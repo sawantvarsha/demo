@@ -1,0 +1,144 @@
+
+
+<!-- <div style="position: relative;">
+    <div style="position: absolute;right: 0;">
+    <button class ="sort"  mat-icon-button [matMenuTriggerFor]="mainMenu" >
+   <span  class="material-icons" matTooltip="More options">more_horiz</span>
+    </button>
+  
+    <mat-menu #mainMenu="matMenu">
+      <button  mat-menu-item (click)="filterData('Ascending')">
+        <span class="tick" *ngIf="selectedOption === 'Ascending'">&#10003;</span> Sort Ascending 
+      </button>
+      <button  mat-menu-item (click)="filterData('Descending')">
+        <span class="tick" *ngIf="selectedOption === 'Descending'">&#10003;</span> Sort Descending
+      </button>
+      <button mat-menu-item [matMenuTriggerFor]="subMenu1">
+        Sort By
+      </button>
+    </mat-menu>
+    
+    <mat-menu #subMenu1="matMenu">
+      <button  mat-menu-item (click)="filterData1('ISIN')">
+        <span class="tick" *ngIf="selectedOption1 === 'ISIN'">&#10003;</span> ISIN
+      </button>
+      <button  mat-menu-item (click)="filterData1('Trace_KO_Distance')">
+        <span class="tick" *ngIf="selectedOption1 === 'Trace_KO_Distance'">&#10003;</span> KO Distance (%)
+      </button>
+      <button  mat-menu-item (click)="filterData1('MTM_Premium')" >
+        <span class="tick" *ngIf="selectedOption1 === 'MTM_Premium'">&#10003;</span> MTM (%)
+      </button>
+      <button  mat-menu-item  (click)="filterData1('C_Note_Barrier_PC')" >
+        <span class="tick" *ngIf="selectedOption1 === 'C_Note_Barrier_PC'">&#10003;</span> KO (%)
+      </button>
+      <button  mat-menu-item (click)="filterData1('WorstOfUnderlying')" >
+        <span class="tick" *ngIf="selectedOption1 === 'WorstOfUnderlying'">&#10003;</span>Worst-of Underlying 
+      </button>
+      <button  mat-menu-item  (click)="filterData1('Note_Master_ID')">
+        <span class="tick" *ngIf="selectedOption1 === 'Note_Master_ID'">&#10003;</span> Product Name
+      </button>
+    </mat-menu>
+    </div>
+</div>
+<div class="chart-title">
+  KO Distance(%) & MTM(%) by ISIN
+</div>
+<div class="chart-container" >
+  <canvas id="mtm-and-ko-chart" width="955" height="600" #chart>{{chart}}</canvas>
+</div> -->
+
+
+<div class="flexContainer">
+  <div class="chart-title" style="font-family: 'Roboto'; color: rgb(180, 180, 180);">
+    KO Distance(%) & MTM(%) by ISIN
+    <input id="colorpicker" type="color" list="preferredlist" [(ngModel)]="color" (ngModelChange)="onColorChange($event)">
+    <datalist id="preferredlist">
+      <option>#5f72bf</option>
+      <option>#aa5555</option>
+      <option>#255272</option>
+      <option>#a55fbf</option>
+      <option>#6d97bf</option>
+    </datalist>
+  </div>
+  <div class="sortButtonBox">
+    <!-- <button class="sort" mat-icon-button [matMenuTriggerFor]="mainMenu">
+      <span class="material-icons" matTooltip="More options">more_horiz</span>
+    </button> -->
+
+    <!-- <mat-menu #mainMenu="matMenu">
+      <button  mat-menu-item (click)="filterData('Ascending')">
+        <span class="tick" *ngIf="selectedOption === 'Ascending'">&#10003;</span> Sort Ascending 
+      </button>
+      <button  mat-menu-item (click)="filterData('Descending')">
+        <span class="tick" *ngIf="selectedOption === 'Descending'">&#10003;</span> Sort Descending
+      </button>
+      <button mat-menu-item [matMenuTriggerFor]="subMenu1">
+        Sort By
+      </button>
+    </mat-menu>
+    
+    <mat-menu #subMenu1="matMenu">
+      <button  mat-menu-item (click)="filterData1('ISIN')">
+        <span class="tick" *ngIf="selectedOption1 === 'ISIN'">&#10003;</span> ISIN
+      </button>
+      <button  mat-menu-item (click)="filterData1('Trace_KO_Distance')">
+        <span class="tick" *ngIf="selectedOption1 === 'Trace_KO_Distance'">&#10003;</span> KO Distance (%)
+      </button>
+      <button  mat-menu-item (click)="filterData1('MTM_Premium')" >
+        <span class="tick" *ngIf="selectedOption1 === 'MTM_Premium'">&#10003;</span> MTM (%)
+      </button>
+      <button  mat-menu-item  (click)="filterData1('C_Note_Barrier_PC')" >
+        <span class="tick" *ngIf="selectedOption1 === 'C_Note_Barrier_PC'">&#10003;</span> KO (%)
+      </button>
+      <button  mat-menu-item (click)="filterData1('WorstOfUnderlying')" >
+        <span class="tick" *ngIf="selectedOption1 === 'WorstOfUnderlying'">&#10003;</span>Worst-of Underlying 
+      </button>
+      <button  mat-menu-item  (click)="filterData1('Note_Master_ID')">
+        <span class="tick" *ngIf="selectedOption1 === 'Note_Master_ID'">&#10003;</span> Product Name
+      </button>
+    </mat-menu> -->
+
+    <div class="button-group"><span
+      style="float: right; margin-right: 10px; transform: rotate(45deg); color: #777;" (click)="pinChart($event,'KO Distance(%) & MTM(%) by ISIN')"
+     ><span class="material-icons">push_pin</span></span></div>
+    <div class="button-group">
+      <button class="sort" (click)="display()">
+        <span class="material-icons">more_horiz</span>
+      </button>
+
+      <div class="menu"  *ngIf="showDiv === 'true'" >
+
+        <button class="sorting" (click)="filterData('Ascending')" style="text-align:center;">
+          <span class="tick" *ngIf="selectedOption === 'Ascending'">&#10003;</span> Sort Ascending</button>
+        <button class="sorting"  (click)="filterData('Descending')">
+          <span class="tick" *ngIf="selectedOption === 'Descending'">&#10003;</span> Sort Descending</button>
+
+        <div class="sub-menu">
+          <button  class="sorting" (click)="filterData1('ISIN')">
+            <span class="tick" *ngIf="selectedOption1 === 'ISIN'">&#10003;</span> ISIN
+          </button>
+          <button  class="sorting" (click)="filterData1('Trace_KO_Distance')">
+            <span class="tick" *ngIf="selectedOption1 === 'Trace_KO_Distance'">&#10003;</span> KO Distance (%)
+          </button>
+          <button class="sorting" (click)="filterData1('MTM_Premium')" >
+            <span class="tick" *ngIf="selectedOption1 === 'MTM_Premium'">&#10003;</span> MTM (%)
+          </button>
+          <button  class="sorting"  (click)="filterData1('C_Note_Barrier_PC')" >
+            <span class="tick" *ngIf="selectedOption1 === 'C_Note_Barrier_PC'">&#10003;</span> KO (%)
+          </button>
+          <button  class="sorting" (click)="filterData1('WorstOfUnderlying')" >
+            <span class="tick" *ngIf="selectedOption1 === 'WorstOfUnderlying'">&#10003;</span>Worst-of Underlying 
+          </button>
+          <button  class="sorting"  (click)="filterData1('Note_Master_ID')">
+            <span class="tick" *ngIf="selectedOption1 === 'Note_Master_ID'">&#10003;</span> Product Name
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="chart-container" >
+  <canvas id="mtm-and-ko-chart"  style="width: 100%;height:100%" #chart>{{chart}}</canvas>
+</div>

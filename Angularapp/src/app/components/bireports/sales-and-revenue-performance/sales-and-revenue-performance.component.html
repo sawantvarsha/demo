@@ -1,0 +1,125 @@
+<!-- <div *ngIf="display"> -->
+<div class="container" #screen [ngClass]="{'container-expanded': showDiv}">
+    <!-- <div class="timeline-item">
+        <div>
+            <span class="arrow" (click)="toggleDiv()">
+            </span>
+            <div class="hidden" [ngClass]="{'show': showDiv}">
+                <div class="sliderImg">
+                    <div class="slide-track" id="square">
+                        <div class="slide" *ngFor="let imageObj of screenshotData" (click)="goToState(imageObj)">
+                            <img src="{{imageObj.image}}" height="200" width="268" alt="" style="border: 1px solid white;"
+                                matTooltip="Timestamp: {{getTimestamp(imageObj.timestamp)}}&#13;
+                            
+                            Date: {{imageObj.startDate}} - {{imageObj.endDate}}&#13;
+                            Currency: {{imageObj.selectedCurrency}}&#13;
+                            Client : {{imageObj.selectedCustomer}}&#13;
+                            tradeRevenue: {{imageObj.tradeRevenue}}
+                            tradeVolume: {{imageObj.tradeVolume}}
+                            
+                            " matTooltipClass="my-tooltip"
+                                [matTooltipPositionAtOrigin]="false" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> -->
+    <div class="item-a">
+        <div class="layout-inner-container">
+            <div class="inner-item-a">
+                <p style="font-family: 'Roboto'; color: rgb(180, 180, 180);" class="title">Sales And Revenue</p>
+            </div>
+            <div class="inner-item-c">
+                <p style="font-family: 'Roboto'; color: rgb(180, 180, 180);" class="client-title">Client</p>
+            </div>
+            <div class="inner-item-b">
+                <select [(ngModel)]="selectedCustomer" (change)="sendSelectedCustomer(selector.value)" #selector>
+                    <option value="All">All</option>
+                    <option *ngFor="let customer of customerList;" [value]="customer">
+                        {{customer}}
+                    </option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="item-b">
+        <app-filter></app-filter>
+    </div>
+    <div class="item-c">
+        <app-chart></app-chart>
+    </div>
+    <div class="item-d">
+        <span class="material-icons info"(click)="toggleDiv()">info</span>
+   
+        <div class="hidden" [ngClass]="{ show: showDiv }">
+          <div>
+            <button class="button-82"
+            role="button"
+            color="primary" (click)="toggleScroll()">
+              {{scroll}}
+            </button>
+          </div>
+          <div class="sliderImg">
+            <div class="slide-track" *ngIf="scroll === 'Scroll off'" id="square">
+              <div class="slide" *ngFor="let imageObj of screenshotData" (click)="goToState(imageObj)"
+                style="border: 1px solid white">
+                <div class="image-container" (mouseenter)="showTooltip($event, imageObj)" (mouseleave)="hideTooltip()">
+                  <img src="{{ imageObj.image }}" height="200" width="268" alt="" />
+                  <div style="height: 45px; line-height: 12px; margin-left: 2%">
+                    <p style="font-size: 13px; position: absolute; right: 0">
+                      {{ getTimestamp(imageObj.timestamp) }}
+                    </p>
+                  </div>
+                  <div class="custom-tooltip" [ngStyle]="tooltipStyle" [innerHTML]="tooltipContent"></div>
+                </div>
+              </div>
+            </div>
+            <div class="slider-off" *ngIf="scroll === 'Scroll on'"style="display: block;" id="square">
+              <div class="slide" *ngFor="let imageObj of screenshotData" (click)="goToState(imageObj)"
+                style="border: 1px solid white">
+                <div class="image-container" (mouseenter)="showTooltip($event, imageObj)" (mouseleave)="hideTooltip()">
+                  <img src="{{ imageObj.image }}" height="200" width="268" alt="" />
+                  <div style="height: 45px; line-height: 12px; margin-left: 2%">
+                    <p style="font-size: 13px; position: absolute; right: 0">
+                      {{ getTimestamp(imageObj.timestamp) }}
+                    </p>
+                  </div>
+                  <div class="custom-tooltip" [ngStyle]="tooltipStyle" [innerHTML]="tooltipContent"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+          
+        </div>
+    <div class="item-e">
+        <!-- <button class="button-81" role="button">Pic Me!</button>  -->
+        <!-- <button class="button-81" role="button" (click)="makeCapture()">Pic Me!</button>  -->
+        <!-- <button mat-button color="primary" class="picmeButton" (click)="makeCapture()">Pic Me!</button> -->
+        <span class="button-85" role="button" color="primary" (click)="goToOriginalState()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 37.242 30.121">
+            <g id="recompute" transform="translate(0.621 -2.939)">
+              <path id="Path_38893" data-name="Path 38893" d="M34.5,6v9h-9" fill="none" stroke="#a7a7a7" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
+              <path id="Path_38894" data-name="Path 38894" d="M1.5,30V21h9" fill="none" stroke="#a7a7a7" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
+              <path id="Path_38895" data-name="Path 38895" d="M5.265,13.5A13.5,13.5,0,0,1,27.54,8.46L34.5,15m-33,6,6.96,6.54A13.5,13.5,0,0,0,30.735,22.5" fill="none" stroke="#a7a7a7" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
+            </g>
+          </svg>
+          </span>
+        <span class="button-81" role="button" color="primary" (click)="makeCapture()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18.322" height="15.75" viewBox="0 0 18.322 15.75">
+            <g id="menu" transform="translate(-4.5 -10.125)">
+              <path id="Path_38890" data-name="Path 38890" d="M22.059,12.375H5.263c-.42,0-.763-.506-.763-1.125h0c0-.619.344-1.125.763-1.125h16.8c.42,0,.763.506.763,1.125h0C22.822,11.869,22.479,12.375,22.059,12.375Z" fill="#848484"/>
+              <path id="Path_38891" data-name="Path 38891" d="M22.059,19.125H5.263c-.42,0-.763-.506-.763-1.125h0c0-.619.344-1.125.763-1.125h16.8c.42,0,.763.506.763,1.125h0C22.822,18.619,22.479,19.125,22.059,19.125Z" fill="#848484"/>
+              <path id="Path_38892" data-name="Path 38892" d="M22.059,25.875H5.263c-.42,0-.763-.506-.763-1.125h0c0-.619.344-1.125.763-1.125h16.8c.42,0,.763.506.763,1.125h0C22.822,25.369,22.479,25.875,22.059,25.875Z" fill="#848484"/>
+            </g>
+          </svg>
+              </span>
+        <div class="popup-container" *ngIf="showScreenshotPopup">
+            <div class="popup">
+              <p style="color: white;background-color: gray;">{{popup}}</p>
+            </div>
+    </div>
+</div>
+<!-- </div> -->

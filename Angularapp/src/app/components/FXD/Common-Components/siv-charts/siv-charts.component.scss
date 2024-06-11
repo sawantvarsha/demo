@@ -1,0 +1,185 @@
+.container {
+    display: grid;
+    grid-template-rows: 1fr 1fr 1.3fr;
+    row-gap: var(--gap);
+    height: 75vh;
+    width: 23vw;
+    // width: auto;
+}
+.chart-container {
+    background-color: var(--select-bg);
+    box-shadow: var(--neumorphic-up);
+    display: grid;
+    grid-template-rows: 40px auto;
+    border-radius: 5px;
+    .chart-header {
+        // font-size: ;
+        text-align: center;
+        padding: 10px 0px 0px 0px;
+    }
+    .chart-content {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 10px 10px 0px 10px;
+    }
+    .chart-ccy-label{
+        text-align: center;
+        margin-bottom: 10px;
+    }
+}
+
+.smallfontVoltable {
+    text-align: center;
+    font-size: 12px !important;
+    margin: 2px !important;
+    border-spacing: 2px 2px;
+    padding: 1px 1px;
+    font-weight: 300 !important;
+}
+
+.smallfontVoltable tbody {
+    overflow: scroll !important;
+}
+
+.smallfontVoltable th {
+    font-weight: 500 !important;
+    margin: 10px !important;
+    padding: 3px 10px;
+    border-radius: 2px;
+    text-align: center ;
+    // min-width: 69px;
+    width: 30px !important;
+}
+
+.smallfontVoltable td {
+    padding: 3px 5px;
+    width: 30px !important;
+    text-align: center !important ;
+}
+tr{
+    height: 25px !important;
+}
+
+.FXD-loader{
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.no-data-found{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.padding-label {
+    padding: 10px 40px 0px 0px !important;
+}
+
+.switch-container{
+    display: flex;
+    align-self: center;
+}
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 44px;
+    height: 22px;
+
+    border-radius: 3px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--containers-content);
+    -webkit-transition: 0.4s;
+    transition: 0.4s;
+    border-radius: 15px;
+    height: 19px;
+    width: 45px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 13px;
+    width: 13px;
+    left: 3px;
+    bottom: 3px;
+    background-color: var(--headers);
+    -webkit-transition: 0.4s;
+    transition: 0.4s;
+    border-radius: 25px;
+}
+
+input:checked + .slider {
+    background-color: var(--active);
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px var(--active);
+}
+
+input:checked + .slider:before {
+    -webkit-transform: translateX(22px);
+    -ms-transform: translateX(22px);
+    transform: translateX(22px);
+}
+input:focus {
+    // border: 1px solid var(--btn-border) !important;
+    box-shadow: var(--neumorphic-down) !important;
+}
+
+.align-center {
+    align-self: center;
+}
+
+.svgChart {
+    cursor: default;
+    position: absolute;
+    top: 4%;
+    left: 89%;
+    z-index: 99999;
+}
+
+
+ //card flip css 
+
+ .content {
+    transition: transform 1s;
+    transform-style: preserve-3d;  
+    background-color: var(--select-bg);
+    box-shadow: var(--neumorphic-up);
+ }
+
+
+  .content-hover {
+    transform: rotateY( 180deg ) ;
+        transition: transform 0.5s;
+  }
+
+  .front, .back {
+    position: absolute;
+    backface-visibility: hidden;
+    width: -webkit-fill-available;
+  }
+
+  .back {
+
+    transform: rotateY( 180deg );
+  }
+

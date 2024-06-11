@@ -1,0 +1,25 @@
+.mtm-history-container {
+  display: grid;
+  grid-template-columns: auto 2fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 20px;
+}
+.mtm-history-table {
+  grid-row: span 2;
+  thead,
+  tbody {
+    tr {
+      display: grid;
+      grid-template-columns: 200px 100px;
+      align-items: end;
+    }
+  }
+  tbody {
+    display: block;
+    height: calc(100vh - 25em);
+    overflow: scroll;
+  }
+}
+.mtm-history-loader {
+  height: 30em;
+}

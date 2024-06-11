@@ -1,0 +1,80 @@
+.component {
+    display: flex;
+    background-color: var(--main-bg-color);
+    flex-direction: column;
+    font-size: 15px;
+}
+
+.main-container {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--containers);
+    letter-spacing: 0.72px;
+    border-radius: 4px;
+    width: 85%;
+    box-shadow: var(--box-shadow-thin);
+    margin-bottom: 15px;
+    // margin-left: 20px;
+}
+
+.main-container:hover {
+    box-shadow: var(--box-shadow-hovered);
+}
+
+.sub-content {
+    display: grid;
+    //     grid-template-columns:minmax(50px,10%) minmax(25px,5%) minmax(50px,10%) minmax(25px,5%) minmax(100px,12%) minmax(100px,12%)
+    //     minmax(25px,5%) minmax(100px,13%) minmax(100px,13%) minmax(50px,10%) minmax(50px,10%);
+    //  padding: 10px 0px;
+    grid-template-columns: 20% 45% 15% 20%;
+    align-items: baseline;
+    //    gap: 10px;
+    text-align: center;
+}
+
+.content-container {
+    display: grid;
+    grid-template-columns: 10% 15% auto;
+    align-items: center;
+    text-align: left;
+    margin: 10px;
+    gap: 5%;
+    align-items: baseline;
+}
+
+.line {
+    border-bottom: solid #eaeaea 1px;
+}
+
+.filter {
+    display: grid;
+    grid-template-columns: 10% 10%;
+    align-items: center;
+    margin: 10px;
+    align-items: baseline;
+}
+
+.date {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    align-items: baseline;
+    text-align: right;
+}
+
+.today {
+    text-align: center;
+    border: solid #7878ab 1px;
+    border-radius: 50%;
+    background-color: #7878ab;
+    color: white;
+    font-weight: bold;
+    padding: 15%;
+    margin: 5px;
+    width: 40px;
+    height: 40px;
+}
+
+.everyday {
+    font-size: larger;
+    padding: 0px 15px;
+}

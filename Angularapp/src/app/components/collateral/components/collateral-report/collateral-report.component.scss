@@ -1,0 +1,77 @@
+.workflowblotter-component {
+    display: flex;
+    background-color: var(--main-bg-color);
+    flex-direction: column;
+    font-size: 15px;
+    width: calc(100% - 50px);
+  }
+  .content-container {
+    overflow-x: scroll;
+    width: calc(100%);
+  }
+  td {
+    font-size: 12px;
+  }
+  .maxwidth100 {
+    max-width: 100px !important;
+    min-width: 100px !important;
+  }
+  .maxwidth120 {
+    max-width: 120px !important;
+    min-width: 120px !important;
+  }
+  .maxwidth150 {
+    max-width: 150px !important;
+    min-width: 150px !important;
+  }
+  .minwidth600 {
+    max-width: 350px !important;
+    min-width: 350px !important;
+    white-space: pre-line;
+  }
+  .maxwidth120{
+    max-width: 120px !important;
+    min-width: 120px !important;
+  }
+  .maxwidth200{
+    max-width: 150px !important;
+    min-width: 150px !important;
+  white-space: pre-line;
+  }
+  .maxwidth70{
+    max-width: 70px !important;
+    min-width: 70px !important;
+  white-space: pre-line;
+  }
+  .maxwidth300{
+    max-width: 200px !important;
+    min-width: 200px !important;
+  white-space: pre-line;
+  }
+  thead,
+  tbody {
+    display: block;
+  }
+  
+  tbody {
+    min-height: 150px; /* Just for the demo          */
+    overflow-y: auto; /* Trigger vertical scroll    */
+    overflow-x: hidden; /* Hide the horizontal scroll */
+  }
+  
+  .head{
+    padding: 5px;
+    font-size: 20px;
+    background-color: #889daf;
+  }
+  
+  
+  ::-webkit-scrollbar {
+    width: 5px;
+    height: 0px;
+  }
+  .table1{
+    border: solid 1px;
+    margin-left: 20px;
+  }
+  

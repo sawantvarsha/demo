@@ -1,0 +1,132 @@
+.header-options {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.flex-row {
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+}
+
+input[type="radio"] {
+    height: 15px;
+}
+
+.timeline-container {
+    padding: 10px;
+}
+
+.excel-icon {
+    margin: auto 0 auto auto;
+}
+
+.performance-grid {
+    display: grid;
+    grid-template-columns: 135px auto;
+    align-items: center;
+    text-align: center;
+    margin-top: 10px;
+    border-bottom: solid 1px var(--table-header-text);
+}
+.loader-icon{
+    display: grid;
+    height:100%;
+    width:100%;
+    place-items: center;
+}
+.sub-row-grid {
+    display: grid;
+    // align-items: center;
+    grid-gap: 10px;
+    text-align: center;
+    min-height: 70px;
+    // border-bottom: solid 1px var(--table-header-text);
+}
+
+.sub-row-grid2{
+    display: grid;
+    // align-items: center;
+    grid-gap: 10px;
+    text-align: center;
+    min-height: 40px;
+}
+
+.sub-row-grid>label {
+    padding: 5px;
+    min-width: 5.2em;
+    margin:auto;
+}
+
+.date-column {
+    // border-bottom: solid 1px var(--table-header-text);
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.date-column>label {
+    margin: 0 auto;
+}
+
+.leftAlign {
+    text-align: left !important;
+}
+
+.rightAlign {
+    text-align: right !important
+}
+
+.centerAlign {
+    text-align: center !important;
+}
+
+.header {
+    color: var(--table-header-text);
+    font-weight: 500;
+    margin:0;
+}
+
+.data-grid {
+    display: grid;
+    grid-gap: 10px;
+    text-align: left;
+    align-items: flex-start;
+    grid-template-rows: 35px 35px 35px 35px;
+}
+
+.mtm-history-loader {
+    height: 30em;
+  }
+
+  .performance-grid-tbody{
+    height: calc(80vh - 202px);
+    overflow-y: auto;
+  }
+
+  input[type='radio']:after {
+    width: 15px;
+    height: 15px;
+    border-radius: 15px;
+    left: -1px;
+    position: relative;
+    background-color: var(--containers);
+    content: '';
+    display: inline-block;
+    visibility: visible;
+    border: 2px solid var(--btn-hover-bg);
+}
+
+input[type='radio']:checked:after {
+    width: 15px;
+    height: 15px;
+    border-radius: 15px;
+    left: -1px;
+    position: relative;
+    background-color: var(--btn-hover-bg);
+    content: "";
+    display: inline-block;
+    visibility: visible;
+    border: 2px solid var(--btn-hover-bg);
+}

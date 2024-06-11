@@ -1,0 +1,203 @@
+<div class="main-container" *ngIf="ViewMode === 'FullPage'">
+
+  <div *ngIf="this.ShowPriceProvider === true">
+
+    <div class="cards-section" *ngIf="LPs?.length > 0">
+
+      <div *ngIf = "LP == 'Best Price'" [attr.name]="Product_code" class="card"  [ngClass]="{ 'highlight-card':  BestPriceRecieved  }"
+      [ngStyle]="{'height': isQENMode === true ? '147px' : (ShowPremAmtConfig == 'YES') ?'205px' : '184px' , 
+      'grid-template-rows': isQENMode === true ? 'unset' :'20px 30px auto auto 45px'}">
+  
+        <!-- <div class="card-lp-logo">
+                  <img class="ccyFlag" style="max-width:80px;" [src]="'http://'+domainURL+'/assets/'+item.PP_Code+'.png'" alt="img" [height]="40">
+        </div> -->
+  
+        <!-- commented by Urmila A, 18-April-23, for PB entity  -->
+        <span class="card-header"></span>
+        <span class="card-sub-header">Best</span>
+  
+              <!-- Checks added by Urmila A | LGTGTWINT-1576 | 1-Mar-23  -->
+        <!-- Prem label, name added for DCI | UrmilaA | 29-Dec-23 -->
+        <div class="card-contents">  
+  
+          <span [attr.name]="Product_code" *ngIf="LPbestPrice.price >= 0  && LPbestPrice.validResponseReceived"
+            [ngClass]="{'Normal_highlight': setSmallFont.includes('false') ,'Normal_highlightsmall': setSmallFont.includes('true') || Product_code == 'DCD'}">
+            <p *ngIf="Product_code == 'DCD'" > Prem &nbsp; </p> {{ LPbestPrice.price || "-"}} {{ ShowPerctSign }}
+          </span>  
+  
+          <span style="padding-top: 4px;" *ngIf="ShowPremAmtConfig == 'YES' && LPbestPrice.priceAMT >= 0  && LPbestPrice.validResponseReceived"
+             [ngClass]="{'Normal_highlight': setSmallFont.includes('false') ,'Normal_highlightsmall': setSmallFont.includes('true') || Product_code == 'DCD'}">
+            <p *ngIf="Product_code == 'DCD'" > Prem   </p> {{ LPbestPrice.priceAMT | number:'1.2-2' || "-"}}
+          </span>
+  
+                  <!-- F5SAAINT-2228 | UI Distortion on price with large length | Chaitanya M | 04-March-2024 -->
+          <!-- Solve For changes | F5SAAINT-399 | Chaitanya M | 21 Nov 2023 -->
+          <!-- Modified by Urmila A | 16-Jan-23 | LGTGTWINT-1044  -->  
+  
+          <span  [attr.name]="Product_code" *ngIf="LPbestPrice.price < 0 && LPbestPrice.validResponseReceived" 
+            [ngClass]="{'Red_highlight': setSmallFont.includes('false') ,'Red_highlightsmall': setSmallFont.includes('true')}">
+            <p *ngIf="Product_code == 'DCD'" > Prem </p> {{LPbestPrice.price || "-"}} {{ ShowPerctSign }}
+          </span> 
+  
+          <span  [attr.name]="Product_code" *ngIf="ShowPremAmtConfig == 'YES' && LPbestPrice.priceAMT < 0 && LPbestPrice.validResponseReceived" 
+          [ngClass]="{'Red_highlight': setSmallFont.includes('false') ,'Red_highlightsmall': setSmallFont.includes('true')}">
+          <p *ngIf="Product_code == 'DCD'" > Prem </p> {{LPbestPrice.priceAMT || "-"}}
+        </span> 
+          <!-- F5SAAINT-2228 | UI Distortion on price with large length | Chaitanya M | 04-March-2024 -->
+          <!-- Solve For changes | F5SAAINT-399 | Chaitanya M | 21 Nov 2023 -->
+          <!-- Modified by Urmila A | 16-Jan-23 | LGTGTWINT-1044  --> 
+  
+          <span  [attr.name]="Product_code" *ngIf="!LPbestPrice.validResponseReceived" >-</span> <!-- modified by UrmilaA | 17-July-23 | LGTGTWINT-2225 -->
+  
+        </div>
+  
+          <!-- Yield added for DCI | UrmilaA | 29-Dec-23 -->
+          <div  class="card-yield"  *ngIf="Product_code == 'DCD'" > 
+            <span *ngIf="LPbestPrice.Yield > 0" [ngClass]="Red_highlightsmall"> Yield {{ LPbestPrice.Yield }}%</span>
+            <!-- F5SAAINT-2228 | UI Distortion on price with large length | Chaitanya M | 04-March-2024 -->
+            <!-- Solve For changes | F5SAAINT-399 | Chaitanya M | 21 Nov 2023 --> 
+        </div>
+  
+  
+        <div class="card-timer" *ngIf="isOrderBtnVisible"> <!-- HSBCFXEINT-115 | Incorrect Timer | ChaitanyaM | 21May2024 -->
+          <!-- <span *ngIf="LPbestPrice.totalTime > 0 && LPbestPrice.validResponseReceived">{{LPbestPrice.totalTime }}</span> -->
+          <span *ngIf="LPbestPrice.totalTime > 0 && LPbestPrice.validResponseReceived">-</span>
+          <span *ngIf="!BestPriceRecieved || LPbestPrice.totalTime === 0">-</span>
+        </div>
+        
+        <div class="card-buttons">
+          <!-- Urmila A | 2-Nov-22 | Shown Order button only to Dealer login, as discussed with Rahul P  -->  
+          <!-- Enabled order btn only to best price , changes done by Urmila A | 25-Jan-23 | LGTGTWINT-1193 -->
+          <!-- Added order button enability after  item.price === 0 || item.price === 0.0 ||  || MinQuoteTimeout, && isOrderBtnEnable || !item.validResponseReceived  by UrmilaA, 9-may-23 | LGTCLI-361 (point 2) -->
+          <button class="button" (click)="BookDeal(LPbestPrice)" [disabled]="  !OrderBtnEnable ||  this.BookingFlag  ||
+            LPbestPrice.totalTime === 0 || !LPbestPrice.IsBestPrice"  *ngIf="isOrderBtnVisible">
+            <!-- !IsRMLoggedIn && !IsIALoggedIn -->
+            Order
+          </button>  
+          <!-- Urmila A | renamed 'Trade' button to 'Order' for Dealer Login | LGTGTWINT-171 -->
+        </div>
+      
+  
+      </div>
+  
+      <!-- Urmila A | 17-Jan-23 | added [ngStyle] | LGTCLI-261  -->
+      <div [attr.name]="Product_code" class="card" *ngFor="let item of LPs" [ngClass]="{ 'highlight-card': item.IsBestPrice }"
+      [ngStyle]="{'height': isQENMode === true ? '147px' : (ShowPremAmtConfig == 'YES') ?'205px' : '184px' , 
+      'grid-template-rows': isQENMode === true ? 'unset' :'20px 30px auto auto 45px'}">
+  
+        <!-- <div class="card-lp-logo">
+                  <img class="ccyFlag" style="max-width:80px;" [src]="'http://'+domainURL+'/assets/'+item.PP_Code+'.png'" alt="img" [height]="40">
+        </div> -->
+  
+        <!-- commented by Urmila A, 18-April-23, for PB entity  -->
+        <span class="card-header"></span>
+        <span class="card-sub-header">{{ item.PP_Code }}</span>
+      
+  
+        <!-- Checks added by Urmila A | LGTGTWINT-1576 | 1-Mar-23  -->
+        <!-- Prem label, name added for DCI | UrmilaA | 29-Dec-23 -->
+        <div class="card-contents">  
+          <span [attr.name]="Product_code" *ngIf="item.price >= 0  && item.validResponseReceived"
+            [ngClass]="{'Normal_highlight': setSmallFont.includes('false') ,'Normal_highlightsmall': setSmallFont.includes('true') || Product_code == 'DCD'}">
+            <p *ngIf="Product_code == 'DCD'" > Prem &nbsp; </p> {{ item.price || "-"}} {{ ShowPerctSign }}
+          </span> 
+          <!-- <START : Added By Anmol B || 12-Apr-2024 || JIRA ID : F5SAAINT-3655>-->
+            <span style="padding-top: 4px;" *ngIf="ShowPremAmtConfig == 'YES' && item.priceAMT >= 0  && item.validResponseReceived"
+              [ngClass]="{'Normal_highlight': setSmallFont.includes('false') ,'Normal_highlightsmall': setSmallFont.includes('true') || Product_code == 'DCD'}">
+             <p *ngIf="Product_code == 'DCD'"> Prem </p> {{ item.priceAMT | number:'1.2-2' || "-"}}
+           </span>
+          <!-- <END : Added By Anmol B || 12-Apr-2024 || JIRA ID : F5SAAINT-3655>-->
+          <!-- F5SAAINT-2228 | UI Distortion on price with large length | Chaitanya M | 04-March-2024 -->
+          <!-- Solve For changes | F5SAAINT-399 | Chaitanya M | 21 Nov 2023 -->
+          <!-- Modified by Urmila A | 16-Jan-23 | LGTGTWINT-1044  -->  
+  
+          <span  [attr.name]="Product_code" *ngIf="item.price < 0 && item.validResponseReceived" 
+            [ngClass]="{'Red_highlight': setSmallFont.includes('false') ,'Red_highlightsmall': setSmallFont.includes('true')}">
+            <p *ngIf="Product_code == 'DCD'" > Prem </p> {{item.price || "-"}} {{ ShowPerctSign }}
+          </span> 
+          <!-- <START : Added By Anmol B || 12-Apr-2024 || JIRA ID : F5SAAINT-3655>-->
+          <span  [attr.name]="Product_code" *ngIf="ShowPremAmtConfig == 'YES' && item.priceAMT < 0 && item.validResponseReceived" 
+            [ngClass]="{'Red_highlight': setSmallFont.includes('false') ,'Red_highlightsmall': setSmallFont.includes('true')}">
+            <p *ngIf="Product_code == 'DCD'" > Prem </p> {{item.priceAMT || "-"}}
+          </span> 
+          <!-- <END : Added By Anmol B || 12-Apr-2024 || JIRA ID : F5SAAINT-3655>-->
+          <!-- F5SAAINT-2228 | UI Distortion on price with large length | Chaitanya M | 04-March-2024 -->
+          <!-- Solve For changes | F5SAAINT-399 | Chaitanya M | 21 Nov 2023 -->
+          <!-- Modified by Urmila A | 16-Jan-23 | LGTGTWINT-1044  --> 
+  
+          <span  [attr.name]="Product_code" *ngIf="!item.validResponseReceived" >-</span> <!-- modified by UrmilaA | 17-July-23 | LGTGTWINT-2225 -->
+        </div>
+       
+        <!-- Yield added for DCI | UrmilaA | 29-Dec-23 -->
+        <div  class="card-yield"  *ngIf="Product_code == 'DCD'" > 
+            <span *ngIf="item.Yield > 0" [ngClass]="Red_highlightsmall"> Yield {{ item.Yield }}%</span>
+            <!-- F5SAAINT-2228 | UI Distortion on price with large length | Chaitanya M | 04-March-2024 -->
+            <!-- Solve For changes | F5SAAINT-399 | Chaitanya M | 21 Nov 2023 --> 
+        </div>
+  
+  
+        <div class="card-timer">
+		<!-- HSBCFXEINT-115 | Incorrect Timer | ChaitanyaM | 24May2024 -->
+          <!-- <span *ngIf="item.totalTime > 0 && item.validResponseReceived">{{item.totalTime }}</span>-->
+          <span *ngIf="item.totalTime > 0 && item.validResponseReceived">-</span>
+          <span *ngIf="item.totalTime === 0">-</span>
+        </div>
+         
+        <div class="card-buttons">
+          <!-- Urmila A | 2-Nov-22 | Shown Order button only to Dealer login, as discussed with Rahul P  -->  
+          <!-- Enabled order btn only to best price , changes done by Urmila A | 25-Jan-23 | LGTGTWINT-1193 -->
+           <!-- Added order button enability after  item.price === 0 || item.price === 0.0 ||  || MinQuoteTimeout, && isOrderBtnEnable || !item.validResponseReceived  by UrmilaA, 9-may-23 | LGTCLI-361 (point 2) -->
+                <button class="button" (click)="BookDeal(item)" [disabled]="  !OrderBtnEnable ||  
+                this.BookingFlag  ||
+                 item.totalTime === 0 || !item.IsBestPrice"  *ngIf="isOrderBtnVisible">
+                 <!-- !IsRMLoggedIn && !IsIALoggedIn -->
+              Order
+            </button>  
+          <!-- Urmila A | renamed 'Trade' button to 'Order' for Dealer Login | LGTGTWINT-171 -->
+        </div>
+      
+  
+      </div>
+  
+    </div>
+    
+  </div>
+  
+
+  <div class="loading-section" *ngIf="LPs?.length === 0 || LPs === undefined">
+     <!--Modified by Urmila A | 16-feb-23-->
+    <app-loader></app-loader>
+  </div>
+</div>
+
+<div class="Card-container" *ngIf="ViewMode === 'Card'">
+  <div class="cards-section" *ngIf="LPs?.length > 0">
+    <div class="card-card" *ngFor="let item of LPs" [ngClass]="{ 'highlight-card-card': item.IsBestPrice }">
+      <div class="card-card-LPLogo">
+        <img class="ccyFlag" style="max-width: 80px" [src]="'http://' + domainURL + '/assets/' + item.PP_Code + '.png'"
+          alt="img" [height]="40" />
+        <!-- <span class="card-card-header">{{item.PP_Code}}</span> -->
+      </div>
+
+      <div class="card-card-contents" *ngIf="item.price !== 0 && item.price !== '' && !startLoading">
+        <div [ngClass]="{ 'highlight-card-price': item.IsBestPrice }" class="card-card-price">
+          {{ item.price || "-" }}
+        </div>
+        <div class="card-card-timer">
+          <app-svg-icons [icon]="'timer'" [width]="'9'" [height]="'9'" class=""></app-svg-icons>
+          <label>{{ item.totalTime || "-" }}</label>
+          <!-- <img class="ccyFlag" [src]="'../../../../../assets/timer.gif'" alt="img" [width]="30" [height]="30"> -->
+        </div>
+      </div>
+
+      <div class="loading-section" *ngIf="startLoading">
+        <app-loader></app-loader>
+      </div>
+    </div>
+  </div>
+  <div class="loading-section" *ngIf="LPs?.length === 0">
+    <app-loader></app-loader>
+  </div>
+</div>
+
+

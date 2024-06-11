@@ -1,0 +1,87 @@
+.Main-container {
+    padding: 20px;
+    .fund-container {
+        display: grid;
+        row-gap: 20px;
+        .fromtodiv {
+            display: grid;
+            grid-template-columns: 0.7fr 2fr;
+        }
+        .fromtolabeldiv {
+            display: grid;
+            grid-template-columns: 0.9fr auto 1fr;
+        }
+        .fund-detail-information {
+            display: grid;
+            grid-template-columns: 0.7fr 1fr 1fr;
+            gap: 10px;
+        }
+        .product-information {
+            display: flex;
+            justify-content: flex-start;
+            column-gap: 10px;
+        }
+        .CustomerDetails {
+            display: grid;
+            grid-template-columns: 1.06fr 1fr 1fr 1fr;
+            gap: 10px;
+        }
+        .tradeparams-row {
+            display: grid;
+            grid-template-columns: 0.7fr 1fr 1fr;
+            gap: 10px;
+        }
+        .btn-row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            column-gap: 10px;
+        }
+    }
+}
+.label {
+    color: var(--heading-label);
+    display: flex;
+    align-items: center;
+}
+.fundinfo {
+    color: var(--heading-label);
+}
+.available-units {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    font-size: 13.5px;
+    padding-right: 7px;
+}
+
+.UnderlyingSearch {
+    display: flex;
+    align-self: flex-end;
+    position: absolute;
+    width: 99% !important;
+    margin-left: 0.5em;
+    padding-right: 2.2em;
+    margin-right: 0 !important;
+}
+
+.SelectorBox {
+    height: auto;
+    max-height: 10em;
+    overflow-y: scroll;
+    position: absolute;
+    float: right;
+    z-index: 10000;
+    border: 0.05em solid var(--gray);
+    cursor: pointer;
+    width: 25%;
+    margin-left: -4px;
+    background-color: var(--containers);
+    top: -3px;
+}
+
+input:disabled,
+select:disabled,
+.button:disabled {
+    color: #bbbbbb !important;
+}

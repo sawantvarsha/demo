@@ -1,0 +1,62 @@
+<div class="app-container">
+  <div class="app-item-a" style='display: none'>
+    <div class="link_div">
+      <div class="link_tab"  #links>
+	  <!-- Code commented by AdilP @13-09-2023 -->
+        <!-- <div class="link" (click)="selection(0)">Sales & Revenue</div>
+        <div class="link" (click)="selection(1)">Barrier Probability</div>
+        <div class="link" (click)="selection(2)">Asset Exposure</div>
+        <div class="link" (click)="selection(3)">Barrier Watch</div> -->
+        <!-- <div class="link" (click)="selection(0)">Protection vs Worst Of Per</div> -->
+        <!-- <div class="link" (click)="selection(1)">KO & Worst Of Per</div> -->
+        <!-- <div class="link" (click)="selection(1)">Protection vs MTM</div> -->
+        <!-- <div class="link" (click)="selection(3)">MTM & KO</div> -->
+        <!-- <div class="link" (click)="selection(2)">Greek Chart</div> -->
+        <!-- <div class="link" (click)="selection(3)">Galaxy</div> -->
+      </div>
+    </div>
+  </div>
+
+  <div class="app-item-b">
+    <!-- <router-outlet></router-outlet> -->
+    <!-- <app-mtm-and-ko></app-mtm-and-ko> -->
+    <!-- <app-sales-and-revenue-performance></app-sales-and-revenue-performance> -->
+    <!-- <app-barrier-probability></app-barrier-probability> -->
+    <!-- <app-barrier-watch></app-barrier-watch> -->
+    <!-- <app-asset-exposure></app-asset-exposure> -->
+    <!-- <app-mtm-and-ki></app-mtm-and-ki> -->
+    <!-- <app-mtm-and-ko></app-mtm-and-ko> -->
+    <ng-container [ngSwitch]="selected">
+      <!-- <ng-template [ngSwitchCase]="0">
+        <app-sales-and-revenue-performance></app-sales-and-revenue-performance>
+      </ng-template> -->
+      <!-- <ng-template [ngSwitchCase]="1">
+        <app-barrier-probability></app-barrier-probability>
+      </ng-template>
+      <ng-template [ngSwitchCase]="2">
+        <app-asset-exposure></app-asset-exposure>
+      </ng-template>
+      <ng-template [ngSwitchCase]="3">
+        <app-barrier-watch></app-barrier-watch>
+      </ng-template> -->
+      <ng-template [ngSwitchCase]="0">
+        <app-wof-and-ki></app-wof-and-ki>
+      </ng-template>
+      <!-- <ng-template [ngSwitchCase]="1">
+        <app-wof-and-ko></app-wof-and-ko>
+      </ng-template> -->
+      <ng-template [ngSwitchCase]="1">
+        <app-mtm-and-ki></app-mtm-and-ki>
+      </ng-template>
+      <!-- <ng-template [ngSwitchCase]="3">
+        <app-mtm-and-ko></app-mtm-and-ko>
+      </ng-template> -->
+      <ng-template [ngSwitchCase]="2">
+        <app-greek-lcm></app-greek-lcm>
+      </ng-template>
+      <!-- <ng-template [ngSwitchCase]="3">
+        <app-galaxy-dashboard></app-galaxy-dashboard>
+      </ng-template> -->
+    </ng-container>
+  </div>
+</div>

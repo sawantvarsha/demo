@@ -1,0 +1,339 @@
+<div [ngClass]="{'amfComponentrmw': isUserRM === true, 'amfComponent': isUserRM === false}">
+
+    <div class="fundname-row" *ngIf="isUserRM">
+      <div class="middle">Customer</div>
+      <div class="middle">
+        <app-common-customer-search (sendCustomerDetails)="getCustomerDetails($event)" (selectedCustomerValue)="selectedCustomerValue1($event)"></app-common-customer-search>
+      </div>
+    </div>
+
+    <div class="fundname-row">
+      <div class="middle">Fund</div>
+      <div class="middle">
+        <!-- <input type="text" [tabindex]=1 placeholder="Search" [(ngModel)]="mutualFund"
+          (keydown.enter)="selectShare1($event); showSuggestions = false ;"
+          (keydown.ArrowUp)="selectedMFIndex = cfs.moveUpSelection($event, selectedMFIndex)"
+          (keydown.ArrowDown)="selectedMFIndex = cfs.moveDownSelection($event, selectedMFIndex)"
+          (keypress)="showSuggestions = true ; " (keyup)="filterFun($event)">
+        <div class="UnderlyingSearch " *ngIf="mutualFund && showSuggestions">
+          <div id="FundNameList" class="SelectorBox" (clickOutside)="onClickedOutside($event)">
+            <a #FundNameList *ngFor="let mf of (mfList | search: mutualFund:'FundDetails'); let i = index"
+              (keypress)="ChangeIndex($event)">
+              <div *ngIf="mf" [attr.data-mf]="mf" (click)="selectShare(mf) ; " (keydown.enter)="selectShare(mf)"
+                [ngClass]="{'HoverSuggestion': (i === selectedMFIndex)}">
+                <span>{{ mf }}</span>
+              </div>
+            </a>
+          </div>
+        </div> -->
+        <input type="text" [tabindex]=1 placeholder="Search" [(ngModel)]="mutualFund"
+        (keydown.enter)="selectShare1($event); showSuggestions = false ;"
+        (keydown.ArrowUp)="selectedMFIndex = cfs.moveUpSelection($event, selectedMFIndex)"
+        (keydown.ArrowDown)="selectedMFIndex = cfs.moveDownSelection($event, selectedMFIndex)"
+        (keypress)="showSuggestions = true ; " (keyup)="filterFun($event)">
+      <div class="UnderlyingSearch " *ngIf="mutualFund && showSuggestions">
+      <div class="SelectorBox">
+
+        <a *ngFor="let mf of mfList; let i = index" (keypress)="ChangeIndex($event)">
+          <div *ngIf="mf" [attr.data-mf]="mf['FundDetails']" (click)="selectShare(mf) ; "
+            (keydown.enter)="selectShare(mf)"
+            [ngClass]="{'HoverSuggestion': (i === selectedMFIndex)}">
+            <span>{{mf['FundDetails']}}</span>
+          </div>
+        </a>
+      </div>
+    </div>
+      </div>
+    </div>
+    <div class="gridInfo">
+      <div class="funddetails" *ngIf="data !== []">
+        <div *ngIf="data['Name']" class="fundtitlerow">
+          <span id="fundname" class="bondName">{{data['Name']}}</span>
+        </div>
+        <div *ngIf="data['Fund']">
+          <span id="fundname" class="bondName">{{data['Fund']}}</span>
+        </div>
+        <div class="fundinfo" *ngIf="data['Manager']">
+          <span id="fundManager" class="medium">{{data['Manager']}}</span>
+          <span class="medium value-top">|</span>
+          <span class="medium value-top"> {{data['Ccy']}} </span>
+          <span class="medium value-top">|</span>
+          <span class="fs12 heading"> Min. Investment </span>
+          <span class="medium value-top">{{data['Min_Inv_Amt']  | number:'1.2-2'}}</span>
+          <span class="medium value-top">|</span>
+          <span class="fs12 heading"> Fund Code </span>
+          <span class="medium value-top">{{data['Code']}}</span>
+        </div>
+      </div>
+      <div class="funddetails " style="color: red;" *ngIf="data['Name']">{{msg}}
+      </div>
+    </div>
+    <div class="param-cols">
+      <div class="column1">
+        <div class="fund-details">
+          <div> Trade Parameters &nbsp;: :</div>
+        </div>
+        <div class="fundparams-row">
+          <div class="middle">Application Type</div>
+          <div class="middle">
+            <select [(ngModel)]="ApplicationType" (click)="ApplicationTypeChange($event)">
+              <option selected>Subscription
+              </option>
+              <option>Redemption
+              </option>
+              <option>Systematic Investment Plan
+              </option>
+              <option>Systematic withdrawal Plan
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="fundparams-row">
+          <div class="middle">NAV </div>
+          <div class="middle">
+            <input type="text " class="right" disabled="disabled" (focus)="cfs.UnformatNumber($event)"
+              (blur)="cfs.FormatNumber($event)" value="{{data['BidNAV']| number:'1.6-6'}}"
+              (change)="nominal = cfs.NotionalChange($event);" (keypress)=" cfs.NotionalValidate($event)" />
+
+          </div>
+        </div>
+        <div class="fundparams-row">
+          <div class="middle" *ngIf="!applicationTypeFlag">Notional</div>
+          <div class="middle" *ngIf="applicationTypeFlag">Installment Amount</div>
+          <div class="middle">
+            <input type="text" class="right" [disabled]="ApplicationType === 'Redemption'" [(ngModel)]="notional"
+              placeholder="Notional" maxlength="12" tabindex="2" (onload)="unitCalculations(notional , data['BidNAV'])"
+              (blur)="cfs.FormatNumber($event)"
+              (change)="notional = cfs.NotionalChange($event); unitCalculations(notional , data['BidNAV'])"
+              (focus)="cfs.UnformatNumber($event)" (keypress)=" cfs.NotionalValidate($event)">
+
+          </div>
+        </div>
+        <div class="fundparams-row" *ngIf="!applicationTypeFlag">
+          <div class="middle">Units</div>
+          <div class="middle">
+            <input type="text" class="right" [(ngModel)]="Units" [disabled]="ApplicationType === 'Subscription'"
+              (blur)="cfs.FormatNumber($event)" (focus)="cfs.UnformatNumber($event)"
+              (keypress)=" cfs.NotionalValidate($event)"
+              (change)="Units = cfs.NotionalChange($event); calculateNotional(data['BidNAV']);" />
+
+          </div>
+        </div>
+        <div class="fundparams-row" *ngIf="applicationTypeFlag">
+          <div class="middle"> Start Date </div>
+          <div class="middle">
+            <input type="date" class="input-dob" [attr.data-date]="FromDate" placeholder="dd-mm-yyyy"
+              data-date-format="DD-MMM-YYYY" value="" min="1997-01-01" max="2030-12-31" [(ngModel)]="FromDate"
+              tabindex="6" (change)="selectDate('FromDate',FromDate )">
+          </div>
+        </div>
+        <div class="fundparams-row" *ngIf="ApplicationType === 'Systematic Withdrawl Plan'">
+          <div class="middle"> Redeeming Units </div>
+          <div class="middle">
+            <input type="text" class="right" [(ngModel)]="redeemingUnits" placeholder="Redeeming Units" maxlength="12"
+              tabindex="2" (blur)="cfs.FormatNumber($event)" (change)="redeemingUnits = cfs.NotionalChange($event); "
+              (focus)="cfs.UnformatNumber($event)" (keypress)=" cfs.NotionalValidate($event)">
+
+          </div>
+        </div>
+        <div *ngIf="this.moredetails !== 'More Details'">
+          <div class="fundparams-row">
+            <div class="middle">Customer</div>
+            <div class="middle">
+              <input type="text" [(ngModel)]="CustomerName" disabled placeholder="Customer" />
+            </div>
+          </div>
+          <div class="fundparams-row">
+            <div class="middle">Portfolio</div>
+            <div class="middle">
+              <select [(ngModel)]="portfolio" (change)="updatePortfolio()">
+                <option *ngFor="let arr of portfolioList; let i = index">{{arr}}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="column2">
+        <div class="fund-details">
+          <div> Product Information &nbsp;: :</div>
+        </div>
+        <div class="fundparams-row">
+          <div class="middle">Rating</div>
+          <div class="middle">
+            <input class="input-txt right" type="text" disabled="disabled" (focus)="cfs.UnformatNumber($event)"
+              (blur)="cfs.FormatNumber($event)" value="{{data['Rating']}}"
+              (change)="nominal = cfs.NotionalChange($event);" (keypress)=" cfs.NotionalValidate($event)" />
+
+          </div>
+        </div>
+        <div class="fundparams-row">
+          <div class="middle">Sector</div>
+          <div class="middle">
+            <input type="text" disabled="disabled" (focus)="cfs.UnformatNumber($event)"
+              (blur)="cfs.FormatNumber($event)" value="{{data['Sector']}}"
+              (change)="nominal = cfs.NotionalChange($event);" (keypress)=" cfs.NotionalValidate($event)" />
+          </div>
+        </div>
+        <div class="fundparams-row" *ngIf="!applicationTypeFlag">
+          <div class="middle">Annual Fees (%)</div>
+          <div class="middle">
+            <input type="text" class="  right" disabled="disabled" (focus)="cfs.UnformatNumber($event)"
+              (blur)="cfs.FormatNumber($event)" value="{{data['AnnualFees']  | number:'1.2-2'}}"
+              (change)="nominal = cfs.NotionalChange($event);" (keypress)=" cfs.NotionalValidate($event)" />
+          </div>
+        </div>
+        <div class="fundparams-row" *ngIf="applicationTypeFlag">
+          <div class="middle">Frequency</div>
+          <div class="middle">
+            <select [(ngModel)]="Frequency">
+              <option selected>Anually
+              </option>
+              <option>Daily
+              </option>
+              <option>Monthly
+              </option>
+              <option>Quarterly
+              </option>
+              <option>Weekly
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="fundparams-row" *ngIf="!applicationTypeFlag">
+          <div class="middle"> {{FrontExitLoad}} (%) </div>
+          <div class="middle">
+            <input type="text" class="right" (focus)="cfs.UnformatNumber($event)" (blur)="cfs.FormatNumber($event)"
+              value="{{data['TrailerFees'] | number:'1.2-2'}}" disabled="disabled"
+              (change)="nominal = cfs.NotionalChange($event);" (keypress)=" cfs.NotionalValidate($event)" />
+          </div>
+        </div>
+        <div class="fundparams-row" *ngIf="applicationTypeFlag">
+          <div class="middle"> End Date </div>
+          <div class="middle">
+            <input type="date" class="input-dob" [attr.data-date]="ToDate" placeholder="dd-mm-yyyy"
+              data-date-format="DD-MMM-YYYY" value="" min="1997-01-01" max="2030-12-31" [(ngModel)]="ToDate"
+              tabindex="6" (change)="selectDate('ToDate',ToDate )">
+          </div>
+        </div>
+        <div *ngIf="this.moredetails !== 'More Details'">
+          <div class="fundparams-row">
+            <div class="middle">Currency</div>
+            <div class="middle">
+              <select [(ngModel)]="this.data.Ccy" disabled>
+                <option *ngFor="let arr of CurrencyList;">{{arr}}
+                </option>
+
+              </select>
+            </div>
+          </div>
+          <div class="fundparams-row">
+            <div class="middle">Account Number</div>
+            <div class="middle">
+              <select [(ngModel)]="Account_Number" (change)="updateCcy()" [disabled]="isUserRM === false">
+                <option *ngFor="let arr of accountList;">{{arr}}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="fund-button-row">
+      <div></div>
+      <div class="details right">
+
+        <div class="link" (click)="moredetailsCheck()"> <u>
+            {{moredetails}}</u></div>
+        <div>
+          <!-- // showdetailsPopUp(notional)-->
+          <button class="button  btn" value="Buy"
+            (click)="loadflag=true; subscribed(notional); " tabindex="3">Submit</button>
+        </div>
+
+
+      </div>
+      <div>
+        <button class="button  btn" (click)=" clearBtn('subscribe');" tabindex="4">Clear</button>
+
+      </div>
+    </div>
+    <div class="fund-message-row">
+      <div *ngIf="loadflag">
+        <img [src]="isProd?'assets/loading_dots.gif':'../../assets/loading_dots.gif'" height="100px" width="100px">
+      </div>
+      <div *ngIf="!loadflag">
+        {{successMsg}}
+      </div>
+    </div> 
+
+</div>
+<div [ngClass]="{'overlay':popUpflag}">
+  <div class="popuptab1 " *ngIf="popUpflag">
+    <div class="content-header" *ngIf="popUpflag" [ngClass]="{'maincontainer-opacity':!popUpflag}">
+      <div class="content-header-name">
+        <span>Customer {{CustomerName}}|{{CustomerID}}</span></div>
+      <div class="closebtn" (click)="showdetailsPopUp(0)">X</div>
+    </div>
+    <div class="content">
+     <div class="gridclass">
+       <span class="link">Target Asset Allocation</span>
+       <button class="button  btn" >Apply</button>
+       </div>
+
+       <div class="content-container">
+        <table style="width: 100%;">
+          <thead>
+            <tr class="tableheadGrid">
+              <th class="minwidth600">Parameters</th>
+              <th class="maxwidth150 display" style="padding-left: 40px;"> 
+                <input type="checkbox"  value="CIF A"/>
+              <span style="    padding-left: 10px;">CIF A</span></th>
+              <th class="maxwidth120">Eligible Y/N</th>
+              <th class="minwidth450">Failed Reason</th>
+              <th class="maxwidth100">Ref.</th>
+              <th class="maxwidth100 display"> 
+                <input type="checkbox"  value="CIF A"/>
+              <span style="    padding-left: 10px;">Override</span></th>
+            </tr>
+    
+          </thead>
+       
+          <tbody >
+            <tr class="tableGrid" *ngFor="let item of finalSuitabilityData">
+              <td class="minwidth600">{{item.Parameter}}</td>
+              <td class="maxwidth160"> <input type="text" disabled value={{item.CIF}}></td>
+              <td class="maxwidth120">{{item.EligibleYN}}</td>
+              <td class="minwidth450">{{item.Reason}}</td>
+              <td class="maxwidth100">{{item.Ref}}</td>
+              <td class="maxwidth120" style="    padding-left: 40px;"><input type="checkbox" [disabled]="item.Override"  value=""/></td>
+            </tr>
+            <!-- <tr class="tableGrid">
+              <td class="minwidth600">Account Currency</td>
+              <td class="maxwidth160"><input type="text" disabled value="USD"/></td>
+              <td class="maxwidth120"><input type="text" disabled value="Y"/></td>
+              <td class="minwidth450"></td>
+              <td class="maxwidth100">Ref:USD</td>
+              <td class="maxwidth120"><input type="checkbox" disabled value=""/></td>
+            </tr>
+            <tr class="tableGrid">
+              <td class="minwidth600">Customer Age Cap</td>
+              <td class="maxwidth160"><input type="text" disabled value="60"/></td>
+              <td class="maxwidth120"><input type="text" disabled value="N"/></td>
+              <td class="minwidth450">Customer Age is greater than 55</td>
+              <td class="maxwidth100">Ref:55</td>
+              <td class="maxwidth120"><input type="checkbox"  value=""/></td>
+            </tr> -->
+          </tbody>
+    
+        </table>
+    
+    
+    
+      </div>
+
+    </div>
+
+  </div>
+</div>

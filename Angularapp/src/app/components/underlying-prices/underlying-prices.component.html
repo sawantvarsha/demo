@@ -1,0 +1,35 @@
+<div>
+    <!-- <div class="outer-grid">
+        <div class="label-grid">
+            <label class="labelCol">Note Master ID:</label>
+            <label>{{this.NMID}}</label>
+        </div>
+        <div class="label-grid">
+          {{productName}}
+        </div>
+    </div> -->
+    <div class="graph-grid one-row">              
+        <div class="graph-layouts"> 
+          <div class="loader-container"  *ngIf = "loader2">
+            <div class="">
+              <div class="multi-ripple">
+                <div></div>
+                <div></div>
+              </div>
+            </div>
+          </div>         
+          <div  *ngIf="showPerformanceTradeDate && !loader2" class="ylabel">% of Initial Strike</div>
+          <!-- <div  *ngIf="showPerformanceTradeDate && !loader2" class="xlabel">Trading Days</div> -->
+          <app-underlying-linechart  *ngIf="showPerformanceTradeDate && !loader2" [chartInput]="performanceFromTradeDate" [lastCommonDate]="lastCommonDate" [ObservationDates]="ObservationDates" [underlyingsCount]="underlyingsCount" ></app-underlying-linechart>
+          <!-- <app-lcm-line-chart [graphdata]="performanceFromTradeDate"></app-lcm-line-chart> -->
+          <div *ngIf="showPerformanceTradeDate" class="flx-dates">
+            <div *ngFor = "let _dates of uniqueMonthCombined">
+                <span class="">{{_dates}}</span> 
+             </div>
+        </div>
+        </div>
+       
+        
+      
+    </div>
+</div>

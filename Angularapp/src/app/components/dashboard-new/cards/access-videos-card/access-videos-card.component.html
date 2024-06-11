@@ -1,0 +1,64 @@
+<!-- <label class="card-header">Access Videos</label> -->
+<div class="card-padding">
+    <div class="sub-heading" *ngIf="currentTab === 1">
+
+        <!-- <label style="margin-bottom:13px;color: var(--gray);">Watch a instruction or information video to use our
+            platform
+            and earn money with us </label> -->
+
+    </div>
+
+
+    <!-- <div class="svg-container">
+        <app-svg-icons [icon]="'Access-Videos'" [width]="'340'" [height]="'200'"></app-svg-icons>
+    </div> -->
+    <div class="container">
+        <div class="header labels" (click)=toggleDisplayDiv(1) style="text-align: start;">
+            <app-svg-icons [icon]="'Back'" [width]="'20'" [height]="'20'"></app-svg-icons> Catalog
+        </div>
+        <div class="contentContainer" *ngIf = "videoList.length > 0">
+            <ul>
+                <li *ngFor="let i of this.videoList">
+                    <div style="" (click)="toggleVideoPopup(i)">
+                        <app-svg-icons [icon]="'Video-Thumbnail'" [width]="'20'" [height]="'20'"></app-svg-icons>
+                        <div class="Details">
+                            {{i}}
+                        </div>
+                    </div>
+                    <hr class="line">
+                </li>
+            </ul>
+        </div>
+        <div *ngIf = "videoList.length <= 0">No Data Found</div>
+
+    </div>
+
+    <!-- <div class="View-Catalog svg-container" style="cursor: pointer;" (click)=toggleDisplayDiv(2) *ngIf="currentTab === 1">
+
+        <app-svg-icons [icon]="'View-catalog-play-button'" [width]="'20'" [height]="'20'"></app-svg-icons>
+        <label class="labels" style="margin-left: 8px; color: var(--primary-color); cursor: pointer;">
+            View Catalog
+        </label>
+
+    </div>
+    <div class="pageStatus">
+        <div [ngClass]="{'active': currentTab === 1}" class="tab" (click)=toggleDisplayDiv(1)></div>
+        <div [ngClass]="{'active': currentTab === 2}" class="tab" (click)=toggleDisplayDiv(2)></div>
+    </div> -->
+
+</div>
+<!-- Pop up-->
+<div class="overlay" *ngIf="Video_popup">
+    <!-- <app-video-player></app-video-player> -->
+    <div class="popup">
+        <div class="title">
+            <label>Structured Products Distribution Journey</label>
+            <app-svg-icons (click)="closeVideoPopup()" [icon]="'close'" [width]="'18'" [height]="'18'"></app-svg-icons>
+        </div>
+        <div class="popup-content">
+            <video controls width="100%" height="auto">
+                <source src="{{videoPath}}" type="video/mp4">
+            </video>
+        </div>
+    </div>
+</div>

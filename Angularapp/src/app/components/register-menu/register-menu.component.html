@@ -1,0 +1,111 @@
+<div class="register-component">
+  <div class="page-title">Configure Menu</div>
+  <div class="container">
+    <!-- <div class="sub-div">
+           <div><span>{{userType | uppercase}} : {{login}}</span></div>
+           <span> Select Portal</span>
+                <select (change)= "getPortal($event.target.value)">
+                    <option *ngFor="let item of this.portalArray; let i = index" [value]="item.submenu">{{item.menu}}</option>
+                </select>
+            <div class="right">
+                <button class="button btn" value="Buy" (click)="saveMenuData()">Save</button>
+              <span>  {{msg}}</span>
+              </div>
+        </div> -->
+    <div class="sub-div">
+      <span style="width: 120px;">Select Portal</span>
+      <select style="width: 150px;" (change)="getPortal(selectedPortal)" [(ngModel)]="selectedPortal">
+        <option *ngFor="let item of this.portalArray; let i = index" [value]="item.submenu">{{item.menu}}
+        </option>
+      </select>
+      <div class="right">
+        <button class="button btn" value="Add" (click)="addNewMenu()">{{AddNewRowBtnLabel}}</button>
+      </div>
+      <div class="right">
+        <button class="button btn" value="Buy" (click)="saveMenuData()">Save</button>
+      </div>
+      <div>
+        <app-svg-icons (click)="refresh()" [icon]="'refresh'" [width]="'30'" [height]="'30'"></app-svg-icons>
+      </div>
+
+      <div>
+        <span *ngIf="menuUpdated" style="margin-left: 5px;">{{msg}}</span>
+      </div>
+    </div>
+
+    <div class="table-div">
+      <div class="fixed-table">
+        <table class="configure-menu-table">
+          <thead>
+            <tr>
+              <th class="center">
+                <div class="widthauto">
+                  <input class="checkbox" type="checkbox" [checked]="false" [(ngModel)]="chkAllMenu"
+                    (click)="selectAllMenu()" />
+                </div>
+              </th>
+              <th class="center">
+                <div class="width50">Actions</div>
+              </th>
+              <th class="center">
+                <div class="width150">Main Header</div>
+              </th>
+              <th class="center">
+                <div class="width200">Sub Header</div>
+              </th>
+              <th class="center">
+                <div class="width200">Route</div>
+              </th>
+              <th class="center">
+                <div class="width40">Position</div>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of menuArray; let i = index">
+              <td class="center">
+                <div class="widthauto">
+                  <input type="checkbox" name="enabledMenu" id="enabledMenu" [checked]="item.Checked"
+                    [(ngModel)]="item.Checked" (change)="saveRow(item,i)">
+                </div>
+              </td>
+              <td class="center" class="actions">
+                <div class="width50">
+                  <a (click)="editRow(item, i)" *ngIf="!item.isEdit">Edit</a>
+                  <a (click)="saveRow(item, i)" *ngIf="item.isEdit">Save</a>
+                </div>
+              </td>
+              <td>
+                <div class="width150" *ngIf="!item.isEdit">{{ item?.menu }}</div>
+                <div class="width150" *ngIf="item.isEdit">
+                  <input type="text" [(ngModel)]="item.menu" (change)="editRow(item, i)" class="txtmenu">
+                </div>
+              </td>
+              <td>
+                <div class="width200" *ngIf="!item.isEdit">{{ item?.submenu }}</div>
+                <div class="width150" *ngIf="item.isEdit">
+                  <input type="text" [(ngModel)]="item.submenu" (change)="editRow(item, i)" class="txtsubmenu">
+                </div>
+              </td>
+              <td>
+                <div class="width200" *ngIf="!item.isEdit">{{ item?.path }}</div>
+                <div class="width150" *ngIf="item.isEdit">
+                  <input type="text" [(ngModel)]="item.path" (change)="editRow(item, i)" class="txtpath">
+                </div>
+              </td>
+              <td>
+                <div class="width40" *ngIf="item.isEdit">
+                  <input type="text" [value]="item?.position" [(ngModel)]="item.position" (change)="editRow(item, i)"
+                    class="txtposition">
+                </div>
+                <div class="width40" *ngIf="!item.isEdit" style="text-align: right;">{{ item?.position }}
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div>

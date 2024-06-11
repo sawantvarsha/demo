@@ -1,0 +1,29 @@
+<div class="card" [ngStyle]="{'width':card.width, 'min-height':'200px'}" *ngIf="card.Value !== 'EmptyCard'">
+
+    <div class="card-header">
+        <label> {{card.Value | translate}}</label>
+    </div>
+
+    <div class="card-content" *ngIf="card.QueueList.length !== 0">
+        <app-pie-chart [legendHeight]="200" [legendWidth]="150" [width]="335" [legendVisible]=false [labelsVisible]=true
+            [graphdata]="card.QueueList"></app-pie-chart>
+        <div class="card-bottom">
+            <app-svg-icons (click)="expandRow(0)"
+                [ngStyle]="expand[0]?{'transform':'rotate(-90deg)','transition':'0.4s'}:{'transform':'rotate(90deg)','transition':'0.4s'}"
+                [icon]="'arrow'" [width]="'8'" [height]="'14'"></app-svg-icons>
+        </div>
+        <div *ngIf="expand[0]">
+            <app-chart-legend [graphdata]="card.QueueList"></app-chart-legend>
+        </div>
+    </div>
+    <div class="card-content" *ngIf="card.QueueList.length === 0">
+        <label style="color: var(--heading-label);">No Record Found</label>
+    </div>
+
+</div>
+
+<div class="emptyCard" *ngIf="card.Value === 'EmptyCard'">
+    <div class="card-content">
+        <app-empty-card></app-empty-card>
+    </div>
+</div>

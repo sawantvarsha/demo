@@ -1,0 +1,68 @@
+$assetPath: "http://52.187.114.119";
+.maple-gridview {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  width: 100%;
+  height: 100%;
+  background-color: #393939;
+  // margin:10px;
+  margin-top: 10px;
+  color: peachpuff !important;
+}
+
+.Dark-grass {
+  background-image: url(#{$assetPath}/assets/App_Resorces/PersonaliseBG/Dark-Grass.jpg) !important;
+  background-repeat: no-repeat !important;
+  background-size: cover !important;
+}
+
+.Dark-blue {
+  background-image: url(#{$assetPath}/assets/App_Resorces/PersonaliseBG/Blue-Flash.jpg) !important;
+  background-repeat: no-repeat !important;
+  background-size: cover !important;
+}
+
+.Dark-cacao {
+  background-image: url(#{$assetPath}/assets/App_Resorces/PersonaliseBG/Cacao.jpg) !important;
+  background-repeat: no-repeat !important;
+  background-size: cover !important;
+}
+
+.Dark-purpleFlash {
+  background-image: url(#{$assetPath}/assets/App_Resorces/PersonaliseBG/Purple-Flash.jpg) !important;
+  background-repeat: no-repeat !important;
+  background-size: cover !important;
+}
+
+.Dark-Saint {
+  background-image: url(#{$assetPath}/assets/App_Resorces/PersonaliseBG/Saint-Emilion-tri.jpg) !important;
+  background-repeat: no-repeat !important;
+  background-size: cover !important;
+}
+
+.Dark-Vermillion {
+  background-image: url(#{$assetPath}/assets/App_Resorces/PersonaliseBG/Vermillion-tri.jpg) !important;
+  background-repeat: no-repeat !important;
+  background-size: cover !important;
+}
+
+.Dark-Verde {
+  background-image: url(#{$assetPath}/assets/App_Resorces/PersonaliseBG/Nero-Verde.jpg) !important;
+  background-repeat: no-repeat !important;
+  background-size: cover !important;
+}
+
+.Dark-Aluminio {
+  background-image: url(#{$assetPath}/assets/App_Resorces/PersonaliseBG/Aluminio.jpg) !important;
+  background-repeat: no-repeat !important;
+  background-size: cover !important;
+}
+
+.cardView {
+  box-shadow: 5px 4px 3px #000 !important;
+  border-radius: 14px;
+  padding: 5px;
+  display: inline-block !important;
+  margin: 7px;
+}

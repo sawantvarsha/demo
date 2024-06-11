@@ -1,0 +1,49 @@
+<div class="collateral-container">
+    <div>
+    <div class="table-data">
+        <table class="collateral">
+            <thead>
+                <th>Collateral Type</th>
+                <th>Amount in USD</th>
+            </thead>
+            <tbody>
+                <tr *ngFor="let cd of collateralDetailsData">
+                    <td class="data">{{cd.CollateralType}}</td>
+                    <td class="data right">{{cd.Amount | number:'1.2-2'}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+ 
+    <div class="table-data">
+        <table class="collateral">
+            <thead>
+                <th>Exposure Type</th>
+                <th>Amount in USD (IM)</th>
+            </thead>
+            <tbody>
+                <tr *ngFor="let ex of exposureDetailsData">
+                    <td class="data">{{ex.Facility}}</td>
+                    <td class="data right">{{ex.Amount | number:'1.2-2'}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    </div>
+    <div>
+    <div class="collateral-graph-container">
+        <!-- <span class="collateral-label">Limit Utilization:</span> (Limit Breached) -->
+        <!-- <google-chart *ngIf="collateralChartData.length" #collateralChart [id]="'collateral-chart-' + id"
+            [title]="collateralChartTitle" [type]="collateralChartType" [data]="collateralChartData"
+            [options]="collateralChartOptions" [columnNames]="collateralChartColumnNames">
+        </google-chart> -->
+    </div>
+    <div class="collateral-graph-container">
+        <!-- <span class="collateral-label">Limit Utilization:</span> (Limit Breached) -->
+        <!-- <google-chart *ngIf="exposureChartData.length" #exposureChart [id]="'exposure-chart-' + id"
+            [title]="exposureChartTitle" [type]="exposureChartType" [data]="exposureChartData"
+            [options]="exposureChartOptions" [columnNames]="exposureChartColumnNames">
+        </google-chart> -->
+    </div>
+    </div>
+</div>

@@ -1,0 +1,1513 @@
+<div id="VerticalSubMulti" *ngIf="commonfunctions.getLayout()">
+  <!-- sticky-col first-col -->
+  <!-- <div class="deleteCol submultiDiv" *ngIf="ProductName!=='CreditTranche'" (click)="deleteRow();"
+    style="text-align: center !important;"> -->
+    <!-- Delete icon replaced by SandipA @28-Mar-2023 -->
+    <!-- <img src="{{asseturl}}delete.png" width="30px" style="filter: invert(50%);cursor: pointer;margin: auto;"
+      title="Delete"> -->
+      <!-- <svg _ngcontent-utx-c344="" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 23.143" class="ng-star-inserted" style="width: 20px; height: 20px;"><use _ngcontent-utx-c344="" href="#delete"></use></svg>
+  </div> -->
+  <!-- deleteCol sticky-col first-col -->
+  <!-- <div class="deleteCol submultiDiv" *ngIf="ProductName==='CreditTranche'" (click)="deleteCreditRow();"
+    style="text-align: center !important;">
+    <img src="{{asseturl}}delete.png" width="30px" style="filter: invert(50%);cursor: pointer;margin: auto;"
+      title="Delete">
+  </div> -->
+
+
+  <!-- sticky-col second-col -->
+  <!-- RESULT -->
+
+  <!-- <div class="submultiDiv" style="height: 170px; display: block;"> -->
+    <!--sticky-col first-col class added by SandipA for FIN1EURINT-464 @16-Jun-2023  -->
+  <div class="submultiDiv sticky-col first-col ver-result">
+    <div class="topleftcorner" (click)="deleteRow();">
+      <!-- <svg _ngcontent-utx-c344="" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 23.143" class="ng-star-inserted" style="width: 15px; height: 15px;"><use _ngcontent-utx-c344="" href="#delete"></use></svg> -->
+      <app-svg-icons [icon]="'delete'" [width]="'15'" [height]="'15'">
+      </app-svg-icons>
+    </div>
+    <!-- FIN1EURINT-570 : Hamburger icon missing in vertical mode (Tooltip to display all fields) | 10-Aug-2023 -->
+  <div class="topleftsecond fullView" (mouseover)="fullViewFlag = true" (mouseout)="fullViewFlag=false">
+    <app-svg-icons [icon]="'full-view-multi'" [width]="'15'" [height]="'15'">
+    </app-svg-icons>
+  </div>
+
+  <div [ngClass]="fullViewFlag ? 'fullViewDiv' : ''" *ngIf="fullViewFlag" >
+    <table class="fullViewTbl">
+      <tr>
+        <td>Underlying</td>
+        <td>{{ getUnderlyings() }} </td>
+        <td >Currency</td>
+        <td >{{ this.ddlNoteCcy }}</td>
+      </tr>
+      <tr >
+        <td >Notional</td>
+        <td >{{ this.Notional }}</td>
+        <td >Format</td>
+        <td >{{ this.format }}</td>
+      </tr>
+      <tr >
+        <td >Solve For</td>
+        <td >{{ getSolveFor(this.SolveForvalue) }}</td>
+        <td >Reoffer(%)</td>
+        <td >{{ this.IBPrice }}</td>
+      </tr>
+      <tr >
+        <td >Issue Price (%)</td>
+        <td >{{ this.issuePrice }}</td>
+        <td >Strike Date</td>
+        <td >{{ this.stkshift === 'Fwd' ? 'FWD' : 'TOD' }}</td>
+      </tr>
+      <tr >
+        <td >Issue Date</td>
+        <td >{{ this.paymentshift }}</td>
+        <td >Tenor</td>
+        <td >{{ this.expshift }}</td>
+      </tr>
+      <tr >
+        <td >Barrier Type</td>
+        <td >{{ this.barrierType }}</td>
+      
+        <td >KI Barrier (%)</td>
+        <td >{{ this.barrierLevel }}</td>
+      </tr>
+      <tr >
+        <td >Strike (%)</td>
+        <td >{{ this.Strike }}</td>
+      
+        <td >Settlement</td>
+        <td >{{ this.SettlementMethod }}</td>
+      </tr>
+      <tr >
+        <td >Periodic Coupon</td>
+        <td >{{ this.periodicCouponFlag }}</td>
+      
+        <td >Coupon Type</td>
+        <td >{{ this.cpnType }}</td>
+      </tr>
+      <tr >
+        <td >Coupon p.a. (%)</td>
+        <td >{{ this.cpnCoupon }}</td>
+      
+        <td >Coupon Frequency</td>
+        <td >{{ this.cpnFreq }}</td>
+      </tr>
+      <tr >
+        <td >Coupon Barrier Type</td>
+        <td >{{ this.cpnObservation }}</td>
+      
+        <td >Coupon Barrier Level</td>
+        <td >{{ this.cpnTrigger }}</td>
+      </tr>
+      <tr >
+        <td >Autocall Type</td>
+        <td >{{ this.autocallCouponType }}</td>
+      
+        <td >Autocall Barrier(%)</td>
+        <td >{{ this.autoTrigger }}</td>
+      </tr>
+      <tr >
+        <td >Step (%)</td>
+        <td >{{ this.autoStepDown }}</td>
+      
+        <td >Frequency</td>
+        <td >{{ this.autoFreq }}</td>
+      </tr>
+      <tr >
+        <td >Autocall From</td>
+        <td >{{ this.autoNonCall }}</td>
+      
+        <td >Autocall Coupon Type</td>
+        <td >{{ this.ERCpnType }}</td>
+      </tr>
+      <tr >
+        <td >AC Coupon p.a. (%)</td>
+        <td >{{ this.ERCoupon }}</td>
+      
+        <td >Priips</td>
+        <td >{{ this.priipsYN }}</td>
+      </tr>
+      <tr >
+        <td >Country</td>
+        <td >{{ replaceStr(this.country) }}</td>
+      
+        <td >Language</td>
+        <td >{{ this.language }}</td>
+      </tr>
+    </table>
+  </div>
+    <!-- <div class="verticalTopCorner" [matMenuTriggerFor]="menu" #menuTrigger *ngIf="this.AllPrices.length > 0" -->
+    <div class="verticalTopCorner infoMulti sortedLP" (click)="displaySortedLpPopup()" *ngIf="this.sortedAllPrices.length > 0"
+      (clickOutside)="showSortedLpPopup=false;">
+      <!-- {{this.AllPrices.length}} -->
+      {{this.sortedAllPrices.length}}
+    </div>
+      <!-- <div class="lp-list-popup" id="menucontainer" *ngIf="showSortedLpPopup">
+        <div style="width: max-content; max-height: 130px; overflow-y: auto;">
+          <div class="ddlitem" *ngFor="let s of sortedAllPrices;let i=index;">
+            <span class="multiReplyList">
+              {{ s.Price === 'Rejected' || s.Price === 'Unsupported' ? s.Price :
+              s.Price === '' ? '-' : s.Price | number:'1.2-2'}} {{ s.Price !== '' && s.Price !== 'Rejected' && s.Price
+              !== 'Unsupported' ? '%' : ''}}
+            </span>
+            &nbsp; / &nbsp;
+            <span style="color: grey;font-size: 14px;">{{s.lp}}</span>
+          </div>
+
+        </div>
+      </div>
+    </div> -->
+    <!-- <div class="verticalTopCorner infoMulti" (click)="displayToggleSortedLpPopup()" *ngIf="this.togglesortedAllPrices.length > 0"
+      style="cursor: pointer;  float: right;" (clickOutside)="showToggleSortedLpPopup=false;"> -->
+      <!-- {{this.AllPrices.length}}</div> -->
+      <!-- {{this.togglesortedAllPrices.length}} -->
+    <!-- </div> -->
+      <!-- <div class="lp-list-popup" id="menucontainer" *ngIf="showToggleSortedLpPopup">
+        <div style="width: max-content; max-height: 130px; overflow-y: auto;">
+          <div class="ddlitem" *ngFor="let s of togglesortedAllPrices;let i=index;"> -->
+            <!-- <div class="ddlitem" *ngFor="let s of AllPrices;let i=index;"> -->
+            <!-- <span class="multiReplyList">
+              {{ s.Price === 'Rejected' || s.Price === 'Unsupported' ? s.Price :
+              s.Price === '' ? '-' : s.Price | number:'1.2-2'}} {{ s.Price !== '' && s.Price !== 'Rejected' && s.Price
+              !== 'Unsupported' ? '%' : ''}}
+            </span>
+            &nbsp; / &nbsp;
+            <span style="color: grey;font-size: 14px;">{{s.lp}}</span>
+          </div>
+
+        </div>
+      </div>
+    </div> -->
+
+<!-- Added by SandipA for FIN1EURINT-121 || 03-May-2023 ||START -->
+<div [ngClass]="showSortedLpPopup ? 'infoMultiPopup' : ''" *ngIf="this.sortedAllPrices.length > 0 && showSortedLpPopup" >
+  <table [ngClass]="showSortedLpPopup ? 'infoNote' : ''" *ngIf="this.sortedAllPrices.length > 0" class="allLP-price">
+    <tr class="allLP-table" *ngFor="let s of sortedAllPrices;let i=index;">
+      <td class="allLP-table">{{s.lp}}</td>
+      <td class="allLP-table">
+        {{ s.Price === 'Rejected' || s.Price === 'Unsupported' ? s.Price :
+        s.Price === '' ? '-' : s.Price | number:'1.2-2'}} {{ s.Price !== '' && s.Price !== 'Rejected' && s.Price !== 'Unsupported' ? '' : ''}}
+      </td>
+      <!-- &nbsp; / &nbsp; -->
+    </tr>
+  </table>
+</div>
+
+<!-- <div [ngClass]="showToggleSortedLpPopup ? 'infodivMulti' : ''" *ngIf="this.togglesortedAllPrices.length > 0 && showToggleSortedLpPopup" >
+  <table [ngClass]="showToggleSortedLpPopup ? 'infoNote' : ''" *ngIf="this.togglesortedAllPrices.length > 0" style="white-space: initial; width: 270px;height: 160px !important;overflow: auto;transform: translate(200px, -50px);">
+    <tr style="height: 7px !important; font-size: 12px !important;" *ngFor="let s of togglesortedAllPrices;let i=index;">
+      <td style="height: 7px !important; font-size: 12px !important;">{{s.lp}}</td>
+      <td style="height: 7px !important; font-size: 12px !important;">
+        {{ s.Price === 'Rejected' || s.Price === 'Unsupported' ? s.Price :
+        s.Price === '' ? '-' : s.Price | number:'1.2-2'}} {{ s.Price !== '' && s.Price !== 'Rejected' && s.Price !== 'Unsupported' ? '' : ''}}
+      </td> -->
+      <!-- &nbsp; / &nbsp; -->
+    <!-- </tr>
+  </table>
+</div> -->
+<!-- Added by SandipA for FIN1EURINT-121 || 03-May-2023 ||END -->
+    <!-- <mat-menu #menu="matMenu">
+      
+      <div>
+        <div class="ddlitem" *ngFor="let s of sortedAllPrices;let i=index;">
+          <span class="multiReplyList">
+        {{ s.Price === 'Rejected' || s.Price === 'Unsupported'  ? s.Price : 
+      s.Price === '' ? '-' : s.Price | number:'1.2-2'}} {{ s.Price !== '' &&  s.Price !== 'Rejected' &&  s.Price !== 'Unsupported' ? '%' : ''}}
+          </span>
+          &nbsp; / &nbsp;
+          <span style="color: grey;font-size: 14px;">{{s.lp}}</span>
+        </div>
+      </div>
+    </mat-menu> -->
+    <!-- <mat-menu #menuToggle="matMenu">
+      <div>
+        <div class="ddlitem" *ngFor="let s of togglesortedAllPrices;let i=index;">
+         
+          <span class="multiReplyList">
+          {{ s.Price === 'Rejected'  || s.Price === 'Unsupported' ? s.Price :
+          s.Price === '' ? '-' : s.Price | number:'1.2-2'}} {{ s.Price !== '' && s.Price !== 'Rejected' &&  s.Price !== 'Unsupported' ? '%' : ''}}
+          </span>
+          &nbsp; / &nbsp;
+          <span style="color: grey;font-size: 14px;">{{s.lp}}</span>
+        </div>
+      </div>
+    </mat-menu> -->
+    <!-- FIN1EURINT-458 || Timer alignment is not proper in vertical view -->
+    <img src="{{asseturl}}loading_dots.gif" alt="" width="50px" height="50px" class="loading-dots" *ngIf="loadflag">
+    <!-- START || Added by SandipA for FIN1EURINT-301 || 09-May-2023 -->
+    <!-- <div *ngIf="pageloadflag" class="loading" id="loading">
+
+      <img src="{{asseturl}}loading_dots.gif" alt="Loading..." class="loadingImg">
+
+    </div> -->
+    <!-- END || Added by SandipA for FIN1EURINT-301 || 09-May-2023 -->
+    <!-- Loader icon changed by AdilP FIN1EURINT-506 || 27-06-2023 -->
+    
+    <!-- FIN1EURINT-121 || Best price not being highlighted on multipricer -->
+    <!-- <span
+      [ngClass]="this.togglesortedAllPrices[0].Price === 'Rejected' || this.togglesortedAllPrices[0].Price === 'Unsupported' ? 'multiRejectMsg' : 'multiReply'"
+      *ngIf="this.togglesortedAllPrices.length > 0 " style="font-size: 18px;font-weight: bold;color: var(--active);">
+      <span style="color: var(--header);font-size: 18px;font-family:var(--font-family); font-weight: normal;">{{
+        this.togglesortedAllPrices[0].lp }}</span> &nbsp;&nbsp;
+      {{ this.togglesortedAllPrices[0].Price === 'Rejected' || this.togglesortedAllPrices[0].Price === 'Unsupported' ?
+      this.togglesortedAllPrices[0].Price :
+      this.togglesortedAllPrices[0].Price | number:'1.2-2'}}
+    </span> -->
+
+    <span
+      [ngClass]="this.sortedAllPrices[0].Price === 'Rejected' || this.sortedAllPrices[0].Price === 'Unsupported' || this.sortedAllPrices[0].Price === 'Expired' || this.sortedAllPrices[0].Price === 'Cancelled' ? 'multiRejectMsg' : 'multiReply'"
+      *ngIf="this.sortedAllPrices.length > 0 " class="best-price1">
+      <span class="best-price2">{{ this.sortedAllPrices[0].lp }}</span> &nbsp;&nbsp;
+      {{ this.sortedAllPrices[0].Price === 'Rejected' || this.sortedAllPrices[0].Price === 'Unsupported' ||
+      this.sortedAllPrices[0].Price === 'Expired' || this.sortedAllPrices[0].Price === 'Cancelled' ?
+      this.sortedAllPrices[0].Price : this.sortedAllPrices[0].Price |
+      number:'1.2-2'}}
+    </span>
+    <!-- FIN1EURINT-121 || Best price not being highlighted on multipricer -->
+    <!-- <span *ngIf="timerinSec >= 0" style="color: #4180c3;font-weight: 500;">{{timerinSec}}</span>
+        </div> -->
+
+    <h6 class="multiRejectMsg"
+      *ngIf="timeoutMsg!=='' && !this.sortedAllPrices.length">
+      {{timeoutMsg}}
+    </h6>
+    <!-- <h6 *ngIf="rfqID" style="white-space: nowrap;">
+      RFQs generated.
+      
+    </h6> -->
+    <!-- <h6 style="white-space: nowrap;" *ngIf="this.sortedAllPrices.length > 0"> RFQ ID: {{this.sortedAllPrices[0].NoteMasterID}} </h6 > -->
+    <h6 class="rfq" *ngIf="noteMasterID && noteMasterID.length > 0"> RFQ ID {{this.noteMasterID}}
+    </h6>
+    <!-- <h6 *ngIf="timerinSec >= 0" style="color: #4180c3;">
+          {{timerinSec}}
+        </h6> -->
+    <h6 *ngIf="orderID && showCptyId" class="rfq">
+      Cpty Ref ID {{orderID}}
+    </h6>
+    <ng-container *ngIf="TSFlag;  then shwViewTS; else shwReqTS">
+    </ng-container>
+    <ng-template #shwReqTS>
+      <!-- Changed by Amogh K | 20apr2022 | request TS config check | assigned by pranav D -->
+      <!-- FIN1EURINT-520 | Request for TS and KID links disable for LPs not supporting documentation -->
+	  <a class="TSlink"
+        *ngIf="this.sortedAllPrices.length > 0 && this.sortedAllPrices[0].Price !== 'Rejected' && this.sortedAllPrices[0].Price !== 'Unsupported' && timeoutMsg === '' 
+        &&(EQ_Show_Termsheet_Button === 'YES' || EQ_Show_Termsheet_Button === 'Y' || EQ_Show_Termsheet_Button === 'Yes') && !TSFlag && reqSuccessMsg==='' && this.sortedAllPrices[0].TSSupported"
+        (click)="RequestTermsheet()" routerLinkActive="active-link">Request TS
+      </a>
+
+      <div class="price-with-loader text-align" *ngIf="this.sortedAllPrices.length > 0 && TSLoadFlag">
+        <img src="{{asseturl}}Ajaxloader.gif" alt="" width="100px" class="ajax-loader"> 
+      </div>
+      <!-- FIN1EURINT-412 || Bulk Pricer : Request TS and KID links visiblity after column transpose -->
+      <!-- <a class="TSlink"
+        *ngIf="this.togglesortedAllPrices.length > 0 && this.togglesortedAllPrices[0].Price !== 'Rejected' && this.togglesortedAllPrices[0].Price !== 'Unsupported' && timeoutMsg === '' 
+        &&(EQ_Show_Termsheet_Button === 'YES' || EQ_Show_Termsheet_Button === 'Y' || EQ_Show_Termsheet_Button === 'Yes') && !TSFlag && reqSuccessMsg===''"
+        (click)="RequestTermsheet()" routerLinkActive="active-link">Request TS
+      </a> -->
+
+      <div class="price-with-loader text-align" *ngIf="this.togglesortedAllPrices.length > 0 && TSLoadFlag">
+        <img src="{{asseturl}}Ajaxloader.gif" alt="" width="100px" class="ajax-loader"> 
+      </div>
+      <!-- FIN1EURINT-412 || Bulk Pricer : Request TS and KID links visiblity after column transpose -->
+      <!-- Added by SandipA for FIN1EURINT-395 || 02-June-2023 || START  -->
+    <!-- <span *ngIf="reqSuccessMsg!==''">{{reqSuccessMsg}}</span> -->
+    <span class="successMsg" *ngIf="reqSuccessMsg!=='' && reqSuccessMsg !=='TS Request Failed.'">{{reqSuccessMsg}}</span>
+    <span class="errorMsg"   *ngIf="reqSuccessMsg =='TS Request Failed.'">{{reqSuccessMsg}}</span>
+    <!-- Added by SandipA for FIN1EURINT-395 || 02-June-2023 || END  -->
+    </ng-template>
+
+    <br *ngIf="ProductName !== 'Accumulator' && ProductName !== 'Decumulator'" />
+    <ng-container *ngIf="KIDFlag;  then shwViewKID; else shwReqKID">
+    </ng-container>
+    <ng-template #shwReqKID>
+      <!-- Changed by Amogh K | 21apr2022 | request KID config check | assigned by pranav D -->
+      <!-- FIN1EURINT-520 | Request for TS and KID links disable for LPs not supporting documentation -->
+	  <a class="TSlink"
+        *ngIf="this.sortedAllPrices.length > 0 && this.sortedAllPrices[0].Price !== 'Rejected' && this.sortedAllPrices[0].Price !== 'Unsupported' && timeoutMsg === '' 
+          &&(EQ_Show_KID_Button === 'YES' || EQ_Show_KID_Button === 'Y' || EQ_Show_KID_Button === 'Yes') && !KIDFlag && reqKIDSuccessMsg==='' && ProductName !== 'Accumulator' && ProductName !== 'Decumulator' && priipsYN !== 'No' && this.sortedAllPrices[0].KidSupported"
+        (click)="RequestKID()" routerLinkActive="active-link">Request KID
+      </a>
+
+      <div class="price-with-loader text-align" *ngIf="this.sortedAllPrices.length > 0 && KIDLoadFlag">
+        <img src="{{asseturl}}Ajaxloader.gif" alt="" width="100px" class="ajax-loader"> 
+      </div>
+
+      <!-- FIN1EURINT-412 || Bulk Pricer : Request TS and KID links visiblity after column transpose -->
+      <!-- <a class="TSlink"
+        *ngIf="this.togglesortedAllPrices.length > 0 && this.togglesortedAllPrices[0].Price !== 'Rejected' && this.togglesortedAllPrices[0].Price !== 'Unsupported' && timeoutMsg === '' 
+          &&(EQ_Show_KID_Button === 'YES' || EQ_Show_KID_Button === 'Y' || EQ_Show_KID_Button === 'Yes') && !KIDFlag && reqKIDSuccessMsg==='' && ProductName !== 'Accumulator' && ProductName !== 'Decumulator' && priipsYN !== 'No'"
+        (click)="RequestKID()" routerLinkActive="active-link">Request KID
+      </a> -->
+
+      <div class="price-with-loader text-align" *ngIf="this.togglesortedAllPrices.length > 0 && KIDLoadFlag">
+        <img src="{{asseturl}}Ajaxloader.gif" alt="" width="100px" class="ajax-loader"> 
+      </div>
+    <!-- FIN1EURINT-412 || Bulk Pricer : Request TS and KID links visiblity after column transpose -->
+      <!-- <span *ngIf="reqKIDSuccessMsg!=='' && ProductName !== 'Accumulator' && ProductName !== 'Decumulator'">{{reqKIDSuccessMsg}}</span> -->
+      <span class="successMsg" *ngIf="reqKIDSuccessMsg!=='' && ProductName !== 'Accumulator' && ProductName !== 'Decumulator' && reqKIDSuccessMsg!=='KID Request Failed.'">{{reqKIDSuccessMsg}}</span>
+      <span class="errorMsg"   *ngIf="ProductName !== 'Accumulator' && ProductName !== 'Decumulator' && reqKIDSuccessMsg =='KID Request Failed.'">{{reqKIDSuccessMsg}}</span>
+    </ng-template>
+
+    <br />
+    <ng-template #shwViewTS>
+      <a class="TSlink" *ngIf="TSFlag" (click)="ViewTermsheet()" routerLinkActive="active-link">View TS
+      </a>
+
+      <div class="price-with-loader col-12 row priceall-loader text-align" *ngIf="ViewTSFlag">
+        <img src="{{asseturl}}Ajaxloader.gif" alt="" width="100px" class="ajax-loader"> 
+      </div>
+    </ng-template>
+
+    <br *ngIf="TSFlag && ProductName !== 'Accumulator' && ProductName !== 'Decumulator'" />
+    <ng-template #shwViewKID>
+      <a class="TSlink" *ngIf="KIDFlag && ProductName !== 'Accumulator' && ProductName !== 'Decumulator'"
+        (click)="ViewKID()" routerLinkActive="active-link">View KID
+      </a>
+      
+      <div class="price-with-loader col-12 row priceall-loader text-align" *ngIf="ViewKIDFlag">
+        <img src="{{asseturl}}Ajaxloader.gif" alt="" width="100px" class="ajax-loader"> 
+      </div> 
+    </ng-template>
+    <div>
+      <!-- [ngStyle]="{'margin-left': timerinSec > 0 ? '2em' : ''}" -->
+      <a class="TSlink" *ngIf="this.sortedAllPrices.length > 0 && quoteEmailSuccessMsg == ''"
+        (click)="emailQuote(sortedAllPrices[0].rfq)"> Mail best Quote </a>
+      <!-- <a class="TSlink" *ngIf="this.togglesortedAllPrices.length > 0 && quoteEmailSuccessMsg == ''"
+        (click)="emailQuote(togglesortedAllPrices[0].rfq)"> Mail best Quote </a> -->
+      <span class="successMsg" *ngIf="quoteEmailSuccessMsg!==''">{{quoteEmailSuccessMsg}}</span>
+    </div>
+    <div class="verticalBottomCorner" *ngIf="timerinSec > 0">
+      <!--  style="color: #4180c3;" -->
+      {{this.timerinSec}}
+    </div>
+
+  </div>
+
+  <!-- UNDERLYING  -->
+<!-- Height changed and div added by SandipA @30-Mar-2023  -->
+  <div class="submultiDiv ver-height" *ngIf="ProductName!=='CreditTranche'">
+ <div class="page-width">
+    <input type="text" placeholder="Please Enter Underlying" value="{{ShareName}}" class="longText sharePopup"
+      [(ngModel)]="ShareName" maxlength="10"
+      (keypress)="ChangeIndex($event); showSuggestions = true" (keydown.enter)="selectShare($event); flag=false;"
+      (keydown.backspace)="backKeyPress($event)" (keydown.delete)="backKeyPress($event)"
+      (keydown.tab)="setFocus();flag=false;"
+      (keydown.ArrowUp)="selectedBIndex = commonfunctions.moveUpSelection1($event, selectedBIndex)"
+      (keydown.ArrowDown)="selectedBIndex = commonfunctions.moveDownSelection1($event, selectedBIndex)"
+      id="txtShare{{ComponentIndex}}" tabindex="ComponentIndex * totalFields + 1" [disabled]="enabledisablefields('Underlyings') || ShareBasket.length >= 4" />
+	  <!-- HSBCECCLI-19 : Limit total number of underlyings to 4 in Bulk Pricer | 08-Aug-2023 -->
+
+
+    <!-- Selector Box  -->
+ <!-- Style Added by SandipA @30-Mar-2023  -->
+  <div class="submultiDiv SelectorDiv" *ngIf="ProductName!=='CreditTranche'">
+      <div class="SelectorBox" *ngIf="flag && showSuggestions" (clickOutside)="flag=false;">
+        <a *ngFor="let share of (shares | searchunderlying: ShareName); let i = index" (keypress)="ChangeIndex($event)"
+          (keydown.enter)="selectShare($event)">
+          <!-- HSBCECCLI-3 : Bulk Pricer - Underlying data discrepancy on enter and click action -->
+          <div *ngIf="share" [attr.data-share]="share.Code" (click)="showUnderlying($event,share)"
+            [ngClass]="{HoverSuggestion: i === selectedBIndex}">
+            <span>{{ share.LongName }}</span>
+          </div>
+        </a>
+      </div>
+
+    </div>
+    <!-- Share Basket  -->
+ <!-- Style changed by SandipA @30-Mar-2023  -->
+  <div class="submultiDiv display" *ngIf="ProductName!=='CreditTranche'">
+      <a *ngFor="let Selectedshare of ShareBasket; let rowIndex = index;">
+        <button class="sharebasket shareName selectedShare" (click)="onclickShareBasket(Selectedshare)">
+          {{Selectedshare.BloombergCode}} &nbsp;
+          <!-- <img src="{{asseturl}}clear.png" width="20px" style="float: right;height: 20px;margin: auto;"
+            (click)="removeShare(rowIndex);"> -->
+            <app-svg-icons (click)="removeShare(rowIndex);" class="cancel-icon" [icon]="'close-icon'" [width]="'12'" [height]="'12'">
+            </app-svg-icons>
+        </button>
+      </a>
+        </div>
+    </div>
+  </div>
+
+  <!-- <ng-container *ngIf="(ProductName!=='Accumulator' && ProductName!=='Decumulator');  then oldProd; else AccDecProd">
+    </ng-container> -->
+  <!-- <ng-container
+    *ngIf="(ProductName !== 'Accumulator' && ProductName !== 'Decumulator');  then oldProdER; else AccDecProd">
+  </ng-container>
+
+  <ng-template #oldProdER>
+    <ng-container *ngIf="(ProductName == 'AutocallablePhoenixER'); then ERProd ; else oldProd">
+    </ng-container>
+  </ng-template> -->
+
+
+  <!-- <ng-template #ERProd> -->
+
+<!-- Ccy -->
+<div class="submultiDiv">
+  <select tabindex="ComponentIndex * totalFields + 2" #focusable [(ngModel)]="ddlNoteCcy" (change)="currencyChange();"
+    [disabled]="enabledisablefields('Currency')">
+    <option *ngFor="let c of CCY" (selected)="c === UnderlyingCurrency" [value]="c">
+      {{ c }}</option>
+  </select>
+</div>
+
+<!-- Notional -->
+  <div class="submultiDiv">
+    <input type="text" id="txtnotional{{ComponentIndex}}" type="text" tabindex="ComponentIndex * totalFields + 4" maxlength="14" value="{{ Notional }}"
+      (focus)="commonfunctions.UnformatNumber($event)"
+      (blur)="this.ERReset();checkValidNotional($event);checkNotional($event);MinMaxValidation($event, 'Notional');"
+      (keypress)="commonfunctions.NotionalValidateKeys($event)"
+      (keyup)="commonfunctions.chkNotionalFormat_keyUp($event) === false ? Notional = '': Notional=Notional"
+      placeholder="Enter Notional" [(ngModel)]="Notional" [disabled]="enabledisablefields('Notional')" />
+    <!-- Modified keyup event to handle invalid notional || Added by Priya L || 01Apr2022 || assigned by Pranav D. -->
+  </div>
+  <!-- format -->
+  <div class="submultiDiv">
+    <!-- set focusable element || PriyaL || 28Apr2022 || Assigned by Pranav D  -->
+    <select [(ngModel)]="format" (change)="formatChange()" tabindex="ComponentIndex * totalFields + 3"
+      [disabled]="enabledisablefields('Format')">
+      <!-- Bind common data to format instead of client book mapping formats || Added by PriyaL || 22Apr2022 -->
+      <ng-container *ngFor="let f of Format">
+        <option *ngIf="f !== 'BonoJ' && f !== 'Warrant' && f !== 'Note'" value="{{f.Value}}">{{f.Key}}</option>
+        <!-- <option *ngIf="f === 'Note'" value="{{f}}">Security</option> -->
+        <option *ngIf="f === 'Note'" value="{{f.Value}}">{{f.Key}}</option>
+      </ng-container>
+    </select>
+  </div>
+
+  
+
+  <!-- Solve For -->
+  <div class="submultiDiv">
+    <select [(ngModel)]="SolveForvalue" (change)="setSolveFor($event)" tabindex="ComponentIndex * totalFields + 5"
+      [disabled]="enabledisablefields('SolveFor')">
+      <!-- <option value="KO" *ngIf="autocallCouponType === 'Constant Barrier'">Autocall Barrier (%) </option>  -->
+      <!-- changes done by Pranav D 03-Dec-2021 -->
+
+      <option value="ERCoupon" *ngIf="periodicCouponFlag === 'No'">
+        Autocall Coupon (%)
+      </option>
+      <option value="CallGearing" *ngIf="upsideType === 'Call' || upsideType === 'Twin Win' || upsideType === 'Call Equally Weighted'|| 
+        upsideType === 'Call Worst of' || upsideType === 'Call Best of' || upsideType === 'Call Custom Basket'">
+        Call Gearing (%)
+      </option>
+      <option value="LowerCallGearing" *ngIf="upsideType === 'Call Spread' || upsideType === 'Capped Twin Win'">
+        Call Spread Gearing (%)
+      </option>
+      <option value="CallStrike" *ngIf="upsideType === 'Call' || upsideType === 'Twin Win' || upsideType === 'Call Equally Weighted' 
+        || upsideType === 'Call Worst of' || upsideType === 'Call Best of' || upsideType === 'Call Custom Basket'">
+        Call Strike (%)
+      </option>
+      <option value="Coupon"
+        *ngIf="cpnType !== 'None' && cpnType !== 'Floating Unconditional' && cpnType !== 'Floating without Memory' && periodicCouponFlag === 'Yes'">
+        Coupon (%)
+      </option>
+      <option value="CouponBarrier" *ngIf="cpnType === 'Conditional with Memory' 
+        || cpnType === 'Conditional without Memory' ||  cpnType === 'Floating without Memory'">
+        Coupon Barrier Level (%)
+      </option>
+
+      <option value="Floor" *ngIf="cpnType === 'Floating Unconditional' || cpnType === 'Floating without Memory'">
+        Floor p.a. (%)</option>
+      <option value="KI"
+        *ngIf="barrierType !== 'Capital Protected' && barrierType !== 'Put Spread' 
+        && barrierType !== 'Geared Put' && barrierType !== 'Ungeared Put'  && barrierType !== 'None'  && barrierType !== ''">
+        KI Barrier (%)
+      </option>
+      <option value="LowerCallStrike" *ngIf="upsideType === 'Call Spread' || upsideType === 'Capped Twin Win'">
+        Lower Call Strike (%)
+      </option>
+      <option value="LowerCouponBarrier" *ngIf="cpnType === 'Range Accrual'">
+        Lower Coupon Barrier (%)
+      </option>
+      <option value="LowerPutStrike" *ngIf="barrierType === 'Put Spread'">
+        Lower Put Strike (%)
+      </option>
+      <option value="Multiplier" *ngIf="cpnType === 'Floating Unconditional' || cpnType === 'Floating without Memory'">
+        Multiplier (%)
+      </option>
+      <option value="ProtectionLevel" *ngIf="barrierType === 'Capital Protected'">
+        Protection Level (%)
+      </option>
+      <option value="PutStrike"
+        *ngIf="barrierType !== 'Capital Protected' && barrierType !== 'Put Spread'  && barrierType !== 'None'  && barrierType !== ''">
+        Put Strike (%)
+      </option>
+      <option value="IBPrice" *ngIf="format !=='Swap'">
+        Reoffer (%)
+      </option>
+      <option value="Spread" *ngIf="format ==='Swap'">
+        Spread (%)
+      </option>
+      <option value="Upfront" *ngIf="format ==='Swap'">
+        Upfront Fee (%)
+      </option>
+      <option value="UpperCallStrike" *ngIf="upsideType === 'Call Spread' || upsideType === 'Capped Twin Win'">
+        Upper Call Strike (%)
+      </option>
+      <option value="UpperCouponBarrier" *ngIf="cpnType === 'Range Accrual'">
+        Upper Coupon Barrier (%)
+      </option>
+      <option value="UpperPutStrike" *ngIf="barrierType === 'Put Spread'">
+        Upper Put Strike (%)
+      </option>
+      <option value="Coupon" *ngIf="cpnType === 'Floating Unconditional' || cpnType === 'Floating without Memory'">
+        Yield Spread p.a. (%)
+      </option>
+    </select>
+  </div>
+  <!-- Price (%) -->
+  <div class="submultiDiv">
+    <input type="text" [(ngModel)]="IBPrice" id="txtIBPrice{{ComponentIndex}}" maxlength="10"
+      [disabled]="this.SolveForvalue === 'IBPrice' || this.SolveForvalue === 'Upfront' || enabledisablefields('ReofferPrice') || enabledisablefields('Upfront')"
+      (change)="IBPricechange()" (blur)="this.ERReset();this.IBPrice = commonfunctions.setDecimal($event);"
+      (keypress)="format === 'Swap' ? commonfunctions.InputNegativeNumber($event) :commonfunctions.InputNumber($event)"
+      tabindex="ComponentIndex * totalFields + 6" />
+    </div>
+    <!-- Issue Price (%) -->
+    <div class="submultiDiv">
+    <!-- *ngIf="format!=='Swap'" -->
+    <input type="text" [(ngModel)]="issuePrice" tabindex="ComponentIndex * totalFields + 7"
+      (blur)="this.issuePrice = commonfunctions.setDecimal($event); this.ERReset();" maxlength="10"
+      (keypress)="commonfunctions.InputNumber($event)" [disabled]="enabledisablefields('IssuePrice')" />
+  </div>
+  
+  
+
+  <!-- Strike Date -->
+  <div class="submultiDiv">
+    <select tabindex="ComponentIndex * totalFields + 8" [(ngModel)]="stkshift"
+      (change)="this.ERReset();this.txtTenorDateChange('Payment');changeStkShiftToggle()"
+      [disabled]="enabledisablefields('StrikeShifterDate')" [ngClass]="(stkshift === 'Fwd') ? 'width' : ''" >
+      <!-- Changed by SandipA @24-Mar-23 -->
+      <option value="0B">TOD </option>
+      <option value="Fwd">FWD </option>
+    </select>
+<!-- dateLabel class added by SandipA @04-04-23-->
+    <input type="date" [(ngModel)]="stkdate" id="txtstkdate{{ComponentIndex}}" tabindex="ComponentIndex * totalFields + 9" value="{{stkdate}}"
+      (change)="this.ERReset();" (blur)="txtTenorDateChange('Payment');" *ngIf="(stkshift === 'Fwd')"
+      class="dateLabel datePopup">
+  </div>
+
+  <!-- Issue Date -->
+  <div class="submultiDiv">
+    <select [(ngModel)]="paymentshift" class="YNbox1" tabindex="ComponentIndex * totalFields + 10" (change)="this.ERReset();"
+      (blur)="txtTenorDateChange('Payment');txtTenorDateChange('Expiry');"
+      [disabled]="enabledisablefields('IssueDateOffset')" [ngClass]="(paymentshift === 'Custom') ? 'width' : ''">
+      <option *ngFor="let d of IssueDateOffset" (selected)="d.Value === paymentshift" [value]="d.Value">
+        {{ d.Key }}</option>
+    </select>
+	<!-- FIN1EURINT-528 : Bulk Pricer - Issue Date custom input functionality like quick pricer -->
+    <div class="dateLabel" *ngIf="paymentshift === 'Custom'">
+      <!-- HSBCECCLI-20 : Custom Issue Date offset field should not allow negative values in Bulk Pricer | 07-Aug-2023 -->
+      <input type="number" [(ngModel)]="settdate" value="{{settdate}}" min="1" max="99" oninput="validity.valid||(value='');" tabindex="ComponentIndex * totalFields + 11" id="txtsettdate{{ComponentIndex}}"
+      (change)="this.ERReset();" (blur)="txtTenorDateChange('Expiry');txtTenorDateChange('Payment');"
+       class="set-date issueDate">
+      <span id="settdateLabel">T + </span>
+    </div>
+  </div>
+
+  <!-- Tenor -->
+  <div class="submultiDiv">
+    <!-- added blur event to calculate expiry date || PriyaL || 07Apr2022 || Assigned by Pranav D -->
+    <!-- HSBCECCLI-56 : Bulk Pricer - Custom Autocall function call code changes || 04-Sep-2023 -->
+    <select [(ngModel)]="expshift" class="YNbox1" tabindex="ComponentIndex * totalFields + 12" (blur)="txtTenorChange($event,'Expiry');"
+      (change)="this.ERReset();autocallfreqbasedonTenor();this.autocallfrombasedonFreqnTenor();this.customBarrier();customTenor = ''"
+      [disabled]="enabledisablefields('Tenor')" [ngClass]="(expshift === 'Custom') ? 'width' : ''">
+      <option *ngFor="let t of Tenor" (selected)="t.Value === expshift" [value]="t.Value">
+        {{ t.Key }}</option>
+    </select>
+    <!-- *ngIf="expshift === 'Custom'" -->
+    <!-- HSBCECCLI-56 : Bulk Pricer - Custom Autocall function call code changes || 04-Sep-2023 -->
+    <input type="text" name="" maxlength="4" [(ngModel)]="customTenor" tabindex="ComponentIndex * totalFields + 13"
+      (blur)="this.ERReset();autocallfreqbasedonTenor();this.autocallfrombasedonFreqnTenor();this.customBarrier();customTenorChange();" class="customTenor"
+      (keypress)="commonfunctions.customTenorValidation($event, customTenor)"
+      *ngIf="expshift === 'Custom'">
+      <!-- FIN1EURINT-263 : Not able to Price when Custom Tenor is selected for Autocallable -->
+    <!-- style="margin-left: 5px !important; width: 82px !important;max-width: 82px !important;min-width: 82px !important;"> -->
+  </div>
+
+  <!-- Payoff At maturity  -->
+  <!-- Protection Type -->
+  <div class="submultiDiv">
+    <select name="" [(ngModel)]="barrierType" tabindex="ComponentIndex * totalFields + 30" (change)="barrierTypeChange()"
+      [disabled]="enabledisablefields('ProtectionType')">
+      <option *ngFor="let p of ProtectionType" (selected)="p.Value === barrierType" [value]="p.Value">
+        {{ p.Key }}</option>
+    </select>
+  </div>
+  <!-- KI Barrier (%) -->
+  <div class="submultiDiv">
+    <input type="text" [(ngModel)]="barrierLevel" id="txtKI{{ComponentIndex}}" maxlength="8" tabindex="ComponentIndex * totalFields + 34"
+      (blur)="this.barrierLevel = commonfunctions.setDecimal($event);PriceValidation($event,'BarrierLevel');"
+      (keypress)="commonfunctions.InputNumber($event)"
+      [disabled]="this.SolveForvalue === 'KI' || !showhideKIBarrier() || enabledisablefields('BarrierLevel')">
+  </div>
+
+  <!-- Frequency -->
+  <!-- <div class="submultiDiv">
+      <select tabindex="48" [disabled]="this.barrierType !== 'Bermudan'">
+        <option>Monthly</option>
+        <option>Quarterly</option>
+        <option>Semiannually</option>
+        <option>Yearly</option>
+    </select>
+    </div> -->
+  <!-- changed by Pranav D 03-Dec-2021 -->
+  <!-- Put Strike -->
+  <div class="submultiDiv">
+    <input type="text" [(ngModel)]="Strike" id="txtStrike{{ComponentIndex}}" maxlength="8"
+      (blur)="this.Strike = commonfunctions.setDecimal($event);PriceValidation($event,'Strike');strikeChange();"
+      (keypress)="commonfunctions.InputNumber($event)" tabindex="ComponentIndex * totalFields + 31"
+      [disabled]="this.SolveForvalue === 'PutStrike' || this.SolveForvalue === 'Strike' || (  barrierType === '' || this.barrierType === 'Capital Protected' || this.barrierType === 'Put Spread')  || enabledisablefields('PutStrike')">
+  </div>
+  <!-- Upper Put Strike (%) -->
+  <!-- <div class="submultiDiv"> -->
+  <!-- *ngIf="this.barrierType === 'Put Spread'"
+    [disabled]="this.SolveForvalue === 'UpperPutStrike'" -->
+  <!-- <input type="text" [(ngModel)]="upperPutStrike" id="txtupperPutStrike" maxlength="8" 
+      (blur)="this.upperPutStrike = commonfunctions.setDecimal($event);" (keypress)="commonfunctions.InputNumber($event)" 
+      tabindex="50" [disabled]="this.barrierType !== 'Put Spread' || this.SolveForvalue === 'UpperPutStrike'">
+    </div> -->
+  <!-- changed by Pranav D 03-Dec-2021 -->
+  <!-- Lower Put Strike (%)	 -->
+  <!-- <div class="submultiDiv"> -->
+  <!-- *ngIf="this.barrierType === 'Put Spread'" -->
+  <!-- <input type="text" [(ngModel)]="lowerPutStrike" id="txtlowerPutStrike" maxlength="8"
+    (blur)="this.lowerPutStrike = commonfunctions.setDecimal($event);" (keypress)="commonfunctions.InputNumber($event)"
+    tabindex="51" [disabled]="(this.barrierType !== 'Put Spread' || this.SolveForvalue === 'LowerPutStrike')">
+    </div> -->
+  <!-- changed by Pranav D 03-Dec-2021 -->
+  <!-- Put Gearing (%) / Put Spread Gearing-->
+
+  <!-- <div class="submultiDiv submultiDiv-gap">
+    *ngIf="this.barrierType !== 'None'  && barrierType !== '' && this.barrierType !== 'Capital Protected' && this.barrierType !== 'Put Spread'"
+    Leverage Y/N
+    <select [(ngModel)]="LeverageYN" id="ddlLeverageYN{{ComponentIndex}}" (change)="strikeChange()"
+      *ngIf="this.barrierType !== 'None'  && barrierType !== '' && this.barrierType !== 'Capital Protected' 
+                                                && this.barrierType !== 'Put Spread' && this.Strike !== '100' && this.Strike !=='100.00'" disabled>
+      <option value="Yes">Yes</option>
+      <option value="No">No</option>
+    </select>
+    <input type="text" [(ngModel)]="leverage" id="txtleverage" maxlength="8"
+      [ngClass]="(this.Strike !== '100' && this.Strike !=='100.00') ? 'smallInputText' : ''"
+      (blur)="this.leverage = commonfunctions.setDecimal($event);" tabindex="ComponentIndex * totalFields + 32"
+      *ngIf="this.barrierType !== 'Put Spread'" [disabled]="enabledisablefields('PutGearring') || LeverageYN==='No'">
+    <input type="text" [(ngModel)]="putSpreadGearing" id="txtputSpreadGearing" maxlength="8"
+      (blur)="this.putSpreadGearing = commonfunctions.setDecimal($event);" tabindex="ComponentIndex * totalFields + 33"
+      (keypress)="commonfunctions.InputNumber($event)" *ngIf="this.barrierType === 'Put Spread'"
+      [disabled]="enabledisablefields('PutSpreadGearing')">
+  </div> -->
+  <!-- Settlement Method -->
+  <div class="submultiDiv">
+    <select tabindex="ComponentIndex * totalFields + 39" [(ngModel)]="SettlementMethod" (change)="this.ERReset();"
+      [disabled]="enabledisablefields('SettlementMethod')">
+
+      <option *ngFor="let s of SettlementMethodArr" (selected)="s.Value === SettlementMethod" [value]="s.Value">
+        {{ s.Key }}</option>
+    </select>
+  </div>
+
+  <!-- Periodic Coupon -->
+  <!-- Add Periodic Coupon -->
+  <div class="submultiDiv">
+    <select tabindex="ComponentIndex * totalFields + 24" [(ngModel)]="periodicCouponFlag" (change)="periodicCouponFlagChng();this.ERReset();"
+      id="ddlPeriodicCpnFlag{{ComponentIndex}}" [disabled]="enabledisablefields('AddPeriodicCpn')">
+      <option value="Yes">Yes</option>
+      <option value="No">No</option>
+    </select>
+  </div>
+
+  <!-- Periodic Coupon -->
+  <!-- Coupon Type -->
+  <div class="submultiDiv">
+    <select name="" [(ngModel)]="cpnType" (change)="cpnTypeChange()" tabindex="ComponentIndex * totalFields + 25" class="selectOverflow"
+      [disabled]="ERCpnType !== 'None' && periodicCouponFlag === 'No' || enabledisablefields('PeriodicCpnType')">
+      <ng-container *ngFor="let c of CouponType">
+        <!-- *ngIf="c.Value !== 'Fixed Unconditional' && c.Value !== 'Conditional with Memory' 
+          &&  c.Value !== 'Conditional without Memory' && c.Value !== 'Range Accrual' && c.Value !== 'Floating Unconditional' 
+          && c.Value !== 'Floating without Memory'" -->
+        <option [value]="c.Value">{{c.Key}}
+        </option>
+        <!-- <option *ngIf="c.Value === 'Fixed Unconditional' && autoFreq !== 'Daily'" [value]="c.Value">{{c.Key}}</option>
+          <option *ngIf="c.Value === 'Conditional with Memory' && autoFreq !== 'Daily'" [value]="c.Value">{{c.Key}}
+          </option>
+          <option *ngIf="c.Value === 'Conditional without Memory' && autoFreq !== 'Daily'" [value]="c.Value">{{c.Key}}
+          </option>
+          <option *ngIf="c.Value === 'Range Accrual' && autoFreq !== 'Daily'" [value]="c.Value">{{c.Key}}</option>
+          <option *ngIf="c.Value === 'Floating Unconditional' && autoFreq !== 'Daily'" [value]="c.Value">{{c.Key}}
+          </option>
+          <option *ngIf="c.Value === 'Floating without Memory' && autoFreq !== 'Daily'" [value]="c.Value">{{c.Key}}
+          </option> -->
+      </ng-container>
+    </select>
+  </div>
+  <!-- Coupon p.a. (%) / -- Yield Spread p.a. (%) same field -->
+  <div class="submultiDiv">
+    <!-- HSBCECCLI-21 : Add validation for AC Coupon ( % ) and Coupon p.a. - Zero coupons should not be allowed | 09-Aug-2023 -->
+    <input type="text" id="txtCoupon{{ComponentIndex}}" [(ngModel)]="cpnCoupon" maxlength="8"
+      (blur)="this.ERReset();this.cpnCoupon = commonfunctions.setDecimal($event);cpnValidation($event)"
+      (keypress)="commonfunctions.InputNumber($event)" tabindex="ComponentIndex * totalFields + 29"
+      [disabled]="SolveForvalue === 'Coupon' || (ERCpnType !== 'None' && periodicCouponFlag === 'No') || (cpnType === '' || cpnType === 'Floating Unconditional' || cpnType === 'Floating without Memory')">
+    <img src="{{asseturl}}information.png" class="info info-margin" *ngIf="cpnCoupon !== ''" >
+    <div class="infodiv infodiv-margin" *ngIf="cpnCoupon !== ''" >
+      <span class="infoNote cpn-pa" *ngIf="cpnCoupon !== ''" >
+        {{showCouponTooltip()}} % coupon to be paid per period.
+      </span>
+    </div>
+  </div>
+  <!-- Coupon Frequency -->
+  <div class="submultiDiv">
+    <select name="" [(ngModel)]="cpnFreq" *ngIf="cpnType !== 'Snowball'" tabindex="ComponentIndex * totalFields + 28"
+      (change)="this.ERReset();cpnFreqChange();" [disabled]="ERCpnType !== 'None' && periodicCouponFlag === 'No'">
+      <option value="Daily" *ngIf="autoFreq ==='Daily' || callableFreq ==='Daily' || putableFreq ==='Daily'">
+        Daily</option>
+      <option value="Monthly" *ngIf="autoFreq !=='Daily'">Monthly</option>
+      <option value="Quarterly" *ngIf="autoFreq ==='Quarterly' || autoFreq ==='Semiannually' || autoFreq ==='Yearly' ||
+callableFreq ==='Quarterly' || callableFreq ==='Semiannually' || callableFreq ==='Yearly' ||
+putableFreq ==='Quarterly' || putableFreq ==='Semiannually' || putableFreq ==='Yearly'">
+        Quarterly
+      </option>
+      <option value="Semiannually" *ngIf="autoFreq ==='Semiannually' || autoFreq ==='Yearly' ||
+callableFreq ==='Semiannually' || callableFreq ==='Yearly' ||
+putableFreq ==='Semiannually' || putableFreq ==='Yearly'">Semiannually
+      </option>
+      <option value="Yearly" *ngIf="autoFreq ==='Yearly' || putableFreq ==='Yearly' ||
+callableFreq ==='Yearly'">Yearly
+      </option>
+
+
+    </select>
+  </div>
+  <!-- Coupon Barrier Type / -- Range Accrual Freq -->
+  <div class="submultiDiv">
+    <select name="" [(ngModel)]="cpnObservation" (change)="this.ERReset();" tabindex="ComponentIndex * totalFields + 26" class="selectOverflow"
+      [disabled]="(ERCpnType !== 'None' && periodicCouponFlag === 'No') || (cpnType !== 'Conditional with Memory' && cpnType !== 'Conditional without Memory') || enabledisablefields('CouponBarrierType')">
+      <!-- <option *ngFor="let cb of CouponBarrierType" (selected)="cb.Value === cpnObservation" [value]="cb.Value">
+        {{ cb.Key }}</option> -->
+      <!-- <option value="American Daily Close (Over the Month)"
+                                                        *ngIf="cpnFreq === 'Monthly'">American Daily Close
+                                                        (Over
+                                                        the
+                                                        Month)
+                                                    </option>
+                                                    <option value="American Daily Close (Over the Quarter)"
+                                                        *ngIf="cpnFreq === 'Quarterly'">American Daily Close
+                                                        (Over
+                                                        the
+                                                        Quarter)
+                                                    </option>
+                                                    <option value="American Daily Close (Over the Semester)"
+                                                        *ngIf="cpnFreq === 'Semiannually'">American Daily Close
+                                                        (Over
+                                                        the
+                                                        Semester)
+                                                    </option>
+                                                    <option value="American Daily Close (Over the Year)"
+                                                        *ngIf="cpnFreq === 'Yearly'">American Daily Close
+                                                        (Over
+                                                        the
+                                                        Year)
+                                                    </option>
+                                                    <option value="American Intraday (Over the Month)"
+                                                        *ngIf="cpnFreq === 'Monthly'">American Intraday (Over
+                                                        the
+                                                        Month)
+                                                    </option>
+
+                                                    <option value="American Intraday (Over the Quarter)"
+                                                        *ngIf="cpnFreq === 'Quarterly'">American Intraday (Over
+                                                        the
+                                                        Quarter)
+                                                    </option>
+                                                    <option value="American Intraday (Over the Semester)"
+                                                        *ngIf="cpnFreq === 'Semiannually'">American Intraday (Over
+                                                        the
+                                                        Semester)
+                                                    </option>
+                                                    <option value="American Intraday (Over the Year)"
+                                                        *ngIf="cpnFreq === 'Yearly'">American Intraday (Over
+                                                        the
+                                                        Year)
+                                                    </option> -->
+      <option value="European" *ngIf="cpnFreq === 'Daily'">European
+
+      </option>
+      <option value="European" *ngIf="cpnObservation === ''">
+      </option>
+      <option value="European (Last day of the Month)" *ngIf="cpnFreq === 'Monthly'">European (Last day of the
+        Month)
+      </option>
+      <option value="European (Last day of the Quarter)" *ngIf="cpnFreq === 'Quarterly'">European (Last day of the
+        Quarter)
+      </option>
+
+
+
+      <option value="European (Last day of the Semester)" *ngIf="cpnFreq === 'Semiannually'">European (Last day of the
+        Semester)
+      </option>
+      <option value="European (Last day of the Year)" *ngIf="cpnFreq === 'Yearly'">European (Last day of the
+        Year)
+      </option>
+
+
+    </select>
+  </div>
+  <!-- Coupon Barrier Level (%) / -- Lower/Upper Trigger (%) -->
+  <div class="submultiDiv">
+    <input type="text" name="" [(ngModel)]="cpnTrigger" id="txtCouponBarrier{{ComponentIndex}}" maxlength="100"
+      (blur)="PriceValidation($event,'CouponTrigger'); this.cpnTrigger = commonfunctions.setDecimal($event)" (keypress)="commonfunctions.AutocallTriggerInputNumber($event)"
+      [disabled]="(ERCpnType !== 'None' && periodicCouponFlag === 'No') || (this.SolveForvalue === 'CouponBarrier') || (cpnType !== 'Conditional with Memory' && cpnType !== 'Conditional without Memory' && cpnType !== 'Floating without Memory')"
+      tabindex="ComponentIndex * totalFields + 27">
+  </div>
+
+  <!-- Autocall -->
+  <!-- Type -->
+  <div class="submultiDiv">
+    <select name="" [(ngModel)]="autocallCouponType" tabindex="ComponentIndex * totalFields + 14" (change)="this.ERReset();autocallCouponTypeChange();"
+      [disabled]="enabledisablefields('AutocallType')">
+      <option *ngFor="let er of EarlyRedemptionType" (selected)="er.Value === autocallCouponType" [value]="er.Value">
+        {{ er.Key }}</option>
+
+    </select>
+  </div>
+  <!-- DAily KO -->
+  <!-- FIN1EURINT-470 || Hide Daily KO field from Autocallable in Bulk pricer -->
+  <!-- <div class="submultiDiv">
+    <select [(ngModel)]="dailyKOYN" id="ddldailyKOYN{{ComponentIndex}}" tabindex="15">
+      <option value="Yes">Yes</option>
+      <option value="No">No</option>
+    </select>
+  </div> -->
+  <!-- Autocall Barrier (%) -->
+  <div class="submultiDiv">
+    <!-- *ngIf="autocallCouponType === 'Constant Barrier' || autocallCouponType === 'Variable Barrier'" -->
+    <!-- HSBCECCLI-56 : Custom Autocall Changes in Bulk Pricer || 31-Aug-2023 -->
+	<input type="text" name="" [(ngModel)]="autoTrigger" id="txtKO{{ComponentIndex}}" maxlength="100" tabindex="ComponentIndex * totalFields + 20"
+      (keypress)="commonfunctions.AutocallTriggerInputNumber($event);" (blur)="this.autoTrigger = commonfunctions.setDecimal($event);PriceValidation($event,'AutoTrigger');this.customBarrier();"
+      [disabled]="(autocallCouponType !== 'Constant Barrier' && autocallCouponType !== 'Variable Barrier' && autocallCouponType !== 'Custom Barrier') || this.SolveForvalue === 'KO' || enabledisablefields('AutocallBarrier')">
+      <div style="position: relative;" (click)="customBarrierPopup=true;" (clickOutside)="customBarrierPopup=false;">
+        <img src="{{asseturl}}information.png" class="info customInfo" *ngIf="autocallCouponType === 'Custom Barrier'">
+        <div *ngIf="this.customBarrierArr?.length > 0 && customBarrierPopup">
+          <table [ngClass]="customBarrierPopup ? 'infoNote' : ''" *ngIf="this.customBarrierArr.length > 0"
+            class="allLP-price customBarrier">
+            <tr class="allLP-table">
+              <th>Periods</th>
+              <th>Trigger</th>
+            </tr>
+            <tr class="allLP-table" *ngFor="let t of customBarrierArr">
+              <td class="allLP-table">{{ t.NoOfPeriods }}</td>
+              <td class="allLP-table">
+                <!-- <span *ngIf="(t.OutTrigger != '-' )"> -->
+                  <input type="text" name="" [(ngModel)]="t.OutTrigger"
+                    (blur)="PriceValidation($event,'customBarrier');t.OutTrigger = commonfunctions.setDecimal($event);"
+                    (keypress)="commonfunctions.AutocallTriggerInputNumber($event);" [disabled]="t.OutTrigger === '-' || t.firstAutocall === true">
+                <!-- </span> -->
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+  </div>
+  <!-- Putable Barrier Level (%) -->
+  <!-- <div class="submultiDiv">
+      <input type="text" name="" tabindex="29" [disabled]="autocallCouponType !== 'Putable by the Investor'"
+    [(ngModel)]="PutableBarrier">
+    </div> -->
+  <!-- Step Up / Down -->
+  <div class="submultiDiv">
+    <input type="text" [(ngModel)]="autoStepDown" id="txtautoStepDown{{ComponentIndex}}" maxlength="8"
+      [disabled]="!(autocallCouponType === 'Variable Barrier') || enabledisablefields('StepUpDown')"
+      (blur)="this.ERReset();this.autoStepDown = commonfunctions.setDecimal($event);"
+      (keypress)="commonfunctions.InputSpread($event)" tabindex="ComponentIndex * totalFields + 21">
+  </div>
+
+  <!-- Autocall Frequency -->
+  <div class="submultiDiv">
+  	<!-- HSBCECCLI-56 : Custom Autocall Changes in Bulk Pricer || 31-Aug-2023 -->
+    <select name="" [(ngModel)]="autoFreq" tabindex="ComponentIndex * totalFields + 16"
+      (change)="this.ERReset();autocallfrombasedonFreqnTenor();this.customBarrier();setdefaultcpnFreq();"
+      *ngIf="autocallCouponType === 'Constant Barrier' || autocallCouponType === 'Variable Barrier' || autocallCouponType === 'Custom Barrier'"
+      [disabled]="enabledisablefields('AutocallFrequency')">
+      <ng-container *ngFor="let a of AutocallFrequency">
+        <option *ngIf="a.Flag" value="{{a.Value}}">{{a.Key}}</option>
+      </ng-container>
+      <!-- tabindex="28" -->
+      <!-- <option selected="selected" value="Monthly">Monthly</option>
+<option value="Quarterly">Quarterly</option>
+<option value="Semiannually">Semiannually</option>
+<option value="Daily">Daily</option> -->
+    </select>
+    <select name="" [(ngModel)]="putableFreq" tabindex="ComponentIndex * totalFields + 17" (change)="this.ERReset();"
+      *ngIf="autocallCouponType === 'Putable by the Investor'" [disabled]="enabledisablefields('PutableFrequency')">
+      <!-- <option *ngFor="let a of autoFreqArr" (selected)="a === autoFreq" [value]="a">
+      {{ a }}</option> -->
+      <option selected="selected" value="Monthly">Monthly</option>
+      <option value="Quarterly">Quarterly</option>
+      <option value="Semiannually">Semiannually</option>
+    </select>
+    <select name="" [(ngModel)]="callableFreq" tabindex="ComponentIndex * totalFields + 18" (change)="this.ERReset();"
+      *ngIf="autocallCouponType === 'Callable by the Issuer'" [disabled]="enabledisablefields('CallableFrequency')">
+      <!-- <option *ngFor="let a of autoFreqArr" (selected)="a === autoFreq" [value]="a">
+           {{ a }}</option> -->
+      <option selected="selected" value="Monthly">Monthly</option>
+      <option value="Quarterly">Quarterly</option>
+      <option value="Semiannually">Semiannually</option>
+    </select>
+  </div>
+  <!-- Autocall From -->
+  <div class="submultiDiv">
+  	<!-- HSBCECCLI-56 : Custom Autocall Changes in Bulk Pricer || 31-Aug-2023 -->
+    <select [(ngModel)]="autoNonCall" tabindex="ComponentIndex * totalFields + 19" *ngIf="autocallCouponType === 'Constant Barrier' || autocallCouponType === 'Variable Barrier' 
+      || autocallCouponType === 'Putable by the Investor' || autocallCouponType === 'Callable by the Issuer' || autocallCouponType === 'Custom Barrier'" (change)="this.customBarrier();"
+      [disabled]="enabledisablefields('AutocallableFrom')">
+      <!-- FIN1EURINT-506 : Bulk Pricer - Autocallable from drop down dynamic option values based on Autocallable Frequency | 10-Aug-2023 -->
+      <option *ngFor="let a of autoNonCallArr"  [ngValue]="a.Value">
+        {{ a.Key }}
+      </option>
+      <!-- <option value="M1" *ngIf="autoFreq === 'Monthly' || callableFreq === 'Monthly' || putableFreq ==='Monthly'">M1
+      </option>
+      <option value="M2" *ngIf="autoFreq === 'Monthly' || callableFreq === 'Monthly' || putableFreq ==='Monthly'">M2
+      </option>
+      <option value="M3" *ngIf="autoFreq === 'Monthly' || callableFreq === 'Monthly' || putableFreq ==='Monthly'">M3
+      </option>
+      <option value="M4" *ngIf="autoFreq === 'Monthly' || callableFreq === 'Monthly' || putableFreq ==='Monthly'">M4
+      </option>
+      <option value="M5" *ngIf="autoFreq === 'Monthly' || callableFreq === 'Monthly' || putableFreq ==='Monthly'">M5
+      </option>
+      <option value="M6" *ngIf="autoFreq === 'Monthly' || callableFreq === 'Monthly' || putableFreq ==='Monthly'">M6
+      </option>
+      <option value="M7" *ngIf="autoFreq === 'Monthly' || callableFreq === 'Monthly' || putableFreq ==='Monthly'">M7
+      </option>
+      <option value="M8" *ngIf="autoFreq === 'Monthly' || callableFreq === 'Monthly' || putableFreq ==='Monthly'">M8
+      </option>
+      <option value="M9" *ngIf="autoFreq === 'Monthly' || callableFreq === 'Monthly' || putableFreq ==='Monthly'">M9
+      </option>
+      <option value="M10" *ngIf="autoFreq === 'Monthly' || callableFreq === 'Monthly' || putableFreq ==='Monthly'">M10
+      </option>
+      <option value="M11" *ngIf="autoFreq === 'Monthly' || callableFreq === 'Monthly' || putableFreq ==='Monthly'">M11
+      </option>
+      <option value="M12" *ngIf="autoFreq === 'Monthly' || callableFreq === 'Monthly' || putableFreq ==='Monthly'">M12
+      </option>
+
+      <option value="Y1" *ngIf="autoFreq === 'Yearly' || callableFreq === 'Yearly' || putableFreq ==='Yearly'">Y1</option>
+
+      <option value="Q1" *ngIf="autoFreq === 'Quarterly' || callableFreq === 'Quarterly' || putableFreq ==='Quarterly'">
+        Q1</option>
+      <option value="Q2" *ngIf="autoFreq === 'Quarterly' || callableFreq === 'Quarterly' || putableFreq ==='Quarterly'">
+        Q2</option>
+      <option value="Q3" *ngIf="autoFreq === 'Quarterly' || callableFreq === 'Quarterly' || putableFreq ==='Quarterly'">
+        Q3</option>
+      <option value="Q4" *ngIf="autoFreq === 'Quarterly' || callableFreq === 'Quarterly' || putableFreq ==='Quarterly'">
+        Q4</option>
+
+      <option value="S1"
+        *ngIf="autoFreq === 'Semiannually' || callableFreq === 'Semiannually' || putableFreq ==='Semiannually'">S1
+      </option>
+      <option value="S2"
+        *ngIf="autoFreq === 'Semiannually' || callableFreq === 'Semiannually' || putableFreq ==='Semiannually'">S2
+      </option> -->
+      <!-- FIN1EURINT-506 : Bulk Pricer - Autocallable from drop down dynamic option values based on Autocallable Frequency | 10-Aug-2023 -->
+    </select>
+  </div>
+  
+  <!-- Autocall Coupn  -->
+  <!-- Type -->
+  <div class="submultiDiv">
+    <select name="" [(ngModel)]="ERCpnType" (change)="ERCpnTypeChange()" tabindex="ComponentIndex * totalFields + 22"
+      id="ddlERCpnType{{ComponentIndex}}" [disabled]="enabledisablefields('AutocallCouponType')">
+      <option value="None">None</option>
+      <option value="Flat">Flat</option>
+      <option value="Snowball">Snowball</option>
+    </select>
+  </div>
+  <!-- AC Coupon p.a. (%) -->
+  <div class="submultiDiv">
+    <!-- HSBCECCLI-21 : Add validation for AC Coupon ( % ) and Coupon p.a. - Zero coupons should not be allowed | 09-Aug-2023 -->
+    <input type="text" id="txtERCoupon{{ComponentIndex}}" [(ngModel)]="ERCoupon" maxlength="8"
+      (blur)="this.ERReset();this.ERCoupon = commonfunctions.setDecimal($event);cpnValidation($event)"
+      (keypress)="commonfunctions.InputNumber($event)" tabindex="ComponentIndex * totalFields + 23"
+      [disabled]="SolveForvalue === 'ERCoupon' || (ERCpnType === 'None' && periodicCouponFlag ==='Yes') || enabledisablefields('ERCouponPa')">
+    <img src="{{asseturl}}information.png" class="info info-margin" *ngIf="(ERCpnType === 'Flat' || ERCpnType === 'Snowball') && ERCoupon !== ''">
+    <div class="infodiv infodiv-margin" *ngIf="(ERCpnType === 'Flat' || ERCpnType === 'Snowball') && ERCoupon !== ''" >
+      <span class="infoNote cpn-pa" *ngIf="(ERCpnType === 'Flat' || ERCpnType === 'Snowball') && ERCoupon !== ''" >
+        <div *ngIf="ERCpnType === 'Flat'">{{showERCouponTooltip()}} % coupon to be paid if the product is early
+          redeemed.</div>
+        <div *ngIf="ERCpnType === 'Snowball'">Coupon to be paid if the product is early redeemed. The size of the coupon
+          will increase by {{showERCouponTooltip()}} % per period.</div>
+      </span>
+    </div>
+  </div>
+  
+  
+  
+  
+  
+  <!-- Coupon in fine -->
+  <!-- <div class="submultiDiv">
+     <select [(ngModel)]="cpnInFine" tabindex="47"
+    [disabled]="periodicCouponFlag === 'No' && (cpnType !== 'Conditional with Memory' && cpnType !== 'Conditional without Memory' && cpnType !== 'Range Accrual')">
+    <option value="Y">Yes </option>
+    <option value="N">No</option>
+  </select>
+    </div> -->
+  <!-- Floating Ref Index -->
+  <!-- <div class="submultiDiv"> -->
+  <!-- *ngIf="(cpnType === 'Floating Unconditional' || cpnType === 'Floating without Memory')" -->
+  <!-- <select class="txtsmall" tabindex="39" [(ngModel)]="cpnFltRef" disabled>
+        <option value="BBSW1M Index">BBSW1M Index</option>
+        <option value="BBSW2M Index">BBSW2M Index</option>
+        <option value="HIHD12M Index">HIHD12M Index</option>
+        <option value="BBSW3M Index">BBSW3M Index</option>
+        <option value="HIHD01M Index">HIHD01M Index</option>
+        <option value="HIHD02M Index">HIHD02M Index</option>
+        <option value="HKD3MH">HKD3MH</option>
+        <option value="HKD6MH">HKD6MH</option>
+        <option value="HIHD12M Index">HIHD12M Index</option>
+        <option value="BBSW6M Index">BBSW6M Index</option>
+        <option value="ADSW1 Index">ADSW1 Index</option>
+        <option value="ADSW2 Index">ADSW2 Index</option>
+        <option value="HDSW1 Index">HDSW1 Index</option>
+        <option value="ADSW3 Index">ADSW3 Index</option>
+        <option value="ADSW4 Index">ADSW4 Index</option>
+        <option value="HDSW2 Index">HDSW2 Index</option>
+        <option value="AUD5YS">AUD5YS</option>
+        <option value="HDSW3 Index">HDSW3 Index</option>
+        <option value="ADSW10 Index">ADSW10 Index</option>
+        <option value="HDSW4 Index">HDSW4 Index</option>
+        <option value="ADSW15 Index">ADSW15 Index</option>
+        <option value="HDSW5 Index">HDSW5 Index</option>
+        <option value="ADSW30 Index">ADSW30 Index</option>
+        <option value="HDSW10 Index">HDSW10 Index</option>
+        <option value="NDSW1 Index">NDSW1 Index</option>
+        <option value="NDSW2 Index">NDSW2 Index</option>
+        <option value="CHF1ML">CHF1ML</option>
+        <option value="SF0002M Index">SF0002M Index</option>
+        <option value="NDSW3 Index">NDSW3 Index</option>
+        <option value="SF0003M Index">SF0003M Index</option>
+        <option value="NDSW4 Index">NDSW4 Index</option>
+        <option value="NDSW5 Index">NDSW5 Index</option>
+        <option value="SF0006M Index">SF0006M Index</option>
+        <option value="SF0012M Index">SF0012M Index</option>
+        <option value="NDSW10 Index">NDSW10 Index</option>
+        <option value="SFSW1 Index">SFSW1 Index</option>
+        <option value="NDSW15 Index">NDSW15 Index</option>
+        <option value="SIBF1M Index">SIBF1M Index</option>
+        <option value="SIBF2M Index">SIBF2M Index</option>
+        <option value="SIBF3M Index">SIBF3M Index</option>
+        <option value="SFSW2 Index">SFSW2 Index</option>
+        <option value="SGD4MS">SGD4MS</option>
+        <option value="SFSW3 Index">SFSW3 Index</option>
+        <option value="SFSW4 Index">SFSW4 Index</option>
+        <option value="CGSW1 Index">CGSW1 Index</option>
+        <option value="SFSW10 Index">SFSW10 Index</option>
+        <option value="SIBF6M Index">SIBF6M Index</option>
+        <option value="CGSW2 Index">CGSW2 Index</option>
+        <option value="CGSW3 Index">CGSW3 Index</option>
+        <option value="CGSW4 Index">CGSW4 Index</option>
+        <option value="CGSW5 Index">CGSW5 Index</option>
+        <option value="SORF1M Index">SORF1M Index</option>
+        <option value="CGSW10 Index">CGSW10 Index</option>
+        <option value="SGD2MSO">SGD2MSO</option>
+        <option value="CNH15YS">CNH15YS</option>
+        <option selected="selected" value="EUR1ML">EUR1ML</option>
+        <option value="CNH30YS">CNH30YS</option>
+        <option value="HICNH1M Index">HICNH1M Index</option>
+        <option value="EUR2ML">EUR2ML</option>
+        <option value="SORF3M Index">SORF3M Index</option>
+        <option value="HICNH2M Index">HICNH2M Index</option>
+        <option value="HICNH3M Index">HICNH3M Index</option>
+        <option value="EUR3ML">EUR3ML</option>
+        <option value="CNH6ML">CNH6ML</option>
+        <option value="SORF6M Index">SORF6M Index</option>
+        <option value="CNH12ML">CNH12ML</option>
+        <option value="EUR6ML">EUR6ML</option>
+        <option value="SDSW1 Index">SDSW1 Index</option>
+        <option value="EE0012M Index">EE0012M Index</option>
+        <option value="US0012M Index">US0012M Index</option>
+        <option value="USSW1 Index">USSW1 Index</option>
+        <option value="SDSW2 Index">SDSW2 Index</option>
+        <option value="USSW2 Index">USSW2 Index</option>
+        <option value="SDSW3 Index">SDSW3 Index</option>
+        <option value="USSW3 Index">USSW3 Index</option>
+        <option value="USSW4 Index">USSW4 Index</option>
+        <option value="SDSW4 Index">SDSW4 Index</option>
+        <option value="USSW5 Index">USSW5 Index</option>
+        <option value="USSW10 Index">USSW10 Index</option>
+        <option value="SDSW5 Index">SDSW5 Index</option>
+        <option value="USSW15 Index">USSW15 Index</option>
+        <option value="USSW30 Index">USSW30 Index</option>
+        <option value="SDSW10 Index">SDSW10 Index</option>
+        <option value="US0001M Index">US0001M Index</option>
+        <option value="EUR001M Index">EUR001M Index</option>
+        <option value="EUR002M Index">EUR002M Index</option>
+        <option value="EUSA15 Index">EUSA15 Index</option>
+        <option value="EUR003M Index">EUR003M Index</option>
+        <option value="US0002M Index">US0002M Index</option>
+        <option value="EUSA30 Index">EUSA30 Index</option>
+        <option value="EUR006M Index">EUR006M Index</option>
+        <option value="BP0001M Index">BP0001M Index</option>
+        <option value="EUR012M Index">EUR012M Index</option>
+        <option value="BP0002M Index">BP0002M Index</option>
+        <option value="EUSA1 Index">EUSA1 Index</option>
+        <option value="EUSA2 Index">EUSA2 Index</option>
+        <option value="BP0006M Index">BP0006M Index</option>
+        <option value="EUSA3 Index">EUSA3 Index</option>
+        <option value="EUSA4 Index">EUSA4 Index</option>
+        <option value="BP0012M Index">BP0012M Index</option>
+        <option value="US0003M Index">US0003M Index</option>
+        <option value="US0006M Index">US0006M Index</option>
+        <option value="BPSW2 Index">BPSW2 Index</option>
+        <option value="BPSW3 Index">BPSW3 Index</option>
+        <option value="BPSW4 Index">BPSW4 Index</option>
+        <option value="BPSW5 Index">BPSW5 Index</option>
+        <option value="BPSW10 Index">BPSW10 Index</option>
+        <option value="SFSW10 Index">SFSW10 Index</option>
+        <option value="EUSA5 Index">EUSA5 Index</option>
+        <option value="BP0003M Index">BP0003M Index</option>
+        <option value="EUSA10 Index">EUSA10 Index</option>
+        <option value="BPSW1 Index">BPSW1 Index</option>
+        <option value="KLIBOR1M">KLIBOR1M</option>
+        <option value="SIBOR1M">SIBOR1M</option>
+        <option value="SIBOR3M">SIBOR3M</option>
+        <option value="SIBOR6M">SIBOR6M</option>
+        <option value="JIBOR6M">JIBOR6M</option>
+        <option value="MIBOR ON">MIBOR ON</option>
+        <option value="KLIBOR3M">KLIBOR3M</option>
+        <option value="KLIBOR6M">KLIBOR6M</option>
+        <option value="HSCEI">HSCEI</option>
+        <option value="CMS30">CMS30</option>
+        <option value="3M LIBOR">3M LIBOR</option>
+        <option value="3M SHIBOR">3M SHIBOR</option>
+        <option value="1M LIBOR">1M LIBOR</option>
+        <option value="FTSE.AT">FTSE.AT</option>
+        <option value="CMS02">CMS02</option>
+      </select>
+      <select class="txtsmall" [(ngModel)]="cpnFixing" tabindex="40"
+style="margin-left: 0.5em !important;"
+        [disabled]="(ERCpnType !== 'None' && periodicCouponFlag === 'No') || (cpnType !== 'Floating Unconditional' && cpnType !== 'Floating without Memory')">
+        <option *ngFor="let f of FixingDetermination" (selected)="f.Value === cpnFixing" [value]="f.Value">
+          {{ f.Key }}</option> -->
+  <!-- *ngIf="!(cpnType === 'Floating Unconditional' || cpnType === 'Floating without Memory')"> -->
+  <!-- </select>
+    </div> -->
+  <!-- changed by Pranav D 03-Dec-2021 -->
+  <!-- Yield Spread p.a. (%)  same as Coupon p.a. (%)-->
+  <!-- <div class="submultiDiv">
+      <input type="text" id="txtCoupon" [(ngModel)]="cpnCoupon" maxlength="8"
+        (blur)="this.ERReset();this.cpnCoupon = commonfunctions.setDecimal($event)"
+        (keypress)="commonfunctions.InputNumber($event)" tabindex="43" 
+        [disabled]="(ERCpnType !== 'None' && periodicCouponFlag === 'No') || this.SolveForvalue === 'Coupon'  || (cpnType !== 'Floating Unconditional' && cpnType !== 'Floating without Memory')">
+    </div> -->
+  <!--Floor & Cap-->
+  <!-- <div class="submultiDiv">
+      <input type="text" (blur)="this.ERReset();this.cpnFloor = commonfunctions.setDecimal($event);" class="txtsmall"
+        [disabled]="(ERCpnType !== 'None' && periodicCouponFlag === 'No') || (cpnType !== 'Floating Unconditional' && cpnType !== 'Floating without Memory')" 
+        [(ngModel)]="cpnFloor" tabindex="41">
+      <input type="text" (blur)="this.ERReset();this.cpnCap = commonfunctions.setDecimal($event);" class="txtsmall"
+        style="margin-left: 0.5em !important;"
+        [disabled]="(ERCpnType !== 'None' && periodicCouponFlag === 'No') || (cpnType !== 'Floating Unconditional' && cpnType !== 'Floating without Memory')"
+        [(ngModel)]="cpnCap" tabindex="42" >
+    </div> -->
+  <!-- changed by Pranav D 03-Dec-2021 -->
+  <!--Multiplier (%)<-->
+  <!-- <div class="submultiDiv">
+     <input type="text" (blur)="this.ERReset();this.cpnMultiplier = commonfunctions.setDecimal($event);"
+  [disabled]="(ERCpnType !== 'None' && periodicCouponFlag === 'No') || (cpnType !== 'Floating Unconditional' && cpnType !== 'Floating without Memory')"
+        
+     [(ngModel)]="cpnMultiplier" tabindex="43">   
+    </div> -->
+  <!-- changed by Pranav D 03-Dec-2021 -->
+  <!-- Range Accrual Freq -->
+  <!-- <div class="submultiDiv"> -->
+  <!-- commented by Priya L 11-Dec-2021 -->
+  <!-- *ngIf="cpnType === 'Range Accrual'" -->
+  <!-- <select name="" [(ngModel)]="rangeAccrualFreq" (change)="this.ERReset();" tabindex="44"
+        [disabled]="(ERCpnType !== 'None' && periodicCouponFlag === 'No') || (cpnType !== 'Range Accrual')">
+        <option selected="selected" value="Daily">Daily</option>
+        <option value="Weekly">Weekly</option>
+        <option value="Monthly">Monthly</option>
+      </select>
+    </div> -->
+  <!-- commented by Priya L 11-Dec-2021 -->
+  <!-- Lower/Upper Trigger (%) -->
+  <!-- <div class="submultiDiv"> -->
+  <!-- commented by Priya L 11-Dec-2021 -->
+  <!-- *ngIf="cpnType === 'Range Accrual'" -->
+  <!-- <input type="text" (change)="this.ERReset();" class="txtsmall" 
+      [disabled]="(ERCpnType !== 'None'  || cpnType !== 'Range Accrual'  || SolveForvalue === 'LowerCouponBarrier') "
+        [(ngModel)]="lowCpnBarrier" tabindex="45"> -->
+  <!-- commented by Priya L 11-Dec-2021 -->
+  <!-- *ngIf="cpnType === 'Range Accrual'" -->
+  <!-- <input type="text" (change)="this.ERReset();" class="txtsmall" 
+      [disabled]="(ERCpnType !== 'None'  || cpnType !== 'Range Accrual' || SolveForvalue === 'UpperCouponBarrier')"
+[(ngModel)]="upperCpnBarrier" style="margin-left: 0.5em !important" tabindex="46">
+    </div> -->
+  <!-- commented by Priya L 11-Dec-2021 -->
+  
+
+  <!-- Protection Level (%) -->
+  <!-- <div class="submultiDiv">
+     <input type="text" [(ngModel)]="ProtectionLevel" id="txtProtectionLevel" maxlength="8"
+        (blur)="this.ProtectionLevel = commonfunctions.setDecimal($event);" (keypress)="commonfunctions.InputNumber($event)"
+     [disabled]="this.barrierType !== 'Capital Protected'" tabindex="55">
+    </div> -->
+  <!-- changed by Pranav D 03-Dec-2021 -->
+  <!-- Final Upside -->
+  <!-- Final Upside -->
+  <!-- <div class="submultiDiv">
+      <select name="" [(ngModel)]="upsideType" tabindex="52" (change)="upsideTypeChange()" [disabled]="ShareBasket.length < 1">
+        <ng-container *ngFor="let f of FinalUpside">
+          <option *ngIf="(f.Value === 'None')
+          &&  ShareBasket.length > 0" [value]="f.Value">{{f.Key}}</option>
+          <option *ngIf="(f.Value === 'Call' || f.Value === 'Call Spread' 
+          || f.Value === 'Twin Win' || f.Value === 'Capped Twin Win')
+          &&  ShareBasket.length === 1" [value]="f.Value">{{f.Key}}</option>
+          <option *ngIf="(f.Value === 'Call Equally Weighted' || f.Value === 'Call Worst of' 
+          || f.Value === 'Call Best of' || f.Value === 'Call Custom Basket')
+          && ShareBasket.length > 1" [value]="f.Value">{{f.Key}}</option>
+        </ng-container>
+      </select>
+    </div> -->
+  <!-- Call Strike (%) -->
+  <!-- <div class="submultiDiv">
+    
+      <input type="text" [(ngModel)]="callStrike" id="txtcallStrike" maxlength="8"
+        (blur)="this.callStrike = commonfunctions.setDecimal($event);" (keypress)="commonfunctions.InputNumber($event)"
+        tabindex="53" 
+    [disabled]="((this.upsideType !== 'Call' && this.upsideType !== 'Twin Win' 
+           && this.upsideType !== 'Call Equally Weighted' && this.upsideType !== 'Call Worst of' 
+           && this.upsideType !== 'Call Best of' && this.upsideType !== 'Call Custom Basket') || this.SolveForvalue === 'CallStrike')">
+    </div> -->
+  <!-- Lower Call Strike (%) -->
+  <!-- <div class="submultiDiv">
+      
+      <input type="text" [(ngModel)]="lowerCallStrike" id="txtlowerCallStrike" maxlength="8"
+        (blur)="this.lowerCallStrike = commonfunctions.setDecimal($event);" (keypress)="commonfunctions.InputNumber($event)" 
+        tabindex="53" [disabled]="(this.upsideType !== 'Call Spread' && this.upsideType !== 'Capped Twin Win') || this.SolveForvalue === 'LowerCallStrike'"
+        >
+    </div> -->
+  <!-- Upper Call Strike (%) -->
+  <!-- <div class="submultiDiv">
+     
+      <input type="text" [(ngModel)]="upperCallStrike" id="txtupperCallStrike" maxlength="8"
+        (blur)="this.upperCallStrike = commonfunctions.setDecimal($event);" 
+        (keypress)="commonfunctions.InputNumber($event)" tabindex="54" 
+        [disabled]="(this.SolveForvalue === 'UpperCallStrike') || (this.upsideType !== 'Call Spread' && this.upsideType !== 'Capped Twin Win')">
+    </div> -->
+  <!-- Call Gearing (%) / Call Spread Gearing (%) -->
+  <!-- <div class="submultiDiv">
+ <input type="text" [(ngModel)]="callGearing" id="txtcallGearing" maxlength="8"
+    (blur)="this.callGearing = commonfunctions.setDecimal($event);" (keypress)="commonfunctions.InputNumber($event)"
+    tabindex="54" 
+    [disabled]="(this.upsideType !== 'Call' && this.upsideType !== 'Twin Win' && this.upsideType !== 'Call Equally Weighted' 
+    && this.upsideType !== 'Call Worst of' && this.upsideType !== 'Call Best of' && this.upsideType !== 'Call Custom Basket' ) 
+    || this.SolveForvalue === 'CallGearing'">
+      
+    </div> -->
+  <!-- <div class="submultiDiv">
+     
+      <input type="text" [(ngModel)]="callSpreadGearing" id="txtcallSpreadGearing" maxlength="8"
+        (blur)="this.callSpreadGearing = commonfunctions.setDecimal($event);"
+        (keypress)="commonfunctions.InputNumber($event)" tabindex="55" tabindex="32" 
+        [disabled]="(this.upsideType !== 'Call Spread' && this.upsideType !== 'Capped Twin Win') || (this.SolveForvalue === 'LowerCallGearing')">
+    </div> -->
+  <!-- </ng-template> -->
+  <!-- Funding Type / Freq.  -->
+  <!-- FIN1EURINT - 327 : Hide Funding Section for Bulk Pricer -->
+  <div class="submultiDiv" *ngIf="displayFundingSection">
+    <select tabindex="ComponentIndex * totalFields + 35" [(ngModel)]="fundType" [disabled]="format !== 'Swap' && enabledisablefields('FundType')"
+      (change)="this.ERReset();this.enableToggle();">
+      <option value="Fixed Rate">Fixed Rate</option>
+      <option value="Floating Rate">Floating Rate
+      </option>
+    </select>
+  </div>
+  <!-- FIN1EURINT - 327 : Hide Funding Section for Bulk Pricer -->
+  <div class="submultiDiv" *ngIf="displayFundingSection">
+    <select tabindex="ComponentIndex * totalFields + 36" [(ngModel)]="fundFreq" [(ngModel)]="fundFreq"
+      [disabled]="format !== 'Swap' && enabledisablefields('FundingFrequency')"
+      (change)="this.ERReset();this.enableToggle();">
+      <option *ngFor="let s of SwapFloatingReference" (selected)="s.Value === fundFreq" [value]="s.Value">
+        {{ s.Key }}</option>
+    </select>
+  </div>
+
+  <!-- Index Rate / Spread -->
+  <!-- FIN1EURINT - 327 : Hide Funding Section for Bulk Pricer -->
+  <div class="submultiDiv" *ngIf="displayFundingSection">
+    <input tabindex="ComponentIndex * totalFields + 37" type="text" [(ngModel)]="fundRate" id="txtFundingRate{{ComponentIndex}}" maxlength="100"
+      (blur)="this.ERReset();this.enableToggle();this.fundRate = commonfunctions.setDecimal($event);"
+      (keypress)="commonfunctions.InputSpread($event)"
+      [disabled]="format !== 'Swap' || this.SolveForvalue === 'FundingRate' || this.SolveForvalue === 'Spread' || enabledisablefields('FundingRateSpread')">
+
+    <!-- <span (clickOutside)="onClickedOutside('fundRate')"  style=" position: relative;">
+        <img src="{{asseturl}}info.jpg" class="info" *ngIf="format === 'Swap' && fundRate !==''" (click)="GetTriggerValue('fundRate')">
+        <div  *ngIf="fundRatePopup" class="triggerTable"> 
+           
+          <table style="width: 100%;">
+            <tr class="popuptr">
+              <th class="popupth" style="width: 10em;">Periods</th>
+              <th class="popupth" style="width: 10em;">
+                Trigger</th>
+            </tr>
+            <tr  *ngFor="let t of TriggerValueArr; let i = index; " class="popuptr"
+            style="width: 100%;">
+              
+              <td class="popuptd tdRight"
+                style="width:10em;">{{t.NoOfPeriods}} </td>
+             <td class="popuptd tdRight"
+                style="width: 10em;"> {{t.OutTrigger | number:'1.2-2'}}
+              </td>
+             
+            </tr>
+          </table>
+        </div>
+    </span> -->
+
+  </div>
+  <!-- Shuffled column to the end || PriyaL || 03May2022 || As asked by Milind Sir -->
+  <!-- Quanto -->
+  <!-- FIN1EURINT-469 || Hide Quanto field from Bulk pricer -->
+  <!-- <div class="submultiDiv">
+    <select tabindex="38" [(ngModel)]="quanto" disabled>
+      <option value="Yes">Yes</option>
+      <option value="No">No</option>
+    </select>
+  </div> -->
+  
+  <!-- Public or Private
+  <div class="submultiDiv">
+    *ngIf="format !== 'Swap'"
+    <select #focusable name="" [(ngModel)]="publicOrPrivate" (change)="this.ERReset();publicprivateChange();" tabindex="9" 
+      [disabled]="!(format !== 'Swap')" disabled>
+    <select name="" [(ngModel)]="publicOrPrivate" (change)="this.ERReset();publicprivateChange();" tabindex="ComponentIndex * totalFields + 40"
+      [disabled]="enabledisablefields('PublicPrivate')">
+      <option *ngFor="let p of PublicorPrivate" (selected)="p.Value === publicOrPrivate" [value]="p.Value">
+        {{ p.Key }}</option>
+      <option value="Private Placement">Private Placement</option>
+                                        <option value="Public Offer">Public Offer</option>
+    </select>
+  </div> -->
+  <!-- Listed -->
+  <!-- FIN1EURINT-335 || Hide 'Listed' field from Bulk pricer -->
+  <!-- <div class="submultiDiv">
+    <select tabindex="41" [(ngModel)]="listed"
+      [disabled]="format === 'Swap' || publicOrPrivate === 'Public Offer'  || publicOrPrivate === 'Private Placement' || enabledisablefields('Listed')">
+      <option value="Y">Yes</option>
+      <option value="N">No</option>
+    </select>
+  </div> -->
+  <!-- Stock Exchange -->
+  <!-- <div class="submultiDiv">
+      <select name="" [(ngModel)]="stockExchange" (change)="this.ERReset();"  [disabled]="listed !== 'Y' || format === 'Swap'" tabindex="11">
+
+        <option *ngFor="let s of StockExchange" (selected)="s.Value === stockExchange" [value]="s.Value">
+          {{ s.Key }}</option>
+      </select>
+    </div> -->
+  <!-- Priips -->
+  <div class="submultiDiv">
+    <select tabindex="ComponentIndex * totalFields + 42" [(ngModel)]="priipsYN" (change)="priipsChanged()" [disabled]="enabledisablefields('Priips')">
+      <option value="Yes">Yes</option>
+      <option value="No">No</option>
+    </select>
+  </div>
+  <!-- Country -->
+  <div class="submultiDiv">
+    <!-- <mat-select tabindex="12" [formControl]="countrySel" [disabled]="(priipsYN === 'No')"  [(ngModel)]="country" multiple
+      [disableOptionCentering]="true" (click)="positionDropdown()"> -->
+    <!-- <mat-option [value]="0" (click)="toggleAllSelection()">All</mat-option> -->
+    <!-- <app-select-all-option [control]="countrySel" [values]="countryArr">
+      </app-select-all-option>
+      <mat-option *ngFor="let c of CountryofDistribution" [value]="c.Value">{{c.Key}}
+      </mat-option>
+    </mat-select> -->
+    <div class="page-width">
+      <app-custom-dropdown-multi-select [disabledMulti]="priipsYN==='Yes'?false:true" [pricerType]="'multi'"
+        [options]="CountryofDistribution" [(ngModel)]="country" [disabled]="enabledisablefields('Country')">
+      </app-custom-dropdown-multi-select>
+    </div>
+  </div>
+  <!-- Language -->
+  <div class="submultiDiv">
+    <!-- <mat-select [formControl]="languageSel" *ngIf="priipsYN === 'Yes'"
+    (selectionChange)="this.ERReset();" [(ngModel)]="language" multiple tabindex="13"
+    [disableOptionCentering]="true" id="ddllanguage" (click)="positionDropdown()"> -->
+    <!-- (change)="this.ERReset();removeErrorPopup($event)" -->
+
+    <!-- <mat-option [value]="0" (click)="toggleAllSelection()">All</mat-option> -->
+    <!-- <app-select-all-option [control]="languageSel" [values]="LanguageArr">
+    </app-select-all-option>
+    <mat-option *ngFor="let l of LanguageArr1" [value]="l.Value">{{l.Key}}
+    </mat-option>
+  </mat-select> -->
+    <div class="page-width">
+      <app-custom-dropdown-multi-select [disabledMulti]="priipsYN==='Yes'?false:true" [pricerType]="'multi'"
+        [options]="LanguageArr1" [(ngModel)]="language" [disabled]="enabledisablefields('Language')">
+      </app-custom-dropdown-multi-select>
+    </div>
+    <!-- <select [(ngModel)]="language" tabindex="14" [disabled]="(priipsYN === 'No')">
+        <option value="Czech">Czech</option>
+        <option value="Dutch">Dutch</option>
+        <option value="English">English</option>
+        <option value="Czechia">Czechia</option>
+        <option value="Finnish">Finnish</option>
+        <option value="French">French</option>
+        <option value="Galician">Galician</option>
+        <option value="Greece">Greece</option>
+        <option value="Guernsey">Guernsey</option>
+        <option value="German">German</option>
+        <option value="Greek">Greek</option>
+        <option value="Italy">Italy</option>
+        <option value="Hungarian">Hungarian</option>
+        <option value="Italian">Italian</option>
+        <option value="Norwegian">Norwegian</option>
+        <option value="Polish">Polish</option>
+        <option value="Portuguese">Portuguese</option>
+        <option value="Russian">Russian</option>
+        <option value="Spanish">Spanish</option>
+        <option value="Switzerland">Swedish</option>
+      </select> -->
+  </div>
+  <!-- Termsheet -->
+  <!--Commented by SandipA as suggested by Nitish K || 06-Jul-2023-->
+  <!-- <div class="submultiDiv">
+    <select [(ngModel)]="termsheetType" tabindex="ComponentIndex * totalFields + 43" [disabled]="enabledisablefields('Termsheet')"> -->
+      <!-- <option value="Standard">Standard</option>
+      <option value="EIS">EIS</option>
+      <option value="SSP">SSP</option>
+      <option value="SSS UK RND">SSP UK RND</option>
+      <option value="UK RND">UK RND</option> -->
+      <!-- <option *ngFor="let t of Termsheets" (selected)="t.Value === termsheetType" [value]="t.Value">
+        {{ t.Key }}</option>
+    </select>
+  </div> -->
+  <!-- Loader icon position changed by AdilP FIN1EURINT-506 || 05-07-2023 ||START -->
+<div class="pageload-overlay" *ngIf="pageloadflag">
+  <div>
+      <svg version="1.1" id="L4" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
+    y="0px" [ngStyle]="{ width:  + '25px', height:  + '25px' }"
+    style="margin-left: 30px" viewBox="0 0 100 100" enable-background="new 0 0 0 0"
+    xml:space="preserve">
+    <circle stroke="#a1a1a1" cx="45" cy="23" r="1.4" stroke-width="0.1" fill="var(--icon-active-bg)">
+      <animate attributeName="opacity" dur="2s" values="0;1;0" repeatCount="indefinite" begin="0.1" />
+    </circle>
+    <circle stroke="#a1a1a1" cx="45" cy="23" r="1.5" stroke-width="0.1" fill="var(--icon-active-bg)">
+      <animate attributeName="opacity" dur="2s" values="0;1;0" repeatCount="indefinite" begin="0.1" />
+    </circle>
+  </svg>
+  </div>
+</div>
+<!-- Loader icon position changed by AdilP FIN1EURINT-506 || 05-07-2023 ||END -->
+</div>
+<!-- Added by AdilP @16-06-2023 || FIN1EURINT-480 -->
+<app-docs-modal *ngIf="showDocsPopup"
+    [tableData]="docsData"
+    [labelsData]="docsPopupLabels"
+    [displayMode]="docsView"
+    
+    (closeModalEvent)="closeDocsModal(val)"></app-docs-modal>
+<router-outlet> </router-outlet>

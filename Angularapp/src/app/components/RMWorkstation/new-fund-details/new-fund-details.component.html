@@ -1,0 +1,480 @@
+<div class="page-title" style="display: flex; gap: 1% ;">
+    <app-svg-icons class="back-button" [icon]="'back-button'" [width]="'30'" [height]="'30'" [fill]="'var(--headers)'"
+        (click)="clickBack()">
+    </app-svg-icons>
+    Fund Details
+</div>
+<div class="page-grid">
+    <div class="new-grid">
+        <div class="box-container column-2">
+            <!--Funds Details-->
+            <div class = "buySellGrid">
+                <div>
+                    <label class="fund-name">{{AllMFData?.Name || '-' }}</label>
+                    <div class="details-list">
+                        <!-- <label class="heading">Fund Umbrella</label><label class="value-top">{{AllMFData?.FundUmbrella || '-' }}</label> -->
+                        <!-- <div class="vh-line"></div> -->
+                        <label class="heading">Currency</label><label class="value-top">{{AllMFData?.Ccy || '-' }}</label>
+                        <div class="vh-line"></div>
+                        <label class="heading">ISIN</label><label class="value-top">{{AllMFData?.ISIN || '-' }}</label>
+                    </div>
+                </div>
+                <div class="btnGrid">
+                    <button class="button btnBuy" value="Buy" (click) = "callOrderEntry('BUY')">Buy</button>
+                    <button class="button btnSell" value="Sell" (click) = "callOrderEntry('SELL')">Sell</button>
+                </div>
+            </div>
+
+
+            <div class="details-row-3">
+                <div class="graphSection">
+                    <!-- <canvas baseChart id="chart1" height="300" width="200" [chartType]="'line'" [datasets]="MFChartData[0]" [labels]="MFChartLabels[0]" [options]="chartOptions" [legend]="true" [colors]="Chartcolor">
+                    </canvas> -->
+                    <google-chart *ngIf="MFChartData.length > 0" #baseChart [title]="Title" type="AreaChart" [data]="MFChartData"
+                        [options]="chartOptions" width="100%" height="100%">
+                    </google-chart>
+                    <div *ngIf="MFChartData.length === 0"> <!--Added by Alolika G on 9th Feb 2022-->
+                        No data found.
+                    </div>
+                </div>
+                <div class="details">
+                    <label class="box-header">Fund Parameters</label>
+                    <div class="details-row-2">
+                        <div class="details">
+                            <label class="value">{{AllMFData?.Code || '-' }}</label>
+                            <label class="heading">Fund Code</label>
+                        </div>
+                        <div class="details">
+                            <label class="value">{{AllMFData?.FundSize | number:'1.2-2'|| '0.00'}}</label>
+                            <label class="heading">Fund Size </label>
+                        </div>
+                        <div class="details">
+                            <label class="value">{{AllMFData?.BidNav | number:'1.2-2'|| '0.00' }}</label>
+                            <label class="heading">NAV</label>
+                        </div>
+                        <div class="details">
+                            <label class="value">{{AllMFData?.DealingFrequency || '-' }}</label>
+                            <label class="heading">Dealing Frequency</label>
+                        </div>
+                        <div class="details">
+                            <label class="value">{{AllMFData?.LTV | number:'1.2-2'|| '0.00' }}</label>
+                            <label class="heading">LTV</label>
+                        </div>
+                        <div class="details">
+                            <label class="value">{{AllMFData?.InceptionDate | date :'dd-MMM-yyyy'|| '-' }}</label>
+                            <label class="heading">NAV Date</label>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="details" style="gap: 0px;">
+                    <label class="box-header">Product Rating</label>
+                    Risk Rating
+                    <app-svg-icons style="margin: auto" [icon]=rating [width]="'300'" [height]="'170'"></app-svg-icons>
+                </div> -->
+            </div>
+        </div>
+        <div class="box-container">
+            <!--Fees & Charges-->
+            <label class="box-header">Security Information</label>
+            <div class="details-row">
+                <div class="details1-row">
+                    <div class="details">
+                        <label class="value">{{AllMFData?.InceptionDate | date :'dd-MMM-yyyy'|| '-' }}</label>
+                        <label class="heading">Inception Date</label>
+                    </div>
+                    <div class="details">
+                        <label class="value">{{AllMFData?.Ccy}} {{this.cfs.FormatNumberr(AllMFData?.Min_Inv_Amt) || '-'
+                            }}</label>
+                        <label class="heading">Minimum Initial</label>
+                    </div>
+                    <div class="details">
+                        <label class="value">{{AllMFData?.Ccy}} {{this.cfs.FormatNumberr(AllMFData?.MinSubsequentAmount)
+                            || '-' }}</label>
+                        <label class="heading">Minimum Additional</label>
+                    </div>
+                    <div class="details">
+                        <label class="value">{{AllMFData?.Ccy || '-' }}</label>
+                        <label class="heading">Fund Currency</label>
+                    </div>
+                    <div class="details">
+                        <label class="value">{{SecurityInfoData?.ScenarioParameters || '-' }}</label>
+                        <label class="heading">Domicile</label>
+                    </div>
+                    <div class="details">
+                        <label class="value">{{SecurityInfoData?.Restricted_Nations || '-' }}</label>
+                        <label class="heading">Type</label>
+                    </div>
+                    <div class="details">
+                        <label class="value">{{SecurityInfoData?.KO_Flag || '-' }}</label>
+                        <label class="heading">RR Profile</label>
+                    </div>
+                </div>
+                <div class="details1-row">
+                    <div class="details">
+                        <label class="value">{{ '-' }}</label>
+                        <label class="heading">Subscription Fee (%)</label>
+                    </div>
+                    <div class="details">
+                        <!-- <label class="value">{{SecurityInfoData?.IPO_Bid_Price_Lower | number:'1.2-2' || '-' }}</label> -->
+                        <label class="value">{{ '-' }}</label>
+                        <label class="heading">Deposit Fee (%)</label>
+                    </div>
+                    <div class="details">
+                        <label class="value">{{ '-' }}</label>
+                        <label class="heading">Redemption Fee (%)</label>
+                    </div>
+                    <div class="details">
+                        <label class="value">{{ '-' }}</label>
+                        <label class="heading">Ongoing Change (%)</label>
+                    </div>
+                    <div class="details">
+                        <label class="value">{{ '-' }}</label>
+                        <label class="heading">Management Fee (%)</label>
+                    </div>
+                    <div class="details">
+                        <label class="value">{{SecurityInfoData?.Misc5 || '-' }}</label>
+                        <label class="heading">Hedged</label>
+                    </div>
+                    <div class="details">
+                        <label class="value">{{SecurityInfoData?.Rocommended_By || '-' }}</label>
+                        <label class="heading">Transferable</label>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="box-container">
+            <!--Fees & Charges-->
+            <div class="radio-class">
+                <label class="box-header">Ratios</label>
+                <div class="right">
+                    <input style="display:none;" type="checkbox" id="1" name="1" value="1 Year" [(ngModel)]="Year1"
+                        (change)="chkChange(0);">&nbsp;
+                    <label for="1" class="lbl" [ngClass]="Year1 ? 'active1':'disabledtabs1'">
+                        <span>1Y</span></label>&nbsp;
+                    <input style="display:none;" type="checkbox" id="2" name="2" value="3 Years" [(ngModel)]="Year3"
+                        (change)="chkChange(1);">&nbsp;
+                    <label for="2" class="lbl" [ngClass]="Year3 ? 'active1':'disabledtabs1'">
+                        <span>3Y</span></label>&nbsp;
+                    <input style="display:none;" type="checkbox" id="3" name="3" value="5 Years" [(ngModel)]="Year5"
+                        (change)="chkChange(2);">&nbsp;
+                    <label for="3" class="lbl" [ngClass]="Year5 ? 'active1':'disabledtabs1'">
+                        <span>5Y</span></label>&nbsp;
+                    <input style="display:none;" type="checkbox" id="4" name="4" value="10 Years" [(ngModel)]="Year10"
+                        (change)="chkChange(3);">&nbsp;
+                    <label for="4" class="lbl" [ngClass]="Year10 ? 'active1':'disabledtabs1'">
+                        <span>10Y</span></label>
+                </div>
+            </div>
+
+
+            <div class="details-row">
+                <div class="details2-row">
+                    <div class="details">
+                        <label class="value">{{FundRatios?.length === 0 ? '-' : FillRatios?.FR_Beta | number:
+                            '1.4-4'}}</label>
+                        <label class="heading">Beta</label>
+                    </div>
+                    <div class="details">
+                        <label class="value">{{FundRatios?.length === 0 ? '-' : FillRatios?.FR_Omega | number:
+                            '1.4-4'}}</label>
+                        <label class="heading">Omega</label>
+                    </div>
+                    <div class="details">
+                        <label class="value">{{FundRatios?.length === 0 ? '-' : FillRatios?.FR_Calmar | number:
+                            '1.4-4'}}</label>
+                        <label class="heading">Calmar</label>
+                    </div>
+                    <div class="details">
+                        <label class="value">{{FundRatios?.length === 0 ? '-' : FillRatios?.FR_Sharpe | number:
+                            '1.4-4'}}</label>
+                        <label class="heading">Sharpe</label>
+                    </div>
+                    <div class="details">
+                        <label class="value">{{FundRatios?.length === 0 ? '-' : FillRatios?.FR_Sortino | number:
+                            '1.4-4'}}</label>
+                        <label class="heading">Sortino</label>
+                    </div>
+                    <div class="details">
+                        <label class="value">{{FundRatios?.length === 0 ? '-' : FillRatios?.FR_Treynor | number:
+                            '1.4-4'}}</label>
+                        <label class="heading">Treynor</label>
+                    </div>
+                    <div class="details">
+                        <label class="value">{{FundRatios?.length === 0 ? '-' : FillRatios?.FR_Bear_Beta | number:
+                            '1.4-4'}}</label>
+                        <label class="heading">Bear Beta</label>
+                    </div>
+                    <div class="details">
+                        <label class="value">{{FundRatios?.length === 0 ? '-' : FillRatios?.FR_Bull_Beta | number:
+                            '1.4-4'}}</label>
+                        <label class="heading">Bull Beta</label>
+                    </div>
+                    <div class="details">
+                        <label class="value">{{FundRatios?.length === 0 ? '-' : FillRatios?.FR_Correlation | number:
+                            '1.4-4'}}</label>
+                        <label class="heading">Correlation</label>
+                    </div>
+                </div>
+                <div class="details2-row">
+                    <div class="details">
+                        <label class="value">{{FundRatios?.length === 0 ? '-' : FillRatios?.FR_Information_Ratio |
+                            number: '1.4-4'}}</label>
+                        <label class="heading">Information Ratio</label>
+                    </div>
+                    <div class="details">
+                        <label class="value">{{FundRatios?.length === 0 ? '-' : FillRatios?.FR_Volatility | number:
+                            '1.2-2'}}</label>
+                        <label class="heading">Volatility (%)</label>
+                    </div>
+                    <div class="details">
+                        <label class="value">{{FundRatios?.length === 0 ? '-' : FillRatios?.FR_Max_Drawdown | number:
+                            '1.2-2'}}</label>
+                        <label class="heading">Max Drawdown (%)</label>
+                    </div>
+                    <div class="details">
+                        <label class="value">{{FundRatios?.length === 0 ? '-' : FillRatios?.FR_Tracking_Error | number:
+                            '1.2-2'}}</label>
+                        <label class="heading">Tracking Error (%)</label>
+                    </div>
+                    <div class="details">
+                        <label class="value">{{FundRatios?.length === 0 ? '-' : FillRatios?.FR_Annualized_Return |
+                            number: '1.2-2'}}</label>
+                        <label class="heading">Annualized Return (%)</label>
+                    </div>
+                    <div class="details">
+                        <label class="value">{{FundRatios?.length === 0 ? '-' : FillRatios?.FR_Downside_Deviation |
+                            number: '1.2-2'}}</label>
+                        <label class="heading">Downside Deviation (%)</label>
+                    </div>
+                    <div class="details">
+                        <label class="value">{{FundRatios?.length === 0 ? '-' : FillRatios?.FR_Jensens_Alpha | number:
+                            '1.2-2'}}</label>
+                        <label class="heading">Jensens Alpha (%)</label>
+                    </div>
+                    <div class="details">
+                        <label class="value">{{FundRatios?.length === 0 ? '-' : FillRatios?.FR_Time_to_Recovery}}</label>
+                        <label class="heading">Time to Recovery</label>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="new-grid">
+        <div [ngClass]="{'box-container': perfFlag, 'new-container': !perfFlag}">
+            <!--Fees & Charges-->
+            <label class="box-header">Performance</label>
+            <!-- <div class="perf-box"> -->
+            <div class="data-container">
+                <div class="header">
+                    <!-- <div class="header-text">
+                            Market Watch
+                            <span class="cancel-icon"
+                                (click)="tabsArray[6].tabshow = !tabsArray[6].tabshow;tabsArray[6].column = col;sendDataToParent('Market Watch')"></span>
+                        </div> -->
+                    <!-- <hr class="header-line"> -->
+                    <div class="performance-table">
+                        <span class="table-title">Performance</span>
+                        <span class="table-title">Return (%)</span>
+
+                    </div>
+                    <div class="marketWatch" *ngIf="PerfPeriods.length > 0">
+                        <div class="performance-table" *ngFor="let item of PerfPeriods">
+                            <span class="table-content" style="font-size: 15px;">{{item.FP_Period}}</span>
+                            <span class="right"
+                                [ngStyle]="{'color':item.FP_Performance > 0 ? 'var(--green)' : 'var(--red)' }"
+                                *ngIf="item.FP_Performance !== ''">
+                                {{item.FP_Performance | number:'1.2-2'}}
+                            </span>
+                            <span class="right" *ngIf="item.FP_Performance === ''">
+                                {{'-'}}
+                            </span>
+
+
+
+
+                        </div>
+                    </div>
+                    <div *ngIf="PerfPeriods.length === 0">
+                        <label class="performance-lbl">No data found.</label>
+                    </div>
+
+                </div>
+            </div>
+            <!-- </div> -->
+            <!-- <div class="perf-box"> -->
+            <!-- <div class="details-row-2 margin-new" style="gap: 20px !important;">
+                    <div class="details1" *ngFor="let item of PerfPeriods">
+                        <label class="value" *ngIf="item.FP_Performance !== ''">{{item.FP_Performance | number: '1.2-2'}} %</label>
+                        <label class="value" *ngIf="item.FP_Performance === ''">{{'-'}}</label>
+                        <label class="heading">{{item.FP_Period}}</label>
+                    </div>
+                </div> --temp comment -->
+            <!-- <div class="details-row-2 margin-new "> --already commented
+                    <div class="details1">
+                        <label class="value">0.53 %</label>
+                        <label class="heading">Day Change</label>
+                    </div>
+                    <div class="details1">
+                        <label class="value">-7.43 %</label>
+                        <label class="heading">YTD</label>
+                    </div>
+                    <div class="details1">
+                        <label class="value">0.74 %</label>
+                        <label class="heading">1 Week</label>
+                    </div>
+                </div>
+                <div class="details-row-2 margin-new ">
+                    <div class="details1">
+                        <label class="value">0.22 %</label>
+                        <label class="heading">1 Month</label>
+                    </div>
+                    <div class="details1">
+                        <label class="value">0.09 %</label>
+                        <label class="heading">3 Months</label>
+                    </div>
+                    <div class="details1">
+                        <label class="value">-2.23 %</label>
+                        <label class="heading">6 Months</label>
+                    </div>
+                </div>
+                <div class="details-row-2 margin-new ">
+                    <div class="details1">
+                        <label class="value">-2.88 %</label>
+                        <label class="heading">1 Year</label>
+                    </div>
+                    <div class="details1">
+                        <label class="value">7.62 %</label>
+                        <label class="heading">3 Years</label>
+                    </div>
+                    <div class="details1">
+                        <label class="value"> - </label>
+                        <label class="heading">5 Years</label>
+                    </div>
+                </div> -->
+            <!-- </div> -->
+
+            <!-- <div class="perf-box"> temp comm
+                <div class="details-row-2 margin-new" style="gap: 20px !important;">
+                    <div class="details1" *ngFor="let item of PerfYears">
+                        <label class="value" *ngIf="item.FP_Performance !== ''">{{item.FP_Performance | number: '1.2-2'}} %</label>
+                        <label class="value" *ngIf="item.FP_Performance === ''">{{'-'}}</label>
+                        <label class="heading">{{item.FP_Period}}</label>
+                    </div>
+                </div>
+            
+            </div> -->
+
+            <div class="data-container">
+                <div class="header">
+                    <div class="performance-table">
+                        <span class="table-title">Performance</span>
+                        <span class="table-title">Return (%)</span>
+                    </div>
+                    <div class="marketWatch" *ngIf="PerfYears.length > 0">
+                        <div class="performance-table" *ngFor="let item of PerfYears">
+                            <span class="table-content" style="font-size: 15px;">{{item.FP_Period}}</span>
+                            <span class="right"
+                                [ngStyle]="{'color':item.FP_Performance > 0 ? 'var(--green)' : 'var(--red)' }"
+                                *ngIf="item.FP_Performance !== ''">
+                                {{item.FP_Performance | number:'1.2-2'}}
+                            </span>
+                            <span class="right" *ngIf="item.FP_Performance === ''">
+                                {{'-'}}
+                            </span>
+                        </div>
+                    </div>
+                    <div *ngIf="PerfYears.length === 0">
+                        <label class="performance-lbl">No data found.</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- <div class="perf-box"> temp comm
+                <div class="details-row-4 margin-new" style="gap: 10px !important;">
+                    <div class="details1" *ngFor="let item of PerfQuarters">
+                        <label class="value" *ngIf="item.FP_Performance !== ''">{{item.FP_Performance | number: '1.2-2'}} %</label>
+                        <label class="value" *ngIf="item.FP_Performance === ''">{{'-'}}</label>
+                        <label class="heading">{{item.FP_Period}}</label>
+                    </div>
+                </div>
+            </div> -->
+
+            <div class="data-container">
+                <div class="header">
+                    <div class="performance-table">
+                        <span class="table-title">Performance</span>
+                        <span class="table-title">Return (%)</span>
+
+                    </div>
+                    <div class="marketWatch" *ngIf="PerfQuarters.length > 0">
+                        <div class="performance-table" *ngFor="let item of PerfQuarters">
+                            <span class="table-content" style="font-size: 15px;">{{item.FP_Period}}</span>
+                            <span class="right"
+                                [ngStyle]="{'color':item.FP_Performance > 0 ? 'var(--green)' : 'var(--red)' }"
+                                *ngIf="item.FP_Performance !== ''">
+                                {{item.FP_Performance | number:'1.2-2'}}
+                            </span>
+                            <span class="right" *ngIf="item.FP_Performance === ''">
+                                {{'-'}}
+                            </span>
+                        </div>
+                    </div>
+                    <div *ngIf="PerfQuarters.length === 0">
+                        <label class="performance-lbl">No data found.</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="box-container">
+            <!--Factsheet-->
+            <label class="box-header">Document</label>
+            <div class="grid-header">
+                <label></label>
+                <label>Document</label>
+                <label>View</label>
+            </div>
+            <div class="grid-data" *ngFor="let item of factsheetdata">
+                <span class="dot"></span>
+                <label>{{item.Document_Output_Path.split('\\')[3]|| '-' }}</label>
+                <div>
+                    <app-svg-icons class="download" [icon]="'pdf'" [width]="'30'" [height]="'30'"
+                        (click)="showFile(item.DGT_ID, this.FactSheetNoteMasterID)"></app-svg-icons>
+                </div>
+            </div>
+            <div *ngIf="factsheetdata.length === 0"> <!--Added by Alolika G on 9th Feb 2022-->
+                No data found.
+            </div>
+            <!-- <div class="grid-data">
+                <span class="dot"></span>
+                <label>EURO STOXX 50 ETF.pdf</label>
+                <div>
+                    <app-svg-icons class="download" [icon]="'pdf'" [width]="'15'" [height]="'15'"></app-svg-icons>
+                </div>
+            </div> -->
+        </div>
+    </div>
+
+</div>
+
+<div *ngIf="showOrderEntry" class="overlay">
+    <div class="order-entry-container page-content-container-popup">
+        <div class="recommended-products">
+            <div> <!--*ngIf="this.product === 'Fund_Setup'"-->
+                <div class="tabs tab-active">
+                    <div class="right">Funds</div>
+                    <!-- <div class="closebtn" (click)="showOrderEntry = false">X</div> -->
+                    <app-svg-icons class="closebtn" [icon]="'cancel-icon'" [width]="'15'" [height]="'15'"
+                        (click)="showOrderEntry = false">
+                    </app-svg-icons>
+                </div>
+                <app-mutualfunds [displaySearch]=true></app-mutualfunds>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,29 @@
+<!-- <p>sharecollection works!</p> -->
+
+<mat-form-field class="example-chip-list">
+    <mat-chip-list #chipList aria-label="Share selection" [disabled]="disabled">
+      <mat-chip class="chip-class"
+        *ngFor="let share of shares"
+        [selectable]="selectable"
+        [removable]="removable"
+        (removed)="remove(share)"
+        >
+        {{share}}
+        <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+      </mat-chip>
+      <input
+        matInput
+        placeholder="{{control.displayName}}"
+        #shareInput
+        [formControl]="shareCtrl"
+        [matAutocomplete]="auto"
+        [matChipInputFor]="chipList"
+        [matChipInputSeparatorKeyCodes]="separatorKeysCodes" /> 
+        <!-- (matChipInputTokenEnd)="add($event)" removed because not required in share collection -->
+    </mat-chip-list>
+    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+      <mat-option *ngFor="let share of filteredShares | async" [value]="share.id">
+        {{share.code}}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>

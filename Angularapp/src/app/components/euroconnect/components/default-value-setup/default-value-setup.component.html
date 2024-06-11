@@ -1,0 +1,39 @@
+<div class="tabs-container">
+    <div *ngIf="this.apifunctions.payOffList.length > 0">
+      <div class="tabs-pages">
+        <ng-container *ngFor="let item of subpages">
+          <div class="tabs" *ngIf="item.displayYN === true" [ngClass]="{ 'tab-active': item.ActiveYN }"
+            (click)="eqchangeProduct(item.Name, 'click')">
+            {{ item.Name }}
+          </div>
+        </ng-container>
+      </div>
+      <div *ngFor="let item of subpages">
+        <ng-container [ngSwitch]="item.Name">
+  
+          <!-- Autocallable -->
+          <ng-template [ngSwitchCase]="'Autocallable'" *ngIf="item.ActiveYN">
+            <app-default-autocallable></app-default-autocallable>
+          </ng-template>
+          <!-- Yeild Enhancement -->
+          <ng-template [ngSwitchCase]="'Yield Enhancement'" *ngIf="item.ActiveYN">
+            <app-default-yield></app-default-yield>
+          </ng-template>
+          <ng-template [ngSwitchCase]="'Custom Strategy'" *ngIf="item.ActiveYN">
+            <app-default-customstrategy></app-default-customstrategy>
+          </ng-template>
+          <ng-template [ngSwitchCase]="'Participation'" *ngIf="item.ActiveYN">
+            <app-default-participation></app-default-participation>
+          </ng-template>
+          <!-- Accumulator -->
+          <ng-template [ngSwitchCase]="'Accumulator'" *ngIf="item.ActiveYN">
+            <app-default-accum></app-default-accum>
+          </ng-template>
+          <ng-template [ngSwitchCase]="'Decumulator'" *ngIf="item.ActiveYN">
+            <app-default-decum></app-default-decum>
+          </ng-template>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+  <!-- Layout changed by AdilP @11-07-2023 -->

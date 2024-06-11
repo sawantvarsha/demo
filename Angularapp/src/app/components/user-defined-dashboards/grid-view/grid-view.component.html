@@ -1,0 +1,135 @@
+<div class="main-block" [ngStyle]="{width: width + 'px', height: height + 'px'}" *ngIf="showTile">
+    <div class="header">
+
+        <div class="Link">
+            <img src={{icon}} style="margin-right: 10px;">
+            <span> {{scenarioDataValue['ScenarioHeader']}}</span>
+            <input type="submit" value="" title="Maximize" class="resizeBtn"
+                *ngIf="scenarioDataValue['ControlType'] !== 'Grid'" (click)="expand = true; expandDiv()">
+        </div>
+        <div class="buttonsContainer">
+            <div style="float: right;">
+                <img [src]="isProd?'assets/App_Resources/images/save.png':'../../../../assets/App_Resources/images/save.png'" alt="Save Layout" title="Save Layout">
+                <img [src]="isProd?'assets/App_Resources/images/delete.png':'../../../../assets/App_Resources/images/delete.png'" alt="close Layout" title="Close Layout"
+                    (click)="showTile = false;showSettings = false; deleteTile()">
+                <img [src]="isProd?'assets/App_Resources/images/setting.png':'../../../../assets/App_Resources/images/setting.png'" alt="Show Filters" title="Show Filters"
+                    (click)="showSettings = !showSettings">
+            </div>
+        </div>
+    </div>
+    <div class="settings" *ngIf="showSettings && scenarioDataValue['FromAndToDateFilter'] !== ''">
+        <div *ngIf="scenarioDataValue['FromAndToDateFilter'] !== ''">
+            <div class="date"> From: 
+            <input #searchInput type="date" class="input-dob" [attr.data-date]="fromDate" style="margin-top: 0px;"
+                placeholder="dd-mm-yyyy" data-date-format="DD-MMM-YYYY" value="" min="1997-01-01" max="2030-12-31"
+                [(ngModel)]="fromDate" (change)="fromDate = selectDate(fromDate)">
+            </div>
+             <div class="date"> To: 
+            <input #searchInput type="date" class="input-dob" [attr.data-date]="toDate" style="margin-top: 0px;"
+                placeholder="dd-mm-yyyy" data-date-format="DD-MMM-YYYY" value="" min="1997-01-01" max="2030-12-31"
+                [(ngModel)]="toDate" (change)="toDate = selectDate(toDate)">
+            </div>
+    
+        </div>
+        <div *ngIf="scenarioDataValue['TimePeriodFilterLbl'] !== ''" class="date">
+            <label>{{scenarioDataValue['TimePeriodFilterLbl']}}</label>
+            <select>
+                <option *ngFor="let filter of TimePeriodFilter">{{filter}}</option>
+            </select>
+        </div>
+    </div>
+    {{lblError}}
+    <div *ngIf="scenarioDataValue['ControlType'] === 'Grid' && lblError === ''">
+        <div class="grid tableHeader" [style.grid-template-columns]="setGrid()">
+            <div *ngFor="let item of  columns">
+                {{item.replaceAll("_", " ").replaceAll("x0020", " ").replaceAll("x0028", " ").replaceAll("x0029", " ").replaceAll("x0024", " ")}}
+            </div>
+        </div>
+
+        <div [ngStyle]="{height: (height - 100) + 'px'}" style="overflow: scroll;">
+            <div *ngFor="let data of  this.spData  ;" class="grid" [style.grid-template-columns]="setGrid()">
+                <div *ngFor="let item of  columns; let i =index">
+                    <div [ngStyle]="{'text-align': alignment[i] }" > {{data[item][0]}} </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="scenarioDataValue['ControlType'] === 'Pie' && lblError === ''" class="piechart">
+        <google-chart #chart type="PieChart" [data]="graphdata" [options]="options">
+        </google-chart>
+    </div>
+
+    <div *ngIf="scenarioDataValue['ControlType'] === 'Column' && lblError === ''" class="piechart">
+        <google-chart #chart type="ColumnChart" [data]="graphdata" [options]="columnOptions">
+        </google-chart>
+    </div>
+    <div *ngIf="scenarioDataValue['ControlType'] === 'Bar' && lblError === ''" class="piechart">
+        <google-chart #chart type="BarChart" [data]="graphdata" [options]="columnOptions">
+        </google-chart>
+    </div>
+    <div *ngIf="scenarioDataValue['ControlType'] === 'Poster' && lblError === ''" class="grid "
+        style="margin-top: 10px;" [style.grid-template-columns]="setGridPoster()">
+        <div class="box" *ngFor="let item of  this.spData">
+            <div class="tableHeader" style="padding-bottom: 10px;">
+                {{item.PosterName[0]}}
+            </div>
+            <div>
+                <div class="posterTenor"> {{item.PosterTenor[0]}} </div>
+                <div class="amount">
+                    <div> {{item.PosterValue[0]}} </div> &nbsp;
+                    <div style="font-size: 15px;"> {{item.PosterSuffix[0]}}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+<div class="overlay" *ngIf="expand">
+    <div class="page-content-container-popup" [ngStyle]="{width: width + 'px', height: height + 'px'}" *ngIf="showTile">
+        <div class="header">
+
+            <div class="Link">
+                <img src={{icon}} style="margin-right: 10px;">
+                <span> {{scenarioDataValue['ScenarioHeader']}}</span>
+                <input type="submit" value="" title="Maximize" class="resizeBtn">
+            </div>
+            <div class="buttonsContainer">
+                <div style="float: right;">
+                    <img [src]="isProd?'assets/App_Resources/images/delete.png':'../../../../assets/App_Resources/images/delete.png'" alt="close Layout"
+                        title="Close Layout" (click)="expand = false;collapseDiv()">
+                </div>
+            </div>
+        </div>
+        {{lblError}}
+        <div *ngIf="scenarioDataValue['ControlType'] === 'Grid' && lblError === ''">
+            <div class="grid tableHeader" [style.grid-template-columns]="setGrid()">
+                <div *ngFor="let item of  this.spData[0] | keyvalue">
+                    {{item.key.replaceAll("_", " ").replaceAll("x0020", " ").replaceAll("x0028", " ").replaceAll("x0029", " ").replaceAll("x0024", " ")}}
+                </div>
+            </div>
+
+            <div [ngStyle]="{height: (height - 100) + 'px'}" style="overflow: scroll;">
+                <div *ngFor="let data of  this.spData  ;" class="grid" [style.grid-template-columns]="setGrid()">
+                    <div *ngFor="let item of  data | keyvalue; let i =index">
+                        <div [ngStyle]="{'text-align': alignment[i] }"> {{item.value}} </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="scenarioDataValue['ControlType'] === 'Pie' && lblError === ''" class="piechart">
+            <google-chart #chart type="PieChart" [data]="graphdata" [options]="options">
+            </google-chart>
+        </div>
+
+        <div *ngIf="scenarioDataValue['ControlType'] === 'Column' && lblError === ''" class="piechart">
+            <google-chart #chart type="ColumnChart" [data]="graphdata" [options]="columnOptions">
+            </google-chart>
+        </div>
+        <div *ngIf="scenarioDataValue['ControlType'] === 'Bar' && lblError === ''" class="piechart">
+            <google-chart #chart type="BarChart" [data]="graphdata" [options]="columnOptions">
+            </google-chart>
+        </div>
+    </div>
+</div>

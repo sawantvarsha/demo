@@ -1,0 +1,224 @@
+<div class="container-fluid contain mainDiv ">
+
+    <div id="wrapper" [ngClass]="CancelRequest ? 'lightboxshow blotterbox':'lightboxhide blotterbox'" style="padding: 0em 0.4em;">
+        <div class="filter row" style="display: flex; justify-content: space-between;">
+            <div class="col-lg-4 col-md-6 col-sm-12 row resclass" style="display: flex;">
+                <div class="col-lg-2 col-sm-2 col-xs-3" style="margin: auto 0; color:#255caf;padding: 0;" *ngIf="workflowRecords.length !== undefined">
+                    {{filterLen}}/{{workflowLen}}
+                </div>
+                <div class="col-lg-2 col-sm-2 col-xs-3" style="margin: auto 0; color:#255caf;" *ngIf="workflowRecords === []">
+                    0/0
+                </div>
+                <div class="col-lg-5 col-sm-8 col-xs-10" style="padding: 0;">
+                    <select style="width: 130px ;margin-left: 20px;" (change)="filterdata()" [(ngModel)]="ccy"> 
+                        <option value="all"> All </option>
+                        <!-- <option value="GTC"> GTC </option>
+                        <option value="GTT"> GTT </option> -->
+                        <option value="{{c.PairCode}}" *ngFor="let c of ccyList">
+                            {{c.PairCode}}
+                        </option>
+                    </select>
+                    <!-- <img class="arrow" src="{{assetURL}}/downarrow.png" style="margin:0 0 0.2em -1.5em;" width="20"
+                        height="20" /> -->
+                </div>
+                <div class="col-5">
+                    <select [(ngModel)]="product" style="width:130px; margin-left: 20px;" (change)="filterdata()">
+                        <option value="all"> All </option>
+                        <option value="SPT">SPOT</option>
+                        <option value="TOD">TOD</option>
+                        <option value="TOM">TOM</option>
+                        <option value="FWD">Forward</option>
+                    </select>
+                </div>
+                <!-- <div class="col-lg-4 col-xs-12" style="padding: 0;">
+                    <select style="width: 93%;padding: 0;padding-left: 0.6em;" (change)="filterdata()"
+                        [(ngModel)]="status">
+                        <option value="all"> All </option>
+                        <option value="New"> New </option>
+                        <option value="Verified"> Verified </option>
+                        <option value="Pending Verify"> Pending Verify </option>
+                        <option value="Pending Cancel Verify"> Cancel Verify </option>
+                        <option value="Cancelled Trades"> Cancelled </option>
+                    </select>
+                    <img class="arrow" src="{{assetURL}}/downarrow.png" style="margin: 0 0 0.2em -1.5em;" width="20"
+                        height="20" />
+                </div> -->
+
+            </div>
+            <!-- <div class="col-5 row" style="padding-left: 0px;">
+                
+                    <label  style="margin: auto 0;padding: 0;margin-right: 10px;"> From </label>
+                    <mat-form-field style="position: absolute;z-index: -1;">
+                        <input matInput [matDatepicker]="picker2" class="picker" 
+                            (dateChange)="getDate($event,'From')">
+                        
+                        <mat-datepicker #picker2></mat-datepicker>
+                    </mat-form-field>
+                    <div class="select  dateclass" style="padding-top: 0.3em;height: 2.1em;margin: auto 0;margin-right: 10px;width: 25%;text-align: center;">
+                        <span>  {{fromDate}}  </span>
+                      </div>
+                    
+                    <div  style="margin: auto 0;margin-right: 20px;">
+                    <img src="{{assetURL}}/calendar.png" alt="" (click)="picker2.open()"
+                        style="height:1.5em;">
+                    </div>
+              
+                    <label  style="margin: auto 0; margin-right: 10px;"> To </label>
+                    <mat-form-field  style="position: absolute;z-index: -1;">
+                        <input matInput [matDatepicker]="picker11" class="picker"
+                            (dateChange)="getDate($event,'To')" >
+                        
+                        <mat-datepicker #picker11></mat-datepicker>
+                    </mat-form-field>
+                    <div class="select  dateclass" style="padding-top: 0.3em;height: 2.1em;margin: auto 0;margin-right: 10px;width: 25%;text-align: center;">
+                      <span>  {{toDate}}  </span>
+                    </div>
+                   
+                    <div style="margin: auto 0;margin-right: 10px;">
+                        <img src="{{assetURL}}/calendar.png" alt="" (click)="picker11.open()"
+                        style="height:1.5em;" >
+                    </div>
+                    
+                
+            </div> -->
+            <div class="col-lg-5 col-md-12 col-sm-12 row resclass fromtodate" style="padding: 0;margin-left: 0em; display: flex;">
+                <div class="col-lg-6 col-md-6 col-xs-12 row resclass" style="padding: 0; display: flex;">
+                    <label class="col-2" style="margin: auto 0;padding: 0;margin-right: 6px;"> From </label>
+                    <!-- <mat-form-field style="position: absolute;z-index: -1;">
+                        <input matInput [matDatepicker]="picker" class="picker" (dateChange)="getDate($event,'From')">
+                 
+                        <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                    <div class="select col-7 dateclass" style="padding-top: 0.3em;height: 2.1em;margin: auto 0;padding-left: 1em;">
+                        <span> {{fromDate}} </span>
+                    </div>
+                    <div class="col-2" style="margin: auto 0;padding: 0;padding-left: 4px;">
+                        <img src="{{assetURL}}/calendar.png" alt="" (click)="picker.open()" style="height:1.5em;">
+                    </div> -->
+                    <input type="date" class="input-dob" [attr.data-date]="fromDate"
+                    style="margin-top: 0px;" placeholder="dd-mm-yyyy"
+                    data-date-format="DD-MMM-YYYY" value="" min="1997-01-01" max="2030-12-31" [(ngModel)]="fromDate"
+                    tabindex="6" (change)="fromDate = selectDate(fromDate)">
+                </div>
+                <div class="col-lg-6 col-md-6 col-xs-12 row" style="padding: 0; display: flex;">
+                    <label class="col-2 tofilter"> To </label>
+                    <!-- <mat-form-field style="position: absolute;z-index: -1;">
+                        <input matInput [matDatepicker]="picker1" class="picker" (dateChange)="getDate($event,'To')">
+                       
+                        <mat-datepicker #picker1></mat-datepicker>
+                    </mat-form-field>
+                    <div class="select col-7 dateclass" style="padding-top: 0.3em;height: 2.1em;margin: auto 0;padding-left: 1em;">
+                        <span> {{toDate}} </span>
+                    </div>
+                    <div class="col-2" style="margin: auto 0;padding: 0;padding-left: 4px;">
+                        <img src="{{assetURL}}/calendar.png" alt="" (click)="picker1.open()" style="height:1.5em;">
+                    </div> -->
+                    <input type="date" class="input-dob" [attr.data-date]="toDate"
+                    style="margin-top: 0px;" placeholder="dd-mm-yyyy"
+                    data-date-format="DD-MMM-YYYY" value="" min="1997-01-01" max="2030-12-31" [(ngModel)]="toDate"
+                    tabindex="6" (change)="toDate = selectDate(toDate)">
+                </div>
+            </div>
+
+            <div class="col-lg-2 col-md-3 col-sm-6 row resclass pdfdiv" style="margin: auto 0;padding-left: 0px;margin-left: -1em; display: flex;">
+                <div class="col-6 download" (click)="captureScreen()">
+                    <img src="{{assetURL}}/pdf.png" alt="" class="imgclass">
+                    <label class="pdfcsv"> PDF </label>
+                </div>
+                <div class="col-6 download">
+                    <img src="{{assetURL}}/pdf.png" alt="" class="imgclass" (click)="exportexcel()">
+                    <label class="pdfcsv"> CSV </label>
+                </div>
+
+            </div>
+            <div class="col-lg-1 col-md-3 col-sm-4 row resclass" style="margin: auto 0;padding-left: 0px;margin-left: -0.5em;">
+                <div class="col-12 rfbtn" style="margin: auto 0;padding-left: 0px;">
+                    <button class="button" (click)="callWorkflow()"> Refresh </button>
+                </div>
+            </div>
+        </div>
+        <div class="test row" style="margin-left: 2%; margin-bottom: 1%; color: #8876e8;">
+            <span>{{validationMsg}}</span>
+        </div>
+        <div class="workflow">
+
+            <div id='contentToConvert1' class="table-responsive" style="font-size: 0.88em;">
+                <table class="table table-striped" id="excel-table">
+                    <tr>
+                        <th scope="col"> Transaction Date and Time </th>
+                        <th scope="col"> Trade ID </th>
+
+                        <th scope="col"> Product </th>
+                        <th scope="col"> Direction </th>
+                        <th scope="col"> Currency Pair</th>
+                        <th scope="col"> Billing Ccy </th>
+                        <th scope="col"> Billing Amt </th>
+                        <th scope="col"> Credit Ccy </th>
+                        <th scope="col"> Credit Amt </th>
+                        <th scope="col"> Rate </th>
+                        <th scope="col"> Value Date </th>
+                        <!-- <th scope="col"> Status </th> -->
+                        <!-- <th scope="col"> Cancel Trade</th> -->
+                    </tr>
+
+                    <tr *ngFor="let record of filteredWorflowRecords;let i =index;">
+                        <td style="text-align: center;">{{record.TranDateandTime}}</td>
+                        <td style="text-align: center;">{{record.OrderID}}</td>
+                        <td style="text-align: center;">{{record.Product}}</td>
+                        <td style="text-align: center;">{{record.Direction === 'B' ? 'Buy' : 'Sell'}}</td>
+                        <td style="text-align: center;">{{record.CurrencyPair}}</td>
+
+                        <td style="text-align: center;">{{record.BillingCurrency}}</td>
+                        <td style="text-align: right;" class="rightspace">{{this.commonfunction.FormatNumberwithFloat(record.Ccy1_Amount| number:'1.2-2')}}</td>
+                        <td style="text-align: center;">{{record.CreditCurrency}}</td>
+                        <td style="text-align: right;" class="rightspace">{{this.commonfunction.FormatNumberwithFloat(record.Ccy2_Amount| number:'1.2-2')}}</td>
+                        <td style="text-align: center;">{{record.Rate}}</td>
+                        <td style="text-align: center;">{{record.Value_Date}}</td>
+                        <!-- <td style="padding-left: 1%;text-align: center;"
+                            [ngStyle]="{'color': (record.Status === 'Cancelled Trades' ? '#e24242': (record.Status === 'Pending Verify' ? '#d8d82b': (record.Status === 'Verified' ? 'green':'#f5a514')))}">
+                            {{record.Status}}</td> -->
+                        <!-- [ngStyle]="{'color': (record.Status === 'N' ? '#d8d82b':'green')}" -->
+                        <!-- <td style="text-align: center;"> 
+                            <img *ngIf="record.Status !== 'Cancelled Trades'" src="{{assetURL}}/cancel_icon.png" alt=""
+                                (click)="cancelOrder(record.OrderID,i);"
+                                [ngStyle]="(cancelStatus) ? {'visibility': 'hidden','height':'1.5em'} : {'visibility': 'visible','height':'1.5em'}">
+                            <img *ngIf="loadingCancel && loadingCancelID===i" src="{{assetURL}}/loading_dots.gif" alt=""
+                                style="height: 2em;margin-left: -2em;float: right;">
+                            <img *ngIf="record.Status === 'Cancelled Trades'"
+                                src="{{assetURL}}/cancel_icon_disabled.png" alt=""
+                                [ngStyle]="(cancelStatus) ? {'visibility': 'hidden','height':'1.5em'} : {'visibility': 'visible','height':'1.5em'}">
+                        </td> -->
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div *ngIf="loading">
+            <img src="{{assetURL}}/loading_dots.gif" alt="" style="height: 2em;margin-left: 1em;">
+        </div>
+    </div>
+    <div id="" *ngIf="CancelRequest" [ngClass]="CancelRequest?'show':'hide'">
+
+        <div id="lightbox_area" class="col-12">
+            <span class="row header">Cancel Trade</span>
+            <div style="color: white;margin-top: -2.1em;float: right;" (click)="CancelRequest = false">X</div>
+            <div class="line"></div>
+            <div class="row" style="padding-top: 3%;">
+                <div class="col-12" style="text-align: center;">
+                    <span>Do you want to cancel trade?</span>
+                </div>
+            </div>
+            <div class="row" style="margin:5%;padding-bottom: 2%;">
+                <button class="col-3 select" style="margin-left: 20%;background-color: white;" (click)="approveCancel=true;approveRejectCancel();">Yes</button>
+                <div class="col-1"></div>
+                <button class="col-3 select" style="background-color: white;" (click)="approveCancel=false;approveRejectCancel();">No</button>
+            </div>
+            <!-- <p class="close" (click)= "CancelRequest=false"><b>X</b></p> -->
+            <div style="text-align: center;margin-top: -1.5em;padding-bottom: 0.5em;"> {{cancelPopupMsg}}
+                <img *ngIf="cancelPopupMsg==='Cancelling the trade.'" src="{{assetURL}}/loading_dots.gif " width="60px" height="60px">
+            </div>
+
+        </div>
+
+    </div>
+    <div id="overlay"></div>

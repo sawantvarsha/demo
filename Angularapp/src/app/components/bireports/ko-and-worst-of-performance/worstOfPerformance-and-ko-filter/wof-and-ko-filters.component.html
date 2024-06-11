@@ -1,0 +1,67 @@
+<!-- <div class="mtm-and-KO-filter-container" #screen>
+   
+    <div style="display: flex;justify-content: center;align-items: center;">
+        <div>
+            
+
+            <div style="color: grey;" class="filterTitle">KO DISTANCE (%)</div>
+            <div class="flexbox">
+                <input type="number" class="numberBox" [(ngModel)]="current_KO_StartValue" [min]="startKOValue"
+                    [max]="endKOValue" class="inputBox" (change)="binder()" step="0.01">
+                <input type="number" class="numberBox" onchange="binder(input1.value)" [(ngModel)]="current_KO_LastValue"
+                    [min]="startKOValue" [max]="endKOValue" class="inputBox" step="0.01" (change)="binder()">
+            </div>
+            <mat-slider [min]="startKOValue" [max]="endKOValue" class="slider" width="200px" step="0.01">
+                <input [(ngModel)]="current_KO_StartValue" matSliderStartThumb (valueChange)="binder()">
+                <input [(ngModel)]="current_KO_LastValue" matSliderEndThumb (valueChange)="binder()">
+            </mat-slider>
+          
+
+
+            <div class="filterTitle">Worst Of Underlying</div>
+            <mat-form-field>
+                <mat-select [(ngModel)]="selectedUnderlying" (valueChange)="sendSelectedUnderlying(selector1.value)"
+                    #selector1>
+                    <mat-option value="All">All</mat-option>
+                    <mat-option *ngFor="let wol of worOfUnderlingList;" [value]="wol">
+                        {{wol}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </div>
+</div> -->
+<div class="mtm-and-ko-filter-container">
+    <div style="display: flex;justify-content: center;align-items: center;margin-bottom: 70px;">
+        <div style="width:100%">
+
+            <div style=" font-family: 'Roboto';  font-size: 20px; padding-top: 20px;font-family: 'Roboto'; color: rgb(180, 180, 180);margin-bottom: 25px" class="filterTitle">
+                KO Distance (%)</div>
+                <div style="margin-top: 12px;" class="ko-number">
+                    <input type="number" class="knumber" [value]="current_KO_StartValue" [min]="startKOValue" [ngModel]="current_KO_StartValue"
+                        [max]="endKOValue" class="inputBox" (change)="binder($event)" step="0.01" name="input1">
+                </div>
+                <div style="margin-top: 12px;" class="ko-number second">
+                    <input type="number" class="knumber" [value]="current_KO_LastValue" [ngModel]="current_KO_LastValue"
+                        [min]="startKOValue" [max]="endKOValue" class="inputBox" step="0.01" (change)="binder($event)" name="input2">
+                </div>
+                <!-- <mat-slider [min]="startKOValue" [max]="endKOValue" class="slider" step="0.01">
+                    <input [(ngModel)]="current_KO_StartValue" matSliderStartThumb (valueChange)="binder()">
+                    <input [(ngModel)]="current_KO_LastValue" matSliderEndThumb (valueChange)="binder()">
+                </mat-slider> -->
+                    <ng-container [ngSwitch]="display">
+                        <ng-template [ngSwitchCase]="1"><ngx-slider class="ngx-ko-dist-slider" [(value)]="current_KO_StartValue" [(highValue)]="current_KO_LastValue" [options]="options"  (userChange)="sliderToInputBinder()"></ngx-slider ></ng-template>
+                        <ng-template [ngSwitchCase]="2"><ngx-slider class="ngx-ko-dist-slider" [(value)]="current_KO_StartValue" [(highValue)]="current_KO_LastValue" [options]="options"  (userChange)="sliderToInputBinder()"></ngx-slider ></ng-template>
+                    </ng-container>
+
+        <div class="filterTitle" style="font-family: 'Roboto'; font-size: 20px;font-family: 'Roboto'; color: rgb(180, 180, 180);">Worst Of Underlying</div>
+            <select [(ngModel)]="selectedUnderlying" (change)="sendSelectedUnderlying(selector1.value)"
+                #selector1>
+                <option value="All">All</option>
+                <option *ngFor="let wol of worOfUnderlingList;" [value]="wol">
+                    {{wol}}
+                </option>
+            </select>
+    </div>
+</div>
+</div>

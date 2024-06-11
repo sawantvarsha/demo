@@ -1,0 +1,19 @@
+<div class="neworderentryComponent">
+  <div class="page-title">Order Entry</div>
+  <div class="main-container">
+    <div class="content-container">
+      <div class="tabs-pages">
+        <div class="tabs" [ngClass]="{'tab-active': this.showLoanOrderEntry}" (click)="changeProduct('loan')">Loan</div>
+        <div class="tabs" [ngClass]="{'tab-active': this.showOverdraft}" (click)="changeProduct('overdraft')">Overdraft</div>
+
+      </div>
+      <div *ngIf="this.showLoanOrderEntry">
+        <app-loan-orderentry></app-loan-orderentry>
+      </div>
+      <div *ngIf="this.showOverdraft">
+        <app-overdraft></app-overdraft>
+      </div>
+
+    </div>
+  </div>
+</div>

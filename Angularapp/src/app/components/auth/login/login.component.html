@@ -1,0 +1,320 @@
+<!-- <div class="login-background"> -->
+<div class="glass-container">
+  <div class="flex-down">
+    <!-- FINIQ -->
+    <div class="logo-div" *ngIf="CompanyLogo === 'FinIQ'">
+      <div class="finiq-logo"></div>
+    </div>
+
+    <!-- SH CAPITAL -->
+    <div class="logo-div" *ngIf="CompanyLogo === 'SHC'">
+      <app-svg-icons
+        class="bluewater-logo"
+        [icon]="'blue-water'"
+        [fill]="'var(--active)'"
+        [width]="
+          'calc(175px + (220 - 175) * ((100vw - 1200px) / (1920 - 1200)))'
+        "
+        [height]="
+          'calc(100px + (120 - 100) * ((100vw - 1200px) / (1920 - 1200)))'
+        "
+      ></app-svg-icons>
+    </div>
+
+    <!-- GATEWAY MARKETS -->
+    <div class="logo-div" *ngIf="CompanyLogo === 'GWM'">
+      <app-svg-icons
+        class="gateway-logo"
+        [icon]="'gateway-markets'"
+        [width]="
+          'calc(250px + (310 - 250) * ((100vw - 1200px) / (1920 - 1200)))'
+        "
+        [height]="
+          'calc(100px + (120 - 100) * ((100vw - 1200px) / (1920 - 1200)))'
+        "
+      ></app-svg-icons>
+    </div>
+
+    <!-- LOGIN -->
+    <form action="javascript:void(0);">
+      <div
+        class="login-grid"
+        [ngClass]="{ 'forgot-password-grid': isForgotpassword }"
+        *ngIf="!twoStepVerification"
+      >
+        <div class="title" *ngIf="!isForgotpassword">
+          <app-svg-icons
+            class="back-button"
+            [icon]="'back-button'"
+            [width]="'40'"
+            [height]="'40'"
+            [fill]="'var(--white)'"
+            [routerLink]="['/welcome']"
+          ></app-svg-icons>
+          <!-- <div class="back-button" [routerLink]="['/welcome']"></div> -->
+          <p
+            style="margin: 0; color: var(--white)"
+            [innerHTML]="portalHeader | translate"
+          ></p>
+        </div>
+        <div class="title" *ngIf="isForgotpassword">
+          <app-svg-icons
+            class="back-button"
+            [icon]="'back-button'"
+            [width]="'40'"
+            [height]="'40'"
+            [fill]="'var(--white)'"
+            (click)="backtologin()"
+          ></app-svg-icons>
+          <!-- <div class="back-button" (click)="backtologin()"></div> -->
+          <p style="margin: 0">Reset Password</p>
+        </div>
+
+        <div class="username" style="text-align: left">
+          <label>{{ "Username" | translate }}</label>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Username"
+            required="required"
+            autocomplete="off"
+            [ngClass]="{ 'input-error': isError }"
+            [(ngModel)]="username"
+            [ngModelOptions]="{ standalone: true }"
+            (focus)="isError = false; password = ''; validateInputs()"
+            (blur)="validateInputs()"
+            (change)="validateInputs()"
+            (keydown)="handleKeyboardEvent($event)"
+          />
+        </div>
+        <div
+          class="password"
+          style="text-align: left"
+          *ngIf="!isForgotpassword"
+        >
+          <label>{{ "Password" | translate }}</label>
+          <input
+            [type]="isPasswordText ? 'text' : 'password'"
+            class="form-control password"
+            placeholder="Password"
+            required="required"
+            autocomplete="off"
+            [ngClass]="{ 'input-error': isError }"
+            [(ngModel)]="password"
+            [ngModelOptions]="{ standalone: true }"
+            (focus)="isError = false"
+            (keydown)="handleKeyboardEvent($event)"
+          />
+          <div class="show-password" (click)="isPasswordText = !isPasswordText">
+            <span
+              ><img
+                *ngIf="isPasswordText"
+                [src]="isProd ? 'assets/eye.png' : '../../../assets/eye.png'"
+                style="width: 20px; height: 20px"
+                alt=""
+            /></span>
+            <span
+              ><img
+                *ngIf="!isPasswordText"
+                [src]="
+                  isProd
+                    ? 'assets/visibility.png'
+                    : '../../../assets/visibility.png'
+                "
+                style="width: 20px; height: 20px"
+                alt=""
+            /></span>
+          </div>
+        </div>
+        <div class="form-group" *ngIf="isForgotpassword">
+          <p
+            style="
+              margin-top: 0px;
+              margin-bottom: 10px !important;
+              color: white;
+              text-align: center;
+            "
+          >
+            Or
+          </p>
+          <label>Email</label>
+          <input
+            type="text"
+            class="form-control username"
+            placeholder="Email"
+            required="required"
+            autocomplete="off"
+            [ngClass]="{ 'input-error': isError }"
+            [(ngModel)]="email"
+            [ngModelOptions]="{ standalone: true }"
+          />
+        </div>
+        <div class="actions" *ngIf="!isForgotpassword">
+          <div>
+            <input type="checkbox" />
+            <label style="float: left; font-size: 14px">{{
+              "Remember Me" | translate
+            }}</label>
+          </div>
+
+          <label
+            class="forgot-password"
+            style="float: right; font-size: 14px"
+            (click)="forgotPassword()"
+            *ngIf="!isForgotpassword"
+          >
+            {{ "Forgot Password" | translate }}?</label
+          >
+        </div>
+        <div class="login-button" style="text-align: left">
+          <input
+            class="button"
+            type="submit"
+            [value]="'Login' | translate"
+            (click)="checkForTwoStepVerifation()"
+            *ngIf="!isForgotpassword"
+          />
+          <!-- <input class="button" type="submit" value="Login" (click)="login();sendOTP();" *ngIf="!isForgotpassword"> -->
+          <input
+            class="button"
+            type="submit"
+            [value]="'Submit' | translate"
+            (click)="changePassword()"
+            *ngIf="isForgotpassword"
+          />
+        </div>
+
+        <div class="register">
+          <label *ngIf="isRegisterEnabled"
+            >{{ "Don't have an account" | translate }}?</label
+          >
+          <label
+            class="register-now"
+            (click)="firstCustomerRegistration(); register()"
+            [routerLink]="['/customerregsetup/1/FCL']"
+            *ngIf="isRegisterEnabled"
+            >{{ "Register Now" | translate }}</label
+          >
+        </div>
+        <div class="message">
+          <p class="error-message" *ngIf="isError" [innerHTML]="ErrorMsg"></p>
+        </div>
+      </div>
+    </form>
+
+    <!-- OTP VERIFICATION -->
+    <div
+      class="login-grid"
+      [ngClass]="{ 'forgot-password-grid': isForgotpassword }"
+      *ngIf="twoStepVerification"
+    >
+      <div class="title">
+        <div class="back-button" (click)="cancelOTPVerification()"></div>
+        <p style="margin: 0">OTP Verification</p>
+      </div>
+      <div class="subtitle">
+        <p>
+          We have sent you an Email with OTP Code to your registered Email
+          Address
+        </p>
+      </div>
+      <form
+        method="get"
+        class="digit-group"
+        data-group-name="digits"
+        data-autosubmit="false"
+        autocomplete="off"
+      >
+        <input
+          type="text"
+          [id]="'digit-' + (i + 1)"
+          [name]="'digit-' + (i + 1)"
+          [attr.data-next]="'digit-' + (i + 2)"
+          [attr.data-previous]="'digit-' + i"
+          *ngFor="let dgt of otpDigitsArr; let i = index"
+          maxlength="1"
+          pattern="[0-9]"
+          (keyup)="goToNext()"
+        />
+        <!-- <input type="text" id="digit-1" name="digit-1" data-next="digit-2"/>
+                <input type="text" id="digit-2" name="digit-2" data-next="digit-3" data-previous="digit-1" />
+                <input type="text" id="digit-3" name="digit-3" data-next="digit-4" data-previous="digit-2" />
+                <input type="text" id="digit-4" name="digit-4" data-previous="digit-3" /> -->
+      </form>
+      <div class="register">
+        <label
+          *ngIf="
+            userType === 'client' ||
+            userType === 'NEWUSER' ||
+            userType === 'CLIENT'
+          "
+          >Didn't receive the OTP?</label
+        >
+        <label
+          [ngClass]="
+            OTPValidityTimer === 0
+              ? { 'register-now': true }
+              : { disabled: true }
+          "
+          (click)="generateOTP()"
+          >Resend Code</label
+        >
+        <label class="register-now" *ngIf="OTPValidityTimer !== 0"
+          >in {{ OTPValidityTimer }}</label
+        >
+      </div>
+      <div class="login-button" style="text-align: left">
+        <input
+          class="button"
+          type="submit"
+          value="Verify OTP"
+          (click)="verifyOTP()"
+        />
+      </div>
+      <div>
+        <p class="error-message" *ngIf="isError" [innerHTML]="ErrorMsg"></p>
+      </div>
+    </div>
+
+    <!-- SH CAPITAL -->
+    <div
+      class="logos-div"
+      style="text-align: center"
+      *ngIf="CompanyLogo === 'SHC'"
+    >
+      <div style="display: flex; justify-content: flex-end">
+        <div class="stanhope-logo"></div>
+      </div>
+      <div class="vl"></div>
+      <div>
+        <p class="website-link">
+          {{ "This platform is powered by" | translate }}
+        </p>
+        <div class="finiq-logo-bottom"></div>
+      </div>
+    </div>
+
+    <!-- GATEWAY MARKETS -->
+    <div
+      class="logos-div-gateway"
+      style="text-align: center"
+      *ngIf="CompanyLogo === 'GWM'"
+    >
+      <div>
+        <p class="website-link">
+          {{ "This platform is powered by" | translate }}
+        </p>
+        <div class="finiq-logo-bottom"></div>
+      </div>
+    </div>
+
+    <div class="copyright">
+      <p>
+        {{
+          "2022 © FinIQ Consulting Pte. Ltd. All Rights Reserved" | translate
+        }}.
+      </p>
+    </div>
+  </div>
+</div>
+<!-- </div> -->

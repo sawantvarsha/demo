@@ -1,0 +1,372 @@
+<div class="page-title module">
+  <div>Perform KYC</div>
+</div>
+<div class="performKYCbtn">
+  <button
+    class="button"
+    (click)="
+      this.hideOrShowKYCVerification === true
+        ? (this.hideOrShowKYCVerification = false)
+        : (this.hideOrShowKYCVerification = true)
+    "
+  >
+    Perform KYC
+  </button>
+</div>
+
+<div class="container">
+  <div class="sub-container">
+    <div class="page-grid">
+      <ng-template
+        ngFor
+        let-headerName
+        [ngForOf]="SectionHeaders"
+        let-i="index"
+      >
+        <div class="page-section">
+          <!-- <span class="section-header">{{headerName}}</span> -->
+          <div class="section-container-4" *ngIf="headerName === 'Login Info'">
+            <ng-container *ngFor="let input of MockForm; let i = index">
+              <ng-container
+                [ngSwitch]="input.controlType"
+                *ngIf="input.sectionName === headerName"
+              >
+                <ng-template [ngSwitchCase]="'label'">
+                  <div
+                    class="section-container-4-elements"
+                    *ngIf="input.controlName !== 'Password'"
+                  >
+                    <label class="label"> {{ input.controlName }}</label>
+                    <!-- Values label -->
+                    <label
+                      class="label_value"
+                      *ngIf="
+                        input.controlName !== 'Last KYC Done At' &&
+                        input.controlName !== 'Next KYC Due On' &&
+                        input.controlName !== 'KYC Status'
+                      "
+                    >
+                      {{ input.selectedValue || "-" }}</label
+                    >
+                    <!-- Normal Values -->
+                    <label
+                      class="label_value"
+                      *ngIf="
+                        input.controlName === 'Last KYC Done At' ||
+                        input.controlName === 'Next KYC Due On'
+                      "
+                    >
+                      {{
+                        input.selectedValue | date: "dd-MMM-yyyy" || "-"
+                      }}</label
+                    >
+                    <!-- Last login only -->
+                    <label
+                      class="label_value"
+                      style="color: var(--green)"
+                      *ngIf="
+                        input.controlName === 'KYC Status' &&
+                        input.selectedValue === 'Valid'
+                      "
+                    >
+                      {{ input.selectedValue || "-" }}</label
+                    >
+                    <!-- KYC status -->
+                    <label
+                      class="label_value"
+                      style="color: var(--red)"
+                      *ngIf="
+                        input.controlName === 'KYC Status' &&
+                        input.selectedValue === 'Invalid'
+                      "
+                    >
+                      {{ input.selectedValue || "-" }}</label
+                    >
+                    <!-- KYC status -->
+                  </div>
+                  <div
+                    class="section-container-4-elements"
+                    *ngIf="input.controlName === 'Password'"
+                  >
+                    <label class="label"> {{ input.controlName }}</label>
+                    <div class="section-container-4-password">
+                      <div
+                        style="
+                          display: flex;
+                          align-items: center;
+                          padding-top: 8px;
+                        "
+                      >
+                        <label class="label_value">
+                          {{ input.selectedValue || "-" }}</label
+                        >
+                      </div>
+                      <!-- <app-svg-icons [icon]="'cart-icon-black'" [width]="'16'" [height]="'16'"></app-svg-icons> -->
+                      <app-svg-icons
+                        style="display: flex; align-items: center"
+                        [icon]="'edit-icon'"
+                        [width]="'16'"
+                        [height]="'16'"
+                        (click)="fnpasswordOverride()"
+                      >
+                      </app-svg-icons>
+                      <!-- <button *ngIf="input.controlName === 'Password' && !MyProfileMode"
+                                            class="button chngPassword" value="Change Password" (click)="passwordOverride()"
+                                            routerLinkActive="router-link-active">
+                                            Change
+                                        </button> -->
+                    </div>
+                  </div>
+                </ng-template>
+              </ng-container>
+            </ng-container>
+          </div>
+          <div class="section-container-4" *ngIf="headerName !== 'Login Info'">
+            <ng-container *ngFor="let input of MockForm; let i = index">
+              <ng-container
+                [ngSwitch]="input.controlType"
+                *ngIf="input.sectionName === headerName"
+              >
+                <ng-template [ngSwitchCase]="'label'">
+                  <div class="section-container-4-elements">
+                    <label class="label"> {{ input.controlName }}</label>
+                    <!-- Values label -->
+                    <label
+                      class="label_value"
+                      *ngIf="
+                        input.controlName !== 'Last KYC Done At' &&
+                        input.controlName !== 'Next KYC Due On' &&
+                        input.controlName !== 'KYC Status'
+                      "
+                    >
+                      {{ input.selectedValue || "-" }}</label
+                    >
+                    <!-- Normal Values -->
+                    <label
+                      class="label_value"
+                      *ngIf="
+                        input.controlName === 'Last KYC Done At' ||
+                        input.controlName === 'Next KYC Due On'
+                      "
+                    >
+                      {{
+                        input.selectedValue | date: "dd-MMM-yyyy" || "-"
+                      }}</label
+                    >
+                    <!-- Last login only -->
+                    <label
+                      class="label_value"
+                      style="color: var(--green)"
+                      *ngIf="
+                        input.controlName === 'KYC Status' &&
+                        input.selectedValue === 'Valid'
+                      "
+                    >
+                      {{ input.selectedValue || "-" }}</label
+                    >
+                    <!-- KYC status -->
+                    <label
+                      class="label_value"
+                      style="color: var(--red)"
+                      *ngIf="
+                        input.controlName === 'KYC Status' &&
+                        input.selectedValue === 'Invalid'
+                      "
+                    >
+                      {{ input.selectedValue || "-" }}</label
+                    >
+                    <!-- KYC status -->
+                    <button
+                      *ngIf="input.controlName === 'Password' && !MyProfileMode"
+                      class="button chngPassword"
+                      value="Change Password"
+                      (click)="fnpasswordOverride()"
+                      routerLinkActive="router-link-active"
+                    >
+                      Change Password
+                    </button>
+                  </div>
+                </ng-template>
+              </ng-container>
+            </ng-container>
+          </div>
+        </div>
+      </ng-template>
+    </div>
+
+    <!-- <label class="success-notification">{{NotificationMes}}</label> -->
+
+    <div *ngIf="ErrorMsg" id="snackbar" style="line-height: 45px">
+      <div>{{ this.ErrorMsg }}</div>
+    </div>
+  </div>
+  <div class="sub-container" *ngIf="!this.hideOrShowKYCVerification">
+    <div class="PerformKYCOverlay">
+      <div class="left-panel">
+        <label class="header">KYC Verification </label>
+        <label class="suggestions"
+          >To verify your account, we'll need a photo of you identity
+          document.</label
+        >
+        <label class="section-header">Required Documents</label>
+        <label class="value-label">Kind of Document (Choose any one)</label>
+        <div class="required-docs">
+          <div
+            class="doc"
+            [ngClass]="{ active: SelectedDoc === item }"
+            *ngFor="let item of RequiredDocs"
+            (click)="SelectedDoc = item"
+          >
+            <label>{{ item }}</label>
+          </div>
+        </div>
+        <div [ngSwitch]="SelectedDoc">
+          <div *ngSwitchCase="'Pan Card'" class="required-docs-details">
+            <label class="value-label">{{ SelectedDoc }} Number </label>
+            <input
+              type="text"
+              [(ngModel)]="PANCardNumber"
+              (change)="fnResetKYCVerfication()"
+              placeholder="Enter {{ SelectedDoc }} Number"
+            />
+            <label class="value-label">{{ SelectedDoc }} Name </label>
+            <input
+              type="text"
+              [(ngModel)]="PANCardName"
+              (change)="fnResetKYCVerfication()"
+              placeholder="Enter {{ SelectedDoc }} Name"
+            />
+          </div>
+          <div *ngSwitchCase="'Aadhar Card'" class="required-docs-details">
+            <label class="value-label">{{ SelectedDoc }} Number </label>
+            <input
+              type="text"
+              [(ngModel)]="AadharCardNumber"
+              (change)="fnResetKYCVerfication()"
+              placeholder="Enter {{ SelectedDoc }} Number"
+            />
+            <!-- <label class="value-label">{{SelectedDoc}} Name </label>
+                        <input type="text" [(ngModel)]='AadharCardName' (change)='fnResetKYCVerfication();'
+                            placeholder="Enter {{SelectedDoc}} Name" /> -->
+          </div>
+        </div>
+
+        <label class="section-header">Upload {{ SelectedDoc }}</label>
+
+        <ngx-file-drop
+          id="iddropfilesdiv"
+          style="border: 3px ​dotted var(--grey) !important"
+          dropZoneLabel="Drop files here"
+          (onFileDrop)="fndropped($event)"
+          (onFileOver)="fnfileOver($event)"
+          (onFileLeave)="fnfileLeave($event)"
+        >
+          <ng-template
+            id="iddropfilesinnerdiv"
+            #dropfilesdiv
+            ngx-file-drop-content-tmp
+            let-openFileSelector="openFileSelector"
+          >
+            <img
+              *ngIf="files.length === 0"
+              style="cursor: pointer"
+              [src]="
+                isProd
+                  ? 'assets/file-upload.png'
+                  : '../../../../../assets/file-upload.png'
+              "
+            />
+            <div class="ngx-file-drop">
+              <label *ngIf="files.length === 0" style="margin-right: 8px"
+                >Drop your file to upload or</label
+              >
+              <label
+                style="color: var(--active); cursor: pointer"
+                (click)="openFileSelector()"
+                >Browse</label
+              >
+            </div>
+            <div class="uploaded-files" *ngIf="files.length > 0">
+              <div
+                class="selected-files-to-upload"
+                *ngFor="let file of files; let i = index"
+              >
+                <label>{{ file.relativePath }}</label>
+                <div class="cancel-icon-div" *ngIf="!file.isUploaded">
+                  <app-svg-icons
+                    (click)="fnRemoveSelectedFile(i)"
+                    [icon]="'cancel-icon'"
+                    [width]="'10'"
+                    [height]="'10'"
+                  ></app-svg-icons>
+                </div>
+                <div class="cancel-icon-div" *ngIf="file.isUploaded">
+                  <app-svg-icons
+                    [icon]="'checked-icon'"
+                    [width]="'20'"
+                    [height]="'20'"
+                  ></app-svg-icons>
+                </div>
+              </div>
+            </div>
+            <div class="uplaod-btn-section" *ngIf="files.length > 0">
+              <img
+                style="cursor: pointer"
+                [src]="
+                  isProd
+                    ? 'assets/file-upload.png'
+                    : '../../../../../assets/file-upload.png'
+                "
+              />
+              <label style="color: var(--active); cursor: pointer"
+                >Upload</label
+              >
+            </div>
+          </ng-template>
+        </ngx-file-drop>
+
+        <div>
+          <label class="value-label" style="padding-left: 5px"
+            >Maximum file size of Image 5MB (PNG, JPG, JPEG)</label
+          >
+        </div>
+        <div class="button-panel">
+          <button
+            class="button cancel-btn"
+            (click)="fnSubmitPerformKYC()"
+            [disabled]="files.length === 0"
+          >
+            Submit
+          </button>
+          <button
+            class="button cancel-btn"
+            (click)="this.hideOrShowKYCVerification = true"
+          >
+            Cancel
+          </button>
+          <label class="success-notification" *ngIf="isPerformKYC">{{
+            NotificationMes
+          }}</label>
+          <label class="failure-notification" *ngIf="!isPerformKYC">{{
+            NotificationMes
+          }}</label>
+        </div>
+      </div>
+
+      <div class="right-panel">
+        <img [src]="isProd ? 'assets/kyc.png' : '../../../../assets/kyc.png'" />
+      </div>
+      <!-- <div class="close-icon-panel">
+                <img class="closeBtn" width="20px" height="20px" (click)="isPerformKYC = false;" [src]="isProd ? 'assets/close.png' : '../../../../../assets/close.png'">
+            </div> -->
+    </div>
+  </div>
+</div>
+
+<div class="overlay" *ngIf="isChangePassword">
+  <app-client-password-override
+    (cancelPasswordOverride)="fnoverrideCancelled()"
+    IUSERID="DJ"
+  >
+  </app-client-password-override>
+</div>

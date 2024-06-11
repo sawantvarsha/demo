@@ -1,0 +1,1143 @@
+.FullScreen-container{
+    // grid-template-columns: 60vw auto !important;
+    grid-template-columns: 57vw auto !important;
+   
+    
+    .FXD-sub-container{
+        
+        .FXD-row-PBOE{
+            .FXD-col-buttons{
+                .button{
+                    // width: 190px;
+                    width: 205px;
+                }
+                .buttonRM_IA{
+                    // width: 159px;
+                    width: 131px !important;
+                }
+            }
+        }
+    }
+}
+
+
+.sub-charts{
+    min-width:25em;
+}
+
+
+
+input[type="date"]{
+    width:100%;
+}
+
+// Added by Urmila A | LGTGTWINT-918 | 10-Jan-23 | start
+.loader-center{
+    top: 5.2% !important;
+    .multi-ripple{
+        position: absolute;
+        // top: 34% !important;
+        top: 27% !important; //modified by Urmila A | 6-Nov-23
+    }
+}
+// Added by Urmila A | LGTGTWINT-918 | 10-Jan-23 | start
+
+// UI Responsiveness CSS added by Urmila Ahire | 14-Nov-22 | Start
+
+//Modified on 6-Jan-23, by Rohit T | start
+@media screen and (min-width: 1600px) and (max-width: 1900px) {
+    .FullScreen-container .FXD-sub-container .FXD-ROWS-COL-4 {
+        grid-template-columns: 150px 1fr 150px 1fr;
+        grid-column-gap: 25px;
+        margin-right: 12px;
+    }
+    .FullScreen-container .FXD-row-PBOE .FXD-col-buttons .button{ //Urmila A | 12-Jan-23 | LGTGTWINT-893
+        width: 189px !important;
+    }
+    .FullScreen-container .FXD-row-PBOE .FXD-col-buttons .buttonRoutedDeal { // Added by Urmila A | 17-Jan-23  | LGTCLI-240
+        width: 173px !important;
+    } 
+    // .FullScreen-container .FXD-row-PBOE .FXD-col-buttons .buttonFXRoutedDeal { //Urmila A | 1-Feb-23 | LGTCLI-284
+    //     width: 152px !important; 
+    // }
+    .FXD-sub-charts-section{ // Added by Urmila A | 17-Jan-23  | LGTCLI-240
+        grid-template-rows: 30px auto auto !important;
+    }  
+}
+
+@media screen and (min-width: 1600px) and (max-width: 1700px) {//Urmila A | 2-Feb-23 | LGTCLI-284
+    .FullScreen-container .FXD-row-PBOE .FXD-col-buttons .buttonFXRoutedDeal { 
+        width: 142px !important; 
+    }
+    .FullScreen-container  .FXD-row-PBOE .FXD-col-buttons .buttonRM_IA { //Urmila A , LGTGTWINT-893 | 12-Jan-23
+        width: 173px !important;
+    }
+    .FXD-sub-charts-section .remarkfield textarea { //Urmila A | LGTGTWINT-1569 | 1-Mar-23
+        max-width: 280px !important;
+    }
+}
+@media screen and (min-width: 1700px) and (max-width: 1900px) {//Urmila A | 2-Feb-23 | LGTCLI-284
+    .FullScreen-container .FXD-row-PBOE .FXD-col-buttons .buttonFXRoutedDeal { 
+        width: 150px !important; 
+    }
+    .FullScreen-container  .FXD-row-PBOE .FXD-col-buttons .buttonRM_IA { //Urmila A , LGTGTWINT-893 | 12-Jan-23
+        width: 184px !important;
+    }
+    .FXD-sub-charts-section .remarkfield textarea { //Urmila A | LGTGTWINT-1569 | 1-Mar-23
+        max-width: 365px !important;
+    }
+}
+@media screen and (min-width: 1400px) and (max-width: 1600px) {
+    .FullScreen-container .FXD-sub-container .FXD-ROWS-COL-4 {
+        grid-template-columns: 150px 1fr 150px 1fr;
+        grid-column-gap: 25px;
+        margin-right: 12px;
+    }
+
+    .FullScreen-container {
+        grid-template-columns: 2fr 0.8fr !important;
+        grid-column-gap: var(--gap);
+    }
+
+    .FullScreen-container .FXD-row-PBOE .FXD-col-buttons .button{ //Urmila A | 12-Jan-23 | LGTGTWINT-893
+        width: 165px !important;
+    }
+    // .FullScreen-container .FXD-sub-container .FXD-row-PBOE .FXD-col-buttons .button {
+    //     width: 150px !important;
+    // }
+    // .FullScreen-container .FXD-row-PBOE .FXD-col-buttons .buttonRM_IA {
+    //     width: 131px !important;
+    // }
+    .FullScreen-container .FXD-row-PBOE .FXD-col-buttons .buttonRoutedDeal { // Added by Urmila A | 17-Jan-23  | LGTCLI-240
+        // width: 155px !important;
+        width: 147px !important; //Urmila A | 1-Feb-23 | LGTCLI-284
+    }
+    // .FullScreen-container .FXD-row-PBOE .FXD-col-buttons .buttonFXRoutedDeal { //Urmila A | 1-Feb-23 | LGTCLI-284
+    //     width: 122px !important; 
+    // } 
+    .FXD-sub-charts-section{ // Added by Urmila A | 17-Jan-23  | LGTCLI-240
+        grid-template-rows: 30px auto auto !important;
+    }  
+
+    .FXD-sub-charts-section .contractsummarytxt {
+        font-size: 13px;
+    }
+
+    .FullScreen-container .FXD-sub-container label {
+        font-size: 13px;
+    }
+    .FXD-sub-charts-section {
+        min-width: 17em;
+    }
+    .FXDorderPopup-overlay{ //Added by Urmila A  | 17-Jan-23 | LGTCLI-261
+        bottom: -206px !important;
+    }
+    .FXDorderPopup-overlay .OrderContainer{ //Added by Urmila A  | 17-Jan-23 | LGTCLI-261
+        top: 40% !important; 
+    }
+
+    .FXD-sub-charts-section .remarkfield textarea { //Urmila A | LGTGTWINT-1569 | 1-Mar-23
+        max-width: 250px !important;
+    }
+}
+
+@media screen and (min-width: 1400px) and (max-width: 1500px) {  //Urmila A | 2-Feb-23 | LGTCLI-284
+    .FullScreen-container .FXD-row-PBOE .FXD-col-buttons .buttonFXRoutedDeal {
+        width: 120px !important; 
+    } 
+    .FullScreen-container .FXD-row-PBOE .FXD-col-buttons .buttonRM_IA {
+        width: 144px  !important;
+    }
+    .FXD-sub-charts-section .remarkfield textarea { //Urmila A | LGTGTWINT-1569 | 2-Mar-23
+        max-width: 209px !important;
+    }
+}
+@media screen and (min-width: 1500px) and (max-width: 1600px) { //Urmila A | 2-Feb-23 | LGTCLI-284
+    .FullScreen-container .FXD-row-PBOE .FXD-col-buttons .buttonFXRoutedDeal { 
+        width: 131px !important; 
+    } 
+    .FullScreen-container .FXD-row-PBOE .FXD-col-buttons .buttonRM_IA {
+        width: 160px  !important;
+    }
+}
+
+//Urmila A | LGTCLI-261 | 30-Jan-23
+@media screen and (min-width: 900px) and (max-width: 1200px){
+    .FXDorderPopup-overlay{
+        bottom: -150px !important;
+    }
+} 
+
+//end  
+//Laptop screen
+@media screen and (min-width: 1200px) and (max-width: 1400px) {
+    .FullScreen-container {
+        // grid-template-columns: auto auto !important;
+        grid-template-columns: 55vw auto !important;
+        grid-column-gap: var(--gap);
+    }
+ 
+    //Added by Urmila A | 10-Jan-23 |  start | LGTGTWINT-897
+    .FullScreen-container  .FXD-row-PBOE .FXD-col-buttons .button{
+        width: 160px !important;
+    }
+    .FullScreen-container  .FXD-row-PBOE .FXD-col-buttons .buttonRM_IA{
+        width: 131px !important;
+    }
+    .FullScreen-container .FXD-row-PBOE .FXD-col-buttons .buttonRoutedDeal { //Urmila A | 1-Feb-23 | LGTCLI-284
+        width: 131px !important; 
+    }
+    .FullScreen-container .FXD-row-PBOE .FXD-col-buttons .buttonFXRoutedDeal { //Urmila A | 1-Feb-23 | LGTCLI-284
+         // width: 101px !important; 
+         width: 141px !important; 
+    }
+    .FXD-sub-charts-section{
+        grid-template-rows: 30px 420px auto !important; // Modified by LalitG@14May2024 || HSBCFXEINT-98
+    }  
+    //Added by Urmila A | 10-Jan-23 | end |LGTGTWINT-897
+
+    // .FullScreen-container .FXD-sub-container .FXD-row-PBOE .FXD-col-buttons .button {
+    //     width: 150px !important;
+    // }
+    // .FullScreen-container .FXD-sub-container .FXD-row-PBOE .FXD-col-buttons .buttonRM_IA {
+    //     width: 131px !important;
+    // }
+
+    .FXD-sub-charts-section .contractsummarytxt {
+        font-size: 12px;
+    }
+
+    
+    .FullScreen-container .FXD-sub-container label {
+        font-size: 12px;
+    }
+    
+    .cards-section .card{
+        width: -webkit-fill-available;
+        min-width: auto;
+    }
+    .FullScreen-container .FXD-sub-container .FXD-ROWS-COL-4 {
+        grid-template-columns: 95px 1fr 95px 1fr;
+        grid-column-gap: 10px;
+        margin-right: 12px;
+    }
+    .FXD-sub-charts-section {
+        min-width: 15em;
+        .remarkfield textarea{  //Added by Urmila A | 9-Jan-23 | LGTGTWINT-890
+                height: 32px;
+                width: 121px;
+                max-width: 150px !important; //Urmila A | LGTGTWINT-1569 | 1-Mar-23            
+        }
+        .remarkfield .highlight{ //Added by Urmila A | 10-Jan-23 | LGTGTWINT-893
+            font-size: 13px !important;
+        }
+    }
+    .loader-center{ //Added by Urmila A | LGTGTWINT-918 | 10-Jan-23 
+        top: 8.9% !important;
+    }
+    .loader-center[name="globalLoader"]{ //Added by Urmila A | LGTGTWINT-918 | 10-Jan-23 
+        .multi-ripple{
+            top: 20% !important;
+        }
+    }
+    .FXDorderPopup-overlay{ //Added by Urmila A  | 10-Jan-23 
+        // bottom: -455px ;
+        bottom: -350px ;
+    }
+    .loader-center[name="priceloader"]{ //Added by Urmila A | LGTGTWINT-918 | 14-Feb-23 
+        .multi-ripple{
+            top: 24% !important;
+        }
+    }
+    .button[name="PriceCancel"]{ //Added by Urmila A | LGTGTWINT-918 | 14-Feb-23
+        margin-top: -335px !important;
+    }
+    .FullScreen-container .FXD-sub-container label[name="FXDIBPremComment"]{ //Urmila A | 20-feb-23
+        display: flex;
+        flex-direction: column !important;
+        align-items: baseline !important;
+    }
+   
+}
+//Modified on 6-Jan-23, by Rohit T | end
+// UI Responsiveness CSS added by Urmila Ahire | 14-Nov-22 | End
+
+
+// START - HSBCFXEINT-7 | UI issues | Chaitanya M  | 17 Nov 2023
+.button {
+    color: var(--btn-text) !important;
+    cursor: pointer;
+    height: var(--input-height);
+    // width: 100px;
+    width: 108px; //Added by Urmila A | 6-Sep-22
+    // border: none;
+    background-color: var(--btn-bg);
+    border: var(--btn-bg);
+    color: var(--btn-text);
+    border-radius: 5px;
+    text-align: center;
+    box-shadow: var(--neumorphic-up);
+}
+.buttonRM_IA {
+    color: var(--btn-text) !important;
+    cursor: pointer;
+    height: var(--input-height);
+    // width: 100px;
+    width: 172px; //Added by Urmila A | 6-Sep-22
+    // border: none;
+    background-color: var(--btn-bg);
+    border: var(--btn-bg);
+    color: var(--btn-text);
+    border-radius: 5px;
+    text-align: center;
+    box-shadow: var(--neumorphic-up);
+}
+
+.buttonRoutedDeal {
+    color: var(--btn-text) !important;
+    cursor: pointer;
+    height: var(--input-height);
+    // width: 100px;
+    width: 172px;
+    // border: none;
+    background-color: var(--btn-bg);
+    border: var(--btn-bg);
+    color: var(--btn-text);
+    border-radius: 5px;
+    text-align: center;
+    box-shadow: var(--neumorphic-up);
+}
+
+.buttonFXRoutedDeal {
+    color: var(--btn-text) !important;
+    cursor: pointer;
+    height: var(--input-height);
+    // width: 100px;
+    width: 172px;
+    // border: none;
+    background-color: var(--btn-bg);
+    border: var(--btn-bg);
+    color: var(--btn-text);
+    border-radius: 5px;
+    text-align: center;
+    box-shadow: var(--neumorphic-up);
+}
+
+
+
+.button:hover {
+    // font-weight: 500;
+    box-shadow: var(--box-shadow);
+    background-color: var(--btn-hover-bg);
+    color: var(--heading-label) !important;
+    transform: translateY(-1px);
+    // box-shadow: 0px 2px 7px rgba(136, 136, 136, 0.4);
+}
+
+.button:focus {
+    box-shadow: var(--box-shadow);
+    background-color: var(--btn-hover-bg);
+    color: var(--btn-hover-text);
+}
+
+.button:focus {
+    box-shadow: var(--neumorphic-down);
+    background-color: var(--btn-hover-bg);
+    color: var(--btn-hover-text);
+}
+
+.FullScreen-container {
+    // margin: 20px;
+    height: auto;
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    column-gap: var(--gap);
+    margin: 9px 0px 20px 25px; //Modified by Urmila A | 10-Jan-23 , as padding change told by Milind Sir
+    // grid-template-rows: auto 200px;
+
+    // grid-template-rows: auto 50px auto;
+
+    //Added by Urmila A | 10-Jan-23 | LGTGTWINT-897 | start
+    .FXD-row-PBOE {
+        // row Pricing Buttons Orderplacement Errormsg (PBOE)
+        display: grid;
+        grid-template-columns: 1fr 2fr 1fr;
+        padding-top: 10px;
+        // max-width: 62vw;
+        max-width: 99%;
+        column-gap: 10px;
+
+        .FXD-col-buttons {
+            // display: flex;
+            // justify-content: flex-start;
+            // column-gap: 10px;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            grid-column-gap: 10px;
+            -moz-column-gap: 10px;
+            // column-gap: 10px;
+            column-gap: 8px; //Urmila A | 7-feb-23
+
+            // margin-top: 2em;
+            .button {
+                // width: 218px;
+                // width: 204px;
+                width: 202px; //Urmila A | 7-feb-23
+
+            }
+
+            .buttonRM_IA {
+                // width: 172px;
+                // width: 157px;
+                width: 171px; //Modified by Urmila A
+            }
+
+            .buttonFXRoutedDeal {
+                //Urmila A | 2-Feb-23
+                width: 171px;
+            }
+        }
+
+        .FXD-col-errorMsg {
+            display: flex;
+            align-items: center;
+        }
+
+        .FXD-Pricing-loader {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        .FXD-col-orderplacement {
+            background-color: var(--select-bg);
+            box-shadow: var(--neumorphic-up);
+            border-radius: 5px;
+            padding: 10px;
+            height: 15vh;
+
+            h4 {
+                color: var(--active);
+                padding: 0px 0px 10px 0px;
+            }
+
+            .order-details {
+                display: flex;
+                flex-direction: column;
+                row-gap: 6px;
+            }
+
+            .stickyNoteText {
+                color: var(--heading-label);
+            }
+
+            .start-notes {
+                display: flex;
+                align-items: center;
+                column-gap: 10px;
+            }
+        }
+    }
+
+  
+    .FXD-RFQ-Div {
+        display: flex;
+        align-items: center;
+        column-gap: 10px;
+        padding: 10px 0 0 0;
+
+        .RFQNOtxt {
+            // color: var(--inline-label);
+            color: var(--rfq-text); //Added by Urmila A |LGTCLI-316 | 16-feb-23
+            text-align: right;
+            font-size: 20px;
+            font-weight: 500;
+        }
+    }
+
+    //Added by Urmila A | 12-Jan-23 | end
+
+    .FXD-sub-container {
+        display: grid;
+        // grid-row-gap: var(--gap);
+        height: auto;
+        row-gap: 2px;
+
+        .FXD-row {
+            display: grid;
+            // grid-template-columns: 0.75fr 1.4fr 0.75fr 1fr;
+            // grid-template-columns: 1fr 1fr 1fr 1fr; // Changed by Ketan S on 29Dec2021
+            grid-column-gap: 30px;
+            // max-width: 62vw;
+            max-width: 99%; // Changed by Ketan S on 29Dec2021
+
+            // Added by Urmila A | start
+            // grid-template-columns: 0.45fr 1.2fr 0.55fr 0.51fr !important;
+            grid-template-columns: 0.25fr 0.47fr 0.24fr 0.215fr;
+            margin-left: 10px;
+            margin-top: 5px;
+            margin-right: 18px;
+            // Added by Urmila A | end
+
+            .lowerupperbarrierlabel {
+                display: flex;
+                flex-direction: row;
+                column-gap: 5px;
+                align-items: center;
+            }
+
+            div,
+            input {
+                display: flex;
+                align-items: center;
+            }
+
+            .FXD-CCYPair {
+                display: grid !important;
+                grid-template-columns: 1fr 15px 1fr;
+            }
+
+            input[type="date"] {
+                margin-top: 0px !important;
+                // width: auto !important;
+            }
+
+            button {
+                width: 204px !important;
+            }
+        }
+
+        .FXD-row-3 {
+            display: grid;
+            grid-template-columns: 0.9fr 1.4fr 1fr 1fr 1fr 1fr;
+            grid-column-gap: 30px;
+            max-width: 99%;
+
+            .lowerupperbarrierlabel {
+                display: flex;
+                flex-direction: row;
+                column-gap: 5px;
+                align-items: center;
+            }
+
+            div,
+            input {
+                display: flex;
+                align-items: center;
+            }
+
+            .FXD-CCYPair {
+                display: grid !important;
+                grid-template-columns: 1fr 15px 1fr;
+            }
+
+            input[type="date"] {
+                margin-top: 0px !important;
+                width: auto !important;
+            }
+        }
+
+        // Added by Urmila A | 5 column view | start
+        .FXD-row-5 {
+            display: grid;
+            grid-template-columns: 0.5fr 1fr 0.5fr 0.30fr 0.5fr;
+            grid-column-gap: 14px;
+            max-width: 99%;
+
+            .lowerupperbarrierlabel {
+                display: flex;
+                flex-direction: row;
+                column-gap: 5px;
+                align-items: center;
+            }
+
+            div,
+            input {
+                display: flex;
+                align-items: center;
+            }
+
+            .FXD-CCYPair {
+                display: grid !important;
+                grid-template-columns: 1fr 15px 1fr;
+            }
+
+            input[type="date"] {
+                margin-top: 0px !important;
+                width: auto !important;
+            }
+        }
+
+        .FXD-ROWS-COL-4 {
+            display: grid;
+            grid-template-columns: 0.5fr 1fr 0.5fr 1fr;
+            grid-column-gap: 25px;
+            margin-top: 5px;
+            margin-right: 18px;
+            align-items: center;
+
+            div,
+            input {
+                display: flex;
+                align-items: center;
+            }
+
+            .SUB-COL-2 {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                column-gap: 10px;
+
+                .button[name="swap-arrow"] {
+                    width: 100%;
+                    display: flex;
+                    justify-content: space-around;
+                    align-items: center;
+                    // column-gap: 50px;
+                    background-color: var(--input-bg) !important;
+                    color: var(--text) !important;
+                    border: 1px solid var(--btn-bg); //Urmila A | LGTCLI-270 | 19-Jan-23
+
+                    svg{ //Urmila A | 28-feb-23  |LGTGTWINT-1579
+                        cursor: unset !important;
+                    }
+                }
+
+
+            }
+
+            .SUB-COL-3 {
+                display: grid;
+                grid-template-columns: 1fr 0.1fr 1fr;
+                align-items: center;
+                column-gap: 2px;
+            }
+            .SUB-COL-3[name="DCI"] { //added by urmilaA | 20-July-23
+                display: grid;
+                grid-template-columns: 1fr 0.6fr 1fr;
+                align-items: center;
+                column-gap: 2px;
+            }
+
+            // .highlight{ 
+            //     color: var(--active);
+            //     font-size: 25px;              
+            // }
+            // .RFQtimer{
+            //     color: #6ba8d6 !important;
+            //     font-size: 25px;
+            // }
+
+            //Added by Urmila A |LGTCLI-323 | 23-Feb-23 | start
+            select[name="producttype"] {
+                cursor: not-allowed !important;
+            }
+
+            .BUY-dir {
+                background-color: var(--green) !important;
+                color: white !important;
+            }
+
+            .SELL-dir {
+                background-color: var(--red) !important;
+                color: white !important;
+            }
+            //Added by Urmila A |LGTCLI-323 | 23-Feb-23 | end
+        }
+
+       
+        .highlight {
+            color: var(--rfq-text) !important; //Added by Urmila A |LGTCLI-316 | 16-feb-23
+            font-size: 25px;
+        }
+
+        .RFQtimer {
+            color: var(--links) !important; //Urmila A | LGTGTWINT-1436 | 17-feb-23
+            font-size: 25px;
+        }
+
+       
+
+        // Added by Urmila A | 5 column view | end
+
+        .FXD-row-PBOE {
+            // row Pricing Buttons Orderplacement Errormsg (PBOE)
+            display: grid;
+            grid-template-columns: 1fr 2fr 1fr;
+            padding-top: 10px;
+            // max-width: 62vw;
+            max-width: 99%;
+            column-gap: 10px;
+
+            .FXD-col-buttons {
+                // display: flex;
+                // justify-content: flex-start;
+                // column-gap: 10px;
+                display: flex;
+                justify-content: flex-start;
+                align-items: center;
+                grid-column-gap: 10px;
+                -moz-column-gap: 10px;
+                column-gap: 10px;
+
+                // margin-top: 2em;
+                .button {
+                    // width: 218px;
+                    width: 204px;
+                }
+
+                .buttonRM_IA {
+                    // width: 172px;
+                    width: 157px;
+                }
+            }
+
+            .FXD-col-errorMsg {
+                display: flex;
+                align-items: center;
+            }
+
+            .FXD-Pricing-loader {
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
+            }
+
+            .FXD-col-orderplacement {
+                background-color: var(--select-bg);
+                box-shadow: var(--neumorphic-up);
+                border-radius: 5px;
+                padding: 10px;
+                height: 15vh;
+
+                h4 {
+                    color: var(--active);
+                    padding: 0px 0px 10px 0px;
+                }
+
+                .order-details {
+                    display: flex;
+                    flex-direction: column;
+                    row-gap: 6px;
+                }
+
+                .stickyNoteText {
+                    color: var(--heading-label);
+                }
+
+                .start-notes {
+                    display: flex;
+                    align-items: center;
+                    column-gap: 10px;
+                }
+            }
+        }
+
+        .FXD-splited-column-2 {
+            display: grid !important;
+            grid-template-columns: 1fr 1fr;
+            column-gap: 10px;
+        }
+
+        .FXD-splited-column-1-3 {
+            display: grid !important;
+            grid-template-columns: 1fr 2fr;
+            column-gap: 10px;
+        }
+
+        .FXD-splited-column-3 {
+            display: grid;
+            grid-template-columns: 1fr 5px 1fr;
+            column-gap: 5px;
+            align-items: center;
+        }
+
+        .FXD-col-pricing {
+
+            // display: grid;
+            // padding: 10px;
+            // row-gap: 10px;
+            // border: 1px solid rgb(202, 190, 178);
+            // border-radius: 5px;
+            // height: 15vh;
+            .pricing-details {
+                display: flex;
+                flex-direction: column;
+                row-gap: 10px;
+            }
+
+            .start-notes {
+                display: flex;
+                align-items: center;
+                column-gap: 10px;
+            }
+
+            h4 {
+                color: var(--active);
+                padding: 0px 0px 10px 0px;
+            }
+
+            background-color: var(--select-bg);
+            box-shadow: var(--neumorphic-up);
+            border-radius: 5px;
+            padding: 10px;
+            height: 15vh;
+            display: none;
+        }
+
+        label {
+            color: var(--heading-label); // label colors
+            display: flex;
+            align-items: center;
+            // font-size: 15px;
+            font-size: 13px;
+        }
+
+        span {
+            font-size: 15px;
+        }
+
+        .loader-center {
+            position: unset !important;
+        }
+
+        .loading-dots {
+            width: 30px;
+            height: 30px;
+        }
+    }
+
+
+}
+
+
+
+.FXD-overlay {
+    display: grid;
+    grid-template-columns: auto 1fr;
+}
+
+.FXD-row[name="Comment-field"] {
+    padding: 2px 0px 0px 0px;
+    grid-template-columns: 0.27fr 1fr 0.63fr !important;
+}
+
+button {
+    cursor: pointer !important;
+}
+input[type="radio"] {
+    cursor: pointer !important;
+}
+
+
+//FXD Pop-up | start
+.FXDorderPopup-overlay {
+    position: absolute; //Modified by Urmila A | 6-Jan-23
+    width: auto;
+    // height: 100%;
+    top: 0;
+    left: 0; //Modified by Urmila A | 6-Jan-23
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.4);
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(0px);
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+
+    // overflow-y: scroll; //Modified by Urmila A | 6-Jan-23
+    .OrderContainer {
+        display: grid;
+        height: 25%;
+        width: 30%;
+        position: absolute;
+        top: 45%; //Urmila A | 31-Jan-23
+        left: 50%;
+        padding: 8px;
+        min-width: 350px;
+        background-color: var(--containers);
+        border-radius: 4px;
+        transform: translate(-50%, -50%);
+        box-shadow: 0 0 10px 1px var(--gray);
+
+        .OrderSection {
+            display: grid;
+            grid-template-rows: 45px;
+
+            .OrderPopUpheader {
+                display: flex;
+                justify-content: space-between;
+                padding: 10px;
+                font-size: 20px;
+                color: var(--off-color);
+                align-items: baseline;
+                border-bottom: 2px solid var(--active) !important;
+            }
+
+            .OrderpopupBody {
+                display: grid;
+                height: 79px;
+                margin: 10px 0 0 5px;
+                row-gap: 10px;
+            }
+
+            .OrderpopupBody[name="RouteToDealer"] {
+                display: grid;
+                height: 50px;
+                margin: 10px 0 0 5px;
+                row-gap: 10px;
+            }
+
+            .FXDRouteToDealerBtnSection {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                column-gap: 20px;
+            }
+        }
+    }
+
+    .button[name="PriceCancel"] {
+        //Urmila A | LGTGTWINT-1147 | 3-Feb-23
+          margin-top: -106px;
+        //margin-top: -43px; //modified by Urmila A | 6-Nov-23
+    }
+
+}
+
+
+svg[name="closebtn"] {
+    cursor: pointer !important;
+}
+//FXD Pop-up | ends
+
+
+//Error-msg CSS | start
+.FXD-col-errorMsg {
+    padding: 5px;
+
+    //LGTGTWINT-588 , Urmila A | 15-Dec-22
+    .errorMsg {
+        color: var(--red) !important;
+        font-size: 16px !important;
+    }
+}
+//Error-msg CSS | ends
+
+
+//contract summ column CSS | start
+.FXD-sub-charts-section {
+    min-width: 25em;
+    display: grid;
+    grid-template-rows: 30px 380px auto;
+    grid-row-gap: 10px; //Urmila A | 12-Jan-23 |LGTGTWINT-893
+
+    .subheader {
+        font-size: 1.5em;
+        font-weight: 400;
+        color: var(--active);
+    }
+
+    .contractsummarytxt {
+        color: var(--heading-label);
+        font-size: 14px;
+        // border-bottom: 1px solid var(--disabled);  //commented by Urmila A | 10-Jan-23
+    }
+
+    .remarkfield {
+        color: var(--heading-label);
+        // font-size: 1.1em;
+        font-size: 13px;
+        // display: flex;
+        padding: 10px 12px 0 0; //Modified by Urmila A | 11-Jan-23
+        height: 74px;
+        column-gap: 20px;
+        align-items: center;
+        display: grid;
+        grid-template-columns: 0.5fr 1fr;
+        grid-template-rows: auto;
+        grid-row-gap: 10px;
+        border-top: 1px solid var(--disabled); //Added by Urmila A | 10-Jan-23
+
+        .highlight {
+            color: var(--active);
+            font-size: 15px;
+        }
+
+        textarea {
+            width: 85%;
+            height: 62px;
+            max-width: 420px !important; //Urmila A | LGTGTWINT-1569 | 1-Mar-23
+        }
+    }
+
+}
+
+.FXD-sub-charts-section[name="TRF"] {
+    grid-template-rows: 30px 440px auto;
+    grid-row-gap: 10px; //Urmila A | 12-Jan-23 | LGTGTWINT-893
+}
+
+.FXD-sub-charts-section[name="pivot"] {
+    grid-template-rows: 30px 500px auto;
+    grid-row-gap: 10px; //Urmila A | 12-Jan-23 | LGTGTWINT-893
+}
+//contract summ column CSS | ends
+
+//Added by Urmila Ahire | FXD-Contract-Summary  |start
+.shim-grid {
+    display: grid;
+    grid-template-rows: 69px 100px 150px;
+    grid-row-gap: 20px;
+}
+
+.shim-grid[name="TRF"] {
+    grid-template-rows: 69px 78px 126px 80px;
+    grid-row-gap: 14px;
+}
+
+.shim-grid[name="pivot"] {
+    grid-template-rows: 69px 78px 126px 80px;
+    grid-row-gap: 14px;
+}
+
+.loading-shimmer-fxd {
+    background: transparent;
+    grid-gap: 10px;
+    margin-top: 5px;
+    max-height: 370px;
+    display: inline-grid;
+    width: 96%;
+    font-weight: 400;
+    -webkit-animation: shimmer 2.5s infinite linear;
+    animation: shimmer 2.5s infinite linear;
+    background: linear-gradient(to right, transparent, transparent, var(--input-bg), transparent, transparent);
+    background-size: 100% 1000%;
+}
+
+@keyframes shimmer {
+    0% {
+        // background-position: -1000px 0;
+        background-position: -968px 0;
+    }
+
+    100% {
+        // background-position: 1000px 0;
+        background-position: 968px 0;
+    }
+}
+
+//Added by Urmila Ahire | FXD-Contract-Summary | |end
+
+//Added by Urmila A | 7-Jan-23  | start
+.grid-combine {
+    grid-column: span 2;
+}
+
+//Added by Urmila A | 7-Jan-23 | end
+
+
+//Added by Urmila A | media queries for overlay, order pop-up |LGTGTWINT-890| start
+@media screen and (min-width: 1200px) and (max-width: 1440px) {
+    .FXDorderPopup-overlay .OrderContainer {
+        top: 30%;
+        width: 40%;
+    }
+
+    .multi-ripple {
+        position: absolute;
+        top: 30%;
+    }
+
+    .FXD-sub-charts-section {
+        grid-template-rows: 30px 390px auto;
+    }
+}
+
+//Added by Urmila A | media queries for overlay, order pop-up | end
+
+.LPsCountTxt {
+    color: var(--links) !important;
+}
+
+.buttonRM_IA:disabled,
+ .buttonRoutedDeal:disabled,
+ .buttonFXRoutedDeal:disabled
+ //added by UrmilaA | 16-june-23 | LGTGTWINT-2137 |ends
+ {
+    background: var(--ucp-disbled) !important;
+    //box-shadow: var(--ucp-neumorphic-disabled);
+    cursor: not-allowed !important;
+    color: var(--ucp-mat-select-clr) !important;
+    // border: 1px solid var(--btn-border);
+}
+
+.overlay {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.4);
+    // backdrop-filter: blur(20px);
+    backdrop-filter: blur(1px);
+    z-index: 100;
+}
+
+// Commom Layout CSS  | Added by UrmilaA | 31-July-23| ends
+// Added by Urmila A | first fixing date | 7-Sep-22 | start
+.firstfixinglbl {
+    position: absolute;
+    margin-top: -24px;
+    margin-left: 7px;
+    font-size: 12px !important;
+}
+
+.lblfromTodate {
+    position: absolute;
+    font-size: 12px !important;
+    margin-top: 17px;
+    margin-left: -137px;
+}
+
+// Added by Urmila A | first fixing date | 7-Sep-22 | end
+// Added by Urmila A | 11-sep-23|start
+.loader-center {
+    display: grid !important;
+    width: 100% !important;
+    height: 100% !important;
+    place-items: center !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    padding: 20% !important;
+    gap: 35px !important;
+}
+// Added by Urmila A | 11-sep-23|ends
+
+
+// Added by Urmila A | 14-Sep-23 | start
+.leftalign {
+    text-align: left;
+}
+
+.rightalign {
+    text-align: right;
+}
+
+.centeralign {
+    text-align: center;
+}
+
+.cursorClass {
+    cursor: pointer;
+}
+// Added by Urmila A | 14-Sep-23 | ends
+
+
+// End - HSBCFXEINT-7 | UI issues | Chaitanya M  | 17 Nov 2023

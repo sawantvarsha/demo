@@ -1,0 +1,782 @@
+<div class="FullScreen-container">
+  <div class="FXD-sub-container">
+    <div class="FXD-row">
+      <label class="disabledlbl">Underlying</label>
+      <div>
+        <input
+          type="text"
+          placeholder="Please enter share name"
+          value="{{ ShareName }}"
+          class="longText"
+          style="text-align: left"
+          [(ngModel)]="ShareName"
+          maxlength="10"
+          (keypress)="ChangeIndex($event); showSuggestions = true"
+          (keydown.enter)="selectShare($event); flag = false"
+          (keydown.backspace)="backKeyPress($event)"
+          (keydown.delete)="backKeyPress($event)"
+          (keydown.tab)="selectShare($event); flag = false"
+          (keydown.ArrowUp)="
+            selectedBIndex = EQC_cfs.moveUpSelection1($event, selectedBIndex)
+          "
+          (keydown.ArrowDown)="
+            selectedBIndex = EQC_cfs.moveDownSelection1($event, selectedBIndex)
+          "
+        />
+        <div class="SelectorBox" *ngIf="flag && showSuggestions">
+          <a
+            *ngFor="
+              let share of shares | searchUnderlying: ShareName;
+              let i = index
+            "
+            (keypress)="ChangeIndex($event)"
+            (keydown.enter)="selectShare($event)"
+            (click)="selectShare($event)"
+          >
+            <div
+              *ngIf="share"
+              [attr.data-share]="share.Code"
+              (click)="showUnderlying(share)"
+              [ngClass]="{ HoverSuggestion: i === selectedBIndex }"
+            >
+              <span>{{ share.LongName }}</span>
+            </div>
+          </a>
+        </div>
+      </div>
+      <label class="disabledlbl">Tenor</label>
+      <div class="FXD-splited-column-2">
+        <input
+          #focusable
+          type="text"
+          [(ngModel)]="Tenor"
+          class="right"
+          minlength="1"
+          maxlength="3"
+          value="{{ Tenor }}"
+          (blur)="changeTenor($event)"
+          (change)="changeTenor($event)"
+          (keydown.enter)="changeTenor($event)"
+          (keypress)="EQC_cfs.TenorValidation($event)"
+        />
+        <select [(ngModel)]="TenorType" (change)="changeTenor($event)">
+          <option value="Month">Month</option>
+          <option value="Year">Year</option>
+        </select>
+      </div>
+    </div>
+    <div class="FXD-row">
+      <label class="disabledlbl">Solve for</label>
+      <select [(ngModel)]="SolveForvalue" (change)="setSolveFor($event)">
+        <option value="PricePercentage">IB Price (%)</option>
+        <option value="StrikePercentage">Strike (%)</option>
+      </select>
+      <label class="disabledlbl">Settlement Weeks</label>
+      <div class="FXD-splited-column-2">
+        <select
+          [(ngModel)]="settlementWeek"
+          (change)="Settlementweekschange($event)"
+        >
+          <option value="1W">1W</option>
+          <option value="2W">2W</option>
+          <option value="3W">3W</option>
+        </select>
+        <div>
+          <input
+            class="settleweeks right"
+            style="margin-right: 15px"
+            type="text"
+            value="{{ DaysCount }}"
+            disabled
+          /><label class="disabledlbl">Days</label>
+        </div>
+      </div>
+    </div>
+    <div class="FXD-row">
+      <label class="disabledlbl">Strike</label>
+      <input
+        type="text"
+        class="right"
+        id="txtStrike"
+        [(ngModel)]="Strike"
+        maxlength="8"
+        [disabled]="this.SolveForvalue === 'StrikePercentage'"
+        (blur)="
+          EQC_cfs.FormatNumber($event);
+          EQC_cfs.setDecimal($event);
+          priceValidation(this.Strike, 'Strike (%)')
+        "
+        (keypress)="EQC_cfs.InputNumber($event)"
+        (change)="this.reset()"
+      />
+      <label class="disabledlbl">Trade Date</label>
+      <input type="text" value="{{ tradedate }}" disabled class="dates" />
+    </div>
+    <div class="FXD-row">
+      <label class="disabledlbl">Note Ccy</label>
+      <select [(ngModel)]="ddlNoteCcy" (change)="this.reset()">
+        <option
+          *ngFor="let c of CCY"
+          (selected)="(c === UnderlyingCurrency)"
+          [value]="c || ccyChange"
+        >
+          {{ c || ccyChange }}
+        </option>
+      </select>
+      <label class="disabledlbl">Settlement Date</label>
+      <input type="text" class="dates" value="{{ settdate }}" disabled />
+    </div>
+    <div class="FXD-row">
+      <label class="disabledlbl">Notional ({{ ddlNoteCcy }})</label>
+      <input
+        type="text"
+        class="right"
+        id="txtnotional"
+        type="text"
+        value="{{ Notional }}"
+        maxlength="14"
+        (focus)="EQC_cfs.UnformatNumber($event)"
+        (blur)="EQC_cfs.FormatNumber($event)"
+        (change)="EQC_cfs.NotionalChange($event); setNotional($event)"
+        (keypress)="EQC_cfs.NotionalValidate($event)"
+        placeholder="Enter Notional"
+      />
+      <label class="disabledlbl">Expiry Date</label>
+      <div>
+        <input type="text" class="dates" value="{{ expdate }}" disabled />
+      </div>
+    </div>
+    <div class="FXD-row">
+      <label class="disabledlbl">Upfront </label>
+      <div>
+        <input
+          type="text"
+          id="txtUpfront"
+          class="right"
+          [(ngModel)]="upfront"
+          maxlength="6"
+          onfocus="this.select();"
+          (blur)="
+            EQC_cfs.FormatNumber($event);
+            EQC_cfs.setDecimal($event);
+            priceValidation(this.upfront, 'Upfront (%)')
+          "
+          (keypress)="EQC_cfs.InputNumber($event)"
+          (change)="this.reset(); calculateIBPrice()"
+        />
+      </div>
+      <div><label class="disabledlbl">Maturity Date</label></div>
+      <div>
+        <input type="text" class="dates" value="{{ matdate }}" disabled />
+      </div>
+    </div>
+    <div class="FXD-row">
+      <div style="padding-right: 0px">
+        <label *ngIf="SolveForvalue !== 'PricePercentage'">Client Yield</label>
+      </div>
+      <div>
+        <input
+          type="text"
+          class="right"
+          *ngIf="SolveForvalue !== 'PricePercentage'"
+          id="txtClientYield"
+          [(ngModel)]="ClientYield"
+          maxlength="8"
+          (blur)="
+            EQC_cfs.FormatNumber($event);
+            EQC_cfs.setDecimal($event);
+            priceValidation(this.ClientYield, 'Client Yield (%)')
+          "
+          (keypress)="EQC_cfs.InputNumber($event)"
+          (change)="calculateIBPrice(); this.reset()"
+        />
+      </div>
+      <div><label class="disabledlbl">IB Price</label></div>
+      <div>
+        <input
+          type="text"
+          class="right"
+          [(ngModel)]="IBPrice"
+          maxlength="8"
+          id="txtIBPrice"
+          disabled
+          (blur)="
+            EQC_cfs.FormatNumber($event);
+            EQC_cfs.setDecimal($event);
+            priceValidation(this.IBPrice, 'IB price (%)')
+          "
+          (keypress)="EQC_cfs.InputNumber($event)"
+          (change)="this.reset()"
+        />
+      </div>
+    </div>
+    <div class="FXD-row-PBOE">
+      <div class="FXD-col-buttons">
+        <button
+          class="button"
+          [disabled]="this.priceFlag === false"
+          (click)="Price()"
+        >
+          Price
+        </button>
+        <button class="button" (click)="Clear()">Clear</button>
+        <button
+          class="button"
+          *ngIf="sortedAllPrices.length && ShareName != ''"
+          (click)="
+            bookOrder(
+              sortedAllPrices[0].rfq,
+              sortedAllPrices[0].lp,
+              sortedAllPrices[0].minnotional,
+              sortedAllPrices[0].maxnotional,
+              sortedAllPrices[0].clientyield,
+              sortedAllPrices[0].price
+            )
+          "
+          [disabled]="bookOrderFlag"
+        >
+          Book Order
+        </button>
+      </div>
+      <div class="FXD-Pricing-loader">
+        <app-loader *ngIf="loadflag"></app-loader>
+        <!-- <img src="http://finiqmbappnsk2683.cloudapp.net/FinIQ_All_In_One/assets/loading_dots.gif" height="100px"
+          width="100px" style="margin-left: 300px;" *ngIf="loadflag"> -->
+      </div>
+      <div class="FXD-col-orderplacement" *ngIf="orderID.length > 2">
+        <h4>Order Details</h4>
+        <div class="order-details">
+          <!-- <h5 class="stickyNoteText">Order placed successfully.</h5> -->
+          <div class="start-notes">
+            <span class="dot"></span>
+            <h5>{{ successOrderMessage }}</h5>
+          </div>
+          <div class="start-notes">
+            <span class="dot"></span>
+            <h5>RFQ: {{ rfq }}</h5>
+          </div>
+          <div class="start-notes">
+            <span class="dot"></span>
+            <h5>Parent ID: {{ orderID }}</h5>
+          </div>
+          <h6 class="stickyNoteText">Order saved at {{ orderTime }}</h6>
+        </div>
+      </div>
+
+      <div class="FXD-col-orderplacement" *ngIf="orderID.length == 2">
+        <h4>Order Details</h4>
+        <div class="order-details">
+          <h5 class="stickyNoteText">Order Execution Failed</h5>
+          <div class="start-notes">
+            <span class="dot"></span>
+            <h5>Order ID: {{ orderID }}</h5>
+          </div>
+          <h6 class="stickyNoteText">Order Time{{ orderTime }}</h6>
+        </div>
+      </div>
+      <div class="FXD-col-errorMsg">
+        <span class="errorMsg">{{ ErrorMsg }}</span>
+      </div>
+    </div>
+    <div class="main-container">
+      <div class="cards-section" *ngIf="lpArr.length > 0">
+        <div
+          class="card"
+          *ngFor="let sortedPrice of this.lpArr; let i = index"
+          [ngClass]="{ 'highlight-card-price': i === 0 }"
+        >
+          <label class="card-header">
+            {{ sortedPrice.displayName | translate }}</label
+          >
+          <span class="card-timer"> {{ sortedPrice.timer }}</span>
+          <label class="card-contents" *ngIf="sortedPrice.price !== 0">
+            {{
+              sortedPrice.price === "-"
+                ? sortedPrice.price
+                : (sortedPrice.price | number: "1.2-2")
+            }}
+          </label>
+          <label class="card-contents error" *ngIf="sortedPrice.price === 0">
+            {{ sortedPrice.status }}
+          </label>
+          <div class="card-buttons">
+            <button
+              class="button"
+              style="width: 80px !important"
+              [disabled]="
+                sortedPrice.timer === '-' ||
+                sortedPrice.timer === '' ||
+                sortedPrice.timer < 1 ||
+                sortedPrice.price <= 0 ||
+                sortedPrice.price === '-'
+              "
+              (click)="
+                bookOrder(
+                  sortedPrice.rfq,
+                  sortedPrice.lp,
+                  sortedPrice.minnotional,
+                  sortedPrice.maxnotional,
+                  sortedPrice.clientyield,
+                  sortedPrice.price
+                )
+              "
+            >
+              Trade
+            </button>
+          </div>
+        </div>
+      </div>
+      <!-- <div style="display: flex; justify-content: flex-start;">
+        <app-loader *ngIf="lpArr.length === 0"></app-loader>
+      </div> -->
+    </div>
+    <div class="FXD-row">
+      <div id="orderDiv" class="col-12"></div>
+    </div>
+
+    <div class="overlay" *ngIf="bookOrderFlag === true && accordflag">
+      <div class="order-entry-containerEQC page-content-container-popupEQC">
+        <div class="tabs-pages">
+          <div class="tabs tab-active">
+            <div class="right">ELN</div>
+            <app-svg-icons
+              class="closebtnEQC"
+              [icon]="'cancel-icon'"
+              [width]="'20'"
+              [height]="'20'"
+              (click)="cancel()"
+            >
+            </app-svg-icons>
+          </div>
+        </div>
+
+        <div class="FXD-row" style="padding: 0px 20px">
+          <div
+            class="EQC-Section-title"
+            *ngIf="bookOrderFlag === true"
+            (click)="openProd()"
+          >
+            {{ "EQCSP.OrderDetails" | translate }}
+          </div>
+        </div>
+
+        <!-- <h4 class="col-6" (click)="openProd('ELN');"> + Order Details</h4> -->
+        <div
+          class="FXD-sub-container"
+          style="padding: 0px 20px"
+          *ngIf="accordflag === true && bookOrderFlag === true"
+        >
+          <div class="FXD-row">
+            <div class="col-2">
+              <label class="disabledlbl">{{
+                "EQCSP.Issuer" | translate
+              }}</label>
+            </div>
+            <div class="col-4">
+              <input
+                type="text"
+                class="center"
+                disabled="disabled"
+                value="{{ Issuer }}"
+              />
+            </div>
+            <div class="col-2">
+              <label class="disabledlbl">
+                {{ "EQCSP.Underlying" | translate }}</label
+              >
+            </div>
+            <div class="col-4">
+              <input
+                type="text"
+                class="center"
+                disabled="disabled"
+                value="{{ shareCode }}"
+              />
+            </div>
+          </div>
+          <div class="FXD-row">
+            <div class="col-2">
+              <label>{{ "EQCSP.BookingBranch" | translate }}</label>
+            </div>
+            <div class="col-4">
+              <select
+                [(ngModel)]="selectedBookingBranch"
+                (change)="bookingBranchChanged($event)"
+              >
+                <option
+                  *ngFor="let arr of bookingBranch"
+                  [selected]="
+                    bookingBranch[bookingBranch.length - 1].BookingCenterCode
+                  "
+                  [value]="arr.BookingCenterCode"
+                >
+                  {{ arr.BookingCenterName }}
+                </option>
+              </select>
+            </div>
+            <div class="col-2">
+              <label class="disabledlbl"
+                >{{ "EQCSP.OrderNotional" | translate }} ({{
+                  ddlNoteCcy
+                }})</label
+              >
+            </div>
+            <div class="col-4">
+              <input
+                type="text"
+                class="center"
+                disabled="disabled"
+                value="{{ totalNotional | number: '1.2-2' }}"
+              />
+            </div>
+          </div>
+
+          <div class="FXD-row">
+            <div class="col-2">
+              <label class="disabledlbl">{{
+                "EQCSP.IBprice" | translate
+              }}</label>
+            </div>
+            <div class="col-4">
+              <input
+                type="text"
+                class="center"
+                disabled="disabled"
+                value="{{ IBPrice }}"
+              />
+            </div>
+            <div class="col-2">
+              <label class="disabledlbl">{{
+                "EQCSP.ClientPrice" | translate
+              }}</label>
+            </div>
+            <div class="col-4">
+              <input
+                type="text"
+                class="center"
+                disabled="disabled"
+                value="{{ ClientPrice }}"
+              />
+            </div>
+          </div>
+
+          <div class="FXD-row">
+            <div class="col-2">
+              <label class="disabledlbl">{{
+                "EQCSP.Strike" | translate
+              }}</label>
+            </div>
+            <div class="col-4">
+              <input
+                type="text"
+                class="center"
+                disabled="disabled"
+                value="{{ Strike }}"
+              />
+            </div>
+            <div class="col-2">
+              <label class="disabledlbl">{{ "EQCSP.Tenor" | translate }}</label>
+            </div>
+            <div class="col-4">
+              <input
+                type="text"
+                class="center"
+                disabled="disabled"
+                value="{{ Tenor }} {{ TenorType }}"
+              />
+            </div>
+          </div>
+
+          <div class="FXD-row" style="display: none">
+            <div class="col-2">
+              <label class="disabledlbl">{{
+                "EQCSP.KOLevel" | translate
+              }}</label>
+            </div>
+            <div class="col-4">
+              <input type="text" class="center" disabled="disabled" value="" />
+            </div>
+            <div class="col-2"></div>
+            <div class="col-4"></div>
+          </div>
+
+          <div class="FXD-row">
+            <div class="col-2">
+              <label class="disabledlbl">{{
+                "EQCSP.Upfront" | translate
+              }}</label>
+            </div>
+            <div class="col-4">
+              <input
+                type="text"
+                class="center"
+                disabled="disabled"
+                value="{{ upfront | number: '1.2-2' }}"
+              />
+            </div>
+            <div class="col-2">
+              <label class="disabledlbl">{{
+                "EQCSP.ClientYield" | translate
+              }}</label>
+            </div>
+            <div class="col-4">
+              <input
+                type="text"
+                class="center"
+                disabled="disabled"
+                value="{{ ClientYield | number: '1.2-2' }}"
+              />
+            </div>
+          </div>
+
+          <div class="FXD-row">
+            <div class="col-2">
+              <label>{{ "EQCSP.OrderType" | translate }}</label>
+            </div>
+            <div class="col-4">
+              <select [(ngModel)]="OrderType">
+                <option value="Limit">Limit</option>
+                <option value="Market">Market</option>
+                <!-- <option value="Market">MOC</option>
+          <option value="Market">VWAP</option> -->
+              </select>
+            </div>
+            <div class="col-2">
+              <label>{{ "EQCSP.LimitLevel" | translate }}</label>
+            </div>
+            <div class="col-4">
+              <select
+                [(ngModel)]="LimitShare"
+                *ngIf="ShareBasket && OrderType === 'Limit'"
+              >
+                <option value="{{ shareCode }}">{{ shareCode }}</option>
+              </select>
+              <input
+                type="text"
+                class="center"
+                [(ngModel)]="LimitAmount"
+                [disabled]="OrderType !== 'Limit'"
+                value="0"
+                maxlength="10"
+                (keypress)="EQC_cfs.InputNumber($event)"
+              />
+              <!-- (blur)="this.onBlurLimitAmt($event);" -->
+            </div>
+          </div>
+
+          <div class="FXD-row" style="padding: 20px 0px 0px 0px">
+            <div class="col-2">
+              <label class="disabledlbl">{{
+                "EQCSP.OrderExecType" | translate
+              }}</label>
+            </div>
+            <div class="col-4">
+              <div class="toggle-container" *ngIf="!disableSuitabilityCheck">
+                <label class="switch">
+                  <input
+                    type="checkbox"
+                    [(ngModel)]="checkSuitability"
+                    (change)="toggleSuitability()"
+                  />
+                  <span class="slider"></span>
+                  <span class="toogle-value-right" *ngIf="checkSuitability"
+                    >Suitabilty</span
+                  >
+                  <span class="toogle-value-left" *ngIf="!checkSuitability"
+                    >Exceptional Order</span
+                  >
+                </label>
+              </div>
+              <div *ngIf="disableSuitabilityCheck">
+                <input
+                  type="text"
+                  class="center suitability-input"
+                  disabled="disabled"
+                  value="Suitabilty"
+                />
+              </div>
+            </div>
+            <div class="col-2"></div>
+            <div class="col-4"></div>
+          </div>
+          <div class="EQC-alloctbl">
+            <table style="width: 40%">
+              <tr>
+                <th style="width: 20px">
+                  <input
+                    type="checkbox"
+                    style="width: 20px"
+                    id="checkboxAll"
+                    checked
+                    (click)="chkAll($event)"
+                  />
+                </th>
+                <th>{{ "EQCSP.RMName" | translate }}</th>
+                <th>{{ "EQCSP.Notional" | translate }}</th>
+              </tr>
+              <tr *ngFor="let data of tblAllocation; let rowIndex = index">
+                <td style="width: 20px" class="tdCenter">
+                  <input
+                    id="checkbox{{ rowIndex }}"
+                    style="width: 20px"
+                    type="checkbox"
+                    checked
+                    (click)="chkAllocation($event)"
+                  />
+                </td>
+                <td class="tdCenter">
+                  <select id="Select{{ rowIndex }}">
+                    <option
+                      *ngFor="let arr of rmList"
+                      [value]="arr.Rel_Manager_Name"
+                    >
+                      {{ arr.Rel_Manager_Name }}
+                    </option>
+                  </select>
+                </td>
+                <td class="tdCenter">
+                  <input
+                    type="text"
+                    id="Notional{{ rowIndex }}"
+                    maxlength="14"
+                    class="right"
+                    (focus)="
+                      EQC_cfs.UnformatNumber($event); previousNotionals($event)
+                    "
+                    (blur)="EQC_cfs.FormatNumber($event)"
+                    (change)="
+                      EQC_cfs.NotionalChange($event); addNotional($event)
+                    "
+                    (keypress)="EQC_cfs.NotionalValidate($event)"
+                    placeholder="Enter Notional"
+                    value="0.00"
+                  />
+                </td>
+              </tr>
+            </table>
+          </div>
+
+          <div class="FXD-row" style="height: 40px">
+            <div class="col-2">
+              <label>{{ "EQCSP.TotalNotional" | translate }}</label>
+            </div>
+            <div class="col-4">
+              <label class="valText">{{
+                totalNotional | number: "1.2-2"
+              }}</label>
+            </div>
+            <div class="col-2">
+              <label>{{ "EQCSP.MinLimit" | translate }} : </label>
+            </div>
+            <div class="col-1" style="column-gap: 10px">
+              <label class="valText">{{ minNotional | number: "1.2-2" }}</label>
+              <div
+                style="
+                  width: -webkit-fill-available;
+                  display: flex;
+                  justify-content: flex-end;
+                "
+              >
+                <button class="button" (click)="btnAllocationClick()">
+                  {{ "EQCSP.AddAllocation" | translate }}
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="FXD-row" style="height: 40px">
+            <div class="col-2">
+              <label>{{ "EQCSP.AllocatedNotional" | translate }}</label>
+            </div>
+            <div class="col-4">
+              <label class="valText">{{
+                allocatedNotional | number: "1.2-2"
+              }}</label>
+            </div>
+            <div class="col-2">
+              <label>{{ "EQCSP.MaxLimit" | translate }} : </label>
+            </div>
+            <div class="col-4">
+              <label class="valText">{{ maxNotional | number: "1.2-2" }}</label>
+            </div>
+          </div>
+
+          <div class="FXD-row" style="height: 40px">
+            <div class="col-2">
+              <label>{{ "EQCSP.RemainingNotional" | translate }}</label>
+            </div>
+            <div class="col-4">
+              <label class="valText">{{
+                remainingNotional | number: "1.2-2"
+              }}</label>
+            </div>
+          </div>
+
+          <div class="FXD-row">
+            <div id="blotterDiv" class="col-12"></div>
+          </div>
+
+          <div class="EQC-btn-class">
+            <div
+              style="
+                width: 100%;
+                display: flex;
+                column-gap: 10px;
+                justify-content: center;
+              "
+            >
+              <button
+                class="button"
+                (click)="confirmOrder()"
+                [disabled]="orderflag === true"
+              >
+                <div *ngIf="!checkSuitability; else btnSuitability" #btnConfirm>
+                  {{ "EQCSP.Confirm" | translate }}
+                </div>
+                <ng-template #btnSuitability>
+                  {{ "EQCSP.Suitability" | translate }}
+                </ng-template>
+              </button>
+              <button class="button" (click)="cancel()">
+                {{ "EQCSP.Cancel" | translate }}
+              </button>
+            </div>
+            <div class="col-3">
+              <span class="errorMsg">{{ ErrorMsg1 }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub-charts">
+    <app-share-details [ShareName]="this.selectShareEvent"></app-share-details>
+  </div>
+  <!-- <div class="loading" id="loading">
+    <img src="http://finiqmbappnsk2683.cloudapp.net/FinIQ_All_In_One/assets/loading_dots.gif" alt="Loading..."
+      class="loadingImg">
+  </div> -->
+</div>
+
+<div class="overlay" *ngIf="emailPopup">
+  <div class="order-entry-containerEQC page-content-container-popupEQC">
+    <div class="tabs-pages">
+      <div class="tabs tab-active">
+        <div class="right">ELN</div>
+        <app-svg-icons
+          class="closebtnEQC"
+          [icon]="'cancel-icon'"
+          [width]="'20'"
+          [height]="'20'"
+          (click)="this.emailPopup = false"
+        >
+        </app-svg-icons>
+      </div>
+    </div>
+    <div class="emailquote">
+      <label>Quote Email Request Initiated.</label>
+      <button class="button" (click)="this.emailPopup = false">OK</button>
+    </div>
+  </div>
+</div>

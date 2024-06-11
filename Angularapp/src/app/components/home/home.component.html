@@ -1,0 +1,205 @@
+<div class="dashboard-component" id="Dashboard" #Dashboard>
+  <div class="page-title module" *ngIf="!isPDFMode">
+    <div>{{ WelcomeMsg }}</div>
+    <div style="text-align: right; font-size: 15px" *ngIf="isProfileCreated">
+      {{ layoutsaveMessage }}
+    </div>
+    <div style="display: flex; gap: 20px" *ngIf="isProfileCreated">
+      <app-svg-icons
+        (click)="GeneratePDF()"
+        [icon]="'pdf'"
+        [width]="'30'"
+        [height]="'30'"
+        [fill]="'var(--red)'"
+      >
+      </app-svg-icons>
+      <img
+        [src]="
+          isProd ? 'assets/savelayout.png' : '../../../assets/savelayout.png'
+        "
+        width="30"
+        height="30"
+        style="cursor: pointer"
+        (click)="saveLayout()"
+        title="Save Layout"
+      />
+      <img
+        [src]="isProd ? 'assets/default.png' : '../../../assets/default.png'"
+        width="30"
+        height="30"
+        style="cursor: pointer"
+        (click)="defaultLayout()"
+        title="Default Layout"
+      />
+      <!-- <img [src]="isProd?'assets/refresh.png':'../../../assets/refresh.png'" width="30" height="30"
+                style="cursor: pointer;" (click)="loadCards()" title="Refresh Layout"> -->
+      <app-svg-icons
+        (click)="loadCards()"
+        [icon]="'refresh'"
+        [width]="'30'"
+        [height]="'30'"
+      ></app-svg-icons>
+    </div>
+  </div>
+  <div *ngIf="!isLoading && isProfileCreated && !isPDFMode">
+    <div class="content-container">
+      <div class="column1">
+        <div
+          cdkDropList
+          #column1List="cdkDropList"
+          [cdkDropListData]="column1"
+          [cdkDropListConnectedTo]="[column2List, column3List, column4List]"
+          class="example-list"
+          (cdkDropListDropped)="drop($event)"
+        >
+          <div *ngFor="let item of column1" cdkDrag>
+            <app-cards
+              [card]="item"
+              [col]="1"
+              [CustomerDetails]="selectedRMCustomerDetails"
+              [Mode]="mode"
+            >
+            </app-cards>
+          </div>
+        </div>
+      </div>
+      <div class="column1">
+        <div
+          cdkDropList
+          #column2List="cdkDropList"
+          [cdkDropListData]="column2"
+          [cdkDropListConnectedTo]="[column1List, column3List, column4List]"
+          class="example-list"
+          (cdkDropListDropped)="drop($event)"
+        >
+          <div *ngFor="let item of column2" cdkDrag>
+            <app-cards
+              [card]="item"
+              [col]="2"
+              [CustomerDetails]="selectedRMCustomerDetails"
+              [Mode]="mode"
+            >
+            </app-cards>
+          </div>
+        </div>
+      </div>
+
+      <div class="column1">
+        <div
+          cdkDropList
+          #column3List="cdkDropList"
+          [cdkDropListData]="column3"
+          [cdkDropListConnectedTo]="[column2List, column1List, column4List]"
+          class="example-list"
+          (cdkDropListDropped)="drop($event)"
+        >
+          <div *ngFor="let item of column3" cdkDrag>
+            <app-cards
+              [card]="item"
+              [col]="3"
+              [CustomerDetails]="selectedRMCustomerDetails"
+              [Mode]="mode"
+            >
+            </app-cards>
+          </div>
+        </div>
+      </div>
+
+      <div class="column1">
+        <div
+          cdkDropList
+          #column4List="cdkDropList"
+          [cdkDropListData]="column4"
+          [cdkDropListConnectedTo]="[column1List, column2List, column3List]"
+          class="example-list"
+          (cdkDropListDropped)="drop($event)"
+        >
+          <div *ngFor="let item of column4" cdkDrag>
+            <app-cards [card]="item" [col]="4"> </app-cards>
+          </div>
+        </div>
+      </div>
+      <!-- <div class="column1">
+                <div cdkDropList #column5List="cdkDropList" [cdkDropListData]="column5"
+                    [cdkDropListConnectedTo]="[column1List, column2List, column3List,column4List]" class="example-list"
+                    (cdkDropListDropped)="drop($event)">
+                    <div *ngFor="let item of column5" cdkDrag>
+                        <app-cards [card]="item" [col]="5"> </app-cards>
+                    </div>
+                </div>
+
+            </div> -->
+      <div class="column1">
+        <div class="data-container">
+          <div class="header">
+            <div class="header-text">Add Items</div>
+            <hr class="header-line" />
+            <div style="text-align: center; margin-top: 10px">
+              <!-- <img [src]="'http://'+domainURL+'/assets/MFCompare/add-circle.png'" width="30" height="30" alt="img" (click)="expandItems()" *ngIf="!expandFlag"> -->
+              <!-- <img [src]="'http://'+domainURL+'/assets/remove.png'" width="30" height="30" alt="img" (click)="expandItems()" *ngIf="expandFlag"> -->
+            </div>
+            <!-- content -->
+            <div class="add-items">
+              <div
+                class="tabsgrid"
+                *ngFor="let tabName of addItemsLayout; let i = index"
+                (click)="
+                  addTile(
+                    tabName.layout,
+                    tabName.RowNumber,
+                    tabName.ColumnNumber
+                  )
+                "
+              >
+                <!-- <span *ngIf="!tabsArray[i].tabshow"> -->
+                <app-svg-icons
+                  [icon]="'add-home-icon'"
+                  [width]="'15'"
+                  [height]="'15'"
+                >
+                </app-svg-icons>
+                <span> {{ tabName.layout }} </span>
+
+                <!-- <span class="expand-icon" (click)="addTile(tabName.layout, tabName.RowNumber, tabName.ColumnNumber)"></span> -->
+
+                <!-- <app-svg-icons [icon]="'add-home-icon'" [width]="'30'" [height]="'30'" (click)="addTile(tabName.layout, tabName.RowNumber, tabName.ColumnNumber)"></app-svg-icons> -->
+                <!-- </span> -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!isLoading && isProfileCreated && isPDFMode">
+    <div class="pdf-box">
+      <pdf-viewer
+        [src]="pdfSRC"
+        useBrowserLocale="true"
+        [original-size]="false"
+        [autoresize]="true"
+        [show-borders]="false"
+      >
+      </pdf-viewer>
+    </div>
+  </div>
+
+  <div *ngIf="isLoading" style="text-align: center; margin-top: 15%">
+    <div class="loader-center">
+      <div class="multi-ripple">
+        <div></div>
+        <div></div>
+      </div>
+    </div>
+    <!-- <img [src]="isProd ? 'assets/loading_dots.gif':'../../../../assets/loading_dots.gif'" height="150px"
+            width="150px"> -->
+  </div>
+</div>
+
+<!-- <div class="pdf-component" *ngIf="viewPDF">
+    <div class="pdf-box">
+        <pdf-viewer [src]="pdfSRC" useBrowserLocale="true" [original-size]="false" [autoresize]="true" [show-borders]="false">
+        </pdf-viewer>
+    </div>
+</div> -->

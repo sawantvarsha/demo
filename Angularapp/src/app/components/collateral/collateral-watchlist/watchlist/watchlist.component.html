@@ -1,0 +1,228 @@
+<div
+  class="allpopup-overlay"
+  *ngIf="showSuggestions"
+  (click)="closePopups()"
+></div>
+
+<div class="watchlist">
+  <div class="watchlist-topbar" *ngIf="Page !== 'dashboard'">
+    <span>
+      <label class="watchlist-label">Watchlist</label>
+    </span>
+    <div class="flex-row">
+      <span *ngIf="addIconToggle">
+        <input
+          type="text"
+          class="input-watchlist"
+          (change)="addWatchlist($event)"
+        />
+      </span>
+      <span class="icon-card" (click)="addIconToggle = !addIconToggle">
+        <app-svg-icons
+          class=""
+          [icon]="'plus'"
+          [width]="'20'"
+          [height]="'18'"
+        ></app-svg-icons>
+      </span>
+      <span class="icon-card">
+        <app-svg-icons
+          class=""
+          [icon]="'watchlist-expand'"
+          [width]="'20'"
+          [height]="'18'"
+        ></app-svg-icons>
+      </span>
+      <span class="icon-card">
+        <app-svg-icons
+          class=""
+          [icon]="'watchlist-settings'"
+          [width]="'20'"
+          [height]="'18'"
+        ></app-svg-icons>
+      </span>
+    </div>
+  </div>
+  <!-- <div class="setting-div">
+        <div *ngIf="showSettingPopup" class="setting-popup">
+
+        </div>
+    </div> -->
+
+  <div class="horizontal-line" *ngIf="Page !== 'dashboard'"></div>
+
+  <div class="watchlist-topbar" style="padding-bottom: 0px">
+    <div class="search-and-popup">
+      <input
+        type="text"
+        class="search"
+        [placeholder]="watchlistPlaceholder"
+        [(ngModel)]="searchKey"
+        (input)="searchWatchListItems()"
+        (keyup.arrowup)="changeSearchIndex('UP')"
+        (keyup.enter)="selectWatchlistSearchItem(selectedProduct)"
+        (keyup.arrowdown)="changeSearchIndex('DOWN')"
+      />
+      <!--(blur)="showSuggestions=false"-->
+      <div class="productSuggestion" *ngIf="showSuggestions">
+        <div
+          *ngFor="let searchItem of filteredWatchlistSearchItems"
+          class="card"
+          (click)="selectWatchlistSearchItem(searchItem)"
+          [ngClass]="{ 'active-item': searchItem?.active }"
+        >
+          <span>{{ searchItem.id }}</span>
+          <span>{{ searchItem.value }}</span>
+        </div>
+      </div>
+    </div>
+    <!-- Changed by Rohit T. Asked by Mohan P. 31-Jan-2021 -->
+    <div class="watchlist-toggle">
+      <span
+        class="btn-toggle"
+        [ngClass]="{ 'selected-toggle': !watchlistToggle }"
+        (click)="toggleHeatmap()"
+      >
+        <app-svg-icons
+          class="crads"
+          [icon]="'cards'"
+          [width]="'18'"
+          [height]="'18'"
+        ></app-svg-icons>
+      </span>
+      <span
+        class="btn-toggle"
+        [ngClass]="{ 'selected-toggle': watchlistToggle }"
+        (click)="toggleList()"
+      >
+        <app-svg-icons
+          class="list"
+          [icon]="'list'"
+          [width]="'18'"
+          [height]="'18'"
+        ></app-svg-icons>
+      </span>
+    </div>
+  </div>
+
+  <div>
+    <div class="tabs-pages" *ngIf="Page !== 'dashboard'">
+      <span
+        class="tabs"
+        *ngFor="let watchlist of watchlistList"
+        (click)="selectedWatchlist = watchlist"
+        [ngClass]="{ 'tab-active': watchlist === selectedWatchlist }"
+      >
+        {{ watchlist }}
+        <div
+          [ngClass]="{
+            'horizontal-line-black': watchlist !== selectedWatchlist,
+            'selected-horizontal-line': watchlist === selectedWatchlist
+          }"
+        ></div>
+      </span>
+    </div>
+    <div class="watchlist-header" *ngIf="watchlistToggle">
+      <div>Scrip Name</div>
+      <div class="align-right"><label></label>LTP</div>
+      <div class="align-right"><label></label>Change (%)</div>
+    </div>
+    <div
+      class="table-div"
+      *ngIf="watchlistToggle && !emptylist && !isNewWatchlist"
+    >
+      <!-- Changed by Rohit T. Asked by Mohan P. 31-Jan-2021 -->
+      <div class="market-watch-tbl">
+        <div
+          class="watchlist-row"
+          *ngFor="let watchlistRecordList of watchlistData; let i = index"
+          (click)="
+            addNewItem('1', !watchlistExpandViewToggle, watchlistRecordList)
+          "
+        >
+          <div class="scrip">
+            <label class="short-name">{{ watchlistRecordList.id }}</label>
+            <label class="long-name">{{ watchlistRecordList.value }}</label>
+          </div>
+          <div class="align-right bid-ask" *ngIf="!changeRowToggle[i]">
+            <label>{{ watchlistRecordList.data1 || "-" }}</label>
+          </div>
+          <div
+            class="align-right percentage"
+            *ngIf="!changeRowToggle[i]"
+            [ngStyle]="{ color: watchlistRecordList.color }"
+          >
+            <label> {{ watchlistRecordList.data2 || "-" }} </label>
+          </div>
+          <div class="delete-button" style="margin: 3px 0px auto auto">
+            <app-svg-icons
+              [icon]="'delete'"
+              [width]="'15'"
+              [height]="'15'"
+              (click)="DeleteSharefromWatchlist(watchlistRecordList)"
+            ></app-svg-icons>
+          </div>
+          <!-- <div *ngIf="changeRowToggle[i]" class="table-actions">
+                        <div class="number-align">
+                            <button class="btn-buy">Buy</button>
+                        </div>
+                        <div class="number-align">
+                            <button class="btn-sell">Sell</button>
+                        </div>
+                        <div>
+                            <app-svg-icons class="" [icon]="'chart'" [width]="'20'" [height]="'20'"></app-svg-icons>
+                        </div>
+                        <div>
+                            <app-svg-icons class="" [icon]="'delete'" [width]="'20'" [height]="'20'"></app-svg-icons>
+                        </div>
+
+                    </div> -->
+        </div>
+      </div>
+      <!-- Changed by Rohit T. Asked by Mohan P. 31-Jan-2021 -->
+    </div>
+    <div
+      class="table-div-heatmap"
+      *ngIf="!watchlistToggle && !emptylist && !isNewWatchlist"
+    >
+      <div class="heatmap-gridview">
+        <div
+          class="heatmap"
+          *ngFor="let watchlistRecord of heatmapWatchlistData"
+          (click)="selectWatchlistData(watchlistRecord)"
+          [ngStyle]="{ 'background-color': watchlistRecord.bgColor }"
+        >
+          <div class="padding05 shortName">{{ watchlistRecord.id }}</div>
+          <div class="longName padding05">{{ watchlistRecord.value }}</div>
+          <div class="padding05" *ngIf="!showBuySell">
+            {{ watchlistRecord.data1 || "-" }}
+          </div>
+          <div class="padding05 small" *ngIf="!showBuySell">
+            {{ watchlistRecord.data2 || "-" }}
+          </div>
+          <button class="btn-buy" *ngIf="showBuySell">Buy</button>
+          <button class="btn-sell" *ngIf="showBuySell">Sell</button>
+          <div class="delete-button-heatmap" style="margin: 3px 0px auto auto">
+            <app-svg-icons
+              [icon]="'delete'"
+              [width]="'15'"
+              [height]="'15'"
+              (click)="DeleteSharefromWatchlist(watchlistRecord)"
+            ></app-svg-icons>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="table-div-heatmap" *ngIf="emptylist || isNewWatchlist">
+      <div class="emptyList">
+        <app-svg-icons
+          [icon]="'no-stocks'"
+          [width]="'60'"
+          [height]="'60'"
+        ></app-svg-icons>
+        <strong>No Watchlists</strong>
+        <span>Click + to create new watchlist</span>
+      </div>
+    </div>
+  </div>
+</div>

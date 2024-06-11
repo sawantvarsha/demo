@@ -1,0 +1,326 @@
+<div class="overlaybg" *ngIf="showsharesuggestionBox || CashFXshowInCcy || CashFXshowDepCcy || FXDshowInCcy || FXDshowDepCcy" (click)="closePopups()"></div>
+<div class="mainLP-container">
+    <!-- <div class="title-container">
+        <app-svg-icons class="back-button" [icon]="'back-button'" [width]="'40'" [height]="'40'"
+            [fill]="'var(--headers)'"></app-svg-icons>
+        <span class="title">
+            
+        </span>
+    </div> -->
+    <div class="page-title">
+        <app-svg-icons class="back-button" [icon]="'back-button'" [width]="'30'" [height]="'30'" [fill]="'var(--headers)'" (click)="commonApi.back()"></app-svg-icons>
+        <div>Liquidity Provider Link Scanner</div>
+        <div>
+            <app-svg-icons (click)="refresh()" [icon]="'refresh'" [width]="'26'" [height]="'26'">
+            </app-svg-icons>
+        </div>
+        <div class="btn-wrapper">
+            <button class="button" (click)="CheckStatus('All')">All Status Check</button>
+            <button class="button" (click)="PriceCheck('All')">All Price Check</button>
+        </div>
+    </div>
+    <div class="prod-wrapper" *ngFor="let rows of lpRows">
+        <ng-container [ngSwitch]='rows.value'>
+            <ng-template [ngSwitchCase]="'EQC'">
+                <div class="prod-container">
+                    <span class="prodheader">EQ Connect Liquidity</span>
+                    <div class="filter-container ELNFilter">
+                        <select aria-placeholder="ELN" disabled style="grid-column: span 2;">
+                            <option value="ELN">ELN</option>
+                        </select>
+                        <div style="grid-column: span 2;">
+                            <!--(blur)="showsharesuggestionBox= false"-->
+                            <input type="text" [(ngModel)]="shareKeyword" placeholder="AAPL.OQ" (input)="showShareSuggestions()" (focus)="showsharesuggestionBox=true">
+                            <div *ngIf="showsharesuggestionBox" class="suggestionBox">
+                                <div class="card" *ngFor="let item of suggestionArray">
+                                    <span (click)="SelectShare(item.Feedcode)">{{item.Feedcode}}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <input type="text" placeholder="6" [(ngModel)]="ELNTenorNo">
+                        <select name="" id="" aria-placeholder="Month" [(ngModel)]="ELNTenorType" style="grid-column: span 2;">
+                            <option value="Month">Month</option>
+                            <option value="Year">Year</option>
+                        </select>
+                        <input type="text" placeholder="97" [(ngModel)]="ELNstrike">
+                    </div>
+                    <div class="btn-container">
+                        <button class="button" (click)="CheckStatus('EQC')">Status Check</button>
+                        <button class="button" (click)="PriceCheck('EQC')">Price Check</button>
+                        <app-loader class="loader-img" *ngIf="ELNloaderup"></app-loader>
+                    </div>
+                </div>
+                <div class="responseCards" *ngIf="!ELNloaderup">
+                    <div class="card" *ngFor="let item of ELNStatusResponse">
+                        <span class="LPName">{{item.Link_Provider_Name ? item.Link_Provider_Name : item.PP_CODE}}</span>
+                        <span class="LPData" [ngClass]="{LPDataOffline: (item.Link_Provider_Status == 'DOWN'), LPDataOffline:item.ELNOUT == ''}">{{item.ELNOUT
+                            == 'Offline' ? ( item.Link_Provider_Status != 'UP' ? 'Offline' : 'Online' ) : (item.ELNOUT?
+                            item.ELNOUT : '-')}}</span>
+                        <!-- <span class="LPData" [ngClass]="{LPDataOffline: ((item.Link_Provider_Status != 'UP') )}">{{item.Link_Provider_Status ? ( item.Link_Provider_Status != 'UP' ? 'Offline' : 'Online' ) : (item.ELNOUT? item.ELNOUT : '-')}}</span> -->
+                    </div>
+                </div>
+                <div class="dummyResponse" *ngIf="ELNloaderup">
+                    <div class="flashCards" *ngFor="let dummy of ' '.repeat(20).split('')">
+                    </div>
+                </div>
+            </ng-template>
+            <ng-template [ngSwitchCase]="'FXD'">
+                <div class="prod-container">
+                    <span class="prodheader">FXD Connect Liquidity</span>
+                    <div class="filter-container vanillaFilter">
+                        <select aria-placeholder="Vanilla" disabled>
+                            <option value="Vanilla">Vanilla</option>
+                        </select>
+                        <div class="ccyWrapper">
+                            <input type="text" [(ngModel)]="FXDinCcyKey" (focus)="FXDshowInCcy = true" (input)="showCcySuggestion(FXDinCcyKey, 'invest')" placeholder="EUR">
+                            <div class="ccySuggestions" *ngIf="FXDshowInCcy">
+                                <span *ngFor="let item of investCcyList" (click)="SelectedCcy('fxd', 'invest', item)">{{item}}</span>
+                            </div>
+                        </div>
+                        <!-- <select name="" id="" aria-placeholder="USD">
+                            <option value="Month">JPY</option>
+                            <option value="Year">USD</option>-->
+                        <div class="ccyWrapper">
+                            <input type="text" [(ngModel)]="FXDdepCcyKey" (focus)="FXDshowDepCcy = true" (input)="showCcySuggestion(depCcyKey, 'deposit')" placeholder="USD">
+                            <div class="ccySuggestions" *ngIf="FXDshowDepCcy">
+                                <span *ngFor="let item of depositCcyList" (click)="SelectedCcy('fxd', 'deposit', item)">{{item}}</span>
+                            </div>
+                        </div>
+                        <select name="" id="" [(ngModel)]="FXDBuySell" aria-placeholder="SELL">
+                            <option value="SELL">SELL</option>
+                            <option value="BUY">BUY</option>
+                        </select>
+                        <select name="" id="" [(ngModel)]="FXDTenor" aria-placeholder="3M" (change)="checkforDates()">
+                            <option value="3M">3M</option>
+                            <option value="6M">6M</option>
+                        </select>
+                        <input type="text" [(ngModel)]="FXDStrike" placeholder="1.1333">
+                    </div>
+                    <div class="btn-container">
+                        <button class="button" (click)="CheckStatus('FXD')">Status Check</button>
+                        <button class="button" (click)="PriceCheck('FXD')">Price Check</button>
+                        <!-- <img src="assets/loading_dots.gif" alt="" *ngIf="FXDloaderup"> -->
+                        <app-loader class="loader-img" *ngIf="FXDloaderup"></app-loader>
+                    </div>
+                </div>
+                <div class="responseCards" *ngIf="!FXDloaderup">
+                    <div class="card" *ngFor="let item of FXDStatusResponse">
+                        <span class="LPName">{{item.provider}}</span>
+                        <span class="LPData">{{item.premium}}</span>
+                    </div>
+                </div>
+                <div class="dummyResponse" *ngIf="FXDloaderup">
+                    <div class="flashCards" *ngFor="let dummy of ' '.repeat(20).split('')">
+                    </div>
+                </div>
+            </ng-template>
+            <ng-template [ngSwitchCase]="'CashFX'">
+                <div class="prod-container">
+                    <span class="prodheader">Cash FX Connect Liquidity</span>
+                    <div class="filter-container SPOTFilter">
+                        <!-- <select name="" id="" aria-placeholder="EUR">
+                            <option value="Month" *ngFor="let item of CurrencyList">{{item}}</option> 
+                        </select> -->
+                        <div class="ccyWrapper">
+                            <input type="text" [(ngModel)]="inCcyKey" (focus)="CashFXshowInCcy = true" (input)="showCcySuggestion(inCcyKey, 'invest')" placeholder="USD">
+                            <div class="ccySuggestions" *ngIf="CashFXshowInCcy">
+                                <span *ngFor="let item of investCcyList" (click)="SelectedCcy('cashfx', 'invest', item)">{{item}}</span>
+                            </div>
+                        </div>
+                        <!-- <select name="" id="" aria-placeholder="USD">
+                            <option value="Month">JPY</option>
+                        </select> -->
+                        <div class="ccyWrapper">
+                            <input type="text" [(ngModel)]="depCcyKey" (focus)="CashFXshowDepCcy = true" (input)="showCcySuggestion(depCcyKey, 'deposit')" placeholder="JPY">
+                            <div class="ccySuggestions" *ngIf="CashFXshowDepCcy">
+                                <span *ngFor="let item of depositCcyList" (click)="SelectedCcy('cashfx', 'deposit', item)">{{item}}</span>
+                            </div>
+                        </div>
+                        <select aria-placeholder="SPOT" disabled>
+                            <option value="SPOT">SPOT</option>
+                        </select>
+                        <select name="" id="" aria-placeholder="SELL" [(ngModel)]="CashFXBuySell">
+                            <option value="SELL">SELL</option>
+                            <option value="BUY">BUY</option>
+                        </select>
+                    </div>
+                    <div class="btn-container">
+                        <button class="button" (click)="CheckStatus('CashFX')">Status Check</button>
+                        <button class="button" (click)="PriceCheck('CashFX')">Price Check</button>
+                        <app-loader class="loader-img" *ngIf="CashFXloaderup"></app-loader>
+                        <!-- <img src="assets/loading_dots.gif" alt="" *ngIf=""> -->
+                    </div>
+                </div>
+                <div class="responseCards" *ngIf="!CashFXloaderup">
+                    <div class="card" *ngFor="let item of CashFXStatusResponse">
+                        <span class="LPName">{{item.PriceProviderCode}}</span>
+                        <span class="LPData">{{item.NearSpotRate}}</span>
+                    </div>
+                </div>
+                <div class="dummyResponse" *ngIf="CashFXloaderup">
+                    <div class="flashCards" *ngFor="let dummy of ' '.repeat(20).split('')">
+                    </div>
+                </div>
+            </ng-template>
+        </ng-container>
+    </div>
+
+
+
+
+    <!-- <div class="prod-wrapper">
+        <div class="prod-container">
+            <span class="prodheader">EQ Connect Liquidity (ELN)</span>
+            <div class="filter-container">
+                <div>
+                    <input type="text" [(ngModel)]="shareKeyword" placeholder="AAPL.OQ" (input)="showShareSuggestions()" (focus)="showsharesuggestionBox=true">
+                    <div *ngIf="showsharesuggestionBox" class="suggestionBox">
+                        <div class="card" *ngFor="let item of suggestionArray">
+                            <span (click)="SelectShare(item.Feedcode)">{{item.Feedcode}}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <input type="text" placeholder="6" [(ngModel)]="ELNTenorNo">
+                <select name="" id="" aria-placeholder="Month" [(ngModel)]="ELNTenorType">
+                    <option value="Month">Month</option>
+                    <option value="Year">Year</option>
+                </select>
+                <input type="text" placeholder="97" [(ngModel)]="ELNstrike">
+            </div>
+            <div class="btn-container">
+                <div class="btn" (click)="CheckStatus('EQC')">Status Check</div>
+                <div class="btn" (click)="PriceCheck('EQC')">Price Check</div>
+                <img src="assets/loading_dots.gif" alt="" *ngIf="ELNloaderup">
+            </div>
+        </div>
+        <div class="responseCards">
+            <div class="card" *ngFor="let item of ELNStatusResponse">
+                <span class="LPName">{{item.Link_Provider_Name ? item.Link_Provider_Name : item.PP_CODE}}</span>
+                <span class="LPData" [ngClass]="{LPDataOffline: (item.Link_Provider_Status == 'DOWN' || item.ELNOUT == '-')}">{{item.ELNOUT
+                    == 'Offline' ? ( item.Link_Provider_Status != 'UP' ? 'Offline' : 'Online' ) : (item.ELNOUT?
+                    item.ELNOUT : '-')}}</span>
+            </div>
+        </div>
+    </div> -->
+    <!-- <div class="prod-wrapper">
+        <div class="prod-container">
+            <span class="prodheader">FXD Connect Liquidity (Vanilla)</span>
+            <div class="filter-container vanillaFilter">
+                <select name="" id="" aria-placeholder="EUR">
+                    <option value="Month">EUR</option>
+                    <option value="Year">USD</option>
+                </select>
+                <select name="" id="" aria-placeholder="USD">
+                    <option value="Month">JPY</option>
+                    <option value="Year">USD</option>
+                </select>
+                <select name="" id="" aria-placeholder="SELL">
+                    <option value="Month">SELL</option>
+                    <option value="Year">BUY</option>
+                </select>
+                <select name="" id="" aria-placeholder="3M">
+                    <option value="Month">3M</option>
+                    <option value="Year">6M</option>
+                </select>
+                <input type="text" placeholder="1.1333">
+            </div>
+            <div class="btn-container">
+                <div class="btn" (click)="CheckStatus('FXD')">Status Check</div>
+                <div class="btn" (click)="PriceCheck('FXD')">Price Check</div>
+                <img src="assets/loading_dots.gif" alt="" *ngIf="FXDloaderup">
+            </div>
+        </div>
+        <div class="responseCards">
+            <div class="card" *ngFor="let item of FXDStatusResponse">
+                <span class="LPName">{{item.provider}}</span>
+                <span class="LPData">{{item.premium}}</span>
+            </div>
+        </div>
+    </div> -->
+    <!-- <div class="prod-wrapper">
+        <div class="prod-container">
+            <span class="prodheader">Cash FX Connect Liquidity (Spot)</span>
+            <div class="filter-container SPOTFilter">
+                <select name="" id="" aria-placeholder="EUR">
+                    <option value="Month">EUR</option>
+                    <option value="Year">USD</option>
+                </select>
+                <select name="" id="" aria-placeholder="USD">
+                    <option value="Month">JPY</option>
+                    <option value="Year">USD</option>
+                </select>
+                <select name="" id="" aria-placeholder="BUY">
+                    <option value="Month">SELL</option>
+                    <option value="Year">BUY</option>
+                </select>
+                <select name="" id="" aria-placeholder="T+2">
+                    <option value="Month">3M</option>
+                    <option value="Year">6M</option>
+                </select>
+            </div>
+            <div class="btn-container">
+                <div class="btn" (click)="CheckStatus('CashFX')">Status Check</div>
+                <div class="btn" (click)="PriceCheck('CashFX')">Price Check</div>
+                <img src="assets/loading_dots.gif" alt="" *ngIf="CashFXloaderup">
+            </div>
+        </div>
+        <div class="responseCards">
+            <div class="card" *ngFor="let item of CashFXStatusResponse">
+                <span class="LPName">{{item.PriceProviderCode}}</span>
+                <span class="LPData">{{item.NearSpotRate}}</span>
+            </div>
+        </div>
+    </div> -->
+
+    <!-- <div class="img-wrapper">
+        <img src="assets/downarrow.png" alt="">
+    </div>
+
+    <div class="bottom-container">
+        <div class="sub-container">
+            <div class="title">Reuters</div>
+            <div class="title-underline"></div>
+            <div class="header">FX Pairs ::</div>
+            <div class="card-container">
+                <div class="card" *ngFor="let dummy of ' '.repeat(3).split('')">
+                    <div class="ccypair">USD-JPY</div>
+                    <div class="rates">108.45/108.48</div>
+                </div>
+            </div>
+            <div class="header">Shares ::</div>
+            <div class="card-container">
+                <div class="card" *ngFor="let dummy of ' '.repeat(3).split('')">
+                    <div class="rates">Apple</div>
+                    <div class="ccypair">(AAPL.OQ)</div>
+                    <div class="rates">194.22/194.49</div>
+                </div>
+            </div>
+        </div>
+        <div class="sub-container">
+            <div class="title">Reuters</div>
+            <div class="title-underline"></div>
+            <div class="header">FX Pairs ::</div>
+            <div class="card-container">
+                <div class="card" *ngFor="let dummy of ' '.repeat(3).split('')">
+                    <div class="ccypair">USD-JPY</div>
+                    <div class="rates">108.45/108.48</div>
+                </div>
+            </div>
+            <div class="header">Shares ::</div>
+            <div class="card-container">
+                <div class="card" *ngFor="let dummy of ' '.repeat(3).split('')">
+                    <div class="rates">Apple</div>
+                    <div class="ccypair">(AAPL.OQ)</div>
+                    <div class="rates">194.22/194.49</div>
+                </div>
+            </div>
+        </div>
+    </div> -->
+
+
+
+
+
+</div>

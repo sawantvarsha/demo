@@ -1,0 +1,205 @@
+<div class = "page-navigation page-nav-margin">
+    <app-svg-icons class="back-button" [icon]="'back-button'" [width]="'40'" [height]="'40'" [fill]="'var(--headers)'"
+    (click)="back()"></app-svg-icons>
+    <div class="page-title">Holiday Calendar Viewer </div>
+
+    <div class="flexview-allholiday">
+        <div class="flex-allholiday">
+            <div class = "filled-circle" id="filled-circle-ccy"  (click) = "selectAllCCY()"></div> <!--[ngClass] = "{'filled-circle-visited' : selectedAllCcy == true }"-->
+            <label>All Holidays</label>
+        </div>
+        <div class="switch-container">
+            <label class="switch" style="margin-top: 5px;">
+              <input type="checkbox" (change)="toggleTableView = !toggleTableView">
+              <span class="slider"></span>
+            </label>
+        </div>
+    </div>
+    
+</div>
+
+<div class = "holiday-setup-wrapper">
+
+    <div>
+        <!-- Added on 02 Aug 2022 for filters  -->
+        <!-- <div class = "edit-holiday-wrapper">
+            <label>Holiday Name</label>
+            <input type="text" [(ngModel)] = "eventNameFilter" (input) = "filterHolidayDetails()"/>
+            <label>Holiday Event</label>
+            <input type="text"  [(ngModel)] = "eventTypeFilter" (input) = "filterHolidayDetails()"/>
+            <label>Holiday Type</label>
+            <select [(ngModel)] = "selectedEventType" (change) = "filterHolidayDetails()">
+                <option *ngFor = "let event of eventType">{{event}}</option>
+            </select>
+          
+            <label>From Date</label>
+            <div class="FromDateLabel">
+                  <input
+                    type="date"
+                    name="StartDate"
+                    id="StartDate"
+                    class="input-dob"
+                    [(ngModel)]="fromDate"
+                    (change) = "getStartDate($event)"
+            />
+            <span id="FromDateLabel">{{
+                    fromDate | date: "dd-MMM-yyyy"
+            }}</span>
+            
+            </div>
+
+            <label>To Date</label>
+            <div class="ToDateLabel">
+              <input
+                    type="date"
+                    name="EndDate"
+                    id="EndDate"
+                    class="input-dob"
+                    [(ngModel)]="toDate"
+                    (change) = "getEndDate($event)"
+                  />
+              <span id="ToDateLabel">{{
+                    toDate | date: "dd-MMM-yyyy"
+             }}</span>
+            </div>
+    
+        
+            
+        </div> -->
+
+        <!-- Added on 05 Aug 2022 asked by Vipul  B-->
+        <div class = "search-ccy-wrapper">
+            <div class="search_Div">
+                <app-svg-icons class="" icon="{{'icon-search'}}" [width]="'20'" [height]="'20'">
+                </app-svg-icons>
+                <input type="search" placeholder="Search Security" (input) = "searchCCY($event)" class="search-input-ccy">
+            </div>
+            <div class = "ccy-wrapper">
+                <div class="ccy-grid">
+                    <ng-container *ngFor = "let ccy of currency_response">
+                          <div class="ccy-tab" [ngClass] = "{'active' : selectedCCY == ccy.code || holidayEventCCY.includes(ccy.code)}" (click) = "getCurrencyDetails(ccy.code)">
+                           <label class="text-wrapper-ccy">{{ccy.code}}</label> 
+                        </div>
+                     </ng-container>
+                </div>
+            </div>
+           
+        </div>
+    </div>
+
+    
+    <div>
+        <div class = "yeartab">
+            <!-- <span (click) = "getYear('previous')" class="btn-prev"><<</span> -->
+            <div class="arrow-container"  (click)="getYear('previous')">
+                <app-svg-icons class="back-button" [icon]="'arrow-left-icon'" [width]="'14'" [height]="'14'" [fill]="'var(--btn-text)'"   ></app-svg-icons>
+            </div>
+            
+            <span>{{currentYear}}</span>
+            <!-- <span (click) = "getYear('next')" class="btn-prev">>></span> -->
+            <div class="arrow-container"  (click)="getYear('next')">
+                <app-svg-icons class="back-button" [icon]="'arrow-right-icon'" [width]="'14'" [height]="'14'" [fill]="'var(--btn-text)'"   ></app-svg-icons>
+            </div>
+        </div>
+      
+
+        <table *ngIf = "toggleTableView">
+            <thead>
+                <th>Currency</th>
+                <th>Holiday Date</th>
+                <th>Holiday Name</th>
+                <th>Holiday Type</th>
+                <th>Event</th>
+            </thead>
+            <tbody>
+                <tr *ngFor = "let holiday of holidayDetails">
+                    <td class="align-center">{{holiday.currency}}</td>
+                    <td class="align-center">{{holiday.formattedDate}}</td>
+                    <td class="align-left" style="padding-left: 4rem;">{{holiday.holidayName}}</td>
+                    <td class="align-left" style="padding-left: 4rem;">{{holiday.holidayType}}</td>
+                    <td class="align-left" style="padding-left: 4rem;">{{holiday.misc}}</td>
+                </tr>
+            </tbody>
+        </table>
+
+<!-- Added on 01 Aug 2022 calendar view-->
+        <div class = "gridview-calender" *ngIf = "!toggleTableView">
+            <div class="week-grid" *ngFor = "let cal of MONTHS">
+                <label style="font-weight: 500; font-size: 15px; margin-bottom: 5px">{{ cal }} {{ currentYear
+                  }}</label>
+                <div class="week-header">
+                  <label *ngFor="let item of WEEKDAYS">{{ item }}</label>
+                </div>
+                <div class="week-data">
+                  <ng-container *ngFor="let days of noOFdays; let i = index" >
+                    <ng-container class="week-class" *ngIf = "cal == days.month">
+                        <ng-container *ngIf="days.day == '1'">
+                            <label *ngFor="let _ of [].constructor(days.weekdayno); let j = index">
+                            </label>
+                        </ng-container>
+                    </ng-container>
+                  
+                    <div class="week-class" *ngIf = "cal == days.month"  [ngClass]="{ active: holidayEvents.includes(days.date) }" (click)="editHolidayPopup(days.date)">
+                      <label>
+                        {{ days.day }}
+                      </label>
+                    </div>
+                 </ng-container>
+                </div>
+            </div>
+
+        </div>
+
+        <div *ngIf="showEditPopup" class="overlay">
+
+            <div class="page-content-container-popup">
+        
+                <div class="recommended-products">
+                    <div class="tabs tab-active">
+                        <div>{{toggle_addupdate}} Holiday</div>
+                        <app-svg-icons class="closebtn" [icon]="'cancel-icon'" [width]="'15'" [height]="'15'"
+                            (click)="showEditPopup = false">
+                        </app-svg-icons>
+                    </div>
+
+                    <div class="edit-holiday-wrapper">
+                        <label>Currency/Exchange</label>
+                        <!-- for adding ccy holiday -->
+                        <select *ngIf = "toggle_addupdate != 'Edit'" [(ngModel)] = "selectedCCYName" [value] = "selectedCCYName" [disabled] = "false" (change) = "validateHolidayFields()"> 
+                            <option *ngFor = "let ccy of currency_response">{{ccy.code}}</option>
+                        </select>
+                        <!-- for editing ccy holiday -->
+                        <select *ngIf = "toggle_addupdate == 'Edit'" id="editHolidayPopupID" [disabled] = "false" (change) = "validateHolidayFields(); updateEditHolidayPopup();">
+                            <option *ngFor = "let rec of fetchHolidayRecord" [value]="rec.id">{{rec.currency}}</option>
+                        </select>
+                        <label>Holiday Name</label>
+                        <input type="text" [(ngModel)] = "selectedHolidayName"/>
+                        <label>Holiday Type</label>
+                        <input type="text" [(ngModel)] = "selectedHolidayType" (input) = "validateHolidayFields()"/>
+                        <label>Event</label>
+                        <input type="text" [(ngModel)] = "selectedEvent"/>
+                        <label>Date</label>
+                        <input type="text" [(ngModel)] = "selectedDate"  (input) = "validateHolidayFields()"/>
+
+                        <div class="message-saveholiday" *ngIf ="message != '' ">
+                            {{message}}
+                        </div>
+                        <div class="error" *ngIf ="errormsg != '' ">
+                            {{errormsg}}
+                        </div>
+                    </div>
+
+                    <div class="btn-edit-holiday" *ngIf = "toggle_addupdate == 'Edit'">
+                        <button class="button" (click) = "saveHolidayCalendar('U')">Update Holiday</button>
+                        <button class="button" (click) = "saveHolidayCalendar('D')">Delete Holiday</button>
+                    </div>
+                    <div class="btn-edit-holiday" *ngIf = "toggle_addupdate == 'Add'">
+                        <button class="button" (click) = "saveHolidayCalendar('I')" *ngIf ="message == '' ">Add Holiday</button>
+                    </div>
+                   
+                </div>
+            </div>
+        </div>   
+    </div>
+</div>
+

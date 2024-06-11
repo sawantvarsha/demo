@@ -1,0 +1,100 @@
+<div style="padding: 0px 15px">
+  <div style="height: 100px; color: var(--text); padding: 0px 5px">
+    <div style="
+          height: 37px;
+          font-size: x-large;
+          font-weight: 400;
+          line-height: 28px;
+          color: var(--label);
+          margin-bottom: 10px;
+          display: flex;
+          justify-content: space-between;
+        ">
+      <p style="margin: 0px" *ngIf="selectedMPGitem">
+        {{ selectedMPGitem.BCM_long_name }}
+      </p>
+    
+    </div>
+    <div style="display: flex; gap: 15px; align-items: center">
+      <!-- <input type="text" placeholder="Search" [(ngModel)]="sTokenToSearch" class="search" -->
+      <input type="text" placeholder="Search" [(ngModel)]="sTokenToSearch" class="search"
+        (keydown.enter)="onKeydownFilter()" />
+    
+      <app-svg-icons title="Load" [icon]="'refresh'" [width]="'30'" [height]="'30'" (click)="refreshData()"></app-svg-icons>
+      <app-svg-icons title="Export To Excel" [icon]="'xls'" (click)="exportAsXLSX()"></app-svg-icons>
+      <app-svg-icons title="Transpose" [icon]="'transpose'" [fill]="'var(--active)'" (click)="transposeTable()"></app-svg-icons>
+
+
+      <div class="pagination-class">
+        <div class="inline" >
+          <span class="common-font rows-per-page" style="font-size: 12px;margin-right:15px">Record(s) Per Page</span>
+          <input class="common-font rows-per-page-input" [(ngModel)]="pageSize" type="text"
+            (keyup.enter)="onKeydownRowsPerPage(pageSize)" (blur)="onKeydownRowsPerPage(pageSize)"
+            />
+            <!-- <input class="common-font rows-per-page-input" type="text"
+            (keyup.enter)="onKeydownRowsPerPage(pageSize)" (blur)="onKeydownRowsPerPage(pageSize)"
+            /> -->
+
+          <button mat-raised-button (click)="prevBtnClicked()" style="font-size: 12px">
+            Prev
+          </button>
+          <input class="common-font rows-per-page-input" [(ngModel)]="pageNo" type="text"
+            (keyup.enter)="onKeydownPageNo(pageNo)" (blur)="onKeydownPageNo(pageNo)"
+           />
+           <!-- <input class="common-font rows-per-page-input" type="text"
+            (keyup.enter)="onKeydownPageNo(pageNo)" (blur)="onKeydownPageNo(pageNo)"
+           /> -->
+          <button mat-raised-button (click)="nextBtnClicked()" style="font-size: 12px">
+            Next
+          </button>
+          <span class="common-font rows-per-page" style="font-size: 12px">Total Record(s) : {{totalRecords}}</span>
+        </div>
+
+
+        
+      </div>
+      <span *ngIf="errorMsg.length" class="link">{{errorMsg}}</span>
+    </div>
+  </div>
+  <div *ngIf="!isLoader" class="tbl-container" >
+    
+     
+      
+    
+   
+    <table *ngIf="BlotterDataColumnHeader.length && BlotterDataRows.length" [ngClass]="{'vertical': transpose}" >
+      <thead>
+        <th [id]="headerItem[0]" *ngFor="let headerItem of BlotterDataColumnHeader; let i = index">
+          <div class="header-grp">
+            <div>
+              <app-column-filter-mpg  *ngIf="colNo === i+1" (tableFiltered)="applyFilter($event)" [colNo]="colNo" [filterkey]="filterkey" [BlotterDataColumnHeader]="BlotterDataColumnHeader" [BlotterDataRows]="BlotterDataRows" [BlotterDataRowsCopy]="BlotterDataRowsCopy"  [colName]="colName" [left]="x" [top]="y" ></app-column-filter-mpg>
+            </div>
+            <div class="header-filter" >
+              {{ this.apifunction.mapHeader(headerItem[0]) }}
+              <app-svg-icons  [icon]="'ecfilter'"  [width]="'20'" [height]="'20'" [fill]="isFilterActive(this.apifunction.mapHeader(headerItem[0]))? 'var(--active)': 'var(--headers)' " (click)="openColFilter(headerItem[0],this.apifunction.mapHeader(headerItem[0]),i+1)"  ></app-svg-icons>
+            </div>
+          </div>
+        </th>
+      </thead>
+    
+        <tbody>
+          <tr *ngFor="let rowItem of BlotterDataRows; let i = index">
+              <td [ngClass]="{'right-cell':isNumeric(rowItem[BlotterDataColumnHeader[j][0]]), 'center-cell':isDate(rowItem[BlotterDataColumnHeader[j][0]]) }"
+                *ngFor="let _ of [].constructor(getRowlength(rowItem)); let j = index">
+                {{ rowItem[BlotterDataColumnHeader[j][0]] || "-" }}
+              </td>
+          </tr>
+        </tbody>
+      
+       
+    </table>
+  </div>
+</div>
+
+
+<div *ngIf="isLoader" class="loader-center">
+  <div class="multi-ripple">
+      <div></div>
+      <div></div>
+  </div>
+</div>

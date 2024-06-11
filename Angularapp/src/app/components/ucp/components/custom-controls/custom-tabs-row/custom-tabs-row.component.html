@@ -1,0 +1,7 @@
+<td (click)="decTableRowCount()">
+<!-- Updated by RajeshC || 11-Oct-2023 || ThemeChanges -->
+   <button  style="width: 30px; vertical-align: bottom;" class="custom-tabs-button UCPMatButton UCPCustomTabButtons" [ngClass]="{disabled: disabled}" [disabled]="disabled">-</button>
+</td>
+<td *ngFor="let control of data" class="customTabTdStyle" [ngStyle]="(checkUDFVisibility(control))">
+  <app-custom-tab-field-templates (CustomTabChangeChange)="customTabFieldValueChange(control)" class="mandate-fix" [dropdowns]="dropdowns" [index]="index" [searchArrays]="searchArrays" [shareArray]="shareArray" [CustomTabs]="CustomTabs" [control]="control"></app-custom-tab-field-templates>
+</td>

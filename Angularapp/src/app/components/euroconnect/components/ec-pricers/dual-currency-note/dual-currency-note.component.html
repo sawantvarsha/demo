@@ -1,0 +1,661 @@
+<div [ngClass]="{'disablePointerEvents': this.viewOnly}">
+    <div class="row pgHeaderTop"><!--Padding changed by Jyoti S || 13-Apr-2023 -->
+        <div class="col-12 title-row">
+            <label class="pageHeader">Dual Currency Note</label>
+            
+            <!--Added by Apurva C||19-Oct-->
+            <!-- Commented by Apurva K|| yet to devloped -->
+            <!-- <div class="product-tabs" *ngIf="!this.viewOnly">
+                <div></div>
+                <div *ngIf="!this.viewOnly">
+                    <div class="topGridRow">
+                        <div class="relPosition">
+                            <label class="labelNames">Load Variants</label>
+                        </div>
+                        <div class="relPosition">
+                            <app-custom-dropdown [data]="portfolioIdArr" [unicodeIcon]="false" [showIcon]="true" [textField]="'P_Name'" [valueField]="'P_ID'" [iconSrcField]="'imageIcon'" (selected)="changeDdl($event)" >
+                            </app-custom-dropdown>
+                        </div>
+
+                        <div class="relPosition">
+                            <label class="labelNames">New Variant</label>
+                        </div>
+                        <div class="relPosition">
+                            <input type="text" [(ngModel)]="portfolioName" class="txtalignLeft">
+                        </div>
+                        <div class="relPosition">
+                            <div class="btn-group btnSaveMargin" (clickOutside)="saveoptionflag = false">
+                                <button type="button" class="btn btn_Save" (click)="Save()" tabindex="50" *ngIf="!this.viewOnly" [disabled]="priceBtnActive === 'N'">
+                                    <div class="price-with-loader">
+                                            {{ "Save" | translate }}
+                                            <div class="txtAlignCenter" *ngIf="variantFlag">
+                                                <div class="row priceall-loader loaderbox">
+                                                    <div class="col-12">
+                                                        <img src="{{asseturl}}Ajaxloader.gif" alt="" width="100px" class="loadergif">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                           </div>
+                                            
+                                </button>
+                               
+                                <button type="button" (click)="saveOptions()" class="sidebutton btnSaveNShare" *ngIf="!this.viewOnly" [disabled]="(priceBtnActive === 'N')">
+                                    <app-svg-icons [icon]="'arrow-drop-down'" [width]="'8'" [height]="'8'">
+                                    </app-svg-icons>
+                                </button>
+                                <div class="ddl SaveNShare" *ngIf="(saveoptionflag) ">
+                                    <div class="flexDisplay">
+                                    <div class="updateIcon" *ngIf="portfolio!=='' && accessRight !== 'VIEW'">
+                                       
+                                            <app-svg-icons [icon]="'update-icon'" [width]="'15'" [height]="'15'">
+                                            </app-svg-icons>
+                                    </div>
+                                    <div class="ddlitem" role="menuitem" (click)="updateVariant();saveoptionflag=false" *ngIf="portfolio!=='' && accessRight !== 'VIEW'">Update Variant
+                                    </div>
+                                </div>
+                                <div class="flexDisplay">
+
+                                    <div class="SaveNShareIcon">
+                                       
+                                            <app-svg-icons [icon]="'share-icon'" [width]="'15'" [height]="'15'">
+                                            </app-svg-icons>
+                                    </div>
+                                    <div class="ddlitem" role="menuitem" (click)="showsaveSharePopup()">Save and Share
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="relPosition">
+                            <button class="button DeleteIcon" (click)="DeleteTemplate();" [disabled]="(portfolio==='')">
+                              
+                                <app-svg-icons *ngIf="(portfolio==='')" [icon]="'delete'" [width]="'13'" [height]="'13'">
+                                </app-svg-icons>
+                                <app-svg-icons *ngIf="(portfolio !=='')" [icon]="'deleteEnabled'" [width]="'13'" [height]="'13'">
+                                </app-svg-icons>
+                                {{ "Delete" | translate }}
+                            </button>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div> -->
+            <!-- Added top on 09 Jan 2023 by Ashwini H -->
+            <div class="portfolioMsg" *ngIf="successMsg !== '' && saveFlag">
+                <span class="successMsg txtsuccessMsg" *ngIf="successMsg !== '' && saveFlag">{{successMsg}} </span>
+            </div>
+            <div class="portfolioMsg" *ngIf="SaveandShareErrorMsg !== ''">
+                <span class="errorMsg" *ngIf="SaveandShareErrorMsg !== ''">{{SaveandShareErrorMsg}} </span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="relPosition">
+            <div class="row divRfqId">
+                <div class="col-12">
+                    <div class="Messagebox" *ngIf="rfqID" style="font-size: 22px !important;">
+                        RFQ ID : &nbsp; {{noteMasterID}}</div>
+                    <div *ngIf="portfolioId && portfolioId!=='' && this.viewOnly" style="font-size: 22px !important;" class="Messagebox">
+                        Saved Request ID : {{portfolioId}}
+                    </div>
+                    <div *ngIf="scheduledReqId && scheduledReqId!=='' " style="font-size: 22px !important;" class="Messagebox">
+                        Scheduled Request ID : {{scheduledReqId}}
+                    </div>
+                    <div *ngIf="ErrorMsg !== '' " class="Messagebox">
+                        <span class="errMsgTop">{{ErrorMsg}}</span>
+                    </div>
+                    <div *ngIf="infoMsg !== '' " class="Messagebox">
+                        <span class="validationErrorMsg">{{infoMsg}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div></div>
+    </div>
+
+    <div class="row-grid">
+        <div class="relPosition">
+            <div class="row-grid-inner">
+                <!-- Column 1 -->
+                <div class="flex-column">
+        
+                            <div class="label-row">
+                                <!-- Changed by Pranav D 26-Oct-2021 Removed hidescreen class from below label and added General Terms -->
+                                <label class="box-header">General Terms</label>
+                            </div>
+    
+                            <!-- On behalf of -->
+                            <!-- *ngIf="this.allBooksData.length > 1" Added by Pranav D 6-Mar-2023 | BBVAEPCLI-407 -->
+                            <!-- <div class="row-grid-2">
+                                <div style="position:relative;" *ngIf="this.allBooksData.length > 1">
+                                    <label>{{this.commonfunctions.Onbehalfof | translate}}</label>
+                                </div>
+                                <div style="position:relative;" *ngIf="this.allBooksData.length > 1">
+                                    <select [(ngModel)]="onBehalfOf" tabindex="1" (change)="this.reset();onBehalfOfChange();">
+                                        <option *ngFor="let bookData of allBooksData;let i = index"
+                                            [value]="bookData.BookCode">
+                                            {{bookData.BookName }}</option>
+                                    </select>
+                                </div>
+                            </div> -->
+    
+                           
+                            
+                            <!-- Currency -->
+                            <div class="row-grid-2">
+                                <div class="relPosition">
+                                    <label>{{ "Currency" | translate}}</label>
+                                </div>
+                                <div class="relPosition">
+                                    <!-- Removed  cpnTypeChange(this.cpnType) | Anubhav Goyal | BBVAEPCLI-343-->
+                                    <select [(ngModel)]="Currency"
+                                    (change)=" this.reset();CurrencyChange(Currency);GetDCNBankSpreadCost()">
+                                    <option *ngFor="let ccy of CurrencyPair" value="{{ccy.Asset_Pair}}">{{ccy.Asset_Pair}}
+                                    </option>
+                                </select>
+                                </div>
+                            </div>
+    
+                            <div class="row-grid-2">
+                                <div style="position:relative;">
+                                    <label>{{this.commonfunctions.Format | translate}}</label>
+                                </div>
+                                <div style="position:relative;">
+                                    <select [(ngModel)]="format" (change)=" this.reset();this.formatChange(format); GetDCNBankSpreadCost()" tabindex="3">
+                                        <!-- <option>Swap</option> -->
+                                        <option *ngFor="let f of Format" [value]="f.Value">{{f.Key}}</option>
+                                    </select>
+                                </div>
+                            </div>
+    
+                            <!-- Solve For -->
+                            <div class="row-grid-2">
+                                <div style="position:relative;">
+                                    <label>{{this.commonfunctions.Solvefor | translate}}</label>
+                                </div>
+                                <div style="position:relative;">
+                                    <select [(ngModel)]="SolveForValue" id="SolveForValue"
+                                    (change)="setSolveFor() ; editSpreadValue(); this.reset();">
+                                        <option value="Coupon">Coupon</option>
+                                        <option value="Strike - Spread">Strike / Spread</option>
+                                        <option value="Reoffer Price">Reoffer Price</option>
+                                        <option value="Fee" *ngIf="this.RMType === 'BBVAUser'">Fee</option>
+                                    </select>
+                                </div>
+                            </div>
+    
+                            
+    
+                           
+                            <div class="row-grid-2">
+                                <div style="position:relative;">
+                                    <!-- Added by Anubhav Goyal | BBVAEPCLI-394 lower the coupon and leave less white space on the CLN screen | 27-02-2023 -->
+    
+                                </div>
+                            </div>
+    
+                        </div>
+                        <!-- Column 2 -->
+                        <div class="flex-column">
+                           
+                            <div class="label-row hideScreen">
+                                <label class="labelHeaders hideScreen" style="height: 32px;"></label>
+                            </div>
+                           
+                            <div class="row-grid-2">
+                                <div style="position:relative;">
+                                    <label>{{this.commonfunctions.SizeT | translate}}</label>
+                                </div>
+                                <div style="display: flex;gap:6%;position: relative;">
+                                    <label style="position:absolute;right: 20px;top: -24px;width: fit-content; ">Denom. CCY</label>
+                                    <!-- End  -->
+                                    <input type="text" id="txtsize" type="text" maxlength="14" value="{{ Size }}" autocomplete="off"
+                                        (focus)="commonfunctions.UnformatNumber($event)" (blur)="this.reset();checkValidNotional($event); checkValidNotionalBand($event);checkNotionalMinMax($event);
+                                GetDCNBankSpreadCost();" (keypress)="commonfunctions.NotionalValidateKeys($event);"
+                                        (keyup)="commonfunctions.chkNotionalFormat_keyUp($event);" [(ngModel)]="Size"
+                                        style="max-width: 11em !important;" />
+                                    <select [(ngModel)]="ddlccy" style="width: 72px;"
+                                        (change)="this.reset();onChangeDdlccy();GetDCNBankSpreadCost();fetchRealTimeSpotValue();GetReofferOrUpfront('Upfront')">
+                                        <option value="{{depoCcy}}">{{depoCcy}}</option>
+                                        <option value="{{altCcy}}">{{altCcy}}</option>
+                                    </select>
+                                    <!-- this.feeAmtCalc() -->
+                                </div>
+                            </div>
+    
+                            <!-- Price (%) -->
+                            <div class="row-grid-2" *ngIf="format==='Note'">
+                                <div style="position:relative;">
+                                    <label>{{this.commonfunctions.ReofferPricepecent | translate}}</label>
+                                </div>
+                                <div>
+                                    <!-- this.Price = setDecimalReofferPrice($event, issuePriceBox); -->
+                                    <div style="display: flex; gap: 4px; align-items: center;">
+                                        <input type="text" id="txtprice" type="text" class="width11em" (blur)="this.reset();
+                                    GetReofferOrUpfront('Upfront'); this.Price = setDecimalReofferPrice($event, issuePriceBox);
+                                    PriceValidation($event)" [(ngModel)]="Price"
+                                            [disabled]="this.SolveForValue === 'Reoffer Price'"
+                                            (keypress)="this.commonfunctions.InputNumber($event)" />
+                                        <!--Anubhav Goyal | 23-01-2023 | Removed (click)="reset(); Changed (change) to (click); Added .currentTarget " -->
+                                        <input type="checkbox" id="chkPrecision" class="matDateChk" [(ngModel)]="issuePriceBox"
+                                            (click)="setIssuePriceCheckBox($event.currentTarget)" style="margin-left:13px" />
+                                        <label class="checkbox-label-font">{{this.commonfunctions.FullPrecision |
+                                            translate}}</label>
+                                    </div>
+                                </div>
+                            </div>
+    
+                            <!-- Upfront (%) -->
+                            <div class="row-grid-2" >
+                                <div style="position:relative;">
+                                    <label style="white-space: nowrap;">{{this.commonfunctions.upfrontpercentpa |
+                                        translate}}
+                                        (%) </label>
+                                </div>
+                                <div style="display: flex; gap: 10px; align-items: center;">
+
+                                    <!--END: Added by Anubhav Goyal | 16-May-2023 | BBVAEPCLI-530 FX: Reoffer Invoice/Discount-->
+                                    <!-- Added by Suvarna P | 26-May-2023 | BBVAEPCLI-530 FX: Reoffer Invoice/Discount || function calling sequence -->
+                                    <input style="width: 66px;" type="text" id="txtissueprice" type="text" value="{{ Upfront }}"
+                                        class="width11em" (keypress)="this.commonfunctions.InputNumber($event)"
+                                        [(ngModel)]="Upfront" [disabled]="this.SolveForValue === 'Reoffer Price'"
+                                        (blur)="this.Upfront = setDecimalReofferPrice($event, issuePriceBox);GetReofferOrUpfront('Reoffer Price'); " />
+                                    <div class="toggleYN">
+                                        <div class="toggleN" (click)="this.invoiceDiscountToggle='Invoice'; reset()"
+                                            [ngClass]="this.invoiceDiscountToggle==='Invoice'? 'Select ':''">I</div>
+                                        <div class="toggleN" (click)="this.invoiceDiscountToggle='Discount';reset()"
+                                            [ngClass]="this.invoiceDiscountToggle==='Discount'? 'Select ':''">D</div>
+                                    </div>
+                                    <!--START: Added by Anubhav Goyal | 16-May-2023 | BBVAEPCLI-530 FX: Reoffer Invoice/Discount-->
+                                    <label>
+                                        <app-svg-icons class="info" [icon]="'info-icon'" [width]="'15'"></app-svg-icons>
+            
+                                        <div class="infodiv">
+                                            <!-- Changed infoNote | Anubhav Goyal | 24-May-2023 | EPCLI-530 -->
+                                            <span *ngIf="this.invoiceDiscountToggle==='Invoice'" class="infoNote infoNote1"
+                                                style="width: 300px;">
+                                                Invoice: The upfront will be paid via Invoice, so you will settle at Issue Price (%)
+                                            </span>
+                                            <span *ngIf="this.invoiceDiscountToggle==='Discount'" class="infoNote infoNote1"
+                                                style="width: 300px;">
+                                                Discount: The upfront will be paid via Discount, so you will settle at Reoffer Price
+                                                (%)
+                                            </span>
+            
+                                        </div>
+                                    </label>
+            
+            
+                                </div>
+                            </div>
+    
+                            <!-- Issue Price (%) -->
+                            <div class="row-grid-2" *ngIf="this.location !== 'Mexico'">
+                                <div style="position:relative;">
+                                    <label>{{this.commonfunctions.IssuePrice | translate}}</label>
+                                </div>
+                                <div *ngIf="this.location !== 'Mexico'">
+                                    <input type="text" id="txtissueprice" type="text" value="{{ IssuePrice }}" class="width11em"
+                                        (blur)="this.reset();this.IssuePrice = commonfunctions.setDecimal($event);IssuePriceValidation($event);GetReofferOrUpfront('Upfront')"
+                                        (keypress)="this.commonfunctions.InputNumber($event)" [(ngModel)]="IssuePrice" />
+                                </div>
+                            </div>
+                        </div>
+            </div>
+    
+    
+            <div class="row-grid-inner">
+                <!-- Column 1 -->
+                <div class="flex-column">
+                    <div class="label-row">
+                        <label class="box-header">{{this.commonfunctions.Dateslabel | translate}}</label>
+                    </div>
+    
+    
+                    <!-- Strike Shifter/Date -->
+                    <!-- <div class="row-grid-2">
+                    <div style="position:relative; padding-right: 0 !important;">
+                        <label>Strike Shifter/Date</label>
+                    </div>
+                    <div class="error-date" style="position:relative; padding: 0 !important;white-space: nowrap;">
+                       
+                        </div>
+    
+                        <div style="position:relative">
+                            <app-svg-icons [icon]="'info-icon'" class="info" [width]="'15'"></app-svg-icons>
+                            <div class="infodiv">
+                                <span class="infoNote" style="white-space: initial;width: 260px;">
+                                    Number of days you want to shift the Strike Forward from Today. For
+                                    Strike today (or next business day in case today is holiday), please
+                                    input 0b.
+                                </span>
+                        </div>
+                    </div>
+    
+                    </div> -->
+    
+    
+                    <!-- Payment Shifter/Date -->
+                    <div class="row-grid-2">
+                        <!--Strike Shifter/Date-->
+                        <div class="relPosition">
+                            <label>{{ "Strike Shifter/Date" | translate }}</label>
+                        </div>
+                        <div class="div-flex-date error-date-2 relPosition">
+                            <!-- <label class="switch">
+                                    <input type="checkbox" id="switch">
+                                    <span class="slider"><p>Tdy Fwd</p></span>
+                                  </label> -->
+                                <div style="display: grid; grid-template-columns: 70px 10px 115px;">
+                                    <select style="width: 74px;" [(ngModel)]="Issueshift" (change)=" this.reset();setDCNDates();">
+                                        <ng-template ngFor let-i="index" let-issueShift [ngForOf]="issueDateShifter">
+                                            <option value="{{issueShift}}">{{issueShift}}</option>
+                                        </ng-template>
+                                    </select>
+                                    <span style="display: flex; align-items: center;"> /</span>
+                                    <input type="date" [(ngModel)]="Issuedate" value="{{Issuedate}}" id="txtIssuedate"
+                                        (change)="this.reset(); "
+                                        style="width: 100% !important; text-align: center; margin-left: 0px;" disabled>
+            
+                                </div>
+                               
+                               
+                                
+                        </div>
+                    </div>
+    
+                    <div class="row-grid-2">
+                        <!-- Payment Shifter/Date -->
+                        <div class="relPosition">
+                            <label>{{this.commonfunctions.MaturityDate | translate}}</label>
+                        </div>
+                        <div class="infodiv">
+                            <span class="infoNote" style="width: 250px;">
+                                {{ this.commonfunctions.IfCustomselectedthefollowingoptionsareavailable |
+                                translate}}
+                                <b>D, W, M</b> <br>
+                                <!-- <b>D</b> <b>W</b> <b>M</b> <br> -->
+                                <b>D</b> {{this.commonfunctions.NaturalDays }}<br>
+                                <b>W</b> Weeks <br>
+                                <b>M</b> Months <br>
+                            </span>
+                        </div>
+                        <div style="display: grid; grid-template-columns: 70px 10px 115px 66px; grid-column: 2 / span 3;">
+                            <!-- changed  by Suvarna P || 30Aug2022 || BBVACLI-443 || Cost to be fetched if maturity date is hand input or customised || assigned by Prananv D -->
+                            <input style="width: 74px;" *ngIf="matDateChk" type="text" name="" id="txtmatDateChk"
+                                maxlength="4" [(ngModel)]="Maturityshifter"
+                                (keypress)="this.commonfunctions.MaturityShifterValidation($event);"
+                                (change)=" this.reset();changeMaturityshifter();setDCNDates();GetDCNBankSpreadCost()"
+                                (blur)="checkValidMaturityDateBand($event); GetReofferOrUpfront('Upfront')">
+    
+                            <select style="width: 74px;" *ngIf="!matDateChk" [(ngModel)]="Maturityshifter"
+                                id="txtMaturityshifter"
+                                (change)=" this.reset();changeMaturityshifter();setDCNDates();GetDCNBankSpreadCost();checkValidMaturityDateBand($event);GetReofferOrUpfront('Upfront')">
+                                <option *ngFor="let maturity of maturityDateShifter" value="{{maturity.Data_Value}}">
+                                    {{maturity.Data_Value}}</option>
+                            </select>
+                            <span style="display: flex; align-items: center;"> /</span>
+                            <input type="date" [(ngModel)]="Maturitydate" value="{{Maturitydate}}" id="txtMaturitydate"
+                                (change)="this.reset();"
+                                style="width: 100% !important; text-align: center;margin-left: 0px ;" disabled>
+    
+                            <div
+                                style="display: flex; justify-content: left; align-items: center; gap: 5px; margin-left: 10px;">
+                                <input type="checkbox" class="matDateChk" [(ngModel)]="matDateChk"
+                                    (click)="setMaturityChk($event.target)" />
+                                <label class="checkbox-label-font">{{this.commonfunctions.Custom | translate}}</label>
+                            </div>
+                        </div>
+                    </div>
+    
+                    <!-- Tenor -->
+                    <div class="row-grid-2">
+                        <!-- Tenor -->
+                        <div class="relPosition">
+                            <label>{{this.commonfunctions.FinalFixingDate | translate }}</label>
+                            <div class="infodiv">
+                                <span class="infoNote" style="width: 250px;">
+                                    <b>M</b> {{this.commonfunctions.MaturityDate | translate}}
+                                </span>
+                            </div>
+                        </div>
+                        <div style="display: grid; grid-template-columns: 70px 10px 115px;">
+                            <select style="width: 74px;" [(ngModel)]="Fixingshifter"
+                                (change)=" this.reset();setDCNDates();">
+                                <option *ngFor="let fixing of fixingDateShifter" value="{{fixing}}">{{fixing}}</option>
+                            </select>
+                            <span style="display: flex; align-items: center;"> /</span>
+                            <input type="date" [(ngModel)]="Fixingdate" value="{{Fixingdate}}" id="txtFixingdate"
+                                (change)="this.reset();fixingDateChange();"
+                                style="width: 100% !important; text-align: center;margin-left: 0px">
+                            <!--  setDCNDates(); this.fixingDateChange() -->
+                        </div>
+                    </div>
+    
+                </div>
+    
+                <!-- Column 2 -->
+                <div class="flex-column">
+                    <div class="label-row">
+                        <label class="box-header" *ngIf="format === 'Swap'">Funding</label>
+                    </div>
+    
+                    <!-- Type -->
+                    <div class="row-grid-2" *ngIf="format === 'Swap'">
+                        <div style="position:relative;">
+                            <label>{{this.commonfunctions.Type | translate}}</label>
+                        </div>
+                        <div style="position:relative;">
+                            <select *ngIf="format === 'Swap'" [(ngModel)]="fundType" tabindex="11" (change)="this.reset();">
+                                <option value="Fixed Rate">{{this.commonfunctions.FixedRate |
+                                    translate}}
+                                </option>
+                                <option value="Floating Rate">{{this.commonfunctions.FloatingRate |
+                                    translate}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+    
+                    <!-- Frequency -->
+                    <div class="row-grid-2" *ngIf="format === 'Swap'">
+                        <div style="position:relative;">
+                            <label>{{this.commonfunctions.Frequency | translate}}</label>
+                        </div>
+                        <div style="position:relative;">
+                            <select name="" [(ngModel)]="fundFreq" *ngIf="format === 'Swap'" [(ngModel)]="fundFreq" tabindex="12" (change)="this.reset();">
+                                <option value="1m" *ngIf="fundType !== 'Floating Rate'">1m</option>
+                                <option value="3m">3m</option>
+                                <option value="6m">6m</option>
+                                <option value="12m" *ngIf="fundType !== 'Floating Rate'">12m</option>
+                            </select>
+                        </div>
+                    </div>
+    
+                    <!-- Rate/Spread (%) -->
+                    <!-- <div class="row-grid-2" *ngIf="(format === 'Swap' && this.SolveForvalue === 'FundingRate') || format === 'Swap' && this.SolveForvalue !== 'FundingRate'">
+                        <div style="position:relative;" style="padding-right: 0 !important;">
+                            <label class="disabledlbl" *ngIf="format === 'Swap' && this.SolveForvalue === 'FundingRate'">{{this.commonfunctions.Rate
+                                | translate }} / {{this.commonfunctions.Spread | translate}}
+                                (%)</label>
+                            <label *ngIf="format === 'Swap' && this.SolveForvalue !== 'FundingRate'">{{this.commonfunctions.Rate
+                                | translate }}/<br>{{this.commonfunctions.Spread | translate}}
+                                (%)</label>
+                        </div>
+                        <div style="position:relative;">
+                            <input type="text" *ngIf="format === 'Swap'" tabindex="13" [(ngModel)]="fundRate" id="txtFundingRate" maxlength="100" (blur)="this.reset();" (keypress)="commonfunctions.InputSpread($event)" [disabled]="this.SolveForvalue === 'FundingRate'">
+                        </div>
+                    </div> -->
+    
+                </div>
+            </div>
+    
+        </div>
+
+        <div class="flex-container">
+            <div class="container">
+                <div style="position:relative;">
+                    <!-- Column 1 & 2 -->
+                    <div class="row-grid-inner">
+                                <!-- Column 1 -->
+                                <div class="flex-column">
+                                    <!-- Added by Anubhav Goyal | BBVAEPCLI-394 lower the coupon and leave less white space on the CLN screen | 27-02-2023 -->
+                                    
+                                    <div class="label-row">
+                                        <label class="box-header">{{this.commonfunctions.Parameters |
+                                            translate}}</label>
+                                    </div>
+    
+    
+                                    <!-- Spot -->
+                                    <div class="row-grid-2">
+                                        <div style="position:relative;" style="padding-right: 0 !important;">
+                                            <label>{{this.commonfunctions.Spotlabel | translate}}</label>
+                                        </div>
+                                        <div class="div-flex-date relPosition" >
+                                            <!-- <mat-button-toggle-group [(ngModel)]="upperStrikeYN" tabindex="22"
+                                                (change)="changeupperStrikeYN()" title="Only for Call Spread">
+                                                <mat-button-toggle value="Y" style="width: 40px;">Yes
+                                                </mat-button-toggle>
+                                                <mat-button-toggle value="N" style="width: 40px;">No
+                                                </mat-button-toggle>
+                                            </mat-button-toggle-group> -->
+                                            <div class="btngroup" title="Only for Call Spread">
+                                                <button [ngClass]="this.manualSpotValue == 'Y' ? 'Btn_Yes':'Btn_No'" tabindex="19" (click)="this.manualSpotValue='Y';reset();editSpotValue()" class="Btn">Yes</button>
+                                                <button [ngClass]="this.manualSpotValue == 'N' ? 'Btn_Yes':'Btn_No'" tabindex="20" (click)="this.manualSpotValue='N';reset();editSpotValue()" class="Btn">No</button>
+                                            </div><!-- Changed by Jyoti S || 24-Apr-2023 -->
+
+                                            <input type="text" id="txtspot" type="text" maxlength="14" value="{{ Spot }}"
+                                            [disabled]="manualSpotValue === 'N'"
+                                            (blur)="this.reset();this.Spot = setSpotDecimalFromCcyPair($event);calculateSpread('Spot');"
+                                            [(ngModel)]="Spot" style="width: 66px;"
+                                            (keypress)="this.commonfunctions.InputNumber($event);" >
+                                        </div>
+                                    </div>
+    
+                                    <!-- Strike -->
+                                    <div class="row-grid-2">
+                                        <div style="position:relative;" style="padding-right: 0 !important;">
+                                            <label >{{this.commonfunctions.Strike
+                                                | translate}}</label>
+                                            <!-- <div class="tooltip-flex" *ngIf="cpnType !== 'UpFront'">
+                                                <app-svg-icons [icon]="'info-icon'" class="info" [width]="'15'"></app-svg-icons>
+                                                <div class="infodiv">
+                                                    <span class="infoNote" style="white-space: initial;width: 260px;">
+                                                        {{this.commonfunctions.Couponexpressedperannum | translate}}
+                                                    </span>
+                                                </div>
+                                            </div> -->
+                                        </div>
+                                        <div style="position:relative;">
+                                            <input type="text" id="txtStrike" type="text" autocomplete="off" maxlength="14"
+                                            value="{{ Strike }}" (blur)="this.reset();
+                                    this.Strike = setSpotDecimalFromCcyPair($event);
+                                    calculateSpread('Strike');" [(ngModel)]="Strike"
+                                            [disabled]="this.SolveForValue === 'Strike - Spread'"
+                                            (keypress)="this.commonfunctions.InputNumber($event)" />    
+                                        </div>
+    
+                                    </div>
+    
+                                    <!-- Fixed Rate -->
+                                    <div class="row-grid-2">
+                                        <div>
+                                            <label >{{this.commonfunctions.Spreadlabel
+                                                | translate}}</label>
+                                            <!-- <div class="tooltip-flex" *ngIf="cpnType === 'Fixed-Float' || cpnType === 'Float-Fixed'">
+                                                <app-svg-icons [icon]="'info-icon'" class="info" [width]="'15'"></app-svg-icons>
+                                                <div class="infodiv">
+                                                    <span class="infoNote" style="white-space: initial;width: 260px;">
+                                                        {{this.commonfunctions.Fixedrateexpressedperannum | translate}}
+                                                    </span>
+                                                </div>
+                                            </div> -->
+                                        </div>
+                                        <div class="div-flex-date relPosition">
+                                                <div class="btngroup" title="Only for Call Spread">
+                                                    <button [ngClass]="this.manualSpreadValue==='Y' ? 'Btn_Yes':'Btn_No'" tabindex="19" (click)="this.SolveForValue === 'Strike - Spread'?null: this.manualSpreadValue='Y';reset();editSpreadValue()" class="Btn">Yes</button>
+                                                    <button [ngClass]="this.manualSpreadValue==='N' ? 'Btn_Yes':'Btn_No'" tabindex="20" (click)="this.SolveForValue === 'Strike - Spread'?null: this.manualSpreadValue='N';reset();editSpreadValue()" class="Btn">No</button>
+                                                </div><!-- Changed by Jyoti S || 24-Apr-2023 -->
+                                            <!-- <div class="toggleYN">
+                                                       <div class="toggleN" (click)="autoNonCallYNtoggle()"
+                                                           [ngClass]="this.autoNonCallYN==='Y'? 'Select ':''">Yes</div>
+                                                       <div class="toggleN" (click)="autoNonCallYNtoggle()"
+                                                           [ngClass]="this.autoNonCallYN==='N'? 'Select ':''">No</div>
+                                                   </div> -->
+                    
+                    
+                                            <input type="text" id="txtspread" type="text" maxlength="14" value="{{Spread}}"
+                                                class="textAlignRight" [disabled]="manualSpreadValue === 'N'"
+                                                (blur)="this.reset();this.Spread = commonfunctions.setSpreadValue($event);calculateSpread('Spread');"
+                                                [(ngModel)]="Spread" style="width: 66px;" />
+                                            <!-- this.setClientEntrySpotFlag($event); removed from spot field as new toggle added to set flag  -->
+                    
+                                        </div>
+    
+    
+                                </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="container">
+            <div style="position:relative;">
+                <!-- Column 1 & 2 -->
+                <div class="row-grid-inner">
+                    <!-- Column 1 -->
+                    <div class="flex-column">
+                        <div class="label-row">
+                            <label class="box-header">{{this.commonfunctions.Coupon |
+                                translate}}</label>
+                        </div>
+
+
+                        <!-- Coupon % -->
+                        <div class="row-grid-2">
+                            <div style="position:relative;">
+                                <label>{{this.commonfunctions.Couponpercentpa | translate}}
+                                </label>
+                                <app-svg-icons class="info" [icon]="'info-icon'" [width]="'15'"></app-svg-icons>
+                                <div class="infodiv">
+                                    <span class="infoNote" style="width: 250px;">
+                                        {{this.commonfunctions.ThecouponispaidatMaturity | translate}}
+                                    </span>
+                                </div>
+                            </div>
+                            <div style="position:relative;">
+                                <input type="text" id="txtCoupon" type="text" value="{{ CpnPct }}"
+                        
+                            (blur)="this.reset();this.CpnPct = commonfunctions.setDecimaltoSix($event);ChangeCouponPct('CpnPct')"
+                            [(ngModel)]="CpnPct" [disabled]="this.SolveForValue === 'Coupon'"
+                            (keypress)="this.commonfunctions.InputNumber($event)" />
+                            </div>
+                        </div>
+
+                        <!-- Coupon % -->
+                        <div class="row-grid-2">
+                            <div style="position:relative;">
+                                <label>{{this.commonfunctions.Couponpercent | translate}}
+                                </label>
+                            </div>
+                            <div style="position:relative;">
+                                <input type="text" id="txtCoupon" type="text" value="{{ CouponPct }}"
+                                (blur)="this.reset();this.CouponPct = commonfunctions.setDecimal($event);ChangeCouponPct('CouponPct')"
+                                [(ngModel)]="CouponPct" (keypress)="this.commonfunctions.InputNumber($event)" disabled />
+                            </div>
+                        </div>
+
+                       
+                    </div>
+                    
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+   
+</div>

@@ -1,0 +1,561 @@
+<div>
+  <div class="page-title">
+    <app-svg-icons
+      class="back-button"
+      [icon]="'back-button'"
+      [width]="'40'"
+      [height]="'40'"
+      [fill]="'var(--headers)'"
+      (click)="commonApi.back()"
+    ></app-svg-icons>
+    <div>New Alert Setup</div>
+    <div>
+      <app-svg-icons
+        (click)="refresh()"
+        [icon]="'refresh'"
+        [width]="'26'"
+        [height]="'26'"
+      >
+      </app-svg-icons>
+    </div>
+  </div>
+
+  <div class="alertpage-main">
+    <div class="topbar-msg">
+      <div class="addPortfoliobtn add-portfolio" (click)="showAlerts()">
+        <div class="circle">
+          <span class="icon arrow"></span>
+        </div>
+        <p class="button-text">New Alert</p>
+      </div>
+      <label class="successMsg">{{ attachmentMsg }}</label>
+    </div>
+
+    <div class="">
+      <!-- <div class="header-alert">
+                <label>Scheduled Alerts</label>
+            </div> -->
+
+      <div class="grid-view-scheduledmail">
+        <div class="my-alerts-grid">
+          <div class="my-alerts-table">
+            <table>
+              <thead>
+                <tr class="alert-header-grid">
+                  <th></th>
+                  <th>Sent At</th>
+                  <th>Customer</th>
+                  <th>Subject</th>
+                  <th>Alert Type</th>
+                  <th>Start Date</th>
+                  <th>End Date</th>
+                  <th>Frequency</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <div class="alert-table-body">
+                  <tr
+                    *ngFor="let alerts of alertsList; let i = index"
+                    class="alert-row-grid"
+                  >
+                    <td>
+                      <div class="align-end" (click)="showEditAlertFn(i)">
+                        <app-svg-icons
+                          class="alert-edit"
+                          [icon]="'edit-icon'"
+                          [width]="'20'"
+                          [height]="'20'"
+                          [fill]="'var(--headers)'"
+                        ></app-svg-icons>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="align-center">
+                        {{
+                          alerts.CAE_Created_At | date: "dd-MMM-yyy hh:mm:ss a"
+                        }}
+                      </div>
+                    </td>
+                    <td>
+                      <div class="align-center">
+                        {{ alerts.CustomerName || "-" }}
+                      </div>
+                    </td>
+                    <td>
+                      <div class="align-left wrap-text">
+                        {{ alerts.CAE_Subject || "-" }}
+                      </div>
+                    </td>
+                    <td>
+                      <div class="align-center">
+                        {{ alerts.CAE_Alert_Type || "-" }}
+                      </div>
+                    </td>
+                    <td>
+                      <div class="align-center">
+                        {{ alerts.CAE_Start_Datetime | date: "dd-MMM-yyy" }}
+                      </div>
+                    </td>
+                    <td>
+                      <div class="align-center">
+                        {{ alerts.CAE_End_Datetime | date: "dd-MMM-yyy" }}
+                      </div>
+                    </td>
+                    <td>
+                      <div class="align-center">
+                        {{ alerts.CAE_Frequency || "-" }}
+                      </div>
+                    </td>
+                    <td>
+                      <div class="alert-actions">
+                        <app-svg-icons
+                          class="pdf"
+                          [icon]="'pdf'"
+                          [width]="'25'"
+                          [height]="'25'"
+                          (click)="showPDF(i)"
+                          [fill]="'var(--headers)'"
+                        ></app-svg-icons>
+                        <app-svg-icons
+                          class="view-details"
+                          [icon]="'view-details'"
+                          [width]="'25'"
+                          (click)="showDescriptionFn(i)"
+                          [height]="'25'"
+                          [fill]="'var(--headers)'"
+                        ></app-svg-icons>
+                      </div>
+                    </td>
+                  </tr>
+                </div>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" *ngIf="showAlertFlag">
+  <div class="showAlertPopup">
+    <div class="close-icon-alert">
+      <div class="close-icon" (click)="closeAlertsPopup()">
+        <app-svg-icons
+          [icon]="'cancel-icon'"
+          [width]="'18'"
+          [height]="'18'"
+        ></app-svg-icons>
+      </div>
+    </div>
+
+    <div class="contact-div box-container" style="padding: 30px 31px">
+      <!--Added by Ashwini H.
+                Task Assign : Mohan P.
+                Date : 31st Jan 2022
+                Jira Id : STANHCINT-591 -->
+
+      <label
+        class="left"
+        style="font-size: 20px; color: var(--off-color); margin-bottom: 5px"
+        >Alert Setup</label
+      >
+      <div class="left form-element">
+        <label style="color: var(--heading-label)">Client Selection Mode</label>
+        <select
+          [(ngModel)]="clientSelectionMode"
+          (change)="changeClientSelectionMode($event)"
+        >
+          <option value="Single Client">Single Client</option>
+          <option value="Multi-Client">Multi-Client</option>
+        </select>
+      </div>
+
+      <div class="left form-element">
+        <label style="color: var(--heading-label)">Client Name</label>
+
+        <div
+          class="customerSearchAlert"
+          *ngIf="clientSelectionMode === 'Single Client'"
+        >
+          <app-common-customer-search
+            (sendCustomerDetails)="getCustomerDetails($event)"
+            (selectedCustomerValue)="selectedCustomerValue1($event)"
+          ></app-common-customer-search>
+        </div>
+        <div
+          class="customerSearchAlert"
+          *ngIf="clientSelectionMode === 'Multi-Client'"
+        >
+          <!-- <app-multi-selection-customer-search (sendCustomerDetails)="getCustomerDetails($event)"
+                        (CustomerDetailsArray)="selectedCustomerValueMulti($event)"  (selectedArray)="selectedArrayList($event)"></app-multi-selection-customer-search> -->
+
+          <app-multi-selection-customer-search
+            (sendCustomerDetails)="getCustomerDetails($event)"
+            (newCustomerArray)="selectedCustomerValueMulti($event)"
+            (selectedArray)="selectedArrayList($event)"
+          ></app-multi-selection-customer-search>
+        </div>
+      </div>
+      <div class="left form-element">
+        <label style="color: var(--heading-label)">Subject</label>
+        <input
+          type="text"
+          class="text-long"
+          placeholder="Enter subject"
+          [(ngModel)]="subject"
+          (click)="clearErrorMsg()"
+        />
+      </div>
+      <div class="left form-element">
+        <label style="color: var(--heading-label)">Body</label>
+        <textarea
+          id="message"
+          name="message"
+          class="text-long"
+          placeholder="Type your message"
+          (click)="clearErrorMsg()"
+          [(ngModel)]="emailBody"
+        ></textarea>
+      </div>
+      <div class="left form-element">
+        <div class="upload-flex">
+          <label style="color: var(--heading-label)"
+            >Attachment (Optional)</label
+          >
+          <label *ngIf="UploadMsg !== ''" class="successMsg">{{
+            UploadMsg
+          }}</label>
+        </div>
+
+        <div class="upload-btn-div">
+          <input
+            type="file"
+            accept="application/pdf"
+            class="custom-file-input"
+            (change)="fileSelectionFunction($event)"
+            (click)="clearErrorMsg()"
+          />
+
+          <div class="additional-documents-action-controls upload-btn-div">
+            <button class="button" (click)="uploadDoc(0)">Upload</button>
+            <button class="button" (click)="removeDocFromList()">Cancel</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="left form-element">
+        <label style="color: var(--heading-label)">Schedule Email</label>
+        <select
+          [(ngModel)]="ScheduledOption"
+          (change)="changeScheduleEmailOption($event)"
+        >
+          <option value="Onetime">Onetime</option>
+          <option value="Scheduled">Scheduled</option>
+          <option value="Recurring">Recurring</option>
+        </select>
+      </div>
+
+      <div
+        class="left flex-scheduled-email"
+        *ngIf="
+          ScheduledOption === 'Scheduled' || ScheduledOption === 'Recurring'
+        "
+      >
+        <div class="form-element">
+          <label style="color: var(--heading-label)">Start Date</label>
+          <div class="FromDateLabel">
+            <input
+              type="date"
+              name="StartDate"
+              id="StartDate"
+              class="input-dob"
+              tabindex="16"
+              min="2000-01-01"
+              [(ngModel)]="StartDate"
+              (change)="changeFromDate($event)"
+            />
+            <span id="FromDateLabel">{{
+              StartDate | date: "dd-MMM-yyyy"
+            }}</span>
+          </div>
+        </div>
+
+        <div class="form-element">
+          <label style="color: var(--heading-label)">End Date</label>
+          <!-- <input type = "date" /> -->
+
+          <div class="FromDateLabel">
+            <input
+              type="date"
+              name="EndDate"
+              id="EndDate"
+              class="input-dob"
+              tabindex="16"
+              min="2000-01-01"
+              [(ngModel)]="EndDate"
+              (change)="changeFromDate($event)"
+            />
+            <span id="FromDateLabel">{{ EndDate | date: "dd-MMM-yyyy" }}</span>
+          </div>
+        </div>
+
+        <div class="form-element">
+          <label for="startTime" style="color: var(--heading-label)"
+            >Time</label
+          >
+          <input
+            type="time"
+            id="startTime"
+            class="at-time-email"
+            [(ngModel)]="AtTime"
+          />
+        </div>
+
+        <div class="form-element" *ngIf="ScheduledOption === 'Recurring'">
+          <label style="color: var(--heading-label)">Frequency</label>
+          <select
+            [(ngModel)]="selected_frequency_option"
+            class="frequency-email-cls"
+          >
+            <option value="Daily">Daily</option>
+            <option value="Weekly">Weekly</option>
+            <option value="Monthly">Monthly</option>
+          </select>
+        </div>
+      </div>
+
+      <div
+        class="left form-element"
+        [ngClass]="{ 'margintop-sendEmail': ScheduledOption === 'Onetime' }"
+      >
+        <div class="left form-element">
+          <label class="emailMsg" *ngIf="emailMsg !== ''">{{ emailMsg }}</label>
+          <label class="successMsg" *ngIf="successMsg !== ''">{{
+            successMsg
+          }}</label>
+        </div>
+        <button class="button" style="width: 100%" (click)="scheduleEmail()">
+          Create Alert
+        </button>
+      </div>
+    </div>
+
+    <!-- <div *ngIf="showEmailPopup" class="overlay ">
+            <div class="model-allocation-popup">
+                <div>
+                    <app-svg-icons [icon]="'cancel-icon'" [width]="'20'" [height]="'20'" (click)="showEmailPopup = false; clearData();"
+                    class="closebtn"></app-svg-icons>
+                </div>
+
+                    <div class="emailMsg">
+                        <label>{{emailMsg}}</label>
+                     </div>
+            </div>
+        </div> -->
+  </div>
+</div>
+
+<!-- edit alert changes done on 27th Jan 2022 -->
+<div class="overlay" *ngIf="showEditAlert">
+  <div class="showAlertPopup">
+    <div class="close-icon-alert">
+      <div class="close-icon" (click)="closeAlertsPopup()">
+        <app-svg-icons
+          [icon]="'cancel-icon'"
+          [width]="'18'"
+          [height]="'18'"
+        ></app-svg-icons>
+      </div>
+    </div>
+
+    <div class="contact-div box-container" style="padding: 30px 31px">
+      <label
+        class="left"
+        style="font-size: 20px; color: var(--off-color); margin-bottom: 5px"
+        >Alert Setup</label
+      >
+      <div class="left form-element">
+        <label style="color: var(--heading-label)">Client Name</label>
+
+        <div class="customerSearchAlert">
+          <!-- <app-customer-search (sendCustomerDetails)="getCustomerDetails($event)"
+                        (selectedCustomerValue)="selectedCustomerValue1($event)"></app-customer-search> -->
+
+          <input
+            type="text"
+            class="text-long"
+            [(ngModel)]="selectedCustomer"
+            disabled
+          />
+        </div>
+      </div>
+      <div class="left form-element">
+        <label style="color: var(--heading-label)">Subject</label>
+        <input
+          type="text"
+          class="text-long"
+          placeholder="Enter subject"
+          [(ngModel)]="subject"
+        />
+      </div>
+      <div class="left form-element">
+        <label style="color: var(--heading-label)">Body</label>
+        <textarea
+          id="message"
+          name="message"
+          class="text-long"
+          placeholder="Type your message"
+          [(ngModel)]="emailBody"
+        ></textarea>
+      </div>
+      <div class="left form-element">
+        <label style="color: var(--heading-label)">Attachment (Optional)</label>
+        <input type="file" accept="application/pdf" class="custom-file-input" />
+      </div>
+
+      <div class="left form-element">
+        <label style="color: var(--heading-label)">Schedule Email</label>
+        <select
+          [(ngModel)]="ScheduledOption"
+          (change)="changeScheduleEmailOption($event)"
+        >
+          <option value="Onetime">Onetime</option>
+          <option value="Scheduled">Scheduled</option>
+          <option value="Recurring">Recurring</option>
+        </select>
+      </div>
+
+      <div
+        class="left flex-scheduled-email"
+        *ngIf="
+          ScheduledOption === 'Scheduled' || ScheduledOption === 'Recurring'
+        "
+      >
+        <div class="form-element">
+          <label style="color: var(--heading-label)">Start Date</label>
+          <div class="FromDateLabel">
+            <input
+              type="date"
+              name="StartDate"
+              id="StartDate"
+              class="input-dob"
+              tabindex="16"
+              min="2000-01-01"
+              [(ngModel)]="StartDate"
+              (change)="changeFromDate($event)"
+            />
+            <span id="FromDateLabel">{{
+              StartDate | date: "dd-MMM-yyyy"
+            }}</span>
+          </div>
+        </div>
+
+        <div class="form-element">
+          <label style="color: var(--heading-label)">End Date</label>
+          <!-- <input type = "date" /> -->
+
+          <div class="FromDateLabel">
+            <input
+              type="date"
+              name="EndDate"
+              id="EndDate"
+              class="input-dob"
+              tabindex="16"
+              min="2000-01-01"
+              [(ngModel)]="EndDate"
+              (change)="changeFromDate($event)"
+            />
+            <span id="FromDateLabel">{{ EndDate | date: "dd-MMM-yyyy" }}</span>
+          </div>
+        </div>
+
+        <div class="form-element">
+          <label for="startTime" style="color: var(--heading-label)"
+            >Time</label
+          >
+          <input
+            type="time"
+            id="startTime"
+            class="at-time-email"
+            [(ngModel)]="AtTime"
+          />
+        </div>
+
+        <div class="form-element" *ngIf="ScheduledOption === 'Recurring'">
+          <label style="color: var(--heading-label)">Frequency</label>
+          <select
+            [(ngModel)]="selected_frequency_option"
+            class="frequency-email-cls"
+          >
+            <option value="Daily">Daily</option>
+            <option value="Weekly">Weekly</option>
+            <option value="Monthly">Monthly</option>
+          </select>
+        </div>
+      </div>
+
+      <div
+        class="left form-element"
+        [ngClass]="{ 'margintop-sendEmail': ScheduledOption === 'Onetime' }"
+      >
+        <div class="left form-element">
+          <label class="emailMsg" *ngIf="emailMsg !== ''">{{ emailMsg }}</label>
+          <label class="successMsg" *ngIf="successMsg !== ''">{{
+            successMsg
+          }}</label>
+        </div>
+        <button class="button" style="width: 100%" (click)="scheduleEmail()">
+          Edit Alert
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- View Alert -->
+
+<div class="overlay" *ngIf="showDescription">
+  <div class="showAlertPopup">
+    <div class="close-icon-alert">
+      <div class="close-icon" (click)="closeAlertsPopup()">
+        <app-svg-icons
+          [icon]="'cancel-icon'"
+          [width]="'18'"
+          [height]="'18'"
+        ></app-svg-icons>
+      </div>
+    </div>
+
+    <div class="contact-div box-container" style="padding: 30px 31px">
+      <label
+        class="left"
+        style="font-size: 20px; color: var(--off-color); margin-bottom: 5px"
+        >View Details</label
+      >
+
+      <div class="left form-element">
+        <label style="color: var(--heading-label)">Subject</label>
+        <input
+          type="text"
+          class="text-long"
+          placeholder="Enter subject"
+          [(ngModel)]="subject"
+          disabled
+        />
+      </div>
+      <div class="left form-element">
+        <label style="color: var(--heading-label)">Body</label>
+        <textarea
+          id="message"
+          name="message"
+          class="text-long"
+          placeholder="Type your message"
+          [(ngModel)]="emailBody"
+          disabled
+        ></textarea>
+      </div>
+    </div>
+  </div>
+</div>

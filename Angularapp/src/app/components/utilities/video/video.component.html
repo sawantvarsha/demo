@@ -1,0 +1,43 @@
+<div class="margin-tab-email">
+    <div class="title-div">
+        <label class="title-info">Content</label>
+    </div>
+
+
+    <div class="video-rows">
+        <div *ngFor="let videoInfo of VideoDetails; let i = index" class="flex-view-video">
+
+            <div [ngClass]="{ 'videoInfo-card' : !isActiveVideo[i]}">
+                <div class="flex-accordion">
+                    <label class="videoName-label">{{videoInfo.VideoName}}</label>
+                    <div class="accordion-div">
+                        <span class="material-icons " (click)="accordionVideo(i)"
+                            [ngClass]=" {'rotate-toggle-menu-icon' : isActiveVideo[i] }">expand_more</span>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="isActiveVideo[i]">
+                <video controls class="video-popup">
+                    <source type="video/mp4" src={{videoInfo.VideoLink}}>
+                </video>
+            </div>
+
+            <div class="videoInfo-card" *ngIf="isActiveVideo[i]">
+                <div class="description-label">
+                    <label>Description</label>
+                </div>
+                <div class="description-p">
+                    <span>{{videoInfo.VideoInformation}}</span><span *ngIf="!showMoreInfo"> ... </span><span
+                        class="video-label" *ngIf="!showMoreInfo" (click)="showMoreInfo = !showMoreInfo">Read
+                        More</span>
+                    <span class="more-content" *ngIf="showMoreInfo">
+                        {{videoInfo.shortInfo}}
+                    </span>
+                    <span class="video-label" *ngIf="showMoreInfo" (click)="showMoreInfo = !showMoreInfo">Read
+                        less</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

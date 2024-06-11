@@ -1,0 +1,113 @@
+::ng-deep .custom-slider .ngx-slider .ngx-slider-bar {
+  background: rgb(51, 34, 34);
+  /* border-radius: 2px; */
+  border-color: whitesmoke;
+  height: 35px;
+  border-width: 20vw;
+
+  border-block-color: whitesmoke;
+}
+::ng-deep .custom-slider .ngx-slider .ngx-slider-selection {
+  background: #103d60;
+}
+::ng-deep .custom-slider .ngx-slider .ngx-slider-pointer {
+  width: 18px;
+  height: 36px;
+  top: 0px;
+  bottom: 0;
+  background-color: grey;
+   /* border-top-left-radius: 27px;
+  border-top-right-radius: 0px;
+  border-bottom-left-radius: 27px;
+  border-bottom-right-radius: 0px; */
+  transform: rotate(180deg) !important;
+}
+
+::ng-deep .custom-slider .ngx-slider-pointer-min{
+  transform: rotate(0deg) !important;
+}
+
+::ng-deep .custom-slider .ngx-slider .ngx-slider-pointer:after {
+  display: none;
+  
+}
+::ng-deep .custom-slider .ngx-slider .ngx-slider-bubble {
+  bottom: 14px;
+}
+::ng-deep .custom-slider .ngx-slider .ngx-slider-limit {
+  font-weight: bold;
+  /* color: orange; */
+}
+::ng-deep .custom-slider .ngx-slider .ngx-slider-tick {
+  width: 1px;
+  height: 5px;
+  margin-left: 4px;
+  border-radius: 0;
+  background: #ffe4d1;
+  top: -1px;
+}
+::ng-deep .custom-slider .ngx-slider .ngx-slider-tick.ngx-slider-selected {
+  background: grey;
+  height: 39px;
+  width: 2px;
+
+}
+.btn-date{
+  border: black solid 1px;
+  border-radius: 5px;
+  font-size: 16px;
+  margin: 5px;
+  padding-top: 5px;
+  padding-left: 10px;
+  padding-bottom: 5px;
+  padding-right: 10px;
+  background-color: #103d60;
+  color: white;
+}
+.btn-date:hover{
+  background-color: white;
+  color: black;
+}
+
+.btn-date:focus{
+  background-color: white;
+  color: black;
+}
+
+/* .custom-slider::before{
+  display: block;
+  content: "slider";
+} */
+
+.custom-slider{
+  position: relative;
+}
+
+.custom-slider-label {
+  position: absolute;
+  width: -webkit-fill-available;
+  height: 35px;
+  display: flex;
+  color: white;
+  justify-content: space-around;
+}
+
+/* ::ng-deep .custom-slider .ngx-slider .ngx-slider-selection-bar{
+  width: 100% !important;
+}
+
+::ng-deep .custom-slider .ngx-slider .ngx-slider-full-bar{
+  width: 100% !important;
+}
+
+::ng-deep .custom-slider .ngx-slider .ngx-slider-right-out-selection{
+  width: 100% !important;
+}
+
+::ng-deep .custom-slider .ngx-slider .ngx-slider-left-out-selection{
+  width: 100% !important;
+}
+
+::ng-deep .custom-slider.ngx-slider animate{
+  width: 100% !important;
+} */

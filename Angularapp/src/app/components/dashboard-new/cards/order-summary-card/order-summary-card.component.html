@@ -1,0 +1,36 @@
+<!-- <label class="card-header">Order Summary</label> -->
+<div class="card-container">
+    <div class="order-summary">
+        <!-- Commented by Apurva K for removing extra headers div|| 14-Apr-2023 -->
+        <div class="summary-item" style="width: 128px;">
+            <label class="labels">{{PopularProductlabel | translate}}</label>
+            <label class="values">{{maxProduct}}</label>
+        </div>
+        <div class="summary-item" style="width: 73px;">
+            <label class="labels">{{PopularUnderlyinglabel | translate}}</label>
+            <label class="values">{{maxUnderlying}}</label>
+        </div>
+        <div class="summary-item" style="width: 60px;">
+            <label class="labels">{{PopularTenorlabel | translate}}</label>
+            <label class="values">{{maxTenor}}</label>
+        </div>
+        <div class="summary-item" id="redirectDiv">
+            <app-svg-icons [icon]="'Redirect-icon'" [height]="'20'" [width]="'17'" (click)="routeToPricer($event, maxProduct, maxUnderlying, maxTenor)"></app-svg-icons>
+        </div>
+    </div>
+    <div class="segment-tabs">
+        <finiq-tabs  [tabHeaders]="segments" [(ngModel)]="selectedSegment" (ngModelChange)="handleSegmentChange()" [tabCase]="tabCase" [selectedTabIndex]="selectedSegment"></finiq-tabs>
+    </div>
+    <div class="pie-charts">
+        <app-pie-chart (productNameEmitter)="setProductNameFromChart($event)" *ngIf="(selectedSegment == 0)  && (productsChartData.length !==0)  " [legendHeight]="350" [legendWidth]="250" [width]="430" [graphdata]="productsChartData">
+        </app-pie-chart>
+
+        <app-pie-chart (productNameEmitter)="setProductNameFromChart($event)" *ngIf="(selectedSegment == 1) && (underlyingsChartData.length !==0)  " [legendHeight]="184" [legendWidth]="250" [width]="420" [graphdata]="underlyingsChartData">
+        </app-pie-chart>
+        <app-pie-chart (productNameEmitter)="setProductNameFromChart($event)" *ngIf="(selectedSegment == 2)  && (tenorsChartData.length !==0) " [legendHeight]="350" [legendWidth]="250" [width]="430" [graphdata]="tenorsChartData">
+        </app-pie-chart>
+        <div *ngIf = "selectedSegment === 0 && productsChartData.length <= 0" class="validationMsg">No Data Found</div>
+        <div *ngIf = "selectedSegment === 1 && underlyingsChartData.length <= 0" class="validationMsg">No Data Found</div>
+        <div *ngIf = "selectedSegment === 2 && tenorsChartData.length <= 0" class="validationMsg">No Data Found</div>
+    </div>
+</div>

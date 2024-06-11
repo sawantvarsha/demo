@@ -1,0 +1,103 @@
+<div class="cashdeposit-component" [ngClass]="{'page-content-popup page-content-container-popup' : pageMode === 1}">
+  <div class="content-container">
+    <div class="tabs tab-active" *ngIf="pageMode === 1 ">
+      <div class="right">Fund Transfer</div>
+      <!-- <div class="closebtn">X</div> -->
+      <div class="close-icon">
+        <app-svg-icons [icon]="'cancel-icon'" [width]="'18'" [height]="'18'" (click)="fnClosePopUp()"></app-svg-icons>
+      </div>
+    </div>
+
+
+    <div class="param-cols">
+      <div class="param-row">
+        <div class="fundparams-row">
+          <div class="middle">Customer</div>
+          <div class="middle">
+            <input type="text" [(ngModel)]="CustomerName" disabled="disabled" tabindex="1" />
+          </div>
+        </div>
+        <div class="fundparams-row">
+          <div class="middle">Portfolio </div>
+          <div class="middle">
+            <select [(ngModel)]="portfolio" tabindex="3" disabled>
+              <option selected>{{portfolio}}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="fundparams-row">
+          <div class="middle">Account Type</div>
+          <div class="middle">
+            <select [(ngModel)]="accounttype" disabled>
+              <option selected>{{accounttype}}
+              </option>
+
+            </select>
+          </div>
+        </div>
+        <div class="fundparams-row">
+          <div class="middle">Account No</div>
+          <div class="middle">
+            <input type="text" [(ngModel)]="Account_Number" disabled="disabled" placeholder="Account Number"
+              tabindex="2">
+          </div>
+        </div>
+      </div>
+      <div class="param-row">
+        <div class="fundparams-row">
+          <div class="middle">Transaction Type</div>
+          <div class="middle">
+            <select [(ngModel)]="TransactionCode" tabindex="2">
+              <option selected>Deposit
+              </option>
+              <option>Withdrawal
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="fundparams-row">
+          <div class="middle">Transaction Date</div>
+          <div class="middle">
+            <input type="date" class="input-dob" [attr.data-date]="tradeDate" placeholder="dd-mm-yyyy"
+              data-date-format="DD-MMM-YYYY" value="" min="1997-01-01" max="2030-12-31" [(ngModel)]="tradeDate"
+              tabindex="6" (change)="selectDate('tradeDate',tradeDate )">
+          </div>
+        </div>
+        <div class="fundparams-row">
+          <div class="middle">Currency</div>
+          <div class="middle">
+            <input type="text" class="center" disabled="disabled" [(ngModel)]="currency" />
+
+          </div>
+        </div>
+        <div class="fundparams-row">
+          <div class="middle">Amount</div>
+          <div class="middle">
+            <input type="text" class="right" [(ngModel)]="amount" placeholder="Amount" maxlength="12" tabindex="2"
+              (blur)="cfs.FormatNumberKetan($event)" (change)="amount = cfs.NotionalChange($event); "
+              (focus)="cfs.UnformatNumber($event);cfs.SelectFullText($event);"
+              (keypress)=" cfs.NotionalValidate($event)">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="fund-button-row">
+        <div class="center">
+          <button class="button btn" tabindex="3" (click)="OrderSubmit()">Submit</button>
+          <button class="button  btn" style="margin-left: 10px;" *ngIf="this.pageMode === 1"
+            (click)="fnClosePopUp();">Cancel</button>
+        </div>
+      </div>
+      <div class="fund-message-row" *ngIf="loadflag || successMsg">
+        <div *ngIf="loadflag">
+          <img [src]="isProd?'assets/loading_dots.gif':'../../assets/loading_dots.gif'" height="100px" width="100px">
+        </div>
+        <div *ngIf="successMsg">
+          {{successMsg}}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

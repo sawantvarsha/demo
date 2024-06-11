@@ -1,0 +1,39 @@
+<div class="custom-ddl" [ngClass]="{'open': ddlOpen}" [class]="class" [style]="style" (click)="toggleDropdown($event);postbackMethod();">
+    <button class="ddl-input ip-border">
+      <div class="ddl-content">
+        <div class="blank" *ngIf="!selectedItem && showIcon"></div>
+        <div class="blank" *ngIf="!selectedItem"></div>
+        <div class="ddl-item-icon" *ngIf="showIcon && unicodeIcon && selectedItem">{{selectedItem[unicodeIconField]}}
+        </div>
+        <img class="ddl-item-icon" *ngIf="showIcon && !unicodeIcon && selectedItem" [src]="selectedItem.ShareType !== 'ALL' ? selectedItem[iconSrcField] : ''"
+          alt="" [ngClass]="{'hidden-element': selectedItem.ShareType == 'ALL'}">
+        <div *ngIf="selectedItem">{{selectedItem[textField]}}</div>
+        <div class="ddl-icon">
+          <svg
+            style="width: 12px !important; height: 9px !important;">
+            <g class="down" stroke="#616161" stroke-width="2px" stroke-linecap="square">
+              <line x1="0" y1="0" x2="6" y2="6"></line>
+              <line x1="6" y1="6" x2="12" y2="0"></line>
+            </g>
+          </svg>
+        </div>
+      </div>
+    </button>
+    <div class="ddl-options" [ngClass]="{'ddl-open': ddlOpen}">
+      <div class="ddl-item-group" *ngFor="let item of data; let i =  index" (click)="setDropdownValue(item);postbackMethod();">
+        <div class="ddl-item-icon" *ngIf="showIcon && unicodeIcon">{{item[unicodeIconField]}}</div>
+        <img class="ddl-item-icon" *ngIf="showIcon && !unicodeIcon" [src]="item.ShareType !== 'ALL' ? item[iconSrcField] : ''" alt="" [ngClass]="{'hidden-element': item.ShareType == 'ALL'}">
+        <div class="ddl-item-text">{{item[textField]}}</div>
+      </div>
+      <!-- <div class="ddl-item-group" *ngFor="let item of data; let i =  index" (click)="setDropdownValue(item)">
+        <div class="ddl-item-icon" *ngIf="showIcon && unicodeIcon">{{item[unicodeIconField]}}</div>
+        <img class="ddl-item-icon" *ngIf="showIcon && !unicodeIcon" [src]="item.ShareType !== 'ALL' ? item[iconSrcField] : ''" alt="">
+        <div class="ddl-item-text">{{item[textField]}}</div>
+      </div>
+      <div class="ddl-item-group" *ngFor="let item of data; let i =  index" (click)="setDropdownValue(item)">
+        <div class="ddl-item-icon" *ngIf="showIcon && unicodeIcon">{{item[unicodeIconField]}}</div>
+        <img class="ddl-item-icon" *ngIf="showIcon && !unicodeIcon" [src]="item.ShareType !== 'ALL' ? item[iconSrcField] : ''" alt="">
+        <div class="ddl-item-text">{{item[textField]}}</div>
+      </div> -->
+    </div>
+  </div>

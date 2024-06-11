@@ -1,0 +1,780 @@
+<!-- Changes added by Mayuri D. on 05-July-2022. -->
+<div class="news-container" [ngClass]="{'news-container-expanded': expandedcontent}">
+    <div class="filter-container">
+      <div class="form-group">
+        <!-- <input type="text" class="txt search" placeholder="Search" [(ngModel)]="search"> -->
+        <input type="text" class="txt search" placeholder="Search" name="search" [(ngModel)]="search"
+          (keydown.enter)="changeFilter(this.activeFilter)">
+        <img style="width:20px;height:20px;" src="{{asseturl}}search.png">
+      </div>
+      <div class="filter-options-alignment-wrapper">
+        <div class="filter-options-wrapper">
+          <button class="filter-btn" [ngClass]="{'active':activeFilter == FilterAction.Recent}"
+            (click)="changeFilter(FilterAction.Recent)">Recent</button>
+          <button class="filter-btn" [ngClass]="{'active':activeFilter == FilterAction.Liked}"
+            (click)="changeFilter(FilterAction.Liked)">Liked</button>
+          <button class="filter-btn" [ngClass]="{'active':activeFilter == FilterAction.Recommended}"
+            (click)="changeFilter(FilterAction.Recommended)" style="width: max-content;">Research backed</button>
+          <button class="filter-btn" [ngClass]="{'active':activeFilter == FilterAction.Popular}"
+            (click)="changeFilter(FilterAction.Popular)">Popular</button>
+          <button class="filter-btn" [ngClass]="{'active':activeFilter == FilterAction.MarketOpportunities}"
+            (click)="changeFilter(FilterAction.MarketOpportunities)" style="width: max-content;">Market Opportunities</button>
+        </div>
+      </div>
+      <!-- [ngStyle]="{'display': expandedcontent ? '' : 'none'}" -->
+      <!-- <div style="margin-right: 2%;"> -->
+      <!-- DrishtyR | 12-Aug-2021 | Change to fix news card overlaping on search row-->
+      <div>
+        <!-- <mat-paginator (click)="addClassToPage()" (page)="onPageChange($event)" [pageIndex]="pageIndex" [length]="totalcount" [pageSize]="pageSize"
+          [pageSizeOptions]="[3, 5, 10]">
+        </mat-paginator> -->
+  
+        <div class="pagination-wrapper">
+          <div class="custom-pagination">
+              <div>
+                  Items per page:
+                  <select class="pagination-select" [ngModel] = "pageSize" (change)="onPageChange({'pageNo':pageIndex,'pageSize':$event.target.value,'reload':true})">
+                      <option *ngFor="let option of [3, 5, 10]">
+                          {{option}}
+                      </option>
+                  </select>
+              </div>
+              <div>
+                <!-- Changed by Amogh K | 28Apr2022 | added pagination conditions | assigned by Pranav D -->
+                  {{(this.totalcount && this.totalcount!=0)?this.startIndex+1:this.startIndex}}-{{(this.totalcount && this.totalcount!=0)?this.pageEnd:0}} of {{(totalcount)?totalcount:0}}
+              </div>
+              <div>
+                  <img class="arrow-img" src="{{asseturl}}arrow-down.png" style="transform: rotate(90deg);"
+                  [ngClass]="{'btn-disabled':pageIndex==0}" (click)="onPageChange({'pageNo':pageIndex-1,'pageSize':pageSize,'reload':false})">
+              </div>
+              <div>
+                  <img class="arrow-img" src="{{asseturl}}arrow-down.png"
+                  [ngClass]="{'btn-disabled':pageEnd == totalcount}" (click)="onPageChange({'pageNo':pageIndex+1,'pageSize':pageSize, 'reload':false})">
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="paginatior-div" [ngStyle]="{'display': expandedcontent ? 'none' : ''}">
+          <div style="margin-right: 2%;" style="grid-column: 1 / span 2;">
+              <mat-paginator (page)="onPageChange($event)" [pageIndex]="pageIndex" [length]="totalcount" [pageSize]="pageSize" [pageSizeOptions]="[3,5,10]">
+              </mat-paginator>
+          </div>
+      </div> -->
+    <div class="productCardDiv">
+      <div class="news-wrapper ">
+        <!-- <div class="news-item" *ngFor="let item of this.currentItemsToShow | search:'Headline':search, let index = index" [ngStyle]="{'display': getNewsDisplayStyle(item.NewsID)}" [ngClass]="getNewsSizeClass(item.NewsSize, index)">
+                  <div class="news-item-image" *ngIf="item.ImageLink.length">
+                      <img [src]="item.ImageLink" alt="Image not available" class="news-image">
+                  </div>
+                  <div class="news-details">
+                      <div class="news-headline-wrapper">
+                          <span class="news-headline" (click)="fillStage2Popup(item.NewsID)">{{item.Headline}}</span>
+                          <div *ngIf="item.Recommend =='Y'" class="recommended" data-tooltip="Recommended">
+                              <img src="{{asseturl}}star.svg">
+                          </div>
+                      </div>
+                      <div class="news-publish-details">
+                          <div class="news-time">
+                              {{item.RelativeTime}}
+                          </div>
+                      </div>
+                      <div>
+                          <app-news-product-list [list]="item.List_Name"></app-news-product-list>
+                      </div>
+                      <div class="news-more-details-wrapper">
+                          <div class="news-extras-wrapper">
+                              <span class="like-wrapper" (click)="setNewsLikeAPI(item.Like, item.NewsID)">
+                    <img class="like-img" [src]="getLikeImage(item.Like)" />
+                              <span class="like-text">Like</span>
+                              </span>
+                              <span class="attachment-wrapper" *ngIf="item.Documents.length > 0 && showStage1Buttons === true" (click)="fillAttachmentPopup(item.NewsID)">
+                    <img class="attachment-img" src="{{asseturl}}attach.png" />
+                    <span class="attachment-text">Attachment</span>
+                              </span>
+                             
+                              <span class="product-wrapper" *ngIf="showStage1Buttons === true" (click)="showPopup(item.Headline,item.List_Name);">
+                    <img class="product-img" src="{{asseturl}}cart.png" />
+                    <span class="product-text">Products</span>
+                              </span>
+                          </div>
+                          <div class="news-more-details">
+                             
+                              <span (click)="fillStage2Popup(item.NewsID)">Read more</span>
+                             
+                          </div>
+                      </div>
+                  </div>
+              </div> -->
+        <!-- | search:'Headline':'NewsDescription':search -->
+        <div class="news-item" [ngClass]="{'news-item-expanded': expandedcontent}"
+          *ngFor="let item of this.currentItemsToShow, let index = index"
+          [ngStyle]="{'display': getNewsDisplayStyle(item.NewsID)}" [ngClass]="getNewsSizeClass(item.NewsSize, index)">
+          <div class="news-item-image" *ngIf="item.ImageLink.length"
+            [ngClass]="{'news-item-image-expanded': expandedcontent}">
+            <img [src]="item.ImageLink" alt="Image not available" class="news-image">
+          </div>
+          <div class="news-details" [ngClass]="{'news-details-expanded': expandedcontent}">
+            <div class="news-headline-wrapper">
+              <span class="news-headline" [ngClass]="{'news-headline-expanded': expandedcontent}"
+                (click)="fillStage2Popup(item.NewsID);">{{item.Headline}}</span>
+              <div *ngIf="item.Recommend =='Y'" class="recommended" data-tooltip="Recommended">
+                <img src="{{asseturl}}opportunity.png">
+              </div>
+              <div *ngIf="item.MarketOpportunities =='Y'" class="recommended" style="width: 25px;height: 20px;"
+                data-tooltip="Market Oppurturnities">
+  
+                <img src="{{asseturl}}star.svg">
+  
+              </div>
+            </div>
+            <div class="news-more-details">
+              <!-- <a style="color:var(--blue);" (click)="showPopup(item.Headline,item.List_Name);">Products</a> -->
+              <span (click)="fillStage2Popup(item.NewsID);" style="margin-right: 20px;">Tell me more</span>
+              <!-- <a target="_blank" [href]="item.NewsLink">Read more</a> -->
+            </div>
+  
+            <div class="news-description" [ngStyle]="{'display': expandedcontent ? '' : 'none'}">
+              <span *ngIf="shouldShowNewsDescription(item, index)" [innerHTML]="item.NewsDescriptionShort">
+              </span>
+            </div>
+            <!-- <div class="news-description" *ngIf="item.NewsSize != 'small'"> -->
+            <div [ngClass]="{'product-list-expanded': expandedcontent}">
+              <app-news-product-list [list]="item.List_Name" [RMWBondProductDetailsArr]="item.productList">
+              </app-news-product-list>
+            </div>
+            <div class="news-more-details-wrapper news-like">
+              <div class="news-publish-details">
+                <div class="news-time" style="padding-top: 22px;">
+                  {{item.RelativeTime}}
+                </div>
+              </div>
+              <div class="news-extras-wrapper">
+                <span class="like-wrapper" (click)="setNewsLikeAPI(item.Like, item.NewsID,item.List_Name)">
+                  <img class="like-img" [src]="getLikeImage(item.Like)" />
+                  <!-- <app-svg-icons *ngIf="item.Like =='N'" icon="{{'like'}}"></app-svg-icons>
+                                <app-svg-icons *ngIf="item.Like =='Y'" icon="{{'liked'}}"></app-svg-icons> -->
+                  <!-- <span class="like-text">{{item.Like === 'N' ? 'Like' : 'Unlike'}}</span> -->
+                  <span class="like-text">Like</span>
+                </span>
+                <span class="attachment-wrapper" *ngIf="item.Documents.length > 0 && showStage1Buttons === true"
+                  (click)="fillAttachmentPopup(item.NewsID,true,this.news)">
+                  <img class="attachment-img" src="{{asseturl}}attach.png" />
+                  <span class="attachment-text">Attachment</span>
+                </span>
+                <!-- <a style="color:var(--blue);" (click)="showPopup(item.Headline,item.List_Name);">
+                  Products
+                </a> -->
+                <!-- <span class="product-wrapper" *ngIf="showStage1Buttons === true && !ContentHideConfig"
+                  (click)="showPopup(item.Headline,item.List_Name);">
+                  <img class="product-img" src="{{asseturl}}cart.png" />
+                  <span class="product-text">Product Details</span>
+                </span> -->
+              </div>
+            </div>
+  
+          </div>
+  
+        </div>
+      </div>
+    </div>
+  
+  </div>
+  
+  <div class="overlay" *ngIf="showStage2Popup">
+    <div class="stage2-popup-container">
+      <div class="stage2-popup-title-bar">
+        <div class="stage2-popup-headline-wrapper">
+          <div class="stage2-popup-headline-text">
+            {{stage2Headline}}
+          </div>
+          <div class="stage2-popup-news-time">
+            {{stage2Time}}
+            <div style="float:right" *ngIf="filePreviewFlag">
+              <a [href]="fileLink">
+                <img class="stage2-popup-close-img" style="margin-right: 10px;" src="{{asseturl}}download.png" />
+              </a>
+              <img class="stage2-popup-close-img" src="{{asseturl}}close.png" (click)="closefilePreviewDiv()" />
+            </div>
+          </div>
+        </div>
+        <div class="stage2-popup-close" (click)="clearStage2Popup()">
+          <img class="stage2-popup-close-img" src="{{asseturl}}close.png" />
+        </div>
+      </div>
+      <div [ngClass]="filePreviewFlag ? 'preview-content-wrapper' : 'stage2-content-wrapper'">
+        <div class="stage2-news-image-wrapper grid-news-image" *ngIf="stage2ImageLink.length">
+          <img [src]="stage2ImageLink" alt="Image not available" class="stage2-news-image">
+        </div>
+        <div class="stage2-news-description grid-news-description" [innerHTML]="stage2Description"
+          *ngIf="!filePreviewFlag">
+        </div>
+        <div class="stage2-news-description grid-news-description iframe-loading" *ngIf="filePreviewFlag"
+          style="height: 100%;overflow: hidden;">
+  
+          <img [src]="imgURL" style="width:100%;height:575px;" *ngIf="isImage">
+          <iframe id="iframeDocViewer" *ngIf="!isImage" [src]="imgURL | safe"
+            style="width:100%;height:100%;border:none;overflow:hidden" scrolling="no" frameBorder="0"
+            (onload)="iframeloadevent()" allowfullscreen></iframe>
+        </div>
+        <!-- <div class="blank" *ngIf="relatedNews.length === 0"></div> -->
+        <div class="stage2-related-links-wrapper grid-news-related">
+          <div *ngIf="relatedNews.length > 0 && hashTags !== ''">
+            <div class="stage2-related-news-header">
+              <div class="stage2-related-title">Related</div>
+              <div class="stage2-hashtags">{{hashTags}}</div>
+            </div>
+            <div class="related-news-wrapper">
+              <div class="related-news" *ngFor="let item of relatedNews;"
+                (click)="fillStage2RelatedPopup(item.NewsID,item.Headline,item.List_Name)">
+                <div class="related-news-item-image-wrapper" *ngIf="item.ImageLink.length">
+                  <img [src]="item.ImageLink" alt="Image not available" class="related-news-image">
+                </div>
+                <div class="related-news-headline">
+                  {{item.Headline}}
+                </div>
+              </div>
+            </div>
+          </div>
+          <br>
+  
+        </div>
+        <!-- <div> -->
+        <!-- <div (click)="showPopup(stage2Headline, stage2ProductList)" style="width: 10% !important;
+                  margin-left: 77%;">
+                      <button class="button" title="Details">Product Details</button>
+                </div> -->
+        <!-- *ngIf="!filePreviewFlag" -->
+        <div class="grid-news-product-header" *ngIf="attachmentFiles.length > 0 && !filePreviewFlag">
+          <div class="stage2-related-news-header">
+            <div class="stage2-related-title">Attachments</div>
+          </div>
+          <div class="grid-news-products subproductCardDiv">
+            <div *ngFor="let file of attachmentFiles">
+  
+              <div class="box-container">
+                <div class="inner-table-title">
+                  <!-- [href]="file.Link" -->
+                  <!-- <a class="attachment-file-link" (click)="openfilePreviewDiv()" target="_blank" rel="noopener noreferrer">{{file.Filename}}</a> -->
+                  <div style="text-align: center;">
+  
+                    <a [href]="file.Link">
+                      <mat-icon style="width: 40px!important;height: 40px !important;" class="subproductIcon"> get_app
+                      </mat-icon>
+                    </a>
+                  </div>
+                  <div style="text-align: left;" (click)="openfilePreviewDiv(file.Link, file.Type,file.Filename)">
+                    {{file.Filename}}</div>
+                </div>
+              </div>
+            </div>
+  
+          </div>
+        </div>
+        <div>
+          <div class="stage2-related-title" *ngIf="!filePreviewFlag">Related Investment Ideas</div>
+          <div class="grid-news-products" id="subproductCardDiv" style="margin: 0px;"
+            [ngClass]="(RMWBondProductDetailsArr !== null && RMWBondProductDetailsArr.length === 1) ? 'subsingleproductCardDiv' : 'subproductCardDiv'"
+            *ngIf="!productDetailFlag && !filePreviewFlag">
+  
+            <div *ngFor="let d of RMWBondProductDetailsArr;let i = index">
+              <!-- <div class="templateDiv" *ngIf="d.Template_Code === 'Bonds'">Bonds</div>
+                  <div class="templateDiv" *ngIf="d.Template_Code === 'Fund_Setup'" style="background-color:#6897b2d6;">Mutual
+                    Funds</div>
+                  <div class="templateDiv" *ngIf="d.Template_Code === 'FCNMemory'" style="background-color:#566c7abf;">EQ
+                    Autocallable Note</div> -->
+  
+              <div id="card1" class="box-container" (click)="redirectOptions(i)" (clickOutside)="hideOptions(i)"
+                *ngIf="d.Template_Code === 'AutocallablePhoenix'">
+                <div class="linksPopUp" id="{{'options' + i}}" *ngIf="d.showOptionsFlag">
+                  <span>
+                    <a [routerLink]="['/Phoenix',{RFQ_ID:d.EP_ER_QuoteRequestId}]" routerLinkActive="active-link">Single
+                      Pricer</a><br>
+                    <a [routerLink]="['/MultiPhoenix',{RFQ_ID:d.EP_ER_QuoteRequestId}]"
+                      routerLinkActive="active-link">Multi Pricer</a>
+                  </span>
+  
+                </div>
+                <div class="inner-table-title">
+                  <div style="text-align: center;">
+                    <mat-icon style="width: 40px!important;height: 40px !important;" class="subproductIcon">widgets
+                    </mat-icon>
+  
+  
+                  </div>
+                  <div style="text-align: left;">
+                    <label class="rmwdiv" style="border:none;font-weight: 500;"
+                      *ngIf="d.Template_Code === 'AutocallablePhoenix'">
+                      Equity Autocall {{d.TenorAUP}} {{d.CurrencyAUP}} :
+                      {{d.FirstUnderlyingCode1AUP}}{{d.SecondUnderlyingCode1AUP!=='' ? ',' : ''}}
+                      {{d.SecondUnderlyingCode1AUP}}{{d.ThirdUnderlyingCode1AUP!=='' ? ',' : ''}}
+                      {{d.ThirdUnderlyingCode1AUP}}{{d.FourthUnderlyingCode1AUP!=='' ? ',' : ''}}
+                      {{d.FourthUnderlyingCode1AUP}}{{d.FifthUnderlyingCode1AUP!=='' ? ',' : ''}}
+                      {{d.FifthUnderlyingCode1AUP}}{{d.sixthUnderlyingCode1AUP!=='' ? ',' : ''}}
+                      {{d.sixthUnderlyingCode1AUP}}
+                    </label>
+                  </div>
+  
+                </div>
+              </div>
+              <div id="card1" class="box-container" (click)="redirectOptions(i)" (clickOutside)="hideOptions(i)"
+              *ngIf="d.Template_Code === 'YieldEnhancement'">
+              <div class="linksPopUp" id="{{'options' + i}}" *ngIf="d.showOptionsFlag">
+                <span>
+                  <a [routerLink]="['/YieldEnhancement',{RFQ_ID:d.EP_ER_QuoteRequestId}]" routerLinkActive="active-link">Single
+                    Pricer</a><br>
+                  <a [routerLink]="['/MultiYieldEnhancement',{RFQ_ID:d.EP_ER_QuoteRequestId}]"
+                    routerLinkActive="active-link">Multi Pricer</a>
+                </span>
+              </div>
+              <div class="inner-table-title">
+                <div style="text-align: center;">
+                  <mat-icon style="width: 40px!important;height: 40px !important;" class="subproductIcon">widgets
+                  </mat-icon>
+                </div>
+                <div style="text-align: left;">
+                  <label class="rmwdiv" style="border:none;font-weight: 500;"
+                    *ngIf="d.Template_Code === 'YieldEnhancement'">
+                    Yield Enhancement {{d.TenorYE}} {{d.CurrencyYE}} :
+                    {{d.UnderlyingYE}}
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div id="card1" class="box-container" (click)="redirectOptions(i)" (clickOutside)="hideOptions(i)"
+              *ngIf="d.Template_Code === 'CustomPayoffs'">
+              <div class="linksPopUp" id="{{'options' + i}}" *ngIf="d.showOptionsFlag">
+                <span>
+                  <a [routerLink]="['/CustomStrategy',{RFQ_ID:d.EP_ER_QuoteRequestId}]" routerLinkActive="active-link">Single
+                    Pricer</a><br>
+                  <a [routerLink]="['/MultiCustomStrategy',{RFQ_ID:d.EP_ER_QuoteRequestId}]" routerLinkActive="active-link">Multi
+                    Pricer</a>
+                </span>
+              </div>
+              <div class="inner-table-title">
+                <div style="text-align: center;">
+                  <mat-icon style="width: 40px!important;height: 40px !important;" class="subproductIcon">widgets
+                  </mat-icon>
+                </div>
+                <div style="text-align: left;">
+                  <label class="rmwdiv" style="border:none;font-weight: 500;" *ngIf="d.Template_Code === 'CustomPayoffs'">
+                    Custom Strategy {{d.TenorYE}} {{d.CurrencyYE}} :
+                    {{d.UnderlyingYE}}
+                  </label>
+                </div>
+              </div>
+            </div>
+              <div id="card1" class="box-container" (click)="redirectOptions(i)" (clickOutside)="hideOptions(i)"
+                *ngIf="d.Template_Code === 'ReverseConvertible'">
+                <div class="linksPopUp" id="{{'options' + i}}" *ngIf="d.showOptionsFlag">
+                  <span>
+                    <a [routerLink]="['/BRC',{RFQ_ID:d.EP_ER_QuoteRequestId}]" routerLinkActive="active-link">Single
+                      Pricer</a><br>
+                    <a [routerLink]="['/MultiBRC',{RFQ_ID:d.EP_ER_QuoteRequestId}]" routerLinkActive="active-link">Multi
+                      Pricer</a>
+                  </span>
+  
+                </div>
+                <div class="inner-table-title">
+                  <div style="text-align: center;">
+  
+                    <mat-icon style="width: 40px!important;height: 40px !important;" class="subproductIcon">aspect_ratio
+                    </mat-icon>
+  
+                  </div>
+                  <div style="text-align: center;">
+  
+                    <label class="rmwdiv" style="border:none;font-weight: 500;"
+                      *ngIf="d.Template_Code === 'ReverseConvertible'">
+                      Equity Reverse Convertible {{d.ComputedPayoffSoftTenorRC}} {{d.InputSettlementCurrencyRC}} :
+                      {{d.FirstUnderlyingCode1RC}}{{d.SecondUnderlyingCode1RC!=='' ? ',' : ''}}
+                      {{d.SecondUnderlyingCode1RC}}{{d.ThirdUnderlyingCode1RC!=='' ? ',' : ''}}
+                      {{d.ThirdUnderlyingCode1RC}}{{d.FourthUnderlyingCode1RC!=='' ? ',' : ''}}
+                      {{d.FourthUnderlyingCode1RC}}{{d.FifthUnderlyingCode1RC!=='' ? ',' : ''}}
+                      {{d.FifthUnderlyingCode1RC}}{{d.sixthUnderlyingCode1RC!=='' ? ',' : ''}}
+                      {{d.sixthUnderlyingCode1RC}}
+                    </label>
+  
+                  </div>
+  
+  
+                </div>
+              </div>
+              <div id="card1" class="box-container" (click)="redirectOptions(i)" (clickOutside)="hideOptions(i)"
+                *ngIf="d.Template_Code === 'Participation'">
+                <div class="linksPopUp" id="{{'options' + i}}" *ngIf="d.showOptionsFlag">
+                  <span>
+                    <a [routerLink]="['/Participation',{RFQ_ID:d.EP_ER_QuoteRequestId}]"
+                      routerLinkActive="active-link">Single Pricer</a><br>
+                    <a [routerLink]="['/MultiParticipation',{RFQ_ID:d.EP_ER_QuoteRequestId}]"
+                      routerLinkActive="active-link">Multi Pricer</a>
+                  </span>
+  
+                </div>
+                <div class="inner-table-title">
+                  <div style="text-align: center;">
+  
+                    <mat-icon style="width: 40px!important;height: 40px !important;" class="subproductIcon">description
+                    </mat-icon>
+  
+  
+                  </div>
+                  <div style="text-align: center;">
+  
+                    <label class="rmwdiv" style="border:none;font-weight: 500;"
+                      *ngIf="d.Template_Code === 'Participation'">
+                      Equity Participation {{d.ComputedPayoffSoftTenor}}
+                      {{d.InputSettlementCurrency}} : {{d.InputUnderlyingCSV}}
+                    </label>
+  
+                  </div>
+  
+  
+                </div>
+              </div>
+              <div id="card1" class="box-container" (click)="redirectOptions(i)" (clickOutside)="hideOptions(i)"
+                *ngIf="d.Template_Code === 'CreditTranche'">
+                <div class="linksPopUp" id="{{'options' + i}}" *ngIf="d.showOptionsFlag">
+                  <span>
+                    <a [routerLink]="['/Credit',{RFQ_ID:d.EP_ER_QuoteRequestId}]" routerLinkActive="active-link">Single
+                      Pricer</a><br>
+                    <a [routerLink]="['/MultiCredit',{RFQ_ID:d.EP_ER_QuoteRequestId}]"
+                      routerLinkActive="active-link">Multi Pricer</a>
+                  </span>
+  
+                </div>
+                <div class="inner-table-title">
+                  <div style="text-align: center;">
+  
+                    <mat-icon style="width: 40px!important;height: 40px !important;" class="subproductIcon">card_giftcard
+                    </mat-icon>
+  
+                  </div>
+                  <div style="text-align: center;">
+  
+                    <label class="rmwdiv" style="border:none;font-weight: 500;"
+                      *ngIf="d.Template_Code === 'CreditTranche'">
+                      Credit Tranche {{d.ComputedTenorValueCT}} {{d.InputSettlementCurrencyCT}} :
+                      {{d.InputCreditIndexTrancheCT}}
+                    </label>
+                  </div>
+  
+                </div>
+              </div>
+              <!-- Early Redemption -->
+              <div id="card1" class="box-container" (click)="redirectOptions(i)" (clickOutside)="hideOptions(i)"
+                *ngIf="d.Template_Code === 'EQC_Europe'">
+                <div class="linksPopUp" id="{{'options' + i}}" *ngIf="d.showOptionsFlag">
+                  <span>
+                    <a [routerLink]="['/EarlyRedemption',{RFQ_ID:d.EP_ER_QuoteRequestId}]"
+                      routerLinkActive="active-link">Single Pricer</a><br>
+                    <a [routerLink]="['/MultiEarlyRedemption',{RFQ_ID:d.EP_ER_QuoteRequestId}]"
+                      routerLinkActive="active-link">Multi Pricer</a>
+                  </span>
+  
+                </div>
+                <div class="inner-table-title">
+                  <div style="text-align: center;">
+                    <mat-icon style="width: 40px!important;height: 40px !important;" class="subproductIcon">dashboard
+                    </mat-icon>
+  
+  
+                  </div>
+                  <div style="text-align: center;">
+                    <label class="rmwdiv" style="border:none;font-weight: 500;" *ngIf="d.Template_Code === 'EQC_Europe'">
+                      Equity Autocallable {{d.TenorER}} {{d.CurrencyER}} :
+                      {{d.UnderlyingsER}}
+                    </label>
+                  </div>
+  
+  
+                </div>
+              </div>
+              
+              <!-- Accumulator -->
+              <div id="card1" class="box-container" (click)="redirectOptions(i)" (clickOutside)="hideOptions(i)"
+                *ngIf="d.Template_Code === 'ACC'">
+                <div class="linksPopUp" id="{{'options' + i}}" *ngIf="d.showOptionsFlag">
+                  <span>
+                    <a [routerLink]="['/AQ',{RFQ_ID:d.EP_ER_QuoteRequestId}]" routerLinkActive="active-link">Single
+                      Pricer</a><br>
+                    <a [routerLink]="['/MultiAccu',{RFQ_ID:d.EP_ER_QuoteRequestId}]" routerLinkActive="active-link">Multi
+                      Pricer</a>
+                  </span>
+  
+                </div>
+                <div class="inner-table-title">
+                  <div style="text-align: center;">
+                    <mat-icon style="width: 40px!important;height: 40px !important;" class="subproductIcon">dashboard
+                    </mat-icon>
+  
+  
+                  </div>
+                  <div style="text-align: center;">
+                    <label class="rmwdiv" style="border:none;font-weight: 500;" *ngIf="d.Template_Code === 'ACC'">
+                      Equity Accumulator {{d.TenorAC}} {{d.CurremcyAC}} :
+                      {{d.UnderlyingAC}}
+                    </label>
+                  </div>
+  
+  
+                </div>
+              </div>
+  
+              <!-- Decumulator -->
+              <div id="card1" class="box-container" (click)="redirectOptions(i)" (clickOutside)="hideOptions(i)"
+                *ngIf="d.Template_Code === 'DAC'">
+                <div class="linksPopUp" id="{{'options' + i}}" *ngIf="d.showOptionsFlag">
+                  <span>
+                    <a [routerLink]="['/DQ',{RFQ_ID:d.EP_ER_QuoteRequestId}]" routerLinkActive="active-link">Single
+                      Pricer</a><br>
+                    <a [routerLink]="['/MultiDecu',{RFQ_ID:d.EP_ER_QuoteRequestId}]" routerLinkActive="active-link">Multi
+                      Pricer</a>
+                  </span>
+  
+                </div>
+                <div class="inner-table-title">
+                  <div style="text-align: center;">
+                    <mat-icon style="width: 40px!important;height: 40px !important;" class="subproductIcon">dashboard
+                    </mat-icon>
+  
+  
+                  </div>
+                  <div style="text-align: center;">
+                    <label class="rmwdiv" style="border:none;font-weight: 500;" *ngIf="d.Template_Code === 'ACC'">
+                      Equity Decumulator {{d.TenorDC}} {{d.CurremcyDC}} :
+                      {{d.UnderlyingDC}}
+                    </label>
+                  </div>
+  
+  
+                </div>
+              </div>
+            </div>
+  
+          </div>
+        </div>
+        <div class="stage2-news-extras-wrapper grid-news-like">
+          <div class="news-extras-wrapper">
+            <span class="like-wrapper" (click)="setNewsLikeAPI(stage2Like, stage2NewsId,stage2ProductList)">
+              <img class="like-img" [src]="getLikeImage(stage2Like)" />
+              <!-- <app-svg-icons *ngIf="stage2Like =='N'" icon="{{'like'}}"></app-svg-icons>
+                          <app-svg-icons *ngIf="stage2Like =='Y'" icon="{{'liked'}}"></app-svg-icons> -->
+              <!-- <span class="like-text">{{item.Like === 'N' ? 'Like' : 'Unlike'}}</span> -->
+              <span class="like-text">Like</span>
+            </span>
+            <!-- <span class="attachment-wrapper" *ngIf="stage2Documents.length > 0 && showStage2Buttons === true" (click)="fillAttachmentPopup(stage2NewsId,true)">
+                <img class="attachment-img" src="{{asseturl}}attach.png" />
+                <span class="attachment-text">Attachment</span>
+                      </span> -->
+            <!-- <a style="color:var(--blue);" (click)="showPopup(item.Headline,item.List_Name);">
+                  Products
+                </a>  -->
+            <!-- <span class="product-wrapper" *ngIf="showStage2Buttons === true"
+              (click)="showPopup(stage2Headline, stage2ProductList);">
+              <img class="product-img" src="{{asseturl}}cart.png" />
+              <span class="product-text">Product Details</span>
+            </span> -->
+            <span class="product-wrapper" *ngIf="showStage2Buttons === true" (clickOutside)="hideContactInfoPopup()">
+              <img class="product-img" src="{{asseturl}}contact.png" />
+              <span class="product-text info1" style="color: var(--link) !important"
+                (click)="showContactInfoPopup()">Contact</span>
+  
+              <div *ngIf="showContactInfoPopupFlag" class="infoNote" style="white-space: initial;width: 300px;">
+                <span>
+                  For any functional help, please contact<br>
+                  Phone : {{contactDetails}}<br>
+                  Email : finiq_europe_spc@finiq.com
+                </span>
+              </div>
+            </span>
+          </div>
+          <a class="stage2-external-link" target="_blank" [href]="stage2ExternalLink"
+            *ngIf="stage2ExternalLink!== null && stage2ExternalLink!==''">
+            Tell me more
+          </a>
+        </div>
+  
+        <!-- <div class="container">
+                  <pdf-viewer [src]="pdfSource" [original-size]="false"></pdf-viewer>
+              </div> -->
+      </div>
+    </div>
+  </div>
+  
+  <div class="overlay" *ngIf="showAttachmentsPopup">
+    <div class="attachments-popup-container">
+      <div class="attachments-popup-title-bar">
+        <div class="attachments-popup-title">Attachments (
+          <span class="attachments-popup-count">{{attachmentCount}}</span>)
+        </div>
+        <div class="attachments-popup-close" (click)="clearAttachmentPopup()">
+          <img class="attachments-popup-close-img" src="{{asseturl}}close.png" />
+        </div>
+      </div>
+      <div class="attachment-files-wrapper">
+        <div class="attachment-file" *ngFor="let file of attachmentFiles">
+          <a class="attachment-file-link" [href]="file.Link" target="_blank"
+            rel="noopener noreferrer">{{file.Filename}}</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div id="filters">
+    <div class="rmwFilterSection">
+  
+      <div class="popupheader">
+        <div class="popuptd" style="width:100%;border-radius: 10px 10px 0px 0px; margin-top:10px;">
+          <p style="font-size: x-large;
+            font-weight: 300;padding: 5px 10px;">{{this.headline}}</p>
+        </div>
+        <!-- <div (click)="showProductDetail()" style="margin-top:10px">
+                 
+  
+                  <button *ngIf="!productDetailFlag" class="btnMoreDetails" type="button" title="Details">
+              <svg class="moreDetailsicon" focusable="false" viewBox="0 0 24 24">
+                <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path>
+              </svg>
+    
+            </button>
+  
+                  <button *ngIf="productDetailFlag" class="btnMoreDetails" type="button" title="List">
+              <svg class="moreDetailsicon" focusable="false" viewBox="0 0 24 24">
+                <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"></path>
+              </svg>
+            </button>
+              </div> -->
+        <div class="btnClosePopUp" style="margin-top: 10px;font-weight: 700;font-size:medium;padding-top: 0px;"
+          (click)="hidePopup()">
+          X
+        </div>
+      </div>
+  
+      <!-- <div id="productCardDiv" [ngClass]="RMWBondProductDetailsArr.length === 1 ? 'singleproductCardDiv' : 'productCardDiv'" *ngIf="!productDetailFlag">
+              <div style="margin-right: 15px;" *ngFor="let d of RMWBondProductDetailsArr;">
+                  
+  
+                  <div id="card1" class="box-container">
+                      <div class="inner-table-title">
+                          <div style="text-align: center;margin: 15px;">
+                              <mat-icon style="width:100px!important;height:100px !important;" class="productIcon" *ngIf="d.Template_Code === 'AutocallablePhoenix'">widgets
+                              </mat-icon>
+                              <mat-icon style="width:100px!important;height:100px !important;" class="productIcon" *ngIf="d.Template_Code === 'ReverseConvertible'">aspect_ratio
+                              </mat-icon>
+                              <mat-icon style="width:100px!important;height:100px !important;" class="productIcon" *ngIf="d.Template_Code === 'Participation'">description
+                              </mat-icon>
+                              <mat-icon style="width:100px!important;height:100px !important;" class="productIcon" *ngIf="d.Template_Code === 'CreditTranche'">card_giftcard
+                              </mat-icon>
+  
+                          </div>
+                          <div style="text-align: center;">
+                              <label class="rmwdiv" style="border:none;font-weight: 500;" *ngIf="d.Template_Code === 'AutocallablePhoenix'">
+                    Equity Autocall {{d.TenorAUP}} {{d.CurrencyAUP}} :
+                    {{d.FirstUnderlyingCode1AUP}}{{d.SecondUnderlyingCode1AUP!=='' ? ',' : ''}}
+                    {{d.SecondUnderlyingCode1AUP}}{{d.ThirdUnderlyingCode1AUP!=='' ? ',' : ''}}
+                    {{d.ThirdUnderlyingCode1AUP}}{{d.FourthUnderlyingCode1AUP!=='' ? ',' : ''}}
+                    {{d.FourthUnderlyingCode1AUP}}{{d.FifthUnderlyingCode1AUP!=='' ? ',' : ''}}
+                    {{d.FifthUnderlyingCode1AUP}}{{d.sixthUnderlyingCode1AUP!=='' ? ',' : ''}}
+                    {{d.sixthUnderlyingCode1AUP}}
+                  </label>
+                              <label class="rmwdiv" style="border:none;font-weight: 500;" *ngIf="d.Template_Code === 'ReverseConvertible'">
+                    Equity Reverse Convertible {{d.ComputedPayoffSoftTenorRC}} {{d.InputSettlementCurrencyRC}} :
+                    {{d.FirstUnderlyingCode1RC}}{{d.SecondUnderlyingCode1RC!=='' ? ',' : ''}}
+                    {{d.SecondUnderlyingCode1RC}}{{d.ThirdUnderlyingCode1RC!=='' ? ',' : ''}}
+                    {{d.ThirdUnderlyingCode1RC}}{{d.FourthUnderlyingCode1RC!=='' ? ',' : ''}}
+                    {{d.FourthUnderlyingCode1RC}}{{d.FifthUnderlyingCode1RC!=='' ? ',' : ''}}
+                    {{d.FifthUnderlyingCode1RC}}{{d.sixthUnderlyingCode1RC!=='' ? ',' : ''}}
+                    {{d.sixthUnderlyingCode1RC}}
+                  </label>
+                              <label class="rmwdiv" style="border:none;font-weight: 500;" *ngIf="d.Template_Code === 'Participation'">
+                    Equity Participation {{d.ComputedPayoffSoftTenor}}
+                    {{d.InputSettlementCurrency}} : {{d.InputUnderlyingCSV}}
+                  </label>
+                              <label class="rmwdiv" style="border:none;font-weight: 500;" *ngIf="d.Template_Code === 'CreditTranche'">
+                    Credit Tranche {{d.ComputedTenorValueCT}} {{d.InputSettlementCurrencyCT}} :
+                    {{d.InputCreditIndexTrancheCT}}
+                  </label>
+                          </div>
+                          <div style="text-align: center;" *ngIf="d.Template_Code === 'AutocallablePhoenix'">
+                              <label class="rmwtableheader" style="text-align: left; border-bottom: none;">
+                    <span class="rmwtableheader" style="border-bottom: none;">Format: </span><span
+                      class="rmwtabledata">{{d.FormatAUP}}&nbsp;</span>
+                    <span class="rmwtableheader" style="border-bottom: none;">Price: </span><span
+                      class="rmwtabledata">{{d.InputInterBankPriceAUP}}&nbsp;</span>
+                  </label>
+                          </div>
+                          <div style="text-align: center;" *ngIf="d.Template_Code === 'ReverseConvertible'">
+                              <label class="rmwtableheader" style="text-align: left; border-bottom: none;">
+                    <span class="rmwtableheader" style="border-bottom: none;">Format: </span><span
+                      class="rmwtabledata">{{d.StaticFormatRC}}&nbsp;</span>
+                    <span class="rmwtableheader" style="border-bottom: none;">Price: </span><span
+                      class="rmwtabledata">{{d.PriceRC}}&nbsp;</span>
+                  </label>
+                          </div>
+                          <div style="text-align: center;" *ngIf="d.Template_Code === 'Participation'">
+                              <label class="rmwtableheader" style="text-align: left; border-bottom: none;">
+                    <span class="rmwtableheader" style="border-bottom: none;">Format: </span><span
+                      class="rmwtabledata">{{d.StaticFormat}}&nbsp;</span>
+                    <span class="rmwtableheader" style="border-bottom: none;">Price: </span><span
+                      class="rmwtabledata">{{d.InputIssuePricePercent}}&nbsp;</span>
+                  </label>
+                          </div>
+                          <div style="text-align: center;" *ngIf="d.Template_Code === 'CreditTranche'">
+                              <label class="rmwtableheader" style="text-align: left; border-bottom: none;">
+                    <span class="rmwtableheader" style="border-bottom: none;">Format: </span><span
+                      class="rmwtabledata">{{d.FormatCT}}&nbsp;</span>
+                    <span class="rmwtableheader" style="border-bottom: none;">Reoffer: </span><span
+                      class="rmwtabledata">{{d.ReofferCT}}&nbsp;</span>
+                  </label>
+                          </div>
+                          <div style="text-align: center;" *ngIf="d.Template_Code === 'AutocallablePhoenix'">
+                              <label class="rmwtableheader" style="text-align: left;border-bottom: none;">
+                    <span class="rmwtableheader" style="border-bottom: none;">Total Issue Size: </span><span
+                      class="rmwtabledata">{{d.NotionalAmountAUP}}&nbsp;</span>
+                    <span class="rmwtableheader" style="border-bottom: none;">Issue Price: </span><span
+                      class="rmwtabledata">{{d.InputIssuePricePercentAUP}}&nbsp;</span>
+                  </label>
+                          </div>
+                          <div style="text-align: center;" *ngIf="d.Template_Code === 'ReverseConvertible'">
+                              <label class="rmwtableheader" style="text-align: left;border-bottom: none;">
+                    <span class="rmwtableheader" style="border-bottom: none;">Total Issue Size: </span><span
+                      class="rmwtabledata">{{d.NotionalAmountRC}}&nbsp;</span>
+                    <span class="rmwtableheader" style="border-bottom: none;">Issue Price: </span><span
+                      class="rmwtabledata">{{d.IssuePriceRC}}&nbsp;</span>
+                  </label>
+                          </div>
+                          <div style="text-align: center;" *ngIf="d.Template_Code === 'Participation'">
+                              <label class="rmwtableheader" style="text-align: left;border-bottom: none;">
+                    <span class="rmwtableheader" style="border-bottom: none;">Total Issue Size: </span><span
+                                class="rmwtabledata">{{d.InputRequestedSize}}&nbsp;</span>
+                    <span class="rmwtableheader" style="border-bottom: none;">Issue Price: </span><span
+                                class="rmwtabledata">{{d.InputIssuePricePercent}}&nbsp;</span>
+                  </label>
+                          </div>
+  
+  
+                          <div style="text-align: center;" *ngIf="d.Template_Code === 'CreditTranche'">
+                              <label class="rmwtableheader" style="text-align: left;border-bottom: none;">
+                    <span class="rmwtableheader" style="border-bottom: none;">Total Issue Size: </span><span
+                      class="rmwtabledata">{{d.InputRFQNotionalAmountCT}}&nbsp;</span>
+                    <span class="rmwtableheader" style="border-bottom: none;">Issue Price: </span><span
+                      class="rmwtabledata">{{d.InputInterBankPriceCT}}&nbsp;</span>
+                  </label>
+                          </div>
+  
+                      </div>
+                  </div>
+              </div>
+  
+          </div> -->
+      <div id="rmwbondDiv" class="rmwbondDiv" *ngIf="productDetailFlag">
+        <app-rmw [RMWBondProductDetailsArr]="RMWBondProductDetailsArr" [popupFlag]="popupFlag" [ListName]="ListName">
+        </app-rmw>
+      </div>
+    </div>
+  </div>
+  
+ 
+  

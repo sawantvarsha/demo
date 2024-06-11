@@ -1,0 +1,282 @@
+<!-- Changes added by Mayuri D. on 06-July-2022. -->
+<div class="productCardDiv">
+    <div *ngFor="let d of RMWBondProductDetailsArr;let i = index">
+        <!-- [routerLink]="['/Phoenix',{RFQ_ID:d.EP_ER_QuoteRequestId}]"
+        routerLinkActive="active-link" -->
+        <div id="card1" class="box-container" (click)="redirectOptions(i)" (clickOutside)="hideOptions(i)" *ngIf="d.Template_Code === 'AutocallablePhoenix'">
+            <div class="linksPopUp" id="{{'options' + i}}" *ngIf="d.showOptionsFlag">
+                <span>
+                    <a (click)="redirecttopricer('/Phoenix',d.EP_ER_QuoteRequestId)">Single Pricer</a><br>
+                    <a (click)="redirecttopricer('/MultiPhoenix',d.EP_ER_QuoteRequestId)">Multi Pricer</a>
+                </span>
+
+            </div>
+            <div class="inner-table-title">
+                <div style="text-align: center;">
+                    <mat-icon style="width: 40px!important;height: 40px !important;" class="subproductIcon">widgets
+                    </mat-icon>
+
+                </div>
+                <div style="text-align: left;">
+                    <label class="rmwdiv" style="border:none;font-weight: 500; " *ngIf="d.Template_Code === 'AutocallablePhoenix'">
+                        Equity Autocall {{d.TenorAUP}} {{d.CurrencyAUP}} :
+                        {{d.FirstUnderlyingCode1AUP}}{{(d.SecondUnderlyingCode1AUP !== undefined &&
+                        d.SecondUnderlyingCode1AUP !== null && d.SecondUnderlyingCode1AUP !== '') ? ',' : ''}}
+                        {{d.SecondUnderlyingCode1AUP}}{{(d.ThirdUnderlyingCode1AUP !== undefined &&
+                        d.ThirdUnderlyingCode1AUP !== null && d.ThirdUnderlyingCode1AUP !== '') ? ',' : ''}}
+                        {{d.ThirdUnderlyingCode1AUP}}{{(d.FourthUnderlyingCode1AUP !== undefined &&
+                        d.FourthUnderlyingCode1AUP !== null && d.FourthUnderlyingCode1AUP !== '') ? ',' : ''}}
+                        {{d.FourthUnderlyingCode1AUP}}{{(d.FifthUnderlyingCode1AUP !== undefined &&
+                        d.FifthUnderlyingCode1AUP !== null && d.FifthUnderlyingCode1AUP !== '') ? ',' : ''}}
+                        {{d.FifthUnderlyingCode1AUP}}{{(d.sixthUnderlyingCode1AUP !== undefined &&
+                        d.sixthUnderlyingCode1AUP !== null && d.sixthUnderlyingCode1AUP !== '') ? ',' : ''}}
+                        {{d.sixthUnderlyingCode1AUP}}
+                    </label>
+                </div>
+            </div>
+        </div>
+        <!-- [routerLink]="['/BRC',{RFQ_ID:d.EP_ER_QuoteRequestId}]"
+        routerLinkActive="active-link"  -->
+        <div id="card1" class="box-container" (click)="redirectOptions(i)" (clickOutside)="hideOptions(i)" *ngIf="d.Template_Code === 'ReverseConvertible'">
+            <div class="linksPopUp" id="{{'options' + i}}" *ngIf="d.showOptionsFlag">
+                <span>
+                    <a (click)="redirecttopricer('/BRC',d.EP_ER_QuoteRequestId)">Single Pricer</a><br>
+                    <a (click)="redirecttopricer('/MultiBRC',d.EP_ER_QuoteRequestId)">Multi Pricer</a>
+                </span>
+
+            </div>
+            <div class="inner-table-title">
+                <div style="text-align: center;">
+
+                    <mat-icon style="width: 40px!important;height: 40px !important;" class="subproductIcon">aspect_ratio
+                    </mat-icon>
+
+                </div>
+                <div style="text-align: center;">
+
+                    <label class="rmwdiv" style="border:none;font-weight: 500; " *ngIf="d.Template_Code === 'ReverseConvertible'">
+                        Equity Reverse Convertible {{d.ComputedPayoffSoftTenorRC}} {{d.InputSettlementCurrencyRC}} :
+                        {{d.FirstUnderlyingCode1RC}}{{(d.SecondUnderlyingCode1RC !== undefined &&
+                        d.SecondUnderlyingCode1RC !== null && d.SecondUnderlyingCode1RC !== '') ? ',' : ''}}
+                        {{d.SecondUnderlyingCode1RC}}{{(d.ThirdUnderlyingCode1RC !== undefined &&
+                        d.ThirdUnderlyingCode1RC !== null && d.ThirdUnderlyingCode1RC !== '') ? ',' : ''}}
+                        {{d.ThirdUnderlyingCode1RC}}{{(d.FourthUnderlyingCode1RC !== undefined &&
+                        d.FourthUnderlyingCode1RC !== null && d.FourthUnderlyingCode1RC !== '') ? ',' : ''}}
+                        {{d.FourthUnderlyingCode1RC}}{{(d.FifthUnderlyingCode1RC !== undefined &&
+                        d.FifthUnderlyingCode1RC !== null && d.FifthUnderlyingCode1RC !== '') ? ',' : ''}}
+                        {{d.FifthUnderlyingCode1RC}}{{(d.sixthUnderlyingCode1RC !== undefined &&
+                        d.sixthUnderlyingCode1RC !== null && d.sixthUnderlyingCode1RC !== '') ? ',' : ''}}
+                        {{d.sixthUnderlyingCode1RC}}
+                    </label>
+
+                </div>
+            </div>
+        </div>
+        <!-- [routerLink]="['/Participation',{RFQ_ID:d.EP_ER_QuoteRequestId}]"
+        routerLinkActive="active-link" -->
+        <div id="card1" class="box-container" (click)="redirectOptions(i)" (clickOutside)="hideOptions(i)" *ngIf="d.Template_Code === 'Participation'">
+            <div class="linksPopUp" id="{{'options' + i}}" *ngIf="d.showOptionsFlag">
+                <span>
+                    <a (click)="redirecttopricer('/Participation',d.EP_ER_QuoteRequestId)">Single Pricer</a><br>
+                    <a (click)="redirecttopricer('/MultiParticipation',d.EP_ER_QuoteRequestId)">Multi Pricer</a>
+                </span>
+
+            </div>
+            <div class="inner-table-title">
+                <div style="text-align: center;">
+
+                    <mat-icon style="width: 40px!important;height: 40px !important;" class="subproductIcon">description
+                    </mat-icon>
+
+
+                </div>
+                <div style="text-align: center;">
+
+                    <label class="rmwdiv" style="border:none;font-weight: 500; " *ngIf="d.Template_Code === 'Participation'">
+                        Equity Participation {{d.ComputedPayoffSoftTenor}}
+                        {{d.InputSettlementCurrency}} : {{d.InputUnderlyingCSV}}
+                    </label>
+
+                </div>
+            </div>
+        </div>
+        <!-- [routerLink]="['/Credit',{RFQ_ID:d.EP_ER_QuoteRequestId}]"
+        routerLinkActive="active-link" -->
+        <div id="card1" class="box-container" (click)="redirectOptions(i)" (clickOutside)="hideOptions(i)" *ngIf="d.Template_Code === 'CreditTranche'">
+            <div class="linksPopUp" id="{{'options' + i}}" *ngIf="d.showOptionsFlag">
+                <span>
+                    <a (click)="redirecttopricer('/Credit',d.EP_ER_QuoteRequestId)">Single Pricer</a><br>
+                    <a (click)="redirecttopricer('/MultiCredit',d.EP_ER_QuoteRequestId)">Multi Pricer</a>
+                </span>
+
+            </div>
+            <div class="inner-table-title">
+                <div style="text-align: center;">
+
+                    <mat-icon style="width: 40px!important;height: 40px !important;" class="subproductIcon">card_giftcard
+                    </mat-icon>
+
+                </div>
+                <div style="text-align: center;">
+
+                    <label class="rmwdiv" style="border:none;font-weight: 500; " *ngIf="d.Template_Code === 'CreditTranche'">
+                        Credit Tranche {{d.ComputedTenorValueCT}} {{d.InputSettlementCurrencyCT}} :
+                        {{d.InputCreditIndexTrancheCT}}
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        
+       <!-- Early Redemption -->
+       <div id="card1" class="box-container" (click)="redirectOptions(i)" (clickOutside)="hideOptions(i)"
+       *ngIf="d.Template_Code === 'EQC_Europe'">
+       <div class="linksPopUp" id="{{'options' + i}}" *ngIf="d.showOptionsFlag">
+         <span>
+           <a [routerLink]="['/EarlyRedemption',{RFQ_ID:d.EP_ER_QuoteRequestId}]"
+             routerLinkActive="active-link">Single Pricer</a><br>
+           <a [routerLink]="['/MultiEarlyRedemption',{RFQ_ID:d.EP_ER_QuoteRequestId}]"
+             routerLinkActive="active-link">Multi Pricer</a>
+         </span>
+
+       </div>
+       <div class="inner-table-title">
+         <div style="text-align: center;">
+           <mat-icon style="width: 40px!important;height: 40px !important;" class="subproductIcon">dashboard
+           </mat-icon>
+
+
+         </div>
+         <div style="text-align: center;">
+           <label class="rmwdiv" style="border:none;font-weight: 500;" *ngIf="d.Template_Code === 'EQC_Europe'">
+             Equity Autocallable {{d.TenorER}} {{d.CurrencyER}} :
+             {{d.UnderlyingsER}}
+           </label>
+         </div>
+
+
+       </div>
+     </div>
+
+     <!-- Added by Amogh K | 16 Nov 2022 |  Yield Enhancement underlying for news product  start-->
+     <div id="card1" class="box-container" (click)="redirectOptions(i)" (clickOutside)="hideOptions(i)"
+     *ngIf="d.Template_Code === 'YieldEnhancement'">
+     <div class="linksPopUp" id="{{'options' + i}}" *ngIf="d.showOptionsFlag">
+       <span>
+         <a [routerLink]="['/YieldEnhancement',{RFQ_ID:d.EP_ER_QuoteRequestId}]"
+           routerLinkActive="active-link">Single Pricer</a><br>
+         <a [routerLink]="['/MultiYieldEnhancement',{RFQ_ID:d.EP_ER_QuoteRequestId}]"
+           routerLinkActive="active-link">Multi Pricer</a>
+       </span>
+
+     </div>
+     <div class="inner-table-title">
+       <div style="text-align: center;">
+         <mat-icon style="width: 40px!important;height: 40px !important;" class="subproductIcon">dashboard
+         </mat-icon>
+
+
+       </div>
+       <div style="text-align: center;">
+         <label class="rmwdiv" style="border:none;font-weight: 500;" *ngIf="d.Template_Code === 'YieldEnhancement'">
+           Yield Enhancement {{d.TenorYE}} {{d.CurrencyYE}} :
+           {{d.UnderlyingYE}}
+         </label>
+       </div>
+
+
+     </div>
+   </div>
+   <!-- Added by Amogh K | 16 Nov 2022 |  Yield Enhancement underlying for news product  end-->
+  <div id="card1" class="box-container" (click)="redirectOptions(i)" (clickOutside)="hideOptions(i)"
+    *ngIf="d.Template_Code === 'CustomPayoffs'">
+    <div class="linksPopUp" id="{{'options' + i}}" *ngIf="d.showOptionsFlag">
+      <span>
+        <a [routerLink]="['/CustomStrategy',{RFQ_ID:d.EP_ER_QuoteRequestId}]" routerLinkActive="active-link">Single
+          Pricer</a><br>
+        <a [routerLink]="['/MultiCustomStrategy',{RFQ_ID:d.EP_ER_QuoteRequestId}]" routerLinkActive="active-link">Multi
+          Pricer</a>
+      </span>
+
+    </div>
+    <div class="inner-table-title">
+      <div style="text-align: center;">
+        <mat-icon style="width: 40px!important;height: 40px !important;" class="subproductIcon">dashboard
+        </mat-icon>
+
+
+      </div>
+      <div style="text-align: center;">
+        <label class="rmwdiv" style="border:none;font-weight: 500;" *ngIf="d.Template_Code === 'CustomStrategy'">
+          Custom Strategy {{d.TenorYE}} {{d.CurrencyYE}} :
+          {{d.UnderlyingYE}}
+        </label>
+      </div>
+
+
+    </div>
+  </div>
+     <!-- Accumulator -->
+     <div id="card1" class="box-container" (click)="redirectOptions(i)" (clickOutside)="hideOptions(i)"
+       *ngIf="d.Template_Code === 'ACC'">
+       <div class="linksPopUp" id="{{'options' + i}}" *ngIf="d.showOptionsFlag">
+         <span>
+           <a [routerLink]="['/AQ',{RFQ_ID:d.EP_ER_QuoteRequestId}]" routerLinkActive="active-link">Single
+             Pricer</a><br>
+           <a [routerLink]="['/MultiAccu',{RFQ_ID:d.EP_ER_QuoteRequestId}]" routerLinkActive="active-link">Multi
+             Pricer</a>
+         </span>
+
+       </div>
+       <div class="inner-table-title">
+         <div style="text-align: center;">
+           <mat-icon style="width: 40px!important;height: 40px !important;" class="subproductIcon">dashboard
+           </mat-icon>
+
+
+         </div>
+         <div style="text-align: center;">
+           <label class="rmwdiv" style="border:none;font-weight: 500;" *ngIf="d.Template_Code === 'ACC'">
+             Equity Accumulator {{d.TenorAC}} {{d.CurremcyAC}} :
+             {{d.UnderlyingAC}}
+           </label>
+         </div>
+
+
+       </div>
+     </div>
+
+     <!-- Decumulator -->
+     <div id="card1" class="box-container" (click)="redirectOptions(i)" (clickOutside)="hideOptions(i)"
+       *ngIf="d.Template_Code === 'DAC'">
+       <div class="linksPopUp" id="{{'options' + i}}" *ngIf="d.showOptionsFlag">
+         <span>
+           <a [routerLink]="['/DQ',{RFQ_ID:d.EP_ER_QuoteRequestId}]" routerLinkActive="active-link">Single
+             Pricer</a><br>
+           <a [routerLink]="['/MultiDecu',{RFQ_ID:d.EP_ER_QuoteRequestId}]" routerLinkActive="active-link">Multi
+             Pricer</a>
+         </span>
+
+       </div>
+       <div class="inner-table-title">
+         <div style="text-align: center;">
+           <mat-icon style="width: 40px!important;height: 40px !important;" class="subproductIcon">dashboard
+           </mat-icon>
+
+
+         </div>
+         <div style="text-align: center;">
+           <label class="rmwdiv" style="border:none;font-weight: 500;" *ngIf="d.Template_Code === 'DAC'">
+             Equity Decumulator {{d.TenorDC}} {{d.CurremcyDC}} :
+             {{d.UnderlyingDC}}
+           </label>
+         </div>
+
+
+       </div>
+     </div>
+
+
+    </div>
+
+</div>

@@ -1,0 +1,22 @@
+<!-- Changes added by Mayuri D. on 05-July-2022. -->
+
+
+<div class="container-fluid cardDiv" style="position: revert; z-index: 99;">
+    <div class="container-fluid contentdiv" style="padding-left: 0px;">
+        <div class="outerGrid" [ngClass]="{'outerGrid-expanded': expanded}">
+            <!-- market Intelligence -->
+            <div class="MainDiv" [ngStyle]="{'display': expanded ? 'none' : ''}">
+                <app-market-intelligence></app-market-intelligence>
+            </div>
+            <div class="TradeIdeasDiv" (click)="emptyLabels()">
+                <div style="border-bottom: 1px solid var(--section-bottom); display: flex;">
+                    <label class="contentLabel">Content</label>
+                    <div class="flex-spacer"></div>
+                    <input type="button" (click)="toggleExpand()" *ngIf="!expanded" class="expand-icon">
+                    <input type="button" (click)="toggleExpand()" *ngIf="expanded" class="collapse-icon">
+                </div>
+                <app-landing-page-news [expandedcontent]="expanded"></app-landing-page-news>
+            </div>
+        </div>
+    </div>
+</div>

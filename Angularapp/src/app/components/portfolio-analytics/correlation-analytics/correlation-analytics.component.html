@@ -1,0 +1,252 @@
+<!-- <div class="page-title main-title-module">
+  <div class="title main-title">Correlation Analytics</div>
+</div> -->
+
+<div class="content-container">
+  <div class="column1">
+    <div class="date-selector-container simulation-dates">
+      <div class="grid-filter-dates">
+        <div class="grid-filter-label">From</div>
+        <div class="grid-filter-dates-input">
+          <input
+            type="date"
+            name="FromDate"
+            id="FromDate"
+            class="input-dob"
+            [attr.data-date]="FromDate"
+            data-date-format="DD-MMM-YYYY"
+            tabindex="16"
+            [(ngModel)]="FromDate"
+          />
+        </div>
+        <div class="grid-filter-label">To</div>
+        <div class="grid-filter-dates-input">
+          <input
+            type="date"
+            name="ToDate"
+            id="ToDate"
+            class="input-dob"
+            [attr.data-date]="ToDate"
+            data-date-format="DD-MMM-YYYY"
+            tabindex="16"
+            min="2000-01-01"
+            [(ngModel)]="ToDate"
+          />
+        </div>
+        <div class="submit-button">
+          <button (click)="datesChanged()" class="submit-dates">Submit</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="securities-selection">
+      <div class="section-title">
+        Select Securities <span style="font-size: 12px">(Max 10)</span>
+      </div>
+      <div class="sub-tabs-section">
+        <!-- <div class="filler-tab tab-right-border"></div> -->
+        <div
+          (click)="toggleSubTab('internal')"
+          [ngClass]="{ 'active-subtab': currentTab === 'internal' }"
+          class="sub-tab button sub-tab-left"
+        >
+          Portfolio Securities
+        </div>
+        <div
+          (click)="toggleSubTab('external')"
+          [ngClass]="{ 'active-subtab': currentTab === 'external' }"
+          class="sub-tab button sub-tab-right"
+        >
+          External Securities
+        </div>
+        <!-- <div (click)="toggleSubTab('model')" [ngClass]="{'active-subtab' : currentTab === 'model'}" class="sub-tab tab-left-border">
+          Model Portfolio
+        </div> -->
+        <!-- <div class="filler-tab tab-left-border"></div> -->
+      </div>
+
+      <div *ngIf="error !== null && error.flag" class="error-box">
+        <div class="error-message">
+          <span style="color: var(--red); font-size: 15px"> Warning: </span>
+          {{ error.message ? error.message : "" }}
+        </div>
+        <button class="dismiss">
+          <img
+            (click)="error = null"
+            class="dismiss-img"
+            src="../../../assets/close.png"
+          />
+        </button>
+      </div>
+      <div class="shares-search-box">
+        <input
+          (focus)="textChangeSearch()"
+          class="search-box"
+          type="text"
+          placeholder="Search Security"
+          [(ngModel)]="securityName"
+          [ngStyle]="{
+            width: currentTab === 'external' ? '88%' : '100%',
+            'margin-right': currentTab === 'external' ? '2%' : '0%'
+          }"
+          (keyup)="textChangeSearch()"
+          (keydown)="setFocusOnFirstMenuItem($event)"
+          #searchInput
+        />
+        <div
+          *ngIf="currentTab === 'external'"
+          class="security-filter-button"
+          [ngClass]="{ 'security-filter-active': isShowFilters }"
+        >
+          <app-svg-icons
+            class="svgAlign"
+            icon="{{ 'filter-search' }}"
+            [width]="'26'"
+            [height]="'20'"
+            (click)="toggleFilter()"
+          ></app-svg-icons>
+        </div>
+      </div>
+
+      <div
+        *ngIf="isInternalSecuritiesError && currentTab === 'internal'"
+        class="section-errors"
+      >
+        <!--Added by Shravan S | 11-02-2022-->
+        No Data Found.
+      </div>
+
+      <div
+        class="searchSuggestions"
+        *ngIf="securityName.length > 0 && this.showSearchResults"
+      >
+        <div
+          *ngFor="
+            let security of securityList
+              | securitySearch: securityName:'portfolio';
+            let i = index
+          "
+          class="individual-security"
+        >
+          <!-- <input (change)="selectedSecuritiesChanged(i)" class="securities-checkbox" type="checkbox" id="{{ security }}{{i}}" name="{{ security }}" value="{{ security }}">
+          <label class="securities-label" for="{{ security }}{{i}}"> {{ security }} </label> -->
+          <div
+            [ngClass]="{
+              'security-selected': this.selectedSecurities.includes(security)
+            }"
+            class="security"
+            (click)="selectedSecuritiesChanged(security)"
+            (keyup.enter)="selectedSecuritiesChanged(security)"
+            #listTrigger
+            tabindex="-1"
+            (keydown)="onKeyDown($event, i)"
+          >
+            {{ (security.LongName ? security.LongName : "") | slice: 0:50 }}
+            <span *ngIf="security.LongName.length > 50">...</span>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="isShowFilters" class="security-filter-section">
+        <div
+          class="individual-filter"
+          [ngClass]="{ 'selected-individual-filter': selectedFilter === i }"
+          *ngFor="let item of securityFilters; let i = index"
+          (click)="selectDeselectFilters(i)"
+        >
+          {{ item }}
+        </div>
+      </div>
+
+      <div *ngIf="selectedSecurities.length > 0" class="added-securities">
+        <div class="securityTitle">Selected Securities</div>
+        <div
+          class="individual-security"
+          *ngFor="let security of selectedSecurities; let i = index"
+        >
+          <div
+            class="security security-selected"
+            (click)="selectedSecuritiesChanged(security)"
+          >
+            <div class="security-name">
+              {{ (security.LongName ? security.LongName : "") | slice: 0:50 }}
+              <span *ngIf="security.LongName.length > 50">...</span>
+            </div>
+            <span class="cancel-icon"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="column2">
+    <div class="column2-title">
+      <div class="section-title">Correlation Matrix</div>
+    </div>
+    <div *ngIf="selectedSecurities.length === 0" class="instruction-div">
+      Please add one or more securities for displaying Correlation Matrix
+    </div>
+
+    <div class="correlation-matrix">
+      <table
+        style="border-collapse: separate; border-spacing: 6px"
+        *ngIf="selectedSecurities.length > 0"
+      >
+        <!-- <tr>
+          <th class="table-header">\</th>
+          <th  class="table-header" *ngFor="let rows of correlationMatrix"> | </th>
+        </tr> -->
+        <tr *ngFor="let row of correlationMatrix; let i = index">
+          <td
+            *ngIf="selectedSecurities[i] && selectedSecurities[i].LongName"
+            class="selected-security-names"
+          >
+            {{
+              (selectedSecurities
+                ? selectedSecurities[i].LongName
+                  ? selectedSecurities[i].LongName
+                  : ""
+                : ""
+              ) | slice: 0:40
+            }}{{ stringLengthTooLong(selectedSecurities[i].LongName, 40) }}
+          </td>
+          <td
+            class="cell"
+            [ngStyle]="{
+              'background-color':
+                column >= 0 && i !== j
+                  ? 'rgb(0, ' +
+                    (floor((1.5 - column) * 200) >= 100
+                      ? floor((1.5 - column) * 200)
+                      : 100) +
+                    ', ' +
+                    (floor((1.5 - column) * 80) >= 60
+                      ? floor((1.5 - column) * 80)
+                      : 45) +
+                    ')'
+                  : column < 0
+                  ? 'rgb(' +
+                    floor(column * -250) +
+                    ',' +
+                    (floor(column * -60) >= 45 ? floor(column * -60) : 45) +
+                    ',' +
+                    (floor(column * -60) >= 45 ? floor(column * -60) : 45) +
+                    ')'
+                  : 'var(--selected-box)',
+              color:
+                column < -0.3 || (column > 0 && i !== j)
+                  ? 'var(--black)'
+                  : 'var(--text)'
+            }"
+            #tooltip
+            (mouseover)="showTooltip(i, j, tooltip, 'tooltip')"
+            (mouseout)="hideTooltip(tooltip)"
+            *ngFor="let column of row; let j = index"
+          >
+            {{ roundTo(column, 2) }}
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>

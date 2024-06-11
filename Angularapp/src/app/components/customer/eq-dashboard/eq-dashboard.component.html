@@ -1,0 +1,903 @@
+<div class="eq-dashboard">
+  <div class="page-title">
+    <app-svg-icons
+      class="back-button"
+      [icon]="'back-button'"
+      [width]="'40'"
+      [height]="'40'"
+      [fill]="'var(--headers)'"
+      (click)="back()"
+    ></app-svg-icons>
+    <div>Share Finder</div>
+  </div>
+  <div class="eq-dashboard-container">
+    <div class="watchlist-container">
+      <div class="watchlist-box">
+        <div class="watchlist-header">
+          <div class="customer-search-box" *ngIf="isUserRM">
+            <!-- <label for="" class="lbl-customer-name">Customer Name:</label> -->
+            <app-common-customer-search
+              (sendCustomerDetails)="getCustomerDetails($event)"
+              (selectedCustomerValue)="selectedCustomerValue1($event)"
+            ></app-common-customer-search>
+            <!-- <select class="ddl-customer-name" name="cust" id="cust" [(ngModel)]="selectedCustomer"
+                            (change)="changeSelectedcustomer()">
+                            <option *ngFor="let customer of customerNames" [value]="customer.customerName">
+                                {{customer.customerName}}
+                            </option>
+                        </select> -->
+          </div>
+          <div class="watchlist-select-box">
+            <label for="" class="lbl-watchlist-name">Watchlist:</label>
+            <select
+              class="ddl-watchlist-name"
+              name="wln"
+              id="wln"
+              [(ngModel)]="selectedWatchlist"
+              (change)="changeSelectedWatchlist()"
+              *ngIf="!isAddShareToWatchlist"
+            >
+              <option
+                *ngFor="let wl of watchlistNames"
+                [value]="wl.WatchlistName"
+              >
+                {{ wl.WatchlistName }}
+              </option>
+            </select>
+            <input
+              type="text"
+              class="text-watchlist-name"
+              *ngIf="isAddShareToWatchlist"
+              placeholder="Enter watchlist name"
+              [(ngModel)]="newWatchlistName"
+            />
+            <div class="watchlist-actions">
+              <app-svg-icons
+                [icon]="'add-new'"
+                [width]="'15'"
+                [height]="'15'"
+                [fill]="'var(--icons)'"
+                (click)="toggleAddShareToWatchlist()"
+              ></app-svg-icons>
+              <app-svg-icons
+                [icon]="'trash-icon'"
+                [width]="'15'"
+                [height]="'15'"
+                [fill]="'var(--icons)'"
+                (click)="deleteWatchList()"
+                *ngIf="!isAddShareToWatchlist"
+              >
+              </app-svg-icons>
+              <app-svg-icons
+                [icon]="'cancel-icon'"
+                [width]="'15'"
+                [height]="'15'"
+                [fill]="'var(--icons)'"
+                (click)="toggleAddShareToWatchlist()"
+                *ngIf="isAddShareToWatchlist"
+              >
+              </app-svg-icons>
+              <app-svg-icons
+                [icon]="'edit-icon'"
+                [width]="'15'"
+                [height]="'15'"
+                [fill]="'var(--icons)'"
+                (click)="toggleEditWatchlist()"
+              ></app-svg-icons>
+              <!-- <label for="" (click)="toggleAddShareToWatchlist()">A</label>
+                            &nbsp;
+                            <label for="" (click)="deleteWatchList()">D</label>
+                            &nbsp;
+                            <label for="" (click)="toggleEditWatchlist()">E</label> -->
+            </div>
+          </div>
+          <div class="shares-search-box">
+            <input
+              class="search-box"
+              type="text"
+              placeholder="Search Security"
+              [(ngModel)]="shareName"
+              (keyup)="searchEquities($event)"
+              (keyup.arrowup)="changeSearchIndex('UP')"
+              (keyup.enter)="addShareToWatchlist(selectedShare)"
+              (keyup.arrowdown)="changeSearchIndex('DOWN')"
+            />
+            <div class="shares-list" *ngIf="shareName !== ''">
+              <ul>
+                <li
+                  *ngFor="let share of sharesList"
+                  (click)="addShareToWatchlist(share)"
+                  [ngClass]="{ 'active-share': share?.active }"
+                >
+                  {{ share.Product_Name }}
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="watchlist-body">
+          <table class="watchlist-table" *ngIf="!isAddShareToWatchlist">
+            <thead>
+              <tr>
+                <th></th>
+                <th style="text-align: left">Product Name</th>
+                <th style="text-align: right">Bid</th>
+                <th style="text-align: right">Ask</th>
+                <th style="text-align: right">Change</th>
+                <th colspan="4">Actions</th>
+              </tr>
+            </thead>
+            <!-- <tbody>
+                            <tr class="watchlist-table-row" *ngFor="let wld of watchlistData">
+                                <td>
+                                    <div class="watchlist-share-name">
+                                        <div class="feed-code">{{wld.FeedCode }}</div>
+                                        <div class="share-name">{{ wld.Product_Name}}</div>
+                                    </div>
+                                </td>
+                                <td class="align-right align-top">{{wld.spotbidquote | number:'1.2-2'}}</td>
+                                <td class="align-right align-top">{{wld.spotaskquote | number:'1.2-2'}}</td>
+                                <td>
+                                    <div class="watchlist-row-actions">
+                                        <span class="align-center align-top" (click)="orderShare(wld,'BUY')">
+                                            <div class="btnBuy">B</div>
+                                        </span>
+                                        <span class="align-center align-top" (click)="orderShare(wld,'SELL')">
+                                            <div class="btnSell">S</div>
+                                        </span>
+                                        <span class="align-center align-top" (click)="showChart(wld)">
+                                            <app-svg-icons [icon]="'chart-line-icon'" [width]="'15'" [height]="'15'">
+                                            </app-svg-icons>
+                                        </span>
+                                        <span class="align-center align-top"
+                                            (click)="deleteShareFromWatchList(wld.Note_Master_Id)">
+                                            <app-svg-icons [icon]="'trash-icon'" [width]="'15'" [height]="'15'">
+                                            </app-svg-icons>
+                                        </span>
+                                    </div>
+                                </td>
+                            </tr>
+
+                        </tbody> -->
+            <tbody
+              cdkDropList
+              class="watchlist-table-body"
+              (cdkDropListDropped)="drop($event)"
+            >
+              <tr
+                class="watchlist-table-row"
+                *ngFor="let wld of watchlistData"
+                cdkDrag
+              >
+                <div
+                  [ngClass]="{
+                    'dark-green': wld.DayChange >= 0 && wld.DayChange < 1,
+                    green: wld.DayChange >= 1 && wld.DayChange < 1.5,
+                    'light-green': wld.DayChange >= 1.5,
+                    'dark-red': wld.DayChange < 0 && wld.DayChange > -1,
+                    red: wld.DayChange <= -1 && wld.DayChange > 0,
+                    'light-red': wld.DayChange <= -1.5
+                  }"
+                  class="watchlist-drag-handle"
+                  cdkDragHandle
+                ></div>
+                <div>
+                  <div class="watchlist-share-name">
+                    <div class="feed-code">{{ wld.FeedCode }}</div>
+                    <div class="share-name">{{ wld.Product_Name }}</div>
+                  </div>
+                </div>
+                <div
+                  class="align-right align-top"
+                  [ngClass]="{
+                    'green-text': wld.prevspotbidquote < wld.spotbidquote,
+                    'red-text': wld.prevspotbidquote > wld.spotbidquote
+                  }"
+                >
+                  {{ wld.spotbidquote | number: "1.2-2" }}
+                </div>
+                <div
+                  class="align-right align-top"
+                  [ngClass]="{
+                    'green-text': wld.prevspotaskquote < wld.spotaskquote,
+                    'red-text': wld.prevspotaskquote > wld.spotaskquote
+                  }"
+                >
+                  {{ wld.spotaskquote | number: "1.2-2" }}
+                </div>
+                <div
+                  [ngClass]="{
+                    'green-text': wld.DayChange >= 0,
+                    'red-text': wld.DayChange < 0
+                  }"
+                  class="align-right align-top ask"
+                >
+                  <span style="margin-right: -3px" *ngIf="wld.DayChange >= 0"
+                    >+</span
+                  >
+                  {{ wld.DayChange | number: "1.2-2" }}
+                </div>
+
+                <div class="watchlist-row-actions">
+                  <span
+                    class="align-center align-top"
+                    (click)="orderShare(wld, 'BUY')"
+                  >
+                    <div class="btnBuy">B</div>
+                  </span>
+                  <span
+                    class="align-center align-top"
+                    (click)="orderShare(wld, 'SELL')"
+                  >
+                    <div class="btnSell">S</div>
+                  </span>
+                  <span class="align-center align-top" (click)="showChart(wld)">
+                    <app-svg-icons
+                      [icon]="'chart-line-icon'"
+                      [width]="'15'"
+                      [height]="'15'"
+                      [fill]="'var(--icons)'"
+                    >
+                    </app-svg-icons>
+                  </span>
+                  <span
+                    class="align-center align-top"
+                    (click)="deleteShareFromWatchList(wld.Note_Master_Id)"
+                  >
+                    <app-svg-icons
+                      [icon]="'trash-icon'"
+                      [width]="'15'"
+                      [height]="'15'"
+                      [fill]="'var(--icons)'"
+                    >
+                    </app-svg-icons>
+                  </span>
+                </div>
+              </tr>
+            </tbody>
+          </table>
+          <table class="watchlist-table" *ngIf="isAddShareToWatchlist">
+            <thead>
+              <tr>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let nwld of newWatchlistData">
+                <td>{{ nwld.Feedcode }}</td>
+                <td>{{ nwld.Exchange }}</td>
+                <td>0</td>
+                <td>0</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="portfolio-container">
+      <div class="ddl-portfolio-container">
+        <label for="" class="lbl-portfolio-name">Portfolio:</label>
+        <select
+          class="ddl-portfolio-name"
+          name="portfolio"
+          id="portfolio"
+          [(ngModel)]="selectedPortfolio"
+          (change)="changePortfolio()"
+        >
+          <option
+            *ngFor="let portfolio of portfolioListddl"
+            [value]="portfolio.PortfolioName"
+          >
+            {{ portfolio.PortfolioName }}
+          </option>
+        </select>
+        <div class="refresh-eq-dashboard">
+          <app-svg-icons
+            (click)="refresh()"
+            [icon]="'refresh'"
+            [width]="'26'"
+            [height]="'26'"
+          >
+          </app-svg-icons>
+        </div>
+      </div>
+      <div class="portfolio-details">
+        <div>
+          <label for="" class="heading-label">Total AUM</label>
+        </div>
+        <div class="amount aum-value-container">
+          <label for="ccy" class="ccy">
+            {{ baseCcy }}
+          </label>
+          <label for="Aum" class="AUM">
+            {{
+              this.commonApi.NotionalConvert(
+                selectedPortfolioTotalAUM,
+                custApi.bankBaseCCY
+              )
+            }}
+          </label>
+          <label for="" class="aum-value">
+            {{ selectedPortfolioTotalAUM | number: "1.2-2" }}</label
+          >
+        </div>
+        <div>
+          <label for="" class="heading-label">Total PnL</label>
+        </div>
+        <div class="pnl-value-container">
+          <label for="ccy" class="ccy">
+            {{ baseCcy }}
+          </label>
+          <label for="Aum" class="AUM">
+            {{
+              this.commonApi.NotionalConvert(
+                selectedPortfolioTotalPnL,
+                custApi.bankBaseCCY
+              )
+            }}
+          </label>
+          <label for="" class="pnl-value">
+            {{ selectedPortfolioTotalPnL | number: "1.2-2" }}
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="chart-blotter-container" #chartBlotterContainer>
+      <div class="blotter-container" *ngIf="!isChart">
+        <div class="blotter-box">
+          <!-- <div class="blotter-tabs">
+                    <label for="" [ngClass]="{'active-tab':activeTab==='HOLDINGS'}"
+                        (click)="changeTab('holdings')">Holdings</label>
+                    &nbsp;
+                    <label for="" [ngClass]="{'active-tab':activeTab==='ORDERS'}" (click)="changeTab('orders')"></label>
+                </div> -->
+          <div class="tabs-pages">
+            <div
+              class="tabs"
+              [ngClass]="{ 'tab-active': activeTab === 'HOLDINGS' }"
+              (click)="changeTab('holdings')"
+            >
+              Holdings
+            </div>
+            <div
+              class="tabs"
+              [ngClass]="{ 'tab-active': activeTab === 'ORDERS' }"
+              (click)="changeTab('orders')"
+            >
+              Orders
+            </div>
+          </div>
+          <div class="blotter-body" *ngIf="activeTab === 'HOLDINGS'">
+            <table style="width: 75% !important">
+              <thead>
+                <tr class="holdings-table-header">
+                  <th style="text-align: left">Product Name</th>
+                  <!-- <th>Asset Code</th> -->
+                  <th>
+                    Available <br />
+                    Units
+                  </th>
+                  <th>Ccy</th>
+                  <th>
+                    Market <br />
+                    Price
+                  </th>
+                  <th>
+                    Quoted <br />
+                    Against
+                  </th>
+                  <th>Market Value</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  *ngFor="let holdings of clientHoldingsData"
+                  class="holdings-table-body"
+                >
+                  <!-- <td>{{holdings.LongName}}</td> -->
+                  <td>
+                    <div class="holdings-share-name">
+                      <div class="feed-code">
+                        {{ holdings.CEHD_Stock_Code }}
+                      </div>
+                      <div class="share-name">{{ holdings.LongName }}</div>
+                    </div>
+                  </td>
+                  <!-- <td class="align-center " style=" color: var(--active);font-size: 18px;">
+                                        {{holdings.CEHD_Stock_Code}}</td> -->
+                  <!-- Added by Ketan S on 14-Sep-21 confirmed by Roshan D -->
+                  <td class="align-right">
+                    {{ holdings.CEHD_Available_Qty | number: "1.2-2" }}
+                  </td>
+                  <!-- Added by Ketan S on 14-Sep-21 confirmed by Roshan D -->
+                  <!-- <td class="align-center">{{holdings.QuotedAgainst}}</td> -->
+                  <td class="grid-align-top justify-center">
+                    <div class="ccy">
+                      <!--Updated by Uddesh on March 23, 2022 asked by Gaurav J-->
+                      <!-- <div class="ccy-flag">
+                                                <img [src]="holdings.flaglink" alt="" srcset="" />
+                                            </div> -->
+                      <div class="ccy-flag">
+                        <img
+                          src="{{asseturl}}/flags/{{
+                            this.custApi.bankBaseCCY
+                          }}.png"
+                          alt=""
+                          srcset=""
+                        />
+                      </div>
+                      <div class="ccy-name">{{ this.custApi.bankBaseCCY }}</div>
+                      <!-- <div class="ccy-name">{{holdings.QuotedAgainst}}</div> -->
+                    </div>
+                  </td>
+                  <td class="align-right">
+                    {{ holdings.SpotBidQuote | number: "1.2-2" }}
+                  </td>
+                  <td class="grid-align-top justify-center">
+                    {{ holdings.QuotedAgainst }}
+                  </td>
+                  <!-- Added by Ketan S on 14-Sep-21 confirmed by Roshan D -->
+                  <td class="align-right">
+                    {{ holdings.Market_Value_LCYE | number: "1.2-2" }}
+                  </td>
+                  <td class="align-center align-top">
+                    <div class="holdings-actions">
+                      <div
+                        class="btnBuy"
+                        (click)="orderShareFromHoldings(holdings, 'BUY')"
+                      >
+                        B
+                      </div>
+                      <div
+                        class="btnSell"
+                        (click)="orderShareFromHoldings(holdings, 'SELL')"
+                      >
+                        S
+                      </div>
+                      <app-svg-icons
+                        [icon]="'chart-line-icon'"
+                        [width]="'15'"
+                        [height]="'15'"
+                        [fill]="'var(--icons)'"
+                        (click)="showChart(holdings)"
+                      >
+                      </app-svg-icons>
+                    </div>
+                  </td>
+
+                  <!-- <td class="align-right">{{holdings.CurrentMarketValue | number:'1.2-2'}}</td> -->
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="blotter-body" *ngIf="activeTab === 'ORDERS'">
+            <table>
+              <!--style="width: 75% !important"-->
+              <thead>
+                <tr class="orders-table-header">
+                  <th>
+                    <div style="text-align: left">
+                      <label> Product Name </label>
+                    </div>
+                  </th>
+                  <th>
+                    <div>
+                      <label>
+                        Order <br />
+                        Type
+                      </label>
+                    </div>
+                  </th>
+                  <th>
+                    <div><label> Position </label></div>
+                  </th>
+                  <th>
+                    <div><label> Ccy </label></div>
+                  </th>
+                  <th>
+                    <div>
+                      <label>
+                        Execution <br />
+                        Rate
+                      </label>
+                    </div>
+                  </th>
+                  <th>
+                    <div><label> Quantity </label></div>
+                  </th>
+                  <th>
+                    <div><label> Trade Date </label></div>
+                  </th>
+                  <th>
+                    <div><label> Settlement Date </label></div>
+                  </th>
+                  <th>
+                    <div><label> Actions </label></div>
+                  </th>
+                </tr>
+              </thead>
+              <tbody
+                style="
+                  margin-top: 10px;
+                  height: calc(76vh - 13em);
+                  overflow: scroll;
+                  display: block;
+                "
+              >
+                <tr
+                  *ngFor="
+                    let orders of clientOrdersData
+                      | paginate
+                        : { itemsPerPage: recordsPerPage, currentPage: q }
+                  "
+                  class="orders-table-body"
+                  style="align-items: center"
+                >
+                  <td>
+                    <div class="orders-share-name">
+                      <div class="feed-code">{{ orders.Security_ID }}</div>
+                      <div class="share-name">{{ orders.Product_Name }}</div>
+                    </div>
+                  </td>
+                  <td class="grid-align-top justify-center">
+                    {{ orders.Order_Type }}
+                  </td>
+                  <td class="grid-align-top justify-center">
+                    {{ orders.BuySell }}
+                  </td>
+                  <td class="grid-align-top justify-center">
+                    <div class="ccy">
+                      <!--Updated by Uddesh on March 23, 2022 asked by Gaurav J-->
+                      <!-- <div class="ccy-flag">
+                        <img [src]="orders.flaglink" alt="" srcset="" />
+                      </div> -->
+                      <div class="ccy-flag">
+                        <img
+                          src="{{asseturl}}/flags/{{
+                            orders.Settlement_Ccy
+                          }}.png"
+                          alt=""
+                          srcset=""
+                        />
+                      </div>
+                      <div class="ccy-name">{{ orders.Settlement_Ccy }}</div>
+                    </div>
+                  </td>
+                  <td class="align-right">
+                    {{ orders.Dealer_Price | number: "1.2-2" }}
+                  </td>
+                  <!-- <td class="align-right">{{orders.Exec_Price||orders.Dealer_Price | number:'1.2-2'}}</td> -->
+                  <td class="align-right">
+                    {{ orders.Quantity | number: "1.0-0" }}
+                  </td>
+                  <!-- <td class="justify-center">{{orders.TradeDate| date:'dd-MMM-yyyy hh:mm:ss aa'}} -->
+                  <td class="justify-center">
+                    {{ orders.TradeDate | date: "dd-MMM-yyyy" }}
+                  </td>
+                  <!-- Rearranged by Ketan S on 14-Sep-21 confirmed by Roshan D -->
+                  <!-- <td class="justify-center">{{orders.Settlement_Date| date:'dd-MMM-yyyy hh:mm:ss aa'}} -->
+                  <td class="justify-center">
+                    {{ orders.Settlement_Date | date: "dd-MMM-yyyy" }}
+                  </td>
+                  <!-- Rearranged by Ketan S on 14-Sep-21 confirmed by Roshan D -->
+                  <td class="btn-flex">
+                    <button
+                      class="btn-buy"
+                      (click)="orderShareFromOrders(orders, 'AMEND')"
+                    >
+                      Amend
+                    </button>
+                    <button
+                      class="btn-cancel"
+                      (click)="orderShareFromOrders(orders, 'CANCEL')"
+                    >
+                      Cancel
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="pagination" *ngIf="clientOrdersData?.length > 0">
+              <pagination-controls (pageChange)="q = $event" class="pageFont">
+              </pagination-controls>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="chart-container-main"
+        #chartContainerMain
+        [ngStyle]="isChart ? {} : { display: 'none' }"
+      >
+        <div class="close-icon" (click)="closeChart()">
+          <app-svg-icons
+            [icon]="'cancel-icon'"
+            [width]="'18'"
+            [height]="'18'"
+          ></app-svg-icons>
+        </div>
+        <div
+          class="chart-container-new"
+          style="gap: 15px"
+          id="chart-container"
+          #chartContainer
+        >
+          <div class="chart-stats">
+            <div class="chart-container-new">
+              <div class="chart-name share-name blue">
+                {{ shareData?.Product_Name }}
+              </div>
+              <div class="chart-name exchange-name">
+                {{ shareData?.Feedcode }} &nbsp;| &nbsp;{{
+                  shareData?.Exchange
+                }}
+                <!-- &nbsp;|&nbsp;{{ today | date: "full" }} -->
+              </div>
+              <div class="chart-name exchange-name">
+                {{ today | date: "full" }}
+              </div>
+            </div>
+            <div class="btn-flex">
+              <div class="stat-grid">
+                <div class="gap">
+                  <span class="label">Open</span>
+                  <span class="value" *ngIf="shareData.openrate !== ''">
+                    {{ shareData.openrate | number: "1.2-2" || "-" }}
+                  </span>
+                  <span class="value" *ngIf="shareData.openrate === ''">
+                    {{ "-" }}
+                  </span>
+                </div>
+                <div class="gap">
+                  <span class="label">Prev. Close</span>
+                  <span
+                    class="value bid-ask"
+                    *ngIf="shareData.previousclose !== ''"
+                    >{{
+                      shareData.previousclose | number: "1.2-2" || "-"
+                    }}</span
+                  >
+                  <span class="value" *ngIf="shareData.previousclose === ''">{{
+                    "-"
+                  }}</span>
+                </div>
+                <div class="gap">
+                  <span class="label">High</span>
+                  <span class="value" *ngIf="shareData.dayhigh !== ''">{{
+                    shareData.dayhigh | number: "1.2-2" || "-"
+                  }}</span>
+                  <span class="value" *ngIf="shareData.dayhigh === ''">{{
+                    "-"
+                  }}</span>
+                </div>
+                <div class="gap">
+                  <span class="label">Low</span>
+                  <span class="value" *ngIf="shareData.daylow !== ''">{{
+                    shareData.daylow | number: "1.2-2" || "-"
+                  }}</span>
+                  <span class="value" *ngIf="shareData.daylow === ''">{{
+                    "-"
+                  }}</span>
+                </div>
+                <div class="gap">
+                  <span class="label">52-Wk High</span>
+                  <span class="value" *ngIf="shareData.ftweekhigh !== ''">{{
+                    shareData.ftweekhigh | number: "1.2-2" || "-"
+                  }}</span>
+                  <span class="value" *ngIf="shareData.ftweekhigh === ''">{{
+                    "-"
+                  }}</span>
+                </div>
+                <div class="gap">
+                  <span class="label">52-Wk Low</span>
+                  <span class="value" *ngIf="shareData.ftweeklow !== ''">{{
+                    shareData.ftweeklow | number: "1.2-2" || "-"
+                  }}</span>
+                  <span class="value" *ngIf="shareData.ftweeklow === ''">{{
+                    "-"
+                  }}</span>
+                </div>
+              </div>
+              <div class="buysell">
+                <div
+                  class="btnBuy button"
+                  (click)="orderShare(shareData, 'BUY')"
+                >
+                  Buy
+                </div>
+                <div
+                  class="btnSell button"
+                  (click)="orderShare(shareData, 'SELL')"
+                >
+                  Sell
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="graph-tools">
+            <div class="internal-graph-tools" *ngIf="chartData.length > 0">
+              <div class="product-tabs">
+                <ul>
+                  <li>
+                    <a
+                      [ngClass]="chartTabs === 3 ? 'active' : 'disabledtabs'"
+                      (click)="changeChartTabs(3)"
+                      >1Year</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      [ngClass]="chartTabs === 2 ? 'active' : 'disabledtabs'"
+                      (click)="changeChartTabs(2)"
+                      >1Month</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      [ngClass]="chartTabs === 1 ? 'active' : 'disabledtabs'"
+                      (click)="changeChartTabs(1)"
+                      >1Week</a
+                    >
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="chart-element-container" #chartElementContainer>
+            <div
+              class="chart-element"
+              #chartElement
+              id="id-chart-element"
+              [hidden]="chartData.length === 0"
+            ></div>
+            <div class="no-chart-data" *ngIf="chartData.length === 0">
+              No Data Found
+            </div>
+          </div>
+        </div>
+        <!-- <div class="chart-container" id="chart-container" #chartContainer>
+          <div class="chart-header">
+            <div class="chart-name share-name blue">
+              {{ shareData?.Product_Name }}
+            </div>
+            <div class="chart-name exchange-name">
+              {{ shareData?.Feedcode }} &nbsp;| &nbsp;{{
+              shareData?.Exchange
+              }}&nbsp;|&nbsp;{{ today | date: "full" }}
+            </div>
+            <label class="heading blue">DETAILS</label>
+            <div class="chart-name curr-price">
+              <div class="label">ISIN</div>
+              <div class="value">{{ shareData?.Isin }}</div>
+              <div class="label">Sector</div>
+              <div class="value">{{ shareData?.industry_sector }}</div>
+              <div class="label">Lot Size</div>
+              <div class="value">{{ shareData?.LotSize }}</div>
+              <div class="label">Settlement Date</div>
+              <div class="value">{{ shareData?.SettlementDate }}</div>
+              <div class="label">Settlement Type</div>
+              <div class="value">{{ shareData?.SettlementType }}</div>
+              <div class="label">Bid / Ask Price</div>
+              <div class="value bid-ask">
+                {{ shareData?.BidPx | number: "1.2-2" }} /
+                {{ shareData?.AskPx | number: "1.2-2" }}
+              </div>
+              <div class="buysell">
+                <div class="btnBuy button" (click)="orderShare(shareData, 'BUY')">
+                  Buy
+                </div>
+                <div class="btnSell button" (click)="orderShare(shareData, 'SELL')">
+                  Sell
+                </div>
+              </div>
+            </div>
+            <div class="chart-grid">
+              <div>
+                <label class="heading blue">STATS</label>
+                <div class="chart-header-grid">
+                  <div class="chart-legend">
+                    <span class="label">Open</span>
+                    <span class="value" *ngIf="shareData.openrate !== ''">{{ shareData.openrate | number: "1.2-2" || "-"
+                      }}
+                    </span>
+                    <span class="value" *ngIf="shareData.openrate === ''">{{
+                      "-"
+                      }}</span>
+
+                    <span class="label">Prev. Close</span>
+                    <span class="value bid-ask" *ngIf="shareData.previousclose !== ''">{{
+                      shareData.previousclose | number: "1.2-2" || "-"
+                      }}</span>
+                    <span class="value" *ngIf="shareData.previousclose === ''">{{ "-" }}</span>
+
+                    <span class="label">High</span>
+                    <span class="value" *ngIf="shareData.dayhigh !== ''">{{
+                      shareData.dayhigh | number: "1.2-2" || "-"
+                      }}</span>
+                    <span class="value" *ngIf="shareData.dayhigh === ''">{{
+                      "-"
+                      }}</span>
+
+                    <span class="label">Low</span>
+                    <span class="value" *ngIf="shareData.daylow !== ''">{{
+                      shareData.daylow | number: "1.2-2" || "-"
+                      }}</span>
+                    <span class="value" *ngIf="shareData.daylow === ''">{{
+                      "-"
+                      }}</span>
+
+                    <span class="label">52-Wk High</span>
+                    <span class="value" *ngIf="shareData.ftweekhigh !== ''">{{
+                      shareData.ftweekhigh | number: "1.2-2" || "-"
+                      }}</span>
+                    <span class="value" *ngIf="shareData.ftweekhigh === ''">{{
+                      "-"
+                      }}</span>
+
+                    <span class="label">52-Wk Low</span>
+                    <span class="value" *ngIf="shareData.ftweeklow !== ''">{{
+                      shareData.ftweeklow | number: "1.2-2" || "-"
+                      }}</span>
+                    <span class="value" *ngIf="shareData.ftweeklow === ''">{{
+                      "-"
+                      }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="graph-tools">
+            <div class="internal-graph-tools" *ngIf="chartData.length > 0">
+              <div class="product-tabs">
+                <ul>
+                  <li>
+                    <a [ngClass]="chartTabs === 3 ? 'active' : 'disabledtabs'" (click)="changeChartTabs(3)">1Year</a>
+                  </li>
+                  <li>
+                    <a [ngClass]="chartTabs === 2 ? 'active' : 'disabledtabs'" (click)="changeChartTabs(2)">1Month</a>
+                  </li>
+                  <li>
+                    <a [ngClass]="chartTabs === 1 ? 'active' : 'disabledtabs'" (click)="changeChartTabs(1)">1Week</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="chart-element-container" #chartElementContainer>
+            <div class="chart-element" #chartElement id="id-chart-element" [hidden]="chartData.length === 0"></div>
+            <div class="no-chart-data" *ngIf="chartData.length === 0">
+              No Data Found
+            </div>
+          </div>
+        </div> -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="showOrderEntry" class="overlay">
+  <div class="page-content-container-popup popup-width">
+    <div class="closebtn" (click)="showOrderEntry = false">
+      <app-svg-icons [icon]="'cancel-icon'" [width]="'15'" [height]="'15'">
+      </app-svg-icons>
+    </div>
+    <div class="recommended-products">
+      <div *ngIf="product === 'SHARES'">
+        <div class="tabs tab-active">
+          <div class="right label">Shares</div>
+        </div>
+        <app-shares-new
+          [displaySearch]="true"
+          [noteMasterId]="shareNMID"
+          [action]="action"
+          [actionData]="actionData"
+        >
+        </app-shares-new>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,388 @@
+.title {
+  color: var(--product-header);
+  font-size: 20px;
+}
+
+.product-underline {
+  background: var(--product-line);
+}
+
+.orderlabel {
+  // color: var(--product-header);
+  margin-left: 10px; // 15-Mar-2021 || Viplav T. ||
+  color:var(--text)
+}
+.selected-queue {
+  font-size: 15px !important;
+  text-align: left;
+  margin-left: 10px;
+  color: var(--text);
+  margin-bottom: 15px;
+  padding-top: 10px;
+}
+.loader {
+  height: 1px;
+  margin-top: 0px;
+  background: linear-gradient(
+    270deg,
+    #5f5b58,
+    #a39587,
+    #bfa592,
+    #e1ac83,
+    #eaccb5,
+    #ffffff
+  );
+  background-size: 600% 600%;
+  -webkit-animation: AnimationName 5s ease infinite;
+  -moz-animation: AnimationName 5s ease infinite;
+  -o-animation: AnimationName 5s ease infinite;
+  animation: AnimationName 5s ease infinite;
+}
+
+@-webkit-keyframes AnimationName {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@-moz-keyframes AnimationName {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@-o-keyframes AnimationName {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes AnimationName {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.accordions {
+  color: #ab9f93;
+  /* font-size: 1.5em; */
+}
+
+.innerrow {
+  padding: 1em !important;
+  border: 1px solid #cccccc;
+  border-radius: 0.2em;
+  /* margin: 0.3em 4em; */
+  background-color: #f5f5f569;
+  cursor: pointer;
+}
+
+.rowMargin {
+  text-align: center;
+  // display: grid;
+  // grid-template-rows: 10% 1fr;
+  justify-content: flex-start;
+  height: 27em;
+}
+
+.button-align {
+  display: flex;
+}
+
+google-chart {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+td,
+th {
+  width: auto;
+  min-width: 6em;
+  padding: 5px;
+}
+
+th {
+  /*background-color: var(--white);
+  color: #ffffff;*/
+  font-weight: 500;
+  margin: 10px !important;
+  padding: 5px 10px;
+  border-radius: 2px;
+  text-align: center;
+  top: 0;
+  position: sticky;
+  font-size: 15px;
+}
+
+td {
+  // background-color: rgba(243, 241, 241, 0.425);
+  margin: 10px !important;
+  padding: 8px 15px;
+  border-radius: 2px;
+}
+
+table {
+  border-collapse: separate;
+  border-spacing: 0.2em 0.5em;
+  width: 100%;
+  position: relative;
+}
+
+tr:nth-child(odd) {
+  // background-color: #d6d6d67c;
+}
+
+.dealDetails {
+  font-size: 12px;
+  position: relative;
+}
+
+.processTokenMessage {
+  color: #ab9f93 !important;
+}
+
+.link {
+  // color: #887f76 !important;
+  cursor: pointer;
+  text-decoration: underline !important;
+}
+
+.refreshIconlight {
+  display: inline-block;
+  width: 20px !important;
+  height: 20px;
+  background-image: url("http://finiqfaio.southindia.cloudapp.azure.com/FinIQAngular_ClientOnboarding/assets/refresh_light.png");
+  background-repeat: no-repeat;
+  background-position-x: 50%;
+  cursor: pointer;
+}
+
+.refreshIconsilver {
+  display: inline-block;
+  width: 20px !important;
+  height: 20px;
+  background-image: url("http://finiqfaio.southindia.cloudapp.azure.com/FinIQAngular_ClientOnboarding/assets/refresh_silver.png");
+  background-repeat: no-repeat;
+  background-position-x: 50%;
+  cursor: pointer;
+}
+
+.externalLinkIcon {
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 1000 1000" style="fill: rgb(171, 159, 147);"><path d="M640 768H128V257.90599999999995L256 256V128H0v768h768V576H640V768zM384 128l128 128L320 448l128 128 192-192 128 128V128H384z"/></svg>');
+  background-repeat: no-repeat;
+  background-position-x: 50%;
+  cursor: pointer;
+}
+
+.search-box,
+.close-icon,
+.search-wrapper {
+  position: relative;
+}
+
+/* .search-wrapper {
+    margin: auto;
+} */
+
+.search-box {
+  width: 80%;
+  outline: 0;
+  text-align: left;
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
+
+.search-box::placeholder {
+  font-size: 15px;
+  text-align: left;
+}
+
+.close-icon {
+  position: absolute;
+  border: 1px solid transparent;
+  background-color: transparent;
+  display: inline-block;
+  vertical-align: middle;
+  outline: 0;
+  cursor: pointer;
+}
+
+.close-icon:after {
+  content: "x";
+  display: block;
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  background-color: #ab9f93;
+  z-index: 1;
+  right: 25px;
+  top: 17px;
+  bottom: 0;
+  margin: auto;
+  border-radius: 50%;
+  text-align: center;
+  color: white;
+  font-weight: normal;
+  font-size: 12px;
+  cursor: pointer;
+  padding-left: 0px;
+}
+
+.search-box:not(:valid) ~ .close-icon {
+  display: none;
+}
+
+@media only screen and (max-width: 600px) {
+  google-chart {
+    width: 300px;
+    height: 250px;
+    padding-left: 30px;
+  }
+
+  .borderright {
+    border-right: 0px solid rgb(223, 223, 223) !important;
+  }
+
+  h4 {
+    font-size: 15px !important;
+    text-align: left;
+    // padding-left: 40px;
+  }
+}
+
+.textworkflow {
+  font-size: 15px;
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+  google-chart {
+  }
+
+  .borderright {
+    border-right: 0px solid rgb(223, 223, 223) !important;
+  }
+
+  h4 {
+    font-size: 15px !important;
+    text-align: left;
+    // padding-left: 40px;
+  }
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) and (max-width: 992px) {
+  google-chart {
+    width: 550px !important;
+    height: 350px !important;
+  }
+
+  .borderright {
+    border-right: 0px solid rgb(223, 223, 223) !important;
+  }
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) and (max-width: 1350px) {
+  google-chart {
+    width: 500px !important;
+    height: 350px !important;
+  }
+
+  .borderright {
+    border-right: 1px solid rgb(223, 223, 223) !important;
+  }
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1350px) and (max-width: 1600px) {
+  google-chart {
+    width: 600px !important;
+    height: 350px !important;
+  }
+
+  .borderright {
+    border-right: 1px solid rgb(223, 223, 223) !important;
+  }
+}
+
+.clientResponseComponent {
+  display: flex;
+  background-color: var(--main-bg-color);
+  flex-direction: column;
+  font-size: 15px;
+  width: 85vw;
+}
+.container-fluid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+.main-container {
+  //padding-left: 40px;
+  display: flex;
+  margin-left: 40px; // 15-Mar-2021 || Viplav T. || Change 20px to 40px
+  flex-direction: column;
+  background-color: var(--containers);
+  letter-spacing: 0.72px;
+  border-radius: 4px;
+  width: 94%;
+  box-shadow: var(--box-shadow-thin);
+  padding: 5px;
+  margin-bottom: 6em;
+  // height: 85vh;
+}
+.firstRow {
+  display: grid;
+  grid-template-columns: 15% 30% 35% 20%;
+  align-items: baseline;
+}
+.secondRow {
+  display: grid;
+  grid-template-columns: 1% 30% 10%;
+  align-items: end;
+}
+@media only screen and (min-width: 1600px) {
+  google-chart {
+    width: 800px !important;
+    height: 350px !important;
+  }
+
+  .borderright {
+    border-right: 1px solid rgb(223, 223, 223) !important;
+  }
+}

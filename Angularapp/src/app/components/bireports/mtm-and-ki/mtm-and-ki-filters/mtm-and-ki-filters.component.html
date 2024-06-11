@@ -1,0 +1,78 @@
+<div class="mtm-and-ki-filter-container">
+    <div style="display: flex;justify-content: center;align-items: center;">
+        <div style="width:100%">
+
+            <div style="font-family: 'Roboto';  font-size: 20px; padding-top: 20px;font-family: 'Roboto'; " class="filterTitle">
+                KI Distance (%)</div>
+                <div style="margin-top: 12px;" class="ki-number">
+                    <input type="number" class="knumber" [value]="current_KI_StartValue" [min]="startKIValue"
+                        [max]="endKIValue" class="inputBox" (change)="binder($event)" step="0.01" name="ki-input1">
+                </div>
+                <div style="margin-top: 12px;" class="ki-number second">
+                    <input type="number" class="knumber" [value]="current_KI_LastValue"
+                        [min]="startKIValue" [max]="endKIValue" class="inputBox" step="0.01" (change)="binder($event)" name="ki-input2">
+                </div>
+                <!-- <mat-slider [min]="startKIValue" [max]="endKIValue" class="slider" step="0.01">
+                    <input [(ngModel)]="current_KI_StartValue" matSliderStartThumb (valueChange)="binder()">
+                    <input [(ngModel)]="current_KI_LastValue" matSliderEndThumb (valueChange)="binder()">
+                </mat-slider> -->
+                    <!-- <ng-container [ngSwitch]="display">
+                        <ng-template [ngSwitchCase]="1"><ngx-slider class="ngx-mtm-slider" [(value)]="current_KI_StartValue" [(highValue)]="current_KI_LastValue" [options]="options1"  (userChange)="sliderToInputBinder()"></ngx-slider ></ng-template>
+                        <ng-template [ngSwitchCase]="2"><ngx-slider class="ngx-mtm-slider" [(value)]="current_KI_StartValue" [(highValue)]="current_KI_LastValue" [options]="options1"  (userChange)="sliderToInputBinder()"></ngx-slider ></ng-template>
+                    </ng-container> -->
+                    <ng-container [ngSwitch]="display">
+                        <ng-template [ngSwitchCase]="1"><ngx-slider class="ngx-ki-dist-slider" [(value)]="current_KI_StartValue" [(highValue)]="current_KI_LastValue" [options]="options1"  (userChange)="sliderToInputBinder()"></ngx-slider ></ng-template>
+                        <ng-template [ngSwitchCase]="2"><ngx-slider class="ngx-ki-dist-slider" [(value)]="current_KI_StartValue" [(highValue)]="current_KI_LastValue" [options]="options1"  (userChange)="sliderToInputBinder()"></ngx-slider ></ng-template>
+                    </ng-container>
+
+            
+            <div style="font-family: 'Roboto';  font-size: 20px;font-family: 'Roboto'; " class="filterTitle">MTM (%)</div>
+            <div style="margin-top: 12px;" class="ki-number">
+                <input type="number" class="knumber" (change)="binder($event)" [value]="current_MTM_StartValue" [value]="current_MTM_StartValue"
+                    [min]="startMTMValue" [max]="endMTMValue" class="inputBox" step="0.01" name="mtm-input1">
+            </div>
+            <div style="margin-top: 12px;" class="ki-number second">
+                <input type="number" class="knumber" (change)="binder($event)" [value]="current_MTM_LastValue"
+                    [min]="startMTMValue" [max]="endMTMValue" class="inputBox" step="0.01" name="mtm-input2">
+            </div>
+            <!-- <mat-slider [min]="startMTMValue" [max]="endMTMValue" class="slider" color="primary" step="0.01">
+                <input matSliderStartThumb [(ngModel)]="current_MTM_StartValue" (valueChange)="binder()">
+                <input matSliderEndThumb [(ngModel)]="current_MTM_LastValue" (valueChange)="binder()">
+            </mat-slider> -->
+            <ng-container [ngSwitch]="display">
+                <ng-template [ngSwitchCase]="1"><ngx-slider class="ngx-ki-dist-slider" [(value)]="current_MTM_StartValue" [(highValue)]="current_MTM_LastValue"
+                    [options]="options2" (userChange)="sliderToInputBinder()"></ngx-slider></ng-template>
+                <ng-template [ngSwitchCase]="2"><ngx-slider class="ngx-ki-dist-slider" [(value)]="current_MTM_StartValue" [(highValue)]="current_MTM_LastValue"
+                    [options]="options2" (userChange)="sliderToInputBinder()"></ngx-slider></ng-template>
+            </ng-container>
+
+
+
+            <div class="filterTitle" style="font-family: 'Roboto'; font-size: 20px;font-family: 'Roboto'; ">Worst Of Underlying</div>
+                <select [(ngModel)]="selectedUnderlying" (change)="sendSelectedUnderlying(selector1.value)"
+                    #selector1>
+                    <option value="All">All</option>
+                    <option *ngFor="let wol of worOfUnderlingList;" [value]="wol">
+                        {{wol}}
+                    </option>
+                </select>
+
+
+            <div class="filterTitle" style="font-family: 'Roboto';  font-size: 20px;font-family: 'Roboto'; ">Currency</div>
+            <select [(ngModel)]="selectedCurrency" (change)="sendSelectedCurrency(selector2.value)" #selector2>
+                <option value="All">All</option>
+                <option *ngFor="let currency of currencies;" [value]="currency">
+                    {{currency}}
+                </option>
+            </select>
+
+            <div class="filterTitle" style="font-family: 'Roboto';  font-size: 20px;font-family: 'Roboto'; ">PayOff</div>
+            <select [(ngModel)]="selectedPayOff" (change)="sendSelectedPayOff(selector3.value)" #selector3>
+                <option value="All">All</option>
+                <option *ngFor="let pay of payOff;" [value]="pay">
+                    {{pay}}
+                </option>
+            </select>
+        </div>
+    </div>
+</div>

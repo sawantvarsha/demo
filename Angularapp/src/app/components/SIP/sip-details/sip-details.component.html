@@ -1,0 +1,325 @@
+<div *ngIf="IsBackButtonEnabled" class="page-navigation" [ngClass]=''>
+    <app-svg-icons class="back-button" [icon]="'back-button'" [width]="'40'" [height]="'40'" [fill]="'var(--headers)'"
+        (click)="fnRedirectToHomePage();"></app-svg-icons>
+    <div class="page-title"> Systematic Investment Plan (SIP) </div>
+</div>
+<div class="">
+    <div *ngIf="!IsBackButtonEnabled" class=" page-navigation module">
+        <app-svg-icons class="back-button" [icon]="'back-button'" [width]="'40'" [height]="'40'"
+            [fill]="'var(--headers)'" (click)="back();"></app-svg-icons>
+        <div class="page-title"> Systematic Investment Plan (SIP) </div>
+    </div>
+    <!--Changes done by AlolikaG on 1st Feb 2022. Assigned by Parikshit K. --START-->
+    <div class="component">
+
+        <div class=" main-container" *ngIf="!loader">
+            <div class="label-class" *ngIf="SipOverview">
+                <label class="active">
+                    My SIP Investments
+                </label>
+                <!-- <label style="justify-self: self-end;">
+                    Active: {{SipData?.length}} SIP | Total SIP Amount: 30,000.00
+                </label> -->
+                <div style="justify-self: self-end;">
+                    <label class="headers fs15">Active: </label>
+                    <label class=" fs17">{{SipOverview?.Param1 || '-'}} SIP(s) |</label>
+                    <label class="headers fs15"> Total SIP Amount: </label>
+                    <label class="ccy">{{baseCcy}}</label>
+                    <label class=" fs17"> {{SipOverview?.Param2 | number:'1.2-2' || '-'}}</label>
+                </div>
+            </div>
+            <div *ngIf="SipOverview.length === 0">No data found.</div>
+            <div class="scroll-container">
+                <div class="container" [ngClass]="{'active': isActive === i }"
+                    *ngFor="let item of SipDetails; let i = index" (click)="showDetails(item, i)">
+                    <div class="heading">
+                        <label>
+                            {{item?.Param1 || '-'}}
+                        </label>
+                        <div class="status" [ngClass]="{'btn-active': item.Param14 === 'ACTIVE' || item.Param14 === 'Active',
+                    'btn-inactive': item.Param14 === 'INACTIVE' || item.Param14 === 'Inactive'}">
+                            <label>
+                                {{item?.Param14 || '-'}}
+                            </label>
+                        </div>
+                        <span>
+                            <app-svg-icons [icon]="'arrow'" [width]="'20'" [height]="'20'" [fill]="'var(--gray)'">
+                            </app-svg-icons>
+                        </span>
+                    </div>
+                    <div class="details-row4">
+                        <div class="">
+                            <div class="align-amout">
+                                <label class="ccy">{{baseCcy}} </label>
+                                <div class="value"> {{ item?.Param18 | number:'1.2-2' || '-'}}</div>
+
+                            </div>
+
+                            <div class="headers fs14">Amount</div>
+                        </div>
+                        <div class="">
+                            <div class="value">{{item?.Param20 | date:'dd-MMM-yyyy'}}</div>
+                            <div class="headers fs14">Next Installment</div>
+                        </div>
+                        <div class="">
+                            <div class="value">{{item?.Param17 || '-'}}</div>
+                            <div class="headers fs14">Frequency</div>
+                        </div>
+                        <div class="svg-class">
+                            <app-svg-icons *ngIf="item.Param14 === 'ACTIVE' || item.Param14 === 'Active'"
+                                class="closebtn" [icon]="'stop'" [width]="'30'" [height]="'30'" title="Terminate SIP"
+                                (click)="SipActions(item.Param16, '', 'TERMINATE', i)">
+                            </app-svg-icons>
+                            <app-svg-icons *ngIf="item.Param14 === 'ACTIVE' || item.Param14 === 'Active'"
+                                class="closebtn" [icon]="'pause'" [width]="'30'" [height]="'30'"
+                                title="Skip Installments" (click)="openPauseAction(item)">
+                            </app-svg-icons>
+                            <app-svg-icons *ngIf="item.Param14 === 'INACTIVE' || item.Param14 === 'Inactive'"
+                                class="closebtn" [icon]="'play'" [width]="'30'" [height]="'30'" title="Activate SIP"
+                                (click)="SipActions(item.Param16, '', 'REACTIVATE', i)">
+                            </app-svg-icons>
+                            <!--Added by AlolikaG on 4th Feb 2022. Assigned by Parikshit K--START-->
+                            <app-svg-icons *ngIf="item.Param14 === 'ACTIVE' || item.Param14 === 'Active'"
+                                class="closebtn" [icon]="'resume'" [width]="'30'" [height]="'30'"
+                                title="Activate Installments" (click)="getSipPausedDates(item, i)">
+                            </app-svg-icons>
+                            <!--Added by AlolikaG on 4th Feb 2022. Assigned by Parikshit K--START-->
+
+                        </div>
+
+                    </div>
+                </div>
+                <!--Extra-->
+            </div>
+
+
+            <div *ngIf="SipDetails.length === 0">No data found.</div>
+
+
+
+        </div>
+        <div *ngIf='loader' class="loader">
+            <div class="multi-ripple">
+                <div></div>
+                <div></div>
+            </div>
+        </div>
+
+        <div>
+            <div class="vline"></div>
+        </div>
+        <div class="main-container2" *ngIf="showSIPDetails">
+            <label class="active" style="font-size: 25px;">{{SipData?.Param1 || '-'}}</label>
+            <!--Added by Alolika G on 10-02-2022-->
+            <div class="toggle-label">
+                <label [ngClass]="{'active-border': SIPdatestoggle, 'disabled': MFlist}"
+                    (click)="toggleforMFList(1)">SIP Details</label>
+                <label [ngClass]="{'active-border': MFlist, 'disabled': SIPdatestoggle}"
+                    (click)="toggleforMFList(0)">Underlying</label>
+            </div>
+            <div class="container2" *ngIf="SIPdatestoggle">
+                <!--*ngIf="SIPdatestoggle"-->
+                <div class="container2 background">
+                    <div>
+                        Status:
+                        <span [ngClass]="{'green': SipData.Param14 === 'ACTIVE' || SipData.Param14 === 'Active',
+                        'red': SipData.Param14 === 'INACTIVE' || SipData.Param14 === 'Inactive'}">
+                            {{SipData?.Param14 || '-'}}
+                        </span>
+                    </div>
+
+                    <div class="details-list">
+
+                        <label class="">Fund Umbrella</label>
+                        <label class="value-top">-</label>
+                        <div class="vh-line"></div>
+
+                        <label class="">Currency</label>
+                        <label class="value-top">{{baseCcy}}</label>
+                        <div class="vh-line"></div>
+
+                        <label class="">ISIN</label>
+                        <label class="value-top">{{SipData?.Param21 || '-'}}</label>
+
+                    </div>
+                    <div class="grid">
+                        <div class="">
+                            <div *ngIf="SipData?.Param15 !==''">{{SipData?.Param15 | date:'dd-MMM-yyyy'}}</div>
+                            <div *ngIf="SipData?.Param15 ===''">-</div>
+                            <div class="headers fs14">Start Date</div>
+                        </div>
+                        <div class="">
+                            <div *ngIf="SipData?.Param22 !==''">{{SipData?.Param22 | date:'dd-MMM-yyyy'}}</div>
+                            <div *ngIf="SipData?.Param22 ===''">-</div>
+
+                            <div class="headers fs14">End Date</div>
+                        </div>
+                        <div class="">
+                            <div>{{SipData?.Param17 || '-'}}</div>
+                            <div class="headers fs14">Frequency</div>
+                        </div>
+                        <div class="">
+                            <div *ngIf="SipData?.Param20 !==''">{{SipData?.Param20 | date:'dd-MMM-yyyy'}}</div>
+                            <div *ngIf="SipData?.Param20 ===''">-</div>
+                            <div class="headers fs14">Next Deduction Day</div>
+                        </div>
+                        <div class="">
+                            <div *ngIf="SipData?.Param20 !==''">{{SipData?.Param4}}</div>
+                            <div *ngIf="SipData?.Param20 ===''">-</div>
+                            <div class="headers fs14">Portfolio</div>  
+                        </div>
+                        <div class="">
+                            <div *ngIf="SipData?.Param20 !==''">{{SipData?.Param3}}</div>
+                            <div *ngIf="SipData?.Param20 ===''">-</div>
+                            <div class="headers fs14">Account Number</div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="box-container">
+
+                    <label class="box-header">Important Dates</label>
+                    <div *ngIf='!loaderDates' style="padding-left: 10px;">
+                        <div class="margin-box" *ngFor="let data of sipDates; let i = index">
+                            <div class="timeline-row">
+                                <div class="timestamp">
+                                    <label class="heading1">{{data?.Param2 | date:'dd-MMM-yyyy'}}</label>
+                                </div>
+                                <div class="milestone">
+                                </div>
+                                <div class="status-timeline">
+                                    <label class="value" [ngClass]="{'yellow': data.Param4 === 'Due', 'brown': data.Param4 === 'SIP on hold', 
+                                    'green': data.Param4 === 'SIP Successful','red': data.Param4 === 'SIP failed'}">
+                                        <label *ngIf="data.Param4 === 'Due'">SIP {{data?.Param4 || '-'}}</label>
+                                        <label *ngIf="data.Param4 !== 'Due'">{{data?.Param4 || '-'}}</label>
+                                    </label>
+                                    <!--check below values with Mohini M-->
+                                    <div>
+                                        <label class="headers margin">SIP Amount : </label>
+                                        <label *ngIf="data.Param4 !== 'SIP on hold'" class="ccy">{{baseCcy}}</label>
+                                        <label *ngIf="data.Param4 !== 'SIP on hold'" class="fs15 margin"> {{data?.Param3
+                                            | number:'1.2-2' || '-'}}</label>
+                                        <label *ngIf="data.Param4 === 'SIP on hold'" class="fs14 margin"> NA</label>
+                                    </div>
+                                    <div>
+                                        <label class="headers margin fs14">Transaction Date: </label>
+                                        <label *ngIf="data.Param4 !== 'SIP on hold'" class="fs14 margin">{{data?.Param2
+                                            | date:'dd-MMM-yyyy' || '-'}}</label>
+                                        <label *ngIf="data.Param4 === 'SIP on hold'" class="fs14 margin">NA</label>
+
+                                    </div>
+                                </div>
+                                <div class="vl"></div>
+                            </div>
+                        </div>
+                        <div *ngIf="sipDates.length === 0">No data found.</div>
+                    </div>
+                    <div *ngIf='loaderDates' class="loader">
+                        <div class="multi-ripple">
+                            <div></div>
+                            <div></div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!--Added by Alolika G | 14-02-2022 --START -->
+            <div class="box-container" *ngIf="MFlist">
+                <label class="box-header">Underlying Details</label>
+                <div class="events">
+                    <div class="table-header-schedule">
+                        <label>Amount</label>
+                        <label>Contribution (%)</label>
+                        <label>Fund Name</label> <!--// Added by Alolika G on 17-02-2022-->
+                        
+                    </div>
+                    <div *ngFor="let item of getFundsData">
+                        <div class="graph-div">
+                            <div class="graph-item">
+                                <div class="graph-date">
+                                    <label class="amount">{{baseCcy}} {{ item.InvAmount | number:'1.2-2'}}</label>
+                                </div>
+                                <div class="graph-date">
+                                    <label class="amount">{{ item.Contribution | number:'1.2-2'}}</label>
+                                </div>
+                                <div class="graph-item-content">
+                                    <label class = "label">{{item.fundName}}</label>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!--Added by Alolika G | 14-02-2022 --END -->
+
+    </div>
+    <!--Changes done by AlolikaG on 1st Feb 2022. Assigned by Parikshit K. --END-->
+</div>
+<!--Added by Uddesh on 1 Feb 2022-->
+<div *ngIf="showPauseActions" class="popupbg" (click)="ClosePopups()"></div>
+
+<div *ngIf="showPauseActions" class="PausePopup">
+    <div class="header">
+        <div class="name">Skip Installments - {{SIPName}}</div>
+        <div (click)="showPauseActions = false" class="close">
+            <app-svg-icons class="closebtn" [icon]="'cancel-icon'" [width]="'15'" [height]="'15'"
+                (click)="showOrderEntry = false">
+            </app-svg-icons>
+        </div>
+    </div>
+    <div class="subheader">Installment Dates</div>
+    <div class="dataContainer">
+        <div *ngFor="let data of PauseSIPDates">
+            <div class="row" *ngIf="data.Param4 === 'Due'">
+                <input type="checkbox" value="" (input)="checkboxAction(data, checkboxAction)">
+                <label>{{data?.Param2 | date:'dd-MMM-yyyy'}}</label>
+            </div>
+        </div>
+        <div *ngIf="PauseSIPDates.length === 0">No data found.</div>
+
+    </div>
+    <div class="button btn" (click)="SkipInstallments('PAUSE')" *ngIf="PauseSIPDates.length > 0">
+        Skip Installment
+    </div>
+</div>
+
+<!--Changes Done by Uddesh on 1 Feb 2022 END-->
+
+<!--Added by AlolikaG on 4th Feb 2022. Assigned by Parikshit K--START-->
+<div *ngIf="openActiveAction" class="popupbg" (click)="ClosePopups()"></div>
+
+<div *ngIf="openActiveAction" class="PausePopup">
+    <div class="header">
+        <div class="name">Activate Installments - {{SIPName}}
+        </div>
+        <div (click)="openActiveAction = false" class="close">
+            <app-svg-icons class="closebtn" [icon]="'cancel-icon'" [width]="'15'" [height]="'15'"
+                (click)="showOrderEntry = false">
+            </app-svg-icons>
+        </div>
+    </div>
+    <div class="subheader">Installment Dates
+        <span>(On hold)</span>
+    </div>
+    <div class="dataContainer">
+        <div *ngFor="let data of pausedDates">
+            <div class="row">
+                <input type="checkbox" value="" (input)="checkboxAction(data, checkboxAction)">
+                <label>{{data?.Param2 | date:'dd-MMM-yyyy'}}</label>
+            </div>
+
+        </div>
+        <div *ngIf="pausedDates.length === 0">No data found.</div>
+
+    </div>
+    <div class="button btn" (click)="SkipInstallments('RESUME')" *ngIf="pausedDates.length > 0">
+        Activate Installment
+    </div>
+</div>
+<!--Added by AlolikaG on 4th Feb 2022. Assigned by Parikshit K--END-->

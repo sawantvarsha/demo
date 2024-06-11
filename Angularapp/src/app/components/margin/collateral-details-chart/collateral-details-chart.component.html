@@ -1,0 +1,23 @@
+<div class="details-grid">
+    <div class="header">Collateral Details</div>
+    <div class="inner-grid">
+        <div class="collateral-details-chart">
+            <div id="chart">
+                <apx-chart [series]="collateralChartOptions.series" [chart]="collateralChartOptions.chart"
+                    [plotOptions]="collateralChartOptions.plotOptions" [labels]="collateralChartOptions.labels"
+                    [dataLabels]="collateralChartOptions.dataLabels" [legend]="collateralChartOptions.legend"
+                    [stroke]="collateralChartOptions.stroke" [responsive]="collateralChartOptions.responsive"
+                    [colors]="collateralChartOptions.colors" [noData]="collateralChartOptions.noData"></apx-chart>
+            </div>
+        </div>
+        <div class="body">
+            <div class="content" *ngFor="let legend of collateralDetailsData">
+                <div class="title">
+                    <div class="square" [ngStyle]="{'background-color': legend.color}"></div>
+                    <span> {{legend.CollateralType}}</span>
+                </div>
+                <span class="value" *ngIf="legend.Amount!==''">{{legend.Amount | number:'1.2-2' || '-'}}</span>
+            </div>
+        </div>
+    </div>
+</div>

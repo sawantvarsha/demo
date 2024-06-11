@@ -1,0 +1,284 @@
+<div class="page-navigation pagetitle" [ngClass]=''>
+  <app-svg-icons class="back-button" [icon]="'back-button'" [width]="'40'" [height]="'40'" [fill]="'var(--headers)'"
+    (click)="back()">
+  </app-svg-icons>
+  <div class="page-title">
+    Client-wise FX Position
+  </div>
+</div>
+
+<div class="main-container">
+  <div class="sub-content">
+    <label class="portfolio-name">{{Customer}}</label>
+    <div class="dateFilter">
+      <div>
+        <label for="fromdate">From:</label>
+      </div>
+      <input type="date" class="input-dob" [attr.data-date]="startDate" style="margin-top: 0px" placeholder="dd-mm-yyyy"
+        data-date-format="DD-MMM-YYYY" value="" min="1997-01-01" max="2030-12-31" [(ngModel)]="startDate"
+        tabindex="6" (change)="startDate = selectDate(startDate)"/>
+      <div>
+        <label for="toDate">To:</label>
+      </div>
+      <input type="date" class="input-dob" [attr.data-date]="endDate" style="margin-top: 0px" placeholder="dd-mm-yyyy"
+        data-date-format="DD-MMM-YYYY" value="" min="1997-01-01" max="2030-12-31" [(ngModel)]="endDate" tabindex="6" 
+        (change)="endDate = selectDate(endDate)"/>
+      <button class="button btn" (click)="loadData()">Load</button>
+      <button class="button btn" (click)="MarkToMarket()">MTM</button>
+      <!-- <img [src]="isProd ? 'assets/loading_dots.gif':'../../../../assets/loading_dots.gif'" height="100px"
+        width="100px"> -->
+        <app-svg-icons *ngIf="LoadingMTMFlag" [icon]="'FXD-loader'" [fill] = "'var(--headers)'" [width]="'15'" [height]="'15'">
+
+        </app-svg-icons>
+      <div>
+        {{ errorMsg }}
+      </div>
+    </div>
+  </div>
+  <div class="box-container">
+    <div class="pair-content">
+      <label class="header-text">Pair-wise MTM</label>
+      <div class="table-content">
+        <table>
+          <thead>
+            <tr>
+              <th>Ccy Pair</th>
+              <th>Net Amount</th>
+              <th>Bid Rate</th>
+              <th>Ask Rate</th>
+              <th>Avg Buy Rate</th>
+              <th>Avg Sell Rate</th>
+              <th>Avg Net Rate</th>
+              <th>Long Amount</th>
+              <th>Short Amount</th>
+              <th>Realised P/L</th>
+              <th>Unrealised P/L</th>
+              <th>Total P/L</th>
+              <th>P/L Base Rate</th>
+              <th>Position base Rate</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let record of PairWiseData;let i =index;">
+              
+                <td class="align-center">
+                  {{record.Deal_Pair}}
+                </td>
+                <td class="align-right">
+                  {{record.NetAmount}}
+                </td>
+                <td class="align-right">
+                  {{this.com.FormatNumberWithoutEventForRate(record.Buy_Rate,
+                  record.DecimalRate)}}
+  
+                </td>
+                <td class="align-right">
+                  {{this.com.FormatNumberWithoutEventForRate(record.Sell_Rate,
+                  record.DecimalRate)}}
+  
+                </td>
+                <td class="align-right">
+                  {{this.com.FormatNumberWithoutEventForRate(record.Avg_Buy_Rate,
+                  record.DecimalRate)}}
+                </td>
+                <td class="align-right">
+                  {{this.com.FormatNumberWithoutEventForRate(record.Avg_Sell_Rate,
+                  record.DecimalRate)}}
+  
+                </td>
+                <td class="align-right">
+                  {{this.com.FormatNumberWithoutEventForRate(record.Avg_Net_Rate,
+                  record.DecimalRate)}}
+                </td>
+                <td class="align-right">
+                  {{record.Amt1}}
+                </td>
+                <td class="align-right">
+                  {{record.Amt2}}
+                </td>
+                <td class="align-right">
+                  {{record.Realised_Profit}}
+                </td>
+                <td class="align-right">
+                  {{record.UnrealisedProfit}}
+                </td>
+                <td class="align-right">
+                  {{record.Total_Profit}}
+                </td>
+                <td class="align-right">
+                  {{record.Profit_Loss_Base_Rate}}
+                </td>
+                <td class="align-right">
+                  {{record.Position_Base_Rate}}
+                </td>
+              
+
+            </tr>
+          </tbody>
+        </table>
+        <label *ngIf="errorMsgPair !== ''">{{errorMsgPair}}</label>
+
+      </div>
+    </div>
+  </div>
+  <div class="middle-content">
+    <div class="box-container">
+      <div class="pair-content">
+        <label class="header-text">Cashflow</label>
+        <div class="table-content">
+          <table>
+            <thead>
+              <tr>
+                <th>Currency</th>
+                <th>Cashflow Date</th>
+                <th>Long</th>
+                <th>Short</th>
+                <th>Net</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let record of CashFlowData;let i =index;">
+                <td class="align-center">
+                  {{record.Ccy}}
+                </td>
+                <td class="align-center">
+                  {{this.commonApi.checkAndFormatDate(record.Maturity_Date)}}
+                </td>
+                <td class="align-right">
+                  {{record.Long}}
+                </td>
+                <td class="align-right">
+                  {{record.Short}}
+                </td>
+                <td class="align-right">
+                  {{record.NetAmount}}
+                </td>
+              </tr>
+            </tbody>
+
+          </table>
+          <label *ngIf="errorMsgCash !== ''">{{errorMsgCash}}</label>
+
+        </div>
+
+      </div>
+    </div>
+    <div class="box-container">
+      <div class="pair-content">
+        <label class="header-text">Margin</label>
+        <div class="table-content">
+          <table>
+            <thead>
+              <tr>
+                <th>Total Position</th>
+                <th>MTM P/L</th>
+                <th>Approved Margin</th>
+                <th>Utilised Margin</th>
+                <th>Available Margin</th>
+                <th>Margin Ratio</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="" *ngFor="let record of CollateralData;let i =index;">
+                <td class="align-right">
+                  {{record.Net_USD_Amt | number: '1.2-2'}}
+                </td>
+                <td class="align-right">
+                  {{record.Net_USD_Profit | number: '1.2-2'}}
+                </td>
+                <td class="align-right">
+                  {{record.Available_Amt | number: '1.2-2'}}
+                </td>
+                <td class="align-right">
+                  {{record.Net_Collateral_Amt | number: '1.2-2'}}
+                </td>
+                <td class="align-right">
+                  {{record.Difference_Amt | number: '1.2-2'}}
+                </td>
+                <td class="align-right">
+                  {{record.Ratio | number: '1.2-2'}}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <label *ngIf="errorMsgCol !== ''">{{errorMsgCol}}</label>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <div class="box-container">
+    <div class="pair-content">
+      <label class="header-text">Done Trade Summary -Total Record(s) {{NoofRecords || '0'}}</label>
+      <div class="table-content">
+        <table>
+          <thead>
+            <tr>
+              <th>Trade ID</th>
+              <th>Product</th>
+              <th>Direction</th>
+              <th>Currency Pair</th>
+              <th>Contract Ccy</th>
+              <th>Contract Amt</th>
+              <th>Counter Ccy</th>
+              <th>Counter Amt</th>
+              <th>Rate</th>
+              <th>Value Date</th>
+              <th>MTM PnL</th>
+              <th>Market Rate</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let record of filteredsandFData;let i =index;">
+              <td class="align-center">
+                {{record.OrderID}}
+              </td>
+              <td class="align-center">
+                {{record.Product}}
+              </td>
+              <td class="align-center">
+                {{record.Direction === 'B' ? 'Buy' : 'Sell'}}
+              </td>
+              <td class="align-center">
+                {{record.CurrencyPair}}
+              </td>
+              <td class="align-center">
+                <div *ngIf="record.Direction  === 'S'">{{record.BillingCurrency}}</div>
+                <div *ngIf="record.Direction  === 'B'">{{record.CreditCurrency}}</div>
+              </td>
+              <td class="align-right">
+                <div *ngIf="record.Direction  === 'S'">
+                  {{this.com.FormatNumberwithFloat(record.Ccy1_Amount)}}</div>
+                <div *ngIf="record.Direction  === 'B'">
+                  {{this.com.FormatNumberwithFloat(record.Ccy2_Amount)}} </div>
+              </td>
+              <td class="align-center">
+                <div *ngIf="record.Direction  === 'S'">{{record.CreditCurrency}}</div>
+                <div *ngIf="record.Direction  === 'B'">{{record.BillingCurrency}}</div>
+              </td>
+              <td class="align-right">
+                <div *ngIf="record.Direction  === 'S'">
+                  {{this.com.FormatNumberwithFloat(record.Ccy2_Amount)}}</div>
+                <div *ngIf="record.Direction  === 'B'">
+                  {{this.com.FormatNumberwithFloat(record.Ccy1_Amount)}}</div>
+              </td>
+              <td class="align-right">
+                {{record.Rate}}
+              </td>
+              <td class="align-center">
+                {{record.Value_Date}}
+              </td>
+              <td class="align-right">
+                {{record.MTM_PNL}}
+              </td>
+              <td class="align-right">
+                {{record.Market_Rate}}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <label *ngIf="errorMsgSF !== ''">{{errorMsgSF}}</label>
+        
+      </div>
+    </div>
+  </div>

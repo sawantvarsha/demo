@@ -1,0 +1,213 @@
+<div style="padding: 20px;" *ngIf="getSuitabilityDetailsRes.length > 0">
+    <!-- <div class = "upper-div">
+        <label class="left large headercolor">Overall Suitability Passed ? </label>
+        <label class="left large" [ngClass]="{'red': getSuitabilityDetails.OvarallSuitabilityYN === 'No',
+        'green': getSuitabilityDetails.OvarallSuitabilityYN === 'Yes'}">{{getSuitabilityDetails?.OvarallSuitabilityYN || '-'}}</label>
+
+    </div> -->
+    <div class="table-header1">
+        <label></label>
+        <label class="left large headercolor">Overall Suitability Passed ? </label>
+        <label class="left large" [ngClass]="{'red': getSuitabilityDetails.OvarallSuitabilityYN === 'No',
+        'green': getSuitabilityDetails.OvarallSuitabilityYN === 'Yes'}">{{getSuitabilityDetails?.OvarallSuitabilityYN || '-'}}</label>
+        <label class="left"> </label>
+        <label class="left"></label>
+        
+        <label class="left"></label>
+    </div>
+    <div class="table-header">
+        <label></label>
+        <label class="left"> </label>
+        <label class="left"> </label>
+        <label class="left">Matching Criteria</label>
+        <label class="center">Passed?</label>
+        <label class="left">Reason</label>
+    </div>
+
+    <!--Changes done by Alolika G on 7th Feb 2022-->
+    <div class="table-data">
+        <div class="data">
+            <div style="padding: 12px;">
+                <div class="" [ngClass]="{'circle': getSuitabilityDetails.Eligible_YN_Nationality === 'Y',
+                'triangle': getSuitabilityDetails.Eligible_YN_Nationality === 'N'}"></div>
+            </div>
+            <label class="headercolor left">1. Restricted Nationality</label>
+            <label class="left">{{getSuitabilityDetails?.Cust_Nationality || '-'}}</label>
+            <label class="left">{{getSuitabilityDetails?.Ref_Nationality || '-'}}</label>
+            <label class="center" [ngClass]="{'red': getSuitabilityDetails.Eligible_YN_Nationality === 'N',
+            'green': getSuitabilityDetails.Eligible_YN_Nationality === 'Y'}">{{getSuitabilityDetails?.Eligible_YN_Nationality || '-'}}</label>
+            <label *ngIf="getSuitabilityDetails.Eligible_YN_Nationality === 'N'">
+                {{getSuitabilityDetails?.Failed_Reason_Nationality || '-'}}
+            </label>
+            <label *ngIf="getSuitabilityDetails.Eligible_YN_Nationality === 'Y'">-</label>
+        </div>
+        <div class="data">
+            <div style="padding: 12px;">
+                <div class="" [ngClass]="{'circle': getSuitabilityDetails.Eligible_YN_Score === 'Y',
+                'triangle': getSuitabilityDetails.Eligible_YN_Score === 'N'}"></div>
+            </div>
+            <label class="headercolor left">2. Risk Score (CRR vs PRR)</label>
+            <label class="left">{{getSuitabilityDetails?.Risk_Score || '-'}}</label>
+            <label class="left">{{getSuitabilityDetails?.Ref_Score || '-'}}</label>
+            <label class="center" [ngClass]="{'red': getSuitabilityDetails.Eligible_YN_Score === 'N',
+            'green': getSuitabilityDetails.Eligible_YN_Score === 'Y'}">{{getSuitabilityDetails?.Eligible_YN_Score || '-'}}</label>
+            <label *ngIf="getSuitabilityDetails.Eligible_YN_Score === 'N'">
+                {{getSuitabilityDetails?.Failed_Reason_Score || '-'}}
+            </label>
+            <label *ngIf="getSuitabilityDetails.Eligible_YN_Score === 'Y'">-</label>
+        </div>
+        <div class="data">
+            <div style="padding: 12px;">
+                <div class="" [ngClass]="{'circle': getSuitabilityDetails.Eligible_YN_GNationality === 'Y',
+                'triangle': getSuitabilityDetails.Eligible_YN_GNationality === 'N'}"></div>
+            </div>
+            <label class="headercolor left">3. Customer G3 Nationality</label>
+            <label class="left">{{getSuitabilityDetails?.Nationality || '-'}}</label>
+            <label class="left">{{getSuitabilityDetails?.Ref_GNationality || '-'}}</label>
+            <label class="center" [ngClass]="{'red': getSuitabilityDetails.Eligible_YN_GNationality === 'N',
+            'green': getSuitabilityDetails.Eligible_YN_GNationality === 'Y'}">{{getSuitabilityDetails?.Eligible_YN_GNationality || '-'}}</label>
+            <label *ngIf="getSuitabilityDetails.Eligible_YN_GNationality === 'N'">
+                {{getSuitabilityDetails?.Failed_Reason_GNationality || '-'}}
+            </label>
+            <label *ngIf="getSuitabilityDetails.Eligible_YN_GNationality === 'Y'">-</label>
+
+        </div>
+        <div class="data">
+            <div style="padding: 12px;">
+                <div class="" [ngClass]="{'circle': getSuitabilityDetails.Eligible_YN_KYC === 'Y',
+                'triangle': getSuitabilityDetails.Eligible_YN_KYC === 'N'}"></div>
+            </div>
+            <label class="headercolor">4. KYC Expiry Check</label>
+            <label class="left">{{getSuitabilityDetails?.KYCExpiryCheck || '-'}}</label>
+            <label class="left">{{getSuitabilityDetails?.Ref_KYC_Expiry || '-'}}</label>
+            <label class="center" [ngClass]="{'red': getSuitabilityDetails.Eligible_YN_KYC === 'N',
+            'green': getSuitabilityDetails.Eligible_YN_KYC === 'Y'}">{{getSuitabilityDetails?.Eligible_YN_KYC || '-'}}</label>
+            <label *ngIf="getSuitabilityDetails.Eligible_YN_KYC === 'N'">
+                {{getSuitabilityDetails?.Failed_Reason_KYC_Expiry || '-'}}
+            </label>
+            <label *ngIf="getSuitabilityDetails.Eligible_YN_KYC === 'Y'">-</label>
+
+        </div>
+        <div class="data">
+            <div style="padding: 12px;">
+                <div class="" [ngClass]="{'circle': getSuitabilityDetails.Eligible_YN_Segment === 'Y',
+                'triangle': getSuitabilityDetails.Eligible_YN_Segment === 'N'}"></div>
+            </div>
+            <label class="headercolor">5. Customer Segment</label>
+            <label class="left">{{getSuitabilityDetails?.CustomerSegment || '-'}}</label>
+            <label class="left">{{getSuitabilityDetails?.Ref_Segment || '-'}}</label>
+            <label class="center" [ngClass]="{'red': getSuitabilityDetails.Eligible_YN_Segment === 'N',
+            'green': getSuitabilityDetails.Eligible_YN_Segment === 'Y'}">{{getSuitabilityDetails?.Eligible_YN_Segment || '-'}}</label>
+            <label *ngIf="getSuitabilityDetails.Eligible_YN_Segment === 'N'">
+                {{getSuitabilityDetails?.FailedReasonSegment || '-'}}
+            </label>
+            <label *ngIf="getSuitabilityDetails.Eligible_YN_Segment === 'Y'">-</label>
+
+        </div>
+        <div class="data">
+            <div style="padding: 12px;">
+                <div class="" [ngClass]="{'circle': getSuitabilityDetails.Eligible_YN_Comm_Amt === 'Y',
+                'triangle': getSuitabilityDetails.Eligible_YN_Comm_Amt === 'N'}"></div>
+            </div>
+            <label class="headercolor">6. Commission Cap</label>
+            <label class="left">{{getSuitabilityDetails?.CommissionAmtLCYE | number:'1.2-2' || '-'}}</label>
+            <label class="left">{{getSuitabilityDetails?.Ref_Comm_Amont || '-'}}</label>
+            <label class="center" [ngClass]="{'red': getSuitabilityDetails.Eligible_YN_Comm_Amt === 'N',
+            'green': getSuitabilityDetails.Eligible_YN_Comm_Amt === 'Y'}">{{getSuitabilityDetails?.Eligible_YN_Comm_Amt || '-'}}</label>
+            <label *ngIf="getSuitabilityDetails.Eligible_YN_Comm_Amt === 'N'">
+                {{getSuitabilityDetails?.Failed_Reason_Commi_Amt || '-'}}
+            </label>
+            <label *ngIf="getSuitabilityDetails.Eligible_YN_Comm_Amt === 'Y'">-</label>
+
+        </div>
+        <div class="data">
+            <div style="padding: 12px;">
+                <div class="" [ngClass]="{'circle': getSuitabilityDetails.Eligible_YN_Fee_Waiver === 'Y',
+                'triangle': getSuitabilityDetails.Eligible_YN_Fee_Waiver === 'N'}"></div>
+            </div>
+            <label class="headercolor">7. Fee Validation/Waiver</label>
+            <label class="left">{{getSuitabilityDetails?.FeeWaiver || '-'}}</label>
+            <label class="left">{{getSuitabilityDetails?.Ref_Fee_Waiver || '-'}}</label>
+            <label class="center" [ngClass]="{'red': getSuitabilityDetails.Eligible_YN_Fee_Waiver === 'N',
+            'green': getSuitabilityDetails.Eligible_YN_Fee_Waiver === 'Y'}">{{getSuitabilityDetails?.Eligible_YN_Fee_Waiver || '-'}}</label>
+            <label *ngIf="getSuitabilityDetails.Eligible_YN_Fee_Waiver === 'N'">
+                {{getSuitabilityDetails?.Failed_Reason_Exit_Fee || '-'}}
+            </label>
+            <label *ngIf="getSuitabilityDetails.Eligible_YN_Fee_Waiver === 'Y'">-</label>
+
+        </div>
+        <div class="data">
+            <div style="padding: 12px;">
+                <div class="" [ngClass]="{'circle': getSuitabilityDetails.Eligible_YN_Exposure === 'Y',
+                'triangle': getSuitabilityDetails.Eligible_YN_Exposure === 'N'}"></div>
+            </div>
+            <label class="headercolor">8. Total Pledged Exposure</label>
+            <label class="left">{{getSuitabilityDetails?.TotalPledgedExposure | number:'1.2-2' || '-'}}</label>
+            <label class="left">{{getSuitabilityDetails?.Ref_Exposure_Amount || '-'}}</label>
+            <label class="center" [ngClass]="{'red': getSuitabilityDetails.Eligible_YN_Exposure === 'N',
+            'green': getSuitabilityDetails.Eligible_YN_Exposure === 'Y'}">{{getSuitabilityDetails?.Eligible_YN_Exposure || '-'}}</label>
+            <label *ngIf="getSuitabilityDetails.Eligible_YN_Exposure === 'N'"> 
+                {{getSuitabilityDetails?.Failed_Reason_Exposure || '-'}}
+            </label>
+            <label *ngIf="getSuitabilityDetails.Eligible_YN_Exposure === 'Y'">-</label>
+
+        </div>
+        <div class="data">
+            <div style="padding: 12px;">
+                <div class="" [ngClass]="{'circle': getSuitabilityDetails.Eligible_YN_Pledge === 'Y',
+                'triangle': getSuitabilityDetails.Eligible_YN_Pledge === 'N'}"></div>
+            </div>
+            <label class="headercolor">9. Min. Pledged Holdings</label>
+            <label class="left">{{getSuitabilityDetails?.PledgedHoldings || '-'}}</label>
+            <label class="left">{{getSuitabilityDetails?.Ref_Pledge || '-'}}</label>
+            <label class="center" [ngClass]="{'red': getSuitabilityDetails.Eligible_YN_Pledge === 'N',
+            'green': getSuitabilityDetails.Eligible_YN_Pledge === 'Y'}">{{getSuitabilityDetails?.Eligible_YN_Pledge || '-'}}</label>
+            <label *ngIf="getSuitabilityDetails.Eligible_YN_Pledge === 'N'">
+                {{getSuitabilityDetails?.Failed_Reason_Pledge || '-'}}
+            </label>
+            <label *ngIf="getSuitabilityDetails.Eligible_YN_Pledge === 'Y'">-</label>
+
+        </div>
+        <div class="data">
+            <div style="padding: 12px;">
+                <div class="" [ngClass]="{'circle': getSuitabilityDetails.Eligible_YN_Unreg_Number === 'Y',
+                'triangle': getSuitabilityDetails.Eligible_YN_Unreg_Number === 'N'}"></div>
+            </div>
+            <label class="headercolor">10. Unregistered Number</label>
+            <label class="left">{{getSuitabilityDetails?.UnregisteredNumber || '-'}}</label>
+            <label class="left">{{getSuitabilityDetails?.Ref_Unreg_Number || '-'}}</label>
+            <label class="center" [ngClass]="{'red': getSuitabilityDetails.Eligible_YN_Unreg_Number === 'N',
+            'green': getSuitabilityDetails.Eligible_YN_Unreg_Number === 'Y'}">{{getSuitabilityDetails?.Eligible_YN_Unreg_Number || '-'}}</label>
+            <label *ngIf="getSuitabilityDetails.Eligible_YN_Unreg_Number === 'N'">
+                {{getSuitabilityDetails?.Failed_Reason_Unreg_Number || '-'}}
+            </label>
+            <label *ngIf="getSuitabilityDetails.Eligible_YN_Unreg_Number === 'Y'">-</label>
+
+        </div>
+        <div class="data">
+            <div style="padding: 12px;">
+                <div class="" [ngClass]="{'circle': getSuitabilityDetails.Eligible_YN_Funding_Spread === 'Y',
+                'triangle': getSuitabilityDetails.Eligible_YN_Funding_Spread === 'N'}"></div>
+            </div>
+            <label class="headercolor">11. Funding Spread</label>
+            <label class="left">{{getSuitabilityDetails?.FundingSpread || '-'}}</label>
+            <label class="left">{{getSuitabilityDetails?.Ref_Funding_Spread || '-'}}</label>
+            <label class="center" [ngClass]="{'red': getSuitabilityDetails.Eligible_YN_Funding_Spread === 'N',
+            'green': getSuitabilityDetails.Eligible_YN_Funding_Spread === 'Y'}">{{getSuitabilityDetails?.Eligible_YN_Funding_Spread || '-'}}</label>
+            <label *ngIf="getSuitabilityDetails.Eligible_YN_Funding_Spread === 'N'">
+                {{getSuitabilityDetails?.Failed_Reason_FundingSpread || '-'}}
+            </label>
+            <label *ngIf="getSuitabilityDetails.Eligible_YN_Funding_Spread === 'Y'">-</label>
+
+        </div>
+    </div>
+
+</div>
+
+<div *ngIf="getSuitabilityDetailsRes.length === 0">
+    <div class="empty-state">
+        <app-svg-icons class="" [icon]="'no-records'" [width]="'100'" [height]="'100'"></app-svg-icons>
+        <label class="state-big">No Data Found</label>
+      </div>
+</div>
+<!-- Ended by Alolika G. Asked by Parikshit K. 07-Feb-2022 -->

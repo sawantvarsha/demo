@@ -1,0 +1,219 @@
+<div class="container" #screen [ngClass]="{'container-expanded': showDiv}">
+
+  <div>
+
+    <span class="material-icons info" (click)="toggleDiv()">info</span>
+
+    <div class="hidden" [ngClass]="{ show: showDiv }">
+      <div>
+        <button class="button-82" role="button" color="primary" (click)="toggleScroll()">
+          {{scroll}}
+        </button>
+      </div>
+      <div class="sliderImg">
+        <div class="slide-track" *ngIf="scroll === 'Scroll off'" id="square">
+          <div class="slide" *ngFor="let imageObj of screenshotData" (click)="goToState(imageObj)"
+            style="border: 1px solid white">
+            <div class="image-container" (mouseenter)="showTooltip($event, imageObj)" (mouseleave)="hideTooltip()">
+              <img src="{{ imageObj.image }}" height="200" width="268" alt="" />
+              <div style="height: 45px; line-height: 12px; margin-left: 2%">
+                <p style="font-size: 13px; position: absolute; right: 0">
+                  {{ getTimestamp(imageObj.timestamp) }}
+                </p>
+              </div>
+              <div class="custom-tooltip" [ngStyle]="tooltipStyle" [innerHTML]="tooltipContent"></div>
+            </div>
+          </div>
+        </div>
+        <div class="slider-off" *ngIf="scroll === 'Scroll on'" style="display: block;" id="square">
+          <div class="slide" *ngFor="let imageObj of screenshotData" (click)="goToState(imageObj)"
+            style="border: 1px solid white">
+            <div class="image-container" (mouseenter)="showTooltip($event, imageObj)" (mouseleave)="hideTooltip()">
+              <img src="{{ imageObj.image }}" height="200" width="268" alt="" />
+              <div style="height: 45px; line-height: 12px; margin-left: 2%">
+                <p style="font-size: 13px; position: absolute; right: 0">
+                  {{ getTimestamp(imageObj.timestamp) }}
+                </p>
+              </div>
+              <div class="custom-tooltip" [ngStyle]="tooltipStyle" [innerHTML]="tooltipContent"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="item item-7">
+    <div style="position:absolute;right:0;margin-top: 10px;">
+      <span class="button-85" role="button" color="primary" (click)="goToOriginalState()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 37.242 30.121">
+          <g id="recompute" transform="translate(0.621 -2.939)">
+            <path id="Path_38893" data-name="Path 38893" d="M34.5,6v9h-9" fill="none" stroke="#a7a7a7" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
+            <path id="Path_38894" data-name="Path 38894" d="M1.5,30V21h9" fill="none" stroke="#a7a7a7" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
+            <path id="Path_38895" data-name="Path 38895" d="M5.265,13.5A13.5,13.5,0,0,1,27.54,8.46L34.5,15m-33,6,6.96,6.54A13.5,13.5,0,0,0,30.735,22.5" fill="none" stroke="#a7a7a7" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
+          </g>
+        </svg>
+        </span>
+      <span class="button-81" role="button" color="primary" (click)="makeCapture()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18.322" height="15.75" viewBox="0 0 18.322 15.75">
+          <g id="menu" transform="translate(-4.5 -10.125)">
+            <path id="Path_38890" data-name="Path 38890" d="M22.059,12.375H5.263c-.42,0-.763-.506-.763-1.125h0c0-.619.344-1.125.763-1.125h16.8c.42,0,.763.506.763,1.125h0C22.822,11.869,22.479,12.375,22.059,12.375Z" fill="#848484"/>
+            <path id="Path_38891" data-name="Path 38891" d="M22.059,19.125H5.263c-.42,0-.763-.506-.763-1.125h0c0-.619.344-1.125.763-1.125h16.8c.42,0,.763.506.763,1.125h0C22.822,18.619,22.479,19.125,22.059,19.125Z" fill="#848484"/>
+            <path id="Path_38892" data-name="Path 38892" d="M22.059,25.875H5.263c-.42,0-.763-.506-.763-1.125h0c0-.619.344-1.125.763-1.125h16.8c.42,0,.763.506.763,1.125h0C22.822,25.369,22.479,25.875,22.059,25.875Z" fill="#848484"/>
+          </g>
+        </svg>
+      </span>
+    </div>
+    <div class="popup-container" *ngIf="showScreenshotPopup">
+      <div class="popup">
+        <p style="color: white;background-color: gray;">{{popup}}</p>
+      </div>
+    </div>
+  </div>
+  <div class="item item-1" style="display: flex;justify-content:space-between;">
+    <p class="titleKI-KO">Notional By KI-KO Distance</p>
+
+    
+
+    <div style="display: flex;justify-content: flex-end;align-items: center;">
+
+      <p style="padding-right: 5%;color:rgb(180,180,180);font-size:20px;">Asset </p>
+      <select [(ngModel)]="selectedAsset" (change)="updateData($event) ">
+        <option *ngFor="let asset of assetList" [value]="asset">
+          {{asset}}
+        </option>
+      </select>
+    </div>
+  </div>
+  <!-- </div> -->
+  <!-- </div> -->
+
+
+
+
+  <!-- <div style="position:absolute;right:0;bottom:15%;right: 5%;"><button class="button-81" role="button" color="primary" (click)="makeCapture()">Pic Me!</button></div>
+        </div>
+        <div class="item">
+            <span class="arrow" (click)="toggleDiv()">
+            </span>
+            <div class="hidden" [ngClass]="{'show': showDiv}">
+                <div class="sliderImg">
+                    <div class="slide-track" id="square">
+                        <div class="slide" *ngFor="let imageObj of screenshotData" (click)="goToState(imageObj)">
+                            <img src="{{imageObj.image}}" height="200" width="268" alt="" style="border: 1px solid white;"
+                                matTooltip="Timestamp: {{getTimestamp(imageObj.timestamp)}}&#13;
+                            KI Probability Range: {{imageObj.kiRangeMin}} - {{imageObj.kiRangeMax}}&#13;
+                            KO Probability Range: {{imageObj.koRangeMin}} - {{imageObj.koRangeMax}}
+                            Asset: {{imageObj.asset}}" matTooltipClass="my-tooltip"
+
+                                [matTooltipPositionAtOrigin]="false" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+  <div class="item item-2">
+    <p class="ko-distance-card-header">KI Probabilities</p>
+    <br>
+
+    <!-- <div style="margin-top: 12px;" class="ki-number">
+                <input type="number" class="knumber" [min]="minKI" [max]="KIRange[1]" [(ngModel)] = "KIRange[0]" (change) = "updateSlider($event)"  step="0.0001" class="inputBox">
+            </div>
+            <div style="margin-top: 12px;" class="ki-number second">
+                <input type="number" class="knumber" [min]="KIRange[0]" [max]="maxKI" [(ngModel)] = "KIRange[1]" (change) = "updateSlider($event)"  step="0.0001" class="inputBox">
+            </div> -->
+    <!-- <div class="input-min-ko">
+                    
+                    <input type="number" class="knumber" [(ngModel)]="KIRange[0]" [min]="minKI"
+                        [max]="KIRange[1]" class="inputBox" (change)="updateSlider($event)" step="0.0001">
+                      
+                </div>
+                <div style="margin-top: 12px;" class="input-max-ko">
+                    <input type="number" class="knumber" [(ngModel)]="KIRange[1]"
+                        [min]="KIRange[0]" [max]="maxKI" class="inputBox" step="0.0001" (change)="updateSlider($event)">
+                </div>
+     -->
+    <!-- <mat-slider  class="slider"  [min]="minKI" [max]="maxKI"  step="0.0001">
+                <input matSliderStartThumb [(ngModel)]="KIRange[0]" (change) = "updateKIRange($event)" name="inputMinKISlider">
+                <input matSliderEndThumb [(ngModel)]="KIRange[1]" (change) = "updateKIRange($event)" name="inputMaxKISlider">
+            </mat-slider> -->
+    <!-- <ngx-slider class="ngx-watch-slider" [(value)]="KIRange[0]" [(highValue)]="KIRange[1]" [options]="options1"
+            (valueChange)="updateKIRange($event)" (highValueChange)="updateKIRange($event)"></ngx-slider> -->
+    <div style="margin-top: 12px;" class="ki-number">
+      <input type="number" class="knumber" [value]="KIRange[0]" [min]="minKI"
+        [ngModel]="KIRange[0]" [max]="maxKI" class="inputBox" (change)="binder($event)" step="0.01"
+        name="ki-input1">
+    </div>
+    <div style="margin-top: 12px;" class="ki-number second">
+      <input type="number" class="knumber" [value]="KIRange[1]" [ngModel]="KIRange[1]"
+        [min]="minKI" [max]="maxKI" class="inputBox" step="0.01" (change)="binder($event)" name="ki-input2">
+    </div>
+    <!-- <mat-slider [min]="minKI" [max]="maxKI" class="slider" step="0.01">
+                      <input [(ngModel)]="KIRange[0]" matSliderStartThumb (valueChange)="binder()">
+                      <input [(ngModel)]="KIRange[0]" matSliderEndThumb (valueChange)="binder()">
+                    </mat-slider> -->
+
+      <ngx-slider class="ngx-watch-slider" [(value)]="KIRange[0]"
+          [(highValue)]="KIRange[1]" [options]="options1"
+          (userChange)="sliderToInputBinder()"></ngx-slider>
+
+
+  </div>
+
+  <div class="item item-3">
+    <p class="ko-distance-card-header">KO Probabilities</p>
+    <br>
+
+    <!-- <div style="margin-top: 12px;" class="ki-number">
+      <input type="number" class="knumber" [min]="minKO" [max]="KORange[1]" [(ngModel)]="KORange[0]"
+        (change)="updateSlider1($event)" class="inputBox" step="0.0001">
+    </div>
+    <div style="margin-top: 12px;" class="ki-number second">
+      <input type="number" class="knumber" [min]="KORange[0]" [max]="maxKO" [(ngModel)]="KORange[1]"
+        (change)="updateSlider1($event)" class="inputBox" step="0.0001">
+    </div>
+
+     <mat-slider  class="slider"  [min]="minKO" [max]="maxKO"  step="0.0001">
+                <input matSliderStartThumb [(ngModel)]="KORange[0]" (change) = "updateKORange($event)" name="inputMinKOSlider">
+                <input matSliderEndThumb [(ngModel)]="KORange[1]" (change) = "updateKORange($event)" name="inputMaxKOSlider">
+            </mat-slider> -->
+    <!-- <ngx-slider class="ngx-watch-slider" [(value)]="KORange[0]" [(highValue)]="KORange[1]" [options]="options2"
+      (valueChange)="updateKORange($event)" (highValueChange)="updateKORange($event)"></ngx-slider>  -->
+      <div style="margin-top: 12px;" class="ki-number">
+        <input type="number" class="knumber" [value]="KORange[0]" [min]="minKO"
+          [ngModel]="KORange[0]" [max]="maxKO" class="inputBox" (change)="binder($event)" step="0.01"
+          name="ko-input1">
+      </div>
+      <div style="margin-top: 12px;" class="ki-number second">
+        <input type="number" class="knumber" [value]="KORange[1]" [ngModel]="KORange[1]"
+          [min]="minKO" [max]="maxKO" class="inputBox" step="0.01" (change)="binder($event)" name="ko-input2">
+      </div>
+      <!-- <mat-slider [min]="minKI" [max]="maxKI" class="slider" step="0.01">
+                        <input [(ngModel)]="KIRange[0]" matSliderStartThumb (valueChange)="binder()">
+                        <input [(ngModel)]="KIRange[0]" matSliderEndThumb (valueChange)="binder()">
+                      </mat-slider> -->
+  
+      <ngx-slider class="ngx-watch-slider" [(value)]="KORange[0]"
+            [(highValue)]="KORange[1]" [options]="options2"
+            (userChange)="sliderToInputBinder()"></ngx-slider>
+
+  </div>
+
+  <div class="item item-4"
+    style="color: white; text-align: center; background-color:  rgba(28,69,99,255); display: flex; justify-content: center;align-items: center;">
+    <div>
+      <h1 style="  font-weight: 400;">{{productCount}}</h1>
+      <h1 style="color:rgb(180,180,180) ; font-weight: 400;">Products</h1>
+    </div>
+
+  </div>
+
+  <div class="item item-5">
+    <p class="Chart-Header" style="margin-left: 4px;">KI & KO Distance By Products</p>
+    <app-barrier-watch-chart></app-barrier-watch-chart>
+    <!-- <div><mat-slider  class="slider"  [min]="minKIDis" [max]="maxKIDis"  step="1">
+        <input matSliderStartThumb [(ngModel)]="xAxis" (change) = "updateXAxis($event)" name="inputMinXSlider" thumbLabel tickInterval="1">
+        <input matSliderEndThumb [(ngModel)]="xAxis1" (change) = "updateXAxis($event)" name="inputMaxXSlider" thumbLabel tickInterval="1">
+    </mat-slider></div> </div>
+    -->
+
+  </div>

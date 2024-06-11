@@ -1,0 +1,619 @@
+<div *ngIf="IsBackButtonEnabled" class="page-navigation" [ngClass]="">
+    <app-svg-icons class="back-button" [icon]="'back-button'" [width]="'40'" [height]="'40'" [fill]="'var(--headers)'"
+        (click)="fnRedirectToHomePage()"></app-svg-icons>
+    <div class="page-title">Policy Details</div>
+</div>
+<div class="component">
+    <div *ngIf="!IsBackButtonEnabled" class="page-title module">
+        Policy Details
+    </div>
+    <div class="" *ngIf="insuranceDetails">
+        <div>
+            <div class="main-container" *ngFor="let data of insuranceDetails; let i = index">
+                <div class="content-container">
+                    <div class="INSName fs24">
+                        {{ data.Policy_Name }}
+                    </div>
+                    <div class="mainGrid">
+                        <div class="">
+                            <app-svg-icons [icon]="'insurance-details'" [width]="'25'" [height]="'25'"
+                                [active]="showPolicy" style="margin: auto"
+                                (click)="closePolicyDetails(data.Policy_Number, i)" *ngIf="showPolicyDetailsflag[i]">
+                            </app-svg-icons>
+                            <app-svg-icons [icon]="'insurance-details'" [width]="'25'" [height]="'25'"
+                                [active]="showPolicy" style="margin: auto"
+                                (click)="showPolicyDetails(data.Policy_Number, i)" *ngIf="!showPolicyDetailsflag[i]">
+                            </app-svg-icons>
+                        </div>
+                        <div class="sub-content fs20">
+                            <div class="">
+                                <div>{{ data.Policy_Number }}</div>
+                                <div class="headers fs14">Policy Number</div>
+                            </div>
+                            <div class="">
+                                <div>{{ data.Insurer }}</div>
+                                <div class="headers fs14">Insurer</div>
+                            </div>
+                            <div class="">
+                                <div>{{ data.PlanType }}</div>
+                                <div class="headers fs14">Type</div>
+                            </div>
+                            <div class="">
+                                <div>{{ data.Policy_Tenor }}</div>
+                                <div class="headers fs14">Term</div>
+                            </div>
+                            <div class="">
+                                <div>
+                                    {{ data.Policy_Inception_Date | date: "dd-MMM-yyyy" }}
+                                </div>
+                                <div class="headers fs14">Inception Date</div>
+                            </div>
+                            <div class="">
+                                <div>{{ data.Maturity_Date | date: "dd-MMM-yyyy" }}</div>
+                                <div class="headers fs14">Maturity Date</div>
+                            </div>
+                            <div class="">
+                                <div>
+                                    <span class="fs12">{{ data.Policy_Currency }}</span> {{
+                                    this.cfs.FormatNumberr(data.Sum_Assured_BaseCcy) }}
+                                </div>
+                                <div class="headers fs14">Sum assured</div>
+                            </div>
+                            <div class="">
+                                <div *ngIf="data.SurrenderPolicyValue !== ''">
+                                    <span class="fs12">{{ data.Policy_Currency }}</span> {{
+                                    this.cfs.FormatNumberr(data.SurrenderPolicyValue) || "-" }}
+                                </div>
+                                <div *ngIf="data.SurrenderPolicyValue === ''">
+                                    {{'-'}}
+                                </div>
+                                <div class="headers fs14">Surrender Value</div>
+                            </div>
+                            <!-- <div class="">
+                                <div><span class="fs12">{{baseCCY}}</span>
+                                   {{this.cfs.FormatNumberr(data.Sum_Assured_LCYECcy)}}</div>
+                                <div class="headers fs14">Sum assured (Base)</div>
+                            </div> -->
+                            <!-- <div class="">
+                                <app-svg-icons style="margin: auto auto auto 29px; width: fit-content;"
+                                    [icon]="'pdf'" [width]="'35'" [height]="'35'" (click) = "generatePolicyDoc(data)"></app-svg-icons>
+                                <div class="headers fs14">Policy Document</div>
+                            </div> -->
+                            <!-- <div class="">
+                                <div><span class="fs12">{{data.Policy_Currency}}</span>
+                                    &nbsp;{{this.cfs.FormatNumberr(data.Premium_Amount)}}</div>
+                                <div class="headers fs14">Premium Amount</div>
+                            </div>
+                            <div class="">
+                                <div><span class="fs12">{{baseCCY}}</span>
+                                    &nbsp;{{this.cfs.FormatNumberr(data.Premium_Amount_LCYECcy)}}</div>
+                                <div class="headers fs14">Premium Amount (Base)</div>
+                            </div>
+                            <div class="">
+                                <div>{{data.Frequency}}</div>
+                                <div class="headers fs14">Frequency</div>
+                            </div>  -->
+                        </div>
+                    </div>
+
+                    <!--Added by AlolikaG on 31st Jan 2022. Assigned by ParikshitK --START-->
+                    <div class="policy-container" *ngIf="showPolicyDetailsflag[i]">
+                        <div class="main-container3" style="margin-left: 0px; width: 100%">
+                            <div class="content-container" *ngIf="!loader1">
+                                <!-- <label class="box-header">Policy Rider Details </label> -->
+                                <!--Changes Done by Uddesh on 3rd June 2022 START-->
+                                <div class="header-wrapper">
+                                    <label class="box-header">Policy Rider Details</label>
+                                    <div class="count" *ngIf="PolicyRiderData.length !== 0">{{riderSliderIndex+1}} of
+                                        {{PolicyRiderData.length}}</div>
+                                </div>
+                                <!--Changes Done by Uddesh on 3rd June 2022 DONE-->
+                                <div class=" " *ngIf="PolicyRiderData.length !== 0">
+                                    <div class="details-div1 fs15" style="grid-template-columns: 1fr 1fr !important">
+                                        <!--Commented by done by Alolika G on 10-02-2022-->
+                                        <!-- <div class="">
+                                            <div>{{PolicyRiderData?.Policy_No || '-' }}</div>
+                                            <div class="headers fs14">Policy Number</div>
+                                        </div> -->
+                                        <!--Changes Done by Uddesh on 3rd June 2022 START-->
+                                        <div *ngIf="showPrevArrowforRider" class="prevArrow Arrow"
+                                            (click)="PrevData('forRider')">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="13.503" height="23.619"
+                                                viewBox="0 0 13.503 23.619">
+                                                <path id="arrow-left-icon"
+                                                    d="M15.321,18l8.937-8.93a1.688,1.688,0,0,0-2.391-2.384L11.742,16.8a1.685,1.685,0,0,0-.049,2.327L21.86,29.32a1.688,1.688,0,0,0,2.391-2.384Z"
+                                                    transform="translate(-11.251 -6.194)" fill="var(--active)" />
+                                            </svg>
+                                        </div>
+                                        <div *ngIf="showNextArrowforRider" class="nextArrow Arrow"
+                                            (click)="NextData('forRider')">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="14.295" height="25"
+                                                viewBox="0 0 14.295 25">
+                                                <path id="arrow" fill="var(--active)"
+                                                    data-name="Icon ionic-ios-arrow-forward"
+                                                    d="M21.232,18.692l-9.46-9.453a1.779,1.779,0,0,1,0-2.523,1.8,1.8,0,0,1,2.531,0L25.02,17.426a1.783,1.783,0,0,1,.052,2.464L14.309,30.675a1.787,1.787,0,1,1-2.531-2.523Z"
+                                                    transform="translate(-11.246 -6.196)" />
+                                            </svg>
+                                        </div>
+                                        <!--Changes Done by Uddesh on 3rd June 2022 DONE-->
+
+
+                                        <div class="">
+                                            <div>{{ PolicyRiderData[riderSliderIndex]?.Rider_No || "-" }}</div>
+                                            <div class="headers fs14">Rider Number</div>
+                                        </div>
+                                        <div class="">
+                                            <div>{{ PolicyRiderData[riderSliderIndex]?.Payment_Method || "-" }}</div>
+                                            <div class="headers fs14">Method of Payment</div>
+                                        </div>
+                                        <div class="">
+                                            <div>{{ PolicyRiderData[riderSliderIndex]?.Status_Code || "-" }}</div>
+                                            <div class="headers fs14">Status Code</div>
+                                        </div>
+                                        <div class="">
+                                            <div>
+                                                {{ PolicyRiderData[riderSliderIndex]?.Sum_Assured | number: "1.2-2" ||
+                                                "-" }}
+                                            </div>
+                                            <div class="headers fs14">Sum Assured</div>
+                                        </div>
+                                        <div class="">
+                                            <div>
+                                                {{ PolicyRiderData[riderSliderIndex]?.Premium_Start | number: "1.2-2" ||
+                                                "-" }}
+                                            </div>
+                                            <div class="headers fs14">Premium Start</div>
+                                        </div>
+                                        <div class="">
+                                            <div>{{ PolicyRiderData[riderSliderIndex]?.Policy_Term || "-" }}</div>
+                                            <div class="headers fs14">Policy Term</div>
+                                        </div>
+                                        <div class="">
+                                            <div>{{ PolicyRiderData[riderSliderIndex]?.Currency || "-" }}</div>
+                                            <div class="headers fs14">Currency</div>
+                                        </div>
+                                        <div class="">
+                                            <div>
+                                                {{ PolicyRiderData[riderSliderIndex]?.Total_Extra_Premium | number:
+                                                "1.2-2" || "-" }}
+                                            </div>
+                                            <div class="headers fs14">Total Extra Premium</div>
+                                        </div>
+                                        <div class="">
+                                            <div>
+                                                {{ PolicyRiderData[riderSliderIndex]?.Rider_Premium_Term || "-" }}
+                                            </div>
+                                            <div class="headers fs14">Rider Premium Term</div>
+                                        </div>
+                                        <div class="">
+                                            <div>
+                                                {{ PolicyRiderData[riderSliderIndex]?.Unique_Rider_Identifier || "-" }}
+                                            </div>
+                                            <div class="headers fs14">Unique Rider Identifier</div>
+                                        </div>
+                                        <div class="">
+                                            <div>{{ PolicyRiderData[riderSliderIndex]?.Product_Code || "-" }}</div>
+                                            <div class="headers fs14">Product Code</div>
+                                        </div>
+                                        <div class="">
+                                            <div>{{ PolicyRiderData[riderSliderIndex]?.Benefit_Code || "-" }}</div>
+                                            <div class="headers fs14">Benefit Code</div>
+                                        </div>
+                                        <div class="">
+                                            <div>
+                                                {{ PolicyRiderData[riderSliderIndex]?.Benefit_Code_Description || "-" }}
+                                            </div>
+                                            <div class="headers fs14">Benefit Code Description</div>
+                                        </div>
+                                        <div class="">
+                                            <div>{{ PolicyRiderData[riderSliderIndex]?.Policy_Year || "-" }}</div>
+                                            <div class="headers fs14">Policy Year</div>
+                                        </div>
+                                        <div class="">
+                                            <div>
+                                                {{ PolicyRiderData[riderSliderIndex]?.Application_Date | date:
+                                                "dd-MMM-yyyy" || "-" }}
+                                            </div>
+                                            <div class="headers fs14">Application Date</div>
+                                        </div>
+                                        <div class="">
+                                            <div>
+                                                {{ PolicyRiderData[riderSliderIndex]?.Declaration_Date | date:
+                                                "dd-MMM-yyyy" || "-" }}
+                                            </div>
+                                            <div class="headers fs14">Declaration Date</div>
+                                        </div>
+                                        <div class="">
+                                            <div>{{ PolicyRiderData[riderSliderIndex]?.Premium_Mode || "-" }}</div>
+                                            <div class="headers fs14">Single/Regular Premium</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="no-data" *ngIf="PolicyRiderData.length === 0">
+                                    No details found.
+                                </div>
+                            </div>
+                            <div *ngIf="loader1" class="loader-center">
+                                <div class="multi-ripple">
+                                    <div></div>
+                                    <div></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="new-grid">
+                            <div class="main-container3" style="margin-left: 0px; width: 100%">
+                                <div class="content-container" *ngIf="!loader2">
+                                    <!-- <label class="box-header">Policy Relationship Details</label> -->
+                                    <!--Changes Done by Uddesh on 3rd June 2022 START-->
+                                    <div class="header-wrapper">
+                                        <label class="box-header">Policy Relationship Details</label>
+                                        <div class="count" *ngIf="PolicyRelData.length !== 0">{{relSliderIndex+1}} of
+                                            {{PolicyRelData.length}}</div>
+                                    </div>
+                                    <!--Changes Done by Uddesh on 3rd June 2022 DONE-->
+                                    <div class=" " *ngIf="PolicyRelData.length !== 0">
+                                        <div class="details-div1 fs15">
+                                            <!--Commented by done by Alolika G on 10-02-2022-->
+                                            <!-- <div class=""> 
+                                                <div>{{PolicyRelData?.PolicyNo || '-' }}</div>
+                                                <div class="headers fs14">Policy Number</div>
+                                            </div> -->
+
+                                            <!--Changes Done by Uddesh on 3rd June 2022 START-->
+                                            <div *ngIf="showPrevArrowforRel" class="prevArrow Arrow"
+                                                (click)="PrevData('forRel')">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="13.503" height="23.619"
+                                                    viewBox="0 0 13.503 23.619">
+                                                    <path id="arrow-left-icon"
+                                                        d="M15.321,18l8.937-8.93a1.688,1.688,0,0,0-2.391-2.384L11.742,16.8a1.685,1.685,0,0,0-.049,2.327L21.86,29.32a1.688,1.688,0,0,0,2.391-2.384Z"
+                                                        transform="translate(-11.251 -6.194)" fill="var(--active)" />
+                                                </svg>
+                                            </div>
+                                            <div *ngIf="showNextArrowforRel" class="nextArrow Arrow"
+                                                (click)="NextData('forRel')">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="14.295" height="25"
+                                                    viewBox="0 0 14.295 25">
+                                                    <path id="arrow" fill="var(--active)"
+                                                        data-name="Icon ionic-ios-arrow-forward"
+                                                        d="M21.232,18.692l-9.46-9.453a1.779,1.779,0,0,1,0-2.523,1.8,1.8,0,0,1,2.531,0L25.02,17.426a1.783,1.783,0,0,1,.052,2.464L14.309,30.675a1.787,1.787,0,1,1-2.531-2.523Z"
+                                                        transform="translate(-11.246 -6.196)" />
+                                                </svg>
+                                            </div>
+                                            <!--Changes Done by Uddesh on 3rd June 2022 DONE-->
+
+                                            <div class="">
+                                                <div class="">{{ PolicyRelData[relSliderIndex]?.IDNUM || "-" }}</div>
+                                                <div class="headers fs14">ID number</div>
+                                            </div>
+                                            <div class="">
+                                                <div>{{ PolicyRelData[relSliderIndex]?.IDTYPE || "-" }}</div>
+                                                <div class="headers fs14">ID Type Code</div>
+                                            </div>
+                                            <div class="">
+                                                <div>{{ PolicyRelData[relSliderIndex]?.IDCTRY || "-" }}</div>
+                                                <div class="headers fs14">ID Owner Country Code</div>
+                                            </div>
+                                            <div class="">
+                                                <div>
+                                                    {{ PolicyRelData[relSliderIndex]?.Policy_Relationship_Ind || "-" }}
+                                                </div>
+                                                <div class="headers fs14">Policy Relationship Ind</div>
+                                            </div>
+                                            <div class="">
+                                                <div>{{ PolicyRelData[relSliderIndex]?.Relationship_Type || "-" }}</div>
+                                                <div class="headers fs14">Relationship Type</div>
+                                            </div>
+                                            <div class="">
+                                                <div>
+                                                    {{ PolicyRelData[relSliderIndex]?.DOB | date: "dd-MMM-yyyy" || "-"
+                                                    }}
+                                                </div>
+                                                <div class="headers fs14">Date of Birth</div>
+                                            </div>
+                                            <div class="">
+                                                <div>
+                                                    {{ PolicyRelData[relSliderIndex]?.Height | number: "1.2-2" || "-" }}
+                                                </div>
+                                                <div class="headers fs14">Height</div>
+                                            </div>
+                                            <div class="">
+                                                <div>
+                                                    {{ PolicyRelData[relSliderIndex]?.Weight | number: "1.2-2" || "-" }}
+                                                </div>
+                                                <div class="headers fs14">Weight</div>
+                                            </div>
+                                            <div class="">
+                                                <div>{{ PolicyRelData[relSliderIndex]?.Smoker || "-" }}</div>
+                                                <div class="headers fs14">Smoker</div>
+                                            </div>
+                                            <div class="">
+                                                <div>{{ PolicyRelData[relSliderIndex]?.REMARKS || "-" }}</div>
+                                                <div class="headers fs14">Remarks</div>
+                                            </div>
+                                            <div class="">
+                                                <div>{{ PolicyRelData[relSliderIndex]?.Nationality || "-" }}</div>
+                                                <div class="headers fs14">Nationality</div>
+                                            </div>
+                                            <div class="">
+                                                <div>{{ PolicyRelData[relSliderIndex]?.Salutation || "-" }}</div>
+                                                <div class="headers fs14">Salutation</div>
+                                            </div>
+                                            <div class="">
+                                                <div>{{ PolicyRelData[relSliderIndex]?.Surname || "-" }}</div>
+                                                <div class="headers fs14">Surname</div>
+                                            </div>
+                                            <div class="">
+                                                <div>{{ PolicyRelData[relSliderIndex]?.Given_name || "-" }}</div>
+                                                <div class="headers fs14">Given Name</div>
+                                            </div>
+                                            <div class="">
+                                                <div>{{ PolicyRelData[relSliderIndex]?.Alternate_name || "-" }}</div>
+                                                <div class="headers fs14">Alternate Name</div>
+                                            </div>
+                                            <div class="">
+                                                <div>
+                                                    {{ PolicyRelData[relSliderIndex]?.Benefiary_Owner_Appointed_Date |
+                                                    date: "dd-MMM-yyyy" || "-" }}
+                                                </div>
+                                                <div class="headers fs14">BE/BO Appointed Date</div>
+                                            </div>
+                                            <div class="">
+                                                <div>
+                                                    {{ PolicyRelData[relSliderIndex]?.BeneficiaryPercentage || "-" }}
+                                                </div>
+                                                <div class="headers fs14">BE/BO Percentage (%)</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="no-data" *ngIf="PolicyRelData.length === 0">
+                                        No details found.
+                                    </div>
+                                </div>
+                                <div *ngIf="loader2" class="loader-center">
+                                    <div class="multi-ripple">
+                                        <div></div>
+                                        <div></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="main-container3" style="margin-left: 0px; width: 100%">
+                                <div class="content-container" *ngIf="!loader">
+                                    <div class="header-wrapper">
+                                        <label class="box-header">Policy ILP Details </label>
+                                    </div>
+                                    <div class=" " *ngIf="PruLIPDataRes !== null">
+                                        <div class="details-div1 fs15">
+                                            <!--Commented by done by Alolika G on 10-02-2022-->
+                                            <!-- <div class="">
+                                                <div>{{PruLIPData?.Policy_No || '-' }}</div>
+                                                <div class="headers fs14">Policy Number</div>
+                                            </div> -->
+                                            <div class="">
+                                                <div>
+                                                    {{ PruLIPData?.Application_Reference_number || "-" }}
+                                                </div>
+                                                <div class="headers fs14">Application No.</div>
+                                            </div>
+                                            <div class="">
+                                                <div>{{ PruLIPData?.Fund_Code || "-" }}</div>
+                                                <div class="headers fs14">Fund Code</div>
+                                            </div>
+                                            <div class="">
+                                                <div>
+                                                    {{ PruLIPData?.Split_Percent | number: "1.2-2" || "-" }}
+                                                </div>
+                                                <div class="headers fs14">Split Percent (%)</div>
+                                            </div>
+                                            <div class="">
+                                                <div>
+                                                    {{ PruLIPData?.Units | number: "1.2-2" || "-" }}
+                                                </div>
+                                                <div class="headers fs14">Units</div>
+                                            </div>
+                                            <div class="">
+                                                <div>
+                                                    {{ PruLIPData?.Fund_Value | number: "1.2-2" || "-" }}
+                                                </div>
+                                                <div class="headers fs14">Fund Value</div>
+                                            </div>
+                                            <div class="">
+                                                <div *ngIf="PruLIPData?.Effective_Date !== ''">
+                                                    {{ PruLIPData?.Effective_Date | date: "dd-MMM-yyyy" }}
+                                                </div>
+                                                <div *ngIf="PruLIPData?.Effective_Date === ''">
+                                                    {{ "-" }}
+                                                </div>
+                                                <div class="headers fs14">Effective Date</div>
+                                            </div>
+                                            <div class="">
+                                                <div>
+                                                    {{ PruLIPData?.Fund_Code_Description || "-" }}
+                                                </div>
+                                                <div class="headers fs14">Fund Description</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="no-data" *ngIf="PruLIPData.length === 0">
+                                        No details found.
+                                    </div>
+                                </div>
+                                <div *ngIf="loader" class="loader-center">
+                                    <div class="multi-ripple">
+                                        <div></div>
+                                        <div></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--Added by AlolikaG on 31st Jan 2022. Assigned by ParikshitK --END-->
+                </div>
+                <!-- <div style="height: 150px;"> -->
+                <div class="main-container2">
+                    <!-- <div class="content-container2">
+                            <div class="">
+                                <app-svg-icons style="margin: 10px auto 10px auto; width: fit-content;"
+                                    [icon]="'pdf'" [width]="'50'" [height]="'50'" (click) = "generatePolicyDoc(data)"></app-svg-icons>
+                                <div class="headers fs14">Policy Document</div>
+                            </div>
+                        </div> -->
+                    <!-- <div class="content-container2"> -->
+                    <app-svg-icons [icon]="'pdf'" [width]="'35'" class="icons" [height]="'35'"
+                        (click)="generatePolicyDoc(data)" title="Policy Document"></app-svg-icons>
+
+                    <app-svg-icons [icon]="'workflowblotter-icon-color'" class="icons" [width]="'35'" [height]="'35'"
+                        title="Surrender Policy" (click)="getSelectedSurrenderPolicyData(data)"></app-svg-icons>
+
+                    <app-svg-icons [icon]="'new-claim'" class="icons" [width]="'35'" [height]="'35'" title="New Claim">
+                    </app-svg-icons>
+
+                    <app-svg-icons [icon]="'add-rider'" class="icons" [width]="'35'" [height]="'35'" title="Add Rider"
+                        (click)="clickRiderIcon(data.Policy_Name, data.Policy_Number)">
+                    </app-svg-icons>
+                    <!-- </div> -->
+                </div>
+                <div></div>
+                <!-- </div> -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Newly updated position of Popup by Uddesh on 8th June, 2022-->
+<div *ngIf="openSurrenderPopup" class="overlay">
+    <app-insurance-surrender (newItemEvent)="CloseSurrenderPopup()" [policyData]="selectedSurrenderPolicy">
+        <!--(newItemEvent)="CloseSurrenderPopup()"-->
+    </app-insurance-surrender>
+</div>
+<!-- done -->
+
+<div *ngIf="showPopup" class="overlay">
+    <div class="page-content-container-popup">
+        <div class="flex-grid" *ngIf="showRiderPopup">
+            <div class="tabs tab-active">
+                <div class="right fs20">{{ policyName }}: {{ policyNo }}</div>
+                <app-svg-icons class="closebtn" [icon]="'cancel-icon'" [width]="'15'" [height]="'15'"
+                    (click)="closePopup()">
+                </app-svg-icons>
+            </div>
+            <label class="yellow large">Select the rider to add</label>
+            <div class="rider-popup">
+                <div class="flex-col">
+                    <div class="flex-grid" style="padding:10px;" [ngClass]="{'background-flex': showRiderDescflag[i]}"
+                        *ngFor="let item of riderListArray1; let i = index;">
+                        <div class="label-grid">
+                            <app-svg-icons class="" [icon]="'surrender-policy-icon'" [width]="'30'" [height]="'30'">
+                            </app-svg-icons>
+                            <label class="link large" (click)="showRiderDesc(item.BenefitCode, i, 'first')"
+                                *ngIf="!showRiderDescflag[i]">{{item.BenefitCodeDescription}}</label>
+                            <label class="link large" (click)="closeRiderDesc(i, 'first')"
+                                *ngIf="showRiderDescflag[i]">{{item.BenefitCodeDescription}}</label>
+                        </div>
+                        <div *ngIf="showRiderDescflag[i]" class="rider-code-grid">
+                            <!-- <label></label> -->
+                            <div class="flex-grid">
+                                <div class="content-container" *ngFor="let data of productRiderArray[i]"
+                                    (click)="clickRiderProduct(data)">
+                                    <div class="sub-content large">
+                                        <div class="">
+                                            <label>{{data.BenefitCode}}</label>
+                                            <div class="headers fs14">Product Code</div>
+                                        </div>
+
+                                        <div class="">
+                                            <label>{{data.UniqueRiderIdentifier}}</label>
+                                            <div class="headers fs14">Product ID</div>
+                                        </div>
+
+                                        <div class="">
+                                            <label>{{data.BenefitCodeDescription}}</label>
+                                            <div class="headers fs14">Product Description</div>
+                                        </div>
+                                    </div>
+                                    <!-- <div class="label-grid">
+                                    <label class="headers-class">Product ID</label>
+                                    <label>{{data.UniqueRiderIdentifier}}</label>
+                                </div> -->
+
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+                <div class="flex-col">
+                    <div class="flex-grid" style="padding:10px;" [ngClass]="{'background-flex': showRiderDescflag1[k]}"
+                        *ngFor="let item of riderListArray2; let k = index;">
+                        <div class="label-grid">
+                            <app-svg-icons class="" [icon]="'surrender-policy-icon'" [width]="'30'" [height]="'30'">
+                            </app-svg-icons>
+                            <label class="link large" (click)="showRiderDesc(item.BenefitCode, k, 'second')"
+                                *ngIf="!showRiderDescflag1[k]">{{item.BenefitCodeDescription}}</label>
+                            <label class="link large" (click)="closeRiderDesc(k, 'second')"
+                                *ngIf="showRiderDescflag1[k]">{{item.BenefitCodeDescription}}</label>
+                        </div>
+                        <div *ngIf="showRiderDescflag1[k]" class="rider-code-grid">
+                            <!-- <label></label> -->
+                            <div class="flex-grid"><!-- *ngIf="!riderLoader"-->
+                                <div class="content-container" *ngFor="let data of productRiderArray1[k]"
+                                    (click)="clickRiderProduct(data)">
+                                    <div class="sub-content large">
+                                        <div class="">
+                                            <label>{{data.BenefitCode}}</label>
+                                            <div class="headers fs14">Product Code</div>
+                                        </div>
+
+                                        <div class="">
+                                            <label>{{data.UniqueRiderIdentifier}}</label>
+                                            <div class="headers fs14">Product ID</div>
+                                        </div>
+
+                                        <div class="">
+                                            <label>{{data.BenefitCodeDescription}}</label>
+                                            <div class="headers fs14">Product Description</div>
+                                        </div>
+                                    </div>
+                                    <!-- <div class="label-grid">
+                                <label class="headers-class">Product ID</label>
+                                <label>{{data.UniqueRiderIdentifier}}</label>
+                                </div> -->
+
+                                </div>
+                            </div>
+                            <!-- <div *ngIf="riderLoader" class="loader-center">
+                                <div class="multi-ripple">
+                                    <div></div>
+                                    <div></div>
+                                </div>
+                            </div> -->
+                        </div>
+                        
+
+
+                    </div>
+
+                </div>
+            </div>
+
+            <div *ngIf="showRiderProduct" class="overlay">
+                <div class="page-content-container-popup rider-page-content">
+                    <div class="flex-grid">
+                        <div class="tabs tab-active">
+                            <div class="right fs20">{{ policyName }}: {{ policyNo }}</div>
+                            <app-svg-icons class="closebtn" [icon]="'cancel-icon'" [width]="'15'" [height]="'15'"
+                                (click)="closeRiderPopup()">
+                            </app-svg-icons>
+                        </div>
+                        <app-insurance-rider [policyNo]="policyNo" [benefitCode]="benefitCode">
+                        </app-insurance-rider>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

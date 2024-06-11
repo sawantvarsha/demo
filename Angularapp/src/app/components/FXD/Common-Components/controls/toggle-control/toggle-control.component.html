@@ -1,0 +1,10 @@
+<!-- <label class="toggleSwitch nolabel" [ngStyle]="{'cursor': IsDisabled === true ? 'not-allowed !important' : 'pointer' }" >
+    <input type="checkbox" [disabled]="IsDisabled" [checked]="IsButtonChecked" (change)="IsButtonChecked = !IsButtonChecked; fnSelectedBuySellBtn()" />
+    <a></a>
+    <span>
+        <span class="left-span">{{button1Name}}</span>
+        <span class="right-span">{{button2Name}}</span>
+    </span>
+</label> -->
+
+<button [ngStyle]="{'background-color': !this.IsButtonChecked ? 'var(--green)' : 'var(--red)'}" style="width: 50px; color: var(--btn-text) !important; height: 27px;" class="button" [disabled]="IsDisabled" (click)="IsButtonChecked = !IsButtonChecked; fnSelectedBuySellBtn()" >{{this.IsButtonChecked === true ? button2Name: button1Name}}</button>

@@ -1,0 +1,165 @@
+<div class="CK-maindata-outer" id="completeKYC">
+    <div class="CK-questiondata" *ngIf="!showKYCResult">
+        <div class="CK-rowcontent">
+            <div class="page-title">{{clientFormName | translate}}</div>
+            <br />
+        </div>
+
+        <div class="CK-rowoptions" *ngIf="!IsLoading">
+            <div>
+                <div class="form-container100" *ngFor="let item of quationsList; let i = index">
+                    <div class="questiondiv" [id]="'Question_NO_'+item.Question_NO+'_ID'">
+                        <div class="KYC-card">
+                            <label class="KYC-card-header" for="CustomerType"
+                                style="text-align: center !important;padding: 0;font-size: 20px;color: var(--off-color);"
+                                class="lbl">{{ i + 1 }}. &nbsp;{{ item.quation }}</label>
+                            <div class="form-container2080 KYC-card-content" *ngFor="let option of item.optionsList; let j = index">
+                                <input type="radio" [id]="'option' + j + item.Question_NO"
+                                    style="align-self: center;display: inline-flex;margin: 0;margin-left: auto;height: 13px;"
+                                    name="{{ item.Question_NO }}" [value]="option" [(ngModel)]="item.answer" (click)="scroll(i)" />
+    
+                                <label [for]="'option' + j + item.Question_NO"
+                                    style="text-align: left !important;font-size: 17px;margin: 0 !important;padding-left: 10px;width: fit-content;"
+                                    class="lbl">{{ option }}</label>
+                            </div>
+                            <div class="question-count">
+                                {{ i + 1 }} of {{ quationsList.length }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lower-buttons-section">
+                <button [disabled]="SubmittingquestionAnswers" class="button" (click)="IsValidKYCAnswers(target)">
+                    Submit
+                </button>
+                <app-loader *ngIf="SubmittingquestionAnswers"></app-loader>
+            </div>
+        </div>
+        <div class="loaderdiv" *ngIf="IsLoading">
+            <div class="loader-center">
+                <div class="multi-ripple">
+                    <div></div>
+                    <div></div>
+                </div>
+            </div>
+            <!-- <img [src]="isProd ? 'assets/loading_dots.gif' : '../../assets/loading_dots.gif'" height="100px"
+                width="100px" /> -->
+        </div>
+    </div>
+    <div class="CKSuccess" *ngIf="showKYCResult && !IsLoading">
+        <div *ngIf="isRiskRatingGenerated">
+            <div>
+                <div class="div cirp-header">
+                    <div class="RR-card-Header">
+                        <div class="RR-circle">
+                            <div class="RR-circle-content" style="margin: auto;">
+                                <div class="RR-circle-content-line-1">You are</div>
+                                <div class="RR-circle-content-line-2">
+                                    <h3 style="padding: 3px 0px;color: #6c8a9e;font-size: 20px;">
+                                        {{ AvgCPRADetails }}
+                                    </h3>
+                                </div>
+                                <div class="RR-circle-content-line-3">investor</div>
+                            </div>
+                        </div>
+                        <div
+                            style="text-align: start;display: inline;margin: auto;width: -webkit-fill-available;padding-right: 20%;color: white;">
+                            <h3 style="padding: 10px 0px;  font-size: 25px">
+                                {{ AvgCPRADetails }}
+                            </h3>
+                            <div class="textnewentry">
+                                You seek high returns on total accumulated wealth in your
+                                portfolio using mid to high-risk products in mid or long
+                                term horizon.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-container5050" style="margin: auto;padding: 0px 8%;text-align: center;width: 100%;">
+                    <div class="div">
+                        <h4 style="text-align: start; margin: 0; padding: 20px 0px 5px 0px">
+                            Recommendations
+                        </h4>
+                        <div class="lbl">
+                            <label for="Name" class="lbl">
+                                You should consider investing in:
+                            </label>
+                        </div>
+                        <div class="product-list">
+                            <div class="lbl" *ngFor="let item of ProductsList">
+                                <ng-container
+                                    *ngIf="item.Visibility === 'Y'; then ShowActiveProduct else ShowInActiveProduct">
+                                </ng-container>
+
+                                <ng-template #ShowActiveProduct>
+                                    <label for="Name" class="activeProduct lbl">
+                                        <span class="checkmark">&#10004;</span> {{item.ProductName}}
+                                    </label>
+                                </ng-template>
+                                <ng-template #ShowInActiveProduct>
+                                    <label for="Name" class="inactiveProduct lbl">
+                                        {{item.ProductName}}
+                                    </label>
+                                </ng-template>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div class="div" style="margin: auto">
+                    <div class="scorenumber">
+                        {{ this.RiskRating || '1' }}
+                    </div>
+                    <div class="textnewentry" style="font-weight: 500; margin-top: 15%; color: grey">
+                        CRR
+                    </div>
+                </div> -->
+                </div>
+            </div>
+        </div>
+
+        <div class="form-container2525" *ngIf="AllChartsData.length > 0"
+            style="border: 1px solid #cbcbcb; padding: 10px; margin: 5px;width: auto;">
+            <div class="div" *ngFor="let chart of AllChartsData">
+                <!-- <google-chart [type]="type" [data]="chart.data" [options]="chart.options">
+                </google-chart> -->
+                <app-pie-chart [legendHeight]="200" [width]="380" [graphdata]="chart.data" [legendVisible]=true [labelsVisible]=false>
+                </app-pie-chart>
+                <h6 style="text-align: center; margin: 0; padding-top: 5%">
+                    {{ chart.chartName }}
+                </h6>
+            </div>
+        </div>
+        <div class="legend-section" *ngIf="isRiskRatingGenerated">
+            <div *ngFor="let legend of chartColorsLegends" style="width: fit-content;display: flex;">
+                <svg width="20" height="10" style="margin-top: 5px">
+                    <rect x="0" y="0" width="30" height="12" [ngStyle]="{'fill':legend.color}" />
+                </svg>
+                <div class="legend-label">{{legend.label}}</div>
+            </div>
+        </div>
+        <div class="errorDiv" *ngIf="!isRiskRatingGenerated">
+            <div class="textnewentry">
+                Error occured while generating Risk Rating.
+            </div>
+        </div>
+
+        <div class="note">
+            <span>Note: This is only an illustration of a potential portfolio scenario based on your risk
+                appetite.</span>
+        </div>
+
+        <div class="buttons-section">
+            <button style="margin-left: 10px" *ngIf="OnlyUpdateCIRP === true" (click)="completeKYC()">
+                Ok
+            </button>
+            <button style="margin-left: 10px" *ngIf="OnlyUpdateCIRP === false" (click)="doneKYC()">Next</button>
+            <!-- <button *ngIf="!isRiskRatingGenerated" click=""> Retry</button> -->
+        </div>
+    </div>
+</div>
+
+<div id="snackbar" style="line-height: 45px">
+    <div *ngIf="ErrorMsg">{{ this.ErrorMsg }}</div>
+</div>

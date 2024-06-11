@@ -1,0 +1,97 @@
+<div class="notes-div">
+    <div class="title-notes-div">
+        <label class="title-notes">Notes</label>
+    </div>
+
+    <div class="notes-header-flex">
+        <div class="flex">
+            <span class="add-newicon" (click)="addNewNotes()">
+                <app-svg-icons class="" [icon]="'add-note'" [width]="'24'" [height]="'24'"
+                    [fill]="showNewNote?'var(--active)':'white'"></app-svg-icons>
+            </span>
+
+            <label>Add a note</label>
+        </div>
+		<!-- Changed by AdilP || FIN1EURINT-512 || 05-07-2023 -->
+        <div class="flex">
+            <button class="button" [disabled]="saveBtn" (click)="addNotes();showNewNote=false">Save</button>
+        </div>
+        
+
+
+        <!-- <span class = "add-newicon">
+            <app-svg-icons class="" [icon]="'edit-icon'" [width]="'20'" [height]="'20'" [fill] = "'#FFFFFF'"></app-svg-icons>
+        </span> -->
+    </div>
+
+    <div *ngIf="showNewNote" class="margin-btm-addnote">
+        <div class="addNotesPanel">
+            <input type="text" placeholder="Title" [(ngModel)]="note_title" />
+            <div>
+                <textarea name="" class="note-textarea" id="" cols="5" rows="10" placeholder="Add Note"
+                    [(ngModel)]="description" (keydown.tab)="insertNotesDetails('I', '')"></textarea>
+                <!-- <div class = "align-right">
+                    <button class = "button">Done</button>
+                </div> -->
+            </div>
+
+        </div>
+    </div>
+
+<!-- Changed by AdilP || FIN1EURINT-512 || 05-07-2023 -->
+    <div class="addNotesPanel" [ngClass]="{'height-on-addnotes' : showNewNote}">
+        <div *ngFor="let item of NotesArray.slice().reverse(); let i = index;"
+            (click)="updateRow(i, item.rmR_Title, item.rmR_Description)" class="flex-row-note">
+            <div class="newnotes" *ngIf="!editFlag[i]">
+                <div class="title-label">
+                    {{item.rmR_Title}}
+                </div>
+
+                <div class="description-label">
+                    {{item.rmR_Description}}
+                </div>
+
+                <div class="dates-style">
+                    {{item.rmR_Created_At | date:'dd-MMM-yyyy hh:mm:ss a'}}
+                </div>
+            </div>
+
+
+            <div class="modifynotes" *ngIf="editFlag[i]">
+                <div class="addNotesPanel">
+                    <div class="title-label" *ngIf="!editTitle" (click)="editTitle = !editTitle">
+                        {{item.rmR_Title}}
+                    </div>
+
+                    <input type="text" placeholder="Title" [(ngModel)]="note_title" *ngIf="editTitle" />
+                    <div>
+                        <textarea name="" class="note-textarea" id="" cols="5" rows="10" placeholder="Add Note"
+                            [(ngModel)]="description"
+                            (keydown.tab)="noteUpdateFlag = true; addNotes( item.rmR_ID); "></textarea>
+                    </div>
+                </div>
+            </div>
+	<!-- Changed by AdilP || FIN1EURINT-512 || 05-07-2023 -->
+            <div class="delete-note">
+                <app-svg-icons class="add-newicon" [icon]="'to-do1'" *ngIf="!editFlag[i]"
+                    (click)="updateRow(i, item.rmR_Title, item.rmR_Description); this.noteUpdateFlag = true;getNoteID(item.rmR_ID)"
+                    [width]="'18'" [height]="'18'" [fill]="'--var(selected)'"></app-svg-icons>
+                <app-svg-icons class="add-newicon" [icon]="'save-icon'" [width]="'18'" [height]="'18'"
+                    [fill]="showNewNote?'var(--active)':'#5e5e5e'" (click)="noteUpdateFlag = true; addNotes( item.rmR_ID);"></app-svg-icons>
+                <app-svg-icons class="add-newicon" [icon]="'trash-icon'" [width]="'18'" [height]="'18'"
+                    [fill]="showNewNote?'var(--active)':'#5e5e5e'" (click)="deleteNotes(item.rmR_ID)"></app-svg-icons>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="listNotes">
+        <div class="note-count">
+            <label>{{total_notes || '-'}}</label>
+        </div>
+    </div>
+
+
+</div>

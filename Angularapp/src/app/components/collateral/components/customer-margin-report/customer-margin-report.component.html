@@ -1,0 +1,81 @@
+<div class="customer-margin-details">
+    <div class="filter-container">
+        <label for="RM">RM: </label>
+        <select id="RM" [(ngModel)]="selectedRM" (change)="changeRM()">
+            <option value="-1">All</option>
+            <!-- <option value="100006" selected>100006</option> -->
+            <option *ngFor="let rm of rmNamesList">{{rm}}</option>
+        </select>
+        <label for="customer-group">Customer Group: </label>
+        <select id="customer-group" [(ngModel)]="selectedCustomerGroup" [disabled]="customerDisabled"
+            (change)="changeCustomer()">
+            <option value="-1">All</option>
+            <option *ngFor="let cg of customerGroups" [value]="cg.GroupId">{{cg.GroupName}}</option>
+        </select>
+        <div class="refreshIcon" accesskey="R" (click)="refresh()"></div>
+    </div>
+    <!-- <div class="customerreporttable"> -->
+    <div class="wrap">
+        <table>
+            <thead class="head">
+                <tr>
+                    <th>Group Id</th>
+                    <th style="width: 225px;">Account Name</th>
+                    <th>Exposure Code</th>
+                    <th>Approved Limit</th>
+                    <th>Limit Used</th>
+                    <th>Available Limit</th>
+                    <th>Cash / CE Margin</th>
+                    <th>MTM</th>
+                    <th>Aggregated Collateral Balance</th>
+                    <th>Margin Required IM, MM, CM</th>
+                    <th>Margin Status</th>
+                    <th>Margin Shortfall Since</th>
+                </tr>
+            </thead>
+        </table>
+
+        <div class="inner_table">
+            <table>
+                    <tr *ngFor="let row of globalMarginView; let i = index;"
+                        [ngClass]="{'expandable-row': row.expandable, 'collapsed': row.expandable}">
+                        <td class="center"  *ngIf="row.GroupId && !row.expandable" [rowSpan]="row.RowSpan.GroupId">
+                            {{row.GroupId}}</td>
+                        <td class="link left" style="width: 200px;" *ngIf="row.AccountName" [rowSpan]="row.RowSpan.AccountName"
+                            (click)="expandDetails(row.MergedRowIndex, row.GroupId)">{{row.AccountName}}</td>
+                        <td class="left" *ngIf="row.ExposureCode" [rowSpan]="row.RowSpan.ExposureCode">
+                            {{row.ExposureCode}}
+                        </td>
+                        <td class="right" *ngIf="row.ApprovedLimit" [rowSpan]="row.RowSpan.ApprovedLimit">
+                            {{row.ApprovedLimit }}</td>
+                        <td class="right" *ngIf="row.LimitUsed" [rowSpan]="row.RowSpan.LimitUsed">
+                            {{row.LimitUsed }}</td>
+                        <td class="right" *ngIf="row.AvailableLimit" [rowSpan]="row.RowSpan.AvailableLimit">
+                            {{row.AvailableLimit }}</td>
+                        <td class="right" *ngIf="row.CEMargin" [rowSpan]="row.RowSpan.CEMargin">
+                            {{row.CEMargin }}</td>
+                        <td class="right" *ngIf="row.MTM" [rowSpan]="row.RowSpan.MTM">
+                            {{row.MTM }}</td>
+                        <td class="right" *ngIf="row.ACB" [rowSpan]="row.RowSpan.ACB">
+                            {{row.ACB }}</td>
+                        <td class="right break-whitespace" *ngIf="row.IMMMCM" [rowSpan]="row.RowSpan.IMMMCM">
+                            <span>{{row.IMMMCM.split(',')[0] }}</span>
+                            <span class="break">{{row.IMMMCM.split(',')[1] | number:'1.2-2'}}</span>
+                            <span class="break">{{row.IMMMCM.split(',')[2] | number:'1.2-2'}}</span>
+                        </td>
+                        <td class="center" *ngIf="row.ShortfallStatus" [rowSpan]="row.RowSpan.ShortfallStatus">
+                            {{row.ShortfallStatus}}</td>
+                        <td class="center no-text-wrap" *ngIf="row.ShortfallSince"
+                            [rowSpan]="row.RowSpan.ShortfallSince">
+                            {{row.ShortfallSince}}</td>
+
+                        <td *ngIf="row.expandable" colspan="100%">
+                            <app-margin-details [id]="i" [groupId]="row.GroupId"></app-margin-details>
+                        </td>
+                    </tr>
+            </table>
+        </div>
+    </div>
+
+    <!-- </div> -->
+</div>

@@ -1,0 +1,410 @@
+// :root {
+//     --btn-bg: #faad32;
+//     --btn-text: #ffffff;
+// }
+.sharesComponent {
+    display: grid;
+    // grid-template-rows: 50px 75px auto minmax(50px, auto) 50px;
+    padding: 10px;
+    // gap: 10px;
+    .funddetails {
+        color: var(--fund-details);
+        justify-content: center;
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 20px;
+        .fund-name {
+            color: var(--text);
+            font-weight: 500;
+            font-size: 30px;
+            line-height: 40px;
+            margin-bottom: 10px;
+        }
+    }
+    .param-cols {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 50px;
+        // margin-top: 10px;
+    }
+    .fundname-row {
+        display: grid;
+        grid-template-columns: 220px 1fr;
+        padding-bottom: 10px;
+    }
+    .fund-details {
+        display: grid;
+        grid-template-columns: 1fr;
+        font-size: 18px;
+        gap: 10%;
+        height: 45px;
+    }
+    .fundparams-row {
+        display: grid;
+        grid-template-columns: 220px 1fr;
+        height: 45px;
+    }
+    .fund-button-row {
+        display: grid;
+        grid-template-columns: 0fr 1fr 1fr 0fr;
+        gap: 20px;
+        // align-items: center;
+        margin-top: 20px;
+        .btn-submit {
+            display: flex;
+            justify-content: flex-end;
+            margin-right: 25px;
+        }
+    }
+    .fund-message-row {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 10px;
+        height: 30px;
+        height: 50px;
+    }
+}
+
+.sharesComponentrmw {
+    display: grid;
+    // grid-template-rows: 50px 50px 75px auto minmax(50px, auto) 50px;
+    padding: 10px;
+    .funddetails {
+        color: var(--fund-details);
+        justify-content: center;
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 20px;
+        .fund-name {
+            color: var(--text);
+            font-weight: 500;
+            font-size: 30px;
+            line-height: 40px;
+        }
+    }
+    .param-cols {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 50px;
+        // margin-top: 10px;
+    }
+    .fundname-row {
+        display: grid;
+        grid-template-columns: 20% 80%;
+        padding-bottom: 10px;
+    }
+    .fund-details {
+        display: grid;
+        grid-template-columns: 1fr;
+        font-size: 18px;
+        gap: 10%;
+        height: 45px;
+    }
+    .fundparams-row {
+        display: grid;
+        grid-template-columns: 40% 60%;
+        height: 45px;
+    }
+    // .fund-button-row {
+    //   display: grid;
+    //   grid-template-columns: 1fr 2fr 2fr;
+    //   gap: 10px;
+    //   align-items: center;
+    //   margin-top: 20px;
+    //   .btn-submit {
+    //     display: flex;
+    //     justify-content: flex-end;
+    //     margin-right: 25px;
+    //   }
+    // }
+    .fund-message-row {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 10px;
+        height: 30px;
+        height: 50px;
+    }
+}
+
+.UnderlyingSearch {
+    display: flex;
+    align-self: flex-end;
+    position: absolute;
+    width: 99% !important;
+    margin-left: 0.5em;
+    padding-right: 2.2em;
+    margin-right: 0 !important;
+}
+
+.SelectorBox {
+    height: auto;
+    max-height: 10em;
+    overflow-y: scroll;
+    position: absolute;
+    float: right;
+    z-index: 10000;
+    border: 0.05em solid var(--gray);
+    cursor: pointer;
+    width: 50%;
+    margin-left: -4px;
+    background-color: var(--input-bg);
+    top: -3px;
+}
+
+.details {
+    display: flex;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    align-items: center;
+    text-align: right;
+    cursor: pointer;
+}
+
+.overlay {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 20;
+}
+
+.popuptab1 {
+    position: absolute;
+    border: 1px solid var(--containers);
+    border-radius: 5px;
+    background-color: var(--containers);
+    z-index: 999;
+    height: 75vh;
+    width: calc(67vw);
+    top: -7%;
+    left: -1%;
+    // left: 25%;
+    .closebtn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 25px;
+        width: 25px;
+        border-radius: 2px;
+        font-size: 18px;
+        color: var(--text);
+        font-weight: 800;
+        // margin-top: 7px;
+    }
+}
+
+.popupHeader {
+    background-color: var(--beige);
+    width: 100%;
+}
+
+.popupContent {
+    width: 100%;
+}
+
+.content-header {
+    height: 50px;
+    padding: 10px;
+    display: grid;
+    grid-template-columns: 97% 3%;
+    background-color: var(--content-header);
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    .content-header-name {
+        font-size: 18px;
+        color: white;
+        display: flex;
+        margin: 0;
+        padding: 0;
+        padding-bottom: 5px;
+        img {
+            margin: 0px 5px;
+            width: 25px;
+            height: 25px;
+            // filter: invert(1);
+        }
+    }
+}
+
+.gridclass {
+    display: grid;
+    grid-template-columns: 60% 40%;
+    padding: 10px;
+    margin-left: 20px;
+    margin-top: 10px;
+}
+
+.overlay {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 20;
+}
+
+.popuptab1 {
+    position: absolute;
+    border: 1px solid var(--containers);
+    border-radius: 5px;
+    background-color: var(--containers);
+    z-index: 999;
+    // height: 60%;
+    // width: 65%;
+    // top: 15%;
+    // left: 25%;
+    .closebtn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 25px;
+        width: 25px;
+        border-radius: 2px;
+        font-size: 18px;
+        color: var(--text);
+        font-weight: 800;
+        // margin-top: 7px;
+    }
+}
+
+.popupHeader {
+    background-color: var(--beige);
+    width: 100%;
+}
+
+.popupContent {
+    width: 100%;
+}
+
+.content-header {
+    height: 50px;
+    padding: 10px;
+    display: grid;
+    grid-template-columns: 97% 3%;
+    background-color: var(--content-header);
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    .content-header-name {
+        font-size: 18px;
+        color: white;
+        display: flex;
+        margin: 0;
+        padding: 0;
+        padding-bottom: 5px;
+        img {
+            margin: 0px 5px;
+            width: 25px;
+            height: 25px;
+            // filter: invert(1);
+        }
+    }
+}
+
+.gridclass {
+    display: grid;
+    grid-template-columns: 60% 40%;
+    padding: 10px;
+    margin-left: 20px;
+    margin-top: 10px;
+}
+
+.tableheadGrid {
+    // display: grid;
+    // grid-template-columns: 25% 10% 10% 33% 15% 5%;
+    height: 35px;
+}
+
+.tableGrid {
+    // display: grid;
+    // grid-template-columns: 25% 10% 10% 35% 15% 5%;
+    height: 35px;
+}
+
+input[type="checkbox"] {
+    position: relative;
+    width: 20px;
+}
+
+.display {
+    display: flex;
+    align-items: center;
+}
+
+@media only screen and (max-width: 600px) {
+    .param-cols {
+        display: flex !important;
+        flex-direction: column !important;
+    }
+}
+
+.floatRight {
+    text-align: end;
+}
+
+.button2 {
+    cursor: pointer;
+    height: 30px;
+    width: 110px;
+    // border: none;
+    background-color: var(--btn-bg);
+    border: var(--btn-bg);
+    color: var(--btn-text);
+    border-radius: 5px;
+    text-align: center;
+}
+
+.sharesComponent {
+    width: 54vw;
+    min-width: 950px;
+}
+
+.FromDateLabel {
+    position: relative;
+    span {
+      position: absolute;
+      left: 108px;
+      font-size: 13px;
+    }
+  }
+
+@media screen and (max-width: 1600px) {
+    .FromDateLabel {
+
+        span {
+
+          left: 84px;
+
+        }
+      }
+  }
+  
+  @media screen and (max-width: 1440px) {
+    .FromDateLabel {
+
+        span {
+
+          left: 84px;
+
+        }
+      }
+  }
+  
+  @media screen and (max-width: 1280px) {
+    .FromDateLabel {
+
+        span {
+
+          left: 84px;
+
+        }
+      }
+  }

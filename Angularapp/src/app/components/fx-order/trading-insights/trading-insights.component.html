@@ -1,0 +1,246 @@
+<div class="container-fluid mainDiv ">
+    <div class="page-title module">Trading Insights</div>
+    <div class="filters">
+        <div class="filter-element1">
+
+            <div class="right-col">
+
+                <div class="dateFilter">
+                    <div class="label">
+                        Product:
+                    </div>
+                    <div>
+                        <select class="select widthfilter" [(ngModel)]="product" (change)="updateGraphData()">
+                            <option value="Spot">Spot</option>
+                            <option value="Forward">Forward</option>
+                            <option value="Swap">Swap</option>
+                            <option value="NDF">NDF</option>
+                        </select>
+                    </div>
+                    <div class="label">
+                        Pair:
+                    </div>
+                    <div>
+                        <select class="select widthfilter" [(ngModel)]="selectedCcy" (change)="updateGraphData()">
+                            <option value="All"> All </option>
+                            <option value="{{c.PairCode}}" *ngFor="let c of ccyList">
+                                {{c.PairCode}}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="label">
+                        Period:
+                    </div>
+                    <div>
+                        <select class="select widthfilter" [(ngModel)]="period"
+                            (change)="changeperiod();updateGraphData()">
+                            <option value="This Month">This Month</option>
+                            <option value="Last Month">Last Month</option>
+                            <option value="This Week">This Week</option>
+                            <option value="Last Week">Last Week</option>
+                            <option value="Today">Today </option>
+                        </select>
+                    </div>
+                    <div class="label">
+                        Time Span:
+                    </div>
+                    <div>
+                        <select class="select widthfilter" [(ngModel)]="TimeSpan" (change)="updateGraphData()">
+                            <option value="TOD">Time Of Day</option>
+                            <option value="DOW" *ngIf="period.includes('Week')">Day Of Week</option>
+                            <option value="WOM" *ngIf="period.includes('Month')">Week Of Month</option>
+                            <option value="DOM" *ngIf="period.includes('Month')">Day Of Month</option>
+                        </select>
+                    </div>
+                    <div class="label">
+                        Graph:
+                    </div>
+                    <div>
+                        <select class="select widthfilter" [(ngModel)]="graph" (change)="updateGraphData()">
+
+                            <option value="ASN">Avg Spread & Notional</option>
+                            <option value="ASR">Avg Spread & Revenue</option>
+                            <option value="ONC">Order Notional & count</option>
+                            <option value="RNC">RFQ Notional & count</option>
+                            <option value="NRP">Notional & Revenue </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- <div class="row fontsize">
+        <div class="col-lg-3 col-md-6 col-sm-12 row resclass">
+            <div class="col-4 paddingfilterprod" style="margin: auto 0;">
+                Product
+            </div>
+            <div class="col-6 mid">
+                <select class="select widthfilter" [(ngModel)]="product" (change)="updateGraphData()">
+                    <option value="Spot">Spot</option>
+                    <option value="Forward">Forward</option>
+                    <option value="Swap">Swap</option>
+                    <option value="NDF">NDF</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-lg-2 col-md-6 col-sm-12 row resclass paddingfilter" >
+            <div class="col-4" style="margin: auto 0;padding-right: 0;">
+                Pair
+            </div>
+            <div class="col-7 mid">
+                <select class="select widthfilter" [(ngModel)]="selectedCcy" (change)="updateGraphData()">
+                    <option value="All"> All </option>
+                    <option value="{{c.PairCode}}" *ngFor="let c of ccyList">
+                        {{c.PairCode}}
+                    </option>
+                </select>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-12 row resclass" style="padding: 1em;">
+            <div class="col-4" style="margin: auto 0;">
+                Period
+            </div>
+            <div class="col-6 mid">
+                <select class="select widthfilter" [(ngModel)]="period" (change)="changeperiod();updateGraphData()">
+                    <option value="This Month">This Month</option>
+                    <option value="Last Month">Last Month</option>
+                    <option value="This Week">This Week</option>
+                    <option value="Last Week">Last Week</option>
+                    <option value="Today">Today </option>
+                </select>
+            </div>
+        </div>
+        <div class="col-lg-2 col-md-6 col-sm-12 row resclass paddingfilter" >
+            <div class="col-4 mid paddingfilterts" style="padding-right: 1em;">
+                Time Span
+            </div>
+            <div class="col-6 mid">
+                <select class="select widthfilter" [(ngModel)]="TimeSpan" (change)="updateGraphData()"
+                    style="padding-left: 0.6em;width: 139%;">
+                    <option value="TOD">Time Of Day</option>
+                    <option value="DOW" *ngIf="period.includes('Week')">Day Of Week</option>
+                    <option value="WOM" *ngIf="period.includes('Month')">Week Of Month</option>
+                    <option value="DOM" *ngIf="period.includes('Month')">Day Of Month</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-12 row paddingfilter" >
+            <div class="col-4 mid paddingfiltergraph">
+                Graph               
+            </div>
+            <div class="col-6 mid graphcontrol">
+                <select class="select widthfilter" [(ngModel)]="graph" (change)="updateGraphData()"
+                    style="padding-left: 0.6em;width: 13em;">
+
+                    <option value="ASN">Avg Spread & Notional</option>
+                    <option value="ASR">Avg Spread & Revenue</option>
+                    <option value="ONC">Order Notional & count</option>
+                    <option value="RNC">RFQ Notional & count</option>
+                    <option value="NRP">Notional & Revenue </option>
+                </select>
+            </div>
+        </div>
+    </div> -->
+    <!-- 16-Mar-2021 || Viplav T. || Add margin-left: 20px -->
+    <div *ngIf="chart_rfqNotional_RfqCount_timeOfDay.data.length >0 && graph === 'RNC'" style="margin: 3em 40px;">
+
+        <google-chart #googlechart [type]="chart_rfqNotional_RfqCount_timeOfDay.type"
+            [data]="chart_rfqNotional_RfqCount_timeOfDay.data" [options]="chart_rfqNotional_RfqCount_timeOfDay.options"
+            [width]="width" [height]="height">
+        </google-chart>
+        <div style="margin-left: 9em;" class="row">
+            <div style="float: left;background-color: #3366cc;width: 1em;height: 1em;"> </div>
+            <label for="" style="float: left;margin-left: 1em;margin-top: -0.1em;">RFQ Notional</label>
+            <div style="float: left;background-color: #dc3912;width: 1em;height: 1em;margin-left: 1em;"> </div>
+            <label for="" style="float: left;margin-left: 1em;margin-top: -0.1em;">RFQ Count</label>
+        </div>
+        <div style="text-align: center;margin-top: 0.2em;">
+            Avg RFQ Notional and RFQ Count vs timeline
+        </div>
+    </div>
+    <!-- 16-Mar-2021 || Viplav T. || Add margin-left: 20px -->
+    <div *ngIf="chart_orderNotional_orderCount_timeOfDay.data.length >0 && graph === 'ONC'" style="margin: 3em 40px;">
+        <google-chart #googlechart1 [type]="chart_orderNotional_orderCount_timeOfDay.type"
+            [data]="chart_orderNotional_orderCount_timeOfDay.data"
+            [options]="chart_orderNotional_orderCount_timeOfDay.options" [width]="width" [height]="height">
+        </google-chart>
+        <div style="margin-left: 9em;" class="row">
+            <div style="float: left;background-color: #3366cc;width: 1em;height: 1em;"> </div>
+            <label for="" style="float: left;margin-left: 1em;margin-top: -0.1em;">Order Notional</label>
+            <div style="float: left;background-color: #dc3912;width: 1em;height: 1em;margin-left: 1em;"> </div>
+            <label for="" style="float: left;margin-left: 1em;margin-top: -0.1em;">Order Count</label>
+        </div>
+        <div style="text-align: center;margin-top: 0.2em;"> Avg Order Notional and Order Count vs timeline </div>
+    </div>
+    <!-- 16-Mar-2021 || Viplav T. || Add margin-left: 20px -->
+    <div *ngIf="chart_avgSpread_avdNotional_timeline.data.length >0 && graph === 'ASN'" style="margin: 3em 40px;">
+        <google-chart #googlechart2 [type]="chart_avgSpread_avdNotional_timeline.type"
+            [data]="chart_avgSpread_avdNotional_timeline.data" [options]="chart_avgSpread_avdNotional_timeline.options"
+            [width]="width" [height]="height">
+        </google-chart>
+        <div style="margin-left: 9em;" class="row">
+            <div style="float: left;background-color: #3366cc;width: 1em;height: 1em;"> </div>
+            <label for="" style="float: left;margin-left: 1em;margin-top: -0.1em;">Avg Spread</label>
+            <div style="float: left;background-color: #dc3912;width: 1em;height: 1em;margin-left: 1em;"> </div>
+            <label for="" style="float: left;margin-left: 1em;margin-top: -0.1em;">Avg Notional</label>
+        </div>
+        <div style="text-align: center;margin-top: 0.2em;"> Avg Spread and Avg Notional vs timeline </div>
+    </div>
+    <!-- 16-Mar-2021 || Viplav T. || Add margin-left: 20px -->
+    <div *ngIf="chart_avgSpread_USDRevenue_timeline.data.length >0 && graph === 'ASR'" style="margin: 3em 40px;">
+        <google-chart #googlechart3 [type]="chart_avgSpread_USDRevenue_timeline.type"
+            [data]="chart_avgSpread_USDRevenue_timeline.data" [options]="chart_avgSpread_USDRevenue_timeline.options"
+            [width]="width" [height]="height">
+        </google-chart>
+        <div style="margin-left: 9em;" class="row">
+            <div style="float: left;background-color: #3366cc;width: 1em;height: 1em;"> </div>
+            <label for="" style="float: left;margin-left: 1em;margin-top: -0.1em;">Avg Spread</label>
+            <div style="float: left;background-color: #dc3912;width: 1em;height: 1em;margin-left: 1em;"> </div>
+            <label for="" style="float: left;margin-left: 1em;margin-top: -0.1em;">Avg USD Revenue</label>
+        </div>
+        <div style="text-align: center;margin-top: 0.2em;"> Avg Spread and Avg USD Revenue vs timeline </div>
+    </div>
+    <div class="row" style="padding: 1em;margin-top: 3em;margin-bottom: 3em;" *ngIf="graph === 'NRP'">
+        <div class="col-6" style="border: 1px solid #d9d9d9;border-right: none;padding-top: 1em;">
+            <google-chart #googlechart5 [type]="chart_piechartNotional.type" [data]="chart_piechartNotional.data"
+                [options]="chart_piechartNotional.options" [width]="chart_piechartNotional.width"
+                [height]="chart_piechartNotional.height" style="margin: 0 auto;">
+            </google-chart>
+            <div style="margin-left: 35%;margin-bottom: 0.5em;"> Order Notional vs Products </div>
+        </div>
+        <div class="col-6" style="border: 1px solid #d9d9d9;padding-top: 1em;">
+            <google-chart #googlechart6 [type]="chart_piechartRevenue.type" [data]="chart_piechartRevenue.data"
+                [options]="chart_piechartRevenue.options" [width]="chart_piechartRevenue.width"
+                [height]="chart_piechartRevenue.height" styke="margin: 0 auto;">
+            </google-chart>
+            <div style="margin-left: 35%;margin-bottom: 0.5em;"> USD Revenue vs Products </div>
+        </div>
+    </div>
+    <!-- <div class="row" style="padding: 1em;margin-top: 1em;">
+        <div *ngIf="graph === 'AN'">
+            <google-chart #googlechart5 [type]="chart_piechartNotional.type" [data]="chart_piechartNotional.data"
+                [options]="chart_piechartNotional.options" [width]="chart_piechartNotional.width"
+                [height]="chart_piechartNotional.height" style="margin: 0 auto;">
+            </google-chart>
+            <div style="margin-left: 35%;margin-bottom: 0.5em;"> Avg Notional vs Products </div>
+        </div>
+        <div *ngIf="graph === 'UR'" >
+            <google-chart #googlechart6  [type]="chart_piechartRevenue.type" [data]="chart_piechartRevenue.data"
+                [options]="chart_piechartRevenue.options" [width]="chart_piechartRevenue.width"
+                [height]="chart_piechartRevenue.height" styke="margin: 0 auto;">
+            </google-chart>
+            <div style="margin-left: 35%;margin-bottom: 0.5em;">  USD Revenue vs Products </div>
+        </div>
+    </div> -->
+</div>
+
+<div class="pagerightpopup" *ngIf="spreadMultiplier==='on' && showSpreadPopup"
+    style="box-shadow: 1px 1px 10px 0px #d4cccc;width: 11em;top: 0.1em;right: 0.5em;background: #f2f2f2;">
+    <div>
+        <span style="font-size: 0.9em">Spread</span>
+        <img [src]="'http://'+domainURL+'/assets/cancel_icon_disabled.png'" style="float: right;width: 1em;"
+            (click)="showSpreadPopup=!showSpreadPopup" alt="">
+    </div>
+    <input type="text" class="spreadtxt" [(ngModel)]="Spread"
+        (change)="Spread=this.commonfunction.CheckAllFieldsPrecision(Spread,1);this.commonfunction.spreadvalue.next(Spread);this.apifunction.setConfigValue('SpreadMultiplier_FXTrading', 'on;'+ Spread);">
+</div>

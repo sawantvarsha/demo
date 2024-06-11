@@ -1,0 +1,147 @@
+<div class="container" *ngIf="ShareDetails.length > 0">
+  <div class="chart-container">
+    <div class="tabs-container">
+      <div class="tabs-pages">
+        <ng-container *ngFor="let item of ShareDetails">
+          <div
+            class="tabs"
+            [ngClass]="{ 'tab-active': item.activeYN }"
+            (click)="fnchangeProduct(item.RICCode)"
+          >
+            <div class="shareName">{{ item.RICCode }}</div>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+    <div *ngFor="let item of ShareDetails">
+      <!-- <div class="chart-content">
+                <div *ngIf="historychart.data.length > 0">
+                    <google-chart #googlechart [type]="historychart.type" [data]="historychart.data" [options]="historychart.options" [width]="width" [height]="height">
+                    </google-chart>
+                </div>
+                <div class="no-data-found" *ngIf="historychart.data.length === 0">
+                    No data found
+                </div>
+            </div> -->
+      <!-- <div class="chart-content" *ngIf="historychart.data.length === 0">
+                <app-loader></app-loader>
+            </div> -->
+      <div style="padding:10px 0px 0px 0px !important;">
+        <label class="share-header" *ngIf="item.activeYN">{{
+          item.Description
+        }}</label>
+      </div>
+      <div class="share-details" *ngIf="item.activeYN">
+        <div class="left-panel">
+          <div class="panel-row">
+            <label class="disabledlbl">Spot(d)</label>
+            <label class="value">{{
+              item.Spot | number: "1.2-2" || "-"
+            }}</label>
+          </div>
+          <div class="panel-row">
+            <label class="disabledlbl">52 Wk High</label>
+            <label class="value">{{
+              item.Last1YearHighValue | number: "1.2-2" || "-"
+            }}</label>
+          </div>
+          <div class="panel-row">
+            <label class="disabledlbl">52 Wk Low</label>
+            <label class="value">{{
+              item.Last1YearLowValue | number: "1.2-2" || "-"
+            }}</label>
+          </div>
+          <div class="panel-row">
+            <label class="disabledlbl">YTD Chng %</label>
+            <label class="value">{{
+              item.YTDchngperc | number: "1.2-2" || "-"
+            }}</label>
+          </div>
+          <div class="panel-row">
+            <label class="disabledlbl">MTD Chng %</label>
+            <label class="value">{{
+              item.MTDchngperc | number: "1.2-2" || "-"
+            }}</label>
+          </div>
+          <div class="panel-row">
+            <label class="disabledlbl">1 Year Chng %</label>
+            <label class="value">{{
+              item.yearchngperc | number: "1.2-2" || "-"
+            }}</label>
+          </div>
+          <div class="panel-row">
+            <label class="disabledlbl">Trailing 12M P/E</label>
+            <label class="value">{{
+              item.Trailing12MPE | number: "1.2-2" || "-"
+            }}</label>
+          </div>
+        </div>
+        <div class="right-panel">
+          <div class="right-top-panel">
+            <div class="panel-row">
+              <label class="disabledlbl">12T Div Yield Indicative</label>
+              <label class="value">{{
+                item.DividendYield12MonthValue | number: "1.2-2" || "-"
+              }}</label>
+            </div>
+            <div class="panel-row">
+              <label class="disabledlbl">Prev. Earn Date</label>
+              <label class="value">{{ item.PreviousEarnDate || "-" }}</label>
+            </div>
+            <div class="panel-row">
+              <label class="disabledlbl">Prev. EPS</label>
+              <label class="value">{{
+                item.PreviousEPS | number: "1.2-2" || "-"
+              }}</label>
+            </div>
+          </div>
+          <div class="right-bottom-panel">
+            <div class="currentVolAnnualized">
+              <label>Current Vol. Annualized</label>
+            </div>
+            <div class="panel-row">
+              <label class="disabledlbl">20D</label>
+              <label class="value">{{
+                item.Last20DHistVolaCurr | number: "1.2-2" || "-"
+              }}</label>
+            </div>
+            <div class="panel-row">
+              <label class="disabledlbl">60D</label>
+              <label class="value">{{
+                item.Last60DHistVolaCurr | number: "1.2-2" || "-"
+              }}</label>
+            </div>
+            <div class="panel-row">
+              <label class="disabledlbl">250D</label>
+              <label class="value">{{
+                item.Last250DHistVolaCurr | number: "1.2-2" || "-"
+              }}</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="ratessourcelbl">
+      <label class="left-panel">*As of {{ AsofDate }}</label>
+      <label class="right-panel"
+        >*sources and definitions as per Thomson Reuters DataScope Select
+      </label>
+    </div>
+  </div>
+</div>
+
+<div class="container" *ngIf="ShareDetails.length === 0">
+  <!-- <app-svg-icons icon="no-data-icon" [width]="'100'" [height]="'100'"></app-svg-icons> -->
+  <div style="margin-left: 25px">
+    <app-svg-icons
+      [icon]="'no-data-found'"
+      [width]="'160'"
+      [height]="'160'"
+      style="height: 45vh"
+    >
+    </app-svg-icons>
+  </div>
+  <div style="display: flex; justify-content: center">
+    <span>Empty Underlying</span>
+  </div>
+</div>

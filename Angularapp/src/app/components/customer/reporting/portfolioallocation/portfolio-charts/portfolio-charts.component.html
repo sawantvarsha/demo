@@ -1,0 +1,347 @@
+<div [ngClass]="{ overlay: portfoliopopflag }">
+  <div class="popuptab1" *ngIf="portfoliopopflag && userType !== 'RM'">
+    <div class="content-header">
+      <div class="content-header-name">
+        <span>Portfolio Details - {{ Selectedportfolio }}</span>
+      </div>
+      <!-- <div class="closebtn" (click)="showdetailsPopUp(false,0,'')">X</div> -->
+      <app-svg-icons
+        [icon]="'cancel-icon'"
+        [width]="'20'"
+        [height]="'20'"
+        class="close"
+        (click)="showdetailsPopUp(false, '')"
+      ></app-svg-icons>
+    </div>
+    <app-portfolio-details
+      [ngClass]="{ 'maincontainer-opacity': !portfoliopopflag }"
+      [selectedfacilityCode]="selectedfacilityCode"
+      [Selectedportfolio]="Selectedportfolio"
+      [baseCCY]="baseCCY"
+    >
+    </app-portfolio-details>
+  </div>
+  <div
+    class="popuptab2"
+    *ngIf="portfoliopopflag && userType === 'RM'"
+    [ngClass]="{ popuptab1: userType !== 'RM' }"
+  >
+    <div class="content-header">
+      <div class="content-header-name">
+        <span>Portfolio Details - {{ Selectedportfolio }}</span>
+      </div>
+      <!-- <div class="closebtn" (click)="showdetailsPopUp(false,0,'')">X</div> -->
+      <app-svg-icons
+        [icon]="'cancel-icon'"
+        [width]="'20'"
+        [height]="'20'"
+        class="close"
+        (click)="showdetailsPopUp(false, '')"
+      ></app-svg-icons>
+    </div>
+    <app-portfolio-details
+      [ngClass]="{ 'maincontainer-opacity': !portfoliopopflag }"
+      [CustomerDetails]="selectedRMCustomerDetails"
+      [selectedfacilityCode]="selectedfacilityCode"
+      [Selectedportfolio]="Selectedportfolio"
+      [baseCCY]="baseCCY"
+    >
+      <!--//Changes done by Alolika G on 10-02-2022-->
+    </app-portfolio-details>
+  </div>
+</div>
+
+<!-- <div *ngIf="showRebalance" class="overlay">
+    <div style="cursor: move;"
+        [ngClass]="{'page-content-container-popup': !isUserRM, 'page-content-container-popupRM':isUserRM}" cdkDrag>
+        <div style="display: flex; flex-direction: row;" class="closebtn">
+            <app-svg-icons [icon]="'cancel-icon'" [width]="'20'" [height]="'20'" (click)="showRebalance = false">
+            </app-svg-icons>
+        </div>
+        <app-rebalance class="inside-Component" [Portfolio]="selectedfacilityCode"></app-rebalance>
+    </div>
+</div> -->
+
+<div *ngIf="showRebalance" class="overlay">
+  <div
+    [ngClass]="{
+      'page-content-container-popup': !isUserRM,
+      'page-content-container-popupRM': isUserRM
+    }"
+  >
+    <div style="display: flex; flex-direction: row" class="closebtn">
+      <app-svg-icons
+        [icon]="'cancel-icon'"
+        [width]="'20'"
+        [height]="'20'"
+        (click)="showRebalance = false"
+      >
+        <!--closeRebalancePopUp();-->
+      </app-svg-icons>
+    </div>
+    <app-rebalance
+      class="inside-Component"
+      [Portfolio]="this.portfolioDetails['FacilityCode']"
+    ></app-rebalance>
+  </div>
+</div>
+
+<div
+  *ngIf="this.cfs.FormatNumberr(AUM) !== '0.00'"
+  class="allocation-component"
+>
+  <div class="verticle-tabcontent">
+    <div class="CI-card">
+      <div
+        class="CI-card-content"
+        style="margin-bottom: 10px; box-shadow: 0 0px 0px 0"
+        name="portfoliocard"
+      >
+        <div class="CI-rowcontent">
+          <!-- <label></label> -->
+          <div class="new-grid">
+            <div
+              class="CI-card-header"
+              style="display: flex; gap: 1%; align-items: baseline"
+            >
+              {{ this.portfolioDetails["PortfolioName"] }}
+            </div>
+            <div
+              class="CI-rowcontent portDetails"
+              style="grid-template-columns: 40% 40%"
+            >
+              <!-- <div></div>
+                            <div></div> -->
+              <div
+                class="labelContent portDetails1 heading-label"
+                style="font-size: 15px; align-items: self-end"
+              >
+                <label for="Name">AUM</label>
+              </div>
+
+              <div class="labelContent" style="grid-template-rows: 1fr 1fr">
+                <div class="amount">
+                  <label for="Name" class="right ccy">{{ baseCCY }}</label>
+                  <label for="Name" class="right AUM">{{
+                    this.cfs.NotionalConvert(AUM, baseCCY) || "0.00"
+                  }}</label>
+                </div>
+                <div>
+                  <label for="Name" class="right ccy">
+                    {{ this.cfs.FormatNumberr(AUM) }}
+                  </label>
+                </div>
+              </div>
+              <div
+                class="portDetails1 heading-label labelContent"
+                style="font-size: 14px; align-items: self-end"
+              >
+                <label for="Name"> PnL </label>
+              </div>
+              <div
+                class="portDetails1 labelContent"
+                style="grid-template-rows: 1fr 1fr"
+              >
+                <div class="amount">
+                  <label for="Name" class="right ccy">
+                    {{ baseCCY }}
+                  </label>
+                  <label for="Name" class="right AUM">
+                    {{ this.cfs.NotionalConvert(pnl, baseCCY) }}
+                  </label>
+                </div>
+                <div>
+                  <label for="Name" class="right ccy">
+                    {{ this.cfs.FormatNumberr(pnl) }}
+                  </label>
+                </div>
+              </div>
+
+              <div class="portDetails1 heading-label" style="font-size: 15px">
+                <label for="Name"> Investment Objective </label>
+              </div>
+              <div class="right portDetails1" style="font-size: 15px">
+                <label for="Name">
+                  {{ InvestmentObj }}
+                </label>
+              </div>
+
+              <!-- <div style="cursor: pointer; align-self: center;" (click)="portfoliopopflag = true; selectedfacilityCode = FacilityCode.value;showdetailsPopUp(true,i,PortfolioName.value)"><u> View </u></div> -->
+              <!-- <div class = "" style="align-self: self-end;">
+                            <button class="button" (click)="showRebalance=true">Rebalance</button>
+                        </div> -->
+              <!-- <div></div> -->
+              <!-- <div></div>
+                            <div></div> -->
+              <!--//Changes done by Alolika G on 10-02-2022--START-->
+              <div class="links-container">
+                <div
+                  style="cursor: pointer; font-size: 15px; align-self: end"
+                  class="links"
+                  (click)="
+                    selectedfacilityCode =
+                      this.portfolioDetails['FacilityCode'];
+                    showdetailsPopUp(
+                      true,
+                      this.portfolioDetails['PortfolioName']
+                    )
+                  "
+                >
+                  <!--portfoliopopflag = true; -->
+                  <u>Portfolio Details</u>
+                </div>
+
+                <div
+                  style="cursor: pointer; font-size: 15px; align-self: end"
+                  class="links"
+                  (click)="portfName(this.portfolioDetails['PortfolioName'])"
+                >
+                  <u> Rebalance </u>
+                </div>
+
+                <div
+                  style="cursor: pointer; font-size: 15px; align-self: end"
+                  class="links"
+                  [routerLink]="['/portfolioanalytics']"
+                  (click)="callPortfolioAnalytics(this.portfolioDetails)"
+                >
+                  <u>Portfolio Analytics</u>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!--//Changes done by Alolika G on 10-02-2022--END-->
+
+          <div
+            style="text-align: center; justify-self: center"
+            *ngIf="this.mode !== 'TARGET' && assetAlloc.length > 0"
+          >
+            <!-- <label>Asset Allocation</label> -->
+
+            <!-- <google-chart  [type]="type" [data]="assetAlloc" [options]="options[0]"
+                        (select)="SelectPieChartSlice($event);" style="margin: 10px auto;">-->
+            <app-pie-chart
+              [legendHeight]="200"
+              [width]="380"
+              [graphdata]="assetAlloc"
+              [legendVisible]=true
+              [labelsVisible]=false
+            >
+            </app-pie-chart>
+            <div style="margin-top: 20px">
+              <label style="color: var(--off-color); padding-right: 25%"
+                >Asset Allocation</label
+              >
+            </div>
+          </div>
+          <div
+            style="
+              text-align: center;
+              justify-self: center;
+              padding-bottom: 20px;
+            "
+            *ngIf="this.mode === 'TARGET' && assetAlloc.length > 0"
+          >
+            <google-chart
+              *ngIf="is3D"
+              [type]="type"
+              [data]="assetAlloc3D"
+              [options]="CurrentOptions[0]"
+              (select)="SelectPieChartSlice($event)"
+              style="margin: 10px auto"
+              title="Current Allocation"
+              ngDefaultControl
+            >
+            </google-chart>
+            <app-pie-chart
+              *ngIf="!is3D"
+              [legendHeight]="200"
+              [width]="380"
+              [graphdata]="assetAlloc"
+              [legendVisible]=true
+              [labelsVisible]=false
+            >
+            </app-pie-chart>
+            <div style="margin-top: 20px">
+              <label style="color: var(--off-color); padding-right: 25%"
+                >Current Allocation</label
+              >
+            </div>
+          </div>
+          <div
+            id="chart1"
+            class="pnlChart"
+            style="text-align: center; justify-self: center"
+            *ngIf="this.mode !== 'TARGET'"
+          >
+            <!-- <google-chart pnl [type]="pnlbestType" [data]="!pnlMode ? top5Bestpnl : top5Worstpnl"
+                            [options]="pnlbestoptions">
+                        </google-chart> -->
+            <app-column-chart
+              [name]="'PnL'"
+              [height]="240"
+              [title]="''"
+              [_graphdata]="!pnlMode ? top5Bestpnl : top5Worstpnl"
+            ></app-column-chart>
+            <div style="margin-top: 20px">
+              <!--Changes done by Alolika G | 11-02-2022-->
+              <label
+                *ngIf="!pnlMode"
+                style="color: var(--off-color); padding-right: 25%"
+                id="pnlLabel"
+                >PnL (Best 5)</label
+              >
+              <label
+                *ngIf="pnlMode"
+                style="color: var(--off-color); padding-right: 25%"
+                id="pnlLabel"
+                >PnL (Worst 5)</label
+              >
+              <!--Changes done by Alolika G | 11-02-2022-->
+
+              <label class="switch">
+                <input
+                  type="checkbox"
+                  (change)="getpnlMode(this.index)"
+                  [(ngModel)]="pnlMode"
+                />
+                <span class="slider round"></span>
+              </label>
+            </div>
+          </div>
+
+          <div
+            *ngIf="this.mode === 'TARGET' && targetAllocationData.length > 0"
+            style="padding-bottom: 20px; text-align: end; justify-self: center"
+          >
+            <google-chart
+              *ngIf="is3D"
+              [type]="type"
+              [data]="targetAllocationData3D"
+              [options]="targetOptions[0]"
+              style="margin: 10px 0px"
+              title="Target Allocation"
+            >
+            </google-chart>
+
+            <app-pie-chart
+              *ngIf="!is3D"
+              [legendHeight]="200"
+              [width]="380"
+              [graphdata]="targetAllocationData"
+              [legendVisible]=true
+              [labelsVisible]=false
+            >
+            </app-pie-chart>
+            <div style="margin-top: 20px">
+              <label style="padding-right: 50%; color: var(--off-color)"
+                >Target Allocation</label
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

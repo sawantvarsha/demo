@@ -1,0 +1,788 @@
+
+<div class="main-grid-container padding-top1">
+    <div class="row">
+  
+    </div>
+    <div class="main-grid-item max-height">
+      <div class="box-container SaveReqs-Table order-box multiPricerDiv ::-webkit-scrollbar max-height"  #holdingsContainer>
+        <div>
+          <div class="product-tabs">
+  
+            <div class="multiPayoffList">
+              <!-- <ul>
+                <ng-template ngFor let-i="index" let-payoff [ngForOf]="this.apifunctions.payOffList">
+                  <li routerLink="{{payoff.multiRoute}}" routerLinkActive="active-link" *ngIf="payoff.display">
+                      
+                      <a class="tab" [ngClass]="ProductName === payoff.multiProductName ?  'activePayOff' : 'disabledtabs'">{{payoff.displayName}}</a>
+                  </li>
+              </ng-template> -->
+                <!-- <li routerLink="/MultiPhoenix" routerLinkActive="active-link">
+                  <a class="tab" class="disabledtabs">Autocall</a>
+                </li>
+                <li routerLink="/MultiBRC" routerLinkActive="active-link">
+                  <a class="tab" class="disabledtabs">Reverse Convertible</a>
+                </li>
+                <li routerLink="/MultiParticipation" routerLinkActive="active-link">
+                  <a class="tab" class="disabledtabs">Participation</a>
+                </li>
+                <li routerLink="/MultiCredit" routerLinkActive="active-link">
+                  <a class="tab" class="disabledtabs">Credit Tranche</a>
+                </li>
+                <li routerLink="/MultiEarlyRedemption" routerLinkActive="active-link">
+                  <a class="tab" class="disabledtabs">Autocallable</a>
+                </li>
+                <li routerLink="/MultiYieldEnhancement" routerLinkActive="active-link">
+                  <a class="tab" class="active">Yield Enhancement</a>
+                </li>
+                <li routerLink="/MulitiDiscountCertificates" routerLinkActive="active-link">
+                  <a class="tab" class="disabledtabs">Discount Certificates</a>
+                </li>
+                <li routerLink="/MultiAccu" routerLinkActive="active-link">
+                  <a class="tab" class="disabledtabs">Accumulator</a>
+                </li>
+                <li routerLink="/MultiDecu" routerLinkActive="active-link">
+                  <a class="tab" class="disabledtabs">Decumulator</a>
+                </li> -->
+              <!-- </ul> -->
+            </div>
+  
+            
+  
+  
+  
+  
+            <div class="innergrid display"><!-- Display none done by Sandip A || 21-Mar-2023 -->
+              <label class="pageHeader">Yield Enhancement Multi
+                Pricer</label>
+              <hr width="100%" class="productHeaderhr">
+            </div>
+            <div class="innergrid">
+            <label class="portfolio-label margin">My Portfolios</label>
+  
+            <select [(ngModel)]="portfolio" (change)="portfolioChange('Owner')">
+              <option value=""></option>
+              <option *ngFor="let arr of portfolioIdArr" value="{{ arr.P_ID }}">
+                {{ arr.P_Name }}
+              </option>
+            </select>
+  
+            <button class="button margin-width" (click)="Delete()" [disabled]="
+                  portfolio === '' || priceBtnActive === 'N' || isPortfolioShared
+                ">
+                <!-- <img src="{{ asseturl }}delete.png" alt="" style="filter: invert(100%); width: 21px" /> -->
+                <!-- <app-svg-icons [icon]="'delete'" [width]="'15'" [height]="'15'">
+                </app-svg-icons> -->
+                Delete Portfolio
+              </button>
+  
+            <label class="portfolio-label">Portfolio Name</label>
+  
+            <input type="text" class="max-width" [(ngModel)]="PortFolioName" (blur)="reset()" />
+  
+            <div class="btn-group">
+                <button type="button" class="btn button save-btn width" tabindex="36" [disabled]="priceBtnActive === 'N'"
+                (click)="generateXML(true)">
+                  <!-- <img src="{{ asseturl }}save.png" alt="" style="width: 21px" /> -->
+                  <span class="align">Save Portfolio</span>
+                </button>
+                <button type="button" class="btn btn-split dropdown-toggle dropdown-toggle-split save-portfolio"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" [disabled]="priceBtnActive === 'N'"
+                #saveButton>
+                  <p #saveP><i class="arrow" #saveI></i></p>
+                  <span class="sr-only align">Toggle Dropdown</span>
+                </button>
+              <div class="ddl" *ngIf="saveoptionflag" #ddlSave>
+                  <div class="update-portfolio" *ngIf="portfolio !== '' && accessRight !== 'VIEW'">
+                    <!-- <mat-icon style="
+                        width: 25px !important;
+                        height: 25px !important;
+                        margin: 3px 5px 3px 10px;
+                        font-size: 24px !important;
+                      ">
+                      save_alt</mat-icon> -->
+                      <app-svg-icons [icon]="'update-icon'" [width]="'15'" [height]="'15'">
+                      </app-svg-icons>
+                  </div>
+                  <div class="ddlitem padding-top" role="menuitem" id="divupdateportfolio"
+                    (click)="generateXML(false)" *ngIf="portfolio !== '' && accessRight !== 'VIEW'">
+                    Update portfolio
+                  </div>
+                  <div class="save-icon">
+                    <!-- <mat-icon style="
+                        width: 25px !important;
+                        height: 25px !important;
+                        margin: 3px 5px 3px 10px;
+                        font-size: 24px !important;
+                      ">
+                      save</mat-icon> -->
+          
+                      <img src="{{ asseturl }}save.png" alt="" class="save-icon-width" />     
+                  </div>
+                  <div class="ddlitem padding-top" role="menuitem" id="divsaveportfolio"
+                    (click)="generateXML(true)">
+                    Save New
+                  </div>
+                  <div class="update-portfolio" *ngIf="accessRight !== 'VIEW'">
+                    <!-- <mat-icon style="
+                        width: 25px !important;
+                        height: 25px !important;
+                        margin: 3px 5px 3px 10px;
+                        font-size: 24px !important;
+                      ">
+                      share</mat-icon> -->
+                      <app-svg-icons [icon]="'share-icon'" [width]="'15'" [height]="'15'">
+                      </app-svg-icons>
+                  </div>
+                  <div class="ddlitem padding-top" role="menuitem" (click)="showsaveSharePopup()"
+                    *ngIf="accessRight !== 'VIEW'">
+                    Save and Share
+                  </div>
+                </div>
+              </div>
+  
+            <div class="switch-flex">
+              <img src="{{ asseturl }}Layouttype.png" alt=""
+                class="flex1" />
+
+              <mat-slide-toggle (change)="commonfunctions.changeLayout(); getToggleData($event)" [checked]="toggleCheck" class="slide-toggle"
+                [disabled]="toggleDisabledFlag"></mat-slide-toggle>
+              <img src="{{ asseturl }}Layouttype.png" alt="" class="flex2" />
+            </div>
+          </div>
+  
+            <div class="innergrid shared-portfolio">
+            <label class="portfolio-label">Shared Portfolios</label>
+    
+                <select [(ngModel)]="portfolio" (change)="portfolioChange('Shared')">
+                  <option value=""></option>
+                  <option *ngFor="let arr of sharedportfolioArr" value="{{ arr.P_ID }}">
+                    {{ arr.P_Name }}
+                  </option>
+            </select>
+  
+              <!-- Modified width of button || PriyaL || 28Apr2022 ||Assigned by Pranav D. -->
+              <span class="add-btn1" >
+                <button class="button add-btn2" #addButton>
+                  Add
+                </button>
+                <div class="ddl" *ngIf="addFlag" (click)="addFlag = false" #ddlAdd>
+                  <div *ngIf="multiPhoenixArr && multiPhoenixArr.length > 0" class="ddlitem" role="menuitem"
+                    (click)="cloneRow()">
+                    <img src="{{ asseturl }}clone.png" alt="" class="clone-icon"/>
+                    <!-- Modified label of clone action || PriyaL || 04May2022 || as asked by Milind Sir -->
+                    <!-- <label style="cursor: pointer;">Clone</label> -->
+                    <label class="cursor">Clone Last Row</label>
+                  </div>
+                  <div class="ddlitem" role="menuitem" (click)="addNewRow(undefined)">
+                    <img src="{{ asseturl }}addnew.png" alt="" class="addNew-row"/>
+                    <!-- Modified label of clone action || PriyaL || 04May2022 || as asked by Milind Sir -->
+                    <!-- <label style="cursor: pointer;">Add
+                      New</label> -->
+                    <label class="cursor">Add New Row</label>
+                  </div>
+                </div>
+              </span>
+              <!-- <button class="button" (click)="Price()">Price</button> -->
+              <div class="btn-group new-btn" (clickOutside)="priceoptionflag = false">
+                <button type="button" class="btn button new-btn1 priceAll-btn" (click)="Price()" [disabled]="priceBtnActive === 'N'">
+                  Price All
+                </button>
+                <!-- <button type="button" (click)="priceOptions()" class="btn button dropdown-toggle dropdown-toggle-split"
+                style="height: 35px !important; font-size: 14px !important;" data-toggle="dropdown" aria-haspopup="true"
+                  aria-expanded="false" [disabled]="priceBtnActive === 'N'">
+                  <span class="sr-only">Toggle Dropdown</span>
+                </button>
+                <div class="ddl" style="top:45px;" *ngIf="priceoptionflag">
+                  <div style="float: left;padding-left: 5px;">
+                    <mat-icon
+                    style="width:25px !important;height:25px !important;margin: 3px 5px 3px 10px;font-size: 24px!important;font-family: 'Material Icons' !important;">
+  
+                      schedule</mat-icon>
+                  </div>
+                  <div class="ddlitem" style="padding-top: 5px;" (click)="showSchedulePopup()">Schedule Price</div>
+                </div> -->
+              </div>
+              <!-- Button added for clear price and rest by AdilP || @26-06-2023 -->
+              <div class="btn-group new-btn" (clickOutside)="priceoptionflag = false">
+              <button type="button" class="btn button new-btn1 clearPrice-btn" (click)="clearPrices()" [disabled]="priceBtnActive === 'N'">
+                Clear Price
+              </button>
+            </div>
+            <div class="btn-group new-btn" (clickOutside)="priceoptionflag = false">
+              <button type="button" class="btn button new-btn1 reset-btn" (click)="clearData()" [disabled]="priceBtnActive === 'N'">
+                Reset
+              </button>
+            </div>
+
+            <!-- Bulk Pricer (YE) - Export to excel. -->
+            <div class="btn-group new-btn" (click)="exportToExcel()">
+              <app-svg-icons [icon]="'xls'" [width]="'35'" [height]="'35'"
+              class="exportExcel" >
+              </app-svg-icons>
+            </div>
+  
+              <!-- <label *ngIf="allBooksData.length>1">On behalf of</label> 
+  
+  
+              <select *ngIf="allBooksData.length>1" [(ngModel)]="onBehalfOf" tabindex="" (change)="onbehalfChange();">
+  
+                <option *ngFor="let bookData of allBooksData;let i = index" [value]="bookData.BookCode">
+                  {{bookData.BookName }}
+                </option>
+  
+  
+            </select>  -->
+  <!--ErrorMsg shifted down by SandipA @27-Mar-2023 -->
+                <!--filter: invert changed by SandipA @30-Mar-2023 -->
+  
+
+              <div *ngIf="ErrorMsg !== ''">
+                <label class="error-msg">{{ ErrorMsg }}</label>
+              </div>
+              <div *ngIf="successMsg !== ''">
+                <label class="success-msg">{{ successMsg }}</label>
+              </div>
+            </div>
+            </div>
+  
+            
+  
+          <br>
+          <br>
+          <!-- <div class="innergrid">
+                 
+            
+               
+            </div> -->
+  
+  
+  
+        </div>
+  
+        <div class="tablephx" *ngIf="!commonfunctions.getLayout()" id="HorizontalLayout">
+          <table id="table1">
+            <tr>
+            <!-- <th rowspan="2" class="deleteCol sticky-col first-col">
+            </th> -->
+            <th rowspan="2" class="sticky-col first-col result-horz">Result
+              </th>
+              <th rowspan="2" class="th-large colminwidth">
+                Underlying</th>
+              <th rowspan="2" class="th-small colminwidth">
+                Ccy/<br />
+                Notional/<br />
+                Format
+              </th>
+              <!-- <th rowspan="2" class="th-small">Solve For</th> -->
+              <th rowspan="2" class="th-small colminwidth">
+                Solve For/<br />
+                Reoffer (%) /<br />
+                Issue Price (%)
+              </th>
+              <!-- <th rowspan="2">Issue Price (%)</th> -->
+              <!-- <th rowspan="2">Ccy</th> -->
+              <!-- <th rowspan="2">Size</th> -->
+              
+              <!-- <th colspan="3">Dates</th> -->
+              <th colspan="1" class="colminwidth">Dates</th>
+              <th colspan="2">Payoff at Maturity</th>
+              <!-- <th rowspan="2">Settlement Method	</th> -->
+              <!-- <th colspan="5">Autocall</th> -->
+              <!-- <th colspan="2">Autocall</th> -->
+              <!-- <th colspan="3">Autocall Coupon</th> -->
+              <!-- <th colspan="1">Autocall Coupon</th> -->
+              <!-- <th colspan="13">Periodic Coupon</th> -->
+              <th colspan="2">Yield Enhancement</th>
+              <!-- <th colspan="7">Payoff at Maturity</th> -->
+              
+              <!-- <th colspan="5">Final Upside</th> -->
+            <!-- <th colspan="3">Final Upside</th> -->
+            <!-- <th colspan="3">Autocall</th>
+              <th colspan="4">Coupon</th>-->
+              <!-- FIN1EURINT - 327 : Hide Funding Section for Bulk Pricer -->
+            <th colspan="2" *ngIf="displayFundingSection">Funding</th>
+            <!-- Shuffled column to the end || PriyaL || 03May2022 || As asked by Milind Sir -->
+            <th rowspan="2" class="th-small colminwidth">
+              <!-- FIN1EURINT-469 || Hide Quanto field from Bulk pricer -->
+              <!-- Quanto/<br /> -->
+              Settlement
+            </th>
+            <!-- <th rowspan="2" class="th-small">
+              Public or Private<br /> -->
+              <!-- FIN1EURINT-335 || Hide 'Listed' field from Bulk pricer -->
+              <!-- Listed -->
+              <!-- <br />
+              Stock Exchange -->
+            <!-- </th> -->
+            <!-- <th rowspan="2">Listed</th>
+              <th rowspan="2">Stock Exchange</th> -->
+            <!-- <th colspan="4">Regulatory</th> -->
+            <th colspan="1">Regulatory</th>
+            <!-- FIN1EURINT-528 : Bulk pricer CSS modification for column rearrangement | 04-Oct-2023 -->
+            </tr>
+            <tr class="trheadergeight">
+             
+            <th class="th-large" class="colminwidth"> Strike/ <br />
+                Issue/ <br />
+                Tenor
+              </th>
+              <th class="th-medium">
+                Barrier Type/<br/>
+              <!-- Frequency/<br/> -->
+              KI Barrier (%)
+              <!-- FIN1EURINT-471 || Remove protection level % from header of Bulk pricer for Yield ENhancement -->
+              <!-- KI Barrier (%)/ <br />
+              Prot. Level (%) -->
+            </th>
+            <th class="th-small">
+              Put Strike (%)/<br />
+              <!-- Lower Put Strike (%)/ <br/> -->
+              <!-- changed by Pranav D 03-Dec-2021 -->
+              <!-- Upper Put Strike (%)/<br/> -->
+              <!-- changed by Pranav D 03-Dec-2021 -->
+              Put Gearing (%)
+            </th>
+              <!-- <th> Issue Date </th>
+                <th> Tenor </th> -->
+              <!-- <th>
+                Type<br />
+                Barrier (%)<br />
+                Step Up / Down
+              </th>
+              <th>
+                Frequency <br />
+                From
+              </th> -->
+              <!-- <th> From </th>
+                <th> Barrier (%) </th>
+                <th> Step Up / Down </th> -->
+              <!-- <th> 
+                ER Coupon Type<br/>
+                ER Coupon p.a. (%)
+              </th> -->
+              <!-- <th> ER Coupon p.a. (%) </th> -->
+              <!-- <th> 
+                Add Periodic Coupon/<br/>
+                Coupon in Fine 
+              </th> -->
+            <th class="th-medium">
+              Cpn Type/ <br />
+              Cpn Frequency/ <br />
+              Cpn p.a. (%)
+            </th>
+            <th class="th-medium">
+              Cpn Barrier Type/<br />
+              Cpn Barrier Level (%)
+            </th>
+            <!-- <th> Coupon Barrier Level (%) </th>
+              <th> Coupon Frequency </th>
+              <th> Coupon p.a. (%) </th>
+              <th> Coupon in Fine </th> -->
+              <!-- <th> Floating Ref Index/<br/>
+                Yield Spread p.a./<br/>
+                Floor & Cap </th> -->  <!-- changed by Pranav D 03-Dec-2021 -->
+              <!-- <th> Yield Spread p.a. </th>
+              <th> Floor & Cap </th>
+              <th> Multiplier (%) </th> -->
+            <!-- <th style="min-width: 13em !important;">
+              Range Accrual Freq/ <br/>
+                Lower Trigger (%)/<br/>
+                Upper Trigger (%)<br/> --><!-- commented by Priya L 11-Dec-2021 -->
+                <!-- Multiplier (%)  -->
+              <!-- </th> --><!-- commented by Priya L 11-Dec-2021 -->
+              <!-- <th> Lower/Upper Trigger (%) </th> -->
+              
+            <!-- <th> Upper Put Strike (%) </th>
+              <th> Lower Put Strike (%) </th>
+              <th> Put Gearing (%) </th>
+              <th> KI Barrier (%) </th>
+              <th> Protection Level (%) </th> -->
+              <!-- <th> Final Upside </th> -->
+            <!-- <th style="min-width: 13em !important;"> 
+              Call Strike (%)/<br/>
+              Lower Call Strike (%)/<br/>
+                Upper Call Strike (%)/<br/>
+            </th> -->
+            <!-- <th style="min-width: 13em !important;">
+                Call Gearing (%)/ <br/>
+                Call Spread Gearing (%)
+              </th> -->
+              <!-- FIN1EURINT - 327 : Hide Funding Section for Bulk Pricer -->
+            <th class="th-small" *ngIf="displayFundingSection">Funding Type /<br>Freq.</th>
+            <th class="th-small" *ngIf="displayFundingSection">Index Rate /<br>Spread (%)</th>
+            <!-- <th> Lower Call Strike (%) </th>
+              <th> Upper Call Strike (%) </th>
+              <th> Call Gearing (%) </th> -->
+              <!-- <th>Strike Date /<br> Payment Date </th>
+                <th>Tenor<img src="{{asseturl}}info.jpg" class="info">
+                  <div class="infodiv">
+                    <span class="infoNote" style="white-space: initial;width: 260px;">
+                      In case you require the exact Maturity or Final Observation Date, please do not hesitate to request a
+                      Termsheet.
+                    </span>
+                  </div>
+                </th>
+                <th>Strike (%) /<br>Leverage</th>
+                <th>Barrier Type /<br>Barrier Level (%)</th>
+                <th>Freq. /<br>Trigger(%)</th>
+                <th>Stepdown (%)/<br>Non-Call
+                  <img src="{{asseturl}}info.jpg" class="info">
+                  <div class="infodiv">
+                    <span class="infoNote" style="white-space: initial;">
+                      Autocall from Noncall + 1 period.
+                    </span>
+                  </div>
+                </th>
+                <th>ER Cpn Type /<br>Coupon (%)</th>
+                <th>Type /<br>Memory Pds.</th>
+                <th>Trigger (%) /<br>Frequency</th>
+                <th>Coupon (%) /<br>Obs.</th>
+                <th style="min-width: 100px !important;">Alt. Coupon (%)
+                    <img src="{{asseturl}}info.jpg" class="info">
+                    <div class="infodiv">
+                      <span class="infoNote">
+                        Coupon paid if product is not
+                        redeemed.
+                      </span>
+                    </div>
+    
+                </th>
+                <th>Funding Type /<br>Freq.</th>
+                <th>Index Rate /<br>Spread (%)</th> -->
+ <!-- Shuffled column to the end || PriyaL || 03May2022 || As asked by Milind Sir -->
+<th class="th-medium">
+                  Priips/<br />
+                  Country/<br />
+                  Language
+                </th>
+                <!-- <th> Country </th>
+                  <th> Language </th> -->
+            <!-- <th class="th-small"> Termsheet </th> --><!--Commented by SandipA as suggested by Nitish K || 06-Jul-2023-->
+            </tr>
+            <app-ec-submultirequest-ye id="submitrequest{{ rowIndex }}"
+              *ngFor="let row of multiPhoenixArr; let rowIndex=index;" [shares]="shares" [ReceivedCCY]="ReceivedCCY"
+              [ComponentIndex]="rowIndex" [ProductName]="ProductName" [DisplayProductName]="DisplayProductName"
+              [data]="row" [data1]="clone" [length1]="multiPhoenixArr.length" [mappedformatlist]="mappedformatlist"
+              (errorMsgChanged)="errorMsgChangedHandler($event)" (scheduleMsgChanged)="scheduleMsgChangedHandler($event)" [showDefault]="showDefault">
+              <!-- FIN1EURINT-502 : Default values appears during load after portfolio saving -->
+            </app-ec-submultirequest-ye>
+          </table>
+        </div>
+        <div class="verticalTableGrid vertical" *ngIf="commonfunctions.getLayout()" id="VerticalLayout">
+          <div class="vertical-headers">
+          <!-- <div class="submultiDivHeader "></div> -->
+          <!--sticky-col first-col class added by SandipA for FIN1EURINT-464 @16-Jun-2023  -->
+            <div class="submultiDivHeader sticky-col first-col vert-result">Result</div>
+            <!-- Underlying height changed by SandipA @30-Mar-2023  -->
+            <div class="submultiDivHeader vert-underlying">Underlying</div>
+            <div class="submultiDivHeader">Ccy </div>
+            <div class="submultiDivHeader">Notional</div>
+            <div class="submultiDivHeader">Format</div>
+            <div class="submultiDivHeader">Solve For</div>
+            <div class="submultiDivHeader">Reoffer(%)</div>
+            <!-- (USD)  -->
+            <div class="submultiDivHeader">Issue Price (%)</div>
+     
+            <!-- <div class="submultiDivHeader">Dates</div> -->
+            <div class="headerDiv">
+              <div class="submultiDivHeader headerSubDiv vert-height">Dates</div>
+              <div class="subHeaderDiv">
+                <div class="submultiDivHeader subDivHeader ">Strike</div>
+                <div class="submultiDivHeader subDivHeader ">Issue</div>
+                <div class="submultiDivHeader subDivHeader ">Tenor</div>
+              </div>
+            </div>
+
+            <!-- <div class="submultiDivHeader">Payoff at Maturity</div> -->
+            <div class="headerDiv">
+              <div class="submultiDivHeader headerSubDiv  vert-height" >Payoff at Maturity</div>
+                <div class="subHeaderDiv">
+                  <div class="submultiDivHeader subDivHeader">Barrier Type</div>
+                  <div class="submultiDivHeader subDivHeader">KI Barrier (%)</div>
+                <!-- <div class="submultiDivHeader">Frequency</div> -->
+                <div class="submultiDivHeader subDivHeader">Put Strike (%)</div>
+                <!-- <div class="submultiDivHeader">Upper Put Strike (%)</div>
+                  <div class="submultiDivHeader">Lower Put Strike (%) </div> -->
+                  <div class="submultiDivHeader subDivHeader">Put Gearing (%)</div>
+                
+                  <!-- <div class="submultiDivHeader">Protection Level (%)</div> -->
+                </div>
+              </div>
+  
+  
+           
+  
+            <!-- <div class="submultiDivHeader">Autocall</div> -->
+            <!-- <div class="headerDiv">
+              <div class="submultiDivHeader" style="height: 100%;">Autocall</div>
+              <div class="subHeaderDiv">
+                <div class="submultiDivHeader">Type</div>
+                <div class="submultiDivHeader">Frequency</div>
+                <div class="submultiDivHeader">From</div>
+                <div class="submultiDivHeader">Barrier (%)</div>
+                <div class="submultiDivHeader">Step Up / Down</div>
+              </div>
+            </div> -->
+  
+            <!-- <div class="submultiDivHeader">Autocall Coupon</div> -->
+            <!-- <div class="headerDiv">
+              <div class="submultiDivHeader" style="height: 100%;">Autocall Coupon</div>
+              <div class="subHeaderDiv">
+                <div class="submultiDivHeader">Type</div>
+                <div class="submultiDivHeader">ER Coupon p.a. (%)</div>
+                <div class="submultiDivHeader">Add Periodic Coupon</div>
+              </div>
+            </div> -->
+  
+            <!-- <div class="submultiDivHeader">Periodic Coupon</div> -->
+            <div class="headerDiv">
+              <div class="submultiDivHeader headerSubDiv subDivHeader2 vert-height">Yield Enhancement</div>
+              <div class="subHeaderDiv">
+                <div class="submultiDivHeader subDivHeader">Cpn Type</div>
+                <div class="submultiDivHeader subDivHeader">Cpn Frequency</div>
+                <div class="submultiDivHeader subDivHeader">Cpn p.a. (%)</div>
+                <div class="submultiDivHeader subDivHeader">Cpn Barrier Type</div>
+                <div class="submultiDivHeader subDivHeader subDivHeader2">Cpn Barrier Level (%)</div>
+                <!-- <div class="submultiDivHeader">Coupon in Fine</div> -->
+                <!-- <div class="submultiDivHeader">Floating Ref Index</div>
+                <div class="submultiDivHeader">Yield Spread p.a.</div>
+                <div class="submultiDivHeader">Floor & Cap</div> -->
+                <!-- <div class="submultiDivHeader">Multiplier (%)</div> -->
+                <!-- <div class="submultiDivHeader">Range Accrual Freq</div> --><!-- commented by Priya L 11-Dec-2021 -->
+                <!-- <div class="submultiDivHeader">Lower/Upper Trigger (%)</div> -->
+              </div>
+            </div>
+  
+  
+            
+  
+            <!-- <div class="submultiDivHeader">Final Upside</div> -->
+            <!-- <div class="headerDiv">
+              <div class="submultiDivHeader" style="height: 98.5%;">Final Upside</div>
+              <div class="subHeaderDiv">
+                <div class="submultiDivHeader">Final Upside</div>
+                <div class="submultiDivHeader">Call Strike (%)</div>
+                <div class="submultiDivHeader">Lower Call Strike (%)</div>
+                <div class="submultiDivHeader">Upper Call Strike (%) </div>
+              <div class="submultiDivHeader">Call Gearing (%)</div>
+              <div class="submultiDivHeader">Call Spread Gearing (%)</div>
+              </div>
+            </div> -->
+            <!-- FIN1EURINT - 327 : Hide Funding Section for Bulk Pricer -->
+          <div class="headerDiv" *ngIf="displayFundingSection">
+            <div class="submultiDivHeader headerSubDiv subDivHeader2 vert-height" >Funding</div>
+            <div class="subHeaderDiv">
+              <div class="submultiDivHeader subDivHeader ">Type </div>
+              <div class="submultiDivHeader subDivHeader ">Freq.</div>
+              <div class="submultiDivHeader subDivHeader subDivHeader2">Index Rate / Spread (%)</div>
+            </div>
+          </div>
+            <!-- <div class="headerDiv">
+                <div class="submultiDivHeader" style="height: 98.5%;">Dates</div>
+                <div class="subHeaderDiv">
+                  <div class="submultiDivHeader">Strike Date</div>
+                  <div class="submultiDivHeader">Payment Date</div>
+                  <div class="submultiDivHeader">Tenor<img src="{{asseturl}}info.jpg" class="info">
+                    <div class="infodiv">
+                      <span class="infoNote" style="white-space: initial;width: 260px;">
+                        In case you require the exact Maturity or Final Observation Date, please do not hesitate to request
+                        a
+                        Termsheet.
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div> -->
+            <!-- <div class="headerDiv">
+                <div class="submultiDivHeader" style="height: 100%;">Barrier</div>
+                <div class="subHeaderDiv">
+                  <div class="submultiDivHeader">Strike (%) </div>
+                  <div class="submultiDivHeader">Leverage </div>
+                  <div class="submultiDivHeader">Barrier Type </div>
+                  <div class="submultiDivHeader">Barrier Level (%)</div>
+                </div>
+              </div>
+    
+              <div class="headerDiv">
+                <div class="submultiDivHeader" style="height: 100%;">Autocall</div>
+                <div class="subHeaderDiv">
+                  <div class="submultiDivHeader">Freq. </div>
+                  <div class="submultiDivHeader">Trigger(%) </div>
+                  <div class="submultiDivHeader">Stepdown (%) </div>
+                  <div class="submultiDivHeader">Non-Call
+                    <img src="{{asseturl}}info.jpg" class="info">
+                    <div class="infodiv">
+                      <span class="infoNote" style="white-space: initial;">
+                        Autocall from Noncall + 1 period.
+                      </span>
+                    </div>
+                  </div>
+                  <div class="submultiDivHeader">ER Cpn Type </div>
+                  <div class="submultiDivHeader">Coupon (%)</div>
+                </div>
+              </div>
+              <div class="headerDiv">
+                <div class="submultiDivHeader" style="height: 100%;">Coupon</div>
+                <div class="subHeaderDiv">
+                  <div class="submultiDivHeader">Type </div>
+                  <div class="submultiDivHeader">Memory Pds.</div>
+                  <div class="submultiDivHeader">Trigger (%)</div>
+                  <div class="submultiDivHeader">Frequency</div>
+                  <div class="submultiDivHeader">Coupon (%) </div>
+                  <div class="submultiDivHeader">Obs.</div>
+                  <div class="submultiDivHeader"><span> Alt. Coupon (%)
+                      <img src="{{asseturl}}info.jpg" class="info">
+                      <div class="infodiv">
+                        <span class="infoNote">
+                          Coupon paid if product is not
+                          redeemed.
+                        </span>
+                      </div>
+                    </span>
+                  </div>
+                </div>
+              </div>
+    
+    
+              <div class="headerDiv">
+                <div class="submultiDivHeader" style="height: 100%;">Funding</div>
+                <div class="subHeaderDiv">
+                  <div class="submultiDivHeader">Type </div>
+                  <div class="submultiDivHeader">Freq.</div>
+                  <div class="submultiDivHeader">Index Rate / Spread (%)</div>
+                </div>
+              </div> -->
+ <!-- Shuffled column to the end || PriyaL || 03May2022 || As asked by Milind Sir -->
+              <!-- FIN1EURINT-469 || Hide Quanto field from Bulk pricer -->
+              <!-- <div class="submultiDivHeader">Quanto </div> -->
+              <div class="submultiDivHeader">Settlement</div>
+            <!-- <div class="submultiDivHeader">Public or Private</div> -->
+            <!-- FIN1EURINT-335 || Hide 'Listed' field from Bulk pricer -->
+            <!-- <div class="submultiDivHeader">Listed</div> -->
+            <!-- <div class="submultiDivHeader">Frequency /<br/> Leverage</div> -->
+            <!-- <div class="submultiDivHeader">Stock Exchange</div> -->
+  
+            <!-- <div class="submultiDivHeader">Regulatory</div> -->
+            <div class="headerDiv">
+              <div class="submultiDivHeader headerSubDiv vert-height" >Regulatory</div>
+              <div class="subHeaderDiv">
+                <div class="submultiDivHeader subDivHeader ">Priips</div>
+                <div class="submultiDivHeader subDivHeader ">Country</div>
+                <div class="submultiDivHeader subDivHeader ">Language</div>
+                <!-- <div class="submultiDivHeader subDivHeader subDivHeader2">Termsheet</div> --><!--Commented by SandipA as suggested by Nitish K || 06-Jul-2023-->
+              </div>
+            </div>
+          </div>
+          <div class="vert-submulti">
+            <app-ec-vertical-submultirequest-ye id="submitrequest{{ rowIndex }}"
+              *ngFor="let row of multiPhoenixArr; let rowIndex=index;" [shares]="shares" [ReceivedCCY]="ReceivedCCY"
+              [ComponentIndex]="rowIndex" [ProductName]="ProductName" [DisplayProductName]="DisplayProductName"
+              [data]="row" [data1]="clone" [length1]="multiPhoenixArr.length"
+              (errorMsgChanged)="errorMsgChangedHandler($event)" [mappedformatlist]="mappedformatlist"
+              (scheduleMsgChanged)="scheduleMsgChangedHandler($event)" class="vert-submultiYE" [showDefault]="showDefault">
+              <!-- FIN1EURINT-502 : Default values appears during load after portfolio saving -->
+            </app-ec-vertical-submultirequest-ye>
+          </div>
+        </div>
+        <br><br>
+      </div>
+  
+    </div>
+  </div>
+  
+ <div id="schedule" *ngIf="showSchedulePopupFlag">
+    <div class="schedulePopup">
+      <div>
+        <span class="date-time">Pick date & time</span>
+        <div class="btnClose hideSchedule-Popup" (click)="hideSchedulePopup()">
+          X
+        </div>
+      </div>
+      <div class="scheduleDiv">
+        <div class="calendar-wrapper">
+          <mat-calendar #calendar (monthSelected)="monthSelected($event)" [(selected)]="selectedDate"
+            (selectedChange)="dateChanged()" [minDate]="todayDate"></mat-calendar>
+        </div>
+        <div>
+          <input type="text" 
+            class="scheduleInput schedule-Input1" [(ngModel)]="inputDate" value="{{selectedDate | date:'dd-MMM-yyyy'}}" disabled><br />
+          <!-- <input type="text" style="max-width: 240px !important;margin: 20px 0px 0px 20px !important;" 
+            class="scheduleInput" [(ngModel)]="inputTime" value="{{selectedDate | date:'hh:mm a'}}"> -->
+          <input type="time" class="scheduleInput schedule-Input2" [(ngModel)]="inputTime"
+          value="{{inputTime}}">
+        </div>
+      </div>
+      <div class="scheduleBtnGrid">
+        <div>
+          <span class="error-msg1" *ngIf="ErrorMsg!==''">{{ErrorMsg}}</span>
+          <span class="successMsg" *ngIf="scheduleMsg!==''">{{scheduleMsg}}</span>
+        </div>
+        <div>
+          <button class="btnPrice" (click)="hideSchedulePopup()">Cancel</button>
+          <button class="btnPrice" (click)="scheduleSend()">Schedule Send</button>
+  
+        </div>
+      </div>
+    </div>
+  
+  </div>
+  
+  <div id="saveShare" *ngIf="showsaveSharePopupFlag">
+    <div class="savesharePopup">
+      <div class="save-share">
+        <span class="share-label">Share with Colleagues and Groups</span>
+      </div>
+      <div class="save-share">
+        <!-- <input type="text" placeholder="Please enter user ID or client group" class="longText saveShareInput">  -->
+        <input type="text" placeholder="Please enter user ID or client group" value="{{userName}}" class="saveShareInput shareWith-user"
+          [(ngModel)]="userName" maxlength="10"
+          (keypress)="ChangeIndex($event); showSuggestions = true" (keydown.enter)="selectShare($event); userflag=false;"
+          (keydown.backspace)="backKeyPress($event)" (keydown.delete)="backKeyPress($event)"
+          (keydown.tab)="userflag=false;"
+          (keydown.ArrowUp)="selectedBIndex = commonfunctions.moveUpSelection1($event, selectedBIndex)"
+          (keydown.ArrowDown)="selectedBIndex = commonfunctions.moveDownSelection1($event, selectedBIndex)" tabindex="5"
+          Id="txtUserGroup" />
+        <div class="SelectorBox" *ngIf="userflag && showSuggestions" (clickOutside)="userflag=false;">
+          <a *ngFor="let user of (users | searchUserGroup: userName); let i = index" (keypress)="ChangeIndex($event)"
+            (keydown.enter)="selectShare($event)">
+            <div *ngIf="user" [attr.data-share]="user.Code" (click)="showUnderlying($event,user)"
+              [ngClass]="{HoverSuggestion: i === selectedBIndex}">
+              <span>{{ user.Name }}</span>
+            </div>
+          </a>
+        </div>
+      </div>
+  
+      <div class="userListDiv" *ngFor="let u of userBasket;let i = index">
+        <button class="btnDel" (click)="deleteUserfromList(i)" [disabled]="isPortfolioShared && !u.NewAddFlag">
+          <!-- <img src="{{asseturl}}delete.png" width="30px" style="filter: invert(50%);cursor: pointer;" title="Delete"> -->
+          <app-svg-icons [icon]="'delete'" [width]="'20'" [height]="'20'">
+          </app-svg-icons>
+        </button>
+        <div class="padding-top">
+          <span class="user-name">{{u.Name}}</span>
+        </div>
+        <div>
+          <select id="list{{i}}" class="user-access" (change)="changeAccessofUserGroup($event,i)"
+            [attr.selected]="u.Access" [disabled]="isPortfolioShared && !u.NewAddFlag">
+            <!-- <option  Value=''></option> -->
+            <option
+              *ngIf="((u.Type === 'USER' || u.Type === 'User') && !isPortfolioShared ) || (isPortfolioShared && !u.NewAddFlag)"
+              [ngValue]='u.Access' [attr.selected]="u.Access === 'EDIT' ? true : null">EDIT</option>
+            <option [ngValue]='u.Access' [attr.selected]="u.Access === 'VIEW' ? true : null">VIEW</option>
+          </select>
+        </div>
+      </div>
+  
+      <div class="port-label">
+        <span class="port-owner">Owner:</span>
+        <span class="portOwner-label">{{portfolioowner}}</span>
+      </div>
+      <div class="port-shareDiv">
+        <button class="button port-cancel" (click)="hidesaveSharePopup()">Cancel</button>
+        <button class="button" (click)="sharePortfolio()">Share</button>
+      </div>
+  
+    </div>
+  
+  </div>

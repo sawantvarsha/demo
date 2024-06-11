@@ -1,0 +1,46 @@
+.container {
+  width: 100%;
+}
+
+.tableClass {
+  height: fit-content;
+    width: 85%;
+    overflow: hidden;
+    margin-top: 5%;
+    margin-left: 6%;
+}
+
+.chartTitle {
+  margin-left: 115px;
+  margin-top: 20px;
+  font-weight: 800;
+  font-size: 22px;
+}
+
+.part {
+  display: flex;
+  width: 100%;
+  margin-top: 40px;
+  margin-bottom: -40px;
+  margin-left: 95px;
+}
+
+.subpart {
+  display: flex;
+  margin-left: 100px;
+}
+
+.td {
+  padding-left: 20px;
+}
+
+.heading {
+  font-size: 26px;
+  font-weight: 400;
+  display: flex;
+  margin: 10px 0px 0px 130px;
+}
+
+.yellow {
+  color: var(--active);
+}

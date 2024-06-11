@@ -1,0 +1,293 @@
+<div *ngIf="IsBackButtonEnabled && !displaySearch" class="page-navigation" [ngClass]='' style="gap: 25px;">
+    <app-svg-icons class="back-button" [icon]="'back-button'" [width]="'40'" [height]="'40'" [fill]="'var(--headers)'"
+        (click)="fnRedirectToHomePage();"></app-svg-icons>
+    <div class="page-title">Order Entry</div>
+</div>
+<div *ngIf="!IsBackButtonEnabled && !displaySearch" class="page-navigation">
+    <div class="page-title">Order Entry</div>
+</div>
+<div [ngClass]="{'mutualfundComponentpopup': displaySearch, 'mutualfundComponent': !displaySearch}">
+    <div class="tabs tab-active" *ngIf="!displaySearch">SIP</div>
+    <div class="fundname-row" *ngIf="isUserRM">
+        <div class="middle">Customer</div>
+        <div class="middle">
+            <app-customer-search (selectedCustomerValue)="selectedCustomerValue1($event)"></app-customer-search>
+        </div>
+    </div>
+
+    <!--// Added by Alolika G on 17-02-2022-->
+
+    <div class="gridInfo" *ngIf="productName">
+        <div class="funddetails">
+            <div class="fundtitlerow">{{productName}}</div>
+            <div class="shareinfo">
+                <span class="fs12 heading">Currency </span>
+                <span class="medium value-top">{{currency}}</span>
+                <span class="medium value-top">|</span>
+                <span class="fs12 heading"> ISIN </span>
+                <span class="medium value-top"> {{ISIN}} </span>
+                <span class="medium value-top">|</span>
+                <span class="fs12 heading">Rating </span>
+                <span class="medium value-top"> {{rating}} </span>
+            </div>
+            <!-- <div class="funddetails " style="color: red;" *ngIf="details['ProductName']">{{msg}}
+            </div> -->
+        </div>
+    </div>
+
+    <div class="param-cols">
+        <div class="column1">
+            <div class="fundparams-row ">
+                <div class="middle">Currency</div>
+                <div class="middle " *ngIf="!fundCCy">
+                    <select [(ngModel)]="currency" class="left" (change)="clearBtn();updateFundonCCy(currency)">
+                        <option *ngFor="let ccy of currencyList" (selected)="ccy.Code === currency" [value]="ccy.Code">
+                            {{ccy.Code}}
+                        </option>
+                    </select>                    
+                </div>
+                <div class="middle " *ngIf="fundCCy">
+                    <input type="text " class="left" [(ngModel)]="currency" [disabled] = "true"/>
+                </div>
+            </div>
+            <div class="fundparams-row">
+                <div class="middle">No Of Installments </div>
+                <div class="middle">
+                    <input type="text " class="right" [(ngModel)]="Installment" (change)="changeFrequency()"
+                        (keydown.enter)="changeFrequency()" (keydown.tab)="changeFrequency()" />
+
+                </div>
+            </div>
+            <div class="fundparams-row">
+                <div class="middle">Start Date </div>
+                <div class="middle FromDateLabel">
+                    <!-- <input type="date" class="input-dob center" [attr.data-date]="startDate" style="margin-top: 0px;  width: 100% !important;"
+                        placeholder="dd-mm-yyyy" data-date-format="DD-MMM-YYYY" value="" min="1997-01-01"
+                        max="2030-12-31" [(ngModel)]="startDate" tabindex="6"
+                        (change)="selectDate(startDate)" > -->
+                    <input type="date" name="startDate" id="startDate" class="input-dob" tabindex="16" min="1997-01-01"
+                        style="margin-top: 0px;  width: 100% !important;" max="2030-12-31" [(ngModel)]="startDate"
+                        (change)="selectDate(startDate)" data-date-format="DD-MMM-YYYY">
+                    <span id="FromDateLabel">{{startDate| date:'dd-MMM-yyyy'}}</span>
+                </div>
+            </div>
+            <div class="fundparams-row" *ngIf="isUserRM">
+                <div class="middle">Commission (%) </div>
+                <div class="middle">
+                    <input type="text " class="right" [(ngModel)]="Commission"
+                        (change)="calculateCommissionAndVATAmount()" [disabled]="false" />
+
+                </div>
+            </div>
+            <div class="fundparams-row" *ngIf="isUserRM">
+                <div class="middle">VAT (%) </div>
+                <div class="middle">
+                    <input type="text " class="right" [(ngModel)]="VAT" [disabled]="true" />
+
+                </div>
+            </div>
+            <div class="fundparams-row" *ngIf="isUserRM">
+                <div class="middle">SIP Fees </div>
+                <div class="middle">
+                    <select [(ngModel)]="SIPFees">
+                        <option *ngFor="let fees of SIPFeesValues">{{fees.DATA_VALUE}}
+                        </option>
+                    </select>
+
+                </div>
+            </div>
+            <div class="fundparams-row" *ngIf="!isUserRM && this.moredetails !== 'More Details'">
+                <div class="middle">Customer</div>
+                <!-- <div class="middle" *ngIf="!isUserRM">
+                        <input type="text" [(ngModel)]="CustomerName" disabled placeholder="Customer" />
+                      </div>
+                      <div class="middle" *ngIf="isUserRM">
+                        <input type="text" [(ngModel)]="CustName" disabled placeholder="Customer" />
+                      </div> -->
+                <div class="middle">
+                    <input type="text" [(ngModel)]="CustomerName" disabled placeholder="Customer" />
+                </div>
+            </div>
+        </div>
+        <div class="column1">
+            <div class="fundparams-row">
+                <div class="middle">Investment Amount</div>
+                <div class="middle">
+                    <input type="text " class="right" [(ngModel)]="InvestmentAmount" (blur)="cfs.FormatNumber($event)"
+                        (change)="InvestmentAmount = cfs.NotionalChange($event); calculateInvestmentAmount(); calculateCommissionAndVATAmount();"
+                        (focus)="cfs.UnformatNumber($event);cfs.SelectFullText($event);"
+                        (keypress)=" cfs.NotionalValidate($event)" />
+
+                </div>
+            </div>
+
+            <div class="fundparams-row">
+                <div class="middle">Frequency </div>
+                <div class="middle">
+                    <select [(ngModel)]="Frequency" (change)=changeFrequency()>
+                        <option *ngFor="let freq of FrequencyValues" (selected)="freq.DATA_VALUE === Frequency"
+                            [value]="freq.DATA_VALUE">{{freq.DATA_VALUE}}
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="fundparams-row">
+                <div class="middle">Last Installment Date </div>
+                <div class="middle">
+                    <!-- <input type="date" class="input-dob center" [attr.data-date]="lastDate" style="margin-top: 0px; width: 100% !important;"
+                        placeholder="dd-mm-yyyy" data-date-format="DD-MMM-YYYY" value="" min="1997-01-01"
+                        max="2030-12-31" [(ngModel)]="lastDate" tabindex="6" [disabled] = true> -->
+                    <input type="text " class="center" [(ngModel)]="lastDate" [disabled]="true" />
+
+                </div>
+            </div>
+
+            <div class="fundparams-row" *ngIf="isUserRM">
+                <div class="middle">Commission Amount </div>
+                <div class="middle">
+                    <input type="text " class="right" [(ngModel)]="CommissionAmount" [disabled]="true" />
+
+                </div>
+            </div>
+            <div class="fundparams-row" *ngIf="isUserRM">
+                <div class="middle"> VAT Amount </div>
+                <div class="middle">
+
+
+                    <input type="text " class="right" [(ngModel)]="VATAmount " [disabled]="true" />
+                </div>
+            </div>
+            <div class="fundparams-row" *ngIf="this.moredetails !== 'More Details'">
+                <div class="middle">Portfolio</div>
+                <div class="middle">
+                    <select [(ngModel)]="portfolio" (change)="updatePortfolio()">
+                        <option *ngFor="let arr of portfolioList;" [value]="arr.FacDesc">{{arr.PortfolioName}}
+                        </option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="param-cols margin-top" *ngIf="this.moredetails !== 'More Details'">
+        <div class="column1" *ngIf="isUserRM">
+            <div class="fundparams-row">
+                <div class="middle">Customer</div>
+                <!-- <div class="middle" *ngIf="!isUserRM">
+                    <input type="text" [(ngModel)]="CustomerName" disabled placeholder="Customer" />
+                  </div>
+                  <div class="middle" *ngIf="isUserRM">
+                    <input type="text" [(ngModel)]="CustName" disabled placeholder="Customer" />
+                  </div> -->
+                <div class="middle">
+                    <input type="text" [(ngModel)]="CustomerName" disabled placeholder="Customer" />
+                </div>
+            </div>
+        </div>
+        <div class="column2">
+
+            <div class="fundparams-row">
+                <div class="middle">Account Number</div>
+                <div class="middle">
+                    <select class="right paddingR_30px" [(ngModel)]="Account_Number" (change)="cashBalance()">
+                        <!-- [disabled]="isUserRM === false"-->
+                        <option *ngFor="let arr of accountList;">{{arr.Param1}}
+                        </option>
+                    </select>
+                    <!-- <input type="text " class="right" disabled="disabled" [(ngModel)]="Account_Number"  /> -->
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+
+    <div class="fundDetails">
+        <div class="header" style="margin: 20px 0px;">
+            <!-- <app-svg-icons [icon]="'add-new'" [width]="'25'" [height]="'25'" style="margin: auto;" [fill]="'var(--active)'" (click)="addRow()">
+            </app-svg-icons> -->
+            <app-svg-icons [icon]="'add-icon'" [width]="'22'" [height]="'22'" style="margin: auto;"
+                [fill]="'var(--active)'" (click)="addRow()" *ngIf="!sipFlag">
+            </app-svg-icons>
+            <!-- <app-svg-icons [icon]="'add-icon'" [width]="'22'" [height]="'22'" style="margin: auto;"
+                [fill]="'var(--active)'" *ngIf="sipFlag" class="svg">
+            </app-svg-icons> -->
+            <div *ngIf="sipFlag"></div>
+            <div class="center">Fund</div>
+            <div class="center">Contribution (%)</div>
+            <div class="center">Investment Amount</div>
+            <div class="center">NAV</div>
+            <div class="center">Currency</div>
+        </div>
+        <div class="header" *ngFor="let row of SelectedfundsList; let i = index" style="margin-bottom: 10px;">
+            <app-svg-icons [icon]="'subtract-icon'" [width]="'20'" [height]="'20'" style="margin: auto;"
+                [fill]="'var(--gray)'" (click)="removeRow(i)" *ngIf="!sipFlag">
+            </app-svg-icons>
+            <!-- <app-svg-icons [icon]="'subtract-icon'" [width]="'20'" [height]="'20'" style="margin: auto;"
+                [fill]="'var(--gray)'" *ngIf="sipFlag" class="svg">
+            </app-svg-icons> -->
+            <div *ngIf="sipFlag"></div>
+            <div>
+                <input type="text" [tabindex]=1 placeholder="Search" [(ngModel)]="row.FundName"
+                    (keydown.enter)="selectShareOnEnter($event,i);row.showSuggestions = false;"
+                    (keydown.ArrowUp)="selectedMFIndex = cfs.moveUpSelection($event, selectedMFIndex)"
+                    (keydown.ArrowDown)="selectedMFIndex = cfs.moveDownSelection($event, selectedMFIndex)"
+                    (keypress)="filterFun($event,i);row.showSuggestions = true ; " [disabled]="sipFlag">
+
+                <div class="UnderlyingSearch " *ngIf="row.FundName.length > 0 && row.showSuggestions">
+                    <div class="SelectorBox">
+
+                        <a *ngFor="let mf of mfList; let j = index" (keypress)="ChangeIndex($event)">
+                            <div *ngIf="mf" [attr.data-mf]="mf['Param5']" (click)="selectShareOnClick(mf.Param5,i); "
+                                (keydown.enter)="selectShareOnEnter($event,i)"
+                                [ngClass]="{'HoverSuggestion': (j === selectedMFIndex)}">
+                                <span>{{mf['Param5']}} {{mf['Param4']}}</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <!-- <input type="text " class="right" [(ngModel)]="Contribution[i]" (change)="changeContribution(i)" />
+            <input type="text " class="right" [(ngModel)]="InvestmentAmountSelectedFund[i]" (change)="cfs.FormatNumber($event)" disabled/>
+            <input type="text " class="right" [(ngModel)]="NAV[i]" disabled/>
+            <input type="text " class="right" [(ngModel)]="SelectedCurrency[i]" disabled/> -->
+            <input type="text " class="right" [(ngModel)]="row.ContributionPer"
+                (change)="changeContribution(i);cfs.FormatNumber($event)" [disabled]="sipFlag" />
+            <input type="text " class="right" [(ngModel)]="row.InvestedAmount" (change)="cfs.FormatNumber($event)"
+                disabled />
+            <input type="text " class="right" [(ngModel)]="row.Nav" disabled />
+            <input type="text " class="left" [(ngModel)]="row.FundCurrency" disabled />
+        </div>
+    </div>
+
+    <div class="fund-button-row">
+        <div></div>
+        <div class="details right">
+
+            <div class="link" (click)="moredetailsCheck()"> <u>
+                    {{moredetails}}</u></div>
+            <div>
+                <button class="button  btn" value="Buy" (click)="loadflag=true; clickSave(); "
+                    tabindex="3">Submit</button>
+            </div>
+
+        </div>
+        <div>
+            <button class="button  btn" tabindex="4" (click)="clearBtn()">Clear</button>
+
+        </div>
+    </div>
+    <div class="fund-message-row">
+        <div *ngIf="loadflag">
+            <img [src]="isProd?'assets/loading_dots.gif':'../../assets/loading_dots.gif'" height="100px" width="100px">
+        </div>
+        <div>
+            {{successMsg}}
+        </div>
+        <!-- <div *ngIf="!errorFlag">
+            {{lblError}}
+        </div> -->
+
+    </div>
+</div>

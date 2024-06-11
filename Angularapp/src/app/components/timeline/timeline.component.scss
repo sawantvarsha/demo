@@ -1,0 +1,204 @@
+.BlotterContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    padding: var(--20);
+}
+
+.tdataWrap{
+    word-break: break-word!important;
+    white-space: normal !important; 
+}
+
+.thead1 {
+  
+    position: sticky;
+    top: 0;
+    background-color: var(--main-bg-color) !important;
+    z-index: 99;
+
+    tr {
+        display: grid;
+        //grid-template-columns:1fr 1.8fr 1.1fr 1.2fr 1.1fr 1.3fr 0.7fr 1fr 0.7fr 1fr 0.8fr;
+        grid-template-columns:2.5fr 1.2fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 0.8fr;
+        height: unset !important;
+        th{
+          padding: 5px 5px 10px 5px;
+          align-items: center;
+          display: flex;
+
+            border-bottom: 1px solid;
+            border-left: 0px ;
+            border-right: 0px;
+            border-top: 0px;
+            border-image-slice: 1;
+            border-width: 1px;
+            border-bottom: 1px solid var(--tbl-audtitrail-border) !important;
+           // border-image-source: linear-gradient(.25turn, #111111, #909090 50%, #111111);
+
+        }
+        
+    }
+  }
+  
+.tRows{
+    display: grid;
+    grid-template-columns:2.5fr 1.2fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 0.8fr;
+}
+.headerFix{
+    position: sticky;
+    top: 0;
+    background-color: var(--main-bg-color)!important;
+    z-index: 99;
+}
+
+  .DataTable
+{
+  overflow: scroll;
+ // height:calc(100vh - 215px)
+ height: calc(100vh - 170px);
+}
+.serchbarDiv{
+    display: flex;
+    flex-direction: row;
+    gap: 1em;
+}
+.center{
+    align-self: center;
+}
+
+.alignRight
+{
+    text-align: right;
+}
+.alignCenter
+{
+    text-align: center;
+}
+.alignLeft
+{
+    text-align: left;
+}
+.contentRight{
+  place-content: end;
+}
+.page-title {
+    padding: 10px 0px !important;
+    width:unset;
+}
+.searchInnerDiv {
+    border-radius: 0.5em;
+    background-color: transparent;
+    // border: 1px solid var(--border);
+    min-height: 33px;
+    display: grid;
+    grid-template-columns: auto auto auto;
+}
+
+.txtSearch {
+    width: 450px !important;
+    border: none !important;
+}
+.showTitle{
+    display:flex;
+    gap:23em;
+}
+.pageHeader{
+    color: var(--heading-label);
+    font-size: 24px !important;
+    font-family: var(--font-family) !important;
+    margin-top: 0px;
+    font-weight: 500;
+}
+.productHeaderhr {
+    background-image: linear-gradient(90deg, #ab9f93, #fff);
+    border: 0;
+    height: 1px;
+    // margin-left: 0px;
+    // margin-top: 10px;
+    // margin: 17px 0px 18px 0px;
+}
+.productHeaderhr {
+    margin: 8px 0px 18px 0px;
+}
+.filterIcon{
+    margin-left: -26px;
+    margin-top: 6px;
+    cursor: pointer;
+}
+.filterTH{
+    border-bottom: unset !important;
+}
+.filterIputs{
+    //width:100px !important;
+    width: 130px !important;
+}
+.filterSelect{
+    width: 130px !important;
+}
+.filterDiv{
+    //border: 1px solid #3e3d3d !important;
+    border: 1px solid var(--tbl-audtitrail-border);
+    align-self: center;
+    padding: 5px;
+    border-radius: var(--10);
+}
+input[type=date] {
+    // position: relative;
+    // height: 35px;
+    // color: white;
+    // width: 150px;
+    // margin-top: 7px;
+    // width: -webkit-fill-available; */
+    /* position: relative; */
+    // height: 35px;
+    // color: white;
+    //width: unset !important;
+    margin-top: auto;
+    cursor: pointer;
+}
+.FromDateLabel,
+.ToDateLabel {
+  position: relative;
+
+  span {
+    position: absolute;
+    left: 8px;
+    top: 14px;
+    font-size: 13px;
+  }
+}
+.sDatePlaceHolder{
+  position: absolute;
+  top: 10px;
+  left: 6px;
+  color:var(--placeholder-text) !important;// var(--heading-label);
+  font-size: 13px;
+}
+
+.sDate{
+  position: absolute;
+  top: 9px;
+  left: 6px;
+  font-size: 14px;
+}
+input::placeholder {
+  letter-spacing: unset;
+}
+.right1 {
+    input::placeholder {
+    letter-spacing: unset;
+    text-align: right !important;
+  }
+}
+.nextRow{
+    color:var(--table-header-text);
+}
+.slide-toggle{
+    vertical-align: sub;
+}
+.eachCell{
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+}

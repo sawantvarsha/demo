@@ -1,0 +1,141 @@
+<div class="container-fluid contain mainDiv ">
+
+    <div id="wrapper form" Class = "lightboxshow blotterbox">
+         <div class="filter row">
+            <div class="col-lg-4 col-md-6 col-sm-12 row resclass" style="margin: auto 0;">
+                <div class="col-2" style="margin: auto 0; color:#255caf;">
+                    {{filterLen}}/{{workflowLen}}
+                </div>
+                <div class="col-9 ccyddl" >
+                    <select style="width: 97%;padding: 0;padding-left: 1em;margin-left: 0.6em;" (change)="filterdata()" [(ngModel)]="spreadGrp">
+                        <option value="{{grp.code}}" *ngFor="let grp of spreadGroupType">
+                            {{grp.value}}
+                        </option>
+                    </select>
+                    <!-- <img class="arrow" src="{{assetURL}}/downarrow.png" style="margin:0 0 0.2em -1.5em;" width="20"
+                        height="20" /> -->
+                </div>
+               
+            </div>
+            
+            <!-- <div class="col-lg-5 col-md-12 col-sm-12 row resclass fromtodate" style="padding: 0;">
+                <div class="col-6 row" style="padding: 0;">
+                    <label class="col-2" style="margin: auto 0;padding: 0;"> From </label>
+                    <mat-form-field style="position: absolute;z-index: -1;">
+                        <input matInput [matDatepicker]="picker" class="picker" 
+                            (dateChange)="getDate($event,'From')">
+                        
+                        <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                    <div class="select col-7 dateclass" style="padding-top: 0.3em;height: 2.1em;margin: auto 0;padding-left: 1em;">
+                        <span>  {{fromDate}}  </span>
+                      </div>
+                   
+                    <div class="col-2" style="margin: auto 0;padding: 0;padding-left: 4px;">
+                    <img src="{{assetURL}}/calendar.png" alt="" (click)="picker.open()"
+                        style="height:1.5em;">
+                    </div>
+                </div>
+                <div class="col-6 row" style="padding: 0;">
+                    <label class="col-2" style="margin: auto 0;padding: 0;padding-left: 1em;"> To </label>
+                    <mat-form-field  style="position: absolute;z-index: -1;">
+                        <input matInput [matDatepicker]="picker1" class="picker"
+                            (dateChange)="getDate($event,'To')" >
+                        
+                        <mat-datepicker #picker1></mat-datepicker>
+                    </mat-form-field>
+                    <div class="select col-7 dateclass" style="padding-top: 0.3em;height: 2.1em;margin: auto 0;padding-left: 1em;">
+                      <span>  {{toDate}}  </span>
+                    </div>
+                    
+                    <div class="col-2" style="margin: auto 0;padding: 0;padding-left: 4px;">
+                        <img src="{{assetURL}}/calendar.png" alt="" (click)="picker1.open()"
+                        style="height:1.5em;" >
+                    </div>
+                    
+                </div>
+            </div> -->
+            
+            <div class="col-lg-2 col-md-3 col-sm-6 row resclass pdfdiv" style="margin: auto 0;padding-left: 0px;">
+                <div class="col-6 download" (click)="captureScreen()" style="padding: 0;">
+                    <img src="{{assetURL}}/pdf.png" alt="" class="imgclass" >
+                    <label  style="margin-left: 0.5em;"> PDF </label>
+                </div>
+                <div class="col-6 download" (click)="exportexcel()" style="padding: 0;">
+                    <img src="{{assetURL}}/pdf.png" alt="" class="imgclass" >
+                    <label  style="margin-left: 0.5em;"> CSV </label>
+                </div>
+                   
+            </div>
+            <div class="col-lg-1 col-md-1 col-sm-4 row resclass" style="margin: auto 1em;padding-left: 0px;">
+                <div class="col-12"  style="margin: auto 0;padding-left: 0px;">
+                <button class="btn_refresh" (click)="callWorkflow()"> Refresh </button>
+            </div>
+            </div>
+        </div>
+          <div class="test row" style="margin-left: 2%; margin-bottom: 1%; color: #8876e8;">
+           <span>{{validationMsg}}</span>
+       </div> 
+        <div class="workflow">
+            <div id= 'contentToConvert1' class="table-responsive" style="font-size: 0.9em;">
+                <table  id="excel-table"  class=" table table-striped">
+                    <tr>
+                        <!-- <th scope="col"> ID  </th> -->
+                        <!-- <th scope="col"> Ccy Pair  </th> -->
+                        <th scope="col"> Spread Group </th>
+                        <th scope="col"> Lower Amount</th>
+                        <th scope="col"> Upper Amount </th>
+                        <th scope="col"> Amount Ccy </th>
+                        <th scope="col"> Bid (Pips) </th>
+                        <th scope="col"> Ask (Pips) </th>
+                        <th scope="col"> Max Premium (Pips) </th>
+                        <th scope="col"> Max Discount (Pips)</th>
+                    </tr>
+
+                    <tr *ngFor="let record of filteredWorflowRecords">
+                        <!-- <td style="text-align: center;">{{record.ID}}</td> -->
+                        <!-- <td style="text-align: center;">{{record.Pair}}</td> -->
+                        <td style="text-align: left;padding-left: 2em;">{{record.SpreadGroup}}</td>
+                        <td style="text-align: right;">{{this.commonfunction.FormatNumberwithFloat(record.Lower_Limit_Amount| number:'1.2-2')}}</td>
+                        <td style="text-align: right;">{{this.commonfunction.FormatNumberwithFloat(record.Upper_Limit_Amount| number:'1.2-2')}}</td>
+                        <td style="text-align: center;">{{record.Amount_in_Ccy}}</td>
+                        <td style="text-align: right;">{{record.Bid}}</td>
+                        <td style="text-align: right;">{{record.Ask}}</td>
+                        <td style="text-align: right;">
+                            {{record.Max_Premium}}</td>
+                            <!-- [ngStyle]="{'color': (record.Status === 'N' ? '#d8d82b':'green')}" -->
+                        <td style="text-align: right;" >
+                            {{record.Max_Discount}}
+                        </td>
+                       
+                    </tr>
+                </table>
+            </div>
+        </div>
+      
+        <div *ngIf="loading"> 
+            <img src="{{assetURL}}/loading_dots.gif" alt="" style="height: 2em;margin-left: 1em;">
+        </div>
+    </div>
+    <!-- <div id="lightbox" *ngIf="CancelRequest" Class="show" >
+      
+            <div id="lightbox_area" class="col-12">
+              <span class="row header">Cancel Trade</span>
+              <div style="color: white;margin-top: -2.1em;float: right;" (click)="CancelRequest = false">X</div>
+              <div class="line"></div>
+              <div class="row" style="padding-top: 3%;">
+                <div class="col-12" style="text-align: center;">
+                <span>Do you want to cancel trade?</span>
+            </div>
+            </div>
+              <div class="row" style="margin:5%;padding-bottom: 2%;">
+              <button class="col-3 select" style="margin-left: 20%;background-color: white;" (click)= "approveCancel=true;approveRejectCancel();">Yes</button>
+              <div class="col-1"></div>
+              <button class="col-3 select" style="background-color: white;" (click)= "approveCancel=false;approveRejectCancel();">No</button>
+              </div>
+              
+            </div>
+        
+    </div> -->
+    
+</div>

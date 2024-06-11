@@ -1,0 +1,666 @@
+// $assetPath: "https://gatewaymarkets.finiq-connect.com";
+.sidebar-component {
+  display:flex;
+  flex-direction: column;
+  height: 51px;
+  width: 232.5px;
+  height: 96vh;/*sidebar visibility issue resolved || ShekharL || 21-Mar-2023*/
+  position: fixed;
+  background: var(--sidebar-bg);
+  box-shadow: var(--box-shadow);
+  z-index: 101;  //Changed by AdilP forFIN1EURINT-524
+  background-size: cover;
+  background-repeat: no-repeat;
+  user-select: none;
+  display: flex;
+  // transition: all 0.3s ease-in;
+  hr {
+    position: relative;
+    height: 1px;
+    // width: 90%;
+    background: var(--sidebar-line);
+    border: 0;
+  }
+  .profile-name {
+    animation: changeOpacity 0.3s both;
+  }
+  .log-time {
+    //animation: changeOpacity 0.3s both;//Changes done by Jyoti S || To resolve the zig zag issues.
+    height: 20px;
+  }
+  .profile-icon {
+    animation: changeOpacity 0.3s both;
+  }
+  .label-sidebar {
+    animation: changeOpacity 0.3s both;
+  }
+  .finiq-div {
+    animation: changeOpacity 0.3s both;
+  }
+  li {
+    transition: all 0.3s ease-in !important;
+  }
+}
+
+.collapsed-sidebar-component {
+  height: 51px;
+  width: 49px !important;
+  height: 100vh;
+  position: fixed;
+  background: var(--sidebar-bg);
+  box-shadow: var(--box-shadow);
+  z-index: 100;
+  // margin-left: -20px;
+
+  transition: all 0.3s ease-in;
+  .label-sidebar {
+    display: none;
+  }
+  .log-time {
+    display: none;
+  }
+  .profile-name {
+    display: none;
+  }
+  .profile-icon {
+    display: none;
+  }
+  .label-sidebar {
+    display: none;
+  }
+  li > div {
+    padding-left: 12px !important;
+    transition: all 0.3s ease-in !important;
+  }
+}
+
+@keyframes changeOpacity {
+  0% {
+    opacity: 0;
+    display: none;
+  }
+  80% {
+    opacity: 0;
+    display: none;
+  }
+  100% {
+    opacity: 1;
+    display: initial;
+  }
+}
+
+.logo-div {
+  height: 55px;
+  width: 100%;
+  text-align: center;
+  .logo {
+    width: 100px;
+  }
+}
+
+.profile-div {
+  margin-top: 20px;
+  cursor: pointer;
+  .username-div {
+    letter-spacing: 0.81px;
+    color: var(--profile-name);
+    font-size: 20px;
+    font-variant: small-caps;
+    opacity: 1;
+    padding: 5px 0px 5px 30px;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    cursor: pointer;
+    line-height: 25px; //FIN1EURINT-580 | Added by Rohit T.
+  }
+  .log-time {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 5px;
+    span {
+      font-size: 12px;
+      color: var(--sidebar-li);
+      //FIN1EURINT-580 | Added by Rohit T.
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+  .profile-name {
+    // width: 100px; commented by AdilP || @03-07-2023
+    text-overflow: ellipsis;
+    overflow: hidden;
+    margin: 0px; //FIN1EURINT-580 | Added by Rohit T. 
+  } 
+}
+
+hr {
+  margin: 5px 8px;
+  // width: 90%;
+  text-align: center;
+  border-color: #ffffff;
+}
+
+// list style
+ul {
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+ul li {
+  -webkit-transition: all 0.4s ease;
+  -o-transition: all 0.4s ease;
+  transition: all 0.4s ease;
+}
+
+li > div {
+  display: flex;
+  list-style-type: none;
+  cursor: pointer;
+  font-size: 15px;
+  height: 42px;
+  padding-left: 28px;
+  align-items: center;
+  border-left: 4px solid transparent;
+  gap: 15px;
+}
+.label-sidebar {
+  font-variant: small-caps;
+  color: var(--sidebar-li);
+}
+.active {
+  color: var(--sidebar-li-active) !important;
+  // font-weight: 500;
+  border-left-color: var(--sidebar-li-active) !important;
+  background: var(--active-sidebar);
+  box-shadow: var(--neumorphic-sidebar);
+
+  .label-sidebar {
+    font-variant: small-caps;
+    color: var(--sidebar-li-active);
+  }
+  svg{
+    fill:#EC0000
+  }
+}
+
+ 
+
+.sub-menu-active {
+  font-weight: 500;
+  color: var(--submenu-active-color) !important;// Changed by Varsha G || 25-Mar-2023
+}
+
+.active-icon {
+  transform: scale(1.1);
+  filter: var(--active-icons-filter) !important;
+}
+
+.li-img {
+  height: 20px;
+  width: 20px;
+  margin: 0px 8px 3px 0px;
+}
+
+.label-sidebar {
+  font-variant: small-caps;
+  color: var(--sidebar-li);
+}
+
+.no-icon,
+.home-icon,
+.account-icon,
+.order-entry-icon,
+.workflow-icon,
+.logout-icon,
+.cash-deposit-icon,
+.view-profile-icon,
+.insurance-icon,
+.recommended-icon,
+.statements-icon,
+.reports-icon,
+.assets-icon,
+.fx-icon,
+.alert-icon,
+.bulk-icon,
+.planning-icon,
+.share-icon,
+.sip-icon,
+.catalog-icon,
+.workflowblotter-icon,
+.fxd-icon,
+.pricing-icon,
+.utilities-icon,
+.investment-icon,
+.proposal-icon,
+.snapshot-icon {
+  float: right;
+  padding: 0px !important;
+  min-width: 25px !important;
+  min-height: 25px !important;
+  // margin: 6px 15px 0px 10px !important;
+  filter: var(--active-icons-filter);
+  display: flex;
+  justify-content: center;
+  img {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.profile-icon {
+  float: right;
+  padding: 0px !important;
+  min-width: 30px !important;
+  min-height: 30px !important;
+  margin: 0px 5px 0px 0px !important;
+  // filter: var(--active-icons-filter);
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  filter: var(--sidebar-filter);
+  img {
+    width: 25px;
+    height: 25px;
+  }
+}
+
+.profile-name {
+  color: var(--sidebar-li);
+  filter: none !important;
+}
+
+.nav-item {
+  position: relative;
+  -webkit-transition: all 0.4s ease;
+  -o-transition: all 0.4s ease;
+  transition: all 0.4s ease;
+  .toggle-menu-icon {
+    position: absolute;
+    left: 200px;
+    -webkit-transition: all 0.4s ease;
+    -o-transition: all 0.4s ease;
+    transition: all 0.4s ease;
+    color: var(--sidebar-handle);
+  }
+}
+
+.route-pages1 {
+  overflow: scroll;
+  //height: 50vh;
+  height: 50vh;
+  overflow-y: auto;
+  margin-left: 0px;
+  display: flex;
+}
+
+.route-pages2{
+  overflow: scroll;
+  //height: 50vh;
+  height: 25vh;
+  overflow-y: auto;
+  margin-left: 0px;
+  display: flex;
+  margin-bottom: 15px;
+
+}
+
+.accordion {
+  width: 100%;
+  .nav-item {
+    position: relative;
+    -webkit-transition: all 0.4s ease;
+    -o-transition: all 0.4s ease;
+    transition: all 0.4s ease;
+  }
+  //   li:hover {
+  //     color: var(--sidebar-li-active) !important;
+  //     font-weight: 500;
+  //   }
+  .sub-menu {
+    li > div {
+      height: 40px;
+      -webkit-transition: all 0.4s ease;
+      -o-transition: all 0.4s ease;
+      transition: all 0.4s ease;
+    }
+  }
+}
+#sub-menu:hover {
+  color: var(--sidebar-li-active) !important;
+  font-weight: 500;
+}
+.hide-sub-menu {
+  li {
+    height: 0px !important;
+    visibility: hidden;
+    opacity: 0;
+    transition: none !important;
+  }
+  li > div {
+    height: 0px !important;
+    visibility: hidden;
+    opacity: 0;
+    transition: none !important;
+  }
+}
+
+.rotate-toggle-menu-icon {
+  -webkit-transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+  -o-transform: rotate(180deg);
+  transform: rotate(180deg);
+  color: var(--headers) !important;
+}
+
+@media only screen and (max-width: 600px) {
+  .sidebar-component {
+    display: none !important;
+  }
+}
+
+@media only screen and (min-width: 600px) {
+  #menuToggle {
+    display: none !important;
+  }
+}
+
+#menuToggle {
+  display: block;
+  position: fixed;
+  margin: auto;
+  margin-left: 10px;
+  top: 16px;
+  z-index: 999;
+  -webkit-user-select: none;
+  user-select: none;
+  margin-right: 15px;
+}
+
+#menuToggle a {
+  text-decoration: none;
+  color: var(--heading-text);
+  transition: color 0.3s ease;
+}
+
+#menuToggle a:hover {
+  color: var(--blue);
+}
+
+#menuToggle input {
+  display: block;
+  position: absolute;
+  cursor: pointer;
+  opacity: 0;
+  /* hide this */
+  z-index: 2;
+  -webkit-touch-callout: none;
+}
+
+/*
+* Just a quick hamburger
+*/
+
+#menuToggle span.hamburger-line {
+  display: block;
+  width: 25px;
+  height: 3px;
+  margin-bottom: 5px;
+  position: relative;
+  background: white;
+  border-radius: 3px;
+  z-index: 1;
+  transform-origin: 0px 0px;
+  transition: transform 0.3s cubic-bezier(0.77, 0.2, 0.05, 1),
+    background 0.3s cubic-bezier(0.77, 0.2, 0.05, 1), opacity 0.35s ease;
+}
+
+#menuToggle span.hamburger-line:first-child {
+  transform-origin: 0% 0%;
+}
+
+#menuToggle span.hamburger-line:nth-last-child(2) {
+  transform-origin: 0% 100%;
+}
+
+/*
+* Transform all the slices of hamburger
+* into a crossmark.
+*/
+
+#menuToggle input:checked ~ span.hamburger-line {
+  opacity: 1;
+  transform: rotate(45deg) translate(-1px, 0px);
+  background: #646c76;
+}
+
+/*
+* But let's hide the middle one.
+*/
+
+#menuToggle input:checked ~ span.hamburger-line:nth-last-child(3) {
+  opacity: 0;
+  transform: rotate(0deg) scale(0.2, 0.2);
+}
+
+/*
+* Ohyeah and the last one should go the other direction
+*/
+
+#menuToggle input:checked ~ span.hamburger-line:nth-last-child(2) {
+  transform: rotate(-45deg) translate(-1px, 0px);
+}
+
+/*
+* Make this absolute positioned
+* at the top left of the screen
+*/
+
+#menu {
+  position: fixed;
+  width: 240px;
+  height: 100vh;
+  margin: -42px 0 0 -50px;
+  padding-top: 60px;
+  padding-left: 30px;
+  background-color: var(--sidebar-bg);
+  box-shadow: var(--box-shadow);
+  list-style-type: none;
+  -webkit-font-smoothing: antialiased;
+  /* to stop flickering of text in safari */
+  transform-origin: 0% 0%;
+  transform: translate(-100%, 0);
+  transition: transform 0.3s cubic-bezier(0.77, 0.2, 0.05, 1);
+  hr {
+    position: relative;
+    height: 1px;
+    width: 100%;
+    background: linear-gradient(
+      to right,
+      var(--sidebar-bg) 0%,
+      #b7b7b7 50%,
+      var(--sidebar-bg) 100%
+    );
+    border: 0;
+  }
+}
+
+/*
+* And let's slide it in from the left
+*/
+
+#menuToggle input:checked ~ ul {
+  transform: none;
+}
+
+/*added by Vedika M.*/
+
+.expand-icon {
+  float: right;
+  padding: 0px !important;
+  min-width: 30px !important;
+  min-height: 30px !important;
+  margin: 0px 15px 0px 10px !important;
+  // background: url(#{$assetPath}/assets/unpin.png) no-repeat scroll calc(50%)
+  //   center/20px auto !important;
+  background-size: 100% 100%;
+  background-position-x: center;
+  background-position-y: center;
+  background-repeat: no-repeat;
+  transform: rotate(90deg);
+}
+
+.collapse-icon {
+  cursor: pointer;
+  float: right;
+  padding: 0px !important;
+  min-width: 20px !important;
+  min-height: 20px !important;
+  margin: 5px 15px 10px 5px !important; //Changes done by Jyoti S || To resolve the zig zag issues.
+  // background: url(#{$assetPath}/assets/pin.png) no-repeat scroll calc(50%)
+  // center/20px auto !important;
+  background-size: 100% 100%;
+  background-position-x: center;
+  background-position-y: center;
+  background-repeat: no-repeat;
+  transform: rotate(90deg);
+  filter: var(--sidebar-filter);
+}
+
+.website-link {
+  text-decoration: none;
+  color: var(--sidebar-li);
+  font-family: graphie, sans-serif;
+  font-size: 15px;
+}
+
+.finiq-logo {
+  // background-image: var(--finiq-logo);
+  background-repeat: no-repeat;
+  background-size: 62%;
+  width: 100%;
+  height: 80px;
+  background-position: center;
+  // margin: 10px 0px;
+}
+
+#client-sub-menu {
+  background-color: var(--sub-sidebar-color);
+  list-style-type: none;
+  position: relative;
+}
+
+.vertial-line {
+  border-right: 1px solid #3e3e3e;
+  height: calc(100% - 27px);
+  margin-top: 8px;
+  position: absolute;
+  padding-left: 41px;
+}
+
+.horizontal-line {
+  border-top: 1px solid #3e3e3e;
+  height: calc(100% - 28px);
+  margin-top: -20px;
+  position: absolute;
+  margin-left: 40px !important;
+  /* width: calc(100% + -252px); */
+  padding-left: 10px !important;
+}
+
+.finiq-logo-svg{
+  display: flex;
+  justify-content: center;
+  margin: 5px 0px;
+}
+
+
+.sub-menu-bg{
+  position: relative;
+  .selected-background{
+    background-color: var(--active-sidebar);
+    position: absolute;
+    width: 160px;
+    height: 35px;
+    left: 60px;
+    border-radius: 3px;
+    // opacity: 0.6;
+    z-index: 99;
+  }
+}
+
+
+.licenser-logo{
+  justify-content: center;
+}
+
+.side-bar-component{
+  display: flex;
+  flex-direction: column;
+}
+
+//Added by SandipA @08-Dec-23 for Third Party & Open Source Acknowledgment Note || Start
+.DisclaimerFooter {
+  text-align: center;
+  padding: 0px;
+  background-color: #f7f7f7;
+  font: normal 14px/28px verdana;
+  margin: 0px;
+  bottom: 0px;
+  z-index: 9;
+  width: 100vw;
+  opacity: 1;
+  cursor: pointer;
+  color: #666666;
+  right: 0px;
+  border-radius: 5px 0px;
+  position: fixed;
+}
+
+.Disclaimer {
+  width: 83vw;
+  background-color: var(--containers);
+  box-shadow: 0px 3px 5px #999;
+  padding: 5px;
+  position: fixed;
+  left: 55%;
+  -ms-transform: translateX(-50%) translateY(-50%);
+  -webkit-transform: translate(-50%,-50%);
+  transform: translate(-50%,-25%);
+  bottom: -15px;
+}
+
+.Disclaimer div {
+  width: 100%;
+  display: block;
+  text-align: center;
+}
+
+.Disclaimer div span {
+  width: 20px;
+  height: 20px;
+  display: block;
+  text-align: center;
+  float: right;
+  cursor: pointer;
+  font: bold 12px/20px inherit;
+}
+
+.Disclaimer p {
+  width: 97%;
+  text-align: justify;
+}
+
+p {
+  padding: 5px 0;
+}
+
+a:link, a {
+  text-decoration: none;
+  cursor: pointer;
+}
+//Added by SandipA @08-Dec-23 for Third Party & Open Source Acknowledgment Note || End

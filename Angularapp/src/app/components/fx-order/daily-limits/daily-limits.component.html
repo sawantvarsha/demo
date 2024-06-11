@@ -1,0 +1,62 @@
+<div class="container-fluid contain mainDiv">
+
+    <div Class="lightboxshow blotterbox">
+        <div class="workflow">
+            <div id='contentToConvert1' class="table-responsive" style="font-size: 0.9em;">
+                <table class="table table-striped" id="excel-table">
+                    <tr>
+                        <th scope="col"> Customer </th>
+                        <th scope="col"> Max Daily Trading Limit </th>
+                        <th scope="col"> Min Trading Limit (USD) </th>
+                    </tr>
+
+                    <tr *ngFor="let record of workflowRecords;let i=index;">
+
+                        <td style="padding-left: 3em;width:33%;vertical-align: middle;">{{record.Customer}}</td>
+                        <td style="text-align: center;width:33%;vertical-align: middle;"> <a (click)="popupShow(record)">Link for popup
+                            </a> </td>
+                        <td style="text-align: right;padding-right: 11%;" *ngIf="!edit || i!==editID" (click)="edit=true;editID=i">
+                            {{this.commonfunction.FormatNumberwithFloat(record.minTradingLimit| number:'1.2-2')}}</td>
+                        <td style="text-align: right;padding-right: 3%;" *ngIf="edit && i===editID">
+                            <input type="text" value="{{record.minTradingLimit}}" class="txt">
+                            <img [src]="'http://'+domainURL+'/assets/cancel_icon.png'" class="inputcancel" alt="" (click)="edit=false;">
+                            <button class="setbtn Submitbtn" > Set</button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<div class="popup" *ngIf="showPopupFlag">
+    <div>
+        <span class="popupheader"> Max daily trading limit for Customer - {{selectedCustomer}} </span>
+        <div style="float: right;"><img [src]="'http://'+domainURL+'/assets/cancel_icon.png'"
+                style="height: 1.5em;width: 1.5em;text-align: right;margin-right: 1em;" alt=""
+                (click)="popupClose()">
+        </div>
+    </div>
+    <div id='contentToConvert1' class="table-responsive" style="font-size: 0.9em;margin-top: 2em;">
+        <table class="table">
+            <tr>
+                <th>Currency</th>
+                <th>Limit</th>
+            </tr>
+            <tr *ngFor="let ld of limitData;let j= index;">
+                <td style="text-align: center;width: 40%;vertical-align: middle;"> {{ld.ccy}}</td>
+                <td style="text-align: right;padding-right: 7em;width: 60%;" *ngIf="!popupEdit || j!==popupEditID"
+                    (click)="popupEdit=true;popupEditID=j">
+                    {{this.commonfunction.FormatNumberwithFloat(ld.limit | number:'1.2-2')}}</td>
+                <td style="text-align: right;width: 60%;" *ngIf="popupEdit && j===popupEditID">
+                    <input type="text" value="{{ld.limit}}" class="txtpopup">
+                    <img [src]="'http://'+domainURL+'/assets/cancel_icon.png'" class="inputcancel" alt="" (click)="popupEdit=false;">
+                    <button class="setbtn Submitbtn" > Set</button>
+                </td>
+            </tr>
+
+        </table>
+    </div>
+</div>
+<div id="overlay" ></div>

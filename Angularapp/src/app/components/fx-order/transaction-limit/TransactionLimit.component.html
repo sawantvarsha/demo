@@ -1,0 +1,116 @@
+<!-- Editable table -->
+<div class="container-fluid mainDiv ">
+  <div class="page-navigation pagetitle" [ngClass]=''>
+    <app-svg-icons class="back-button" [icon]="'back-button'" [width]="'40'" [height]="'40'" [fill]="'var(--headers)'"
+      (click)="back()">
+    </app-svg-icons>
+    <div class="page-title">
+      Limits and Controls
+    </div>
+  </div>
+
+
+  <div id="wrapper form" class="lightboxshow blotterbox">
+    <div class="">
+      <div class="sub-container">
+
+        
+        <div class="flex-display">
+          <label *ngIf="!isUserRM">Customer</label>
+
+            <!-- <div *ngIf="isUserRM"> -->
+              <app-customer-search class="position" *ngIf="isUserRM" (selectedCustomerValue)="selectedCustomerValue1($event)"
+              (blur) = selectedCustomerValue1($event)></app-customer-search>
+            <!-- </div> -->
+            <!-- <div *ngIf="!isUserRM"> -->
+              <input *ngIf="!isUserRM" [value]='Customer' type="text" placeholder="" class="align-left" disabled />
+            <!-- </div> -->
+          </div>
+          <div class="flex-display">
+            <div class="dateFilter">
+              <button class="button btn btnLogic" (click)="add()">Add</button>
+              <button class="button btn btnLogic" (click)="SaveDataInDB()" *ngIf="!messagevisiblity">Save</button>
+              <button class="button btn btnLogic" *ngIf="messagevisiblity">Save</button>
+              <!-- <button class="button btn btnLogic" (click)="TransactionLimitDataOnLoad()">Refresh</button> -->
+              <app-svg-icons class="" (click)="TransactionLimitDataOnLoad()" [icon]="'refresh'" [width]="'30'"
+                [height]="'30'">
+              </app-svg-icons>
+              <div>
+                <div [hidden]="messagevisiblity">{{Displaymessage}}</div>
+              </div>
+            </div>
+          </div>
+
+
+      </div>
+    </div>
+    <div class="blotter-data">
+      <!-- <table class="table table-striped text-center"> -->
+      <table>
+        <tr>
+          <th scope="col" class="maxwidth50">Sr No.</th>
+          <th scope="col" class="minwidth600">Customer Code</th>
+          <th scope="col" class="maxwidth100">Limit CCY</th>
+          <th scope="col" class="maxwidth150">Transaction Limit</th>
+          <th scope="col" class="maxwidth150">Daily Limit</th>
+          <th scope="col" class="maxwidth150">Utilised Daily Limit</th>
+          <th scope="col" class="maxwidth150">Remaining Daily Limit</th>
+          <th></th>
+        </tr>
+        <tr *ngFor="let person of TransactionLimitData; let id = index">
+          <td class="center">
+            <span>{{(id+1)}}</span>
+          </td>
+          <td class="Cust_Code">
+            <input *ngIf="!person.editable" (blur)="updateList(id, 'Cust_Code', $event)" class="align-left"
+              value="{{person.Cust_Code}}" [disabled] ="!person.editable" />
+              <app-customer-search *ngIf="person.editable" class="position" 
+              (selectedCustomerValue)="updateList(id, 'Cust_Code', $event)"></app-customer-search>
+
+          </td>
+          <td class="LimitCcy center">
+            <!-- <input class="align-center" (blur)="updateList(id, 'LimitCcy', $event)" value="{{person.LimitCcy}}" /> -->
+            <select [(ngModel)]="person.LimitCcy" class="align-center" (blur)="updateList(id, 'LimitCcy', $event)">
+              <option value="{{item.Asset1}}" (selected)="ccy.Asset1 === person.LimitCcy" *ngFor="let item of ccyList">{{item.Asset1}} </option>
+            </select>
+          </td>
+          <td class="LimitAmount ">
+            <input (blur)="updateList(id, 'LimitAmount', $event)" style="text-align: right;"
+              value="{{person.LimitAmount}}" (keydown)="onlyNumeric($event)" />
+          </td>
+          <td class="DailyLimit ">
+            <input (blur)="updateList(id, 'Daily_Limit', $event)" style="text-align: right;"
+              value="{{person.Daily_Limit}}" (keydown)="onlyNumeric($event)" />
+          </td>
+          <td class="UtilisedDailyLimit ">
+            <input (blur)="updateList(id, 'Utilised_Daily_Limit', $event)" tabindex="-1" style="text-align: right;"
+              value="{{person.Utilised_Daily_Limit}}" (keydown)="onlyNumeric($event)" [disabled] ="!person.editable"/>
+          </td>
+          <td class="RemainingDailyLimit ">
+            <input (blur)="updateList(id, 'Remaining_Daily_Limit', $event)" tabindex="-1" style="text-align: right;"
+              value="{{person.Remaining_Daily_Limit}}" (keydown)="onlyNumeric($event)" disabled/>
+          </td>
+          <td class="center">
+            <span class="table-remove">
+              <!-- <button class="Tablebtn" type="button" rounded="true" size="sm" (click)="remove(id)">Remove</button> -->
+              <app-svg-icons [icon]="'trash-icon'" [width]="'20'" [height]="'20'" [fill]="'var(--icons)'" (click)="remove(id)"
+              title="Remove">
+              </app-svg-icons>
+              
+            </span>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <div class="pagerightpopup" *ngIf="spreadMultiplier==='on' && showSpreadPopup"
+    style="box-shadow: 1px 1px 10px 0px #d4cccc;width: 11em;top: 0.1em;right: 0.5em;background: #f2f2f2;">
+    <div>
+      <span style="font-size: 0.9em">Spread</span>
+      <img [src]="'http://'+domainURL+'/assets/cancel_icon_disabled.png'" style="float: right;width: 1em;"
+        (click)="showSpreadPopup=!showSpreadPopup" alt="">
+    </div>
+    <input type="text" class="spreadtxt" [(ngModel)]="Spread"
+      (change)="Spread=this.cfs.CheckAllFieldsPrecision(Spread,1);this.cfs.spreadvalue.next(Spread);this.apifunction.setConfigValue('SpreadMultiplier_FXTrading', 'on;'+ Spread);">
+  </div>
+  <!-- Editable table -->

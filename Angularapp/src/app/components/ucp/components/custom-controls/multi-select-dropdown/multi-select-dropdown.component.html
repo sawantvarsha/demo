@@ -1,0 +1,8 @@
+<mat-form-field [style.--width]="width" floatLabel="always">
+  <mat-select class="UCPMatSelect" name="Select" tabIndex={{input.tabIndex}} [(ngModel)]="selected" multiple #selectionModel="ngModel"
+     [disabled]="disabled" [required]="input.mandatory === 'Y' ? true : false" (ngModelChange)="udfFieldValueChange()"> <!-- (selectionChange)="udfFieldValueChange()" removed by devesh because check-all was not triggering udffieldvaluechange was value was remaining as it is-->
+    <app-select-check-all [model]="selectionModel" [values]="options">
+    </app-select-check-all>
+    <mat-option *ngFor="let option of options" [value]="option">{{option}}</mat-option>
+  </mat-select>
+</mat-form-field>

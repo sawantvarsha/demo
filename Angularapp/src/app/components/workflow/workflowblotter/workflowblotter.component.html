@@ -1,0 +1,995 @@
+<div *ngIf="IsBackButtonEnabled" class="page-navigation" [ngClass]="">
+    <app-svg-icons class="back-button" [icon]="'back-button'" [width]="'40'" [height]="'40'" [fill]="'var(--headers)'" (click)="fnRedirectToHomePage()"></app-svg-icons>
+    <div class="page-title">My Orders</div>
+</div>
+<div class="workflowblotter-component">
+    <!-- <app-svg-icons *ngIf="IsBackButtonEnabled" class="back-button" [icon]="'back-button'" [width]="'40'" [height]="'40'"
+    (click)="fnRedirectToHomePage();"></app-svg-icons> -->
+
+    <div *ngIf="!IsBackButtonEnabled" class="page-navigation">
+        <app-svg-icons class="back-button" [icon]="'back-button'" [width]="'40'" [height]="'40'" [fill]="'var(--headers)'" (click)="back()"></app-svg-icons>
+        <div class="page-title">My Orders</div>
+    </div>
+    <div [ngClass]="{
+      container: !showQueueBar,
+      'collapsed-container': showQueueBar
+    }" *ngIf="!IsLoading">
+        <div class="wf-queues" *ngIf="showQueueBar">
+            <span class="back-icon" (click)="toggleQueueBar()"></span>
+            <div>
+                <select class="queue-element">
+          <option>AAA</option>
+          <option>BBB</option>
+        </select>
+            </div>
+            <div class="queue-element">
+                <span class="queue-label">{{ "q.Display_Name" }}</span>
+            </div>
+            <div class="queue-element">
+                <span class="queue-label">{{ "q.Display_Name" }}</span>
+            </div>
+        </div>
+
+        <div class="tabs-padding">
+            <div class="tabs-pages">
+                <div class="tabs" [ngClass]="{ 'tab-active': this.activeAll }" (click)="
+            this.showInvestment = true; changeProductType('All', tabs.length)
+          ">
+                    All
+                </div>
+                <div class="tabs" *ngFor="let tab of tabs; let i = index" (click)="
+            this.showInvestment = true; changeProductType(tab['DATA_VALUE'], i)
+          " [ngClass]="{ 'tab-active': activeTab[i] === true }">
+                    <div>{{ tab["Misc1"] }}</div>
+                </div>
+                <!-- <div class="tabs" [ngClass]="{'tab-active': !this.showInvestment}" (click)="this.showInvestment = false;changeProductType('FX',tabs.length+1)">FX
+        </div> -->
+            </div>
+        </div>
+
+        <div [ngClass]="{ blotter: !showQueueBar, 'collapsed-blotter': showQueueBar }" *ngIf="this.showInvestment">
+            <div class="filters">
+                <div class="filter-element1">
+                    <!-- // Changed by MohanP | 2 Feb'22  -->
+                    <!-- <div>
+            <span class="edit-icon" (click)="toggleQueueBar();">
+            </span>
+          </div> -->
+                    <div class="right-col">
+                        <div class="periodFilter">
+                            <label for="period">Period:</label>
+                            <select style="font-size: 12px !important; width: 120px" [(ngModel)]="periodType" (change)="onchngePeriod(periodType)">
+                <option value="All">All</option>
+                <option value="Today">Today</option>
+                <option value="This Week">This Week</option>
+                <option value="This Month">This Month</option>
+                <option value="Custom">Custom</option>
+              </select>
+                        </div>
+                        <!-- <div class="product-filter">
+              <label for="product-type">Product Type:</label>
+              <select style="font-size: 12px !important;width: 120px;" [(ngModel)]="productType"
+                (change)="changeProductType(productType)">
+                <option value="All">All</option>
+                <option *ngFor="let productType of productTypes" [value]="productType">{{productType}}</option>
+              </select>
+            </div> -->
+
+                        <div class="dateFilter" *ngIf="periodType === 'Custom'">
+                            <div>
+                                <label for="fromdate">From:</label>
+                            </div>
+                            <input type="date" class="input-dob" [attr.data-date]="startDate" style="margin-top: 0px" placeholder="dd-mm-yyyy" data-date-format="DD-MMM-YYYY" value="" min="1997-01-01" max="2030-12-31" [(ngModel)]="startDate" tabindex="6" (change)="startDate = selectDate(startDate)"
+                            />
+                            <div>
+                                <label for="toDate">To:</label>
+                            </div>
+                            <input type="date" class="input-dob" [attr.data-date]="endDate" style="margin-top: 0px" placeholder="dd-mm-yyyy" data-date-format="DD-MMM-YYYY" value="" min="1997-01-01" max="2030-12-31" [(ngModel)]="endDate" tabindex="6" (change)="endDate = selectDate(endDate)"
+                            />
+                            <button class="button btn" value="Load" (click)="blotter = customfilter()" value="Load">
+                Load
+              </button>
+                            <div>
+                                {{ errorMsg }}
+                            </div>
+                        </div>
+                        <app-svg-icons class="svgAlign" (click)="refreshPage()" [icon]="'refresh'" [width]="'26'" [height]="'26'">
+                        </app-svg-icons>
+                    </div>
+                </div>
+            </div>
+            <!-- Added by Rohit T. Asked by Parikshit K. 01-Feb-2021 -->
+            <div class="filter-tabs">
+                <div class="filter-tab all" [ngClass]="{ active: filteredTab === 'All' }" (click)="selectFilter('All')">
+                    <label class="filter-title">All</label>
+                    <label class="filter-value">{{ totalCount || "0" }}</label>
+                </div>
+                <div class="filter-tab" *ngFor="let filter of filterTabs" (click)="selectFilter(filter.title)" [ngClass]="{
+            Created: filter.title === 'Created',
+            Confirmed: filter.title === 'Confirmed',
+            submitted: filter.title === 'Submitted',
+            cancelled: filter.title === 'Cancelled',
+            rejected: filter.title === 'Rejected',
+            verified: filter.title === 'Verified',
+            filled: filter.title === 'Filled',
+            active: filteredTab === filter.title
+          }">
+                    <label class="filter-title">{{ filter.title }}</label>
+                    <label class="filter-value">{{ filter.value }}</label>
+                </div>
+                <!-- <div class="filter-tab">
+          <label class="filter-title">Confirmed</label>
+          <label class="filter-value">200</label>
+        </div>
+        <div class="filter-tab">
+          <label class="filter-title">Created</label>
+          <label class="filter-value">200</label>
+        </div>
+        <div class="filter-tab">
+          <label class="filter-title">Submitted</label>
+          <label class="filter-value">200</label>
+        </div>
+        <div class="filter-tab">
+          <label class="filter-title">Verified</label>
+          <label class="filter-value">200</label>
+        </div>
+        <div class="filter-tab">
+          <label class="filter-title">Cancelled</label>
+          <label class="filter-value">200</label>
+        </div>
+        <div class="filter-tab">
+          <label class="filter-title">Rejected</label>
+          <label class="filter-value">200</label>
+        </div> -->
+            </div>
+            <!-- Ended by Rohit T. Asked by Parikshit K. 01-Feb-2021 -->
+            <div class="content-container" *ngIf="this.isUserRM === false && !IsLoader">
+                <table>
+                    <thead>
+                        <tr class="orders">
+                            <th>
+                                <span>Action</span>
+                            </th>
+                            <th style="text-align: left; padding-left: 10px">
+                                <span (click)="shwFilter('Ref No')">Ref No</span>
+                                <span *ngIf="blottersHeaders['Ref No']['filterFlg']">
+                  <input placeholder="Filter By...." class="filterBox" type="text" [(ngModel)]="filterStr"
+                    placeholder="Search" (keydown.enter)="filterData($event, 'Ref No')"
+                    (blur)="filterData($event, 'Ref No')" />
+                  <button type="button" class="filterCross" (click)="hideFilter('Ref No')">
+                    x
+                  </button>
+                </span>
+                            </th>
+                            <th>
+                                <span (click)="shwFilter('Transaction Status')">Transaction Status
+                </span>
+                                <span *ngIf="blottersHeaders['Transaction Status']['filterFlg']">
+                  <input placeholder="Filter By...." class="filterBox" type="text" [(ngModel)]="filterStr"
+                    placeholder="Search" (keydown.enter)="filterData($event, 'Transaction Status')"
+                    (blur)="filterData($event, 'Transaction Status')" />
+                  <button type="button" class="filterCross" (click)="hideFilter('Transaction Status')">
+                    x
+                  </button>
+                </span>
+                            </th>
+                            <th>
+                                <span (click)="shwFilter('Transaction Type')">Transaction Type
+                </span>
+                                <span *ngIf="blottersHeaders['Transaction Type']['filterFlg']">
+                  <input placeholder="Filter By...." class="filterBox" type="text" [(ngModel)]="filterStr"
+                    placeholder="Search" (keydown.enter)="filterData($event, 'Transaction Type')"
+                    (blur)="filterData($event, 'Transaction Type')" />
+                  <button type="button" class="filterCross" (click)="hideFilter('Transaction Type')">
+                    x
+                  </button>
+                </span>
+                            </th>
+                            <th>
+                                <span (click)="shwFilter('Code')">Code </span>
+                                <span *ngIf="blottersHeaders['Code']['filterFlg']">
+                  <input placeholder="Filter By...." class="filterBox" type="text" [(ngModel)]="filterStr"
+                    placeholder="Search" (keydown.enter)="filterData($event, 'Code')"
+                    (blur)="filterData($event, 'Code')" />
+                  <button type="button" class="filterCross" (click)="hideFilter('Code')">
+                    x
+                  </button>
+                </span>
+                            </th>
+                            <th>
+                                <span (click)="shwFilter('Product')">Product</span>
+                                <span *ngIf="blottersHeaders['Product']['filterFlg']">
+                  <input placeholder="Filter By...." class="filterBox" type="text" [(ngModel)]="filterStr"
+                    placeholder="Search" (keydown.enter)="filterData($event, 'Product')"
+                    (blur)="filterData($event, 'Product')" />
+                  <button type="button" class="filterCross" (click)="hideFilter('Product')">
+                    x
+                  </button>
+                </span>
+                            </th>
+                            <th>
+                                <span (click)="shwFilter('Portfolio')">Portfolio </span>
+                                <span *ngIf="blottersHeaders['Portfolio']['filterFlg']">
+                  <input placeholder="Filter By...." class="filterBox" type="text" [(ngModel)]="filterStr"
+                    placeholder="Search" (keydown.enter)="filterData($event, 'Portfolio')"
+                    (blur)="filterData($event, 'Portfolio')" />
+                  <button type="button" class="filterCross" (click)="hideFilter('Portfolio')">
+                    x
+                  </button>
+                </span>
+                            </th>
+                            <th>
+                                <span (click)="shwFilter('Currency')"> Ccy </span>
+                                <span *ngIf="blottersHeaders['Currency']['filterFlg']">
+                  <input placeholder="Filter By...." class="filterBox" type="text" [(ngModel)]="filterStr"
+                    placeholder="Search" (keydown.enter)="filterData($event, 'Currency')"
+                    (blur)="filterData($event, 'Currency')" />
+                  <button type="button" class="filterCross" (click)="hideFilter('Currency')">
+                    x
+                  </button>
+                </span>
+                            </th>
+                            <th>
+                                <span (click)="shwFilter('Transaction Amount')">Transaction Amount
+                </span>
+                                <span *ngIf="blottersHeaders['Transaction Amount']['filterFlg']">
+                  <input placeholder="Filter By...." class="filterBox" type="text" [(ngModel)]="filterStr"
+                    placeholder="Search" (keydown.enter)="filterData($event, 'Transaction Amount')"
+                    (blur)="filterData($event, 'Transaction Amount')" />
+                  <button type="button" class="filterCross" (click)="hideFilter('Transaction Amount')">
+                    x
+                  </button>
+                </span>
+                            </th>
+                            <th>
+                                <span (click)="shwFilter('Units')">Units </span>
+                                <span *ngIf="blottersHeaders['Units']['filterFlg']">
+                  <input placeholder="Filter By...." class="filterBox" type="text" [(ngModel)]="filterStr"
+                    placeholder="Search" (keydown.enter)="filterData($event, 'Units')"
+                    (blur)="filterData($event, 'Units')" />
+                  <button type="button" class="filterCross" (click)="hideFilter('Units')">
+                    x
+                  </button>
+                </span>
+                            </th>
+                            <th>
+                                <span (click)="shwFilter('Execution Price')">Execution Price </span>
+                                <span *ngIf="blottersHeaders['Execution Price']['filterFlg']">
+                  <input placeholder="Filter By...." class="filterBox" type="text" [(ngModel)]="filterStr"
+                    placeholder="Search" (keydown.enter)="filterData($event, 'Execution Price')"
+                    (blur)="filterData($event, 'Execution Price')" />
+                  <button type="button" class="filterCross" (click)="hideFilter('Execution Price')">
+                    x
+                  </button>
+                </span>
+                            </th>
+                            <th>
+                                <span (click)="shwFilter('Trade Date')">Trade Date </span>
+                                <span *ngIf="blottersHeaders['Trade Date']['filterFlg']">
+                  <input placeholder="Filter By...." class="filterBox" type="text" [(ngModel)]="filterStr"
+                    placeholder="Search" (keydown.enter)="filterData($event, 'Trade Date')"
+                    (blur)="filterData($event, 'Trade Date')" />
+                  <button type="button" class="filterCross" (click)="hideFilter('Trade Date')">
+                    x
+                  </button>
+                </span>
+                            </th>
+                            <th>
+                                <span (click)="shwFilter('Created Date')">Transaction Date and Time
+                </span>
+                                <span *ngIf="blottersHeaders['Created Date']['filterFlg']">
+                  <input placeholder="Filter By...." class="filterBox" type="text" [(ngModel)]="filterStr"
+                    placeholder="Search" (keydown.enter)="filterData($event, 'Created Date')"
+                    (blur)="filterData($event, 'Created Date')" />
+                  <button type="button" class="filterCross" (click)="hideFilter('Created Date')">
+                    x
+                  </button>
+                </span>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody *ngIf="blotter.length === 0 && !this.isUserRM">
+                        <!-- Added by Rohit T. Asked by Parikshit K. 01-Feb-2022 -->
+                        <div class="empty-state">
+                            <app-svg-icons class="" [icon]="'no-records'" [width]="'100'" [height]="'100'"></app-svg-icons>
+                            <label class="state-big">No Records Found</label>
+                            <label class="state-small">Try to adjust your filter to find what you are looking
+                for.</label>
+                        </div>
+                        <!-- Ended by Rohit T. Asked by Parikshit K. 01-Feb-2022 -->
+                    </tbody>
+                    <tbody>
+                        <tr *ngFor="
+                let arr of blotter
+                  | paginate: { itemsPerPage: recordsPerPage, currentPage: q }
+              " class="orders">
+                            <!-- Added by Rohit T. Asked by Parikshit K. 04-Feb-2021 -->
+                            <td (click)="
+                  clickEvent(arr[14].Value, arr[13].Value, arr[1].Value, arr)
+                ">
+                                <app-svg-icons *ngIf="
+                    (arr[1].Value === 'Confirmed' &&
+                      (arr[13].Value === 'FI' ||
+                        arr[13].Value === 'EQ' ||
+                        arr[13].Value === 'MF' ||
+                        arr[13].Value === 'Cash_Equity')) ||
+                    (arr[1].Value === 'Submitted' && arr[13].Value === 'MF')
+                  " style="margin: auto; width: fit-content" [icon]="'pdf'" [width]="'24'" [height]="'24'">
+                                </app-svg-icons>
+                            </td>
+                            <td style="text-align: left" id="refNo" class="">
+                                {{ arr[0].Value }}
+                            </td>
+                            <td id="tranStatus" class="center">
+                                <div class="status" style="white-space: pre-line" [ngClass]="{
+                    'Created-tag': arr[1].Value === 'Created',
+                    'Confirmed-tag': arr[1].Value === 'Confirmed',
+                    'submitted-tag': arr[1].Value === 'Submitted',
+                    cursor: arr[13].Value === 'FI',
+                    'cancelled-tag': arr[1].Value === 'Cancelled',
+                    'rejected-tag': arr[1].Value === 'Rejected',
+                    'filled-tag': arr[1].Value === 'Filled',
+                    'part-filled-tag': arr[1].Value === 'Partially Filled',
+                    'fully-filled-tag': arr[1].Value === 'Fully Filled'
+                  }" (click)="
+                    clickEvent(arr[14].Value, arr[13].Value, arr[1].Value, arr)
+                  ">
+                                    {{ arr[1].Value }}
+                                </div>
+                                <!-- Ended by MohanP. Asked by Parikshit K. 01-Feb-2021 -->
+                            </td>
+                            <!-- <td id="tranType" style="text-align: center;"
+                [ngStyle]="{'color':arr[2].Value === 'Buy' || arr[2].Value === 'Subscription' || arr[2].Value === 'Cash Deposit' || arr[2].Value === 'Purchase' ? 'var(--green)' : 'var(--red)'}">
+                {{arr[2].Value}}</td> -->
+                            <td id="tranType" style="text-align: center">
+                                {{ arr[2].Value }}
+                            </td>
+                            <td id="code">{{ arr[3].Value || "-" }}</td>
+                            <td id="prod" style="white-space: pre-line">
+                                {{ arr[4].Value }}
+                            </td>
+                            <td id="portfolio" class="center">{{ arr[10].Value || "-" }}</td>
+                            <td id="ccy" class="center">{{ arr[5].Value }}</td>
+                            <td id="tranAmt" class="right">
+                                {{ this.com.FormatNumberPrecision(arr[6].Value) || "-" }}
+                            </td>
+                            <td id="units" class="right">
+                                {{ this.com.FormatNumberPrecision(arr[7].Value) || "-" }}
+                            </td>
+                            <td id="exec" class="right">
+                                {{ this.com.FormatNumberPrecision(arr[16].Value) || "-" }}
+                            </td>
+                            <td id="tradeDate" class="center">
+                                {{ arr[9].Value | date: "dd-MMM-yyyy" }}
+                            </td>
+                            <td id="settlDate" class="center">
+                                {{ arr[11].Value | date: "dd-MMM-yyyy hh:mm:ss aa" }}
+                            </td>
+                        </tr>
+                    </tbody>
+
+                    <tbody *ngIf="IsLoading">
+                        <div class="loaderdiv">
+                            <img [src]="
+                  isProd
+                    ? 'assets/loading_dots.gif'
+                    : '../../../../assets/loading_dots.gif'
+                " height="100px" width="100px" />
+                        </div>
+                    </tbody>
+                </table>
+            </div>
+            <div *ngIf="IsLoader" style="text-align: center; margin-top: 15%">
+                <div class="loader-center">
+                    <div class="multi-ripple">
+                        <div></div>
+                        <div></div>
+                    </div>
+                </div>
+            </div>
+            <div class="pagination" *ngIf="this.isUserRM === false && blotter?.length > 0">
+                <pagination-controls (pageChange)="q = $event" class="pageFont">
+                </pagination-controls>
+            </div>
+            <div class="content-container" *ngIf="this.isUserRM === true && !IsLoader">
+                <table>
+                    <thead>
+                        <tr class="ordersRM">
+                            <th>
+                                <span>Action</span>
+                            </th>
+                            <th style="text-align: left; padding-left: 10px">
+                                <span (click)="shwFilter('Ref No')">Ref No</span>
+                                <span *ngIf="blottersHeaders['Ref No']['filterFlg']">
+                  <input placeholder="Filter By...." class="filterBox" type="text" [(ngModel)]="filterStr"
+                    placeholder="Search" (keydown.enter)="filterData($event, 'Ref No')"
+                    (blur)="filterData($event, 'Ref No')" />
+                  <button type="button" class="filterCross" (click)="hideFilter('Ref No')">
+                    x
+                  </button>
+                </span>
+                            </th>
+                            <th>
+                                <span (click)="shwFilter('Transaction Status')">Transaction Status
+                </span>
+                                <span *ngIf="blottersHeaders['Transaction Status']['filterFlg']">
+                  <input placeholder="Filter By...." class="filterBox" type="text" [(ngModel)]="filterStr"
+                    placeholder="Search" (keydown.enter)="filterData($event, 'Transaction Status')"
+                    (blur)="filterData($event, 'Transaction Status')" />
+                  <button type="button" class="filterCross" (click)="hideFilter('Transaction Status')">
+                    x
+                  </button>
+                </span>
+                            </th>
+                            <th>
+                                <span (click)="shwFilter('Transaction TypeRM')">Transaction Type
+                </span>
+                                <span *ngIf="blottersHeaders['Transaction TypeRM']['filterFlg']">
+                  <input placeholder="Filter By...." class="filterBox" type="text" [(ngModel)]="filterStr"
+                    placeholder="Search" (keydown.enter)="filterData($event, 'Transaction TypeRM')"
+                    (blur)="filterData($event, 'Transaction TypeRM')" />
+                  <button type="button" class="filterCross" (click)="hideFilter('Transaction TypeRM')">
+                    x
+                  </button>
+                </span>
+                            </th>
+                            <th>
+                                <span (click)="shwFilter('Code')">Code </span>
+                                <span *ngIf="blottersHeaders['Code']['filterFlg']">
+                  <input placeholder="Filter By...." class="filterBox" type="text" [(ngModel)]="filterStr"
+                    placeholder="Search" (keydown.enter)="filterData($event, 'Code')"
+                    (blur)="filterData($event, 'Code')" />
+                  <button type="button" class="filterCross" (click)="hideFilter('Code')">
+                    x
+                  </button>
+                </span>
+                            </th>
+                            <th>
+                                <span (click)="shwFilter('Product')">Product</span>
+                                <span *ngIf="blottersHeaders['Product']['filterFlg']">
+                  <input placeholder="Filter By...." class="filterBox" type="text" [(ngModel)]="filterStr"
+                    placeholder="Search" (keydown.enter)="filterData($event, 'Product')"
+                    (blur)="filterData($event, 'Product')" />
+                  <button type="button" class="filterCross" (click)="hideFilter('Product')">
+                    x
+                  </button>
+                </span>
+                            </th>
+                            <th>
+                                <span (click)="shwFilter('Customer')"> Customer </span>
+                                <span *ngIf="blottersHeaders['Customer']['filterFlg']">
+                  <input placeholder="Filter By...." class="filterBox" type="text" [(ngModel)]="filterStr"
+                    placeholder="Search" (keydown.enter)="filterData($event, 'Customer')"
+                    (blur)="filterData($event, 'Customer')" />
+                  <button type="button" class="filterCross" (click)="hideFilter('Customer')">
+                    x
+                  </button>
+                </span>
+                            </th>
+                            <th>
+                                <span (click)="shwFilter('Portfolio')">Portfolio </span>
+                                <span *ngIf="blottersHeaders['Portfolio']['filterFlg']">
+                  <input placeholder="Filter By...." class="filterBox" type="text" [(ngModel)]="filterStr"
+                    placeholder="Search" (keydown.enter)="filterData($event, 'Portfolio')"
+                    (blur)="filterData($event, 'Portfolio')" />
+                  <button type="button" class="filterCross" (click)="hideFilter('Portfolio')">
+                    x
+                  </button>
+                </span>
+                            </th>
+                            <th>
+                                <span (click)="shwFilter('Currency')"> Currency </span>
+                                <span *ngIf="blottersHeaders['Currency']['filterFlg']">
+                  <input placeholder="Filter By...." class="filterBox" type="text" [(ngModel)]="filterStr"
+                    placeholder="Search" (keydown.enter)="filterData($event, 'Currency')"
+                    (blur)="filterData($event, 'Currency')" />
+                  <button type="button" class="filterCross" (click)="hideFilter('Currency')">
+                    x
+                  </button>
+                </span>
+                            </th>
+                            <th>
+                                <span (click)="shwFilter('Transaction Amount')">Transaction Amount
+                </span>
+                                <span *ngIf="blottersHeaders['Transaction Amount']['filterFlg']">
+                  <input placeholder="Filter By...." class="filterBox" type="text" [(ngModel)]="filterStr"
+                    placeholder="Search" (keydown.enter)="filterData($event, 'Transaction Amount')"
+                    (blur)="filterData($event, 'Transaction Amount')" />
+                  <button type="button" class="filterCross" (click)="hideFilter('Transaction Amount')">
+                    x
+                  </button>
+                </span>
+                            </th>
+                            <th>
+                                <span (click)="shwFilter('Units')">Units </span>
+                                <span *ngIf="blottersHeaders['Units']['filterFlg']">
+                  <input placeholder="Filter By...." class="filterBox" type="text" [(ngModel)]="filterStr"
+                    placeholder="Search" (keydown.enter)="filterData($event, 'Units')"
+                    (blur)="filterData($event, 'Units')" />
+                  <button type="button" class="filterCross" (click)="hideFilter('Units')">
+                    x
+                  </button>
+                </span>
+                            </th>
+                            <th>
+                                <span (click)="shwFilter('Trade Date')">Trade Date </span>
+                                <span *ngIf="blottersHeaders['Trade Date']['filterFlg']">
+                  <input placeholder="Filter By...." class="filterBox" type="text" [(ngModel)]="filterStr"
+                    placeholder="Search" (keydown.enter)="filterData($event, 'Trade Date')"
+                    (blur)="filterData($event, 'Trade Date')" />
+                  <button type="button" class="filterCross" (click)="hideFilter('Trade Date')">
+                    x
+                  </button>
+                </span>
+                            </th>
+                            <th>
+                                <span (click)="shwFilter('Settlement Date')">Settlement Date
+                </span>
+                                <span *ngIf="blottersHeaders['Settlement Date']['filterFlg']">
+                  <input placeholder="Filter By...." class="filterBox" type="text" [(ngModel)]="filterStr"
+                    placeholder="Search" (keydown.enter)="filterData($event, 'Settlement Date')"
+                    (blur)="filterData($event, 'Settlement Date')" />
+                  <button type="button" class="filterCross" (click)="hideFilter('Settlement Date')">
+                    x
+                  </button>
+                </span>
+                            </th>
+                        </tr>
+
+                        <!-- </tr> -->
+                    </thead>
+                    <tbody *ngIf="this.isUserRM && RMOrderBlotter.length === 0">
+                        <div class="empty-state">
+                            <app-svg-icons class="" [icon]="'no-records'" [width]="'100'" [height]="'100'"></app-svg-icons>
+                            <label class="state-big">No Records Found</label>
+                            <label class="state-small">Try to adjust your filter to find what you are looking
+                for.</label>
+                        </div>
+                    </tbody>
+                    <tbody *ngIf="RMOrderBlotter.length > 0">
+                        <tr *ngFor="
+                let arr of RMOrderBlotter
+                  | paginate: { itemsPerPage: recordsPerPage, currentPage: r }
+              " class="ordersRM">
+                            <td (click)="
+                  clickEvent(
+                    arr[14].Value,
+                    arr.Type,
+                    arr.TransactionStatus,
+                    arr
+                  )
+                ">
+                                <app-svg-icons *ngIf="
+                    arr.TransactionStatus === 'Confirmed' &&
+                    (arr.Type === 'MF' ||
+                      arr.Type === 'FI' ||
+                      arr.Type === 'EQ' ||
+                      arr.Type === 'Cash_Equity')
+                  " style="margin: auto; width: fit-content" [icon]="'pdf'" [width]="'24'" [height]="'24'">
+                                </app-svg-icons>
+                            </td>
+                            <td class="left">{{ arr.RefNo }}</td>
+                            <td class="center">
+                                <!-- Changed by Rohit T. 04-Feb-2021 -->
+                                <div class="status" [ngClass]="{
+                    'Created-tag': arr.TransactionStatus === 'Created',
+                    'Confirmed-tag': arr.TransactionStatus === 'Confirmed',
+                    'submitted-tag': arr.TransactionStatus === 'Submitted'
+                  }">
+                                    {{ arr.TransactionStatus }}
+                                </div>
+                                <!-- <div class="Created"> {{arr.TransactionStatus}}</div> -->
+                            </td>
+                            <td style="white-space: pre-line">{{ arr.TransactionType }}</td>
+                            <td class="">{{ arr.Code || "-" }}</td>
+                            <td style="white-space: pre-line">{{ arr.Name }}</td>
+                            <td class="">{{ arr.Customer_Name }}</td>
+                            <td class="">{{ arr.Portfolio }}</td>
+                            <td class="center">{{ arr.Currency }}</td>
+                            <td class="right">
+                                {{ arr.TransactionAmount | number: "1.2-2" }}
+                            </td>
+                            <td class="right">{{ arr.Units | number: "1.2-2" }}</td>
+                            <!-- <td class="center maxwidth100">{{ getDateInProperFormat(arr.Trade_date)}}</td> -->
+                            <!-- <td class="center maxwidth100">{{ getDateInProperFormat(arr.Settlement_Date)}}</td> -->
+                            <td class="center">{{ arr.Trade_date | date: "dd-MMM-yyyy" }}</td>
+                            <td class="center">
+                                {{ arr.Settlement_Date | date: "dd-MMM-yyyy" }}
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tbody *ngIf="IsLoading">
+                        <div class="loaderdiv">
+                            <img [src]="
+                  isProd
+                    ? 'assets/loading_dots.gif'
+                    : '../../assets/loading_dots.gif'
+                " height="100px" width="100px" />
+                        </div>
+                    </tbody>
+                </table>
+            </div>
+            <div *ngIf="IsLoader" style="text-align: center; margin-top: 15%">
+                <div class="loader-center">
+                    <div class="multi-ripple">
+                        <div></div>
+                        <div></div>
+                    </div>
+                </div>
+            </div>
+            <div class="pagination" *ngIf="this.isUserRM === true && RMOrderBlotter.length > 0">
+                <pagination-controls (pageChange)="r = $event" class="pageFont">
+                </pagination-controls>
+            </div>
+        </div>
+        <div *ngIf="!this.showInvestment" class="blotter">
+            <div class="filters">
+                <div class="filter row" style="display: grid; grid-template-columns: 5fr 1fr 1fr">
+                    <div class="row resclass" style="
+              display: grid;
+              grid-template-columns: 1fr 2fr 2fr;
+              margin-left: 20px;
+              gap: 10px;
+            ">
+                        <div style="margin: auto 0; color: var(--inline-label); padding: 0" *ngIf="transaction.length !== undefined">
+                            {{ filterLen }}/{{ transaction.length }}
+                        </div>
+                        <div style="margin: auto 0; color: var(--inline-label)" *ngIf="transaction === []">
+                            0/0
+                        </div>
+                        <div style="
+                padding: 0;
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                align-items: baseline;
+                gap: 5px;
+              ">
+                            <span>Currency Pair</span>
+                            <select style="font-size: 12px !important; width: 120px" (change)="filterdata()" [(ngModel)]="ccy">
+                <option value="all">All</option>
+
+                <option value="{{ c.PairCode }}" *ngFor="let c of ccyList">
+                  {{ c.PairCode }}
+                </option>
+              </select>
+                        </div>
+                        <div class="col-5" style="
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                align-items: baseline;
+                gap: 5px;
+              ">
+                            <span>Product</span>
+                            <select [(ngModel)]="product" style="font-size: 12px !important; width: 120px" (change)="filterdata()">
+                <option value="all">All</option>
+                <option value="SPT">SPOT</option>
+                <option value="TOD">TOD</option>
+                <option value="TOM">TOM</option>
+                <option value="FWD">Forward</option>
+              </select>
+                        </div>
+                    </div>
+
+                    <div class="row resclass pdfdiv" style="
+              margin: auto 0;
+              padding-left: 0px;
+              margin-left: 1em;
+              display: grid;
+              /* align-items: center; */
+              width: 200px;
+              grid-template-columns: 1fr 1fr;
+            ">
+                        <div class="download" (click)="captureScreen()">
+                            <!-- <app-svg-icons
+                [icon]="{{'pdf'}}"
+                width="{{ '26px' }}"
+                height="{{ '26px' }}"
+              ></app-svg-icons> -->
+                            <app-svg-icons [icon]="'pdf'" [width]="'26'" [height]="'26'">
+                            </app-svg-icons>
+                            <label class="pdfcsv"> PDF </label>
+                        </div>
+                        <div class="download">
+                            <app-svg-icons icon="{{ 'xls' }}" width="{{ '26px' }}" height="{{ '26px' }}" (click)="exportexcel()">
+                            </app-svg-icons>
+                            <label class="pdfcsv"> CSV </label>
+                        </div>
+                    </div>
+                    <div class="row resclass" style="margin: auto 0; padding-left: 0px; margin-left: -0.5em">
+                        <div class="col-12 rfbtn" style="margin: auto 0; padding-left: 0px">
+                            <!-- <button class="button" (click)="callWorkflow()"> Refresh </button> -->
+                            <app-svg-icons class="svgAlign" (click)="callWorkflow()" [icon]="'refresh'" [width]="'26'" [height]="'26'">
+                            </app-svg-icons>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="content-container table-responsive" id="contentToConvert1" style="font-size: 0.88em" [ngClass]="{ 'pdf-class': pdfFlag }">
+                <table id="excel-table">
+                    <thead class="FXHeader">
+                        <th style="text-align: left; padding-left: 10px">
+                            <span (click)="shwFilter('Trade ID')"> Trade ID </span>
+                            <span *ngIf="FXblottersHeaders['Trade ID']['filterFlg']">
+                <input placeholder="Filter By...." class="filterBox" type="text" [(ngModel)]="filterStr"
+                  placeholder="Search" (keydown.enter)="filterData($event, 'Trade ID')"
+                  (blur)="filterData($event, 'Trade ID')" />
+                <button type="button" class="filterCross" (click)="hideFilter('Trade ID')">
+                  x
+                </button>
+              </span>
+                        </th>
+                        <th>
+                            <span (click)="shwFilter('Status')"> Status </span>
+                            <span *ngIf="FXblottersHeaders['Status']['filterFlg']">
+                <input placeholder="Filter By...." class="filterBox" type="text" [(ngModel)]="filterStr"
+                  placeholder="Search" (keydown.enter)="filterData($event, 'Status')"
+                  (blur)="filterData($event, 'Status')" />
+                <button type="button" class="filterCross" (click)="hideFilter('Status')">
+                  x
+                </button>
+              </span>
+                        </th>
+                        <th>
+                            <span (click)="shwFilter('Product')"> Product </span>
+                            <span *ngIf="FXblottersHeaders['Product']['filterFlg']">
+                <input placeholder="Filter By...." class="filterBox" type="text" [(ngModel)]="filterStr"
+                  placeholder="Search" (keydown.enter)="filterData($event, 'Product')"
+                  (blur)="filterData($event, 'Product')" />
+                <button type="button" class="filterCross" (click)="hideFilter('Product')">
+                  x
+                </button>
+              </span>
+                        </th>
+                        <th>
+                            <span (click)="shwFilter('Direction')"> Direction </span>
+                            <span *ngIf="FXblottersHeaders['Direction']['filterFlg']">
+                <input placeholder="Filter By...." class="filterBox" type="text" [(ngModel)]="filterStr"
+                  placeholder="Search" (keydown.enter)="filterData($event, 'Direction')"
+                  (blur)="filterData($event, 'Direction')" />
+                <button type="button" class="filterCross" (click)="hideFilter('Direction')">
+                  x
+                </button>
+              </span>
+                        </th>
+                        <th>
+                            <span (click)="shwFilter('Currency Pair')"> Currency Pair </span>
+                            <span *ngIf="FXblottersHeaders['Currency Pair']['filterFlg']">
+                <input placeholder="Filter By...." class="filterBox" type="text" [(ngModel)]="filterStr"
+                  placeholder="Search" (keydown.enter)="filterData($event, 'Currency Pair')"
+                  (blur)="filterData($event, 'Currency Pair')" />
+                <button type="button" class="filterCross" (click)="hideFilter('Currency Pair')">
+                  x
+                </button>
+              </span>
+                        </th>
+                        <th>
+                            <span (click)="shwFilter('Sell Ccy')"> Sell Ccy </span>
+                            <span *ngIf="FXblottersHeaders['Sell Ccy']['filterFlg']">
+                <input placeholder="Filter By...." class="filterBox" type="text" [(ngModel)]="filterStr"
+                  placeholder="Search" (keydown.enter)="filterData($event, 'Sell Ccy')"
+                  (blur)="filterData($event, 'Sell Ccy')" />
+                <button type="button" class="filterCross" (click)="hideFilter('Sell Ccy')">
+                  x
+                </button>
+              </span>
+                        </th>
+                        <th>
+                            <span (click)="shwFilter('Sell Amt')"> Sell Amt </span>
+                            <span *ngIf="FXblottersHeaders['Sell Amt']['filterFlg']">
+                <input placeholder="Filter By...." class="filterBox" type="text" [(ngModel)]="filterStr"
+                  placeholder="Search" (keydown.enter)="filterData($event, 'Sell Amt')"
+                  (blur)="filterData($event, 'Sell Amt')" />
+                <button type="button" class="filterCross" (click)="hideFilter('Sell Amt')">
+                  x
+                </button>
+              </span>
+                        </th>
+                        <th>
+                            <span (click)="shwFilter('Buy Ccy')"> Buy Ccy </span>
+                            <span *ngIf="FXblottersHeaders['Buy Ccy']['filterFlg']">
+                <input placeholder="Filter By...." class="filterBox" type="text" [(ngModel)]="filterStr"
+                  placeholder="Search" (keydown.enter)="filterData($event, 'Buy Ccy')"
+                  (blur)="filterData($event, 'Buy Ccy')" />
+                <button type="button" class="filterCross" (click)="hideFilter('Buy Ccy')">
+                  x
+                </button>
+              </span>
+                        </th>
+                        <th>
+                            <span (click)="shwFilter('Buy Amt')"> Buy Amt </span>
+                            <span *ngIf="FXblottersHeaders['Buy Amt']['filterFlg']">
+                <input placeholder="Filter By...." class="filterBox" type="text" [(ngModel)]="filterStr"
+                  placeholder="Search" (keydown.enter)="filterData($event, 'Buy Amt')"
+                  (blur)="filterData($event, 'Buy Amt')" />
+                <button type="button" class="filterCross" (click)="hideFilter('Buy Amt')">
+                  x
+                </button>
+              </span>
+                        </th>
+                        <th>
+                            <span (click)="shwFilter('Rate')"> Rate </span>
+                            <span *ngIf="FXblottersHeaders['Rate']['filterFlg']">
+                <input placeholder="Filter By...." class="filterBox" type="text" [(ngModel)]="filterStr"
+                  placeholder="Search" (keydown.enter)="filterData($event, 'Rate')"
+                  (blur)="filterData($event, 'Rate')" />
+                <button type="button" class="filterCross" (click)="hideFilter('Rate')">
+                  x
+                </button>
+              </span>
+                        </th>
+
+                        <th>
+                            <span (click)="shwFilter('Transaction Date')">
+                Transaction Date
+              </span>
+                            <span *ngIf="FXblottersHeaders['Transaction Date']['filterFlg']">
+                <input placeholder="Filter By...." class="filterBox" type="text" [(ngModel)]="filterStr"
+                  placeholder="Search" (keydown.enter)="filterData($event, 'Transaction Date')"
+                  (blur)="filterData($event, 'Transaction Date')" />
+                <button type="button" class="filterCross" (click)="hideFilter('Transaction Date')">
+                  x
+                </button>
+              </span>
+                        </th>
+                        <th>
+                            <span (click)="shwFilter('Value Date')"> Value Date </span>
+                            <span *ngIf="FXblottersHeaders['Value Date']['filterFlg']">
+                <input placeholder="Filter By...." class="filterBox" type="text" [(ngModel)]="filterStr"
+                  placeholder="Search" (keydown.enter)="filterData($event, 'Value Date')"
+                  (blur)="filterData($event, 'Value Date')" />
+                <button type="button" class="filterCross" (click)="hideFilter('Value Date')">
+                  x
+                </button>
+              </span>
+                        </th>
+                    </thead>
+                    <tbody *ngIf="transaction.length === 0">
+                        <div class="empty-state">
+                            <app-svg-icons class="" [icon]="'no-records'" [width]="'100'" [height]="'100'"></app-svg-icons>
+                            <label class="state-big">No Records Found</label>
+                            <label class="state-small">Try to adjust your filter to find what you are looking
+                for.</label>
+                        </div>
+                    </tbody>
+                    <tbody *ngIf="transaction.length !== 0" class="fx-table-body">
+                        <tr *ngFor="
+                let record of transaction
+                  | paginate: { itemsPerPage: recordsPerPageFX, currentPage: p }
+              " class="FXHeader">
+                            <td style="text-align: left">{{ record.OrderID }}</td>
+                            <td style="text-align: center;" class="submitted">
+                                {{ record.Status }}
+                            </td>
+                            <!-- margin-left: 30px !important-->
+                            <!-- <td style="text-align: center; margin-left: 30px !important;" *ngIf="record.Deal_Status !== 'Cancelled'">
+              </td> -->
+                            <td style="text-align: center">{{ record.Product }}</td>
+                            <!-- <td style="text-align: center;">{{record.Direction === 'B' ? 'Buy' : 'Sell'}}</td> -->
+                            <td style="text-align: center" [ngStyle]="{
+                  color:
+                    record.Direction === 'Buy' ? 'var(--green)' : 'var(--red)'
+                }">
+                                {{ record.Direction }}
+                            </td>
+                            <td style="text-align: center">{{ record.CurrencyPair }}</td>
+                            <td style="text-align: center">{{ record.BillingCurrency }}</td>
+                            <td style="text-align: right" class="rightspace">
+                                {{ this.com.FormatNumberwithFloat( record.Ccy1_Amount | number: "1.2-2" ) }}
+                            </td>
+                            <td style="text-align: center">{{ record.CreditCurrency }}</td>
+                            <td style="text-align: right" class="rightspace">
+                                {{ this.com.FormatNumberwithFloat( record.Ccy2_Amount | number: "1.2-2" ) }}
+                            </td>
+                            <td style="text-align: right">{{ record.Rate }}</td>
+                            <td style="text-align: center">{{ record.TranDateandTime }}</td>
+                            <td style="text-align: center">{{ record.Value_Date }}</td>
+                        </tr>
+                    </tbody>
+                    <tbody *ngIf="IsLoading">
+                        <div class="loaderdiv">
+                            <img [src]="
+                  isProd
+                    ? 'assets/loading_dots.gif'
+                    : '../../assets/loading_dots.gif'
+                " height="100px" width="100px" />
+                        </div>
+                    </tbody>
+                </table>
+            </div>
+            <div class="pagination" *ngIf="transaction.length > 0">
+                <pagination-controls (pageChange)="p = $event" class="pageFont">
+                </pagination-controls>
+            </div>
+        </div>
+        <div *ngIf="IsLoading" style="text-align: center; margin-top: 15%">
+            <div class="loader-center">
+                <div class="multi-ripple">
+                    <div></div>
+                    <div></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- XLS ICON -->
+        <svg version="1.2" baseProfile="tiny" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 512 512" overflow="visible" xml:space="preserve" style="display: none">
+      <g id="xlsIcon">
+        <g>
+          <path fill="var(--btn-bg)"
+            d="M400.34,313.26c-2.03,0.51-3.54,2.35-3.54,4.54v128.24h76.02V317.8c0-2.19-1.51-4.03-3.54-4.54" />
+          <path fill="var(--btn-bg)" d="M407.4,446.04h-40.67c-2.84,0-4.08,3.6-1.83,5.34l68.08,52.83c1.08,0.84,2.58,0.84,3.66,0l68.08-52.83
+		c2.25-1.74,1.01-5.34-1.83-5.34h-40.54" />
+        </g>
+        <g>
+          <path fill="none" stroke="var(--heading-label)" stroke-width="20" stroke-linecap="round"
+            stroke-miterlimit="10" d="M445.62,283.26V86.75
+		c0,7.93-6.58,14.36-14.69,14.36h-57.13c-8.11,0-14.69-6.43-14.69-14.36V30.89c0-7.93,6.58-14.36,14.69-14.36h-261.4
+		c-8.11,0-14.69,6.43-14.69,14.36v83.87" />
+          <path fill="none" stroke="var(--heading-label)" stroke-width="20" stroke-linecap="round"
+            stroke-miterlimit="10" d="M98.7,318.74v147.85
+		c0,7.93,6.58,14.36,14.69,14.36h226.95" />
+          <path fill="none" stroke="var(--heading-label)" stroke-width="15" stroke-miterlimit="10" d="M98.7,309.15" />
+          <path fill="none" stroke="var(--heading-label)" stroke-width="15" stroke-miterlimit="10" d="M97.7,119.77" />
+
+          <line fill="none" stroke="var(--heading-label)" stroke-width="20" stroke-linecap="round"
+            stroke-miterlimit="10" x1="373.79" y1="16.53" x2="445.62" y2="86.75" />
+        </g>
+        <path fill="var(--btn-bg)"
+          d="M18.58,135.63h306.75c7.6,0,13.76,6.16,13.76,13.76v133.25c0,7.6-6.16,13.76-13.76,13.76H18.58" />
+        <path fill="var(--btn-text)" d="M143.7,260.58h-16.48c-1.15,0-2.06-0.29-2.74-0.86c-0.68-0.57-1.22-1.23-1.63-1.97l-20.6-34.13
+	c-0.33,1.03-0.72,1.91-1.17,2.64l-19.74,31.49c-0.49,0.7-1.06,1.34-1.69,1.94c-0.64,0.59-1.47,0.89-2.49,0.89H61.72l29.52-45.76
+	l-28.35-43.17h16.48c1.15,0,1.98,0.15,2.49,0.46c0.51,0.31,0.99,0.81,1.45,1.51l20.23,32.59c0.41-1.02,0.9-2.05,1.48-3.07
+	l18.57-29.21c0.45-0.78,0.94-1.35,1.48-1.72s1.21-0.55,2.03-0.55h15.8l-28.6,42.5L143.7,260.58z M206,246.93v13.65h-52.09v-88.93
+	h16.54v75.28H206z M265.16,187.83c-0.49,0.86-1.01,1.49-1.57,1.88c-0.55,0.39-1.24,0.58-2.06,0.58c-0.86,0-1.79-0.32-2.8-0.95
+	c-1-0.64-2.2-1.34-3.6-2.12c-1.39-0.78-3.02-1.49-4.89-2.12c-1.87-0.64-4.07-0.95-6.61-0.95c-2.3,0-4.3,0.28-6.03,0.83
+	c-1.72,0.55-3.17,1.32-4.34,2.31c-1.17,0.98-2.04,2.16-2.61,3.54c-0.57,1.37-0.86,2.88-0.86,4.52c0,2.09,0.58,3.83,1.75,5.23
+	c1.17,1.39,2.71,2.58,4.64,3.57c1.93,0.98,4.12,1.87,6.58,2.64c2.46,0.78,4.98,1.61,7.56,2.49c2.58,0.88,5.1,1.91,7.56,3.08
+	s4.65,2.64,6.58,4.43c1.93,1.78,3.47,3.97,4.64,6.55s1.75,5.72,1.75,9.41c0,4.02-0.69,7.78-2.06,11.29
+	c-1.38,3.51-3.38,6.56-6.03,9.16c-2.65,2.6-5.87,4.65-9.69,6.15c-3.81,1.5-8.18,2.24-13.1,2.24c-2.83,0-5.62-0.28-8.36-0.83
+	c-2.75-0.55-5.38-1.34-7.9-2.37c-2.52-1.02-4.89-2.25-7.1-3.69c-2.21-1.44-4.18-3.03-5.9-4.8l4.86-7.93
+	c0.41-0.57,0.94-1.06,1.6-1.45c0.66-0.39,1.35-0.58,2.09-0.58c1.02,0,2.13,0.42,3.32,1.26c1.19,0.84,2.6,1.77,4.24,2.8
+	c1.64,1.03,3.56,1.96,5.75,2.8c2.19,0.84,4.83,1.26,7.9,1.26c4.71,0,8.36-1.12,10.95-3.35c2.58-2.23,3.88-5.44,3.88-9.62
+	c0-2.34-0.58-4.24-1.75-5.72c-1.17-1.48-2.72-2.72-4.64-3.72c-1.93-1-4.12-1.85-6.58-2.55c-2.46-0.7-4.96-1.45-7.5-2.28
+	c-2.54-0.82-5.04-1.8-7.5-2.95c-2.46-1.15-4.65-2.64-6.58-4.49c-1.93-1.85-3.47-4.15-4.64-6.92c-1.17-2.77-1.75-6.18-1.75-10.24
+	c0-3.24,0.65-6.4,1.94-9.47c1.29-3.08,3.17-5.8,5.63-8.18c2.46-2.38,5.49-4.28,9.1-5.72c3.61-1.43,7.75-2.15,12.42-2.15
+	c5.25,0,10.09,0.82,14.51,2.46c4.43,1.64,8.2,3.94,11.32,6.89L265.16,187.83z" />
+      </g>
+    </svg>
+
+        <!-- PDF ICON -->
+        <svg version="1.2" baseProfile="tiny" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 512 512" overflow="visible" xml:space="preserve" style="display: none">
+      <g id="pdfIcon">
+        <g>
+          <path fill="var(--btn-bg)"
+            d="M400.99,313.15c-2.03,0.51-3.54,2.35-3.54,4.54v128.24h76.02V317.69c0-2.19-1.51-4.03-3.54-4.54" />
+          <path fill="var(--btn-bg)" d="M408.05,445.94h-40.67c-2.84,0-4.08,3.6-1.83,5.34l68.08,52.83c1.08,0.84,2.58,0.84,3.66,0l68.08-52.83
+		c2.25-1.74,1.01-5.34-1.83-5.34h-40.54" />
+        </g>
+        <g>
+          <path fill="none" stroke="var(--heading-label)" stroke-width="20" stroke-linecap="round"
+            stroke-miterlimit="10" d="M446.27,283.15V86.65
+		c0,7.93-6.58,14.36-14.69,14.36h-57.13c-8.11,0-14.69-6.43-14.69-14.36V30.79c0-7.93,6.58-14.36,14.69-14.36h-261.4
+		c-8.11,0-14.69,6.43-14.69,14.36v83.87" />
+          <path fill="none" stroke="var(--heading-label)" stroke-width="20" stroke-linecap="round"
+            stroke-miterlimit="10" d="M99.35,318.64v147.85
+		c0,7.93,6.58,14.36,14.69,14.36H341" />
+
+          <line fill="none" stroke="var(--heading-label)" stroke-width="20" stroke-linecap="round"
+            stroke-miterlimit="10" x1="374.45" y1="16.43" x2="446.27" y2="86.65" />
+        </g>
+        <path fill="var(--btn-bg)" d="M325.98,296.3H19.23c-7.6,0-13.76-6.16-13.76-13.76V149.29c0-7.6,6.16-13.76,13.76-13.76h306.75
+	c7.6,0,13.76,6.16,13.76,13.76v133.25C339.74,290.14,333.58,296.3,325.98,296.3z" />
+        <path fill="var(--btn-text)" d="M89.74,171.55c5.94,0,11.09,0.7,15.44,2.09c4.35,1.39,7.93,3.34,10.76,5.84c2.83,2.5,4.93,5.49,6.3,8.98
+	c1.37,3.49,2.06,7.3,2.06,11.44c0,4.31-0.72,8.25-2.15,11.84c-1.44,3.59-3.59,6.67-6.46,9.26c-2.87,2.58-6.47,4.59-10.79,6.03
+	c-4.33,1.44-9.38,2.15-15.16,2.15H77.38v31.3H60.83v-88.93H89.74z M89.74,216.26c3.03,0,5.68-0.38,7.93-1.14
+	c2.25-0.76,4.13-1.84,5.63-3.26c1.5-1.41,2.61-3.14,3.35-5.17c0.74-2.03,1.11-4.29,1.11-6.8c0-2.38-0.37-4.53-1.11-6.46
+	c-0.74-1.93-1.85-3.57-3.32-4.92s-3.34-2.39-5.6-3.11c-2.25-0.72-4.92-1.08-7.99-1.08H77.38v31.92H89.74z M215.94,216.01
+	c0,6.52-1.09,12.51-3.26,17.96c-2.17,5.45-5.23,10.15-9.16,14.08s-8.67,6.99-14.21,9.16c-5.53,2.17-11.68,3.26-18.45,3.26h-33.89
+	v-88.93h33.89c6.77,0,12.92,1.1,18.45,3.29c5.54,2.19,10.27,5.25,14.21,9.16c3.94,3.92,6.99,8.6,9.16,14.05
+	C214.85,203.51,215.94,209.49,215.94,216.01z M198.96,216.01c0-4.88-0.65-9.26-1.94-13.13s-3.16-7.15-5.6-9.84
+	c-2.44-2.69-5.39-4.75-8.86-6.18c-3.47-1.43-7.37-2.15-11.72-2.15h-17.28v62.61h17.28c4.35,0,8.25-0.72,11.72-2.15
+	c3.46-1.43,6.42-3.5,8.86-6.18c2.44-2.69,4.3-5.97,5.6-9.84S198.96,220.89,198.96,216.01z M247.12,184.71v26.32h33.33v13.22h-33.33
+	v36.22h-16.6v-88.93h56.09v13.16H247.12z" />
+      </g>
+    </svg>
+    </div>
+</div>

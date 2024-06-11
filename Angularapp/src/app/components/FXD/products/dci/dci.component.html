@@ -1,0 +1,372 @@
+<div class="FullScreen-container"
+[ngStyle]="{ 'grid-template-columns': (isQENMode  === true ? '52vw auto' : '48vw auto') }">
+
+
+    <div class="FXD-sub-container">
+        
+        <div class="FXD-ROWS-COL-4">
+            <label class="disabledlbl">Booking Center</label>
+            <span>
+                <select  *ngIf="EntityData.length > 0" (change)="chngEntity($event);ResetAllFields();">
+                    <option *ngFor="let data of EntityData" [value]="data.Code" >{{data.Value}}</option>
+                </select>
+            </span>
+            <label class="disabledlbl"> Trade Date</label>
+            <div class="SUB-COL-2">
+                <span></span>
+                <input  type="text" class="dates" value="{{TradeDate || '-'}}" disabled />
+                <!-- <app-loader *ngIf="!TradeDate"></app-loader>   -->
+            </div>
+        </div>
+
+        <div class="FXD-ROWS-COL-4"> 
+            <label>Product Type</label>
+            <div class="SUB-COL-2">
+                    <span></span>
+                    <input  type="text"  value="DCI" disabled />
+            </div>
+       
+
+            <label class="disabledlbl"> Start/Value Date</label>
+            <div class="SUB-COL-2">
+                <span></span>
+                <input  type="text" class="dates" [value]="PremiumDate" disabled />
+                <!-- <app-loader *ngIf="!TradeDate"></app-loader>   -->
+            </div>
+        </div>
+
+        <div class="FXD-ROWS-COL-4">
+            <label>Investment Currency</label>
+            <div class="SUB-COL-2">
+                <span></span>
+                <select (change)="chngInvCCY($event);ResetAllFields()" [(ngModel)]="DepCcy">
+                    <option *ngFor="let obj of CurrencyPairList" [value]="obj">{{ obj }}</option>
+                </select>
+            </div>
+
+            <label>Spot Ref</label>
+            <div class="SUB-COL-3">
+                <input id="idSpotBid" class="right" type="text" disabled value="{{SpotBid}}" />
+                &nbsp;/
+                <input id="idSpotAsk" class="right" type="text" disabled value="{{SpotAsk}}" />
+            </div>
+        </div>
+
+        <div class="FXD-ROWS-COL-4"> 
+            <label>Alternate Currency</label>
+            <div class="SUB-COL-2">
+                <span></span>
+                <select (change)="chngAltCCY($event);ResetAllFields()" [(ngModel)]="AltCcy">
+                    <option *ngFor="let obj of CurrencyPairList" [value]="obj">{{ obj }}</option>
+                </select>
+            </div>
+
+            <label class="disabledlbl"> Fixing Date</label>
+            <div class="SUB-COL-2">
+                <span></span>
+                <input  type="text" class="dates" [value]="FixingDate" disabled />
+                <!-- <app-loader *ngIf="!FixingDate"></app-loader> -->
+            </div>  
+        </div>
+
+        <div class="FXD-ROWS-COL-4"> 
+            <label>Price Provider</label>
+            <div class="SUB-COL-2">
+                <span></span>
+                <select (change)="fnchngPriceProvider($event); ResetAllFields();" >
+                    <option value="Bestprice">Best Price</option>
+                    <option *ngFor="let item of PriceproviderArr" [value]="item.PP_Code">{{item.PP_Code}}</option>
+                </select>
+            </div>
+           
+
+            <label class="disabledlbl"> Maturity Date</label>
+            <div class="SUB-COL-2">
+                <span></span>
+                <input  type="text" class="dates" [value]="MaturityDate" disabled />
+                <!-- <app-loader *ngIf="!MaturityDate"></app-loader> -->
+            </div>  
+        </div>
+
+        <div class="FXD-ROWS-COL-4">
+            <label>Notional ({{ DepCcy }})</label>
+            <input  class="right" type="text" [value]="Notional" />
+
+            <label>Option Cut</label>
+            <div class="SUB-COL-2">
+                <span></span>
+                <!--OptionCutOptions.length > 0  -->
+                <span>
+                    <select [disabled]="RouteFromWorkflow && ExecutedQueue || NewOrderfromRMLocked && !LockedDealPopUp" *ngIf="this.AllDataLoaded.optioncut" 
+                    [(ngModel)]="OptionCut" (change)="fnOptionCutChange($event);ResetAllFields();">
+                        <option *ngFor="let item of OptionCutOptions; let i = index" [value]="item">{{item}}</option>
+                    </select>
+                    <app-loader *ngIf="!this.AllDataLoaded.optioncut"></app-loader>        
+                </span>
+                         
+            </div>
+        </div>
+
+        <div class="FXD-ROWS-COL-4">
+            <label>Investment Period</label>
+            <div class="SUB-COL-3" name="DCI">
+                <select (change)="TenorChanged($event);ResetAllFields()" [(ngModel)]="Tenor">
+                    <option *ngFor="let obj of TenorOptions" [value]="obj"> {{ obj }} </option>                   
+                </select>
+                <input  class="right" type="number" [(ngModel)]="TenorDays" />
+                <select>
+                    <option></option>                   
+                </select>
+            </div>
+
+            <label>Yield p.a. (FD/PCI Cover)%</label>
+            <div class="SUB-COL-2">
+                <input  class="right" disabled type="text" />
+                <input  class="right" disabled type="text" />
+            </div>
+          
+                   
+        </div>
+
+        <div class="FXD-ROWS-COL-4">
+            <label>Strike Rate</label>
+            
+            <div class="SUB-COL-2">
+                <span></span>
+                <!-- <input class="right" style="visibility: hidden;" type="text" /> -->
+                <span>
+                    <input  class="right" type="text" />
+                </span>
+                
+            </div>
+
+            <label>Vol(%) / Prem(%)</label>
+            <div class="SUB-COL-2">
+                <input type="text" class="longText right" (keypress)="FXD_cfs.InputNunbersOnly($event)" disabled
+                [value]="VolPer | number:'1.2-4'" (blur)="ResetAllFields();" />
+                <input type="text" class="longText right" (keypress)="FXD_cfs.InputNunbersOnly($event)" disabled
+                [value]="PremiumPer" (blur)="ResetAllFields();" />
+                
+            </div>
+        </div>
+        <div class="FXD-ROWS-COL-4">
+            <label>Strike Point</label>
+            <div class="SUB-COL-2">
+                <span></span>
+                <!-- <input class="right" style="visibility: hidden;" type="text" /> -->
+                <span>
+                    <input  class="right" type="text" />
+                </span>                
+            </div>
+
+            <label>IR1(%) / IR2(%)</label>
+            <div class="SUB-COL-2">
+                <input type="text" class="longText right" (keypress)="FXD_cfs.InputNunbersOnly($event)" disabled="disabled"
+                [value]="IR1 | number:'1.2-4'" (blur)="ResetAllFields();" />
+                <input type="text" class="longText right" (keypress)="FXD_cfs.InputNunbersOnly($event)" disabled="disabled"
+                [value]="IR2" (blur)="ResetAllFields();" />                
+            </div>
+
+        </div>
+        <div class="FXD-ROWS-COL-4">
+            <label>Enhanced Yield p.a.(%)</label>
+            <div class="SUB-COL-2">
+                <span></span>
+                <!-- <input class="right" style="visibility: hidden;" type="text" /> -->
+                <span>
+                    <input  class="right" type="text" />
+                </span>                
+            </div>
+
+            <label>Interest Amount ({{ DepCcy }})</label>
+            <div class="SUB-COL-2">
+                <span></span>
+                <!-- <input class="right" style="visibility: hidden;" type="text" /> -->
+                <span>
+                    <input  class="right" type="text" />
+                </span>                
+            </div>
+        </div>
+        <div class="FXD-ROWS-COL-4">
+            <label>Spread p.a. (%)</label>
+            <div class="SUB-COL-2">
+                <span></span>
+                <!-- <input class="right" style="visibility: hidden;" type="text" /> -->
+                <span>
+                    <input  class="right" disabled type="text" />
+                </span>                
+            </div>
+
+            <label>Interest Amount ({{ AltCcy }})</label>
+            <div class="SUB-COL-2">
+                <span></span>
+                <!-- <input class="right" style="visibility: hidden;" type="text" /> -->
+                <span>
+                    <input  class="right" disabled type="text" />
+                </span>                
+            </div>
+        </div>
+        <div class="FXD-ROWS-COL-4">
+            <label>Spread ({{ DepCcy }}) </label>        
+            <input  class="right" type="text" />                
+
+            <label>Repayment ({{ DepCcy }})</label>
+            <div class="SUB-COL-2">
+                <span></span>
+                <!-- <input class="right" style="visibility: hidden;" type="text" /> -->
+                <span>
+                    <input  class="right" disabled type="text" />
+                </span>                
+            </div>
+        </div>
+        <div class="FXD-ROWS-COL-4">
+            <label>Spread (USD) </label>
+            <input  class="right" type="text" />
+
+            <label>Repayment ({{ AltCcy }})</label>
+            <div class="SUB-COL-2">
+                <span></span>
+                <input  class="right" disabled  type="text" />
+            </div>
+           
+        </div>
+    </div>
+
+    <!-- Added by Urmila A | Contract Summary Start -->
+    <div class="FXD-sub-charts-section" *ngIf="ContractSummary === ''">
+        <label class="subheader">Contract Summary</label>
+            <div class="shim-grid">
+                <!-- <div class=" loading-shimmer-fxd"></div>
+                <div class=" loading-shimmer-fxd"></div>
+                <div class=" loading-shimmer-fxd"></div> -->
+            </div>
+        
+            <div class="remarkfield">
+                <span class="highlight" *ngIf="NewOrderfromRMUnlocked || NewOrderfromRMLocked">Original IB Premium : </span>
+                <span class="highlight" *ngIf="NewOrderfromRMUnlocked || NewOrderfromRMLocked">
+                    {{ IBPremCcy }} {{ FXD_cfs.numberWithCommas(OriginalIBPrem) }} ({{OriginalIBPremPer }} %) </span>
+                <label>Remark</label>
+                <textarea rows="3" [(ngModel)]='DealerRemark' (change)="fnChngeRemark($event)">{{DealerRemark}}</textarea>
+                <label  *ngIf="RMRemarkVisibility">RM Remark</label>
+                <span  *ngIf="RMRemarkVisibility">{{ RMRemark }}</span>
+                <!-- Urmila A | RM remark visibility control - LGTCLI-294 | 13-feb-23 |  RouteFromWorkflow -->
+            </div>
+    </div>
+
+    <div class="FXD-sub-charts-section" *ngIf="ContractSummary !== ''" >
+        <label class="subheader">Contract Summary</label>
+        <div class="contractsummarytxt"  [innerHTML]="ContractSummary"></div>
+        <div class="remarkfield">
+                <span class="highlight" *ngIf="NewOrderfromRMUnlocked || NewOrderfromRMLocked">Original IB Premium : </span>
+                <span class="highlight" *ngIf="NewOrderfromRMUnlocked || NewOrderfromRMLocked">
+                    {{ IBPremCcy }} {{ FXD_cfs.numberWithCommas(OriginalIBPrem) }} ({{OriginalIBPremPer }} %)</span>
+                <label>Remark</label>
+                
+                <textarea rows="3"  [(ngModel)]='DealerRemark' (change)="fnChngeRemark($event)">{{DealerRemark}}</textarea>
+                <label  *ngIf="RMRemarkVisibility">RM Remark</label>
+                <span  *ngIf="RMRemarkVisibility">{{ RMRemark }}</span>
+                <!-- Urmila A | RM remark visibility control - LGTCLI-294 | 13-feb-23 |  RouteFromWorkflow -->
+        </div>
+        
+    </div>
+
+    <!-- Added by Urmila A | LGTGTWINT-897 | 10-Jan-23 | Buttons Row Starts -->
+    <div class="grid-combine">
+        <div class="FXD-row-PBOE">
+            <div class="FXD-col-buttons" > 
+            
+                <button *ngIf="isSpreadVisible"
+                    [ngClass]="{'button' : !IsRMLoggedIn || !IsIALoggedIn, 'buttonRM_IA': IsRMLoggedIn || IsIALoggedIn || IsAdvisoryLoggedIn && !RouteFromWorkflow ,
+                    'buttonRoutedDeal' : RouteFromWorkflow, 'buttonFXRoutedDeal': RouteFromWorkflow && IsAdvisoryLoggedIn }"
+                    (click)="this.Validations();this.fnBestPricing();" 
+                    [disabled]="(RouteFromWorkflow && TradeDate < FXD_cfs.convertDate(FXD_cfs.fnGetMinDate()) ) || 
+                    (!AllAPIsLoaded  && !RouteFromWorkflow  ) || 
+                    (RouteFromWorkflow  &&  !AllAPIsLoaded ) || (RouteFromWorkflow && OrderPlaced || RouteFromWorkflow && RejectedOrderMSG !== '') || NewOrderfromRMLocked"  > <!--[disabled]="!AllAPIsLoaded"  added by Urmila A | 31-Jan-23 | LGTGTWINT-1295-->               
+                    <div title="Spread (F8)" >Spread</div>
+                </button>
+
+                <button *ngIf="isEmailQuoteVisible" [ngClass]="{'button' : !IsRMLoggedIn || !IsIALoggedIn, 'buttonRM_IA': IsRMLoggedIn || IsIALoggedIn || IsAdvisoryLoggedIn && !RouteFromWorkflow , 
+                'buttonRoutedDeal' : RouteFromWorkflow , 'buttonFXRoutedDeal': RouteFromWorkflow && IsAdvisoryLoggedIn}" (click)="EmailQuote()"  
+                [disabled]=" !btnEnable || ( QuteMailClicked && !QuoteMailSent && !closeQuoteMail) || closeQuoteMail || OrderPlaced">
+                    <!-- !BestPrice, removed & added !btnEnable in [disabled],  by UrmilaA, 27-April-23, LGTCLI-361, point 2 -->    
+                    <div title="Email the Quote">Email the Quote</div>
+                </button>
+
+                <!-- OrderPlaceFlag || Orderplace, [disabled]="OrderPlaceFlag || Orderplace || !BestPrice"-->
+                <button *ngIf="isSchedulevisible" [ngClass]="{'button' : !IsRMLoggedIn || !IsIALoggedIn, 'buttonRM_IA': IsRMLoggedIn || IsIALoggedIn || IsAdvisoryLoggedIn && !RouteFromWorkflow  , 
+                'buttonRoutedDeal' : RouteFromWorkflow , 'buttonFXRoutedDeal': RouteFromWorkflow && IsAdvisoryLoggedIn}" (click)="fnShowOrHideShedule()"
+                >  <!-- [disabled]="!BestPrice"   >  Ch  Added [disabled]=!BestPrice by UrmilaA, 27-April-23 | LGTCLI-361 --> 
+                    <div title="View Schedule">View Schedule</div>
+                </button>
+    
+                <!-- <button class="button" [disabled]="Orderplace || !BestPrice" (click)="CallScheduleComp();">Schedule</button> -->
+                <button *ngIf="isResetvisible" [ngClass]="{'button' : !IsRMLoggedIn || !IsIALoggedIn, 'buttonRM_IA': IsRMLoggedIn || IsIALoggedIn || IsAdvisoryLoggedIn && !RouteFromWorkflow  , 
+                'buttonRoutedDeal' : RouteFromWorkflow , 'buttonFXRoutedDeal': RouteFromWorkflow && IsAdvisoryLoggedIn}" (click)="ResetAllFields();ResetPricer();" 
+                >  
+                    <div title="Reset (F7)">Reset</div>
+                </button>
+
+                    <button id="btnTrade" [ngClass]="{'button' : !IsRMLoggedIn || !IsIALoggedIn, 'buttonRM_IA': IsRMLoggedIn || IsIALoggedIn || IsAdvisoryLoggedIn && !RouteFromWorkflow  , 
+                    'buttonRoutedDeal' : RouteFromWorkflow , 'buttonFXRoutedDeal': RouteFromWorkflow && IsAdvisoryLoggedIn}" 
+                    *ngIf="isSaveTradevisible" (click)="closeSignalR();fnSaveTrade()"
+                [disabled]="!SaveTradeEnabledFlag || !BestPrice">
+                    <!-- Added [disabled]=!BestPrice by UrmilaA, 27-April-23 | LGTCLI-361 -->
+                    <div title="Save Trade Idea">Save Trade Idea</div>
+                    </button>
+            
+                <!-- Urmila A | shown Route to Dealer only to RM users |LGTGTWINT-171 -->
+                <!-- OrderPlaceFlag || || !BestPrice-->
+                <button id="btnTrade" [ngClass]="{'button' : !IsRMLoggedIn || !IsIALoggedIn, 'buttonRM_IA': IsRMLoggedIn || IsIALoggedIn || IsAdvisoryLoggedIn && !RouteFromWorkflow  ,
+                    'buttonRoutedDeal' : RouteFromWorkflow, 'buttonFXRoutedDeal': RouteFromWorkflow && IsAdvisoryLoggedIn}" 
+                *ngIf="isRoutetoDealerVisible" (click)="fnRouteDealerClick()"
+                
+                    [disabled]="!btnEnable || Orderplace || routeToDealerClicked || disabledRoutetodealeronSaveTrade || 
+                    confirmedRouteDealer || IsRouteToDealerExecuted && !routeToDealerClicked">
+                        <!-- !BestPrice, removed & added !MinQuoteTimeOutOccurred in [disabled],  by UrmilaA, 27-April-23, LGTCLI-361, point 2 -->
+                    <div title="Route to Dealer">Route to dealer</div>
+                </button>
+
+                <!-- Disabled check added by Urmila A | LGTGTWINT-1523 | 24-feb-23-->
+                <button [disabled]="RejectedOrderMSG !== '' || NewOrderfromRMLocked || OrderPlaced" 
+                [ngClass]="{'button' : !IsRMLoggedIn || !IsIALoggedIn, 'buttonRM_IA': IsRMLoggedIn || IsIALoggedIn || IsAdvisoryLoggedIn && !RouteFromWorkflow  ,
+                    'buttonRoutedDeal' : RouteFromWorkflow , 'buttonFXRoutedDeal': RouteFromWorkflow && IsAdvisoryLoggedIn}" 
+                *ngIf="isRejectVisible" (click)="fnRejectRouteToDealer()"> 
+                    <div title="Reject">Reject</div>
+                </button>   
+                    
+            </div>
+            
+            <div class="FXD-Pricing-loader" *ngIf="QuteMailClicked">
+                <app-loader></app-loader>
+            </div>
+            
+        </div>
+        
+    </div> 
+
+    <div class="FXD-RFQ-Div" *ngIf="BestPrice || noResponseRecv"> 
+        <span *ngIf="BestPrice || noResponseRecv">RFQ No.</span>
+        <span *ngIf="BestPrice || noResponseRecv" class="RFQNOtxt">{{ DCDRfqId }}</span>
+        <span *ngIf="OrderPlaced">Deal No.</span>
+        <span *ngIf="OrderPlaced" class="RFQNOtxt"> {{ DealNo }}</span>
+            <!--SampleArray.length added by UrmilaA | LGTGTWINT-2072 | 1-June-23 -->
+        <span class="LPsCountTxt">{{ PriceRecvFromLPs }} / {{ SampleArray.length}}  Counterparties Replied</span> <!-- Urmila A | 16-feb-23 | LGTCLI-315 -->
+        <span *ngIf="BestPrice && MinMaxTimer > 0" style="color: #c50c11">You can place order after {{MinMaxTimer}} sec. </span> <!-- UrmilaA | 8-June-23 | LGTGTWINT-2110 -->
+    </div>
+
+    <!-- LPs Row Starts -->
+    <div *ngIf="!ExecutedQueue || AllDataLoaded.productDetail" class="grid-combine"> <!-- AllDataLoaded.productinfo | Changes added by Urmila A | 10-feb-23 | LGTGTWINT-1295 -->
+        <app-pricing *ngIf="!AllDataLoaded.priceprovider && !ExecutedQueue"  
+        [incomingLPs]="SampleArray" [startLoading]='this.loadflag'
+            [ViewMode]="'FullPage'"></app-pricing> <!--Added by Urmila A | 16-Feb-23-->
+        <app-pricing *ngIf="AllDataLoaded.priceprovider && !ExecutedQueue "  [ViewMode]="'FullPage'" [startLoading]='this.loadflag' [ClearFlag]='this.ClearPricingFlag'
+            [data]='this.ServiceResponse' [Product_code]='this.Product_Code' [LPname]="LPname" [Product_ID]='this.Product_ID' [RouteFromWorkflow]="RouteFromWorkflow" 
+            [ProdChangedYN]='ProdChangedYN' [incomingLPs]="SampleArray" [isOrderBtnVisible]="isOrderBtnVisible"  [showRFS]="showRFS" [OrderBtnEnable]="btnEnable"
+            [Mode]="Mode" [UserGroup]="UserGroup" [PricingMode]="PricingMode" [LP]="SelectedLPForPricing"  [ClearLPs]="ClearLPs" [PriceClick]="PriceClick"
+            (TradedLPDetails)="TradeSelectedLP($event)" (DisableTradeButton)="fnDisableTradebtn($event)" (DisableLoader)="fnDisableLoader($event)"
+            (EnablePrembtn)="fnDisablePrembtn($event)" [QuoteValidity]="QuoteValidity" [RFQNODisplayFromParent]="RFQNODisplayFromParent" >
+        </app-pricing>
+    </div>
+
+    
+</div>

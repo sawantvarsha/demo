@@ -1,0 +1,509 @@
+<div>
+  <div class="page-navigation">
+    <app-svg-icons class="back-button" [icon]="'back-button'" [width]="'40'" [height]="'40'" [fill]="'var(--headers)'"
+      (click)="showRebalance = true; clickBack()"></app-svg-icons>
+
+    <div class="page-title">Proposal Generation</div>
+
+    <div>
+      <app-svg-icons (click)="Refresh()" [icon]="'refresh'" [width]="'26'" [height]="'26'"></app-svg-icons>
+    </div>
+  </div>
+
+  <!-- <p>proposal-generation works!</p> -->
+  <div class="container">
+    <div class="client-form">
+      <div class="part1">
+        <div class="sub-part1">
+          <div class="ssp1 margin">
+            <label> Target Client </label>
+          </div>
+          <div class="ssp1">
+            <label> None </label>
+            <input id="noneid" class="btnsize" type="radio" name="TargetClient" (click)="clickNone()" />
+            <label> Selected </label>
+            <input id="selectedid" class="btnsize" type="radio" name="TargetClient" (click)="fnLongname()" />
+          </div>
+        </div>
+        <div class="sub-part1">
+          <div class="ssp1"></div>
+          <div *ngIf="usertype !== 'RM'" class="ssp1">
+            <textarea *ngIf="usertype !== RM && username" class="margin1 padding1 ddlwidth" disabled>
+ {{ username }} </textarea>
+          </div>
+          <div>
+            <textarea *ngIf="usertype === 'RM' && showLongname" class="margin1 ddlwidth"
+              (focusout)="hideWithdelayLongname()" (focus)="SmartSearchLongname()" (keyup)="SmartSearchLongname()"
+              [(ngModel)]="Longname" name="fieldName" ngDefaultControl>
+            </textarea>
+            <div *ngIf="LongnameDisplaySuggestion" class="search-suggestion">
+              <div class="scroll">
+                <div class="btnsize2" *ngFor="let item of LongnamesList | filter1: { ln: Longname }">
+                  <div (click)="selectedLongNamefromSearch(item)">
+                    {{ item.ln }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="sub-part1">
+          <div class="ssp1 margin">
+            <label> Risk Profile </label>
+          </div>
+          <!-- For Client mode -->
+          <div *ngIf="usertype === 'CLIENT'" id="rp1" class="ssp1">
+            <!-- <input type="text" id="rp" class="ddlwidth margin1" placeholder="{{this.Risk}}" disabled> -->
+            <input
+              type="text"
+              id="rp"
+              class="ddlwidth margin1"
+              [(ngModel)]="this.Risk"
+              [ngValue]="this.Risk"             
+              disabled
+              name="fieldName"
+              ngDefaultControl
+            > 
+              <!-- <option *ngFor="let item of profile" [ngValue]="item">
+                {{ item }}
+              </option> -->
+            
+          </div>
+          <!-- For RM mode -->
+          <div *ngIf="usertype === 'RM'" id="rp1" class="ssp1">
+            <select type="text" id="rp" class="ddlwidth margin1" [(ngModel)]="this.Risk"
+              (ngModelChange)="SelectedRiskProfile($event)" placeholder="profile[0]" name="fieldName" ngDefaultControl>
+              <option *ngFor="let item of profile" [ngValue]="item">
+                {{ item }}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="sub-part1">
+          <div class="ssp1 margin">
+            <label> Investment Objective </label>
+          </div>
+
+          <div *ngIf="usertype === 'CLIENT'" class="ssp1">
+            <!-- <input type="text" class="margin1 ddlwidth" placeholder="{{investmentObj}}" disabled> -->
+            <select
+              class="margin1 ddlwidth"
+              [(ngModel)]="this.investmentObj"
+              (ngModelChange)="changeOBJ($event)"
+              placeholder="{{ this.investmentObj }}"
+              name="fieldName"
+              ngDefaultControl
+            >
+              <option *ngFor="let it of dd_InvestmentObjective" [ngValue]="it">
+                {{ it }}
+              </option>
+            </select>
+          </div>
+          <div *ngIf="usertype === 'RM'" class="ssp1">
+            <select
+              class="margin1 ddlwidth"
+              [(ngModel)]="this.investmentObj"
+              (ngModelChange)="changeOBJ($event)"
+              placeholder="{{ this.investmentObj }}"
+              name="fieldName"
+              ngDefaultControl
+            >
+              <option *ngFor="let it of dd_InvestmentObjective" [ngValue]="it">
+                {{ it }}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="sub-part1">
+          <div class="ssp1 margin">
+            <label> CRR </label>
+          </div>
+          <div class="ssp1 padding">
+            <input id="c1" type="checkbox" class="cbsize" disabled />
+            <label> 1 </label>
+            <input id="c2" type="checkbox" class="cbsize" disabled />
+            <label> 2 </label>
+            <input id="c3" type="checkbox" class="cbsize" disabled />
+            <label> 3 </label>
+            <input id="c4" type="checkbox" class="cbsize" disabled />
+            <label> 4 </label>
+            <input id="c5" type="checkbox" class="cbsize" disabled />
+            <label> 5 </label>
+          </div>
+        </div>
+        <div class="sub-part1">
+          <div class="ssp1 margin">
+            <label> Select Proposal </label>
+          </div>
+          <div id="selPro" class="ssp1 margin1 ddlwidth">
+            <select id="change" (change)="Change_Proposal()" [(ngModel)]="selectedValue[0]"
+              (ngModelChange)="onOptionSelected($event)" name="fieldName" ngDefaultControl>
+              <option *ngFor="let item of ProposalDropdown" [ngValue]="item">
+                {{ item }}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="part1">
+        <div class="sub-part1">
+          <div class="ssp1 margin">
+            <label> Proposal </label>
+          </div>
+          <div class="ssp1 padding ddlwidth">
+            <input id="PropName" name=" PropName " placeholder=" {{ username }}_{{ mydate | date: 'MMM-dd-yyyy' }} "
+              type="text" [(ngModel)]="nameproposal" name="fieldName" ngDefaultControl autocomplete="off"/>
+          </div>
+        </div>
+        <div class="sub-part1">
+          <div class="ssp1 margin">
+            <label> Currency</label>
+          </div>
+          <div class="sub-part1">
+            <input *ngIf="baseCCY" type="text" class="padding ddlwidth" value="{{ baseCCY }}" disabled />
+          </div>
+        </div>
+        <div class="sub-part1">
+          <div class="ssp1 margin">
+            <label> Total Allocation </label>
+          </div>
+          <div class="ssp1 middle">
+            <input type="text" class="ddlwidth right padding" [(ngModel)]="TotalAllocation"
+              (blur)="cfs.FormatNumber($event)" (change)="TotalAllocation = cfs.NotionalChange($event)"
+              (focus)="cfs.UnformatNumber($event); cfs.SelectFullText($event)"
+              (key.enter)="cfs.NotionalValidate($event)" name="fieldName" ngDefaultControl disabled />
+          </div>
+        </div>
+        <div class="sub-part1">
+          <div class="ssp1 margin">
+            <label> Target Notional </label>
+          </div>
+          <div class="ssp1 middle">
+            <input type="text" class="ddlwidth right padding" [(ngModel)]="TargetNotional"
+              (blur)="cfs.FormatNumber($event); onNominalChange('a')" (change)="TargetNotional = cfs.NotionalChange($event)"
+              (focus)="cfs.UnformatNumber($event); cfs.SelectFullText($event)"
+              (key.enter)="cfs.NotionalValidate($event); onNominalChange('a')" value="{{ this.TargetNotional }}" name="fieldName"
+              ngDefaultControl />
+          </div>
+        </div>
+
+
+      <div *ngIf="showChart" class="chart">
+        <app-pie-chart [legendHeight]="200" [width]="380" [graphdata]="chartData" [legendVisible]=true [labelsVisible]=false>
+        </app-pie-chart>
+          <!-- <google-chart
+            [(ngModel)]="chartData"
+            [type]="type"
+            [data]="chartData"
+            [options]="options"
+            name="fieldName"
+            ngDefaultControl
+          >
+          </google-chart> -->
+        </div>
+      </div>
+
+      <div class="width">
+        <button class="ddlwidth margin4 button" (click)="btnValidate()">
+          Validate
+        </button>
+        <button id="savPro" class="ddlwidth margin4 button" (click)="btnsave()">
+          {{ btntext }}
+        </button>
+        <button class="ddlwidth margin4 button" (click)="Export()">
+          Export
+        </button>
+
+        <button class="ddlwidth margin4 button" (click)="showRecommendedPL = true">
+          Recommended Product List
+        </button>
+
+        <button class="ddlwidth margin4 button" (click)="Reset()">Reset</button>
+      </div>
+    </div>
+
+    <div *ngIf="showProposalSavedMsg" class="positivemsg">
+      Proposal saved Successfully
+    </div>
+    <br />
+
+    <div *ngIf="showRecommendedPL" class="overlay">
+      <div class="" [ngClass]="{
+          'page-content-container-popup': !isUserRM,
+          'page-content-container-popupRM': isUserRM
+        }"
+      >
+        <app-svg-icons
+          [icon]="'cancel-icon'"
+          [width]="'20'"
+          [height]="'20'"
+          (click)="showRecommendedPL = false"
+          class="closebtn"
+        ></app-svg-icons>
+
+        <app-recommended-product-list class="inside-Component"></app-recommended-product-list>
+      </div>
+    </div>
+
+    <div class="config-port">
+      <!-- Configure Portfolio -->
+
+      <div class="sub-Section-title">Configure Portfolio</div>
+      <div>
+        <br />
+        <table border="">
+          <tr>
+            <th></th>
+            <th>
+              <button (click)="addPlus()" class="bg margin">
+                <img src="../../../../../../assets/add.png" class="icon" />
+              </button>
+            </th>
+            <th>Buy/Sell</th>
+            <th>Scheme</th>
+            <th>Template</th>
+            <th>Sub Template</th>
+            <th> Category</th>
+            <th>Security</th>
+            <th>Nominal</th>
+            <th>Percentage</th>
+          </tr>
+
+          <tr *ngFor="let x of Rowarray; let j = index">
+            <td><button (click)="addRow(j)" class="bg copybt">Copy</button></td>
+
+            <td style="text-align: center">
+              <button (click)="delRow(j)" class="bg">
+                <img src="../../../../../../assets/remove.png" class="icon" />
+              </button>
+            </td>
+
+            <td>
+              <select
+               [(ngModel)]="x.buysell" 
+               name="fieldName" 
+               ngDefaultControl>
+               <option *ngFor="let item of BuySellDropdown" value="{{item}}"> {{item}} </option>
+              </select>
+            </td>
+            <td class="ddlwidth1">
+              <select
+                (change)="changeScheme(j)"
+                [(ngModel)]="x.schemename"
+                name="fieldName"
+                ngDefaultControl
+              >
+                <option
+                  value="{{ Scheme.Scheme_Name }}"
+                  *ngFor="let Scheme of selectedSchemes"
+                >
+                  {{ Scheme.Scheme_Name }}
+                </option>
+                <!-- <option id = "t1"> Cash </option>
+              <option id = "t2"> Equities </option>
+              <option id = "t3"> MF </option>
+              <option id = "t4"> Fixed Income </option>
+              <option id = "t5"> PMSProductMaster </option> -->
+              </select>
+            </td>
+
+            <td class="ddlwidth1">
+              <select
+                [(ngModel)]="x.selectedTemplate"
+                (change)="changedTemplate(j)"
+                name="fieldName"
+                ngDefaultControl
+              >
+                <option
+                  value="{{ item.TemplateName }}"
+                  *ngFor="let item of x.templates; let k = index"
+                >
+                  {{ item.TemplateName }}
+                </option>
+              </select>
+            </td>
+
+            <td class="ddlwidth1">
+              <select
+                [(ngModel)]="x.activeSubTemp"
+                (change)="changdedSubTemp(j)"
+                name="fieldName"
+                ngDefaultControl
+                >
+                  <option
+                  *ngFor="let it of x.subTemplate; let k = index"
+                  value="{{ it.Misc1 }}"
+                  >
+                    {{ it.Misc1 }}
+                  </option>
+                
+              </select>
+            </td>
+            
+            <td class="ddlwidth1">
+              <select
+                [(ngModel)]="x.activecategory"
+                (change)="changedCategory()"
+                name="fieldName"
+                ngDefaultControl
+              >
+                <option
+                  *ngFor="let it of x.categories; let k = index"
+                  value="{{ it.Misc1 }}"
+                >
+                  {{it.Misc1}}
+                </option>
+              </select>
+            </td>
+
+            <td>
+              <div>
+                <input id="Security" type=" text " placeholder=" Search.. "
+                  (clickOutside)="x.displaySuggestions = false" (focus)="SmartSearch(j)" (keyup)="SmartSearch(j)"
+                  [(ngModel)]="x.securityname" (keydown)="setFocusOnFirstMenuItem($event)" #searchInput name="fieldName"
+                  ngDefaultControl autocomplete="off"/>
+                
+                <div *ngIf="x.displaySuggestions" class="search-suggestion">
+                  <div class="scroll">
+                    <div class="btnsize2" *ngFor="
+                        let item of RecProductList
+                          | filter1: { Param1: x.securityname };
+                        let kk = index
+                      " (keyup.enter)="
+                        selectedSecurityfromSearch(item, j);
+                        x.displaySuggestions = false
+                      " #listTrigger tabindex="-1" (keydown)="onKeyDown($event, kk)">
+                      <div (click)="selectedSecurityfromSearch(item, j)">
+                        {{ item.Param1 }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </td>
+
+            <td class="ddlwidth1">
+              <div>
+                <input type="text" class="right" [(ngModel)]="x.nominal"
+                  (onload)="unitCalculations(notional, data['BidNAV'])" (blur)="cfs.FormatNumber($event);
+                  onNominalChange(j);" (change)="
+                    x.nominal = cfs.NotionalChange($event);
+                    onNominalChange(j);
+                  " (focus)="
+                    cfs.UnformatNumber($event); cfs.SelectFullText($event)
+                  " (key.enter)="cfs.NotionalValidate($event);
+                  cfs.FormatNumber($event);
+                  onNominalChange(j);" name="fieldName" ngDefaultControl />
+              </div>
+            </td>
+            <td>
+              <div>
+                <input type="text" class="right" [(ngModel)]="x.percentage" (change)="onPercentChange(j)">
+              </div>
+            </td>
+          </tr>
+          <!-- *ngIf (this.portfolioDetails[this.index].AssetDetails[j].XAxisMember = selectedSchemes[i] ) -->
+          <!-- {{this.portfolioDetails[this.index].AssetDetails[j].Holdings}} -->
+        </table>
+
+        <div *ngIf="schemeError" class="negativeMsg">
+          Please select a Scheme from the Dropdown !
+        </div>
+        <div *ngIf="SecOrNomError">Security Or Nominal not entered.</div>
+        <div *ngIf="percentError"> Input should not be greater than 100%</div>
+        <div *ngIf="nominalError"> Nominal should not be greater than Target Notional</div>
+        <div *ngIf="totalPercentCheck">Total Nominal should not exceed 100% </div>
+        <div *ngIf="totalNominalError">Total Nominal should not exceed Target Notional</div>
+
+        <button id="Previewbtn" class="button margin4" (click)="showPreview = true">
+          Preview
+        </button>
+        <div *ngIf="showPreview" class="overlay">
+          <div class="" [ngClass]="{
+              'page-content-container-popup': !isUserRM,
+              'page-content-container-popupRM': isUserRM
+            }">
+            <app-svg-icons [icon]="'cancel-icon'" [width]="'20'" [height]="'20'" (click)="showPreview = false"
+              class="closebtn"></app-svg-icons>
+
+            <app-proposal-generation-preview class="inside-Component"></app-proposal-generation-preview>
+          </div>
+        </div>
+
+        <button id="GPbtn" class="button margin4 ddlwidth" (click)="generateProposal(1)">
+          Generate Proposal
+        </button>
+        <span *ngIf="isDownloading">Downloading...</span>
+        <span *ngIf="this.error !== ''">{{ error }}</span>
+      </div>
+    </div>
+
+    <br />
+
+    <div class="config-port">
+      <!-- Distribute Proposal -->
+      <div>
+        <div class="sub-Section-title">Distribute Proposal</div>
+      </div>
+      <div>
+        <br />
+        <table border=" medium ">
+          <tr>
+            <th>
+              <input id="headertextbox" type="checkbox" (click)="checkAll()" class="cbsize" />
+            </th>
+            <th>Customer</th>
+            <th>E-mail</th>
+            <th>Contact No</th>
+            <th></th>
+            <th></th>
+          </tr>
+          <tr *ngIf="usertype !== 'RM'">
+            <td>
+              <div class="checkbox-handler">
+                <input id="CustCheckbox" type="checkbox" class="cbsize" />
+              </div>
+            </td>
+            <td class="width1">{{ Code }}</td>
+            <td class="width1">{{ EmailID }}</td>
+            <td class="width1">{{ ContactNo }}</td>
+            <td>
+              <button type="image" class="bg" (click)="generateProposal()">
+                <app-svg-icons [icon]="'pdf'" [width]="'30'" [height]="'30'" [fill]="'var(--active)'"></app-svg-icons>
+              </button>
+            </td>
+            <td>
+              <button type="image" class="bg" (click)="SendEmailClient(EmailID)">
+                <img src="../../../../../../assets/envelope.png" class="icon" />
+              </button>
+              <span class="msg-class" *ngIf="EmailFlag">{{ EmailMsg }}</span>
+            </td>
+          </tr>
+          <!-- For RM -->
+          <tr *ngFor="let item of data; let k = index">
+            <td>
+              <div class="checkbox-handler">
+                <input id="{{ 'CustCheckbox' + k }}" type="checkbox" class="cbsize" />
+              </div>
+            </td>
+            <td class="width1">{{ item.LongName }}</td>
+            <td class="width1">{{ item.EmailId }}</td>
+            <td class="width1">{{ item.Contact1 }}</td>
+            <td>
+              <button type="image" class="bg" (click)="generateProposal(k)">
+                <img src="../../../../../../assets/pdf-white.png" class="icon" />
+              </button>
+            </td>
+            <td>
+              <button type="image" class="bg" (click)="SendEmailRM(item.EmailId, k)">
+                <img src="../../../../../../assets/envelope.png" class="icon" />
+              </button>
+              <span class="msg-class"> </span>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

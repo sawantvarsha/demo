@@ -1,0 +1,75 @@
+<div style="margin-top: 20px;">
+    <label class="page-title">How can we help you?</label>
+<div class="page-grid">
+    <div class="contact-div box-container" style="margin-top: 35px;padding: 30px 31px;">
+        <label class="left" style="font-size: 20px; color: var(--off-color); margin-bottom: 5px;">Send us a message and we'll get your questions answered as soon as possible.</label>
+        <div class="left form-element">
+            <label style="color: var(--heading-label);">Your Name</label>
+            <input type="text" class="text-long" placeholder="Enter your name...">
+        </div>
+        <div class="left form-element">
+            <label style="color: var(--heading-label);">Your Email</label>
+            <input type="text" class="text-long" placeholder="Enter your email address...">
+        </div>
+        <div class="left form-element">
+            <label style="color: var(--heading-label);">Message</label>
+            <textarea id="message" name="message" class="text-long" placeholder="Type your message..."></textarea>
+        </div>
+        <div class="left form-element">
+            <label style="color: var(--heading-label);">Attachment (Optional)</label>
+            <input type="file" accept="application/pdf" class="custom-file-input">
+        </div>
+        <div class="left form-element">
+           <button class="button" style="width: 100%;">Submit your message</button>
+        </div>
+        
+    </div>
+    <div class="contact-div">
+        <app-svg-icons class="" [icon]="'support-vector'" [width]="'560'" [height]="'560'"></app-svg-icons>
+        
+        <div class="details-grid">
+            <div class = "left-alignment">
+               <label style="grid-column: 1/span 2;" class="sub-title">Contact Us</label>
+ 
+                <div>
+                 <!-- <div class="details-flex">
+                     <app-svg-icons class="" style="margin: 2px 0px;" [icon]="'phone'" [width]="'20'" [height]="'20'"></app-svg-icons>
+                     <label class="">+65-6808 6460</label>
+                 </div> -->
+                 <div class="details-flex">
+                     <app-svg-icons class="" style="margin: 2px 0px;" [icon]="'phone'" [width]="'20'" [height]="'20'"></app-svg-icons>
+                     <label class="" *ngIf="CompanyLogo === 'SHC'">+971(0)4 556 2701</label>
+                     <label class="" *ngIf="CompanyLogo === 'FinIQ' || CompanyLogo === 'GWM'">+65-6808 6460</label>
+                 </div>
+                 
+                 <div class="details-flex">
+                     <app-svg-icons class="" style="margin: 2px 0px;" [icon]="'email'" [width]="'20'" [height]="'20'"></app-svg-icons>
+                     <label class="" *ngIf="CompanyLogo === 'SHC'">info@sh-financials.com</label>
+                     <label class="" *ngIf="CompanyLogo === 'FinIQ' || CompanyLogo === 'GWM'">info@finiq.com</label>
+                 </div>
+                </div>
+            </div>
+             <div class = "left-alignment">
+                 <label style="grid-column: 1/span 2;" class="sub-title">Address</label>
+                 <div class="details-flex" *ngIf="CompanyLogo === 'SHC'"> 
+                     <app-svg-icons class="" style="margin: 2px 0px;" [icon]="'location'" [width]="'20'" [height]="'20'"></app-svg-icons>
+                     <label class="">Unit 02, Level 1<br>
+                         Gate Village Building 03<br>
+                         DIFC, Dubai UAE</label>
+                 </div>
+     
+                 <div class="details-flex" *ngIf="CompanyLogo === 'FinIQ' || CompanyLogo === 'GWM'">
+                     <app-svg-icons class="" style="margin: 2px 0px;" [icon]="'location'" [width]="'20'" [height]="'20'"></app-svg-icons>
+                     <label class="">FinIQ Consulting Pte. Ltd.<br>
+                         10 Collyer Quay,<br>
+                         #40-00, Ocean Financial Centre,<br>
+                         Singapore, 049315.</label>
+                 </div>
+             </div>
+           
+         </div>
+    </div>
+    
+</div>
+</div>
+

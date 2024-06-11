@@ -1,0 +1,155 @@
+<div class="pitchbook-component">
+    <div class="page-title" style="display: flex;align-items: center; gap: 10px;">
+        <app-svg-icons class="back-button" [icon]="'back-button'" [width]="'30'" [height]="'30'"
+            [fill]="'var(--headers)'" (click)="commonApi.back()"></app-svg-icons>
+        <div>Pitchbook</div>
+    </div>
+    <div class="pitchbook-grid">
+        <div class="pitchbook-filter" *ngIf="this.showBookIndex === true">
+
+            <!-- <div class="">
+                <input type="text" class="search search-portfolio" placeholder="Search Book" />
+            </div> -->
+
+            <div class="view">
+                <div class="pitchbook-actions">
+                    <input type="text" class="search search-portfolio" placeholder="Search Book" />
+                    <div style="position: relative;    padding: 10px;">
+                        <div class="button b2" id="button-13">
+                            <input type="checkbox" class="checkbox" [ngModel]="isSinglePage"
+                                (change)="toggleSinglePage()">
+                            <div class="knobs">
+                                <span></span>
+                            </div>
+                            <div class="layer"></div>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- <fieldset> -->
+                <!-- <legend class="view-legend">View</legend> -->
+
+
+
+                <!-- <div class="toggle-flex">
+
+                    <label *ngFor="let radiobutton of radioItems">
+                        <input type="radio" class="" name="options" (click)="model.option = radiobutton"
+                            [checked]="radiobutton === model.option">
+
+                        {{radiobutton}}
+                    </label>
+                </div> -->
+                <!-- </fieldset> -->
+
+                <div class="pitchlist-cls">
+                    <div *ngFor="let book of userBooks;let i=index;">
+                        <li class="list-item" (click)="bookSelection(book.Book_Summary, book.PitchBook_Id)"
+                            [ngClass]="{'active' : book.Book_Summary === selectedBook}">
+                            <div style="display: flex;align-items: center;">
+                                <app-svg-icons [icon]="'videoLibrary'" [width]="'14'" [height]="'14'"
+                                    [fill]="'var(--icon-active)'" style="margin-right: 10px;"></app-svg-icons>
+                                <label for="">{{book.Book_Summary}}</label>
+                            </div>
+                        </li>
+                    </div>
+                </div>
+                <!-- <table>
+                    <tbody>
+                        <tr *ngFor="let book of userBooks;let i=index;">
+                            <td class="grid-table-data td-padding">
+                                
+                                <label class="book-name book-label"
+                                    (click)="bookSelection(book.Book_Summary, book.PitchBook_Id)">{{book.Book_Summary}}</label>
+                               
+                                <div class="read-button">
+                                <button class="button" (click)="bookSelection(book.Book_Summary, book.PitchBook_Id)">
+                                    Read</button>
+                                </div>
+                            </td>
+                        </tr>
+
+
+                    </tbody>
+                </table> -->
+
+
+
+
+            </div>
+
+        </div>
+
+        <div class="cards">
+
+            <div class="header-topbar">
+                <div>
+                    <span *ngIf="this.selectedBook === ''">
+                        <h1 class="header-style">
+                            {{this.header}}
+                        </h1>
+
+                    </span>
+                    <span *ngIf="this.selectedBook !== ''">
+                        <h1 class="header-style">
+                            {{this.selectedBook}}
+                        </h1>
+
+                    </span>
+                </div>
+            </div>
+            <hr size="1">
+            <div class="select-book-flex" *ngIf="this.selectedBook === '' ">
+                <label>Please select a Book!!</label>
+            </div>
+            <div class="video-grid" *ngIf="this.selectedBook !== '' ">
+
+                <!-- Videos -->
+                <ng-container *ngFor="let video of bookDetails | paginate: config">
+                    <div class="content">
+                        <video controls width="550" preload="metadata">
+
+                            <source src="{{generateVideoUrl(video.Doc_Block1)}}#t=0.05" type="video/mp4">
+
+                            Sorry, your browser doesn't support embedded videos.
+                        </video>
+                    </div>
+                    <div class="content">
+                        <video controls width="550" preload="metadata">
+
+                            <source src="{{generateVideoUrl(video.Doc_Block2)}}#t=0.05" type="video/mp4">
+
+                            Sorry, your browser doesn't support embedded videos.
+                        </video>
+                    </div>
+                    <div class="content">
+                        <video controls width="550" preload="metadata">
+
+                            <source src="{{generateVideoUrl(video.Doc_Block3)}}#t=0.05" type="video/mp4">
+
+                            Sorry, your browser doesn't support embedded videos.
+                        </video>
+                    </div>
+                    <div class="content">
+                        <video controls width="550" preload="metadata">
+
+                            <source src="{{generateVideoUrl(video.Doc_Block4)}}#t=0.05" type="video/mp4">
+
+                            Sorry, your browser doesn't support embedded videos.
+                        </video>
+                    </div>
+                </ng-container>
+
+
+
+            </div>
+
+            <div class="pagination-controls col-span" *ngIf="!isSinglePage && this.selectedBook !== '' ">
+                <pagination-controls class="my-pagination" (pageChange)="pageChanged($event)">
+                </pagination-controls>
+            </div>
+        </div>
+
+
+    </div>
+</div>

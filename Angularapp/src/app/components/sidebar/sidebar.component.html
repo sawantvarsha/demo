@@ -1,0 +1,372 @@
+<div id="menuToggle" *ngIf="!isPDFMode">
+  <input type="checkbox" id="hamburger" />
+  <span class="hamburger-line"></span>
+  <span class="hamburger-line"></span>
+  <span class="hamburger-line"></span>
+  <ul id="menu">
+    <div class="profile-div" style="height: 60px" (click)="openProfile()">
+      <div class="username-div">
+        <div class="profile-icon"></div>
+        <label class="profile-name">
+          {{ loggedInUsername }}
+        </label>
+      </div>
+      <div class="log-time">
+        <span
+          ><span style="font-size: 8px">
+            {{ "Logged in at" | translate }}:</span
+          >
+          {{ loggedAt }}</span
+        >
+      </div>
+    </div>
+    <hr />
+    <div class="route-pages">
+      <ul class="accordion">
+        <li *ngFor="let menu of MenuArray; let i = index">
+          <div
+            class="nav-item"
+            [routerLink]="[menu.router]"
+            (click)="activeTab = menu.menu; clearInputs(); setTitle(menu, menu.menu)"
+            [ngClass]="{ active: activeTab === menu.menu }"
+          >
+            <p hidden="true">{{ activeTab }}</p>
+            <div
+              [className]="menu.icon"
+              [ngClass]="{ 'active-icon': activeTab === menu.menu }"
+            >
+              <app-svg-icons
+                [icon]="menu.icon"
+                [width]="'22'"
+                [height]="'22'"
+              ></app-svg-icons>
+            </div>
+            <span class="label-sidebar">{{ menu.translatedMenu }} </span>
+            <app-svg-icons class="toggle-menu-icon" [icon]="'down-arrow'" (click)="collapse(i)" [width]="'12'" [height]="'12'" [fill]="'var(--sidebar-li)'" *ngIf="menu.isSubMenu && menu.isCollapsed"></app-svg-icons>
+            <!-- <span
+              class="material-icons toggle-menu-icon"
+              *ngIf="menu.isSubMenu && menu.isCollapsed"
+              (click)="collapse(i)"
+              >expand_more</span
+            > -->
+            <app-svg-icons class="toggle-menu-icon" [icon]="'down-arrow'" [ngClass]="{ 'rotate-toggle-menu-icon': activeTab === menu.menu }" (click)="collapse(i)" [width]="'12'" [height]="'12'" [fill]="'var(--sidebar-li)'" *ngIf="menu.submenu !== '-' && !menu.isCollapsed && menu.isSubMenu"></app-svg-icons>
+            <!-- <span
+              class="material-icons toggle-menu-icon"
+              (click)="collapse(i)"
+              [ngClass]="{ 'rotate-toggle-menu-icon': activeTab === menu.menu }"
+              *ngIf="menu.submenu !== '-' && !menu.isCollapsed"
+              >expand_more</span
+            > -->
+          </div>
+
+          <ul
+            *ngIf="!menu.isCollapsed"
+            class="sub-menu"
+            id="client-sub-menu"
+            [ngClass]="{ 'hide-sub-menu': activeTab !== menu.menu }"
+          >
+            <li
+              *ngFor="let submenu of SubmenuArray"
+              (click)="setTitle(menu, submenu)"
+            >
+              <div
+                [routerLink]="[submenu.router]"
+                *ngIf="submenu.menu === menu.menu"
+              >
+                <div class="no-icon"></div>
+                <span class="label-sidebar">{{
+                  submenu.translatedSubmenu
+                }}</span>
+              </div>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+    <hr />
+    <div class="route-pages" style="display: flex; flex-direction: column">
+      <!-- <ul>
+                <li class="nav-item" (click)="logout()">
+                    <div class="logout-icon">
+                        <img [src]="isProd?'assets/logout-icon.png':'../../../assets/logout-icon.png'" alt="">
+                    </div>
+                    <span class="label-sidebar"> Logout</span>
+                </li>
+                <li>
+                    <p style="text-align: center; font-family: 'Times New Roman', Times, serif; font-size: 45px;color: white;">FinIQ</p>
+                </li>
+            </ul> -->
+      <div>
+        <hr />
+        <p
+          style="
+            text-align: center;
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 45px;
+            color: white;
+          "
+        >
+          FinIQ
+        </p>
+      </div>
+    </div>
+  </ul>
+</div>
+
+<div
+  class="sidebar-component"
+  [ngClass]="{
+    'sidebar-component': !hideSideBar,
+    'collapsed-sidebar-component': hideSideBar
+  }"
+  *ngIf="!isPDFMode"
+>
+  <!-- <div
+    class="logo-div"
+    style="display: flex; align-items: center; justify-content: center"
+  >
+   
+  </div> --> 
+  <!-- changes done by Jyoti S to remove spacing|| 14-APr-2023 -->
+  <div class="side-bar-component" *ngIf="!hideSideBar">
+    <div class="profile-div"  *ngIf="!hideSideBar">
+      <span (click)="toggleSideBar(); activeTab = 0"
+        *ngIf="!hideSideBar">
+        <img class="collapse-icon" src="{{asseturl}}pin.png" alt="" style="width: 0px;"><!--Added by SandipA for FIN1EURINT-82 || 08-May-2023 -->
+      </span>
+
+      <div class="username-div" (click)="openProfile()">
+        <div class="profile-icon">
+          <img
+            [src]="
+              isProd ? 'assets/user-blue.png' : '../../../assets/user-blue.png'
+            "
+            alt=""
+          />
+        </div>
+        <!-- <label for="" style="letter-spacing: 0.81px;"> -->
+        <label class="profile-name" [title]="loggedInUsername">
+          {{ loggedInUsername }}
+        </label>
+      </div>
+      <div class="log-time">
+        <span
+          ><span style="font-size: 8px">
+            {{ "Logged in at" | translate }}:</span
+          >
+          {{
+            loggedAt
+             
+          }}</span
+        >
+      </div>
+    </div>
+
+    <hr />
+    
+    <div class="route-pages1 abc" [ngStyle]="hideSideBar ? { display: 'none' } : { display: 'flex' }">
+      <!-- <div class="route-pages abc" *ngIf="!hideSideBar" [ngStyle]="{'display':'none'}"></div> -->
+      <ul class="accordion">
+        <li *ngFor="let menu of MenuArray; let i = index">
+          <div
+            class="nav-item"
+            (click)="collapse(i)"
+            [routerLink]="[menu.router]"
+            (click)="activeTab = menu.menu;selectedSubMenu = menu.SubMenu[0]?.submenu;clearInputs();setTitle(menu);"
+            [ngClass]="{ active: activeTab === menu.menu }"
+          >
+            <p hidden="true">{{ activeTab }}</p>
+            <div
+              [className]="menu.icon"
+              [ngClass]="{ 'active-icon': activeTab === menu.menu }"
+            >
+              <!-- <img [src]="isProd?'assets/'+menu.icon+'.png':'../../../assets/'+menu.icon+'.png'" alt=""> -->
+              <app-svg-icons
+                [icon]="menu.icon"
+                [width]="'22'"
+                [height]="'22'"
+                [fill]="'var(--active)'"
+              ></app-svg-icons>
+            </div>
+            <span class="label-sidebar">{{ menu.translatedMenu }} </span>
+            <app-svg-icons class="toggle-menu-icon" [icon]="'down-arrow'" [width]="'12'" [height]="'12'" [fill]="'var(--sidebar-li)'" *ngIf="menu.isSubMenu && menu.isCollapsed"></app-svg-icons>
+            <!-- <span
+              class="material-icons toggle-menu-icon"
+              *ngIf="menu.isSubMenu && menu.isCollapsed"
+              (click)="collapse(i)"
+              >expand_more</span
+            > -->
+            <app-svg-icons class="toggle-menu-icon" [icon]="'down-arrow'" [ngClass]="{ 'rotate-toggle-menu-icon': activeTab === menu.menu }" [width]="'12'" [height]="'12'" [fill]="'var(--sidebar-li)'" *ngIf="menu.submenu !== '-' && !menu.isCollapsed && menu.isSubMenu"></app-svg-icons>
+            <!-- <span
+              class="material-icons toggle-menu-icon"
+              (click)="collapse(i)"
+              [ngClass]="{ 'rotate-toggle-menu-icon': activeTab === menu.menu }"
+              *ngIf="menu.submenu !== '-' && !menu.isCollapsed"
+              >expand_more</span
+            > -->
+          </div>
+
+          <!-- Removed class [ngClass]="{ 'hide-sub-menu': activeTab !== menu.menu }" by Apurva K for FIN1EURINT-252|| 26-Apr-2023 -->
+          <ul
+            *ngIf="!menu.isCollapsed"
+            class="sub-menu"
+            id="client-sub-menu"
+            
+          >
+            <li
+              *ngFor="let submenu of menu.SubMenu; let sm = index"
+              (click)="setTitle(menu, submenu); activeTab = menu.menu"
+              [id]="'sub-menu'"
+            > <!-- Added by AdilP @09-11-2023-->
+              <div
+                [routerLink]="[submenu.router]" [state]="{pageTitle:submenu.translatedSubmenu}"
+                 (click)="selectedSubMenu = submenu.submenu"
+              >
+                <div class="no-icon"></div>
+                <span
+                  class="label-sidebar"
+                  [ngClass]="{
+                    'sub-menu-active': selectedSubMenu === submenu.submenu
+                  }"
+                  >{{ submenu.translatedSubmenu }}</span
+                >
+              </div>
+              <div class="horizontal-line"></div>
+            </li>
+            <div class="vertial-line"></div>
+          </ul>
+        </li>
+      </ul>
+    </div>
+    <!-- <hr /> --> <!-- commented by AdilP FIN1EURINT-541-->
+    <hr />
+    <div
+      class="route-pages2 finiq-div"
+      [ngStyle]="hideSideBar ? { display: 'none' } : { display: 'flex !important' }"
+      style="display: flex !important; align-items: flex-end; "
+    >
+      <div
+        style="
+        display: flex;
+        flex-direction : column;
+          /* position: absolute; */
+          /* bottom: 20px;*/
+          width: 100%;
+          text-align: center;
+          align-self: last baseline;       
+        "
+        *ngIf="!isDemo"
+      >
+        <!-- <hr> -->
+        <p class="website-link">
+          {{ version }}<br><br>
+          {{ "This platform is powered by" | translate }} 
+        </p>
+        <!-- <div class="finiq-logo"></div> -->
+        <app-svg-icons class="licenser-logo" [icon]="'finiq-logo'" [height]="'95'" [width]="'130'" [fill]="'var(--sidebar-li)'"></app-svg-icons>
+        <a
+          class="website-link"
+          href="http://www.finiq.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          >www.finiq.com</a> 
+          
+      </div>
+    </div>
+
+<!-- Added by SandipA @08-Dec-23 for Third Party & Open Source Acknowledgment Note || Start -->
+<div id="footer">
+  <div class="website-link" style="margin-left: 5px; text-align: center; margin-right: 5px;"  (click)="Disclaimer()" (clickOutside)="infoDivFlag=false;">
+        <a> {{currentYear}} &#64; FinIQ Consulting Pte. Ltd.  All Rights Reserved.</a>
+</div>
+
+<div class="Disclaimer"  *ngIf="infoDivFlag">
+  <div>Disclaimer<span (click)="closeDisclaimer()">X</span></div>
+  <p>
+      All the information and material contained herein including but not limited to codes (in a source code or object code form), binaries, executable, designs, algorithms, work flows, marketing and promotional materials, user manuals, features, UI, UX,  intellectual and technical concepts are proprietary in nature and are the property of FinIQ Consulting Pte. Ltd. and its subsidiaries (collectively "FinIQ Consulting").  
+All such information contained herein are protected by trade secrets or copyright laws. Dissemination, copying, unauthorized use, access or modification of this information or reproduction thereof is strictly forbidden unless prior written permission is obtained from FinIQ Consulting.
+  <br>
+      <a id="lnkOpenSourceList" style="font-weight: normal !important; font-style: italic; color: rgb(77, 166, 255);" title="Open source & third party software details, read more..." href="../assets/OpenSource_ThirdParty_AcknowledgementNote.pdf" target="_blank">Open source & third party software details, read more...</a>
+
+  </p>
+</div> 
+</div>
+<!-- Added by SandipA @08-Dec-23 for Third Party & Open Source Acknowledgment Note || End -->
+
+  </div>
+  <div *ngIf="hideSideBar">
+  <div class="profile-div" >
+    <span (click)="toggleSideBar()"
+      *ngIf="hideSideBar"> 
+      <img class="collapse-icon" src="{{asseturl}}pin.png" alt="" style="width: 0px;"><!--Added by SandipA for FIN1EURINT-82 || 08-May-2023 -->
+    </span>
+  </div>
+
+  <hr />
+  <div class="route-pages" style="overflow: hidden !important; " 
+      [ngStyle]="hideSideBar ? { display: 'block' } : { display: 'none' }">
+	    <!-- Style overflow Added by SandipA for FIN1EURINT-82 || 08-May-2023 --> <!-- Added by AdilP for FIN1EURINT-541 || 27-07-2023 -->
+    <ul class="accordion">
+      <li *ngFor="let menu of MenuArray; let i = index">
+        <div
+          class="nav-item"
+          [routerLink]="[menu.router]"
+          (click)="activeTab = menu.menu; clearInputs(); setTitle(menu)"
+          [ngClass]="{ active: activeTab === menu.menu }"
+        >
+          <p hidden="true">{{ activeTab }}</p>
+          <div
+            [className]="menu.icon"
+            [ngClass]="{ 'active-icon': activeTab === menu.menu }"
+            [title]="menu.menu"
+          >
+            <!-- <img [src]="isProd?'assets/'+menu.icon+'.png':'../../../assets/'+menu.icon+'.png'" alt=""> -->
+            <app-svg-icons
+              [icon]="menu.icon"
+              [width]="'22'"
+              [height]="'22'"
+              [fill]="'var(--active)'"
+            ></app-svg-icons>
+          </div>
+          <app-svg-icons class="toggle-menu-icon" [icon]="'down-arrow'" (click)="collapse(i)" [width]="'12'" [height]="'12'" [fill]="'var(--sidebar-li)'" *ngIf="menu.isSubMenu && menu.isCollapsed"></app-svg-icons>
+            <!-- <span
+              class="material-icons toggle-menu-icon"
+              *ngIf="menu.isSubMenu && menu.isCollapsed"
+              (click)="collapse(i)"
+              >expand_more</span
+            > -->
+            <app-svg-icons class="toggle-menu-icon" [icon]="'down-arrow'" [ngClass]="{ 'rotate-toggle-menu-icon': activeTab === menu.menu }" (click)="collapse(i)" [width]="'12'" [height]="'12'" [fill]="'var(--sidebar-li)'" *ngIf="menu.submenu !== '-' && !menu.isCollapsed && menu.isSubMenu"></app-svg-icons>
+            <!-- <span
+              class="material-icons toggle-menu-icon"
+              (click)="collapse(i)"
+              [ngClass]="{ 'rotate-toggle-menu-icon': activeTab === menu.menu }"
+              *ngIf="menu.submenu !== '-' && !menu.isCollapsed"
+              >expand_more</span
+            > -->
+            
+        </div>
+
+        <ul
+          *ngIf="!menu.isCollapsed"
+          class="sub-menu"
+          id="client-sub-menu"
+          [ngClass]="{ 'hide-sub-menu': activeTab !== menu.menu }"
+        >
+          <li
+            *ngFor="let submenu of SubmenuArray"
+            (click)="setTitle(menu, submenu)"
+          >
+            <div
+              [routerLink]="[submenu.router]"
+              *ngIf="submenu.menu === menu.menu"
+            >
+              <div class="no-icon"></div>
+            </div>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+  <!-- <hr /> -->
+  <div class="route-pages"></div>
+</div>

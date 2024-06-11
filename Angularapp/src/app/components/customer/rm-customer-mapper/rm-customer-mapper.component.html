@@ -1,0 +1,107 @@
+<div class="RMCustomerMappingClass">
+  <div class="page-title module">RM Customer Mapping</div>
+
+  <div>
+    <!-- <div class="filters">
+      <div class="filter-element">
+        <div style="padding-left: 10px">RM Name: {{ rmName }}</div>
+        <button class="button btn" (click)="mapCustomers()" style="width: 250px">
+          Update Mapping
+        </button>
+
+        <div *ngIf="!loadflag">{{ msg }}</div>
+        <div *ngIf="loadflag">
+          <img [src]="
+              isProd
+                ? 'assets/loading_dots.gif'
+                : '../../assets/loading_dots.gif'
+            " height="50px" width="60px" style="margin-block: -35%" />
+        </div>
+      </div>
+    </div> -->
+    <div class="filters">
+      <div class="filter-element">
+        <div style="padding-left: 10px">Search Customer Group:
+        </div>
+        <div>
+          <input type="text" name="" id="" [(ngModel)]="selectedCustomerGroup">
+        </div>
+        <button class="button btn" (click)="mapCustomers()" style="width: 250px">
+          Update Mapping
+        </button>
+
+        <div *ngIf="!loadflag">{{ msg }}</div>
+        <div *ngIf="loadflag">
+          <img [src]="
+              isProd
+                ? 'assets/loading_dots.gif'
+                : '../../assets/loading_dots.gif'
+            " height="50px" width="60px" style="margin-block: -35%" />{{msg}}
+        </div>
+      </div>
+    </div>
+    <div class="filters">
+      <div class="blotter-data">
+        <div class="blotter-data-table">
+          <table class="rm-cust-map-table">
+            <thead>
+              <tr>
+                <th>
+                  <input type="radio" name="" id="">
+                </th>
+                <th>
+                  Customer Group List
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let grp of customerGrpList | custfilter: selectedCustomerGroup ">
+                <td class="checkbox-row">
+                  <!-- <input type="checkbox" name="chkcustmapped" id="chkcustmapped" class="check-mapped-cust"> -->
+                  <input type="radio" name="chkcustmapped" id="chkcustmapped" class="check-mapped-cust"
+                    (change)="mapUnmapCustomer(grp)">
+                </td>
+                <td [ngClass]="grp === selectedCustomerGroup ? 'selected' : ''" for="chkcustmapped">
+                  <label>{{ grp.CustomerGroup }}</label>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- <div style="height: 700px; overflow-y: scroll" class="blotter-data-table">
+          <table>
+            <thead>
+              <th style="min-width: 250px !important; align-items: center;width: 35em;">
+                Mapped Customer Name
+              </th>
+            </thead>
+            <tbody>
+              <tr *ngFor="let mappedcust of customersOfRMArray">
+                <td style="min-width: 250px !important; align-items: left;padding-left:20px">
+                  <label>{{ mappedcust.CustomerName }}</label>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div> -->
+        <!-- <div style="height: 700px; overflow-y: scroll" class="blotter-data-table">
+          <table>
+            <thead>
+              <th style="min-width: 250px !important; align-items: center">
+                Unmapped Customer Name
+              </th>
+            </thead>
+            <tbody>
+              <tr *ngFor="let Customer of unmappedCustomers">
+                <td>
+                  <label>{{ Customer.Customer_Name }}</label>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div> -->
+      </div>
+    </div>
+  </div>
+</div>

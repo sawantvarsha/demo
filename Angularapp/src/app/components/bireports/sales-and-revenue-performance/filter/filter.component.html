@@ -1,0 +1,39 @@
+<div class="filter-container">
+    <div class="filter-item-a">
+        <p style="font-family: 'Roboto';color: rgba(180, 180, 180, 1.0);" class="trade-date-label">
+            Trade Date</p>
+        <app-date-range-picker></app-date-range-picker>
+        
+        <div class="currency-div">
+            <p style="font-family: 'Roboto'; color: rgba(180, 180, 180, 1.0);" class="currency-label">Currency</p>
+           
+                <select [(ngModel)]="selected" (change)="sendSelected(selector.value)" #selector>
+                    <option value="All">All</option>
+                    <option *ngFor="let label of labels;" [value]="label">
+                        {{label}}
+                    </option>
+                </select>
+            
+        </div>
+    </div>
+    <div class="filter-item-b">
+        <div class="displayData">
+            <div class="display-item-a">
+                <p class="display-block-total">${{tradeRevenue || "(blank)"}}</p>
+            </div>
+            <div class="display-item-b">
+                <p class="display-block-label" style="color: rgba(180, 180, 180, 1.0);">Revenue($ eqv.)</p>
+            </div>
+        </div>
+    </div>
+    <div class="filter-item-c">
+        <div class="displayData">
+            <div class="display-item-a">
+                <p class="display-block-total">${{tradeVolume || "(blank)"}}</p>
+            </div>
+            <div class="display-item-b">
+                <p class="display-block-label" style="color: rgba(180, 180, 180, 1.0);">Trade Volume($ eqv.)</p>
+            </div>
+        </div>
+    </div>
+</div>

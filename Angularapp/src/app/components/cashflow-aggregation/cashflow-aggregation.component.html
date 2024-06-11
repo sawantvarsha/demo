@@ -1,0 +1,187 @@
+<div *ngIf="!IsBackButtonEnabled" class="page-navigation">
+    <div class="filter">
+
+        <div class="page-title">
+            <div>
+                <app-svg-icons class="back-button" [icon]="'back-button'" [width]="'40'" [height]="'40'"
+                    [fill]="'var(--headers)'" (click)="back()"></app-svg-icons>
+            </div>
+            <div>
+                Cashflow Aggregation
+            </div>
+        </div>
+    </div>
+</div>
+<div class="blotter">
+    <div class="content-container">
+        <div class="filters">
+            <div class="filter-grid">
+                <label>Template</label>
+                <label>Currency</label>
+                <label>Settlement Type</label>
+                <label>Ref Prod ID</label>
+            </div>
+
+            <div class="filter-grid">
+                <select [(ngModel)]="template">
+                    <option>ALL</option>
+                </select>
+                <select [(ngModel)]="currency">
+                    <option>ALL</option>
+                </select>
+                <select [(ngModel)]="settlementType">
+                    <option>ALL</option>
+                </select>
+                <input type="text" [(ngModel)]="refProdId">
+            </div>
+
+            <div class="filter-grid">
+                <label>Exchange</label>
+                <label>Underlying</label>
+                <label>Customer</label>
+                <label>Payment Type</label>
+            </div>
+
+            <div class="filter-grid">
+                <select [(ngModel)]="exchange">
+                    <option selected>ALL</option>
+                </select>
+                <select [(ngModel)]="underlying">
+                    <option selected>ALL</option>
+                </select>
+                <input type="text" [(ngModel)]="customer">
+                <select [(ngModel)]="paymentType">
+                    <option selected>ALL</option>
+                </select>
+            </div>
+
+
+            <div class="filter-grid">
+                <label>From</label>
+                <label>To</label>
+            </div>
+
+            <div class="filter-grid">
+                <div class="date-container">
+                    <input type="date" [(ngModel)]="fromDate">
+                    <span class="date-label">{{ fromDate | date: "dd-MMM-yyyy" }}</span>
+                </div>
+                <div class="date-container">
+                    <input type="date" [(ngModel)]="toDate">
+                    <span class="date-label">{{ toDate | date: "dd-MMM-yyyy" }}</span>
+                </div>
+            </div>
+
+            <div class="filter-grid">
+                <button class="button">Load</button>
+                <button class="button" (click)="expandAll()">{{!expandAllFlag ? 'Expand All':'Collapse All'}}</button>
+            </div>
+
+            <div class="filter-grid">
+                <label>Sort by #1</label>
+                <label>Sort by #2</label>
+                <label>Sort by #3</label>
+            </div>
+
+            <div class="filter-grid" style="width:10em">
+                <select [(ngModel)]="sortFilter[0].col">
+                    <option>Ref Prod Id</option>
+                </select>
+                <select [(ngModel)]="sortFilter[1].col">
+                    <option>Payment Date</option>
+                </select>
+                <select [(ngModel)]="sortFilter[2].col">
+                    <option>Product Name</option>
+                </select>
+            </div>
+
+
+            <div class="filter-grid">
+                <div class="radio-btn-container">
+                    <input type="radio" name="order1" (change)="orderChanged(0)" [checked]="sortFilter[0].asc">
+                    &nbsp;&nbsp;
+                    <label>Asc</label>&nbsp;&nbsp;
+                    <input type="radio" name="order1" (change)="orderChanged(0)"> &nbsp;&nbsp;
+                    <label>Dsc</label>
+                </div>
+                <div class="radio-btn-container">
+                    <input type="radio" name="order2" (change)="orderChanged(1)" [checked]="sortFilter[1].asc">
+                    &nbsp;&nbsp;
+                    <label>Asc</label>&nbsp;&nbsp;
+                    <input type="radio" name="order2" (change)="orderChanged(1)"> &nbsp;&nbsp;
+                    <label>Dsc</label>
+                </div>
+                <div class="radio-btn-container">
+                    <input type="radio" name="order3" (change)="orderChanged(2)" [checked]="sortFilter[2].asc">
+                    &nbsp;&nbsp;
+                    <label>Asc</label>&nbsp;&nbsp;
+                    <input type="radio" name="order3" (change)="orderChanged(2)"> &nbsp;&nbsp;
+                    <label>Dsc</label>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <table>
+            <thead>
+                <tr>
+                    <th> </th>
+                    <th>Payment Date</th>
+                    <th>Ref Prod ID</th>
+                    <th>Product Type</th>
+                    <th>Product Name</th>
+                    <th>Pay/Recieve</th>
+                    <th>Payment Event</th>
+                    <th>Settlement Type</th>
+                    <th>Settlement In</th>
+                    <th>Payment</th>
+                    <th>Party Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                <ng-template ngFor let-i="index" let-item
+                    [ngForOf]="data | paginate: { itemsPerPage: recordsPerPage, currentPage: q }">
+
+                    <tr class="tableRow" [ngClass]="{ active: rowToExpand[i]}">
+                        <td class="row-opt">
+                            <app-svg-icons (click)="expandRow(i)"
+                                [ngStyle]="expand[i]?{'transform':'rotate(-90deg)','transition':'0.4s'}:{'transform':'rotate(90deg)','transition':'0.4s'}"
+                                [icon]="'arrow'" [width]="'8'" [height]="'14'"></app-svg-icons>
+                        </td>
+                        <td class="centerAlign">{{item.date}}</td>
+                        <td class="rightAlign">{{item.records[0].refProdId}}</td>
+                        <td>{{item.records[0].productType}}</td>
+                        <td>{{item.records[0].productName}}</td>
+                        <td>{{item.records[0].payReceive}}</td>
+                        <td>{{item.records[0].paymentEvent}}</td>
+                        <td class="centerAlign">{{item.records[0].settType}}</td>
+                        <td class="centerAlign">{{item.records[0].settIn}}</td>
+                        <td class="rightAlign">{{item.records[0].payment}}</td>
+                        <td>{{item.records[0].partyName}}</td>
+                    </tr>
+
+                    <ng-container *ngIf="expand[i]">
+                        <tr class="expandedRow" *ngFor="let subrow of item.records | slice:1;">
+                            <td> </td>
+                            <td class="centerAlign">{{item.date}}</td>
+                            <td class="rightAlign">{{subrow.refProdId}}</td>
+                            <td>{{subrow.productType}}</td>
+                            <td>{{subrow.productName}}</td>
+                            <td>{{subrow.payReceive}}</td>
+                            <td>{{subrow.paymentEvent}}</td>
+                            <td class="centerAlign">{{subrow.settType}}</td>
+                            <td class="centerAlign">{{subrow.settIn}}</td>
+                            <td class="rightAlign">{{subrow.payment}}</td>
+                            <td>{{subrow.partyName}}</td>
+                        </tr>
+                    </ng-container>
+                </ng-template>
+            </tbody>
+        </table>
+
+
+        <div class="pagination" *ngIf="data?.length > 0">
+            <pagination-controls (pageChange)="q = $event" class="pageFont">
+            </pagination-controls>
+        </div>
+    </div>
+</div>

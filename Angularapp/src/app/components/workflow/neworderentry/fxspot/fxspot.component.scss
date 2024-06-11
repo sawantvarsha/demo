@@ -1,0 +1,599 @@
+/*
+.fxspotComponent{
+    display: grid;
+    // grid-template-rows:  50px 75px auto 50px;
+    // grid-template-rows: 50px auto 50px 50px;
+    grid-template-rows: auto 75px 30px;
+    padding: 10px;
+  
+    .funddetails {
+      color: var(--fund-details);
+      justify-content: center;
+      display: flex;
+      flex-direction: column;
+      .fundtitlerow {
+        font-size: 22px;
+      }
+    }
+    .param-cols {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 50px;
+      margin-top: 10px;
+    }
+    .fundname-row {
+      display: grid;
+      // font-size: 18px;
+      grid-template-columns: 20% 80%;
+    }
+    .fund-details {
+      display: grid;
+      grid-template-columns: 1fr;
+      font-size: 18px;
+      gap: 10%;
+      height: 45px;
+    }
+    // .fundparams-row { 4013071245
+    //   display: grid;
+    //   grid-template-columns: 40% 60%;
+    //   // gap: 10%;
+    //   height: 45px;
+    // }
+    .fxspotparams-row {
+      display: grid;
+      grid-template-columns: 40% 60%;
+      // gap: 10%;
+      height: 45px;
+    }
+    .fxspot-button-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 2fr;
+      gap: 10px;
+      align-items: end;
+      .btn-submit {
+        display: flex;
+        justify-content: flex-end;
+        margin-right: 25px;
+      }
+    }
+    .details{
+      display: grid;
+      grid-template-columns:  1fr 1fr;
+      gap: 10px;
+      align-items: center;
+      text-align: right;
+      cursor: pointer;
+    }
+    .fxspot-message-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 30px;
+    }
+  }
+  */
+  
+  .amfComponent{
+    display: grid;
+    // grid-template-rows:  50px 75px auto 50px;
+    // grid-template-rows:  50px auto 50px 50px;
+    grid-template-rows:  50px auto 50px;
+    // grid-template-rows: 50px 50px  auto 50px auto;
+
+    // grid-template-rows: 50px 50px 75px auto 50px;
+    // 50px auto 50px 50px
+    padding: 10px;
+  
+    .funddetails {
+      color: var(--fund-details);
+      justify-content: center;
+      display: flex;
+      flex-direction: column;
+      .fundtitlerow {
+        color: var(--text);
+    font-weight: 500;
+    font-size: 30px;
+    line-height: 40px;
+    margin-bottom: 10px;
+    }
+    }
+    .param-cols {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 50px;
+      margin-top: 10px;
+    }
+    .fundname-row {
+      display: grid;
+      // font-size: 18px;
+      grid-template-columns: 20% 80%;
+    }
+    .fund-details {
+      display: grid;
+      grid-template-columns: 1fr;
+      font-size: 18px;
+      gap: 10%;
+      height: 45px;
+    }
+    .fundparams-row {
+      display: grid;
+      grid-template-columns: 40% 60%;
+      // gap: 10%;
+      height: 45px;
+    }
+    .fund-button-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 2fr;
+      gap: 20px;
+      align-items: end;
+      .btn-submit {
+        display: flex;
+        justify-content: flex-end;
+        margin-right: 25px;
+      }
+    }
+    .details{
+      display: grid;
+      grid-template-columns:  1fr 1fr;
+      gap: 10px;
+      align-items: center;
+      text-align: right;
+      cursor: pointer;
+    }
+    .fund-message-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 30px;
+    }
+  }
+  
+  .amfComponentrmw{
+    display: grid;
+    // grid-template-rows: 50px 50px 75px auto 50px;
+    grid-template-rows: 50px 50px  auto 50px ;
+    // gr=id-template-rows: 50px 50px  auto 50px ;
+    // grid-template-rows: 50px 50px auto 50px;
+    padding: 10px;
+  
+    .funddetails {
+      color: var(--fund-details);
+      justify-content: center;
+      display: flex;
+      flex-direction: column;
+      .fundtitlerow {
+        color: var(--text);
+    font-weight: 500;
+    font-size: 30px;
+    line-height: 40px;
+    margin-bottom: 10px;
+    }
+    }
+    .param-cols {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 50px;
+      margin-top: 10px;
+    }
+    .fundname-row {
+      display: grid;
+      // font-size: 18px;
+      grid-template-columns: 20% 80%;
+    }
+    .fund-details {
+      display: grid;
+      grid-template-columns: 1fr;
+      font-size: 18px;
+      gap: 10%;
+      height: 45px;
+    }
+    .fundparams-row {
+      display: grid;
+      grid-template-columns: 40% 60%;
+      // gap: 10%;
+      height: 45px;
+    }
+    .fund-button-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 2fr;
+      gap: 20px;
+      align-items: end;
+      .btn-submit {
+        display: flex;
+        justify-content: flex-end;
+        margin-right: 25px;
+      }
+    }
+    .details{
+      display: grid;
+      grid-template-columns:  1fr 1fr;
+      gap: 10px;
+      align-items: center;
+      text-align: right;
+      cursor: pointer;
+    }
+    .fund-message-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 30px;
+    }
+  }
+  
+
+  /*
+  .UnderlyingSearch {
+    display: flex;
+    align-self: flex-end;
+    position: absolute;
+    width: 99% !important;
+    margin-left: 0.5em;
+    padding-right: 2.2em;
+    margin-right: 0 !important;
+  }
+  
+  .SelectorBox {
+    height: auto;
+    max-height: 10em;
+    overflow-y: scroll;
+    position: absolute;
+    float: right;
+    z-index: 10000;
+    border: 0.05em solid var(--gray);
+    cursor: pointer;
+    width: 50%;
+    margin-left: -4px;
+    background-color: white;
+    top : -3px;
+  }
+  
+  .fundinfo {
+    margin-top: 10px;
+  }
+  */
+  
+  .link{
+    color: var(--mediumblue);
+  }
+
+  /*
+  .gridInfo{
+    display: grid;
+    grid-template-columns: 73% 27%;
+  }
+  */
+  
+  .input-dob {
+    position: relative;
+    color: white;
+    text-align: center;
+    width: 100%;
+  }
+  
+  .input-dob:before {
+    position: absolute;
+    top: 10px;
+    left: 5px;
+    content: attr(data-date);
+    display: inline-block;
+    color: black;
+  }
+  
+  .input-dob::-webkit-datetime-edit,
+  .input-dob::-webkit-inner-spin-button,
+  .input-dob::-webkit-clear-button {
+    display: none;
+  }
+  
+  .input-dob::-webkit-calendar-picker-indicator {
+    position: absolute;
+    top: 8px;
+    right: 0;
+    color: black;
+    opacity: 1;
+  }
+  
+  /*
+  .overlay {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 20;
+  }
+
+  .popuptab1 {
+    position: absolute;
+    border: 1px solid var(--containers);
+    border-radius: 5px;
+    background-color: var(--containers);
+    z-index: 999;
+    height: 60%;
+    width: 65%;
+    top: 15%;
+    left: 25%;
+    .closebtn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 25px;
+      width: 25px;
+      border-radius: 2px;
+      font-size: 18px;
+      color: white;
+      font-weight: 800;
+      // margin-top: 7px;
+    }
+  }
+  .popupHeader {
+    background-color: var(--beige);
+    width: 100%;
+  }
+  .popupContent {
+    width: 100%;
+  }
+  */
+  input[type="date"] {
+    position: relative;
+    // width: 100%;
+    height: 35px;
+    color: white;
+  }
+  @media only screen and (max-width: 600px) {
+    .param-cols {
+      display: flex !important;
+      flex-direction: column !important;
+    }
+  }
+
+/*
+  .gridclass{
+    display: grid;
+    grid-template-columns: 60% 40%;
+    padding: 10px;
+    margin-left: 20px;
+    margin-top: 10px;
+  }
+  */
+  /*
+  .content-header {
+    height: 50px;
+    padding: 10px;
+    display: grid;
+    grid-template-columns: 97% 3%;
+    background-color: var(--headers);
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+  
+    .content-header-name {
+      font-size: 18px;
+      color: white;
+      display: flex;
+      margin: 0;
+      padding: 0;
+      padding-bottom: 5px;
+      img {
+        margin: 0px 5px;
+        width: 25px;
+        height: 25px;
+        // filter: invert(1);
+      }
+    }
+  }
+  
+  .workflowblotter-component {
+    display: flex;
+    background-color: var(--main-bg-color);
+    flex-direction: column;
+    font-size: 15px;
+    width: calc(100% - 50px);
+  }
+  */
+
+  .content-container {
+    margin: 20px;
+    margin-left: 25px;
+    overflow-x: scroll;
+    // width: calc(100%);
+  }
+
+  
+  .maxwidth100 {
+    max-width: 100px !important;
+    min-width: 100px !important;
+  }
+  .minwidth450 {
+    max-width: 450px !important;
+    min-width: 450px !important;
+  }
+  .maxwidth150 {
+    max-width: 150px !important;
+    min-width: 150px !important;
+  }
+  .maxwidth160 {
+    max-width: 160px !important;
+    min-width: 160px !important;
+  }
+  .minwidth600 {
+    max-width: 330px !important;
+    min-width: 330px !important;
+    white-space: pre-line;
+  }
+  .maxwidth120{
+    max-width: 120px !important;
+    min-width: 120px !important;
+  }
+  
+  /*
+  thead,
+  tbody {
+    display: block;
+  }
+  
+  tbody {
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+  
+  td {
+    font-size: 12px;
+  }
+  */
+  
+/*
+  .loader {
+    img {
+        height: 100px;
+        width: 100px;
+    }
+  }
+  
+  .loaderdiv {
+    display: flex;
+    justify-content: center;
+  
+  }
+  */
+
+ ::-webkit-scrollbar {
+    width: 5px;
+    height: 0px;
+}
+
+
+/*
+  .tableheadGrid{
+    // display: grid;
+    // grid-template-columns: 25% 10% 10% 33% 15% 5%;
+    height: 35px;
+  }
+  
+  .tableGrid{
+    // display: grid;
+    // grid-template-columns: 25% 10% 10% 35% 15% 5%;
+    height: 35px;
+  }
+  */
+  
+  input[type="checkbox"] {
+    position: relative;
+   width: 20px;
+   
+  }
+  .display{
+    display: flex;
+    align-items: center;
+  }
+  .neworderentryComponent {
+    display: flex;
+    height: 100vh;
+    width: 85vw;
+    flex-direction: column;
+    font-size: 15px;
+  
+    .main-container {
+      display: flex;
+      margin-left: 20px;
+      flex-direction: column;
+      background-color: var(--containers);
+      letter-spacing: 0.72px;
+      border-radius: 4px;
+      width: 80%;
+      box-shadow: var(--box-shadow-thin);
+      // height: 80vh;
+      // padding: 20px;
+  
+      .tabs-pages {
+        display: flex;
+        justify-content: space-around;
+        font-size: 15px;
+        margin-bottom: 10px;
+        height: 50px;
+        gap: var(--tab-gap);
+        .tabs {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    cursor: pointer;
+    border-bottom: 1px solid var(--border);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    font-weight: 400;
+    box-shadow: var(--neumorphic-up);
+}
+        .tabs:hover {
+          border-bottom: 2px solid var(--border);
+        }
+        .tab-active {
+          font-weight: 500;
+          border-bottom: 2px solid var(--active) !important;
+          box-shadow: var(--neumorphic-down);
+        }
+      }
+    }
+  }
+  .main-container:hover {
+    box-shadow: var(--box-shadow-hovered) !important;
+  }
+  
+  @media only screen and (max-width: 600px) {
+    .neworderentryComponent {
+      display: flex;
+      height: 100vh;
+      width: 85vw;
+      flex-direction: column;
+      font-size: 15px;
+  
+      .main-container {
+        display: flex;
+        margin-left: 20px;
+        flex-direction: column;
+        background-color: white;
+        letter-spacing: 0.72px;
+        border-radius: 4px;
+        width: 100%;
+        box-shadow: var(--box-shadow-thin);
+        // height: 80vh;
+        // padding: 20px;
+  
+        .tabs-pages {
+          display: contents;
+          justify-content: space-around;
+          font-size: 15px;
+          margin-bottom: 10px;
+          height: 50px;
+          gap: var(--tab-gap);
+          .tabs {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            cursor: pointer;
+            border-bottom: 1px solid var(--border);
+            text-decoration: underline;
+            text-underline-offset: 4px;
+            font-weight: 400;
+            box-shadow: var(--neumorphic-up);
+          }
+          .tabs:hover {
+            border-bottom: 2px solid var(--border);
+          }
+          .tab-active {
+            font-weight: 500;
+            border-bottom: 2px solid var(--active) !important;
+            box-shadow: var(--neumorphic-down);
+          }
+        }
+      }
+    }
+  }
+  //76027108667
+  // rD3WWM
+
+  //77562525704
+  // 4fs30a

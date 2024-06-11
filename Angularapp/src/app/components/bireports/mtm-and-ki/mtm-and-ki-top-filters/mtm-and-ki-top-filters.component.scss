@@ -1,0 +1,211 @@
+/* Filters */
+.showTitle {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+  }
+  
+  .pageHeader {
+    color: var(--headers);
+    font-size: 30px !important;
+    margin-top: 0px;
+    font-weight: 500;
+  }
+  
+  .serchbarDiv {
+    display: flex;
+    flex-direction: row;
+    gap: 1em;
+  }
+  
+  filterSelect {
+    width: 115px !important;
+  }
+  
+  .searchInnerDiv {
+    border-radius: 0.5em;
+    background-color: transparent;
+    /* border: 1px solid var(--border); */
+    min-height: 33px;
+    display: grid;
+    grid-template-columns: auto auto auto;
+  }
+  
+  .txtSearch {
+    width: 450px !important;
+    border: none !important;
+  }
+  
+  .rotateCircle {
+    -moz-animation: spinoffPulse 1s infinite linear;
+    -webkit-animation: spinoffPulse 1s infinite linear;
+  }
+  
+  .filterDiv {
+    /* //border: 1px solid #3e3d3d !important; */
+    border: 1px solid var(--tbl-audtitrail-border);
+    /* //align-self: center; */
+    padding: 18px;
+    border-radius: 5px;
+    margin: 0px 20px;
+
+  }
+  
+  .filterMainDiv {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+  }
+  .labelRowContainer{
+    display: flex;
+    gap: 1em;
+    flex-wrap: wrap;
+  }
+  
+  .filterTH {
+    border-bottom: unset !important;
+  }
+  .alignLeft {
+    text-align: left;
+  }
+  
+  .labelDivWidth {
+    /* width: 120px; */
+    width: 135px; 
+    min-width: 135px;
+  }
+  
+  .labelFilerBlock {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .eachRowFilter {
+    line-height: 17px;
+    margin-right: 0.5em !important;
+    font-size: 13px;
+    /* font-family: var(--font-family) !important; */
+  }
+  
+  .filterIputs {
+    /* width:100px !important; */
+    width: 115px !important;
+  }
+  
+  .clientFilterDiv {
+    display: flex;
+    gap: 1em;
+    flex-wrap: wrap;
+  }
+  
+  .productFilterDiv {
+    display: flex;
+    gap: 1em;
+    flex-wrap: wrap;
+  }
+  .columnContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+  }
+  
+  .filterLabels {
+    line-height: 17px;
+    margin-right: 0.5em !important;
+    font-size: 13px;
+    /* //font-family: var(--font-family) !important; */
+    color: #bdbdbd
+  }
+  
+  .productSpecsDiv {
+    display: flex;
+    gap: 1em;
+    flex-wrap: wrap;
+  }
+  
+  .sDatePlaceHolder {
+    position: absolute;
+    top: 10px;
+    left: 6px;
+    color: var(--placeholder-text) !important;  
+    /* var(--heading-label); */
+    font-size: 13px;
+  }
+  
+  .sDate {
+    position: absolute;
+    top: 9px;
+    left: 6px;
+    font-size: 14px;
+  }
+  
+  .ki-number {
+    /* //width: 60px; */
+    width: 115px;
+  }
+  
+  .sliderPosition {
+    position: relative;
+    /* //bottom: -20px; */
+  }
+  
+  .toggleDiv {
+    display: flex;
+    gap: 1em;
+    width: 131px;
+  }
+  
+  .toggleLabels {
+    align-self: center;
+    /* margin-bottom: 8px; */
+  }
+   
+  .togglePos {
+    margin-top: 2px;
+  }
+  .slide-toggle {
+    vertical-align: sub;
+  }
+  .filterSelectAsc{
+    width: 75px !important;
+  }
+
+  #colorpicker{
+    width: 60px;
+    height: 30px;
+}
+.filterIcon {
+  margin-left: -26px;
+  margin-top: 6px;
+  cursor: pointer;
+}
+
+.cancelProbSlider {
+  margin: 15px 0 15px !important;
+}
+.input-dob{
+  margin-top: 0px;
+}
+
+:not(:disabled) .highlight-border {
+  border-bottom: 2px solid var(--red) !important;
+}
+
+.paginationtext{
+  min-width: 120px;
+}
+.pageCount{
+  display: flex;
+  gap: 0.5em;
+  //margin-top: 6px;
+  align-self: center;
+}
+.lastRow {
+  display: flex;
+  gap: 1em;
+  justify-content: space-between;
+}
+
+.cursorpoint{
+  cursor: pointer;
+}

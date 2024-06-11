@@ -1,0 +1,51 @@
+<!-- <div class="page-title">API Response</div> -->
+<div class="page-navigation" [ngClass]="">
+    <app-svg-icons class="back-button" [icon]="'back-button'" [width]="'40'" [height]="'40'" [fill]="'var(--headers)'"
+        (click)="commonApi.back()"></app-svg-icons>
+    <div class="page-title">API Response</div>
+</div>
+
+<div class="padding-left">
+    <div class="generic-response">
+        <!-- <label for="genres" style="font-size: medium;">
+            Enter the response here:
+        </label> -->
+        <!-- <br /> -->
+        <textarea placeholder="Enter the response here..." id="genres" name="genres" rows="40" cols="840" type="text"
+            [(ngModel)]="genres" style="width: 98%; height: 15em;">
+        </textarea>
+        <!-- <br /> -->
+        <div style="display: grid; grid-template-columns: 8% 8%; padding-top: 1em;align-items: center;">
+            <div>
+                <button class="run-btn button" type="button" (click)="parsegenres_()">
+                    Run
+                </button>
+            </div>
+            <div>
+                <!-- <img src="../../../../../../assets/assets/excel.png" class="exportImage"
+                (click)='Exporttoexcel_()' title="Export to Excel"> -->
+                <!-- <button class="run-btn button" type="button" (click)="Exporttoexcel_()">
+                    Export To Excel
+                </button> -->
+                <app-svg-icons [width]="'30px'" [height]="'30px'" icon="{{ 'xls' }}" (click)="Exporttoexcel_()"></app-svg-icons>
+            </div>
+        </div>
+        <div *ngIf="showtable" style="padding-top: 3em; overflow-x: scroll; overflow-y: scroll;">
+            <table style="border: solid 1px black; border-collapse: collapse;" #TABLE>
+                <tr style="border: solid 1px black; border-collapse: collapse; width: fit-content;">
+                    <th *ngFor="let header of tableHeadergen"
+                        style="border: solid 1px black; border-collapse: collapse; padding: 1em; background-color: black; width: fit-content;">
+                        {{ header }}
+                    </th>
+                </tr>
+                <tr *ngFor="let row of tableBodygen"
+                    style="border: solid 1px black; border-collapse: collapse; width: fit-content;">
+                    <td *ngFor="let data of row"
+                        style="border: solid 1px black; border-collapse: collapse; padding: 1em; background-color: black; width: fit-content;">
+                        {{ data }}
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>

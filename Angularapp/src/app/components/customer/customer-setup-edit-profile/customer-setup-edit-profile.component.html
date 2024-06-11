@@ -1,0 +1,271 @@
+<div class="client-profile-setup-container" *ngIf="IsPagedataLoaded">
+    <div class="page-title">Edit Profile</div>
+    <!-- <form [formGroup]="form"> -->
+
+    <!-- <div class="section-container">
+                    <ng-template ngFor let-input [ngForOf]="MockForm">
+                        <ng-container [ngSwitch]="input.controlType" *ngIf="input.sectionName === headerName">
+                            <ng-template [ngSwitchCase]="'label'">
+                                <div class="form-group">
+                                    <label> {{input.controlName}}</label>
+                                    <label> {{input.selectedValue}}</label>
+                                </div>
+                            </ng-template>
+                        </ng-container>
+                    </ng-template>
+                </div> -->
+    <div class="form-container">
+        <ng-template ngFor let-headerName [ngForOf]="SectionHeaders">
+            <span class="section-header">{{ headerName.SectionName }}</span>
+            <div class="section-container">
+                <ng-template ngFor let-input [ngForOf]="MockForm">
+                    <ng-container [ngSwitch]="input.controlType" *ngIf="input.sectionName === headerName.SectionName">
+
+                        <ng-template [ngSwitchCase]="'text'">
+                            <div class="form-group">
+                                <label class="heading-label" [for]="input.controlName">{{input.controlName}}</label>
+
+                                <input [(ngModel)]="input.selectedValue" [type]="input.valueType"
+                                    [name]="input.controlName" [required]="input.validators.required"
+                                    [placeholder]="input.placeholder" [minlength]="input.validators.minlength"
+                                    [maxlength]="input.validators.maxlength" />
+
+                            </div>
+                        </ng-template>
+
+                        <ng-template [ngSwitchCase]="'number'">
+                            <div class="form-group">
+                                <label class="heading-label" [for]="input.controlName">
+                                    {{ input.controlName }}</label>
+                                <input [(ngModel)]="input.selectedValue" [type]="input.valueType"
+                                    [name]="input.controlName" [required]="input.validators.required"
+                                    [placeholder]="input.placeholder" [maxlength]="input.validators.maxlength" />
+
+                            </div>
+                        </ng-template>
+
+                        <ng-template [ngSwitchCase]="'numberdecimal'">
+                            <div class="form-group">
+                                <label class="heading-label" [for]="input.controlName">{{ input.controlName }}</label>
+                                <input class="inputNotional" [(ngModel)]="input.selectedValue" [type]="input.valueType"
+                                    [id]="input.controlName" [name]="input.controlName"
+                                    [required]="input.validators.required" [placeholder]="input.placeholder"
+                                    [maxlength]="input.validators.maxlength"
+                                    (focus)=" this.commonfunctionservice.UnformatNumberForCustomer($event)"
+                                    (blur)="this.commonfunctionservice.FormatNumberSFK($event, 2)"
+                                    (keypress)="this.commonfunctionservice.NotionalValidate($event)"
+                                    (change)="input.selectedValue = this.commonfunctionservice.NotionalChangeSFK($event,2)"
+                                    onCopy="return false" onDrag="return false" onDrop="return false"
+                                    onPaste="return false" />
+
+                            </div>
+                        </ng-template>
+
+                        <ng-template [ngSwitchCase]="'select'">
+                            <div class="form-group">
+                                <label class="heading-label" [for]="input.controlName">
+                                    {{ input.controlName }}</label>
+                                <select [(ngModel)]="input.selectedValue" [name]="input.controlName"
+                                    [id]="input.controlName" [required]="input.validators.required"
+                                    [disabled]="input.validators.disabled"
+                                    [attr.disabled]="input.validators.disabled ? '' : null"
+                                    [ngClass]="{'select-disabled':input.validators.disabled}">
+                                    <option value="" [disabled]="true" selected>{{ input.placeholder }}</option>
+                                    <option *ngFor="let option of input.options" [value]="option.value"
+                                        [disabled]="input.validators.disabled">
+                                        {{ option.optionName }}
+                                    </option>
+                                </select>
+                            </div>
+                        </ng-template>
+
+                        <ng-template [ngSwitchCase]="'Date'">
+                            <div class="form-group">
+                                <label [for]="input.controlName">
+                                    {{ input.controlName }}</label>
+                                <input [(ngModel)]="input.selectedValue"
+                                    [attr.data-date]="input.selectedValue" [type]="input.valueType"
+                                    [name]="input.controlName" [required]="input.validators.required"
+                                    (change)="input.selectedValue = fnSetDOB(input.selectedValue)"
+                                    [placeholder]="input.placeholder" />
+                            </div>
+                        </ng-template>
+
+                        <ng-template [ngSwitchCase]="'selectmultiple'">
+                            <div class="form-group">
+                                <label class="heading-label" [for]="input.controlName">
+                                    {{ input.controlName }}</label>
+
+                                <div class="multiselect" (clickOutside)="ClosePopup(input.controlName)">
+                                    <div class="selectBox">
+                                        <div (click)="showCheckboxes(input.controlName)">
+                                            <select class="disable-text-selection" [id]="'select_' + input.controlName">
+                                                <!--[ngClass]="{'selectddl':displayClass === 'block'}"-->
+                                                <option>Select an option</option>
+                                            </select>
+                                        </div>
+                                        <div class="overSelect">
+                                            <div [id]="input.controlName" class="multiselectDropDown"
+                                                style="display: none">
+                                                <!-- <img class="close-multiselect-popup-menu"
+                                                    [src]="isProd? 'assets/close.png': '../../../../assets/close.png'"
+                                                    (click)="closeCheckboxes(input.controlName)" /> -->
+                                                <label class="multiselectDropDownvalues"
+                                                    *ngFor="let option of input.options">
+                                                    <input type="checkbox" [name]="option.optionName"
+                                                        [(ngModel)]="option.Ischecked"
+                                                        (click)="CheckBoxValue($event, input)" [value]="option.value"
+                                                        [ngModelOptions]="{standalone: true}" />{{
+                                                    option.optionName}}</label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="selectedValues">
+                                    <div class="selected-value-box"
+                                        *ngFor="let item of input.selectedValueArray;let i = index">
+                                        <!-- <span *ngIf="i > 0"></span> -->
+                                        <span>{{ item }}</span>
+                                        <app-svg-icons class="closebtn" [icon]="'cancel-icon'"
+                                            [width]="'12'" [height]="'12'" (click)="RemoveCheckBoxValue(item, input)">
+                                        </app-svg-icons>
+                                    </div>
+                                </div>
+                                <!-- <div class="selectedValues">
+                                    <div *ngFor="let item of input.selectedValueArray;let i = index">
+                                        <span *ngIf="i > 0">&nbsp;|&nbsp;</span>
+                                        <span>{{ item }}</span>
+                                    </div>
+                                </div> -->
+                            </div>
+                        </ng-template>
+
+                        <ng-template [ngSwitchCase]="'radio'">
+                            <ng-container *ngIf="input.IsHorizontal; then ShowHorizontal else HideHorizontal">
+                            </ng-container>
+                            <ng-template #ShowHorizontal>
+                                <div class="form-group-T-C-horizontal">
+                                    <label class="heading-label" [for]="input.controlName">
+                                        {{ input.controlName }}</label>
+                                    <div class="form-radio-options">
+                                        <div *ngFor="let option of input.options" class="radio-group">
+                                            <label>
+                                                <input [(ngModel)]="input.selectedValue" [checked]="option.Ischecked"
+                                                    [type]="input.controlType" [name]="input.controlName"
+                                                    value="{{option.value}}" [required]="input.validators.required"
+                                                    (click)="ClickOnLabelofRadiobutton(input,option.value,$event)" />
+
+                                                {{ option.optionName }}
+                                            </label>
+                                            <!-- <label class="radio-labels" [for]="option.value">{{option.optionName}}</label> -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-template>
+                            <ng-template #HideHorizontal>
+                                <div class="form-group">
+                                    <label class="heading-label" [for]="input.controlName">
+                                        {{ input.controlName }}</label>
+                                    <div class="form-radio-options">
+                                        <div *ngFor="let option of input.options" class="radio-group">
+                                            <label>
+                                                <input [(ngModel)]="input.selectedValue" [type]="input.controlType"
+                                                    [name]="input.controlName" value="{{option.value}}"
+                                                    [checked]="option.Ischecked" [required]="input.validators.required"
+                                                    (click)="ClickOnLabelofRadiobutton(input,option.value,$event)" />
+                                                {{ option.optionName }}
+                                            </label>
+                                            <!-- <label class="radio-labels" [for]="option.value">{{option.optionName}}</label> -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-template>
+                        </ng-template>
+
+                        <ng-template [ngSwitchCase]="'checkbox'">
+                            <div class="form-group-T-C-horizontal">
+                                <label class="heading-label" [for]="input.controlName">
+                                    {{ input.controlName }}</label>
+                                <div class="form-radio-options">
+                                    <div *ngFor="let option of input.options">
+                                        <label>
+                                            <input [(ngModel)]="input.selectedValue" [type]="input.controlType"
+                                                [name]="input.controlName" [checked]="option.Ischecked"
+                                                [required]="input.validators.required"
+                                                (click)="ClickOnLabelofCheckBox(input,option.value)"
+                                                style="height: 16px !important;" />
+                                            {{ option.optionName }}
+                                        </label>
+                                        <!-- <label class="radio-labels" [for]="option.value">{{option.optionName}}</label> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-template>
+
+                        <ng-template [ngSwitchCase]="'label'">
+                            <div class="form-group-label">
+                                <label [for]="input.controlName">{{input.controlName}}</label>
+                            </div>
+                        </ng-template>
+
+                        <ng-template [ngSwitchCase]="'Document_Upload'">
+                            <div class="form-group" style="grid-template-columns: 0% 32% 350px auto ;">
+                                <label class="heading-label" [for]="input.controlName">
+                                    <!-- {{input.sectionwiseSequenceNo}}. -->
+                                </label>
+                                <ng-container *ngIf="input.DocUploadValue; then HideSelect else ShowSelect">
+                                </ng-container>
+                                <ng-template #ShowSelect>
+                                    <select class="txt" (change)="eventChange($event, input.sectionwiseSequenceNo - 1)"
+                                        tabindex="19" [attr.disabled]="input.DocUploadValue ? '' : null"
+                                        [(ngModel)]="input.docUploadValuelabel">
+                                        <option *ngFor="let docUpload of dropDownList" [value]="docUpload">
+                                            {{ docUpload }}
+                                        </option>
+                                    </select>
+                                </ng-template>
+                                <ng-template #HideSelect>
+                                    <label style="font-size: 17px;font-weight: 500;"
+                                        [for]="input.controlName">{{input.docUploadValuelabel}}</label>
+                                </ng-template>
+                                <!-- <ng-container *ngIf="input.selectedValue; then HideInputFile else ShowInputFile">
+                                    </ng-container>
+                                    <ng-template #ShowInputFile> -->
+                                <input type="file" accept="application/pdf" class="custom-file-input"
+                                    (change)="fileSelectionFunction($event, input.sectionwiseSequenceNo - 1)" />
+                                <!-- </ng-template>
+                                    <ng-template #HideInputFile> -->
+                                <label class="filename"
+                                    *ngIf="input.selectedValue !== '' && input.selectedValue !== undefined "
+                                    [for]="input.controlName"
+                                    (click)="showFile(input.DGT_ID)">{{input.selectedValue}}</label>
+                                <!-- </ng-template> -->
+                            </div>
+                        </ng-template>
+                    </ng-container>
+                </ng-template>
+            </div>
+        </ng-template>
+    </div>
+    <div id="snackbar" style="line-height: 45px">
+        <div *ngIf="ErrorMsg">{{this.ErrorMsg}}</div>
+    </div>
+
+    <!-- </form> -->
+    <div class="page-controller">
+        <div class="action-buttons">
+            <button (click)="saveDetails('Update')">Submit</button>
+            <button (click)="BackToMyProfile()">Cancel</button>
+        </div>
+    </div>
+</div>
+<div *ngIf="!IsPagedataLoaded" style="text-align: center; margin-top: 15%;">
+    <div class="loader-center">
+        <div class="multi-ripple">
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <!-- <img [src]="isProd ? 'assets/loading_dots.gif':'../../../../assets/loading_dots.gif'" height="150px" width="150px"> -->
+</div>

@@ -1,0 +1,76 @@
+<div class="page-navigation" [ngClass]="">
+  <app-svg-icons *ngIf="!IsLandingPage" class="back-button" [icon]="'back-button'" [width]="'40'" [height]="'40'"
+    [fill]="'var(--headers)'" (click)="closeProduct()"></app-svg-icons>
+  <div class="page-title">{{ pageTitle }}</div>
+</div>
+
+<div class="main-container" *ngIf="IsLandingPage">
+  <div class="sub-container">
+    <ng-container *ngFor="let payoff of Echome.payOffList">
+      <div class="cards-container" *ngIf="payoff.display">
+        <div class="card" (click)="eqchangeProduct(payoff.displayName, 'click')">
+          <app-svg-icons [icon]="payoff.displayName" [width]="'100'" [height]="'100'"></app-svg-icons>
+          <span class="card-header">{{payoff.displayName}}</span>
+        </div>
+      </div>
+      <!-- Bulk Pricer - Loader until shares and currency api fetch data -->
+      <div class="pageload-overlay" *ngIf="pageloadflag">
+        <div>
+            <svg version="1.1" id="L4" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
+        y="0px" [ngStyle]="{ width:  + '25px', height:  + '25px' }"
+        class="pageLoadSvg" viewBox="0 0 100 100" enable-background="new 0 0 0 0"
+        xml:space="preserve">
+        <circle stroke="#a1a1a1" cx="55" cy="23" r="1.4" stroke-width="0.1" fill="var(--icon-active-bg)">
+            <animate attributeName="opacity" dur="2s" values="0;1;0" repeatCount="indefinite" begin="0.1" />
+        </circle>
+        <circle stroke="#a1a1a1" cx="55" cy="23" r="1.5" stroke-width="0.1" fill="var(--icon-active-bg)">
+            <animate attributeName="opacity" dur="2s" values="0;1;0" repeatCount="indefinite" begin="0.1" />
+        </circle>
+        </svg>
+        </div>
+      </div>
+      <!-- Bulk Pricer - Loader until shares and currency api fetch data -->
+    </ng-container>
+  </div>
+</div>
+<div class="tabs-container" *ngIf="!IsLandingPage">
+  <div *ngIf="subpages.length > 0">
+    <div class="tabs-pages">
+      <ng-container *ngFor="let item of subpages">
+        <div class="tabs" *ngIf="item.displayYN === true" [ngClass]="{ 'tab-active': item.ActiveYN }"
+          (click)="eqchangeProduct(item.Name, 'click')">
+          {{ item.Name }}
+        </div>
+      </ng-container>
+    </div>
+    <div *ngFor="let item of subpages">
+      <ng-container [ngSwitch]="item.Name">
+        <!-- Anubhav 05-01-2023 -->
+        <ng-template [ngSwitchCase]="'Autocallable'" *ngIf="item.ActiveYN">
+          <app-ec-multi-earlyredemption>
+          </app-ec-multi-earlyredemption>
+        </ng-template>
+        <ng-template [ngSwitchCase]="'Yield Enhancement'" *ngIf="item.ActiveYN">
+          <app-ec-multi-yield-enhancement>
+          </app-ec-multi-yield-enhancement>
+        </ng-template>
+        <ng-template [ngSwitchCase]="'Custom Strategy'" *ngIf="item.ActiveYN">
+          <app-ec-multi-customstrategy>
+          </app-ec-multi-customstrategy>
+        </ng-template>
+        <ng-template [ngSwitchCase]="'Accumulator'" *ngIf="item.ActiveYN">
+          <app-ec-multi-accu>
+          </app-ec-multi-accu>
+        </ng-template>
+        <ng-template [ngSwitchCase]="'Decumulator'" *ngIf="item.ActiveYN">
+          <app-multi-decu>
+          </app-multi-decu>
+        </ng-template>
+        <ng-template [ngSwitchCase]="'Participation'" *ngIf="item.ActiveYN">
+          <app-ec-multi-participation>
+          </app-ec-multi-participation>
+        </ng-template>
+      </ng-container>
+    </div>
+  </div>
+</div>

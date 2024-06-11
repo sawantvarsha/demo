@@ -1,0 +1,170 @@
+<div>
+  <!--Loader START-->
+  <div *ngIf="loader" class="pageOverlay">
+    <div class="loader-center">
+      <div class="multi-ripple">
+        <div></div>
+        <div></div>
+      </div>
+    </div>
+  </div>
+  <!--Loader END-->
+  <div class="container">
+    <!--Page Title START-->
+    <div class="innergrid">
+        <div class="">
+            <label class="pageHeader">{{ "Start Of The Day" | translate }}</label>
+            <app-svg-icons class="filterIcon" (click)="showFilterDropdown=!showFilterDropdown" [icon]="'filter-icon'" [width]="'20'" [height]="'20'" [fill]="'var(--input-icon)'" ></app-svg-icons>
+        </div>
+        <hr width="100%" class="productHeaderhr">
+    </div>
+    <!--Page Title END-->
+    <!--Filters START-->
+    <div *ngIf="showFilterDropdown==true" [ngStyle]="{'display': showFilterDropdown ? '': 'none'}" class="filterDiv">
+      <div class="filterMainDiv">
+        <div class="labelRowContainer">
+          <div  style="align-self: center;" class="filterTH alignLeft labelDivWidth labelFilerBlock">
+              <span>Client Filters:</span>
+              <span class="link eachRowFilter " (click)="clearClient()" >Clear Filters</span>
+          </div>
+          <div class="clientFilterDiv">
+            <app-custom-dropdown-multi-select [options]="groupArr" [backupOptions]="groupArr" [(ngModel)]="selectedGroup" [displayText2]=" groupArr?.length === 1 ? groupArr[0]['value'] : 'Group'" [pricerType]="'dropdownSearch'" [isRefreshed]="clearClientFilter" (selectOptionsEmitter)="clientFilterData($event)" [ngClass]="{ 'disabled': groupArr.length <= 1 }" >
+            </app-custom-dropdown-multi-select>
+            
+            <app-custom-dropdown-multi-select [options]="clientArr" [backupOptions]="clientArr" [(ngModel)]="selectedClient" [displayText2]="'Client'"  [pricerType]="'dropdownSearch'" [isRefreshed]="clearClientFilter" (selectOptionsEmitter)="clientFilterData($event)" >
+            </app-custom-dropdown-multi-select>
+            
+            <app-custom-dropdown-multi-select [options]="intRefArr" [backupOptions]="intRefArr" [(ngModel)]="selectedIntRef" [displayText2]="'Internal Ref./J' | translate"  [pricerType]="'dropdownSearch'" [isRefreshed]="clearClientFilter" (selectOptionsEmitter)="clientFilterData($event)" >
+            </app-custom-dropdown-multi-select>
+            
+            <app-custom-dropdown-multi-select [options]="typeArr" [backupOptions]="typeArr" [(ngModel)]="selectedType" [displayText2]="'Type'"  [pricerType]="'dropdownSearch'" [isRefreshed]="clearClientFilter" (selectOptionsEmitter)="clientFilterData($event)" >
+            </app-custom-dropdown-multi-select>
+            
+            <app-custom-dropdown-multi-select [options]="tutelaArr" [backupOptions]="tutelaArr" [(ngModel)]=" tutelaArr?.length === 1 ? tutelaArr[0]['value'] : selectedTutela" [displayText2]=" tutelaArr?.length === 1 ? tutelaArr[0]['value'] : 'Tutela'"  [pricerType]="'dropdownSearch'" [isRefreshed]="clearClientFilter" (selectOptionsEmitter)="clientFilterData($event)" [ngClass]="{ 'disabled': tutelaArr.length <= 1 }" >
+            </app-custom-dropdown-multi-select>
+            
+            <app-custom-dropdown-multi-select [options]="subtutelaArr" [backupOptions]="subtutelaArr" [(ngModel)]="selectedSubtutela" [displayText2]="'Subtutela'"  [pricerType]="'dropdownSearch'" [isRefreshed]="clearClientFilter" (selectOptionsEmitter)="clientFilterData($event)" >
+            </app-custom-dropdown-multi-select>
+            
+            <app-custom-dropdown-multi-select [options]="branchArr" [backupOptions]="branchArr" [(ngModel)]="selectedBranch" [displayText2]="'Branch'"  [pricerType]="'dropdownSearch'" [isRefreshed]="clearClientFilter" (selectOptionsEmitter)="clientFilterData($event)" >
+            </app-custom-dropdown-multi-select>
+            
+            <app-custom-dropdown-multi-select [options]="territoryArr" [backupOptions]="territoryArr" [(ngModel)]="selectedTerritory" [displayText2]="'Territory'"  [pricerType]="'dropdownSearch'" [isRefreshed]="clearClientFilter" (selectOptionsEmitter)="clientFilterData($event)" >
+            </app-custom-dropdown-multi-select>
+            
+            <app-custom-dropdown-multi-select [options]="zoneArr" [backupOptions]="zoneArr" [(ngModel)]="selectedZone" [displayText2]="'Zone'"  [pricerType]="'dropdownSearch'" [isRefreshed]="clearClientFilter" (selectOptionsEmitter)="clientFilterData($event)" >
+            </app-custom-dropdown-multi-select>
+          </div>          
+        </div>
+      </div>
+    </div>
+    <!--Filters END-->
+    <div class="tiles">
+      <!--Protection Card-->
+      <div class="tile tooltip" id="tile-1" (click)="TileSelected('tile-1', $event)" [ngClass]="{'current': selectedCard === 'tile-1'}">
+        <div class="Card">
+          <div class="CardIcon"><img class="imgCard" src="{{asseturl}}KI.png" alt=""></div>
+          <div class="CardTitle">{{ "Protection in " | translate }}<input class="ipPercentage" type="number" [(ngModel)]="KIPercentage" (change)="getProductDetails();"> %</div>
+        </div>
+        <div class="briefInfo">
+          <div class="noOfProducts"><p>{{superData['tile-1']?.length}}</p><p>{{ "Products" | translate }}</p></div>
+          <div class="NotionalAmt"><p>{{equivalentEURNotional('tile-1')}}</p><p>{{ "Notional (EUR eqv.)" | translate }}</p></div>
+        </div>
+      </div>
+
+      <!--Autocall Card-->
+      <div class="tile" id="tile-2" (click)="TileSelected('tile-2', $event)" [ngClass]="{'current': selectedCard === 'tile-2'}">
+        <div class="Card">
+          <div class="CardIcon"><img class="imgCard" src="{{asseturl}}AUTOCALL_sotd.png" alt=""></div>
+          <div class="CardTitle">{{ "Autocall in " | translate }}<input class="ipPercentage" type="number" [(ngModel)]="AutocallPercentage" (change)="getProductDetails();"> %</div>
+        </div>
+        <div class="briefInfo">
+          <div class="noOfProducts"><p>{{superData['tile-2']?.length}}</p><p>{{ "Products" | translate }}</p></div>
+          <div class="NotionalAmt"><p>{{equivalentEURNotional('tile-2')}}</p><p>{{ "Notional (EUR eqv.)" | translate }}</p></div>
+        </div>
+      </div>
+
+      <!--Maturity Card-->
+      <div class="tile" id="tile-3" (click)="TileSelected('tile-3', $event)" [ngClass]="{'current': selectedCard === 'tile-3'}">
+        <div class="Card">
+          <div class="CardIcon"><img class="imgCard" src="{{asseturl}}Coupon_sotd.png" alt=""></div>
+          <div class="CardTitle">{{ "Coupon & Maturity in " | translate }}<input class="ipPercentage" type="number" [(ngModel)]="CouponMaturityDays" (change)="getProductDetails();"> days</div>
+        </div>
+        <div class="briefInfo">
+          <div class="noOfProducts"><p>{{superData['tile-3']?.length}}</p><p>{{ "Events" | translate }}</p></div>
+          <div class="NotionalAmt"><p>{{equivalentEURNotional('tile-3')}}</p><p>{{ "Notional (EUR eqv.)" | translate }}</p></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="contentDiv">
+      <!--doughnutChart div-->
+      <div class="Notionalpayoff">
+        <div class="hdrNotionalPayoff">{{ "Notional by Payoff" | translate }}</div>
+        <div class="pieChart">
+          <canvas id="doughnutChart">
+          </canvas>
+        </div>
+      </div>
+
+      <!--Product details div-->
+      <div class="prodDetails">
+        <div class="hdrProductDetails">
+            <div>{{ "Product Details" | translate }}</div>
+            <div class="tblInfo">
+              <div class="ProdDetailsTitle">{{ProdDetailsTitle()}}</div>
+              <app-svg-icons [icon]="'xls'" [width]="'10'" [height]="'10'" class="exportToExcel" (click)="exportToExcel();"></app-svg-icons>
+            </div>
+        </div>
+        <div class="tblProdDetails">
+          <table style="border-collapse: collapse; width: 100%;">
+            <thead>
+              <tr>
+                <th class="hdrProduct">
+                  <span>{{ "Product" | translate }}</span>
+                  <div class="sort-svg-icon sortProduct" [appSort]="superData[selectedCard]" data-order="desc" data-name="Product_Name">
+                    <app-svg-icons class="back-button" [icon]="'sort'" id="product"  [width]="'15'" [height]="'15'" [fill]="'var(--table-header-text)'" (click)="setSortingDirection('sortProduct','product')"></app-svg-icons>
+                  </div>
+                </th>
+                <th class="hdrExternalId">
+                  <span>{{ "External id" | translate }}</span>
+                  <div class="sort-svg-icon sortExternalId" [appSort]="superData[selectedCard]" data-order="desc" data-name="External">
+                    <app-svg-icons class="back-button" [icon]="'sort'" id="externalId"  [width]="'15'" [height]="'15'" [fill]="'var(--table-header-text)'" (click)="setSortingDirection('sortExternalId','externalId')"></app-svg-icons>
+                  </div>
+                </th>
+                <th class="hdrPayOff">
+                  <span>{{ "Payoff" | translate }}</span>
+                  <div class="sort-svg-icon sortPayOff" [appSort]="superData[selectedCard]" data-order="desc" data-name="PayOff">
+                    <app-svg-icons class="back-button" [icon]="'sort'" id="payOff"  [width]="'15'" [height]="'15'" [fill]="'var(--table-header-text)'" (click)="setSortingDirection('sortPayOff','payOff')"></app-svg-icons>
+                  </div>
+                </th>
+                <th class="hdrCurrency" colspan="2">
+                  <span>{{ "Currency" | translate }}</span>
+                  <div class="sort-svg-icon sortCurrency" [appSort]="superData[selectedCard]" data-order="desc" data-name="Currency">
+                    <app-svg-icons class="back-button" [icon]="'sort'" id="currency"  [width]="'15'" [height]="'15'" [fill]="'var(--table-header-text)'" (click)="setSortingDirection('sortCurrency','currency')"></app-svg-icons>
+                  </div>
+                </th>
+                <th class="hdrNotional" [appSort]="superData[selectedCard]" data-order="desc" data-name="Nominal_Amount">
+                  <span class="spnNotional">{{ "Notional" | translate }}</span>
+                  <div class="sort-svg-icon sortNotional" [appSort]="superData[selectedCard]" data-order="desc" data-name="Nominal_Amount">
+                    <app-svg-icons class="back-button" [icon]="'sort'" id="notional"  [width]="'15'" [height]="'15'" [fill]="'var(--table-header-text)'" (click)="setSortingDirection('sortNotional','notional')"></app-svg-icons>
+                  </div>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+               <tr *ngFor="let data of superData[selectedCard]">
+                <td class="tblProduct" title="{{data.Product_Name}}">{{data.Product_Name}}</td>
+                <td class="tblExternalId">{{data.External}}</td>
+                <td class="tblPayOff" title="{{data.PayOff}}">{{data.PayOff}}</td>
+                <td class="tblCurrFlag"><img class="flagImg" src="{{asseturl}}/Flags_Circular/{{data.Currency}}.png" alt=""></td>
+                <td class="tblCurrCode">{{data.Currency}}</td>
+                <td>{{FormatNotional(data.Nominal_Amount)}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

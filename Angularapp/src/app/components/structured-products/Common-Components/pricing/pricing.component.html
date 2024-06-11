@@ -1,0 +1,45 @@
+<div class="Card-container" *ngIf="ViewMode === 'Card'">
+    <div class="cards-section" *ngIf="ClassModel.PPDetails.length > 0">
+        <div class="card-card" *ngFor="let item of ClassModel.PPDetails; let i = index" [ngClass]="{'highlight-card-card': item.price !== '' && item.price !== 0 && i === 0 }">
+            <div class="card-card-LPLogo">
+                <img class="ccyFlag" style="max-width:80px;" [src]="'http://'+domainURL+'/assets/'+item.lp+'.png'" alt="img" [height]="40">
+            </div>
+
+            <div class="card-card-contents" *ngIf="item.price !== 0 && item.price !== ''">
+                <div [ngClass]="{'highlight-card-price': i === 0}" class="card-card-price">
+                    {{item.price | number:'1.2-2' || ''}}
+                </div>
+                <div class="card-card-timer">
+                    <app-svg-icons [icon]="'timer'" [width]="'9'" [height]="'9'" class=""></app-svg-icons>
+                    <label>{{item.timer || '-'}}</label>
+                </div>
+            </div>
+            <div class="loading-section" *ngIf="item.price === 0 && startLoading">
+                <app-loader></app-loader>
+            </div>
+        </div>
+    </div>
+    <div class="loading-section" *ngIf="ClassModel.PPDetails.length === 0">
+        <app-loader></app-loader>
+    </div>
+</div>
+
+<div class="main-container" *ngIf="ViewMode === 'FullPage'">
+    <div class="cards-section" *ngIf="LPs.length > 0">
+        <div class="card" *ngFor="let item of LPs" [ngClass]="{'highlight-card': item.IsBestPrice}">
+            <span class="card-header">{{item.PP_Code}}</span>
+            <div class="card-timer">
+                {{item.totalTime || '-'}}
+            </div>
+            <div class="card-contents">
+                {{item.price || '-'}}
+            </div>
+            <div class="card-buttons">
+                <button class="button" (click)="BookDeal(item)" [disabled]="item.price === 0 || item.price === 0.0000 || this.BookingFlag">Trade</button>
+            </div>
+        </div>
+    </div>
+    <div class="loading-section" *ngIf="LPs.length === 0">
+        <app-loader></app-loader>
+    </div>
+</div>

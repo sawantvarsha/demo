@@ -1,0 +1,43 @@
+<div class="feesndcharges-component">
+    <div class="page-title">Fees and Charges</div>
+    <div class="content">
+        <div class="content-container" *ngIf="!IsLoading && Blotter.length > 0">
+            <table id="excel-table">
+                <thead>
+                    <tr>
+                        <!--updated by Uddesh on 7 Feb, 2022-->
+                        <th>Ref No</th>
+                        <th>Asset Class</th>
+                        <th>Product</th>
+                        <th>Fee Type</th>
+                        <th>Currency</th>
+                        <th>Amount <br> (Asset Ccy)</th>
+                        <th>Amount <br> (USD eqv.)</th>
+                        <th>Trade Date</th>
+                        <th>Settlement Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let arr of Blotter">
+                        <td class="left" style="padding: 5px 15px !important;">{{arr.ProductRef}}</td>
+                        <td class="center">{{arr.AssetClass}}</td>
+                        <td style="white-space: pre-wrap;">{{arr.Product}}</td>
+                        <!--updated by Uddesh on 7 Feb, 2022-->
+                        <td class="center">{{arr.FeeType}}</td>
+                        <td class="center">{{arr.Currency}}</td>
+                        <td class="right">{{arr.Amount | number:'1.2-2'}}</td>
+                        <td class="right">{{arr.Amount_USDEqv | number:'1.2-2'}}</td>
+                        <td class="center">{{arr.TradeDate | date:'dd-MMM-yyyy'}}</td>
+                        <td class="center">{{arr.SettlementDate | date:'dd-MMM-yyyy'}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="content-container" *ngIf="Blotter.length === 0">
+            No data available.
+        </div>
+        <div class="loaderdiv" *ngIf="IsLoading && Blotter.length!==0">
+            <img [src]="isProd?'assets/loading_dots.gif':'../../assets/loading_dots.gif'" height="100px" width="100px">
+        </div>
+    </div>
+</div>

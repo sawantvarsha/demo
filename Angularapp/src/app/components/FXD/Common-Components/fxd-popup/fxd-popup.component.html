@@ -1,0 +1,101 @@
+
+<!-- FXD Integrated POP-UPs added by Urmila A | 10-July-23 | start-->
+<div class="FXDorderPopup-overlay"  id="savetrade" *ngIf="this.FXD_cfs.fxdpopupOpenClose">
+    <div class="OrderContainer"> 
+        <div class="OrderSection">
+            <div class="OrderPopUpheader">
+                <span>User Notification</span>
+                <svg name="closebtn" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 32.008 32" (click)="closePop()" >
+                    <path fill="var(--headers)" id="cancel" d="M31.082,27.289,42.514,15.857a2.679,2.679,0,1,0-3.788-3.788L27.294,23.5,15.861,12.068a2.679,2.679,0,1,0-3.788,3.788L23.505,27.289,12.073,38.721a2.679,2.679,0,0,0,3.788,3.788L27.294,31.077,38.726,42.509a2.679,2.679,0,1,0,3.788-3.788Z" transform="translate(-11.285 -11.289)"/>
+                </svg>
+            </div>
+
+
+
+            <!-- Save Trade Idea Block -->
+            <div *ngIf="SaveTradeOpen" class="OrderpopupBody" name="RouteToDealer">              
+              <span>RFQ {{DCDRfqId}} marked as trade idea successfully</span>               
+            </div>
+
+            <!-- Order Block -->
+            <div class="OrderpopupBody" *ngIf="OrderPlacedPopup">
+                <span>{{ orderMsg }}</span>
+                <span>Deal No.:{{ DealNo }}</span>
+                <span>External Trade ID : {{ Orderplace }}</span>
+            </div>
+
+            <!-- Email Quote Block -->
+            <div class="OrderpopupBody" *ngIf="EmailQuote">
+                <span>Mail sent successfully</span>
+            </div>
+
+
+            <!-- Locked RFQ Block -->
+            <div class="OrderpopupBody" *ngIf="LockedDealPopUp">
+                <span> {{ RFQLockedBy }}</span> 
+            </div>
+
+
+            <!-- Route To Dealer Block -->
+            <div class="OrderpopupBody" name="RouteToDealer" *ngIf="routeToDealerClicked">
+                <span *ngIf="!confirmedRouteDealer">Do you want to route the order to the dealing desk?</span>
+                <span *ngIf="RouteToDealerExecuted"> RFQ {{ DCDRfqId }} routed to dealing desk successfully</span>
+            </div>
+            <div class="FXDRouteToDealerBtnSection" *ngIf="routeToDealerClicked">
+                <button *ngIf="!confirmedRouteDealer" class="button" (click)="fnConfirmRouteToDealer()">
+                  Yes
+                </button>
+                <button *ngIf="!confirmedRouteDealer" class="button" (click)="closePop()">
+                  No
+                </button>
+                <button *ngIf="RouteToDealerExecuted" class="button" (click)="closePop()">
+                  Close
+                </button>
+            </div>
+
+        </div>               
+    </div>
+</div>
+
+
+<!-- Product tile loader  -->
+<div class="Product-Load-Cls" *ngIf="AllDataLoaded == false">
+    <div class="loaderdiv">
+        <div class="loader-center">
+            <div class="multi-ripple">
+                <div></div>
+                <div></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Global loader -->
+<div class="FXDorderPopup-overlay" id="global-loader" *ngIf=" 
+this.FXD_cfs.loadFlag  ||  RejectRedirectedOrder && RejectedOrderMSG === ''">
+<div class="loaderdiv" >
+      <div class="loader-center" name="globalLoader">
+      <div class="multi-ripple">
+          <div></div>
+          <div></div>
+      </div>
+      </div>
+  </div>
+</div>
+
+<!-- Cancel pricing -->
+<div class="FXDorderPopup-overlay" id="priceloader" *ngIf="priceLoader">
+    <div class="loaderdiv"> 
+        <div class="loader-center" name="priceloader">  
+        <div class="multi-ripple">
+            <div></div>
+            <div></div>         
+        </div>
+        <button class="button" name="PriceCancel" (click)="CancelPricing()">Cancel Pricing</button>
+        </div>
+    </div>
+  </div>
+
+<!-- FXD Integrated POP-UPs added by Urmila A | 10-July-23 | Ends -->

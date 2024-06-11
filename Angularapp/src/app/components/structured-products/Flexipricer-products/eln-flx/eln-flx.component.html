@@ -1,0 +1,77 @@
+<div class="flexi-eqc-container">
+  <div class="btn-section">
+    <button class="button">Add New</button>
+    <button class="button">Price All</button>
+    <button class="button">Generate Email</button>
+    <button class="button">Reset</button>
+  </div>
+  <div class="main-container">
+    <div class="headers">
+        <label></label>
+        <label>Share</label>
+        <label>CCY</label>
+        <label>Solve For</label>
+        <label>Strike(%)</label>
+        <label>IB Price(%)</label>
+        <label>Client Yield(%)</label>
+        <label>KO(%)</label>
+        <label>KO Type</label>
+        <label>Tenor</label>
+        <label>Settl. Week</label>
+        <label>Upfront(%)</label>
+        <label>Settl. Date</label>
+        <label>Expiry Date</label>
+        <label>Maturity Date</label>
+        <label>Result</label>
+    </div>
+    <div class="flexi-section">
+        <div class="product-row">
+            <div><app-svg-icons [icon]="'delete'" [width]="'30'" [height]="'30'"></app-svg-icons></div>
+            <div>  </div>
+            <div> 
+              <select>
+              <option *ngFor="let c of CCY" (selected)="(c === UnderlyingCurrency)" [value]="c || ccyChange">
+                {{ c || ccyChange }}
+              </option>
+            </select>
+            </div>
+            <div> 
+               <select [(ngModel)]="SolveForvalue" (change)="setSolveFor()">
+              <option value="PricePercentage">IB Price (%)</option>
+              <option value="StrikePercentage">Strike (%)</option>
+            </select> 
+          </div>
+            <div>   
+              <input type="text" maxlength="8" [disabled]="this.SolveForvalue === 'StrikePercentage'" (blur)="EQC_cfs.FormatNumber($event); EQC_cfs.setDecimal($event);priceValidation(this.Strike, 'Strike (%)')" (keypress)="EQC_cfs.InputNumber($event)" (change)="this.reset()"/> 
+            </div>
+            <div>
+              <input type="text" class="right" [(ngModel)]="IBPrice"
+              maxlength="8" disabled (blur)=" EQC_cfs.FormatNumber($event);EQC_cfs.setDecimal($event); priceValidation(this.IBPrice, 'IB price (%)')" (keypress)="EQC_cfs.InputNumber($event)" (change)="this.reset()"/>
+            </div>
+            <div>
+              <input type="text" class="right" *ngIf="SolveForvalue !== 'PricePercentage'" id="txtClientYield" [(ngModel)]="ClientYield" maxlength="8" (blur)=" EQC_cfs.FormatNumber($event); EQC_cfs.setDecimal($event);priceValidation(this.ClientYield, 'Client Yield (%)')"
+              (keypress)="EQC_cfs.InputNumber($event)" (change)="calculateIBPrice(); this.reset()"/>
+            </div>
+            <div>
+              
+            </div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+  </div>
+</div>

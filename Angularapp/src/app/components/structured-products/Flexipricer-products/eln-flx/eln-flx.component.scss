@@ -1,0 +1,25 @@
+.flexi-eqc-container {
+  .btn-section {
+    display: flex;
+    flex-direction: row;
+    column-gap: 10px;
+    margin: 20px;
+  }
+  .main-container{
+    display: grid;
+    grid-template-rows: 50px auto;
+    .headers{
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+        label{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    }
+    .product-row{
+      display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    }
+  }
+}

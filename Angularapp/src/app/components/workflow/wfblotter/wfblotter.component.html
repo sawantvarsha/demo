@@ -1,0 +1,126 @@
+<div class="wfblotterClass">
+    <div class="page-title module">
+        <app-svg-icons class="back-button" [icon]="'back-button'" [width]="'40'" [height]="'40'"
+            [fill]="'var(--headers)'" (click)="back();"></app-svg-icons>
+        <div>Workflow Blotter</div>
+    </div>
+    <div *ngIf="queues.length > 0" [ngClass]="{'container': !showQueueBar, 'collapsed-container': showQueueBar}">
+        <div class="wf-queues" *ngIf="showQueueBar">
+            <span class="back-icon" (click)="toggleQueueBar()"></span>
+            <div>
+                <select class="queue-element" [(ngModel)]="workflow" (change)="changeWorkflow();">
+                    <option *ngFor="let value of WorkflowCommonData; let i =index" [value]="value">{{value}}</option>
+                </select>
+            </div>
+            <span *ngIf="loader">
+                Loading...
+            </span>
+            <div class="queue-element" *ngFor="let q of queues">
+                <div class="queue-logo" *ngIf="!loader">
+                    <img [src]="isProd?'assets/pending-verification.png':'../../../../assets/pending-verification.png'"
+                        alt="client" width="20px" height="20px">
+                </div>
+                <span class="queue-label" *ngIf="!loader"
+                    [ngStyle]="{'color': q.QM_ID === selectedqueueId ? 'var(--btn-bg)' : '', 'font-size': q.QM_ID === selectedqueueId ? 'larger' : '' }"
+                    (click)="getTokens(workflowId,q.QM_ID, q.TokenCount); getActions(q.QM_ID.toString()); queueLoader = true; showloader =true">{{q.Display_Name}}</span>
+            </div>
+        </div>
+        <div [ngClass]="{'blotter': !showQueueBar, 'collapsed-blotter': showQueueBar}">
+            <div class="filters">
+                <div class="filter-element1">
+                    <div><span class="edit-icon" (click)="toggleQueueBar();"></span></div>
+                    <div class="right-col">
+                        <div class="dateFilter">
+                            <div> <label style="float: right;" for="fromdate">From:</label></div>
+                            <input type="date" class="input-dob" [attr.data-date]="fromdate" placeholder="dd-mm-yyyy"
+                                data-date-format="DD-MMM-YYYY" value="" min="1997-01-01" max="2030-12-31"
+                                [(ngModel)]="fromdate" tabindex="6" (change)="selectDate('fromDate',fromdate )">
+                            <div> <label style="float: right;" for="toDate">To:</label></div>
+                            <input type="date" class="input-dob" [attr.data-date]="todate" placeholder="dd-mm-yyyy"
+                                data-date-format="DD-MMM-YYYY" value="" min="1997-01-01" max="2030-12-31"
+                                [(ngModel)]="todate" tabindex="6" (change)="selectDate('toDate',todate )">
+                            <button class="button btn" value="Filter Records" style="width: 150px;"
+                                (click)="filterByDate()">Filter Records</button>
+                            <div class="reload">
+                                <img value="Reload" width="30px" (click)="reloadRecords()"
+                                    src="https://cdn0.iconfinder.com/data/icons/social-messaging-ui-color-shapes/128/sync-circle-blue-512.png" />
+                            </div>
+                            <div><img *ngIf='queueLoader'
+                                    [src]="isProd?'assets/loading_dots.png':'../../../../assets/loading_dots.gif'"
+                                    alt="client" width="50" height="40">
+                                <div *ngIf='!queueLoader'>{{status}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="blotter-data">
+                <table *ngIf="tokens.length !== 0">
+                    <thead>
+                        <th style="width: 100px !important;"></th>
+                        <th style=" min-width: 185px !important;">Action</th>
+
+                        <th *ngFor="let header of columnNames; let i = index"
+                            [ngStyle]="{ 'max-width': (columnstyles[i] + 30)+ 'px', 'min-width': (columnstyles[i] + 30) + 'px' }">
+                            <div> <span (click)="filterColumn(i);">{{header}}</span>
+                                <span *ngIf="filterflag[i]">
+                                    <input placeholder="Filter By...." class="filterBox"
+                                        [(ngModel)]="filterObj[columnTargetValues[i]]" type="text">
+                                    <button type="button" (click)="filterObj[columnTargetValues[i]] = ''"
+                                        class="filterCross">x</button>
+                                </span>
+                            </div>
+                        </th>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let j=index,let token of tokens | filter1 : filterObj">
+                            <td id="checkboxID" style="text-align: center;"><input type="checkbox"
+                                    (change)="checked(j);"></td>
+                            <td>
+                                <select style="padding-left: 5px;" class="selectAction"
+                                    (change)="processToken(token.Token_x0020_Id,token.TI_DealNo, $event.target.value, token, j); validateCheckboxes(j);">
+                                    <option selected>
+                                        Action</option>
+                                    <option *ngFor="let action of actions" [value]="action.WB_Caption">
+                                        {{action.WB_Caption}}
+                                    </option>
+                                </select>
+                            </td>
+                            <td *ngFor="let header of columnTargetValues, let i= index;">
+                                <div [ngClass]="{
+                  'right': columnDataType[i] ==='NUMBER'|| columnDataType[i] ==='NUMERIC' || columnDataType[i] ==='NUMERIC2' || columnDataType[i] ==='NUMERIC4',
+                  'left':columnDataType[i] ==='TEXT' || columnDataType[i] ==='TEXTWITHCOLOUR',
+                  'center':columnDataType[i] ==='DATE' || columnDataType[i] ==='DATETIME' || columnDataType[i] ==='CURRENCY'
+                }">
+                                    <div
+                                        *ngIf="columnDataType[i] ==='NUMERIC' || columnDataType[i] ==='NUMERIC2' || columnDataType[i] ==='NUMERIC4'">
+                                        {{cas.FormatNumberr(token[header])}}
+                                    </div>
+                                    <div *ngIf="columnDataType[i] ==='TEXT' || columnDataType[i] ==='CURRENCY'">
+                                        <span *ngIf="(token[header] | json) !== '{}'">{{token[header]}}</span>
+                                    </div>
+                                    <div *ngIf="columnDataType[i] ==='DATE'">
+                                        {{cas.checkAndFormatDate(token[header])}}
+                                    </div>
+                                    <div *ngIf="columnDataType[i] ==='DATETIME'">
+                                        {{cas.checkAndFormatDateTime(token[header])}}
+                                    </div>
+                                    <div *ngIf="columnDataType[i] ==='NUMBER'">
+                                        {{token[header]}}
+                                    </div>
+                                    <div *ngIf="columnDataType[i] ==='TEXTWITHCOLOUR'">
+                                        {{token[header]}}
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="nodatafound">
+        No data found
+    </div>
+</div>

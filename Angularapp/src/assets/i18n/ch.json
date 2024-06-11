@@ -1,0 +1,21 @@
+{
+    "YES_value":"是",
+    "NO_value":"没有",
+    "From_value": "从",
+    "Account_value": "帐户",
+    "To_value": "至",
+    "Notional_value": "名义的",
+    "Order_value": "订购",
+    "Type_value": "类型",
+    "Reason_value": "原因",
+    "Currency_value": "货币",
+    "Sell_value": "卖",
+    "Buy_value": "购买",
+    "Normal_value":"正常",
+    "High_value":"高",
+    "Priority_value":"优先",
+    "Direct_value":"直接",
+    "Submit_value":"提交",
+    "Select_from_existing_accounts_value": "从现有帐户值中选择",
+    "Customer_value":"顾客"
+}

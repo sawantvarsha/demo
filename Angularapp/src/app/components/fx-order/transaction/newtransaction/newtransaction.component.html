@@ -1,0 +1,527 @@
+<div class="container-fluid mainDiv circle" *ngIf="TransactionShow">
+    <div class="row one-column info">
+        <div class="col-lg-5 col-md-4 col-sm-col-sm-6">
+            <label>{{ "Customer_value" }}</label>
+        </div>
+        <div class="col-lg-4 col-md-7">
+            <div class="customer-container inputfield">
+                <input *ngIf="userType === 'CLIENT'" type="text" class="select equalisewidth" [(ngModel)]="Customer"
+                    style="margin-left: 0.1em; width: 100%" disabled />
+                <app-customer-search id="customerSearchElem" *ngIf="userType === 'RM'" [(ngModel)]="Customer"
+                    (sendCustomerDetails)="getCustomerDetails($event)"
+                    (selectedCustomerValue)="getSelectedCustomer($event)" [DefaultValue]="setDefaultCustomer">
+                </app-customer-search>
+
+                <div class="customer-suggesstion-container" *ngIf="flag && showCustomerList">
+                    <div class="customer-list" [attr.data-customer]="item.customer" *ngFor="
+              let item of customerList | search: Customer:'customer';
+              let i = index
+            " [ngClass]="{ 'customer-list-hover': i === selectedCustomerIndex }"
+                        (click)="setCustomer(item.customer, item)">
+                        <span class="customer-list-item">{{ item.customer }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row one-column info" *ngIf="settlementType === 'PS'">
+        <div class="">
+            <label>{{ "From_value" }} {{ "Account_value" }}
+            </label>
+        </div>
+        <div class="">
+            <select class="select_img equalisewidth" [(ngModel)]="BillingAccount">
+                <option value="{{ ba }}" *ngFor="let ba of billingAccountList">
+                    {{ ba }}
+                </option>
+            </select>
+        </div>
+    </div>
+    <div class="row one-column info" *ngIf="settlementType === 'Cash'">
+        <div class="">
+            <label>{{ "Settlement_Value" }} {{ "Account_value" }}
+            </label>
+        </div>
+        <div class="">
+
+            <select class="select_img equalisewidth" [(ngModel)]="SettlementAccount"
+                (change)="this.settleAccount = SettlementAccount.replace('-', '')">
+                <option value="{{ sa }}" *ngFor="let sa of SettlementAccountList">
+                    {{ sa }}
+                </option>
+            </select>
+        </div>
+    </div>
+
+
+    <div class="row one-column info" *ngIf="settlementType === 'PS'">
+        <div class="">
+            <label>{{ "To_value" }} {{ "Account_value" }}
+            </label>
+        </div>
+        <div class="">
+            <select class="select_img equalisewidth" [(ngModel)]="CreditAccount" style="width: 100%">
+                <option value="{{ ca }}" *ngFor="let ca of creditAccountList">
+                    {{ ca }}
+                </option>
+            </select>
+        </div>
+    </div>
+
+    <div class="row col-12 info" [ngClass]="settlementType === 'Cash' ? 'bk_whitesmoke' : 'bk_white'">
+        <div class="row one-column info">
+            <label class="col-lg-5 col-md-4 col-sm-4">
+                {{ "Sell_value" }}
+                {{ "Notional_value" }}
+            </label>
+
+            <input class="col-lg-2 col-md-3 col-sm-6 select select equalisewidth leftspacenotional"
+                style="text-align: right; background-color: white" type="text" placeholder="{{ 'Sell_value'  }} {{
+          'Notional_value' 
+        }}" value="{{ invAmt1 }}" (focus)="commonfunction.UnformatNumber($event)"
+                (blur)="commonfunction.FormatNumber($event)" (change)="
+          invAmt1 = commonfunction.NotionalChange($event);
+          validationMsg = '';
+          ChangeNotional()
+        " (keypress)="commonfunction.NotionalValidate($event)" [disabled]="amt1flag === false" />
+
+            <label class="col-lg-2 col-sm-4">{{ "Currency_value" }}:
+                <b style="font-weight: 500">
+                    {{ invCCY1 }}
+                </b></label>
+        </div>
+
+        <div class="row one-column info">
+            <label class="col-lg-5 col-md-4 col-sm-4" style="margin-top: 10px">{{ "Buy_value" }} {{
+                "Notional_value" }}
+            </label>
+            <input class="col-lg-2 col-md-3 col-sm-6 select equalisewidth leftspacenotional"
+                style="margin-top: 10px; text-align: right; background-color: white" type="text" placeholder="{{ 'Buy_value'  }} {{
+          'Notional_value' 
+        }}" value="{{ altAmt1 }}" (focus)="commonfunction.UnformatNumber($event)"
+                (blur)="commonfunction.FormatNumber($event)" (change)="
+          altAmt1 = commonfunction.NotionalChange($event);
+          validationMsg = '';
+          ChangeNotional()
+        " (keypress)="commonfunction.NotionalValidate($event)" [disabled]="amt2flag === false" />
+            <label class="col-lg-2 col-sm-4" style="margin-top: 10px">{{ "Currency_value" }}:
+                <b style="font-weight: 500"> {{ altCCY1 }} </b></label>
+        </div>
+    </div>
+    <div class="row col-12 info">
+        <div class="row one-column info" style="">
+            <div class="col-lg-5 col-md-4 col-sm-4">
+                <label>{{ "Order_value" }} {{ "Type_value" }}
+                </label>
+            </div>
+
+            <div class="col-lg-4 col-md-5 col-sm-6">
+                <input class="select margin equalisewidth" style="width: 100%; background: whitesmoke" type="text"
+                    [(ngModel)]="OrderType" placeholder="Order Type" disabled />
+
+            </div>
+
+            <mat-form-field style="position: absolute; z-index: -1; margin-left: 56em">
+                <input matInput [matDatepicker]="picker" class="picker" (dateChange)="getDate($event)" />
+                <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+            <div class="col-lg-2 col-md-2">
+                <input class="select equalisewidth" [ngStyle]="{display:
+              OrderType === 'Forward' || OrderType === 'Προς τα εμπρός'? 'block': 'none'}" type="text"
+                    value="{{ ValueDate }}" disabled="true" style="width: 9em" />
+            </div>
+
+            <div *ngIf="clickccy" class="ddl">
+                <div class="pair selected" (click)="clickccy = false; OrderType = 'Normal Priority (T+2)'">
+                    <span class="">
+                        {{ "Normal_value" }}
+                        {{ "Priority_value" }} (T+2)</span>
+                </div>
+                <div class="pair" (click)="clickccy = false; OrderType = 'High Priority (T+1)'">
+                    <span>{{ "High_value" }}
+                        {{ "Priority_value" }} (T+1)
+                    </span>
+                </div>
+                <div class="pair" (click)="clickccy = false; OrderType = 'Direct (T+0)'">
+                    <span> {{ "Direct_value" }} (T+0) </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row col-12 info" [ngClass]="settlementType === 'Cash' ? 'bk_whitesmoke' : 'bk_white'">
+        <div class="row one-column info">
+            <div class="col-lg-5 col-md-4 col-sm-6">
+                <label> {{ "Reason_value" }} </label>
+            </div>
+            <div class="col-lg-4 col-md-7">
+                <input class="select margin equalisewidth" style="width: 95%" type="text" [(ngModel)]="Reason"
+                    placeholder="{{ 'Reason_value'  }}" />
+            </div>
+            <div>
+                <img class="arrow" src="{{ assetURL }}/exclaim.png" style="margin-left: 2%; margin-top: -1%" width="20"
+                    height="20" />
+            </div>
+        </div>
+    </div>
+    <div class="row info" style="
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2%;
+      align-items: center;
+    ">
+        <div class="col-lg-7 col-md-7 col-sm-9 right">
+            <button class="btnimg button" style="text-align: center" (click)="Load = true; CallRates()">
+                {{ "Submit_value" }}
+            </button>
+
+        </div>
+
+        <div class="col-lg-1" *ngIf="Load">
+            <img class="" src="{{ assetURL }}/loading_dots.gif" width="50" height="50" />
+        </div>
+    </div>
+    <!-- </div> -->
+    <div class="row col-12" [ngClass]="settlementType === 'Cash' ? 'bk_whitesmoke' : 'bk_white'"
+        style="padding: 1%; margin-left: 0%" *ngIf="validationMsg !== ''">
+        <div class="col-lg-4 col-sm-3"></div>
+        <span class="col-8">{{ validationMsg }}</span>
+    </div>
+</div>
+<!-- Order Submission -->
+<div class="" style="background-color: whitesmoke !important" *ngIf="OrderSubmission">
+    <div class="row col-12" style="margin-left: 1px"></div>
+    <div class="container-fluid subdiv">
+        <div class="row col-12" style="
+        padding: 10px 5em 10px 10px;
+        margin-left: 1px;
+        text-align: center;
+        color: var(--btn-bg);
+      ">
+            <div class="col-3"></div>
+            <label class="summary col-lg-6 col-md-12"><b style="font-weight: 500">Confirm new transaction detail for
+                    <span style="font-size: 12px;"> {{ invCCY1 }} </span>
+                    <span style="font-size: 17px;"> {{ invAmt1 }} </span></b></label>
+        </div>
+
+        <div style="color: var(--text)">
+
+            <div class="centerColumn">
+                <label class="col-5 label1" style="text-align: right">Portfolio </label>
+                <div class="col-2"></div>
+
+                <select [(ngModel)]="folio1" style="width: 30%;">
+                    <option value="{{ ba.FacDesc }}" *ngFor="let ba of portfolio1">
+                        {{ ba.PortfolioName }}
+                    </option>
+                </select>
+            </div>
+        </div>
+
+
+        <div style="color: var(--text)">
+
+            <div class="centerColumn">
+                <label class="col-5 label1" style="text-align: right">Sell Amount</label>
+                <div class="col-2"></div>
+
+                <label class="col-5 label1">Buy Amount</label>
+            </div>
+        </div>
+        <div>
+            <div class="centerColumn attached_column">
+                <label class="col-5 label1" style="text-align: right">
+                    <span style="font-size: 12px;"> {{ invCCY1 }} </span>
+                    <span style="font-size: 17px;">{{ invAmt1 }} </span>
+                </label>
+
+                <div class="col-2" style="text-align: center; "> <img src="{{ assetURL }}/right.png" width="70"
+                        height="40" class="arrow1" /></div>
+                <label class="col-5 label1">
+                    <span style="font-size: 12px;"> {{ altCCY1 }} </span>
+                    <span style="font-size: 17px;">{{ altAmt1 }}</span>
+                </label>
+            </div>
+        </div>
+
+        <div style="color: var(--text)" *ngIf="EFX_NewTransactionAccountDetails.toLocaleUpperCase() !== 'NO'">
+            <div class="centerColumn">
+                <label class="col-5 label1" style="text-align: right">Order Type:</label>
+                <div class="col-2"></div>
+                <label class="col-5 label1">Reason:</label>
+            </div>
+        </div>
+
+        <div *ngIf="EFX_NewTransactionAccountDetails.toLocaleUpperCase() !== 'NO'">
+            <div class="centerColumn attached_column">
+                <label class="col-5 label1" style="text-align: right">{{OrderType}}</label>
+                <div class="col-2"></div>
+                <label class="col-5 label1">{{Reason || "-"}}</label>
+            </div>
+        </div>
+
+        <div style="color: var(--text)">
+            <div class="centerColumn">
+                <label class="col-5 label1" style="text-align: right">Spot Date</label>
+                <div class="col-2"></div>
+
+                <label class="col-5 label1">Value Date</label>
+            </div>
+        </div>
+
+        <div>
+            <div class="centerColumn attached_column">
+                <label class="col-5 label1" style="text-align: right">{{SpotDate}}</label>
+                <div class="col-2"></div>
+                <label class="col-5 label1">{{ ValueDate }}</label>
+            </div>
+        </div>
+
+        <!-- <div style="color: var(--text)">
+            <div class="centerColumn">
+                <label class="col-5 label1" style="text-align: right">SPOT Price</label>
+                <div class="col-2"></div>
+
+                <label class="col-5 label1">Interbank Rate</label>
+            </div>
+        </div> -->
+
+        <!-- <div>
+            <div class="centerColumn attached_column">
+                <label class="col-5 label1" style="text-align: right">{{
+                    spotrate
+                    }}</label>
+                <div class="col-2"></div>
+
+                <label class="col-5 label1">{{ bidask }}</label>
+            </div>
+        </div> -->
+
+        <!-- <div style="color: var(--text)">
+            <div class="centerColumn">
+                <label class="col-5 label1" style="text-align: right">Extra Charges</label>
+                <div class="col-2"></div>
+
+                <label class="col-5 label1">FORWARD Points</label>
+            </div>
+        </div> -->
+
+        <!-- <div>
+            <div class="centerColumn attached_column">
+                <label class="col-5 label1" style="text-align: right">{{ RMspread || 0 }}
+                </label>
+                <div class="col-2"></div>
+
+                <label class="col-5 label1">{{ forwardPoint || 0 }} </label>
+            </div>
+        </div> -->
+
+
+        <div style="color: var(--text)">
+            <div class="centerColumn" style="grid-template-columns: 41% 49%;">
+                <label class="col-5 label1" style="text-align: right;">Customer Rate:</label>
+                <div class="col-5">
+                    <input class=" select" type="text" placeholder="Customer Rate" style="text-align: center; width: 140px;    margin-left: 30px; height: 25px;
+            margin-right: 20px;" value="{{ custrate }}" disabled />
+                    <label class=" timer">{{ sec }}:00</label>
+                </div>
+
+            </div>
+        </div>
+
+
+        <div class="col-12 line"></div>
+
+        <div class="row col-12 transaction-actions">
+            <div style="display: grid;justify-content: center;">
+                <button class="button" (click)="back()">
+                    Cancel
+                </button>
+            </div>
+            <div style="display: grid;justify-content: center;">
+                <button class="button" (click)="placeOrder()" [disabled]="TimeUP">
+                    Submit
+                </button>
+            </div>
+            <div class="transaction-messages" *ngIf="isMessage">
+                <div class="col-1" *ngIf="loader">
+                    <img src="{{ assetURL }}/loading_dots.gif" width="50" height="50" />
+                    <div style="margin-left: 1em;">{{ error }}</div>
+                </div>
+                <div class="row col-12">
+                    <span>{{ validationMsg }}</span>
+                    <div>{{ error }}</div>
+                </div>
+                <div class="row col-12">
+                    <div class="col-3"></div>
+                    <label class="summary col-6 label1" *ngIf="ConfirmationWindow"><span style="color: var(--text)">Date
+                            and
+                            Time of
+                            Execution :</span><b style="font-weight: 400"> {{ transactionDateTime }}</b></label>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Confirmation window -->
+
+<div id="contentToConvert" class="" *ngIf="ConfirmationWindow" style="padding: 15px">
+    <div class="subdiv container-fluid" style="
+      border: solid 1px var(--green);
+      padding-left: 0px;
+      padding-right: 0px;
+    ">
+        <div class="col-12 confirmation">
+            Foreign Exchange Transaction Confirmation
+        </div>
+        <div style="color: var(--text)" *ngIf="EFX_NewTransactionAccountDetails.toLocaleUpperCase() !== 'NO'">
+            <div class="row col-12 3 three-column " style="margin-top: 3%">
+                <label class="col-lg-6 col-5 label1" style="text-align: right">From Account</label>
+
+                <div class="col-lg-1 col-3" style="padding-top: 1em; text-align: center">
+                    <img src="{{ assetURL }}/right.png" width="60" height="30"
+                        style="position: absolute; z-index: 1; margin-left: -30px" />
+                </div>
+                <label class="col-lg-5 col-4 label1">To Account</label>
+            </div>
+        </div>
+        <div class="row col-12 three-column confirmvalues"
+            *ngIf="EFX_NewTransactionAccountDetails.toLocaleUpperCase() !== 'NO'">
+            <label class="col-lg-6 col-5 label1" style="text-align: right">
+
+                <span *ngIf="EFX_NewTransactionAccountDetails.toLocaleUpperCase() !== 'NO'"> {{BillingAccount}}
+                </span>
+            </label>
+            <div class="col-lg-1 col-3"></div>
+            <div>
+                <label><span class="sth_acc_header"> Currency:</span> USD</label> <br />
+                <label><span class="sth_acc_header">Account Name:</span>
+                    {{STHAccountDetails[0].AccountName}}</label><br />
+                <label><span class="sth_acc_header">Account Number:</span>
+                    {{STHAccountDetails[0].AccountNo}}</label><br />
+                <label><span class="sth_acc_header">IBAN:</span> {{STHAccountDetails[0].IBAN}}</label><br />
+                <label><span class="sth_acc_header">SWIFT BIC:</span> {{STHAccountDetails[0].Swift_Code}}</label>
+            </div>
+            <label class="col-lg-5 col-4 label1"
+                *ngIf="EFX_NewTransactionAccountDetails.toLocaleUpperCase() !== 'NO'">{{ CreditAccount }}</label>
+
+        </div>
+        <div style="color: var(--text)" *ngIf="EFX_NewTransactionAccountDetails.toLocaleUpperCase() !== 'NO'">
+            <div class="row col-12 three-column confirmlabels">
+                <label class="col-lg-6 col-5 label1" style="text-align: right">Order Type:</label>
+                <div class="col-lg-1 col-3"></div>
+
+                <label class="col-lg-5 col-4 label1">Reason:</label>
+            </div>
+        </div>
+
+        <div *ngIf="EFX_NewTransactionAccountDetails.toLocaleUpperCase() !== 'NO'">
+            <div class="row col-12 three-column confirmvalues">
+                <label class="col-lg-6 col-5 label1" style="text-align: right">{{
+                    OrderType
+                    }}</label>
+                <div class="col-lg-1 col-3"></div>
+
+                <label class="col-lg-5 col-4 label1">{{
+                    Reason
+                    }}</label>
+            </div>
+        </div>
+        <div style="color: var(--text)">
+            <div class="row col-12 three-column confirmlabels">
+                <label class="col-lg-6 col-5 label1" style="text-align: right">Sell Amount</label>
+                <div class="col-lg-1 col-3"></div>
+
+                <label class="col-lg-5 col-4 label1">Buy Amount</label>
+
+            </div>
+        </div>
+
+        <div>
+            <div class="row col-12 three-column confirmvalues">
+                <label class="col-lg-6 col-5 label1" style="text-align: right">
+                    <span style="font-size: 12px;"> {{ invCCY1 }} </span>
+
+                    <span style="font-size: 20px;"> {{ invAmt1 }} </span>
+                </label>
+                <div class="col-lg-1 col-3" style="text-align: center; "> <img src="{{ assetURL }}/right.png" width="70"
+                        height="40" class="arrow1" /></div>
+
+                <label class="col-lg-5 col-4 label1">
+                    <span style="font-size: 12px;"> {{ altCCY1 }} </span>
+                    <span style="font-size: 20px;">{{ altAmt1 }} </span>
+                </label>
+
+            </div>
+        </div>
+
+        <div style="color: var(--text)">
+            <div class="row col-12 three-column confirmlabels">
+                <label class="col-lg-6 col-5 label1" style="text-align: right">Transaction Number</label>
+                <div class="col-lg-1 col-3"></div>
+
+                <label class="col-lg-5 col-4 label1">Transaction Rate</label>
+
+            </div>
+        </div>
+
+        <div>
+            <div class="row col-12 three-column confirmvalues">
+                <label class="col-lg-6 col-5 label1"
+                    style="text-align: right;font-size: 20px;">{{transactionId}}</label>
+                <div class="col-lg-1 col-3"></div>
+
+                <label class="col-lg-5 col-4 label1" style="font-size: 20px;">{{ custrate }}</label>
+
+            </div>
+        </div>
+        <div style="color: var(--text)">
+            <div class="row col-12 three-column confirmlabels">
+                <label class="col-lg-6 col-5 label1" style="text-align: right;font-size: 20px;">Date and Time of
+                    Execution</label>
+                <div class="col-lg-1 col-3"></div>
+                <label class="col-lg-5 col-4 label1" style="font-size: 20px;">Value Date</label>
+            </div>
+        </div>
+
+        <div>
+            <div class="row col-12 three-column confirmvalues">
+                <label class="col-lg-6 col-5 label1" style="text-align: right">{{transactionDateTime}}</label>
+                <div class="col-lg-1 col-3"></div>
+                <label class="col-lg-5 col-4 label1">{{ ValueDate }}</label>
+            </div>
+        </div>
+
+        <div class="row col-12 resclasstop msgmargin">
+            <span class="col-lg-12 col-sm-12" style="text-align: center; margin-bottom: 1%">The total amount includes
+                customer
+                pricing as well as any additional
+                charges as applicable.</span>
+        </div>
+        <div class="row col-12 resclasstop msgmargin"
+            *ngIf="EFX_NewTransactionAccountDetails.toLocaleUpperCase() === 'NO'" style="font-size: 12px;">
+            <span class="col-lg-12 col-sm-12" style="text-align: center; margin-bottom: 1%">To complete the Settlement,
+                please credit the funds to the following account,</span> <br>
+            <span class="col-lg-12 col-sm-12" style="text-align: center; margin-bottom: 1%">Currency - USD, A/C Name -
+                {{STHAccountDetails[0].AccountName}}, A/C No -{{STHAccountDetails[0].AccountNo}}, IBAN -
+                {{STHAccountDetails[0].IBAN}}, SWIFT BIC - {{STHAccountDetails[0].Swift_Code}}</span>
+            <div class="col-12 resclasstop" style="display: grid; grid-template-columns: 90% 10%;">
+
+                <div>
+
+                </div>
+                <div (click)="captureScreen()">
+                    <app-svg-icons [icon]="'pdf'" [width]="'26'" [height]="'26'">
+                    </app-svg-icons>
+                    <!-- <img class="arrow" src="{{ assetURL }}/downarrow.png"
+                        style="margin: auto;cursor: pointer; filter: grayscale(1);" width="20" height="20" />
+                    <label style="cursor: pointer;">PDF</label> -->
+                </div>
+
+
+            </div>
+
+        </div>
+    </div>
+</div>

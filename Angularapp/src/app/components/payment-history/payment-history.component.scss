@@ -1,0 +1,52 @@
+.centerAlign {
+  text-align: center !important;
+}
+.leftAlign {
+  text-align: left !important;
+}
+.rightAlign {
+  text-align: right !important;
+}
+::ng-deep .ngx-pagination {
+  float: left;
+}
+
+::ng-deep .ngx-pagination .current {
+  background: var(--pagination-current-tab) !important;
+  border-radius: 4px;
+}
+
+::ng-deep .ngx-pagination a:hover,
+.ngx-pagination button:hover {
+  background: var(--pagination-hover) !important;
+  border-radius: 5px;
+}
+
+::ng-deep .ngx-pagination a,
+.ngx-pagination button {
+  cursor: pointer;
+  color: #7d7d74 !important;
+}
+
+::ng-deep .ngx-pagination .current {
+  color: #cacaca !important;
+}
+.flex-row {
+  display: flex;
+  align-content: center;
+  justify-content: space-between;
+  padding: 10px 0px 10px 0px;
+}
+
+.container {
+  padding: 5px;
+}
+
+th {
+  border-top: solid 1px var(--table-header-text);
+}
+.flex-right {
+  display: flex;
+  width: 100%;
+  justify-content: right;
+}

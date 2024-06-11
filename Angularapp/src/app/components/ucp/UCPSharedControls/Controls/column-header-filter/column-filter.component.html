@@ -1,0 +1,46 @@
+<div>
+    <h4 class="common-font magrin-5" mat-dialog-title>{{ header }}</h4>
+</div>
+<div>
+    <mat-form-field class="column-filter-ddl">
+        <mat-select [(ngModel)]="columnFilterOption" (selectionChange)="filterOptionChanged()" [disabled]="showDdl">
+            <mat-option class="common-font dd-font-size" value="like">Like</mat-option>
+            <mat-option class="common-font dd-font-size" value="exact">Equal</mat-option>
+            <mat-option class="common-font dd-font-size" value="less_than"
+                [ngStyle]="{display: compareOption ? 'block' : 'none'}">
+                Less than</mat-option>
+            <mat-option class="common-font dd-font-size" value="greater_than"
+                [ngStyle]="{display: compareOption ? 'block' : 'none'}">
+                Greater than</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <ng-container>
+        <ng-template #txtBlock>
+            <mat-form-field class="filter-dialog-width common-font">
+                <mat-label class="dd-font-size">Filter</mat-label>
+                <input [(ngModel)]="columnFilterValue" class="dd-font-size" matInput (keyup)="applyHeaderFilter()" />
+            </mat-form-field>
+        </ng-template>
+        <ng-template #ddlBlock>
+            <mat-form-field class="filter-dialog-width common-font" *ngIf="showDdl; else txtBlock">
+                <mat-label class="dd-font-size">{{ header }}s</mat-label>
+                <mat-select [(ngModel)]="columnValue" class="dd-font-size" (selectionChange)="ddlSelectionChange()">
+                    <mat-option class="dd-font-size" *ngFor="let val of allColumnValues" [value]="val">
+                        {{ val }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </ng-template>
+        <mat-form-field class="filter-dialog-width common-font"
+            *ngIf="(isDate && (columnFilterOption === 'less_than' || columnFilterOption === 'greater_than')); else ddlBlock">
+            <mat-label class="common-font dd-font-size">Choose a date</mat-label>
+            <input matInput [matDatepicker]="picker" [(ngModel)]="dateVal" (dateChange)="dateValueChange()"
+                (keyup)="applyHeaderFilter()" />
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+    </ng-container>
+    <br>
+    <button class="common-font dd-font-size dialog-button" mat-raised-button [disabled]="!showClearBtn"
+        (click)="removeFilter()">Clear</button>
+</div>

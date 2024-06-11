@@ -1,0 +1,189 @@
+<div class="page-navigation pagetitle" [ngClass]=''>
+    <app-svg-icons class="back-button" [icon]="'back-button'" [width]="'40'" [height]="'40'" [fill]="'var(--headers)'" (click)="back()">
+    </app-svg-icons>
+    <div class="page-title">
+        FX Limit Order
+    </div>
+</div>
+<div class="main-container">
+    <div class="fxWatchlistContainer">
+        <div class="header">
+            <div>Watchlist</div>
+            <app-svg-icons class="refresh" [icon]="'refresh'" [width]="'30'" [height]="'30'" (click)="refreshRates()"></app-svg-icons>
+        </div>
+        <hr class="header-line">
+        <div class="searchbar">
+            <input type="text" placeholder="Search" [(ngModel)]="pairsearch" (input)="getPairSuggestion()" (focus)="showClearSearch=true">
+            <img *ngIf="showClearSearch" src="{{ assetURL }}/cancel_icon.png" alt="X" (click)="clearSearch()">
+        </div>
+        <div class="ccyCardWrapper" *ngIf="!ccypairLoadingFlag">
+            <div class="ccyCard" [ngClass]="{selectedCcyCard: (selectedCardIndex == i)}" *ngFor="let item of ccyPairArrayDummy; let i=index" (click)="selectedCcyPairCard(item, i)">
+                <div class="alignPosition flagContainer ">
+                    <div class="imgContainer">
+                        <img src="{{assetURL}}/Flags_Circular/{{item.Asset1}}.png" alt="">
+                        <img src="{{assetURL}}/Flags_Circular/{{item.Asset2}}.png" alt="***">
+                    </div>
+                    <span class="data">
+                        {{item.Pair}}
+                    </span>
+                </div>
+                <div class="alignPosition bidaskContainer bid" (click)="PlaceOrder('Buy', item)">
+                    <div class="datatitle bidcontent"></div>
+                    <div class="data">
+                        <span>{{item.pairbidrateSMALL}}</span>
+                        <span class="dataLarge">{{item.pairbidrateLARGE}}</span>
+                    </div>
+                </div>
+                <div class="alignPosition bidaskContainer ask" (click)="PlaceOrder('Sell', item)">
+                    <div class="datatitle askcontent"></div>
+                    <div class="data">
+                        <span>{{item.pairaskrateSMALL}}</span>
+                        <span class="dataLarge">{{item.pairaskrateLARGE}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ccyCardWrapper" *ngIf="ccypairLoadingFlag">
+            <div class="ccyCard shimmerCard" *ngFor="let dummy of ' '.repeat(6).split('')">
+                <div class="alignPosition flagContainer ">
+                </div>
+                <div class="alignPosition bidaskContainer bid">
+                </div>
+                <div class="alignPosition bidaskContainer ask">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="fxGraphContainer">
+        <app-fxgraph [SelectedCcyPair]="selectedCcyPair"></app-fxgraph>
+    </div>
+    <div class="TradeContainer">
+        <app-fxlimit-trades [Title]="RT"></app-fxlimit-trades>
+    </div>
+    <!-- <div class="TradeContainer">
+        <app-fxlimit-trades [Title]="OT"></app-fxlimit-trades>
+    </div> -->
+    <!-- <div class="TradeContainer">
+        <app-fxlimit-trades [Title]="HT"></app-fxlimit-trades>
+    </div> -->
+</div>
+
+<div *ngIf="orderBookFlag" class="overlaybg" (click)="closePopup()"></div>
+
+<div *ngIf="orderBookFlag" class="orderBookContainer">
+    <div class="titlerow">
+        <div class="title">Book FX Limit Order</div>
+        <div class="close" (click)="closePopup()">
+            <img src="{{ assetURL }}/cancel_icon.png" alt="X">
+        </div>
+    </div>
+    <hr class="header-line">
+    <!-- <div class="bodyrow">
+        <span *ngIf="userType=='RM'">Customer</span>
+        <div *ngIf="userType=='RM'" style="grid-column: span 3;" class="databg">
+            <div class="custdd">
+                <div>{{BLOcustomerName}}</div>
+                <span class="material-icons toggle-menu-icon" style="font-size: 26px;" (click)="BLOshowCustSuggestionsFlag=true">expand_more</span>
+            </div>
+            <div *ngIf="BLOshowCustSuggestionsFlag" class="expiryTypePopup custpopup">
+                <div class="extype" (click)="selectedCustomer(item); closesmallPopup()" *ngFor="let item of customerListArray">{{item.CustomerName}}</div>
+            </div>
+        </div>
+        <span>Buy Ccy</span>
+        <div class="databg">
+            {{BLObuyccy}}
+        </div>
+        <span>Buy Amount</span>
+        <div class="databg">
+            <input type="text" placeholder="10,000.00" [(ngModel)]="BLObuyamount">
+        </div>
+        <span>Sell Ccy</span>
+        <div class="databg">
+            {{BLOsellccy}}
+        </div>
+        <span>Sell Amount</span>
+        <div class="databg">
+            <input type="text" placeholder="7,500,000.00" [(ngModel)]="BLOsellamount" readonly>
+        </div>
+        <span>Rate</span>
+        <div class="databg">
+            {{BLOrate}}
+        </div>
+        <span>Target Rate</span>
+        <div class="databg">
+            <input type="text" placeholder="76.65" [(ngModel)]="BLOtargetrate" (change)="calculateTargetAmount()">
+        </div>
+        <span>Buy Account</span>
+        <div class="databg">
+            <div class="custdd">
+                <div>{{BLObillingAccount}}</div>
+                <span class="material-icons toggle-menu-icon" style="font-size: 26px;" (click)="BLOshowBillingAccountSuggestionsFlag=true">expand_more</span>
+            </div>
+            <div *ngIf="BLOshowBillingAccountSuggestionsFlag" class="expiryTypePopup custpopup">
+                <div class="extype" (click)="getselectedAccount('billing', item); closesmallPopup()" *ngFor="let item of BLObillingAccountList">{{item}}</div>
+            </div>
+        </div>
+        <span>Sell Account</span>
+        <div class="databg">
+            <div class="custdd">
+                <div>{{BLOcreditAccount}}</div>
+                <span class="material-icons toggle-menu-icon" style="font-size: 26px;" (click)="BLOshowCreditAccountSuggestionsFlag=true">expand_more</span>
+            </div>
+            <div *ngIf="BLOshowCreditAccountSuggestionsFlag" class="expiryTypePopup custpopup">
+                <div class="extype" (click)="getselectedAccount('credit', item); closesmallPopup()" *ngFor="let item of BLOcreditAccountList">{{item}}</div>
+            </div>
+        </div>
+        <span>Expiry Type</span>
+        <div class="databg">
+            <div (click)="BLOshowExpiryTypeFlag=true" class="selectbox">
+                <div>{{BLOexpirytype}}</div>
+                <span class="material-icons toggle-menu-icon" style="font-size: 26px;" (click)="closesmallPopup()">expand_more</span>
+            </div>
+            <div *ngIf="BLOshowExpiryTypeFlag" class="expiryTypePopup">
+                <div class="extype" (click)="getExpiryType(item); closesmallPopup()" *ngFor="let item of expiryTypesArray">{{item}}</div>
+            </div>
+        </div>
+        <span>Expiry Date</span>
+        <div class="databg">
+            <div class="Label">
+                <input type="date" name="todate" id="todate" class="input-dob" tabindex="16" min="2000-01-01" [(ngModel)]="BLOexpirydate" (change)="changeExpiryDate()">
+                <span id="Label">{{BLOexpirydate| date:'dd-MMM-yyyy'}}</span>
+            </div>
+        </div>
+        <span></span>
+        <div style="visibility: collapse;"></div>
+        <span *ngIf="BLOshowtimefield">Expiry Time</span>
+        <div *ngIf="BLOshowtimefield" class="timeContainer">
+            <div class="databg timesplit" (click)="BLOshowexHrFlag=true">
+                <div>{{BLOexHr}}</div>
+                <span class="material-icons toggle-menu-icon" style="font-size: 26px;" (click)="closesmallPopup()">expand_more</span>
+            </div>
+            <div *ngIf="BLOshowexHrFlag" class="expiryTimePopup">
+                <div class="extype" (click)="getTime('hr', i); closesmallPopup()" *ngFor="let item of counter(24); let i = index">{{i | number : '2.0'}}</div>
+            </div>
+            <span style="text-align: center;">:</span>
+            <div class="databg timesplit" (click)="BLOshowexMinFlag=true">
+                <div>{{BLOexMin}}</div>
+                <span class="material-icons toggle-menu-icon" style="font-size: 26px;" (click)="closesmallPopup()">expand_more</span>
+            </div>
+            <div *ngIf="BLOshowexMinFlag" class="expiryTimePopup" style="justify-self: end; margin-right: 1px;">
+                <div class="extype" (click)="getTime('min', i); closesmallPopup()" *ngFor="let item of counter(60); let i = index">{{i | number : '2.0'}}</div>
+            </div>
+        </div>
+    </div> -->
+    <app-order-entry [ParentMsg]="parentMsg" [ParentPair]="selectedCcyPair" [ParentDirection]="BLODirection" [ParentRate]="BLOrate"></app-order-entry>
+    <!-- <div class="btnrow">
+        <button class="button" (click)="bookOrder()">Book Order</button>
+    </div> -->
+</div>
+<!-- 
+<div *ngIf="showconfirmationPopup" class="overlay">
+    <div class="confirmation">
+        <div class="close" (click)="showconfirmationPopup=false">X</div>
+        <span>Are you sure you want to book limit order?</span>
+        <div class="btn-group">
+            <button class="button" (click)="processOrder()">Yes</button>
+            <button class="button" (click)="showconfirmationPopup=false">No</button>
+        </div>
+    </div>
+</div> -->

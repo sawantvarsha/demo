@@ -1,0 +1,391 @@
+// Added by Urmila A |  start
+.LogMonitorGlobalGrid{
+    // display: grid;
+    // grid-template-rows: 170px auto;
+    // grid-row-gap: 20px;
+    // row-gap: 2px;
+    // padding: 10px;
+    // background-color: var(--containers);
+    // box-shadow: var(--box-shadow-thin);
+    // border-radius: 4px;
+    // margin: 20px;
+    // letter-spacing: .72px;
+
+    // //Urmila A | 27-Mar-23 | LGTGTWINT-1743
+    // position: absolute;
+    // overflow-y: hidden;
+    // height: 863px;
+
+    //modified by UrmilaA | LGTGTWINT-2138  | 20-July-23
+    display: flex;
+    flex-direction: column;
+    background-color: var(--containers);
+    letter-spacing: 0.72px;
+    border-radius: 4px;
+    width: auto;
+    box-shadow: var(--box-shadow-thin);
+    height: 90%; //100%  //Urmila A | 14-sep-23
+    margin: 20px;
+
+    .filter-grid{
+        display: grid;
+        grid-template-rows: auto;
+        row-gap: 10px;
+        padding: 10px;
+        // height: 30px;  //modified by UrmilaA | LGTGTWINT-2138  | 20-July-23
+        .filterRow{
+            display: grid;
+            // grid-template-columns: 0.7fr 1fr 0.7fr 1fr 0.7fr 1fr 0.7fr 1fr 1fr 0.7fr 1fr 1fr 1fr 1fr 1fr;        
+            grid-template-columns: 175px 0.5fr 155px 0.4fr 0.4fr 150px 0.3fr 0.5fr 108px;      //Changed by Rohit T. 10-Jan-2023  
+            height: 40px;        
+            column-gap: 10px;
+            align-items: center;
+            .TwoRowColumn{
+                display: grid;
+                row-gap: 7px;
+                height: 80px;
+            }
+        }
+      
+    }
+    .contentBody{
+        // min-height: 560px;
+        // border-top: 1px solid var(--light-dark-gray);
+        // margin-bottom: 10px;
+        // padding-top: 0;
+       
+         //modified by UrmilaA | LGTGTWINT-2138  | 20-July-23
+         height: 100%;        
+         overflow: auto;  
+         border-top: 2px solid var(--active);
+      
+        .RFQTable {
+            .RFQHeaders {
+                background-color: var(--containers);
+                position: sticky;
+                top: 0;
+                z-index: 1;
+            }
+
+            //added by Urmila A | 27-Mar-23, LGTGTWINT-1743 | start
+            table,tr, th {
+                padding-right: 10px !important; 
+                font-size: 15px;
+                padding: 10px 6px;
+
+                // position: sticky; //Urmila A | 27-Mar-23 | LGTGTWINT-1743
+                min-width: 130px; //urmila A | 28-Mar-23 | LGTCLI-378
+            }
+            //added by Urmila A, 30-mar-23,LGTGTWINT-1791
+            table, td{           
+                vertical-align: middle;         
+            }
+            table, thead, tr{
+                th:nth-child(1) {
+                    // position: sticky; //commented by Urmila A | LGTCLI-376, 28-mar-23
+                    background-color: var(--containers);
+                    left: 0px;
+                    min-width: 24px !important; 
+                    width: 24px !important;
+                }
+                
+                th:nth-child(2) {
+                    // position: sticky; //commented by Urmila A | LGTCLI-376, 28-mar-23
+                    background-color: var(--containers);
+                    left: 24px;
+                    min-width: 100px !important; 
+                    width: 100px !important;
+                }
+                //Added by Urmila A | 13-Sep-23 | start
+                th{
+                    background-color: var(--containers) !important;
+                }
+                //Added by Urmila A | 13-Sep-23 | ends
+            }
+            //added by Urmila A | 27-Mar-23, LGTGTWINT-1743 | end
+
+            table, tr{
+                line-height: unset;
+                vertical-align: sub !important;
+
+                td{
+                    padding: 10px;
+                    border-right: dotted 0.1em #3a3a3a !important;
+                }
+            }
+            tbody{
+
+                //commented by Urmila A, | 23-Mar-23 | LGTGTWINT-1743 | start
+                // tr:nth-child(even) {
+                //     background-color: var(--containers);
+        
+                //     td:nth-child(1) {
+                //         background-color: var(--containers);
+                //     }
+        
+                //     td:nth-child(2) {
+                //         background-color: var(--containers);
+                //     }
+                // }
+        
+                // tr:nth-child(odd) {
+                //     background-color: var(--theme-hover);
+        
+                //     td:nth-child(1) {
+                //         background-color: var(--theme-hover);
+                //     }
+        
+                //     td:nth-child(2) {
+                //         background-color: var(--theme-hover);
+                //     }
+                // }
+                //commented by Urmila A, | 23-Mar-23 | LGTGTWINT-1743 | end
+                
+                .oddRow {
+                    background-color: var(--theme-hover) !important;
+                }
+        
+                .evenRow {
+                    background-color: var(--containers) !important;
+                    
+                }
+            }
+            table,td { font-size: 15px !important;}
+            table,td[name="ExternalQuoteID"],[name="QuoteRemark"]{
+                width: 30% !important;
+                word-wrap: break-word !important;
+                white-space: break-spaces;
+                div{
+                    width: 300px;
+                    max-width: 300px;
+                }
+            }
+            table,td[name="DCDRFQID"],[name="Executed_RFQ"]  //added by Urmila A, 13-April-23 | LGTGTWINT-1873 
+            { cursor: pointer;}
+            table,td{ width: 20% !important;}
+        }
+     
+    }
+    .NoRecordsFound{ //Urmila A | LGTGTWINT-1367 | 8-Feb-23
+        display: flex;
+        width: auto;
+        position: absolute;
+        padding: 10px;  //modified by UrmilaA | LGTGTWINT-2138  | 20-July-23
+    }
+    
+}
+
+
+.LogMonitorGlobalGrid[name="LegTable"]{
+    width: 94% !important;
+    top: 7% !important;
+    position: absolute;
+    // overflow: auto;
+    overflow-y: hidden; //Urmila A | 19-Jan-23 | LGTGTWINT-1115
+    grid-template-rows: 100px auto !important;
+    // max-height: 790px;
+    // height: 739px; //Urmila A | 19-Jan-23 | LGTGTWINT-1115
+    height: 80%; //modified by UrmilaA | LGTGTWINT-2138  | 20-July-23
+    box-shadow: 0 0 10px 1px var(--gray);
+    .clsLeg{
+        position: absolute;
+        right: 0.5%;
+        padding: 10px;
+    }
+    .contentBody{ //Added by Urmila A | 19-Jan-23 | LGTGTWINT-1115
+        padding-top: unset !important;
+    }
+    //added by Urmila A | 29-Mar-23
+    table, tbody{
+                tr:nth-child(even) {
+                    background-color: var(--containers);
+        
+                    td:nth-child(1) {
+                        background-color: var(--containers);
+                    }
+        
+                    td:nth-child(2) {
+                        background-color: var(--containers);
+                    }
+                }
+        
+                tr:nth-child(odd) {
+                    background-color: var(--theme-hover);
+        
+                    td:nth-child(1) {
+                        background-color: var(--theme-hover);
+                    }
+        
+                    td:nth-child(2) {
+                        background-color: var(--theme-hover);
+                    }
+                }
+                //added by Urmila A , 29-Mar-23
+                // .loader-center{
+                //     display: flex;
+                //     .multi-ripple{
+                //         margin-left: 9%;
+                //         top: 27%;
+                //         position: absolute;
+                //     }
+                // }
+
+    }
+    table,tr th { //Added by Urmila A | 19-Jan-23 | LGTGTWINT-1115
+        position: sticky; 
+        top: 0;  
+        z-index: 10; 
+    }
+    table th {  //Added by Urmila A | 19-Jan-23 | LGTGTWINT-1115
+        background-color: var(--containers);
+        vertical-align: middle;
+    }
+    .filter-grid{
+        // border-bottom: 1px solid var(--active);
+        .highlight{ color: var(--active);}
+        .filterRow[name="LegTable"]{
+            width: 70%;
+            // grid-template-columns: 0.5fr 0.5fr 0.8fr 0.5fr 0.7fr 0.5fr 0.6fr 0.2fr 0.5fr;
+            grid-template-columns: 175px 0.5fr 155px 0.4fr 0.4fr 150px 0.3fr 0.5fr 108px; //Changed by Rohit T. 10-Jan-2023
+            align-items: center;
+            div{
+                display: flex;
+                align-items: center;
+                column-gap: 10px;
+            }
+        }
+    }
+    input[type="radio"]:checked {
+        accent-color: var(--active) !important;
+        height: 15px;
+        width: 21%;
+    }
+    input[type="radio"]:not(:checked) {
+        /* accent-color: var(--table-row-bg) !important; */
+        height: 15px;
+        width: 21%;
+        filter: opacity(0.5);
+    }  
+}
+// Added by Urmila A |  end
+
+// Added by Urmila A | 14-feb-23, modified | start
+.loader-center{
+        top: 5%;      //Added changed by Mayuri D. on 24-Mar-2023 | LGTGTWINT - 1743 | Urmila will confirm on this
+}
+//Added by Rohit T. 10-Jan-2023
+.lblfromTodate {
+    position: absolute;
+    font-size: 12px !important;
+    margin-top: 17px;
+    left: 143px;
+}
+@media screen and (min-width: 1200px) and (max-width: 1440px){
+    .loader-center{
+        top: 30%;
+}
+}
+// Added by Urmila A | 9-Jan-23 | end
+
+//Added by Rohit T. 10-Jan-2023
+@media screen and (min-width: 1440px) and (max-width: 1600px){
+    .LogMonitorGlobalGrid .filter-grid .filterRow{
+        grid-template-columns: 1fr 1.5fr 1fr 1fr 1fr 120px 0.5fr 120px 108px;
+    }
+    input[type=date]{
+        width: 120px;
+    }
+}
+@media screen and (min-width: 1200px) and (max-width: 1440px){
+    .LogMonitorGlobalGrid .filter-grid .filterRow{
+        grid-template-columns: 105px 1fr 96px 1fr 85px 120px 65px 120px 108px;
+    }
+    input[type=date]{
+        width: 120px;
+    }
+}
+
+//Pagination added by UrmilaA | LGTGTWINT-2138 | 4-July-23 |start
+.fxd-pagination-container{
+    display: flex;
+    column-gap: 10px;
+    height: 35px;
+    align-items: center;
+    margin: 5px;   //modified by UrmilaA | LGTGTWINT-2138  | 20-July-23
+    .nav-tabs{
+        display: flex;
+        -moz-column-gap: 2px;
+        column-gap: 5px;
+        border: 1px solid var(--border-active);
+        align-items: center;
+        background: var(--theme-hover);
+        border-radius: 5px; //added by UrmilaA | 18-July-23 | LGTCLI-438 
+        .button{
+            width: 65px;
+            height: 30px;
+        }
+        div{
+            width: 25px;
+            text-align: center;
+            background: var(--containers);
+        }
+    }
+
+    .activeBtn{
+        background: var(--btn-bg) !important;
+        color: var(--btn-text);
+    }
+}
+//Pagination added by UrmilaA | LGTGTWINT-2138 | 4-July-23 |ends
+
+
+// Common CSS added by UrmilaA |n 31-July-23 | start
+// Added by Urmila A | RFQ LOg Monitor | 31-July-23 | start
+.LogMonitorGlobalGrid {
+    label {
+        color: var(--heading-label); // label colors
+        display: flex;
+        align-items: center;
+        // font-size: 15px;
+        font-size: 13px;
+    }
+
+    label[name="txt_checkbox_col"] {
+        column-gap: 10px;
+    }
+
+    input[type="checkbox"] {
+        width: 20px;
+    }
+
+    span {
+        font-size: 13px;
+        color: var(--text);
+        align-items: center;
+    }
+
+    span[name="liveDate"] {
+        display: flex;
+
+    }
+
+}
+
+// RFQ LOg Monitor | end
+
+.firstfixinglbl {
+    position: absolute;
+    margin-top: -24px;
+    margin-left: 7px;
+    font-size: 12px !important;
+}
+
+.lblfromTodate {
+    position: absolute;
+    font-size: 12px !important;
+    margin-top: 17px;
+    margin-left: -137px;
+}
+
+// Added by Urmila A | first fixing date | 31-July-23  | end
+// Common CSS added by UrmilaA |n 31-July-23 | ends

@@ -1,0 +1,108 @@
+
+<div class="insideCard-gridview">
+    <div class="cls-td">
+        <label>Product</label>
+    </div>
+    <div class="">
+        <label class="productName">
+            Deposit
+        </label>
+    </div>
+    <div>
+        <div class="cls-td">
+            <label>Type::Short term</label>
+        </div>
+    </div>
+
+    <div class="cls-td">
+        <label>Currency</label>
+    </div>
+    <div class="">
+        <select [(ngModel)]="selectedCcy" (change)="changeCcyDeposit($event)">
+            <option *ngFor = "let c of currency" [value]="c">
+                <!-- EUR - USD -->{{c}}
+            </option>
+        </select>
+    </div>
+    <div class="">
+        <!-- <input type="text" value="1,000,000.00" class="InputClass"> -->
+    </div>
+
+    <div class="cls-td">
+        <label>Deposit Amount</label>
+    </div>
+    <div>
+        <input type="text" value="1,000,000.00" class="InputClass">
+    </div>
+    <div></div>
+
+    <div class="cls-td">
+        <label>Tenor / Maturity</label>
+    </div>
+    <div>
+        <select [(ngModel)]="tenorDepo" (change)="changetenorDeposit($event)">
+            <option>1W</option>
+            <option>1M</option>
+            <option>2M</option>
+            <option>6M</option>
+            <option>1Y</option>
+        </select>
+    </div>
+    <div class="cls-td">
+        <label>{{MaturityDate}}</label>
+    </div>
+
+    <div class="cls-td">
+        <label>Maturity Instruction</label>
+    </div>
+    <div>
+        <select>
+            <option>
+                Renew P&I
+            </option>
+        </select>
+    </div>
+    <div></div>
+   
+
+    <div class="cls-td">
+        <label>Payment Frequency</label>
+    </div>
+    <div>
+        <select>
+            <option>Daily</option>
+            <option>Weekly</option>
+            <option>Monthly</option>
+            <option>Quaterly</option>
+            <option>Semiannually</option>
+            <option>Annually</option>
+        </select>
+    </div>
+    <div>
+        <!-- <input type = "text" value="1.1905" class="InputClass"/> -->
+    </div>
+   
+    <!-- <div class="row-merge"></div> -->
+
+</div>
+
+<div class="pricingTile" >
+    <div class="pricing-div">
+        <div>
+
+        </div>
+        <div></div>
+        <div>
+            <button class="btn-price">Price</button>
+        </div>
+        <div>
+            <button class="btn-price">Book Request</button>
+        </div>
+    </div>   
+
+    <div class="pricing-card">
+        <div>
+
+        </div>
+    </div>
+</div> 

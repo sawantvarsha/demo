@@ -1,0 +1,172 @@
+
+.fields {
+    width: calc(100% - 20px);
+    height: calc(100vh - 170px);
+    display: grid;
+    grid-auto-flow: column;
+    /* grid-template-columns: repeat(5, 300px); */
+    /* grid-template-rows: repeat(50, 30px); */
+    -webkit-column-gap: 50px;
+    -moz-column-gap: 50px;
+    column-gap: 50px;
+    row-gap: 20px;
+    overflow: auto;
+    margin: 20px;
+  }
+  
+  .form-group {
+    display: grid;
+    /* grid-template-columns: 50% 50%; */
+    height: 100%;
+    padding: 5px 0;
+  }
+  
+  .mandatoryImage {
+    margin-right: -8px;
+  }
+  
+  .labelAlignment {
+    padding-left: 8px;
+  }
+  
+  .ucplabel{
+  color: #1a4269;
+  grid-template-columns: 100% !important;
+  font-size: 12px;
+  }
+  
+  .anotherucplabel{
+    cursor: pointer;
+    color: #0284e0;
+    font-size: 12px;
+  }
+  
+  .readonly {
+    background: inherit;
+    /* background: #F5F5F5; */
+  }
+  
+  .label-group {
+    display: flex;
+    align-items: center;
+  }
+  
+  .example-form {
+    /* min-width: 150px; */
+    max-width: 500px;
+    width: 100%;
+  }
+  
+  .example-full-width {
+    /* width: 280px; changed by devesh on 8-April-2021 for layout issues */
+    width: max-content;
+  }
+  
+  .invisible{
+    display: none;
+  }
+  
+  
+  :host ::ng-deep .mat-radio-container{
+    height: 14px;
+    width: 14px;
+  }
+  :host ::ng-deep .mat-radio-outer-circle{
+    height: 14px;
+    width: 14px;
+  }
+  :host ::ng-deep .mat-radio-inner-circle{
+    height: 14px;
+    width: 14px;
+  }
+  :host ::ng-deep .mat-radio-button .mat-radio-ripple{
+    height: 20px; /*double of your required circle radius*/
+    width: 20px;  /*double of your required circle radius*/
+    left: calc(50% - 10px); /*'10px'-same as your required circle radius*/
+    top: calc(50% - 10px); /*'10px'-same as your required circle radius*/
+  }
+  
+  .normal-label{
+    font-size: 12px;
+  }
+  
+  ::ng-deep .mat-radio-container{
+    margin-left: 7px;
+  }
+  .static-button {
+    /* background-color: rgb(239, 239, 239);
+    color: black; */
+    background-color: var(--staticbuttonBGcolor); 
+    color: var(--staticbuttontxtcolor);
+  }
+  /* Added by BhagyashriB */
+  .udf-color + .mat-form-field-label-wrapper > .mat-form-field-label {
+    color: var(--clr) !important;
+  }
+  .udf-font-name + .mat-form-field-label-wrapper > .mat-form-field-label > .ng-star-inserted {
+    font-family: var(--fontName) !important;
+  }
+  .udf-font-size + .mat-form-field-label-wrapper > .mat-form-field-label > .ng-star-inserted {
+    font-size: var(--fontSize) !important;
+  }
+  .udf-bold + .mat-form-field-label-wrapper > .mat-form-field-label {
+    font-weight: bold !important;
+  }
+  .udf-italic + .mat-form-field-label-wrapper > .mat-form-field-label {
+    font-style: italic !important;
+  }
+  .udf-underline + .mat-form-field-label-wrapper > .mat-form-field-label {
+    text-decoration: underline !important;
+  }
+  
+  
+  .radio-btn-vrt {
+    flex-direction: column;
+  }
+  .radio-btn-hrz {
+    flex-direction: row;
+  }
+  .radio-btn-hrz > .mat-radio-button:not(:last-child) {
+    padding-right: 10px;
+  }
+  .radio-label {
+    padding-top: 5px;
+    vertical-align: baseline;
+  }
+  /* Extra classes Added for merging in Angular Gateway by OnkarE on 23-Feb-2022 */
+  
+  
+  .UCPMatSelectColor {
+    color: white !important;
+  }
+  
+  :host .MetadataWidth {
+    width: var(--VarWidth) !important;
+  }
+  
+  .ucp-hybrid-input{
+    margin-top: 25px !important;
+  }
+
+  .Td-EW-height {
+    height: 50px !important;
+    padding: 0px 0px 0px 0px !important;
+    margin: 10px !important;
+    text-align: left !important;
+  }
+
+  .EW-label {
+    display: block;
+    letter-spacing: .72px;
+    font-size: 12px;
+    white-space: pre-wrap;
+  }
+.topAlign {
+    vertical-align: text-top;
+}
+.textareaprop{
+    width: 94%;
+    padding-left: 6px !important;
+    padding-top: 4px !important;
+}
+  

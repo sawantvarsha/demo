@@ -1,0 +1,453 @@
+<div class="modelsetup-component">
+    <div class="page-title">Model Setup</div>
+
+    <div class="main-container">
+        <div *ngIf="messageFlag">{{this.message}}</div>
+        <div *ngIf="modelCodemsgflg || modelNamemsgflg">{{this.modelCodemsg}}</div>
+        <div *ngIf="duplicateFlag">Duplicate Record </div>
+        <!-- <div *ngIf = "modelNamemsgflg">{{this.modelNamemsg}}</div> -->
+        <br>
+        <div class="col-btn-model">
+            <!-- <button class="button" (click)=load()>Load</button> -->
+
+            <button class="button" (click)="add_records()">Add</button>
+
+            <button class="button button-disabled-model" *ngIf="editToggle" [disabled]>Save</button>
+            <button class="button" *ngIf="!editToggle" (click)="save_record()">Save</button>
+            <app-svg-icons [icon]="'refresh'" [width]="'30'" [height]="'30'" (click)=load()></app-svg-icons>
+            <!-- <button class="button" *ngIf = "editToggledel" (click)="del()" [disabled]>Delete</button>
+            <button class=" button button-disabled-model" *ngIf = "!editToggledel" >Delete</button> -->
+
+            <!-- <button class="button model-btn" (click)="modelAllocation()">Model Allocation</button> -->
+
+            <div *ngIf="popup" class="overlay">
+                <div class="page-content-container-popup">
+                    <div class="popup-label">Are you sure you want to Delete?</div>
+                    <div class="popup-btns">
+                        <button class="button" style="margin-left: 10px;margin-right: 10px;"
+                            (click)="yesToggle()">Yes</button>
+                        <button class="button" (click)="cancel_popup()">Cancel</button>
+                    </div>
+                </div>
+            </div>
+
+            <div *ngIf="allocationFlag" class="overlay">
+                <div class="model-allocation-popup">
+                    <div>
+                        <app-svg-icons [icon]="'cancel-icon'" [width]="'20'" [height]="'20'" (click)="closepopup()"
+                            class="closebtn"></app-svg-icons>
+                    </div>
+                    <!-- <div></div> -->
+                    <div class="model-allocation-container">
+                        <div class="model-allocation row">
+                            <label class="align-vertical">Investment Objective</label>
+                            <input type="text" disabled [value]="popupinvstobj">
+
+                            <label class="align-vertical">Model Name</label>
+                            <input type="text" disabled [value]="popupmodelName">
+
+                            <button class="button" (click)="addModelAllo()">Add</button>
+                            <button class="button" *ngIf="!delFlag" disabled>Delete</button>
+                            <button class="button" *ngIf="delFlag" (click)="deleteModelAllo()">Delete</button>
+                        </div>
+                        <br>
+                        <div *ngIf="!respFlag">
+                            <label>No data found.</label>
+                        </div>
+                        <div>
+                            <caption class="table-heading">Model Composition</caption>
+                            <div class="chartArea" *ngIf="modelCompositionGraphData.length>0">
+                                <google-chart #chart [type]="modelCompositionGraphType"
+                                    [data]="modelCompositionGraphData" [options]="modelCompositionGraphOptions">
+                                </google-chart>
+                            </div>
+                        </div>
+                        <!-- <div *ngIf="modelCompFlag" class="allocation-container">
+                            <table class="modelCompositionTable">
+                                <caption class="table-heading">Model Composition</caption>
+                                <thead>
+                                    <th>Scheme</th>
+                                    <th>Allocation %</th>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let comp of modelComposition; let i = index">
+                                        <td>
+                                            {{comp.scheme}}
+                                        </td>
+                                        <td class="right-model">
+                                            {{comp.allocation}}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="total-div">
+                                Total : 100%
+                            </div>
+                        </div> -->
+                        <div>
+                            <table class="modelAllocationTable" *ngIf="respFlag">
+                                <thead>
+                                    <th></th>
+                                    <th></th>
+                                    <th>Scheme</th>
+                                    <th>Template</th>
+                                    <th>Sub Template</th>
+                                    <th>Category</th>
+                                    <th>Category Allocation</th>
+                                    <th>Sub Template Allocation</th>
+                                    <th>Allocation</th>
+                                    <th>Created By</th>
+                                    <th>Created At</th>
+                                </thead>
+                                <tbody>
+                                    <ng-container *ngIf="!editpopup">
+                                        <!-- <tr *ngFor="let data of  modelData;  let i=index; "  (click)="checkbox(i,$event)" > -->
+                                        <tr *ngFor="let data of  modelAllocationData; let i=index; ">
+                                            <td>
+                                                <input type="checkbox" [checked]="sel === i" class="checkbox"
+                                                    (change)="checkboxSelection(i)">
+                                            </td>
+                                            <td class=" hyperlinktxt" (click)="editmodelAllocation(i)">
+                                                Edit
+                                            </td>
+
+                                            <td>{{data.schemeName}}</td>
+                                            <td>{{data.temp_name}}</td>
+                                            <td>
+                                                <select class="allocation-sel">
+                                                    <option>
+                                                        Sector
+                                                    </option>
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <select class="allocation-sel" disabled>
+                                                    <option>Consumer Cyclicals</option>
+                                                    <option>Financial Services</option>
+                                                    <option>HealthCare</option>
+                                                </select>
+                                            </td>
+                                            <td class=" right-model">
+                                                {{data.cat_allo||'-'}}
+
+                                            </td>
+                                            <td class=" right-model">
+                                                {{data.subtemp_all ||'-'}}
+                                            </td>
+                                            <td class=" right-model">
+                                                {{data.allocation ||'-'}}
+
+                                            </td>
+                                            <td>
+                                                {{data.created_by ||'-'}}
+                                            </td>
+                                            <td>
+                                                {{data.created_at | date:'dd-MMM-yyyy hh:mm a'}}
+                                            </td>
+                                        </tr>
+                                    </ng-container>
+                                    <ng-container *ngIf="editpopup">
+                                        <tr *ngFor="let data of  modelAllocationData; let i=index; ">
+                                            <ng-container *ngIf="i === rcd">
+                                                <td>
+                                                    <input type="checkbox" class="checkbox" [checked]="sel === i"
+                                                        (change)="checkboxSelection(i)">
+                                                </td>
+                                                <td class="center  ">
+                                                    <!-- {{data.save}} -->
+                                                    <div (click)="savePopup(i)" class="hyperlinktxt">Save</div>
+                                                    <div (click)="cancelPopup(i)" class="hyperlinktxt">Cancel</div>
+                                                </td>
+                                                <td class="center ">
+                                                    <select class="allocation-sel" [(ngModel)]="schemeName"
+                                                        (change)="changeScheme(i,$event)">
+                                                        <option *ngFor="let s of schemeArray" [value]="s.schemeName">
+                                                            {{s.schemeName}}
+                                                        </option>
+                                                    </select>
+                                                </td>
+                                                <td class="center ">
+                                                    <select class="allocation-sel" [(ngModel)]="templateName"
+                                                        (change)="changeTemplate(i,$event)">
+                                                        <option *ngFor="let temp of templateArray"
+                                                            [value]="temp.tempName">
+                                                            {{temp.tempName}}
+                                                        </option>
+                                                    </select>
+                                                </td>
+                                                <td class="  ">
+                                                    <select class="allocation-sel">
+                                                        <option>
+                                                            Sector
+                                                        </option>
+                                                    </select>
+                                                </td>
+                                                <td class="center ">
+                                                    <select class="allocation-sel" [(ngModel)]="category"
+                                                        (change)="changeCategory($event)">
+                                                        <option value="Consumer Cyclicals">Consumer Cyclicals</option>
+                                                        <option value="Financial Services">Financial Services</option>
+                                                        <option value="HealthCare">HealthCare</option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <!-- {{data.cat_allo}} -->
+                                                    <input type="text" class="right-model" [value]="data.cat_allo"
+                                                        (keyup)="OnkeyupCatAllo(i,$event)">
+                                                    <!-- <input *ngIf = "data.code === undefined" type="text"  [value]="" (keyup)="Onkeyup(i,$event)" >
+                                                <input *ngIf = "data.code !== undefined" type="text"  [value]="data.cat_allo" (keyup)="Onkeyup(i,$event)" > -->
+                                                </td>
+                                                <td>
+                                                    <!-- {{data.subtemp_all}} -->
+                                                    <input type="text" class="right-model" [value]="data.subtemp_all"
+                                                        (keyup)="OnkeyupSubtmp(i,$event)">
+                                                </td>
+                                                <td>
+                                                    <!-- {{data.allocation}} -->
+                                                    <input type="text" class="right-model" [value]="data.allocation"
+                                                        (keyup)="OnkeyupAllocation(i,$event)">
+                                                </td>
+                                                <td>
+                                                    {{data.created_by}}
+                                                </td>
+                                                <td>
+                                                    {{data.created_at | date:'dd-MMM-yyyy hh:mm a'}}
+                                                </td>
+                                            </ng-container>
+                                            <ng-container *ngIf="i !== rcd">
+                                                <td>
+                                                    <input type="checkbox" class="checkbox" [checked]="sel === i"
+                                                        (change)="checkboxSelection(i)">
+                                                </td>
+                                                <td (click)="editmodelAllocation(i)">
+                                                    Edit
+                                                </td>
+
+                                                <td>
+                                                    {{data.schemeName}}
+                                                </td>
+                                                <td>
+                                                    {{data.temp_name}}
+                                                </td>
+                                                <td>
+                                                    <select class="allocation-sel" disabled>
+                                                        <option>
+                                                            Sector
+                                                        </option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <select class="allocation-sel" disabled>
+                                                        <option>Consumer Cyclicals</option>
+                                                        <option>Financial Services</option>
+                                                        <option>HealthCare</option>
+                                                    </select>
+                                                </td>
+                                                <td class=" right-model">
+                                                    {{data.cat_allo}}
+
+                                                </td>
+                                                <td class=" right-model">
+                                                    {{data.subtemp_all}}
+                                                </td>
+                                                <td class=" right-model">
+                                                    {{data.allocation}}
+
+                                                </td>
+                                                <td>
+                                                    {{data.created_by}}
+                                                </td>
+                                                <td>
+                                                    {{data.created_at | date:'dd-MMM-yyyy hh:mm a'}}
+                                                </td>
+                                            </ng-container>
+                                        </tr>
+                                    </ng-container>
+                                </tbody>
+                            </table>
+
+
+                            <!--  -->
+                            <!--  -->
+                            <!--  -->
+                            <!--  -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- <button class="button">KYC Setup</button> -->
+        </div>
+        <table class="recordsTable">
+            <thead>
+                <tr>
+                    <th class="maxwidth40"></th>
+                    <th class="maxwidth40"></th>
+                    <th class="maxwidth40">
+                        <span (click)="filter('Model Code')">Model Code</span>
+                        <span *ngIf="blottersHeaders['Model Code']['filterFlg']">
+                            <input placeholder="Filter By...." class="filterBox" type="text"
+                                (change)="filtering($event,'code')">
+                            <button type="button" class="filterCross" (click)="hideFilter($event);">x</button>
+                        </span>
+                    </th>
+                    <th class="maxwidth40">
+                        <span (click)="filter('Model Name')">Model Name</span>
+                        <span *ngIf="blottersHeaders['Model Name']['filterFlg']">
+                            <input placeholder="Filter By...." class="filterBox" type="text"
+                                (change)="filtering($event,'name')">
+                            <button type="button" class="filterCross" (click)="hideFilter($event);">x</button>
+                        </span>
+                    </th>
+                    <th class="dropdown">Investment Objective</th>
+                    <th class="expreturn_col">Expected Returns</th>
+                    <th class="maxwidth40">
+                        <span (click)="filter('Created By')">Created By</span>
+                        <span *ngIf="blottersHeaders['Created By']['filterFlg']">
+                            <input placeholder="Filter By...." class="filterBox" type="text"
+                                (change)="filtering($event,'created_by')">
+                            <button type="button" class="filterCross" (click)="hideFilter($event);">x</button>
+                        </span>
+                    </th>
+                    <th class="maxwidth40">Created At</th>
+                </tr>
+            </thead>
+            <tbody>
+                <ng-container *ngIf="!edit">
+
+                    <tr *ngFor="let data of  modelData;  let i=index; " (click)="checkbox(i,$event)">
+                        <td class="center maxwidth40 ">
+                            <!-- <input type="checkbox" [checked]="selected === i"  (change)="checkbox(i,$event)" class="checkbox"> -->
+                            <button class="button model-btn" (click)="modelAllocation(i)">Model Allocation</button>
+                        </td>
+                        <td class="center maxwidth40  hyperlinktxt">
+                            <!-- {{data.edit}} -->
+                            <app-svg-icons [icon]="'edit-icon'" [width]="'15'" [height]="'15'"
+                                (click)="edit_records(i);edit_entry(i)"></app-svg-icons>
+                            <app-svg-icons [icon]="'trash-icon'" [width]="'15'" [height]="'15'" (click)="del()"
+                                style=" margin-left: 15px;"></app-svg-icons>
+                        </td>
+                        <td class=" maxwidth40">
+                            {{data.code}}
+                        </td>
+                        <td class="maxwidth40 ">
+                            {{data.name}}
+                        </td>
+                        <td>
+                            <select [(ngModel)]="data.objective" (change)="changeInvstObj(i,$event)" class="obj_select"
+                                disabled>
+                                <option *ngFor=" let val of objInvst ">
+                                    <!-- {{val}} -->
+                                    {{data.objective}}
+                                </option>
+                            </select>
+                            <!-- {{data.objective}} -->
+                        </td>
+                        <td class="right-model">
+                            {{data.return}}
+                        </td>
+                        <td class=" maxwidth40 ">
+                            {{data.created_by}}
+                        </td>
+                        <td class="center maxwidth40 ">
+                            {{data.created_at | date:'dd-MMM-yyyy hh:mm a' }}
+                        </td>
+                    </tr>
+                </ng-container>
+                <ng-container *ngIf="edit">
+                    <tr *ngFor="let data of modelData; let i=index; " (click)="checkbox(i,$event)">
+                        <ng-container *ngIf="i === record_index">
+                            <td class="center maxwidth40 ">
+                                <!-- <input type="checkbox" (change)="checkbox(i,$event)" class="checkbox-cancel"> -->
+                                <button class="button model-btn" (click)="modelAllocation(i)">Model Allocation</button>
+                            </td>
+                            <td class="center maxwidth40  top1 hyperlinktxt" (click)="cancel()">
+                                <!-- Cancel -->
+                                <app-svg-icons [icon]="'edit-icon'" [width]="'15'" [height]="'15'"></app-svg-icons>
+                                <app-svg-icons [icon]="'trash-icon'" [width]="'15'" [height]="'15'"
+                                    style=" margin-left: 15px;"></app-svg-icons>
+                            </td>
+                            <td class="center maxwidth40">
+                                <input *ngIf="data.code === undefined" type="text" [value]=""
+                                    (keyup)="Onkeyup(i,$event)">
+                                <input *ngIf="data.code !== undefined" type="text" [value]="data.code"
+                                    (keyup)="Onkeyup(i,$event)">
+                            </td>
+                            <td class=" maxwidth40 ">
+                                <input *ngIf="data.name === undefined" type="text" [value]=""
+                                    (keyup)="OnkeyupmodelName(i,$event)">
+                                <input *ngIf="data.name !== undefined" type="text" [value]="data.name"
+                                    (keyup)="OnkeyupmodelName(i,$event)">
+                            </td>
+                            <td class="center ">
+                                <select [(ngModel)]="data.objective" (change)="changeInvstObj(i,$event)"
+                                    class="obj_select">
+                                    <!-- <option value="Regular Income">Regular Income</option>
+                                <option value="Very High Returns">Very High Returns</option>
+                                <option value="Growth of Capital">Growth of Capital</option> -->
+                                    <option *ngFor=" let val of objInvst ">
+                                        {{val}}
+                                    </option>
+                                </select>
+                            </td>
+                            <td class="right-model maxwidth40 ">
+                                <input *ngIf="data.return === undefined" type="text" class="right-model"
+                                    onkeypress="return (event.charCode !=8 && event.charCode ==0 || ( event.charCode === 46 || (event.charCode >= 48 && event.charCode <= 57)))"
+                                    [value]="" (keyup)="OnkeyupexpectedReturns(i,$event)">
+                                <input *ngIf="data.return !== undefined" type="text" class="right-model"
+                                    onkeypress="return (event.charCode !=8 && event.charCode ==0 || ( event.charCode === 46 || (event.charCode >= 48 && event.charCode <= 57)))"
+                                    [value]="data.return" (keyup)="OnkeyupexpectedReturns(i,$event)">
+                            </td>
+                            <td class=" maxwidth40">
+                                <input type="text" [value]="data.created_by" [disabled]="true">
+                            </td>
+                            <td class="center maxwidth40 ">
+                                <input type="text" [value]="data.created_at | date:'dd-MMM-yyyy hh:mm a' "
+                                    [disabled]="true">
+                            </td>
+                        </ng-container>
+                        <ng-container *ngIf="i !== record_index">
+                            <td class="center maxwidth40">
+                                <!-- <input type="checkbox" (change)="checkbox(i,$event)" class="checkbox"> -->
+                                <button class="button model-btn" (click)="modelAllocation(i)">Model Allocation</button>
+                            </td>
+                            <td class="center maxwidth40 hyperlinktxt" (click)="edit_records(i);edit_entry(i)">
+                                <!-- {{data.edit}} -->
+                                <app-svg-icons [icon]="'edit-icon'" [width]="'15'" [height]="'15'"></app-svg-icons>
+                                <app-svg-icons [icon]="'trash-icon'" [width]="'15'" [height]="'15'"
+                                    style=" margin-left: 15px;"></app-svg-icons>
+                            </td>
+                            <td class=" maxwidth40">
+                                {{data.code}}
+                            </td>
+                            <td class="maxwidth40 ">
+                                {{data.name}}
+                            </td>
+                            <td class=" maxwidth40">
+                                <!-- {{data.objective}} -->
+                                <select [(ngModel)]="data.objective" (change)="changeInvstObj(i,$event)">
+                                    <!-- <option value="Regular Income">Regular Income</option>
+                                <option value="Very High Returns">Very High Returns</option>
+                                <option value="Growth of Capital">Growth of Capital</option> -->
+                                    <option *ngFor=" let val of objInvst ">
+                                        {{val}}
+                                    </option>
+                                </select>
+                            </td>
+                            <td class="right-model maxwidth40 ">
+                                {{data.return}}
+                            </td>
+                            <td class=" maxwidth40">
+                                {{data.created_by}}
+                            </td>
+                            <td class="center maxwidth40 ">
+                                {{data.created_at | date:'dd-MMM-yyyy hh:mm a' }}
+                            </td>
+                        </ng-container>
+                    </tr>
+                </ng-container>
+            </tbody>
+        </table>
+
+    </div>
+</div>

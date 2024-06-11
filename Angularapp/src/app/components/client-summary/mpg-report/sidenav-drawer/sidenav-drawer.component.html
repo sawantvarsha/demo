@@ -1,0 +1,50 @@
+<!-- <mat-sidenav-container>
+    <mat-sidenav mode="side" opened>
+        <div class="col-12 sidebar-background">
+            <div style="    display: flex;
+            align-items: baseline;flex-direction: column; gap: 10px; padding: 0px 10px 12px 10px;">
+                <div style="display: flex; flex-direction: row; justify-content: space-between; width: -webkit-fill-available;">
+                    <label *ngIf="showMenu" class="header-text">MPGs</label>
+                    <app-svg-icons [icon]="'arrow-left'" (click)="toggleMenu()" *ngIf="showMenu" [width]="'25'" [height]="'25'"></app-svg-icons>
+                    <app-svg-icons [icon]="'hamburger'" (click)="toggleMenu()" *ngIf="!showMenu" [width]="'25'" [height]="'22'"></app-svg-icons>
+                </div>
+                <input *ngIf="showMenu" type="text" [(ngModel)]="txtSearch" placeholder="Search" class="search">
+            </div>
+
+            <div *ngIf="showMenu" class="product-list" style="height: calc(100vh - 275px); padding: 10px 12px;
+            overflow-y: auto;">
+                <div *ngFor="let item of this.apifunction.BlotterItems | filter: txtSearch ; let i = index">
+                    <li class="list-item" [ngClass]="{'active':this.apifunction.BlotterItems[i].BCM_ID === selectedMPGitem.BCM_ID}" id="mpgItem_{{i}}" (click)="mpg_click(item, $event)">
+                        {{item.BCM_long_name}}
+                    </li>
+                </div>
+            </div>
+        </div>
+    </mat-sidenav>
+</mat-sidenav-container> -->
+
+<div>
+    <div>
+        <div class="col-12 sidebar-background">
+            <!-- <div style="padding:20px;"> -->
+            <div style="    display: flex;
+            align-items: baseline;flex-direction: column; gap: 10px; padding: 0px 10px 12px 10px;">
+                <div style="display: flex; flex-direction: row; justify-content: space-between; width: -webkit-fill-available;">
+                    <label *ngIf="showMenu" class="header-text">MPGs</label>
+                    <app-svg-icons [icon]="'arrow-left'" (click)="toggleMenu()" *ngIf="showMenu" [width]="'25'" [height]="'25'"></app-svg-icons>
+                    <app-svg-icons [icon]="'hamburger'" (click)="toggleMenu()" *ngIf="!showMenu" [width]="'25'" [height]="'22'"></app-svg-icons>
+                </div>
+                <input *ngIf="showMenu" type="text" [(ngModel)]="txtSearch" placeholder="Search" class="search">
+            </div>
+
+            <div *ngIf="showMenu" class="product-list" style="height: calc(100vh - 275px); padding: 10px 12px;
+            overflow-y: auto;">
+                <div *ngFor="let item of this.apifunction.BlotterItems | filter: txtSearch ; let i = index">
+                    <li class="list-item" [ngClass]="{'active':this.apifunction.BlotterItems[i].BCM_ID === selectedMPGitem.BCM_ID}" id="mpgItem_{{i}}" (click)="mpg_click(item, $event)">
+                        {{item.BCM_long_name}}
+                    </li>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

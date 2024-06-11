@@ -1,0 +1,114 @@
+<div class="CK-maindata-outer">
+    <div style="width: calc(100vw - 251px);">
+        <div class="page-title">
+            View {{clientFormName}} Details
+        </div>
+        <div class="VKYC-card" *ngIf="!IsLoading">
+            <div style="padding-left: 40px">{{ msg }}</div>
+            <div class="CKSuccess" *ngIf="AvgCPRADetails !== ''">
+                <div>
+                    <div class="div cirp-header">
+                        <div class="RR-card-Header">
+                            <div class="RR-circle">
+                                <div class="RR-circle-content" style="margin: auto;">
+                                    <div class="RR-circle-content-line-1">You are</div>
+                                    <div class="RR-circle-content-line-2">
+                                        <h3 style="padding: 3px 0px;color: #6c8a9e;font-size: 20px;">
+                                            {{ AvgCPRADetails }}
+                                        </h3>
+                                    </div>
+                                    <div class="RR-circle-content-line-3">investor</div>
+                                </div>
+                            </div>
+                            <div
+                                style="text-align: start;display: inline;margin: auto;width: -webkit-fill-available;padding-right: 20%;color: white;">
+                                <h3 style="padding: 10px 0px;  font-size: 25px">
+                                    {{ AvgCPRADetails }}
+                                </h3>
+                                <div class="textnewentry">
+                                    You seek high returns on total accumulated wealth in your
+                                    portfolio using mid to high-risk products in mid or long
+                                    term horizon.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-container5050"
+                        style="margin: auto;padding: 0px 8%;text-align: center;width: 100%;">
+                        <div class="div">
+                            <h4 style="text-align: start; margin: 0; padding: 20px 0px 5px 0px">
+                                Recommendations
+                            </h4>
+                            <div class="lbl">
+                                <label for="Name" class="lbl">
+                                    You should consider investing in:
+                                </label>
+                            </div>
+                            <div class="product-list">
+                                <div class="lbl" *ngFor="let item of ProductsList">
+                                    <ng-container
+                                        *ngIf="item.Visibility === 'Y'; then ShowActiveProduct else ShowInActiveProduct">
+                                    </ng-container>
+
+                                    <ng-template #ShowActiveProduct>
+                                        <label for="Name" class="activeProduct lbl">
+                                            <span class="checkmark">&#10004;</span> {{item.ProductName}}
+                                        </label>
+                                    </ng-template>
+                                    <ng-template #ShowInActiveProduct>
+                                        <label for="Name" class="inactiveProduct lbl">
+                                            {{item.ProductName}}
+                                        </label>
+                                    </ng-template>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <div class="div" style="margin: auto">
+                            <div class="scorenumber">
+                                {{ this.RiskRating || '1' }}
+                            </div>
+                            <div class="textnewentry" style="font-weight: 500; margin-top: 15%; color: grey">
+                                CRR
+                            </div>
+                        </div> -->
+                    </div>
+                </div>
+                <!-- Charts section -->
+                <div class="form-container2525" *ngIf="CPRAGraph.length > 0"  style="border: 1px solid #cbcbcb; padding: 10px; margin: 5px; width: auto;">
+                    <div class="div" *ngFor="let chart of CPRAGraph" >
+                        <!-- <google-chart #chart [type]="type" [data]="chart.data" [options]="chart.options">
+                        </google-chart> -->
+                        <app-pie-chart [legendHeight]="200" [width]="380" [graphdata]="chart.data" [legendVisible]=true [labelsVisible]=false>
+                        </app-pie-chart>
+                        <h6 style="text-align: center; margin: 0; padding-top: 5%">
+                            {{ chart.chartName }}
+                        </h6>
+                    </div>
+
+                </div>
+                <!-- <div class="legend-section">
+                    <div *ngFor="let legend of chartColorsLegends" style="width: fit-content;display: flex;">
+                        <svg width="20" height="10" style="margin-top: 5px">
+                            <rect x="0" y="0" width="30" height="12" [ngStyle]="{'fill':legend.color}" />
+                        </svg>
+                        <div class="legend-label">{{legend.label}}</div>
+                    </div>
+                </div> -->
+            </div>
+            <app-question-answer [FormName]="formName"></app-question-answer>
+        </div>
+        <!-- <div class="VKYC-card" *ngIf="viewKYCQuestionsAnswers.length === 0 && !IsLoading" style="text-align: start; padding: 10px 45px">
+            Please Update {{clientFormName}}.
+        </div> -->
+        <div class="loader-container" *ngIf="IsLoading">
+            <div class="loader-center">
+                <div class="multi-ripple">
+                    <div></div>
+                    <div></div>
+                </div>
+            </div>
+            <!-- <img [src]="isProd ? 'assets/loading_dots.gif' : '../../assets/loading_dots.gif'" height="100px" width="100px" /> -->
+        </div>
+    </div>
+</div>

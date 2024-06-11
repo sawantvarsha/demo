@@ -1,0 +1,1490 @@
+<div [ngClass]="{ overlay: portfoliopopflag }">
+  <div
+    [ngClass]="{ popuptab1: !isUserRM, popuptab2: isUserRM }"
+    *ngIf="portfoliopopflag"
+  >
+    <div class="content-header">
+      <div class="content-header-name">
+        <span>Portfolio Details - {{ Selectedportfolio }}</span>
+      </div>
+      <!-- <div class="closebtn" (click)="showdetailsPopUp(false,0,'')">X</div> -->
+      <app-svg-icons
+        [icon]="'cancel-icon'"
+        [width]="'20'"
+        [height]="'20'"
+        class="close"
+        (click)="showdetailsPopUp(false, 0, '')"
+      ></app-svg-icons>
+    </div>
+    <app-portfolio-details
+      [ngClass]="{ 'maincontainer-opacity': !portfoliopopflag }"
+      [selectedfacilityCode]="selectedfacilityCode"
+      [Selectedportfolio]="Selectedportfolio"
+      [baseCCY]="baseCCY"
+      [CustomerDetails]="selectedRMCustomerDetails"
+      [Mode]="mode"
+    >
+    </app-portfolio-details>
+  </div>
+</div>
+
+<div
+  class="data-container"
+  class="{{ background }}"
+  *ngIf="card === 'WatchList' && tabsArray[0].tabshow"
+>
+  <div class="header">
+    <div class="header-text watchlist">
+      <span>{{ "Watchlist" | translate }}</span>
+      <div class="watchlist-inner">
+        <select
+          style="width: 150px; height: 30px"
+          *ngIf="!newWatchlist"
+          [(ngModel)]="selectedWatchlist"
+          (change)="getSelectedWatchlist(selectedWatchlist)"
+        >
+          <option
+            *ngFor="let item of newWatchlistTemp"
+            [value]="item.WatchlistName"
+          >
+            {{ item.WatchlistName }}
+          </option>
+        </select>
+        <div class="btnAdd" *ngIf="!newWatchlist">
+          <app-svg-icons
+            [icon]="'add-simple'"
+            [width]="'15'"
+            [height]="'15'"
+            (click)="createWatchlist()"
+          >
+          </app-svg-icons>
+        </div>
+        <div class="btnAdd" *ngIf="!newWatchlist">
+          <app-svg-icons
+            [icon]="'delete'"
+            [width]="'15'"
+            [height]="'15'"
+            (click)="deleteWatchlist()"
+          >
+          </app-svg-icons>
+        </div>
+        <input
+          type="text"
+          [(ngModel)]="watchlistName"
+          style="width: 150px; height: 30px"
+          placeholder="Watchlist Name"
+          *ngIf="newWatchlist"
+        />
+        <div class="btnAdd" *ngIf="newWatchlist">
+          <app-svg-icons
+            [icon]="'save-icon'"
+            [width]="'14'"
+            [height]="'14'"
+            (click)="saveWatchlist()"
+          >
+          </app-svg-icons>
+        </div>
+        <div class="btnAdd" *ngIf="newWatchlist">
+          <app-svg-icons
+            [icon]="'cancel-icon'"
+            [width]="'13'"
+            [height]="'13'"
+            (click)="closeWatchlist()"
+          >
+          </app-svg-icons>
+        </div>
+        <span
+          class="cancel-icon"
+          (click)="
+            tabsArray[0].tabshow = !tabsArray[0].tabshow;
+            tabsArray[0].column = col;
+            tabsArray[1].tabName = 'Watchlist';
+            sendDataToParent('Watchlist')
+          "
+        ></span>
+      </div>
+    </div>
+    <hr class="header-line" />
+    <app-product-watchlist
+      [WatchlistData]="watchlistData"
+      [SelectedWatchlist]="selectedWatchlist"
+      [NewWatchlistName]="sendNewWatchlistName"
+      [AddNewWatchList]="newWatchlist"
+      [DeleteWatchList]="deleteWatchlist"
+      [CustomerDetails]="selectedRMCustomerDetails"
+      [Mode]="mode"
+      (selectWatchlistDataEvent)="selectedWatchlistDataEvent($event)"
+      (getWatchlistNamesEvent)="getWatchlistNamesEventListener($event)"
+      [Page]="'dashboard'"
+    >
+    </app-product-watchlist>
+    <!-- <hr class="header-line">
+       
+        <div class="search-customer-div">
+            <app-svg-icons class="searchsvgAlign" icon="{{'icon-search'}}" [width]="'20'" [height]="'20'">
+            </app-svg-icons>
+            <input class="svgClass txtWatchlist" type="text" [(ngModel)]="searchName" style="width: 300px;"
+                placeholder="Search">
+        </div> -->
+
+    <!-- <div class="watchlistGrid">
+            <div *ngFor="let item of marketWatch" class="box" [ngStyle]="{'background-color': item[1]}">
+                <div class="code">{{item[0].Misc1}}</div>
+                <div class="name"><span style="white-space: nowrap" [title]="item[0].Misc2">{{item[0].Misc2}}</span>
+                </div>
+                <div class="bidask">{{this.cfs.FormatNumberr(item[0].SpotBidQuote)}}</div>
+                <div class="change"> <span *ngIf="item[0].Change > 0"> +
+                    </span>{{this.cfs.FormatNumberr(item[0].Change)}}
+                </div>
+            </div>
+        </div> -->
+  </div>
+  <!-- <div class="overlay" *ngIf="newWatchlist">
+        <div class="small-popup">
+            <div class="content-header">
+                <div class="content-header-name">
+                    <span>Create Watchlist</span>
+                </div>
+                <app-svg-icons class="close"  [icon]="'cancel-icon'" [width]="'20'" [height]="'20'" (click)="closeWatchlistPopup()"></app-svg-icons>
+            </div>
+        </div>
+    </div> -->
+</div>
+<div
+  class="data-container"
+  class="{{ background }}"
+  *ngIf="card === 'Balance' && tabsArray[1].tabshow"
+>
+  <div class="header">
+    <div class="balance">
+      {{ "Balance as on" | translate }}
+      <span class="small">{{ today | date : "dd-MMM-yyyy" }}</span>
+      <span
+        class="cancel-icon"
+        (click)="
+          tabsArray[1].tabshow = !tabsArray[1].tabshow;
+          tabsArray[1].column = col;
+          sendDataToParent('Balance')
+        "
+      ></span>
+    </div>
+    <div class="gridTable">
+      <span class="heading-label">{{ "AUM" | translate }}</span>
+      <span class="center ccy">{{ baseCCY }}</span>
+      <span class="AUM">{{ this.cfs.FormatNumberr(AUM) }}</span>
+    </div>
+    <div class="gridTable">
+      <span class="heading-label">{{ "PnL" | translate }}</span>
+      <span class="center ccy"> {{ baseCCY }}</span>
+      <span
+        class="right medium"
+        [ngStyle]="{ color: isprofit ? 'var(--green)' : 'var(--red)' }"
+      >
+        {{ this.cfs.FormatNumberr(pnl) }}</span
+      >
+    </div>
+    <div class="gridTable">
+      <span class="heading-label">{{ "Free Cash" | translate }}</span>
+      <span class="center ccy">{{ baseCCY }}</span>
+      <span class="right medium">{{ this.cfs.FormatNumberr(freecash) }}</span>
+    </div>
+  </div>
+</div>
+<div
+  class="data-container"
+  class="{{ background }}"
+  *ngIf="card === 'Limits and Collateral' && tabsArray[2].tabshow"
+>
+  <div class="header">
+    <div class="header-text">
+      {{ "Limits and Collateral" | translate }}
+      <span
+        class="cancel-icon"
+        (click)="
+          tabsArray[2].tabshow = !tabsArray[2].tabshow;
+          tabsArray[2].column = col;
+          tabsArray[2].tabName = 'Limits and Collateral';
+          sendDataToParent('Limits and Collateral')
+        "
+      ></span>
+    </div>
+    <hr class="header-line" />
+    <div class="gridTableINS" style="margin-top: 15px">
+      <span class="heading-label">{{ "Margin Status" | translate }}</span>
+      <span class="center ccy"></span>
+      <span class="AUM" [ngStyle]="{ color: shortfallStatusColor }">{{
+        this.ShortfallStatus || "-"
+      }}</span>
+    </div>
+    <div class="gridTableINS">
+      <span class="heading-label">{{ "Approved Limit" | translate }}</span>
+      <span class="center ccy">{{ baseCCY }} </span>
+      <span class="right">{{
+        this.cfs.FormatNumberr(this.Total?.Approved_Limit) || "0.00"
+      }}</span>
+    </div>
+    <div class="gridTableINS">
+      <span class="heading-label">{{ "Total Collateral" | translate }}</span>
+      <span class="center ccy">{{ baseCCY }} </span>
+      <span class="right AUM">
+        {{ this.cfs.FormatNumberr(this.Total?.Collateral) || "0.00" }}</span
+      >
+    </div>
+    <div class="gridTableINS">
+      <span class="heading-label">{{ "Total Exposure" | translate }}</span>
+      <span class="center ccy">{{ baseCCY }}</span>
+      <span class="right medium">{{
+        this.cfs.FormatNumberr(this.Total?.Exposure) || "0.00"
+      }}</span>
+    </div>
+    <div class="gridTableINS">
+      <span class="heading-label">{{ "Shortfall Amount" | translate }}</span>
+      <span class="center ccy" *ngIf="ShortfallAmount !== '-'">{{
+        baseCCY
+      }}</span>
+      <span class="center ccy" *ngIf="ShortfallAmount === '-'"></span>
+      <span
+        class="right medium"
+        style="color: red"
+        *ngIf="ShortfallAmount !== '-'"
+        >{{ this.cfs.FormatNumberr(this.ShortfallAmount) || "-" }}</span
+      >
+      <span class="right medium" *ngIf="ShortfallAmount === '-'">-</span>
+    </div>
+    <div class="gridTableINS">
+      <span class="heading-label">{{
+        "Margin Shortfall Since" | translate
+      }}</span>
+      <span class="center ccy"></span>
+      <span class="right medium">{{ this.ShortfallSince || "-" }}</span>
+    </div>
+    <div class="mail right">
+      <span
+        ><u
+          (click)="redirectToHomePage()"
+          [routerLink]="['/globalMarginDashboard']"
+          >{{
+            "View
+          Details" | translate
+          }}</u
+        ></span
+      >
+    </div>
+  </div>
+</div>
+<div
+  class="data-container"
+  class="{{ background }}"
+  *ngIf="card === 'Latest Transactions' && tabsArray[3].tabshow"
+>
+  <div class="header">
+    <div class="header-text">
+      {{ "Latest Transactions" | translate }}
+      <span
+        class="cancel-icon"
+        (click)="
+          tabsArray[3].tabshow = !tabsArray[3].tabshow;
+          tabsArray[3].column = col;
+          sendDataToParent('Latest Transactions')
+        "
+      ></span>
+    </div>
+    <hr class="header-line" />
+    <div class="transactions" *ngIf="latestTransction.length > 0">
+      <div *ngFor="let item of latestTransction">
+        <div class="date">
+          <div class="small dateText" *ngIf="item.Created_At">
+            {{
+              this.epochtoFormatted(
+                item.Created_At.split("(")[1].split("+")[0].substring(0, 10)
+              )
+            }}
+          </div>
+          <div class="transactiongrid">
+            <div class="headercolor">{{ item.Note_Product_Name }}</div>
+            <div class="center small" style="font-size: 15px">
+              {{ item.Note_Ccy }}
+            </div>
+            <div class="right" style="font-size: 15px">
+              {{ this.cfs.FormatNumberr(item.Nominal_Amt) }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="right mail"
+      *ngIf="latestTransction.length > 0"
+      (click)="redirectToHomePage()"
+      [routerLink]="['/workflowblotter']"
+    >
+      <u>More Details </u>
+    </div>
+
+    <div *ngIf="latestTransction.length === 0" class="port-allco-empty-state">
+      <span> No data available for Latest transactions </span>
+    </div>
+  </div>
+</div>
+<div
+  class="data-container"
+  class="{{ background }}"
+  *ngIf="card === 'Cash Balance' && tabsArray[4].tabshow"
+>
+  <div class="header">
+    <div class="header-text">
+      {{ "Cash Balance" | translate }}
+      <span
+        class="cancel-icon"
+        (click)="
+          tabsArray[4].tabshow = !tabsArray[4].tabshow;
+          tabsArray[4].column = col;
+          sendDataToParent('Cash Balance')
+        "
+      ></span>
+    </div>
+    <hr class="header-line" />
+    <div class="tableCenter" *ngIf="cashbalance.length > 0">
+      <div class="holdingTable">
+        <span class="tablehead">{{ "Currency" | translate }}</span>
+        <span class="tablehead">{{ "Cash Balance" | translate }}</span>
+      </div>
+      <div class="holdingTable" *ngFor="let item of cashbalance; let i = index">
+        <span class="center" style="padding: 5px; color: var(--inline-label)">{{
+          cashccy[i]
+        }}</span>
+        <span class="right" style="padding: 5px; padding-right: 30px">{{
+          this.cfs.FormatNumberr(cashbalance[i])
+        }}</span>
+      </div>
+    </div>
+    <div
+      class="right mail"
+      (click)="redirectToHomePage()"
+      *ngIf="cashbalance.length > 0"
+      [routerLink]="['/accountdetails/1']"
+    >
+      <u>{{ "More Details" | translate }} </u>
+    </div>
+    <div *ngIf="cashbalance.length === 0" class="port-allco-empty-state">
+      <span> No Data available for Cash balance </span>
+    </div>
+  </div>
+</div>
+<div
+  class="data-container"
+  class="{{ background }}"
+  *ngIf="card === 'Performance' && tabsArray[5].tabshow"
+>
+  <div class="header">
+    <div class="header-text">
+      {{ "Performance" | translate }}
+      <span
+        class="cancel-icon"
+        (click)="
+          tabsArray[5].tabshow = !tabsArray[5].tabshow;
+          tabsArray[5].column = col;
+          sendDataToParent('Performance')
+        "
+      ></span>
+    </div>
+    <hr class="header-line" />
+  </div>
+  <div class="graph-selection">
+    <div class="togglediv">
+      <button
+        class="button togglebtn"
+        (click)="togglePerformance('curr')"
+        [ngClass]="{ 'active-togglebtn': isCurrentPerf }"
+      >
+        {{ "Current" | translate }}
+      </button>
+      <button
+        class="button togglebtn"
+        (click)="togglePerformance('histo')"
+        [ngClass]="{ 'active-togglebtn': !isCurrentPerf }"
+      >
+        {{ "Historical" | translate }}
+      </button>
+    </div>
+    <div class="histddldiv" *ngIf="showhistddl">
+      <select
+        [(ngModel)]="histPeriod"
+        (click)="getcustPortPerfPeriodic()"
+        style="border: none"
+      >
+        <option value="QUARTERLY">Quarterly</option>
+        <option value="MONTHLY">Monthly</option>
+        <option value="ANNUALLY">Annually</option>
+      </select>
+    </div>
+  </div>
+  <div style="width: 100%">
+    <div *ngIf="isCurrentPerf && portfolioperfdata.length > 0">
+      <!-- <google-chart #chartPerformance [title]="areaTitle" [type]="areaType" [data]="portfolioperfdata"
+        [options]="areaOptions">
+      </google-chart> -->
+      <app-area-chart
+        [height]="310"
+        [name]="'Portfolio'"
+        [title]="''"
+        [graphdata]="portfolioperfdata"
+      >
+      </app-area-chart>
+    </div>
+    <div *ngIf="!isCurrentPerf && portfolioperfdataPeriodic.length > 0">
+      <!-- <google-chart #chartPerformance [title]="areaTitle" [type]="pnlbestType" [data]="portfolioperfdataPeriodic"
+        [options]="areaOptions">
+      </google-chart> -->
+      <app-column-chart
+        [height]="310"
+        [name]="'Profit'"
+        [title]="''"
+        [_graphdata]="portfolioperfdataPeriodic"
+      >
+      </app-column-chart>
+    </div>
+  </div>
+  <div class="error" *ngIf="tab2Error !== ''">{{ tab2Error }}</div>
+</div>
+<div
+  class="data-container"
+  class="{{ background }}"
+  *ngIf="card === 'Portfolio Allocation' && tabsArray[6].tabshow"
+>
+  <div class="header">
+    <div class="header-text">
+      {{ "Portfolio Allocation" | translate }}
+      <span
+        class="cancel-icon"
+        (click)="
+          tabsArray[6].tabshow = !tabsArray[6].tabshow;
+          tabsArray[6].column = col;
+          sendDataToParent('Portfolio Allocation')
+        "
+      ></span>
+    </div>
+    <hr class="header-line" />
+    <div *ngIf="tab1Error === '' && graphdata" style="position: relative">
+      <div class="details-grid">
+        <!-- <div class="medium allocation" *ngIf='graphdata.length>0'
+                    style="position: absolute; top: 90px; left: 44px;z-index: 10;">
+                    <span class="small" style="padding: 0px 5px;">{{baseCCY}}</span>
+                    <span class="holding">{{this.convert(this.AUM)}}</span>
+                    <div style="font-size: 12px;    text-align: end;">
+                        {{this.cfs.FormatNumberr(AUM)}}&nbsp;
+                    </div>
+                </div> -->
+
+        <div class="portfolio-chart" *ngIf="graphdata.length > 0">
+          <!-- <google-chart #chart [type]="type" [data]="graphdata" [options]="options">
+                    </google-chart> -->
+          <div id="chart">
+            <app-pie-chart
+              [legendHeight]="200"
+              [width]="380"
+              [graphdata]="graphdata"
+              [legendVisible]="true"
+              [labelsVisible]="false"
+            >
+            </app-pie-chart>
+            <!-- <apx-chart
+              [series]="portfolioChartOptions.series"
+              [chart]="portfolioChartOptions.chart"
+              [plotOptions]="portfolioChartOptions.plotOptions"
+              [labels]="portfolioChartOptions.labels"
+              [dataLabels]="portfolioChartOptions.dataLabels"
+              [legend]="portfolioChartOptions.legend"
+              [stroke]="portfolioChartOptions.stroke"
+              [responsive]="portfolioChartOptions.responsive"
+              [colors]="portfolioChartOptions.colors"
+              [noData]="portfolioChartOptions.noData"
+              [tooltip]="portfolioChartOptions.tooltip"
+            ></apx-chart> -->
+            <div class="hollow-value">
+              <span class="small" style="padding: 0px 5px">{{ baseCCY }}</span>
+              <span class="holding">{{ this.convert(this.AUM) }}</span>
+              <div style="font-size: 12px; text-align: end">
+                {{ this.cfs.FormatNumberr(AUM) }}&nbsp;
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- <div class="body">
+          <div class="content" *ngFor="let legend of graphdata">
+            <div class="title">
+              <div class="square" [ngStyle]="{ 'background-color': legend.color }"></div>
+              <span> {{ legend.PortfolioName }}</span>
+            </div>
+          </div>
+        </div> -->
+      </div>
+
+      <div *ngIf="graphdata.length === 0" class="port-allco-empty-state">
+        <span> No Data available for Portfolio Allocation </span>
+      </div>
+      <div class="gridTableHead" *ngIf="graphdata.length > 0">
+        <span class="tablehead">Portfolio</span>
+        <span class="tablehead">Value</span>
+        <span class="tablehead" style="padding-top: 21px"></span>
+      </div>
+      <div class="gridTable2" *ngFor="let arr of holdings; let i = index">
+        <span class="headercolor">{{ folioName[i] }}</span>
+        <span class="center small" style="font-size: 14px">{{ baseCCY }}</span>
+        <span class="right"> {{ this.cfs.FormatNumberr(holdings[i]) }}</span>
+
+        <span
+          class="mail center"
+          (click)="
+            redirectToHomePage(); showdetailsPopUp(true, i, folioName[i])
+          "
+          ><u>View</u></span
+        >
+      </div>
+    </div>
+    <div class="error" *ngIf="tab1Error !== ''">{{ tab1Error }}</div>
+  </div>
+</div>
+<div
+  class="data-container"
+  class="{{ background }}"
+  *ngIf="card === 'Market Watch' && tabsArray[7].tabshow"
+>
+  <div class="header">
+    <div class="header-text">
+      {{ "Market Watch" | translate }}
+      <span
+        class="cancel-icon"
+        (click)="
+          tabsArray[7].tabshow = !tabsArray[7].tabshow;
+          tabsArray[7].column = col;
+          sendDataToParent('Market Watch')
+        "
+      ></span>
+    </div>
+    <hr class="header-line" />
+    <div class="performance-table" *ngIf="marketWatch.length > 0">
+      <span class="table-title"></span>
+      <span class="table-title">{{ "Asset" | translate }}</span>
+      <span class="table-title">{{ "Perf. (%)" | translate }}</span>
+      <span class="table-title">{{ "Market Price" | translate }}</span>
+      <span class="table-title">{{ "Avg. Cost" | translate }}</span>
+    </div>
+    <div class="marketWatch" *ngIf="marketWatch.length > 0">
+      <div class="performance-table" *ngFor="let item of marketWatch">
+        <span class="holdingTable">
+          <div class="">
+            <img
+              [src]="
+                isProd
+                  ? 'assets/buy-green.png'
+                  : '../../../assets/buy-green.png'
+              "
+              width="15px"
+              height="15px"
+              (click)="callOrderEntry('BUY', item); redirectToHomePage()"
+            />
+          </div>
+
+          <div class="">
+            <img
+              [src]="
+                isProd ? 'assets/sell-red.png' : '../../../assets/sell-red.png'
+              "
+              width="15px"
+              height="15px"
+              (click)="callOrderEntry('SELL', item); redirectToHomePage()"
+            />
+          </div>
+        </span>
+        <span class="table-content" style="font-size: 14px">{{
+          item[0].Misc1
+        }}</span>
+        <span
+          class="right"
+          [ngStyle]="{ color: item[1] ? 'var(--green)' : 'var(--red)' }"
+        >
+          <!-- <img [src]="isProd?'assets/triangle.png':'../../../assets/triangle.png'" width="15px"
+        height="15px"> -->
+          {{ this.cfs.FormatNumberr(item[0].Change) }}
+        </span>
+        <span class="table-content right">{{
+          this.cfs.FormatNumberr(item[0].SpotBidQuote)
+        }}</span>
+
+        <span class="table-content right">{{
+          this.cfs.FormatNumberr(item[0].CEHD_BUY_Settled_Avg_Price)
+        }}</span>
+      </div>
+    </div>
+    <div *ngIf="marketWatch.length === 0" class="port-allco-empty-state">
+      <span> No data available for Market Watch </span>
+    </div>
+  </div>
+</div>
+<div
+  class="data-container"
+  class="{{ background }}"
+  *ngIf="card === 'Top Performing Assets' && tabsArray[8].tabshow"
+>
+  <div class="header">
+    <div class="header-text">
+      {{ "Top Performing Assets" | translate }}
+      <span
+        class="cancel-icon"
+        (click)="
+          tabsArray[8].tabshow = !tabsArray[8].tabshow;
+          tabsArray[8].column = col;
+          sendDataToParent('Top Performing Assets')
+        "
+      ></span>
+    </div>
+    <hr class="header-line" />
+    <div
+      *ngIf="tab5Error === '' && pnlbestdata.length > 0"
+      style="height: 320px; padding: 10px 0px"
+    >
+      <!-- <google-chart
+        #chartpnl
+        [type]="pnlbestType"
+        [data]="pnlbestdata"
+        [options]="pnloptions"
+        [title]="pnltitle"
+      >
+      </google-chart> -->
+      <app-column-chart
+        [height]="315"
+        [name]="'Profit'"
+        [title]="''"
+        [_graphdata]="pnlbestdata"
+      ></app-column-chart>
+    </div>
+    <div
+      *ngIf="tab5Error === '' && pnlbestdata.length === 0"
+      class="port-allco-empty-state"
+    >
+      <span> No data available for Top performing assets </span>
+    </div>
+    <div class="error" *ngIf="tab5Error !== ''">{{ tab5Error }}</div>
+  </div>
+</div>
+<div
+  class="data-container"
+  class="{{ background }}"
+  *ngIf="card === 'My Profile' && tabsArray[9].tabshow"
+>
+  <div class="header">
+    <div class="header-text verified">
+      <div>{{ "My Profile" | translate }}</div>
+      <div class="right">
+        <img
+          [src]="
+            isProd ? 'assets/verified.png' : '../../../assets/verified.png'
+          "
+          width="35px"
+          height="35px"
+          alt="img"
+        />
+      </div>
+      <span
+        class="cancel-icon"
+        (click)="
+          tabsArray[9].tabshow = !tabsArray[9].tabshow;
+          tabsArray[9].column = col;
+          sendDataToParent('My Profile')
+        "
+      ></span>
+    </div>
+    <hr class="header-line" />
+    <div class="profile">
+      <span class="mail" style="padding-left: 0px; padding-top: 0px">
+        <u *ngIf="custEmail">
+          <a href="{{ emailURL }}">{{ this.custEmail }}</a></u
+        >
+      </span>
+      <span *ngIf="contactNo">{{ this.contactNo }}</span>
+      <div class="profilegrid">
+        <span class="heading-label">{{ "Last Updated On" | translate }} </span
+        ><span class="medium largeFont" *ngIf="lastUpdteOn">
+          {{ lastUpdteOn }}</span
+        >
+        <span class="heading-label">{{ "KYC Done On" | translate }}</span>
+        <span class="medium largeFont" *ngIf="kycUpdteOn">{{
+          kycUpdteOn
+        }}</span>
+        <span class="heading-label">{{ "Risk Profile" | translate }}</span>
+        <span class="medium largeFont"
+          >{{ RiskProfile }} <span>({{ CRR }})</span>
+        </span>
+      </div>
+      <!-- <div class="right mail"><u [routerLink]="['/validateUser/2']">View Details</u></div> -->
+      <div class="right mail">
+        <u (click)="redirectToHomePage()" [routerLink]="['/customersetupview']"
+          >View Details</u
+        >
+      </div>
+    </div>
+  </div>
+</div>
+<div
+  class="data-container"
+  class="{{ background }}"
+  *ngIf="card === 'Insurance' && tabsArray[10].tabshow"
+>
+  <div class="header">
+    <!-- content -->
+    <div class="header-text">
+      {{ "Insurance" | translate }}
+      <span
+        class="cancel-icon"
+        (click)="
+          tabsArray[10].tabshow = !tabsArray[10].tabshow;
+          tabsArray[10].column = col;
+          sendDataToParent('Insurance')
+        "
+      ></span>
+    </div>
+    <hr class="header-line" />
+    <div class="gridTableINS" style="margin-top: 15px">
+      <span class="heading-label">{{ "Sum Assured" | translate }}</span>
+      <span class="center ccy">{{ baseCCY }}</span>
+      <span class="AUM" *ngIf="insuranceDetails">{{
+        this.cfs.FormatNumberr(sumassured)
+      }}</span>
+    </div>
+    <div class="gridTableINS">
+      <span class="heading-label">{{ "Next Premium Due" | translate }}</span>
+      <span
+        class="center ccy"
+        *ngIf="insuranceDetails && paymentHistory.length !== 0"
+      >
+      </span>
+      <span
+        class="right medium"
+        *ngIf="insuranceDetails && paymentHistory.length !== 0"
+      >
+        {{ paymentHistory[0][6].Value || "-" }}
+      </span>
+      <span class="right medium" *ngIf="paymentHistory.length === 0"> </span>
+      <span class="right medium" *ngIf="paymentHistory.length === 0">
+        {{ "-" }}
+      </span>
+    </div>
+    <div class="gridTableINS">
+      <span class="heading-label">{{ "Next Premium Amt." | translate }}</span>
+      <span
+        class="center ccy"
+        *ngIf="insuranceDetails && paymentHistory.length !== 0"
+      >
+        {{ baseCCY }}
+      </span>
+      <span
+        class="right medium"
+        *ngIf="insuranceDetails && paymentHistory.length !== 0"
+      >
+        {{ this.cfs.FormatNumberr(paymentHistory[0][15].Value || "-") }}
+      </span>
+      <span class="right medium" *ngIf="paymentHistory.length === 0"> </span>
+      <span class="right medium" *ngIf="paymentHistory.length === 0">
+        {{ "-" }}
+      </span>
+    </div>
+    <div class="mail right">
+      <span (click)="redirectToHomePage()" [routerLink]="['/policy']"
+        ><u>{{ "View Details" | translate }}</u></span
+      >
+    </div>
+  </div>
+</div>
+<div
+  class="data-container"
+  class="{{ background }}"
+  *ngIf="card === 'News' && tabsArray[11].tabshow"
+>
+  <div class="header">
+    <div class="header-text">
+      {{ "News" | translate }}
+      <span
+        class="cancel-icon"
+        (click)="
+          tabsArray[11].tabshow = !tabsArray[11].tabshow;
+          tabsArray[11].column = col;
+          sendDataToParent('News')
+        "
+      ></span>
+    </div>
+    <hr class="header-line" />
+    <!-- content -->
+    <div class="news-box">
+      <div
+        class="smalltile"
+        *ngFor="let item of news; let i = index"
+        [routerLink]="['/News']"
+      >
+        <div>
+          <img
+            *ngIf="!!newsURL[i]"
+            [src]="newsURL[i]"
+            width="50px"
+            height="50px"
+            [alt]="'news' + i"
+          />
+          <box *ngIf="!newsURL[i]" class="shine"></box>
+        </div>
+        <div>
+          <span>{{ item }}</span>
+          <br />
+          <div class="right">{{ newsPublishAt[i] }} ago</div>
+        </div>
+      </div>
+    </div>
+    <div class="right mail">
+      <u (click)="redirectToHomePage()" [routerLink]="['/News']">{{
+        "View
+        Content" | translate
+      }}</u>
+    </div>
+  </div>
+</div>
+<div
+  class="data-container"
+  class="{{ background }}"
+  *ngIf="card === 'Capital and Limits tracker' && tabsArray[12].tabshow"
+>
+  <div class="header">
+    <div class="header-text">
+      {{ "Capital and Limits Tracker" | translate }}
+      <span
+        class="cancel-icon"
+        (click)="
+          tabsArray[12].tabshow = !tabsArray[12].tabshow;
+          tabsArray[12].column = col;
+          sendDataToParent('Capital and Limits Tracker')
+        "
+      ></span>
+    </div>
+    <hr class="header-line" />
+    <!-- content -->
+    <div *ngIf="tab11Error === '' && limitdata.length > 0">
+      <!--style="height: 350px"-->
+      <!-- <google-chart #chartlimit [type]="limittype" [data]="limitdata" [options]="limitoptions" [title]="limittitle">
+      </google-chart> -->
+      <app-bar-chart
+        [height]="350"
+        [width]="360"
+        [name]="'Capital and Limits Tracker'"
+        [title]="''"
+        [graphdata]="limitdata"
+        [legend]="legends"
+        [legendFlag]="legendFlag"
+      ></app-bar-chart>
+    </div>
+    <div
+      *ngIf="tab11Error === '' && limitdata.length === 0"
+      class="port-allco-empty-state"
+    >
+      <span> No data available for Capital and Limit Tracker </span>
+    </div>
+  </div>
+</div>
+<div
+  class="data-container"
+  class="{{ background }}"
+  *ngIf="card === 'Upcoming Events' && tabsArray[13].tabshow"
+>
+  <div class="header">
+    <div class="header-text">
+      {{ "Upcoming Events" | translate }}
+      <span
+        class="cancel-icon"
+        (click)="
+          tabsArray[13].tabshow = !tabsArray[13].tabshow;
+          sendDataToParent('Upcoming Events')
+        "
+      ></span>
+      <!--sendDataToParent Added by Alolika G on 3rd Feb 2022.-->
+    </div>
+    <hr class="header-line" />
+    <div class="transactions" *ngIf="eventData.length > 0">
+      <div *ngFor="let item of eventData">
+        <div class="date">
+          <div class="small dateText" *ngIf="item.RS_Schedule_Date">
+            {{ item.RS_Schedule_Date | date : "dd-MMM-yyyy" }}
+          </div>
+          <div class="transactiongrid">
+            <div class="headercolor">{{ item.Product_Name }}</div>
+            <div class="center small" style="font-size: 14px"></div>
+            <div class="right" style="font-size: 14px">
+              {{ item.Event_Name }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="right mail"
+      (click)="redirectToHomePage()"
+      *ngIf="eventData.length > 0"
+      [routerLink]="['/EventAlert']"
+    >
+      <u>More Details </u>
+    </div>
+    <div *ngIf="eventData.length === 0" class="port-allco-empty-state">
+      <span> No data available for Upcoming Events </span>
+    </div>
+  </div>
+</div>
+<div
+  class="data-container"
+  class="{{ background }}"
+  *ngIf="card === 'FX Rates' && tabsArray[14].tabshow"
+>
+  <div class="header">
+    <div
+      class="header-text"
+      style="display: grid; grid-template-columns: 1fr auto"
+    >
+      <div class="FXRatesLabel">
+        {{ "FX Rates" | translate }}
+        <app-svg-icons
+          [icon]="'refresh'"
+          [width]="'30'"
+          [height]="'30'"
+          (click)="fnCallFXRates()"
+        >
+        </app-svg-icons>
+      </div>
+
+      <span
+        class="cancel-icon"
+        (click)="
+          tabsArray[14].tabshow = !tabsArray[14].tabshow;
+          sendDataToParent('FX Rates')
+        "
+      ></span>
+    </div>
+    <hr class="header-line" />
+    <div class="FxGrid" *ngIf="ccyPair.length > 0">
+      <div class="FX" *ngFor="let item of ccyPair; let i = index">
+        <div class="FXHeader">
+          <div class="flagGrid">
+            <img
+              class="ccyFlag flagPos"
+              [src]="
+                'http://' +
+                domainURL +
+                '/assets/Flags_Circular/' +
+                item.split(' -')[0] +
+                '.png'
+              "
+              alt="ccy"
+            />
+            <img
+              class="ccyFlag"
+              [src]="
+                'http://' +
+                domainURL +
+                '/assets/Flags_Circular/' +
+                item.split('- ')[1] +
+                '.png'
+              "
+              alt="ccy"
+            />
+          </div>
+          {{ item }}
+        </div>
+        <div class="FXValue">
+          <div class="bidAskgrid border">
+            <label class="heading-label">BID</label>
+
+            <div>
+              {{ this.cfs.FormatNumberr(ratesBuy[i]) }}
+              <span style="font-size: 17px">{{ ratesSell[i] }}</span>
+            </div>
+          </div>
+          <div class="bidAskgrid">
+            <label class="heading-label">ASK</label>
+            <div>
+              {{ this.cfs.FormatNumberr(ratesBuy[i]) }}
+              <span style="font-size: 17px">{{ Pips[i] }}</span>
+            </div>
+          </div>
+        </div>
+        <!-- <div class="FXValue"> {{ratesBuy[i] | number:'1.2-2'}}
+                    <span style="font-size: 17px;"> {{Pips[i]}} / {{ratesSell[i]}}</span>
+                </div> -->
+        <!-- <div class="FXValue">{{ratesBuy[i]}} / {{ratesSell[i]}}</div> before-->
+      </div>
+    </div>
+
+    <div class="right mail" [routerLink]="['/dashboardFx/0']">
+      <u>{{ "More Details" | translate }} </u>
+    </div>
+    <div *ngIf="ccyPair.length === 0" class="port-allco-empty-state">
+      <span> No data available for FX Rates </span>
+    </div>
+  </div>
+</div>
+<div
+  class="data-container"
+  class="{{ background }}"
+  *ngIf="card === 'Vanilla' && tabsArray[14].tabshow"
+>
+  <div class="header">
+    <div class="header-text">
+      {{ "Vanilla" | translate }}
+      <span
+        class="cancel-icon"
+        (click)="
+          tabsArray[14].tabshow = !tabsArray[14].tabshow;
+          sendDataToParent('Vanilla')
+        "
+      ></span>
+    </div>
+    <hr class="header-line" />
+
+    <app-card-dashboard [ProductName]="'Vanilla'"></app-card-dashboard>
+  </div>
+</div>
+<div
+  class="data-container"
+  class="{{ background }}"
+  *ngIf="card === 'AQ' && tabsArray[14].tabshow"
+>
+  <div class="header">
+    <div class="header-text">
+      {{ "AQ" | translate }}
+      <span
+        class="cancel-icon"
+        (click)="
+          tabsArray[14].tabshow = !tabsArray[14].tabshow; sendDataToParent('AQ')
+        "
+      ></span>
+    </div>
+    <hr class="header-line" />
+
+    <app-eqc-card-dashboard [ProductName]="'AQ'"></app-eqc-card-dashboard>
+  </div>
+</div>
+
+<div
+  class="data-container Blank"
+  class="{{ background }}"
+  *ngIf="card === 'Portfolio Allocation BI' && true"
+>
+  <div class="header" style="max-height: 275px">
+    <div class="header-text">
+      {{ "Portfolio Allocation" | translate }}
+      <span class="cancel-icon"></span>
+    </div>
+    <hr class="header-line" />
+    <div style="pointer-events: none;">
+      <iframe
+      title="1"
+      width="365"
+      height="373.5"
+      src="https://app.powerbi.com/view?r=eyJrIjoiMWU1YzZjMTUtMWRiZS00YWE3LWJmN2YtODZiODljYjAxMzY5IiwidCI6Ijk0MTRkMGE0LTQzNGUtNGQyZi04ZjM4LTcxNmYzY2ZkNzllNSIsImMiOjEwfQ%3D%3D&pageName=ReportSection18e953a9ba54433cae11"
+      frameborder="0"
+      allowFullScreen="true"
+    ></iframe>
+    </div>
+    
+  </div>
+</div>
+
+<div
+  class="data-container Blank"
+  class="{{ background }}"
+  *ngIf="card === 'Total PnL BI' && true"
+>
+  <div class="header" style="max-height: 275px">
+    <div class="header-text">
+      {{ "Total PnL" | translate }}
+      <span class="cancel-icon"></span>
+    </div>
+    <hr class="header-line" />
+    <div style="pointer-events: none;">
+      <iframe
+      title="3"
+      width="365"
+      height="373.5"
+      src="https://app.powerbi.com/view?r=eyJrIjoiNDVhYTYzYzMtMWQyOC00MmY2LTkxZDctZjlmN2VkMzg3NjRjIiwidCI6Ijk0MTRkMGE0LTQzNGUtNGQyZi04ZjM4LTcxNmYzY2ZkNzllNSIsImMiOjEwfQ%3D%3D&pageName=ReportSection4009f724a2bbd73853bd"
+      frameborder="0"
+      allowFullScreen="true"
+    ></iframe>
+    </div>
+    
+  </div>
+</div>
+<!-- Coupon -->
+<div
+  class="data-container Blank"
+  class="{{ background }}"
+  *ngIf="card === 'Coupon BI' && true"
+>
+  <div class="header" style="max-height: 275px">
+    <div class="header-text">
+      {{ "Coupon" | translate }}
+      <span class="cancel-icon"></span>
+    </div>
+    <hr class="header-line" />
+    <div style="pointer-events: none;">
+      <iframe
+      title="3"
+      width="365"
+      height="373.5"
+      src="https://app.powerbi.com/reportEmbed?reportId=9ec4c09e-ffb7-4b98-9eee-3737b0e674d5&autoAuth=true&ctid=9414d0a4-434e-4d2f-8f38-716f3cfd79e5"
+      frameborder="0"
+      allowFullScreen="true"
+    ></iframe>
+    </div>
+    
+  </div>
+</div>
+<!-- Issuer Summary2 -->
+<div
+  class="data-container Blank"
+  class="{{ background }}"
+  *ngIf="card === 'Issuer Summary BI' && true"
+>
+  <div class="header" style="max-height: 275px">
+    <div class="header-text">
+      {{ "Issuer Summary" | translate }}
+      <span class="cancel-icon"></span>
+    </div>
+    <hr class="header-line" />
+    <div style="pointer-events: none;">
+      <iframe
+      title="3"
+      width="365"
+      height="373.5"
+      src="https://app.powerbi.com/reportEmbed?reportId=0060894b-a493-4f75-b223-212375760bd9&autoAuth=true&ctid=9414d0a4-434e-4d2f-8f38-716f3cfd79e5"
+      frameborder="0"
+      allowFullScreen="true"
+    ></iframe>
+    </div>
+    
+  </div>
+</div>
+<!-- Underlying Summary -->
+<div
+  class="data-container Blank"
+  class="{{ background }}"
+  *ngIf="card === 'Underlying Summary BI' && true"
+>
+  <div class="header" style="max-height: 275px">
+    <div class="header-text">
+      {{ "Underlying Summary" | translate }}
+      <span class="cancel-icon"></span>
+    </div>
+    <hr class="header-line" />
+    <div style="pointer-events: none;">
+      <iframe
+      title="3"
+      width="365"
+      height="373.5"
+      src="https://app.powerbi.com/reportEmbed?reportId=100e28f7-2943-44fe-b8c2-7b83461f8ec1&autoAuth=true&ctid=9414d0a4-434e-4d2f-8f38-716f3cfd79e5"
+      frameborder="0"
+      allowFullScreen="true"
+    ></iframe>
+    </div>
+    
+  </div>
+</div>
+<!-- Sector Summary -->
+<div
+  class="data-container Blank"
+  class="{{ background }}"
+  *ngIf="card === 'Sector Summary BI' && true"
+>
+  <div class="header" style="max-height: 275px">
+    <div class="header-text">
+      {{ "Sector Summary" | translate }}
+      <span class="cancel-icon"></span>
+    </div>
+    <hr class="header-line" />
+    <div style="pointer-events: none;">
+      <iframe
+      title="3"
+      width="365"
+      height="373.5"
+      src="https://app.powerbi.com/reportEmbed?reportId=23894fb3-aeab-41a4-ac54-c9db99d1bcd2&autoAuth=true&ctid=9414d0a4-434e-4d2f-8f38-716f3cfd79e5"
+      frameborder="0"
+      allowFullScreen="true"
+    ></iframe>
+    </div>
+    
+  </div>
+</div>
+<!-- Autocall -->
+<div
+  class="data-container Blank"
+  class="{{ background }}"
+  *ngIf="card === 'Autocall BI' && true"
+>
+  <div class="header" style="max-height: 275px">
+    <div class="header-text">
+      {{ "Autocall" | translate }}
+      <span class="cancel-icon"></span>
+    </div>
+    <hr class="header-line" />
+    <div style="pointer-events: none;">
+      <iframe
+      title="3"
+      width="365"
+      height="373.5"
+      src="https://app.powerbi.com/reportEmbed?reportId=a69fa3ed-0755-4d30-a7ed-372e5a1326da&autoAuth=true&ctid=9414d0a4-434e-4d2f-8f38-716f3cfd79e5"
+      frameborder="0"
+      allowFullScreen="true"
+    ></iframe>
+    </div>
+    
+  </div>
+</div>
+<!-- KI Barrier -->
+<div
+  class="data-container Blank"
+  class="{{ background }}"
+  *ngIf="card === 'KI Barrier BI' && true"
+>
+  <div class="header" style="max-height: 275px">
+    <div class="header-text">
+      {{ "KI Barrier" | translate }}
+      <span class="cancel-icon"></span>
+    </div>
+    <hr class="header-line" />
+    <div style="pointer-events: none;">
+      <iframe
+      title="3"
+      width="365"
+      height="373.5"
+      src="https://app.powerbi.com/reportEmbed?reportId=4a050726-612a-4681-9b78-15a297d29849&autoAuth=true&ctid=9414d0a4-434e-4d2f-8f38-716f3cfd79e5"
+      frameborder="0"
+      allowFullScreen="true"
+    ></iframe>
+    </div>
+    
+  </div>
+</div>
+
+<!-- <div class="data-container " class={{background}} *ngIf="card === 'FX Rates' && tabsArray[13].tabshow">
+    <div class="header">
+        <div class="header-text">
+            FX Rates
+            <span class="cancel-icon" (click)="tabsArray[13].tabshow = !tabsArray[13].tabshow"></span>
+        </div>
+        <hr class="header-line">
+        <div class="FxGrid" *ngIf="ccyPair.length > 0">
+            <div class="FX" *ngFor="let item of ccyPair; let i = index">
+                <div class="FXHeader"> {{item}}</div>
+                <div class="FXValue"> {{ratesBuy[i] | number:'1.2-2'}}
+                    <span style="font-size: 17px;"> {{Pips[i]}} / {{ratesSell[i]}}</span>
+                </div>
+                <div class="FXValue">{{ratesBuy[i]}} / {{ratesSell[i]}}</div>
+            </div>
+        </div>
+
+
+        <div class="right mail" [routerLink]="['/dashboardFx/0']"><u>More Details </u>
+        </div>
+        <div *ngIf="ccyPair.length === 0" class="port-allco-empty-state">
+            <span>
+                No data available for FX Rates
+            </span>
+        </div>
+    </div>
+</div> -->
+
+<div *ngIf="showDashboard">
+  <div
+    class="data-container"
+    class="{{ background }}"
+    *ngIf="this.scenarioDataValue[0]['ControlType'] === 'Grid' && !closeGrid"
+  >
+    <div class="header">
+      <div class="header-text">
+        {{ this.scenarioDataValue[0]["ScenarioHeader"] }}
+        <span class="cancel-icon" (click)="closeGrid = true"></span>
+      </div>
+      <hr class="header-line" />
+      <div *ngIf="spData.length > 0">
+        <div class="grid tablehead" [style.grid-template-columns]="setGrid()">
+          <div *ngFor="let item of this.spData[0] | keyvalue">
+            {{
+              item.key
+                .replaceAll("_", " ")
+                .replaceAll("x0020", " ")
+                .replaceAll(
+                  "x0028",
+                  "
+            "
+                )
+                .replaceAll("x0029", " ")
+                .replaceAll("x0024", " ")
+            }}
+          </div>
+          <hr class="header-line" />
+          <div *ngIf="spData.length > 0">
+            <div
+              class="grid tableHeader"
+              [style.grid-template-columns]="setGrid()"
+            >
+              <div *ngFor="let item of this.spData[0] | keyvalue">
+                {{
+                  item.key
+                    .replaceAll("_", " ")
+                    .replaceAll("x0020", " ")
+                    .replaceAll(
+                      "x0028",
+                      "
+                "
+                    )
+                    .replaceAll("x0029", " ")
+                    .replaceAll("x0024", " ")
+                }}
+              </div>
+            </div>
+
+            <div
+              [ngStyle]="{ height: height - 100 + 'px' }"
+              style="overflow: scroll"
+            >
+              <div
+                *ngFor="let data of this.spData"
+                class="grid"
+                [style.grid-template-columns]="setGrid()"
+              >
+                <div *ngFor="let item of data | keyvalue; let i = index">
+                  <div [ngStyle]="{ 'text-align': alignment[i] }">
+                    {{ item.value }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="spData.length === 0">No Data Found</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div
+    class="data-container"
+    class="{{ background }}"
+    *ngIf="this.scenarioDataValue[0]['ControlType'] === 'Pie' && !closePie"
+  >
+    <div class="header">
+      <div class="header-text">
+        {{ this.scenarioDataValue[0]["ScenarioHeader"] }}
+        <span class="cancel-icon" (click)="closePie = true"></span>
+      </div>
+      <hr class="header-line" />
+      <div *ngIf="graphdata.length > 0">
+        <google-chart
+          #chart
+          type="PieChart"
+          [data]="graphdata"
+          [options]="Pieoptions"
+        >
+        </google-chart>
+      </div>
+      <div *ngIf="graphdata.length === 0">No Data Found</div>
+    </div>
+  </div>
+
+  <div
+    class="data-container"
+    class="{{ background }}"
+    *ngIf="
+      this.scenarioDataValue[0]['ControlType'] === 'Column' && !closeColumn
+    "
+  >
+    <div class="header">
+      <div class="header-text">
+        {{ this.scenarioDataValue[0]["ScenarioHeader"] }}
+        <span class="cancel-icon" (click)="closeColumn = true"></span>
+      </div>
+      <hr class="header-line" />
+      <div *ngIf="graphdata.length > 0">
+        <google-chart
+          #chart
+          type="ColumnChart"
+          [data]="graphdata"
+          [options]="columnOptions"
+        >
+        </google-chart>
+      </div>
+      <div *ngIf="graphdata.length === 0">No Data Found</div>
+    </div>
+    <hr class="header-line" />
+    <div *ngIf="graphdata.length > 0">
+      <google-chart
+        #chart
+        type="ColumnChart"
+        [data]="graphdata"
+        [options]="columnOptions"
+        [columns]="columnNames"
+      >
+      </google-chart>
+    </div>
+    <div *ngIf="graphdata.length === 0">No Data Found</div>
+  </div>
+
+  <div
+    class="data-container"
+    class="{{ background }}"
+    *ngIf="this.scenarioDataValue[0]['ControlType'] === 'Bar' && !closeBar"
+  >
+    <div class="header">
+      <div class="header-text">
+        {{ this.scenarioDataValue[0]["ScenarioHeader"] }}
+        <span class="cancel-icon" (click)="closeBar = true"></span>
+      </div>
+      <hr class="header-line" />
+      <div *ngIf="graphdata.length > 0">
+        <google-chart
+          #chart
+          type="BarChart"
+          [data]="graphdata"
+          [options]="columnOptions"
+        >
+        </google-chart>
+      </div>
+      <div *ngIf="graphdata.length === 0">No Data Found</div>
+    </div>
+  </div>
+
+  <div
+    class="grid"
+    class="{{ background }}"
+    *ngIf="
+      this.scenarioDataValue[0]['ControlType'] === 'Poster' && !closePoster
+    "
+    style="margin-top: 10px"
+    [style.grid-template-columns]="setGridPoster()"
+  >
+    <div class="header">
+      <div class="header-text">
+        {{ this.scenarioDataValue[0]["ScenarioHeader"] }}
+        <span class="cancel-icon" (click)="closePoster = true"></span>
+      </div>
+      <hr class="header-line" />
+      <div *ngIf="spData.length > 0">
+        <div class="box" *ngFor="let item of this.spData">
+          <div class="tableHeader" style="padding-bottom: 10px">
+            {{ item.PosterName[0] }}
+          </div>
+          <div>
+            <div class="posterTenor">{{ item.PosterTenor[0] }}</div>
+            <div class="amount">
+              <div>{{ item.PosterValue[0] }}</div>
+              &nbsp;
+              <div style="font-size: 14px">{{ item.PosterSuffix[0] }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="spData.length === 0">No Data Found</div>
+    </div>
+  </div>
+</div>

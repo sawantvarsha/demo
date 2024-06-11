@@ -1,0 +1,8 @@
+<div class="margin-ratio-container">
+    <span class="margin-ratio">
+        <span class="margin-ratio-label">Margin Ratio:</span> {{collateralApi.FormatNumber(marginRatioValue) + '%'}}
+    </span>
+    <google-chart *ngIf="chart.data.length" #marginRatioChart [title]="chart.title" [type]="chart.type"
+        [data]="chart.data" [options]="chart.options" (ready)="customizeChart()">
+    </google-chart>
+</div>

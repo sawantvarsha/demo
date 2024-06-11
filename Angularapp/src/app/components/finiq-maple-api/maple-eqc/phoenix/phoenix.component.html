@@ -1,0 +1,180 @@
+
+<div class="insideCard-gridview">
+    <div class="cls-td">
+        <label>Product</label>
+    </div>
+    <div class="">
+        <label class="productName">
+            Phoenix
+        </label>
+    </div>
+    <div>
+        <div class="">
+            <select *ngIf = "KOKIDropdown">
+                <option value="No KI / KO Period End" *ngIf = "solveForPhnx !== 'KNOCKIN_BARRIER' ">No KI / KO Period End</option>
+                <option value="KI Day Close / KO Period End">KI Day Close / KO Period End</option>
+                <option value="KI European/ KO Period End">KI European/ KO Period End</option>
+              
+            </select>
+        </div>
+    </div>
+
+    <div class="cls-td ">
+        <label>Underlying</label>
+    </div>
+    <div class="underlying" (clickOutside)="onClickedOutside($event)">
+        <div class="InputClass left InputWidth100" (click)=" showSharePopup = !showSharePopup" >
+            <span class="shareListName" *ngFor = "let share of BasketSplit"> {{ share }} <span (click) = "removeShare(share)">&nbsp; X</span></span> 
+            <!-- <span  class="" (click) = "sharelistpopup = !sharelistpopup">  <input type = "text" class="shareInputFCN" placeholder="Select share" (keypress)="searchShare($event)" (keydown.backspace)="searchShare($event)" /></span>  -->
+            
+        </div>
+        <div class="share-popup" *ngIf = "showSharePopup">
+            <div class = "pair" *ngFor = "let basket of basketArray" (click)="fnShowSharePopup(basket.Basket)">
+                {{basket.Basket}}
+            </div>
+            <div class="pair" (click) = "showSearchShare = !showSearchShare " >
+                More>>>
+            </div>
+            <!-- <div>
+                <input type = "text" class="searchShare" placeholder="Select share" (keypress)="searchShare($event)" (keydown.backspace)="searchShare($event)" />
+            </div> -->
+            <div class="Searchshare-popup sharelistpopup" *ngIf = "sharelistpopup">
+                <div  class = "sharelist" *ngFor = "let sharelist of FilterSharesPhnx" (click) = "selectShareFromDropdown(sharelist)">
+                    {{sharelist.LongName}}
+                </div>
+            </div>
+        </div>
+    </div>
+  
+
+    <div class="cls-td">
+        <label>Contract Amt. / Ccy / Solve for</label>
+    </div>
+    <div class="" (clickOutside)="onClickedOutsideAmt($event)">
+        <input type = "text" [(ngModel)]="notional" class="InputClass" (click)=" showAmountPopup = !showAmountPopup " (change) = "getNotional($event)" />
+        <div class="share-popup" *ngIf = "showAmountPopup">
+            <div class = "pair-amt" *ngFor = "let notional of AmountArray" (click)="fnShowAmountPopup(notional)">
+              <div>  {{notional.Amount}} </div>
+            </div>
+            <div class="pair-amt" (click) = "showSearchAmount = !showSearchAmount " >
+                More>>>
+            </div>
+            <div class="Searchshare-popup" *ngIf = "showSearchAmount" style="left:2px !important">
+                <input type = "text" class="searchShare" placeholder="Enter Notional" (change)="getNotional($event)"/>
+            </div>
+           
+        </div>
+    </div>
+    <div class="gridView-2">
+        <div>
+            <select>
+                <option *ngFor = "let c of currencyList[0]" [value]="c.Ccy">{{c.Ccy}}</option>
+            </select>
+        </div>
+        <div>
+            <select [(ngModel)] = "solveForPhnx">
+                <option value="CONVERSION_STRIKE">Strike (%)</option>
+                <option value="COUPON">Coupon (%)</option>
+                <option value="PRICE">IB Price (%)</option>
+                <option value="KNOCKIN_BARRIER">Knock In Barrier</option>
+                <option value="AUTOCALL_BARRIER">AutoCall Barrier</option>
+            </select>
+        </div>
+       
+    </div>
+
+    <div class="cls-td">
+        <label>Tenor / Strike / IB Price</label>
+    </div>
+    <div>
+        <select class="select-tenor" [(ngModel)]="selectedTenorPhnx" (change)="changeTenor()">
+            <option *ngFor = "let tenor of tenor" [value]="tenor.Tenor" >{{tenor.Tenor}}</option>
+        </select>
+        {{MaturityDate}}
+    </div>
+    
+    <div class="gridView-2"> 
+        <div>
+            <input type = "text" [(ngModel)] = "StrikePhnx" class="InputClass InputWidth" *ngIf = "solveForPhnx !== 'CONVERSION_STRIKE' " />
+            <input type = "text"  class="InputClass InputWidth" *ngIf = "solveForPhnx === 'CONVERSION_STRIKE' "  disabled/>
+            <span class="PerPaddingLeft">%</span>
+        </div>
+        <div>
+            <input type = "text" [(ngModel)] = "IBPricePhnx" class="InputClass InputWidth" *ngIf = "solveForPhnx !== 'PRICE' "/>
+            <input type = "text"  class="InputClass InputWidth" *ngIf = "solveForPhnx === 'PRICE' "  disabled/>
+            <span class="PerPaddingLeft">%</span>
+        </div>
+    </div>
+    <div class="cls-td">
+        <label>Frequency / Coupon / Coupon barr.</label>
+    </div>
+    <div>
+        <select>
+            <option value="MONTHLY" *ngIf="(this.tenor_Phnx >= 1)"  selected class="option-FCN">Monthly</option>
+            <option value="BIMONTHLY" *ngIf="(this.tenor_Phnx >= 2 && this.tenor_Phnx % 2 === 0)" class="option-FCN">Two-Monthly</option>
+            <option value="QUARTERLY"  *ngIf="(this.tenor_Phnx >= 1 && this.tenor_Phnx % 3 === 0)" class="option-FCN">Quarterly</option>
+            <option value="SEMIANNUALLY" *ngIf="(this.tenor_Phnx >= 1 && this.tenor_Phnx % 6 === 0)" class="option-FCN">Semiannually</option>
+            <option value="ANNUALLY" *ngIf="(this.tenor_Phnx >= 12 && this.tenor_Phnx % 12 === 0)" class="option-FCN">Annually</option>
+        </select>
+      
+    </div>
+    <div  class = "gridView-2">
+        <div>
+            <input type = "text" [(ngModel)]="CouponPhnx" class="InputClass InputWidth" *ngIf = "solveForPhnx !== 'COUPON' " />
+            <input type = "text"  class="InputClass InputWidth" *ngIf = "solveForPhnx === 'COUPON' "  disabled/>
+            <span class="PerPaddingLeft">%</span>
+        </div>
+        <div>
+            <input type = "text" [(ngModel)]="CouponBarrPhnx" class="InputClass InputWidth"/>
+            <span class="PerPaddingLeft">%</span>
+        </div>
+    </div>
+    <div class="cls-td">
+        <label>KO / KI / KO Step</label>
+    </div>
+    <div>
+        <input type = "text" [(ngModel)] = "KOPercPhnx" class="InputClass" *ngIf = "solveForPhnx !== 'AUTOCALL_BARRIER' "/>
+        <input type = "text"  class="InputClass InputWidth" *ngIf = "solveForPhnx === 'AUTOCALL_BARRIER' "  disabled/>
+        <span class="PerPaddingLeft">%</span>
+    </div>
+    <div  class="gridView-2">
+        <div>
+            <input type = "text" [(ngModel)] = "KIPercPhnx" class="InputClass InputWidth" *ngIf = "solveForPhnx !== 'KNOCKIN_BARRIER' " />
+            <input type = "text"  class="InputClass InputWidth" *ngIf = "solveForPhnx === 'KNOCKIN_BARRIER'  "  disabled/>
+            <span class="PerPaddingLeft">%</span>
+        </div>
+      <div>
+        <input type = "text" [(ngModel)] = "KOStepPhnx" class="InputClass InputWidth"/>
+ 
+        <span class="PerPaddingLeft">%</span>
+      </div>
+     
+    </div>
+   
+    
+</div>
+
+
+    <div class="pricing-div">
+        <div>
+    
+        </div>
+        <div>
+            <button class="btn-price">Price</button>
+        </div>
+        <div>
+            <button class="btn-price">Email</button>
+        </div>
+        <div>
+            <button class="btn-price">Order</button>
+        </div>
+    </div>   
+    
+    <div class="pricing-card">
+        <div>
+    
+        </div>
+    </div>
+
+
+

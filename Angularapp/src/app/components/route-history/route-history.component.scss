@@ -1,0 +1,44 @@
+:host {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+}
+.route-history-container-expanded {
+    padding: 0em 75px !important;
+}
+
+.route-history-container {
+    padding: 0em 40px;
+    .breadcrumb {
+        background: none;
+        font-size: 15px;
+        margin: 0;
+        a,
+        span {
+            color: var(--headers);
+        }
+        a:hover,
+        span:hover {
+            color: var(--heading-label);
+            text-decoration: none;
+            cursor: pointer;
+        }
+        li {
+            list-style: none;
+            float: left;
+            margin: 5px;
+        }
+        li:last-child {
+            margin-right: 20px;
+        }
+        li::after {
+            content: ">";
+            color: darkgrey;
+        }
+        li:last-child::after {
+            content: "";
+        }
+    }
+}

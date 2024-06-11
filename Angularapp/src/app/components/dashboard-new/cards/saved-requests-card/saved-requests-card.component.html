@@ -1,0 +1,35 @@
+<!-- <label class="card-header">Saved Requests</label> -->
+
+<div class="save-request-list">
+    <ul>
+        <li *ngFor="let data of saveReq ; let i = index">
+            <div class="item-prev">
+                <div class="First-row">
+                    <label class=""><span class="">{{Requestid | translate}}</span>&nbsp;<span style="color: var(--text) !important;">{{data.P_ID}}</span></label>
+                    <!-- <label class="Save-requests-header">● Pending Response</label> -->
+                    <ng-container  *ngFor="let saveProduct of CommonDataProducts">
+                        <label class="" *ngIf="saveProduct.Data_Value == data.prodtype"><span>{{ saveProduct.misc1}}</span></label>
+                    </ng-container >
+                </div>
+                <div class="details-container">
+                    <div class="details"><label>{{Solvefor | translate}}</label><span>{{data.SolveFor}}</span> </div>
+                    <div class="details"><label>{{format | translate}}</label><span>{{data.FormatDetails}}</span> </div>
+                    <div class="details"><label>{{size | translate}}</label><span>{{data.Size}}</span> </div>
+                </div>
+                <div>
+                    <label *ngIf="data.SubTemplate !== 'CreditTrancheInd' && data.SubTemplate !== 'DualCurrencyNote' && data.SubTemplate !== 'CreditTranche'" class="underlyings-card">{{(data.Share.split('#')).slice(0, data.Share.split('#').length - 2)}}</label>
+                    <label *ngIf="data.SubTemplate === 'CreditTrancheInd' || data.SubTemplate === 'CreditTranche'" class="underlyings-card">{{data.IndexCode}}</label>
+                    <label *ngIf="data.SubTemplate === 'DualCurrencyNote'" class="underlyings-card">{{data.CurrencyPair}}</label>
+                    <label style="float:right; " (click)="fetchReqIDDetails(data.P_ID, false)"><span class="Hlink">Clone</span></label>
+                    <label style="float:right;margin-right: 15px;" class="Hlink" (click)="fetchReqIDDetails(data.P_ID, true)"><span class="Hlink">View</span></label>
+
+                </div>
+
+            </div>
+
+            <hr class="line">
+        </li>
+
+    </ul>
+    <div *ngIf = "isValid(saveReq)">No Data Found</div>
+</div>

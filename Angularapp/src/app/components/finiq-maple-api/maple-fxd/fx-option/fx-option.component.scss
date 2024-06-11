@@ -1,0 +1,224 @@
+
+.insideCard-gridview{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    
+    margin:10px;
+    color : peachpuff !important;
+    font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande", "Lucida Sans", verdana, sans-serif, verdana !important;
+    font-size: 13px;
+    gap:10px;
+}
+
+.productName{
+    font-size: 26px;
+}
+
+.cls-td{
+    vertical-align: middle !important;
+    padding: 10px 6px;
+}
+select{
+    background-color: #232323 !important;
+    padding: 3px 5px 5px 5px;
+    border-radius: 5px;
+    color : peachpuff !important;
+    border:none !important;
+    -webkit-appearance: auto !important;
+    background-image: none !important;
+    height: 30px !important;
+}
+
+.select-tenor{
+    background-color: #232323 !important;
+    padding: 3px 5px 5px 5px;
+    border-radius: 5px;
+    color : peachpuff !important;
+    border:none !important;
+    width: 65px;
+    height: 30px !important;
+}
+.InputClass{
+ 
+    border-radius: 5px;
+    padding: 3px 5px 5px 5px;
+    text-align: right;
+    outline: none !important;
+    color : peachpuff !important;
+    background-color: #232323 !important;
+    height: 30px !important;
+
+}
+.btn-price{
+   
+    background-color: #0e0e0e !important;
+    color: peachpuff !important;
+    width: 100px !important;
+    margin-right: 0px !important;
+   
+    box-shadow: 1px 1px 1px #333333;
+    border: solid 0px #2c2c2c;
+    cursor: pointer;
+    padding-top: 6px;
+    padding-bottom: 8px;
+    border-radius: 5px;
+    
+}
+
+.pricing-div{
+    display: grid;
+    grid-template-columns: 1.8fr 1fr 1fr 1fr;
+    gap:10px;
+    margin: 0px 10px;
+}
+.pricing-card{
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-clip: border-box;
+    border: 1px solid rgba(0,0,0,.125);
+    border-radius: .25rem;
+    height: 80px;
+    margin-top: 10px;
+    background-color: #0000008f;
+    margin: 10px;
+}
+
+.underlying{
+    grid-column: 2/ span 2;
+}
+
+.pricingTile{
+    // margin-top: 85px;
+}
+
+.row-merge{
+    grid-row: 7/ span 1;
+}
+
+// .toggle-switch {
+//     height: 30px;
+//     border-radius: 5px;
+//     display: inline-block;
+//     position: relative;
+//     input {
+//       display: none;
+//       &:checked + .slider {
+//         background-color: #232323;
+//       }
+//       &:checked + .slider::before {
+//         -webkit-transform: translateX(0px);
+//         -ms-transform: translateX(0px);
+//         transform: translateX(0px);
+//       }
+//     }
+//     .slider {
+//       position: absolute;
+//       left: 0;
+//       top: 0;
+//       right: 0;
+//       bottom: 0;
+//       background-color: #232323;
+//       transition: 0.1s;
+//       border-radius: 5px;
+//       &::before {
+//         position: absolute;
+//         content: '';
+//         height: 30px;
+//         width: 65px;
+//         border-radius: 5px;
+//         background-color: #0E0E0E;
+//         left: 0;
+//         bottom: 0;
+//         transition: 0.1s;
+//       }
+//       &::after {
+//         position: absolute;
+//         content: '';
+//         height: 30px;
+//         width: 65px;
+//         border-radius: 5px;
+//         background-color: #0E0E0E;
+//         left: 37px;
+//         bottom: 0;
+//         transition: 0.1s;
+//       }
+//     }
+//   }
+
+.switch {
+    position: relative;
+    display: inline-block;
+    height: 30px;
+  }
+  
+  .switch input {display:none;}
+  
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    border-radius: 5px;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #232323;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+  
+  .slider:before {
+    position: absolute;
+    content: "";
+    border-radius: 5px;
+    height: 30px;
+    // width: calc(136.11px - 67px);
+    width: 50%;
+    // left: 4px;
+    bottom: 0px;
+    background-color: #0E0E0E;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+  
+  input:checked + .slider {
+    background-color: #232323;
+  }
+  
+  input:focus + .slider {
+    box-shadow: 0 0 1px #2196F3;
+  }
+  
+  input:checked + .slider:before {
+    -webkit-transform: translateX(55px);
+    -ms-transform: translateX(55px);
+    transform: translateX(100%);
+  }
+
+  .on
+  {
+    // display: none;
+  }
+  
+  .on, .off
+  {
+    color: var(--peachpuff !important);
+    position: absolute;
+    transform: translate(-50%,-50%);
+    top: 50%;
+  }
+  
+  input:checked+ .slider .on
+  {}
+  
+  input:checked + .slider .off
+  {display: block;}
+  
+.buy{
+    // left: 30%;
+    left: 25%;
+}
+.sell{
+    left: 75%;
+}

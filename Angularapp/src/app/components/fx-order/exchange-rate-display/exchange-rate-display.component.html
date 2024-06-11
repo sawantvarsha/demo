@@ -1,0 +1,115 @@
+<div class="price-popup-overlay " *ngIf="showPricingPopup">
+    <div class="price-popup">
+        <div class="top-row">
+            <div class="cancel-icon" (click)="showHidePopup()"></div>
+        </div>
+        <div class="LP-content" *ngIf="showLPsfor === 'Buy'">
+            <div class="singleLP" *ngFor="let item of LPDataBuy">
+                <div>{{item.LP}}</div>
+                <div>{{item.price}}</div>
+                <button class="button" (click)="selectTrade(item.price)">Trade</button>
+            </div>
+        </div>
+        <div class="LP-content" *ngIf="showLPsfor === 'Sell'">
+            <div class="singleLP" *ngFor="let item of LPDataSell">
+                <div>{{item.LP}}</div>
+                <div>{{item.price}}</div>
+                <button class="button" (click)="selectTrade(item.price)" *ngIf="userType !== 'CLIENT'">Trade</button>
+                <div></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid contain form" style="margin: 0;">
+    <!--height: 840px;-->
+    <div class="container">
+        <div class="row statusbar-grid" [ngStyle]="{'grid-template-columns': userType === 'RM'? '1140px':'98% 2%'}">
+            <div class="statusbar">
+                <div class="statusbar-inner">
+                    <img src="{{assetURL}}/unknown.png" alt="" style="height: 2em;width: 1.6em;margin-left: 10px;" class="divleft">
+                    <div class="blacklabel divleft" style="margin-top: 7px;margin-left: 1em;font-size: 1em;font-weight: 400;"> You have {{limitOrderCount}} active orders. </div>
+                </div>
+
+            </div>
+            <div *ngIf="userType !== 'RM'" class="resclass" style="margin: auto 0;display: flex;">
+                <!-- <button (click)="RefreshAll()" class="btn_refresh"> Refresh </button> -->
+                <!-- <img src="{{assetURL}}/refresh.png" alt="" style="width: 1.5em;" (click)="RefreshAll()"> -->
+                <app-svg-icons (click)="RefreshAll()" [icon]="'refresh'" [width]="'26'" [height]="'26'"></app-svg-icons>
+            </div>
+        </div>
+        <div class="row" style="margin-top: 1em;" *ngIf="userType === 'RM'">
+            <label for="" style="margin: auto 20px auto 0;"> Customer </label>
+            <app-customer-search style="width: 40%;" (selectedCustomerValue)="getSelectedCustomer($event)">
+            </app-customer-search>
+            <div class="resclass" style="text-align: right;margin: auto 0;margin-left: 20px;display: flex;">
+                <!-- <button (click)="RefreshAll()" class="btn_refresh"> Refresh </button> -->
+                <!-- <img src="{{assetURL}}/refresh.png" alt="" style="width: 1.5em;" (click)="RefreshAll()"> -->
+                <app-svg-icons (click)="RefreshAll()" [icon]="'refresh'" [width]="'26'" [height]="'26'"></app-svg-icons>
+            </div>
+            <div>
+                <label>{{error}}</label>
+            </div>
+        </div>
+        <div class="row pairs-grid" style="margin-top: 20px;">
+            <app-single-card class="col-lg-4 col-md-6 col-sm-12" style="padding: 0em; position: inherit;" *ngFor="let p of MultiPair;let i=index" [Arrayvalue]="p" [updateIndex]="changeIndexAfterRemoval" (removeCardChild)="removeCardParent($event)" (removeCcyChild)="removeCcyParent($event)" (ForwardTrade)="ForwardTradeParent()"
+                [Refresh]="RefreshAllCurrencyRates">
+            </app-single-card>
+
+            <div class="col-lg-4 col-md-6 col-sm-12 cardtop">
+                
+                <div class="plusdiv" *ngIf="!showCurrencySelection">
+                    <img src="{{assetURL}}/plus.png" alt="" style="height: 4em; cursor: pointer;" (click)="filterCCY();  this.showCurrencySelection = true; ">
+                </div>
+                <div class="plusdiv" *ngIf="showCurrencySelection" style="padding-top: 3.5em;padding-left: 0.8em;height: 15.2em;">
+                    <span class="msg">{{msg}}</span>
+                    <div class="ccybox" *ngFor="let ccy of ccySelectionArray">
+                        <span (click)="addNewCard(ccy.ccy, ccy.visible)" [ngStyle]="{'color':(ccy.visible === true) ? 'var(--gray)' : 'var(--disabled-text)' }"  > {{ccy.ccy}} </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+    <div *ngIf="forwardPopup">
+
+        <div id="lightbox_area" class="col-12">
+            <span class="row header">Forward Trade</span>
+            <div style="color: white;margin-top: -2.1em;float: right;cursor: pointer;" (click)="HideForwardPopup()">X
+            </div>
+            <div class="line"></div>
+            <div class="row" style="padding-top: 3%;">
+                <div class="col-12" style="text-align: center;">
+                    <span>Please choose settlement type</span>
+                </div>
+            </div>
+            <!-- <div class="row" style="margin:5%;padding-bottom: 2%;">
+                <button class="col-3 select" style="margin-left: 20%;background-color: white;"
+                    (click)="approveCancel=true;approveRejectCancel();">Yes</button>
+                <div class="col-1"></div>
+                <button class="col-3 select" style="background-color: white;"
+                    (click)="approveCancel=false;approveRejectCancel();">No</button>
+            </div> -->
+            <div style="margin-top: 2px;"><label class="radioButton">
+          <input type="radio" [(ngModel)]="checkedCP" value="Cash" name="radio" (click)="setRadiobtn('Cash')">
+          <span class="checkmark"></span>
+        </label></div>
+            <div style="padding: 0;margin-left: 2em;"><span>Cash</span></div>
+            <div style="margin-top: 2px;"><label class="radioButton">
+          <input type="radio" [(ngModel)]="checkedCP" value="PS" name="radio" (click)="setRadiobtn('PS')">
+          <span class="checkmark"></span>
+        </label></div>
+            <div style="padding: 0;margin-left: 2em;"><span>Physical settlement</span></div>
+            <div style="text-align: center;margin-bottom: 1em;margin-top: 1em;">
+                <button class="btn_refresh" routerLink="/transaction" (click)="this.commonfunction.setSettlementType(checkedCP);this.commonfunction.changeScreen('newtransaction');this.apifunction.FXOBestPriceTransaction.next([]);this.apifunction.FXOBestPrice.next([]);this.apifunction.GetSpreadDetails.next([]);">Proceed</button>
+                <button class="btn_refresh" style="margin-left: 1em;" (click)="HideForwardPopup()">Cancel</button>
+            </div>
+        </div>
+    </div>
+    <div class="pagerightpopup" *ngIf="tradingOption!=='on'" style="color: red;">
+        Trading is off so you will not able to price or book order.
+    </div>
+    <div id="overlay"></div>
+</div>

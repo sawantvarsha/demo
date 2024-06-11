@@ -1,0 +1,1263 @@
+<nav class="nav" *ngIf="this.NavigatingFrom !== 'FCLFUCPRA'">
+  <!-- SH CAPITAL -->
+  <div
+    class="nav-header"
+    style="
+      height: 56px;
+      text-align: center;
+      background-color: var(--nav-header);
+    "
+    *ngIf="CompanyLogo === 'SHC'"
+  >
+    <div class="stanhope-logo"></div>
+  </div>
+
+  <!-- GATEWAY MARKETS -->
+  <div
+    class="nav-header"
+    style="height: 56px; text-align: center; display: flex"
+    *ngIf="CompanyLogo === 'GWM'"
+  >
+    <app-svg-icons
+      class="gateway-logo"
+      [icon]="'gateway-markets-horizontal'"
+      [width]="'338'"
+      [height]="'55'"
+    >
+    </app-svg-icons>
+  </div>
+
+  <!-- FINIQ -->
+  <div
+    class="nav-header"
+    style="height: 56px; text-align: center; display: flex"
+    *ngIf="CompanyLogo === 'FinIQ'"
+  >
+    <p
+      style="
+        text-align: center;
+        font-family: 'Times New Roman', Times, serif;
+        font-size: 45px;
+        color: white;
+        margin-left: -25px;
+      "
+    >
+      FinIQ
+    </p>
+  </div>
+
+  <div class="nav-container" style="height: 56px">
+    <div class="flex-spacer"></div>
+    <div class="nav-bar-contents">
+      <div
+        class="home-icon"
+        (click)="routeToWelcome()"
+        *ngIf="this.NavigatingFrom === 'FCL'"
+      ></div>
+      <div
+        class="logout-icon"
+        (click)="logout()"
+        *ngIf="this.NavigatingFrom === 'FPFCL'"
+      ></div>
+    </div>
+  </div>
+</nav>
+
+<app-svg-icons
+  class="backButton"
+  [icon]="'back-button'"
+  [width]="'40'"
+  [height]="'40'"
+  [fill]="'var(--white)'"
+  [routerLink]="['/login/client']"
+  routerLinkActive="router-link-active"
+></app-svg-icons>
+<div
+  class="client-profile-setup-container"
+  [ngClass]="{
+    'full-page': NavigatingFrom === 'FCL' || NavigatingFrom === 'FPFCL'
+  }"
+  [ngStyle]="{
+    left:
+      NavigatingFrom === 'FCL' || NavigatingFrom === 'FPFCL'
+        ? '0em'
+        : IsSidebarCollapsed
+        ? '3em'
+        : '232.5px'
+  }"
+>
+  <!-- Loading contents -->
+  <div class="loadingContainer" *ngIf="IsLoading">
+    <div class="loader-center">
+      <div class="multi-ripple">
+        <div></div>
+        <div></div>
+      </div>
+    </div>
+  </div>
+  <!-- finish loading contents -->
+  <div class="process-screen" *ngIf="!IsLoading">
+    <div *ngIf="IsProfileRejected">
+      <app-customer-setup-resubmit-rejected-client
+        [LoginID]="RejectedProfileUsername"
+        [NoteMasterID]="RejectedProfileNoteMasterID"
+        (BacktoClientSetup)="fnToggleRejectionFlag($event)"
+      >
+      </app-customer-setup-resubmit-rejected-client>
+    </div>
+    <div *ngIf="!IsProfileRejected">
+      <div
+        class="flow-outer"
+        [ngStyle]="{
+          left:
+            NavigatingFrom !== 'FCL' && NavigatingFrom !== 'FPFCL'
+              ? '56%'
+              : '50%'
+        }"
+        *ngIf="showprocess"
+      >
+        <div class="flow-diagram">
+          <div
+            class="page-title"
+            style="
+              grid-column: 1 / span 6;
+              padding-top: 0px;
+              padding-bottom: 0px;
+              color: var(--text);
+              margin-bottom: 60px !important;
+            "
+          >
+            {{ "Client Profile Setup" | translate }}
+          </div>
+        </div>
+        <div class="flow-diagram">
+          <div class="flow-process" *ngFor="let item of PageMenu">
+            <img
+              style="margin: auto"
+              [src]="item.imgSrc"
+              width="60px"
+              height="60px"
+            />
+          </div>
+        </div>
+        <div class="flow-diagram">
+          <div *ngFor="let item of PageMenu">
+            <span
+              class="customer-setup-flow-labels"
+              [innerHTML]="item.pageName"
+            ></span>
+          </div>
+        </div>
+        <div class="flow-diagram circles">
+          <div
+            class="flow-process-circles"
+            *ngFor="let pageMenuOBJ of PageMenu; let pageMenuIndex = index"
+            [ngClass]="{
+              ripple: activePageNumber === (pageMenuIndex + 1).toString()
+            }"
+          >
+            <ng-container
+              *ngIf="
+                pageMenuOBJ.IsFilled;
+                then ShowFilledCircle;
+                else ShowEmptyCircle
+              "
+            >
+            </ng-container>
+            <ng-template #ShowFilledCircle>
+              <div
+                class="numberCircleFilled"
+                style="margin-left: -6px; margin-top: 0px"
+              >
+                {{ pageMenuIndex + 1 }}
+              </div>
+            </ng-template>
+            <ng-template #ShowEmptyCircle>
+              <div>
+                {{ pageMenuIndex + 1 }}
+              </div>
+            </ng-template>
+          </div>
+          <div class="dash"></div>
+          <div class="flow-diagram" style="margin-bottom: 0px">
+            <div
+              style="grid-column: 1 / span 6; text-align: end; margin-top: 30px"
+              class="action-buttons"
+            >
+              <button class="continuebtn" (click)="toggleRegistration()">
+                {{ "Continue" | translate }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="page-container" *ngIf="!showprocess">
+        <div class="page-Menu">
+          <div class="page-title">{{ "Client Profile Setup" | translate }}</div>
+          <div
+            class="page-Menu-Name"
+            *ngFor="let pageMenuOBJ of PageMenu; let pageMenuIndex = index"
+          >
+            <ng-container
+              *ngIf="
+                pageMenuOBJ.IsFilled;
+                then ShowFilledCircle;
+                else ShowEmptyCircle
+              "
+            >
+            </ng-container>
+            <ng-template #ShowFilledCircle>
+              <div class="numberCircleFilled">&#10003;</div>
+            </ng-template>
+            <ng-template #ShowEmptyCircle>
+              <div
+                class="numberCircle"
+                [ngClass]="{
+                  ripple: activePageNumber === (pageMenuIndex + 1).toString()
+                }"
+              >
+                {{ pageMenuIndex + 1 }}
+              </div>
+            </ng-template>
+            <span
+              [ngClass]="{
+                activePage: activePageName === pageMenuOBJ.pageName
+              }"
+              [innerHTML]="pageMenuOBJ.pageName"
+            ></span>
+          </div>
+          <div class="vl"></div>
+        </div>
+        <!-- New Registrtion and KYC is not at 2nd stage -->
+        <div
+          class="page"
+          *ngIf="
+            isNewRegistration &&
+            this.activePageName !== clienRiskAssessmentPageName
+          "
+        >
+          <!-- <form [formGroup]="form"> -->
+          <div class="form-container" *ngIf="!accountCreatedsuccessful">
+            <ng-template ngFor let-headerName [ngForOf]="SectionHeaders">
+              <span
+                class="section-header"
+                *ngIf="headerName.pageNumber === activePageNumber"
+                >{{ headerName.SectionName }}</span
+              >
+              <div
+                class="section-container"
+                *ngIf="headerName.pageNumber === activePageNumber"
+              >
+                <ng-template ngFor let-input [ngForOf]="MockForm">
+                  <ng-container
+                    [ngSwitch]="input.controlType"
+                    *ngIf="
+                      input.sectionName === headerName.SectionName &&
+                      activePageNumber === input.pageNumber
+                    "
+                  >
+                    <ng-template [ngSwitchCase]="'text'">
+                      <div
+                        class="form-group"
+                        [style.display]="input.validators.visibility"
+                      >
+                        <label
+                          class="Formlabel"
+                          [for]="input.controlName"
+                          [ngStyle]="{
+                            'font-weight': input.validators.IsBold
+                              ? 'bold'
+                              : 'normal',
+                            'font-size': input.validators.FontSize
+                          }"
+                          ><span
+                            class="impFields"
+                            *ngIf="input.validators.required"
+                            >*</span
+                          >
+                          {{ input.controlName }}
+                        </label>
+
+                        <input
+                          [(ngModel)]="input.selectedValue"
+                          [type]="input.valueType"
+                          [name]="input.controlName"
+                          [required]="input.validators.required"
+                          [placeholder]="input.placeholder"
+                          (keydown.space)="(input.validators.spacesAllowed)"
+                          (change)="
+                            input.controlName === 'Username'
+                              ? this.checkDuplicateUser()
+                              : null;
+                            this.fnParseStringforControlDisable()
+                          "
+                          [disabled]="input.validators.disabled"
+                        />
+
+                        <app-password-strength-bar
+                          *ngIf="
+                            input.controlName === 'Password' &&
+                            input.selectedValue !== ''
+                          "
+                          [passwordToCheck]="input.selectedValue"
+                          [barLabel]="barLabel"
+                        >
+                        </app-password-strength-bar>
+                        <div>
+                          <small
+                            *ngIf="
+                              input.controlName === 'Confirm Password' &&
+                              input.selectedValue ===
+                                MockForm[2].selectedValue &&
+                              input.selectedValue.length > 0
+                            "
+                            style="margin: 11px; margin-top: 0px"
+                            >{{ "Password Matched" | translate }}</small
+                          >
+                        </div>
+                      </div>
+                    </ng-template>
+
+                    <ng-template [ngSwitchCase]="'number'">
+                      <div
+                        class="form-group"
+                        [style.display]="input.validators.visibility"
+                      >
+                        <label
+                          class="Formlabel"
+                          [for]="input.controlName"
+                          [ngStyle]="{
+                            'font-weight': input.validators.IsBold
+                              ? 'bold'
+                              : 'normal',
+                            'font-size': input.validators.FontSize
+                          }"
+                          ><span
+                            class="impFields"
+                            *ngIf="input.validators.required"
+                            >*</span
+                          >
+                          {{ input.controlName }}</label
+                        >
+                        <input
+                          [(ngModel)]="input.selectedValue"
+                          [type]="input.valueType"
+                          [name]="input.controlName"
+                          [required]="input.validators.required"
+                          [placeholder]="input.placeholder"
+                          [maxlength]="input.validators.maxlength"
+                          [disabled]="input.validators.disabled"
+                        />
+                      </div>
+                    </ng-template>
+
+                    <ng-template [ngSwitchCase]="'numberdecimal'">
+                      <div
+                        class="form-group"
+                        [style.display]="input.validators.visibility"
+                      >
+                        <label
+                          class="Formlabel"
+                          [for]="input.controlName"
+                          [ngStyle]="{
+                            'font-weight': input.validators.IsBold
+                              ? 'bold'
+                              : 'normal',
+                            'font-size': input.validators.FontSize
+                          }"
+                          ><span
+                            class="impFields"
+                            *ngIf="input.validators.required"
+                            >*</span
+                          >
+                          {{ input.controlName }}</label
+                        >
+                        <input
+                          class="inputNotional"
+                          [(ngModel)]="input.selectedValue"
+                          [type]="input.valueType"
+                          [id]="input.controlName"
+                          [name]="input.controlName"
+                          [required]="input.validators.required"
+                          [placeholder]="input.placeholder"
+                          (focus)="
+                            this.cfs.UnformatNumberForCustomer($event);
+                            cfs.SelectFullText($event)
+                          "
+                          (blur)="this.cfs.FormatNumberSFK($event, 2)"
+                          (keypress)="this.cfs.NotionalValidate($event)"
+                          (change)="
+                            input.selectedValue = this.cfs.NotionalChangeSFK(
+                              $event,
+                              2
+                            )
+                          "
+                          [disabled]="input.validators.disabled"
+                          onCopy="return false"
+                          onDrag="return false"
+                          onDrop="return false"
+                          onPaste="return false"
+                        />
+                      </div>
+                    </ng-template>
+
+                    <ng-template [ngSwitchCase]="'Date'">
+                      <div
+                        class="form-group"
+                        [style.display]="input.validators.visibility"
+                      >
+                        <label
+                          class="Formlabel"
+                          [for]="input.controlName"
+                          [disabled]="input.validators.disabled"
+                          [ngStyle]="{
+                            'font-weight': input.validators.IsBold
+                              ? 'bold'
+                              : 'normal',
+                            'font-size': input.validators.FontSize
+                          }"
+                          ><span
+                            class="impFields"
+                            *ngIf="input.validators.required"
+                            >*</span
+                          >
+                          {{ input.controlName }}</label
+                        >
+                        <input
+                          [(ngModel)]="input.selectedValue"
+                          [attr.data-date]="input.selectedValue"
+                          [type]="input.valueType"
+                          [name]="input.controlName"
+                          [required]="input.validators.required"
+                          (change)="
+                            input.selectedValue = fnSetDOB(input.selectedValue)
+                          "
+                          [placeholder]="input.placeholder"
+                          [disabled]="input.validators.disabled"
+                        />
+                      </div>
+                    </ng-template>
+
+                    <ng-template [ngSwitchCase]="'Drag and Drop'">
+                      <div [style.display]="input.validators.visibility">
+                        <ngx-file-drop
+                          id="iddropfilesdiv"
+                          style="border: 3px ​dotted var(--gray) !important"
+                          dropZoneLabel="Drop files here"
+                          (onFileDrop)="fndropped($event)"
+                          (onFileOver)="fnfileOver($event)"
+                          (onFileLeave)="fnfileLeave($event)"
+                        >
+                          <ng-template
+                            id="iddropfilesinnerdiv"
+                            #dropfilesdiv
+                            ngx-file-drop-content-tmp
+                            let-openFileSelector="openFileSelector"
+                          >
+                            <img
+                              *ngIf="files.length === 0"
+                              style="cursor: pointer"
+                              [src]="
+                                isProd
+                                  ? 'assets/file-upload.png'
+                                  : '../../../../../assets/file-upload.png'
+                              "
+                            />
+                            <div class="ngx-file-drop">
+                              <label
+                                class="Formlabel"
+                                *ngIf="files.length === 0"
+                                style="margin-right: 8px"
+                                >Drop your file to upload or</label
+                              >
+                              <label
+                                style="color: var(--active); cursor: pointer"
+                                (click)="openFileSelector()"
+                                >Browse</label
+                              >
+                            </div>
+                            <div
+                              class="uploaded-files"
+                              *ngIf="files.length > 0"
+                            >
+                              <div
+                                class="selected-files-to-upload"
+                                *ngFor="let file of files; let i = index"
+                              >
+                                <label>{{ file.relativePath }}</label>
+                                <div
+                                  class="cancel-icon-div"
+                                  *ngIf="!file.isUploaded"
+                                >
+                                  <app-svg-icons
+                                    (click)="fnRemoveSelectedFile(i)"
+                                    [icon]="'cancel-icon'"
+                                    [width]="'10'"
+                                    [height]="'10'"
+                                  ></app-svg-icons>
+                                </div>
+                                <div
+                                  class="cancel-icon-div"
+                                  *ngIf="file.isUploaded"
+                                >
+                                  <app-svg-icons
+                                    [icon]="'checked-icon'"
+                                    [width]="'20'"
+                                    [height]="'20'"
+                                  ></app-svg-icons>
+                                </div>
+                              </div>
+                            </div>
+                            <div
+                              class="uplaod-btn-section"
+                              *ngIf="files.length > 0"
+                            >
+                              <img
+                                style="cursor: pointer"
+                                (click)="fnSubmitFiles()"
+                                [src]="
+                                  isProd
+                                    ? 'assets/file-upload.png'
+                                    : '../../../../../assets/file-upload.png'
+                                "
+                              />
+                              <label
+                                style="color: var(--active); cursor: pointer"
+                                (click)="fnUploadDoc()"
+                                >Upload</label
+                              >
+                            </div>
+                          </ng-template>
+                        </ngx-file-drop>
+                      </div>
+                    </ng-template>
+
+                    <ng-template [ngSwitchCase]="'select'">
+                      <div
+                        class="form-group"
+                        [style.display]="input.validators.visibility"
+                      >
+                        <label
+                          class="Formlabel"
+                          [for]="input.controlName"
+                          [disabled]="input.validators.disabled"
+                          [ngStyle]="{
+                            'font-weight': input.validators.IsBold
+                              ? 'bold'
+                              : 'normal',
+                            'font-size': input.validators.FontSize
+                          }"
+                          ><span
+                            class="impFields"
+                            *ngIf="input.validators.required"
+                            >*</span
+                          >
+                          {{ input.controlName }}</label
+                        >
+                        <select
+                          [(ngModel)]="input.selectedValue"
+                          [name]="input.controlName"
+                          [id]="input.controlName"
+                          [disabled]="input.validators.disabled"
+                          [attr.disabled]="
+                            input.validators.disabled ? '' : null
+                          "
+                          [ngClass]="{
+                            'select-disabled': input.validators.disabled
+                          }"
+                          (change)="this.fnParseStringforControlDisable()"
+                        >
+                          <option value="" [disabled]="true" selected>
+                            {{ input.placeholder }}
+                          </option>
+                          <option
+                            *ngFor="let option of input.options"
+                            [value]="option.value"
+                            [disabled]="input.validators.disabled"
+                          >
+                            {{ option.optionName }}
+                          </option>
+                        </select>
+                      </div>
+                    </ng-template>
+
+                    <ng-template [ngSwitchCase]="'selectmultiple'">
+                      <div
+                        class="form-group"
+                        [style.display]="input.validators.visibility"
+                      >
+                        <label
+                          class="Formlabel"
+                          [for]="input.controlName"
+                          [ngStyle]="{
+                            'font-weight': input.validators.IsBold
+                              ? 'bold'
+                              : 'normal',
+                            'font-size': input.validators.FontSize
+                          }"
+                          ><span
+                            class="impFields"
+                            *ngIf="input.validators.required"
+                            >*</span
+                          >
+                          {{ input.controlName }}</label
+                        >
+
+                        <div
+                          class="multiselect"
+                          (clickOutside)="ClosePopup(input.controlName)"
+                        >
+                          <div class="selectBox">
+                            <div (click)="showCheckboxes(input.controlName)">
+                              <select class="disable-text-selection">
+                                <option>Select an option</option>
+                              </select>
+                            </div>
+                            <div class="overSelect">
+                              <div
+                                [id]="input.controlName"
+                                class="multiselectDropDown"
+                                style="display: none"
+                              >
+                                <!-- <img class="close-multiselect-popup-menu"
+                                                                    [src]="isProd? 'assets/close.png': '../../../../assets/close.png'"
+                                                                    (click)="closeCheckboxes(input.controlName)" /> -->
+                                <label
+                                  class="multiselectDropDownvalues"
+                                  *ngFor="let option of input.options"
+                                >
+                                  <input
+                                    type="checkbox"
+                                    [id]="option.optionName"
+                                    [(ngModel)]="option.Ischecked"
+                                    (click)="CheckBoxValue($event, input)"
+                                    [value]="option.value"
+                                    [ngModelOptions]="{ standalone: true }"
+                                  />{{ option.optionName }}</label
+                                >
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="selectedValues">
+                          <div
+                            class="selected-value-box"
+                            *ngFor="
+                              let item of input.selectedValueArray;
+                              let i = index
+                            "
+                          >
+                            <!-- <span *ngIf="i > 0"></span> -->
+                            <span>{{ item }}</span>
+                            <app-svg-icons
+                              class="closebtn"
+                              [icon]="'cancel-icon'"
+                              [width]="'12'"
+                              [height]="'12'"
+                              (click)="RemoveCheckBoxValue(item, input)"
+                            >
+                            </app-svg-icons>
+                          </div>
+                        </div>
+                      </div>
+                    </ng-template>
+
+                    <ng-template [ngSwitchCase]="'radio'">
+                      <ng-container
+                        *ngIf="
+                          input.IsHorizontal;
+                          then ShowHorizontal;
+                          else HideHorizontal
+                        "
+                      >
+                      </ng-container>
+                      <ng-template #ShowHorizontal>
+                        <div
+                          class="form-group-T-C-horizontal"
+                          [style.display]="input.validators.visibility"
+                        >
+                          <label
+                            class="Formlabel"
+                            [for]="input.controlName"
+                            [ngStyle]="{
+                              'font-weight': input.validators.IsBold
+                                ? 'bold'
+                                : 'normal',
+                              'font-size': input.validators.FontSize
+                            }"
+                            ><span
+                              class="impFields"
+                              *ngIf="input.validators.required"
+                              >*</span
+                            >
+                            {{ input.controlName }}</label
+                          >
+                          <div class="form-radio-options">
+                            <div
+                              *ngFor="let option of input.options"
+                              class="radio-group"
+                            >
+                              <label>
+                                <input
+                                  [(ngModel)]="input.selectedValue"
+                                  [checked]="option.Ischecked"
+                                  [type]="input.controlType"
+                                  [name]="input.controlName"
+                                  value="{{ option.value }}"
+                                  [required]="input.validators.required"
+                                  (click)="
+                                    ClickOnLabelofRadiobutton(
+                                      input,
+                                      option.value,
+                                      $event
+                                    )
+                                  "
+                                />
+
+                                {{ option.optionName }}
+                              </label>
+                              <!-- <label class="radio-labels" [for]="option.value">{{option.optionName}}</label> -->
+                            </div>
+                          </div>
+                        </div>
+                      </ng-template>
+                      <ng-template #HideHorizontal>
+                        <div
+                          class="form-group"
+                          [style.display]="input.validators.visibility"
+                        >
+                          <label
+                            class="Formlabel"
+                            [for]="input.controlName"
+                            [ngStyle]="{
+                              'font-weight': input.validators.IsBold
+                                ? 'bold'
+                                : 'normal',
+                              'font-size': input.validators.FontSize
+                            }"
+                            ><span
+                              class="impFields"
+                              *ngIf="input.validators.required"
+                              >*</span
+                            >
+                            {{ input.controlName }}</label
+                          >
+                          <div class="form-radio-options">
+                            <div
+                              *ngFor="let option of input.options"
+                              class="radio-group"
+                            >
+                              <label>
+                                <input
+                                  [(ngModel)]="input.selectedValue"
+                                  [type]="input.controlType"
+                                  [name]="input.controlName"
+                                  value="{{ option.value }}"
+                                  [checked]="option.Ischecked"
+                                  [required]="input.validators.required"
+                                  (click)="
+                                    ClickOnLabelofRadiobutton(
+                                      input,
+                                      option.value,
+                                      $event
+                                    )
+                                  "
+                                />
+                                {{ option.optionName }}
+                              </label>
+                              <!-- <label class="radio-labels" [for]="option.value">{{option.optionName}}</label> -->
+                            </div>
+                          </div>
+                        </div>
+                      </ng-template>
+                    </ng-template>
+
+                    <ng-template [ngSwitchCase]="'checkbox'">
+                      <div
+                        class="form-group-T-C-horizontal"
+                        [style.display]="input.validators.visibility"
+                      >
+                        <label
+                          class="Formlabel"
+                          [for]="input.controlName"
+                          [ngStyle]="{
+                            'font-weight': input.validators.IsBold
+                              ? 'bold'
+                              : 'normal',
+                            'font-size': input.validators.FontSize
+                          }"
+                          ><span
+                            class="impFields"
+                            *ngIf="input.validators.required"
+                            >*</span
+                          >
+                          {{ input.controlName }}</label
+                        >
+                        <div class="form-radio-options">
+                          <div *ngFor="let option of input.options">
+                            <label>
+                              <input
+                                [(ngModel)]="input.selectedValue"
+                                [type]="input.controlType"
+                                [name]="input.controlName"
+                                [checked]="option.Ischecked"
+                                value="{{ option.value }}"
+                                [required]="input.validators.required"
+                                (click)="
+                                  ClickOnLabelofCheckBox(input, option.value)
+                                "
+                                style="height: 16px !important"
+                              />
+                              <label
+                                (click)="
+                                  ClickOnLabelofCheckBox(input, option.value)
+                                "
+                              >
+                                {{ option.optionName }}</label
+                              >
+                            </label>
+                            <!-- <label class="radio-labels" [for]="option.value">{{option.optionName}}</label> -->
+                          </div>
+                        </div>
+                      </div>
+                    </ng-template>
+
+                    <ng-template [ngSwitchCase]="'label'">
+                      <div
+                        class="form-group-label"
+                        [style.display]="input.validators.visibility"
+                      >
+                        <label
+                          [for]="input.controlName"
+                          [ngStyle]="{
+                            'font-weight': input.validators.IsBold
+                              ? 'bold'
+                              : 'normal',
+                            'font-size': input.validators.FontSize
+                          }"
+                          ><span
+                            class="impFields"
+                            *ngIf="input.validators.required"
+                            >*</span
+                          >{{ input.controlName }}</label
+                        >
+                      </div>
+                    </ng-template>
+
+                    <ng-template [ngSwitchCase]="'Text_Area'">
+                      <div
+                        class="form-group-Text_Area"
+                        style="margin: 0px 20px"
+                        [style.display]="input.validators.visibility"
+                      >
+                        <label
+                          class="Formlabel"
+                          [for]="input.controlName"
+                          [ngStyle]="{
+                            'font-weight': input.validators.IsBold
+                              ? 'bold'
+                              : 'normal',
+                            'font-size': input.validators.FontSize
+                          }"
+                          ><span
+                            class="impFields"
+                            *ngIf="input.validators.required"
+                            >*</span
+                          >{{ input.controlName }}</label
+                        >
+                        <!-- <pdf-viewer style="display: block;height: 62vh;top: 0;" [src]="this.pdfSRC" [original-size]="false" [autoresize]="true"></pdf-viewer>-->
+                      </div>
+                    </ng-template>
+                    <ng-template [ngSwitchCase]="'File_Control'">
+                      <div
+                        class="form-group-Text_Area"
+                        style="
+                          display: block;
+                          height: 70vh;
+                          position: relative;
+                          position: relative;
+                          border: 1px solid #dedede;
+                          margin: 0px 20px;
+                          overflow: auto;
+                        "
+                        [style.display]="input.validators.visibility"
+                      >
+                        <!-- <pdf-viewer style="display: block;height: 62vh;top: 0;"
+                                                        [src]="'../../assets/TC.pdf'" useBrowserLocale="true" [original-size]="false" [autoresize]="true">
+                                                    </pdf-viewer> -->
+                        <div
+                          class="pdf-box"
+                          style="
+                            display: flex;
+                            height: 67vh;
+                            top: 0;
+                            flex-direction: column;
+                            overflow: auto;
+                          "
+                        >
+                          <!-- <pdf-viewer [src]="'../../assets/TC.pdf'" useBrowserLocale="true"
+                                                        [original-size]="false" [autoresize]="true">
+                                                    </pdf-viewer> -->
+                          <pdf-viewer
+                            [src]="pdfSRC"
+                            useBrowserLocale="true"
+                            [original-size]="false"
+                            [autoresize]="true"
+                            [show-borders]="true"
+                          >
+                          </pdf-viewer>
+                          <div
+                            class="form-group-T-C-horizontal"
+                            id="IAgreeButton"
+                          >
+                            <label class="Formlabel" [for]="input.controlName">
+                              {{ input.controlName }}</label
+                            >
+                            <div class="form-radio-options">
+                              <div *ngFor="let option of input.options">
+                                <input
+                                  [(ngModel)]="input.selectedValue"
+                                  type="checkbox"
+                                  [name]="input.controlName"
+                                  [checked]="option.Ischecked"
+                                  [required]="input.validators.required"
+                                  (click)="
+                                    ClickOnLabelofCheckBox(input, option.value)
+                                  "
+                                  style="height: 16px !important"
+                                />
+                                <label
+                                  (click)="
+                                    ClickOnLabelofCheckBox(input, option.value)
+                                  "
+                                >
+                                  {{ option.optionName }}</label
+                                >
+                                <!-- <label class="radio-labels" [for]="option.value">{{option.optionName}}</label> -->
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </ng-template>
+
+                    <!-- <ng-template [ngSwitchCase]="'Text_Area'">
+                                                <div class="form-group-Text_Area">
+                                                    <label [for]="input.controlName">{{input.controlName}}</label>
+                                                </div>
+                                            </ng-template> -->
+
+                    <ng-template [ngSwitchCase]="'Document_Upload'">
+                      <div
+                        class="form-group"
+                        style="grid-template-columns: 0% 38% 60%"
+                        [style.display]="input.validators.visibility"
+                      >
+                        <label
+                          class="Formlabel"
+                          [for]="input.controlName"
+                        ></label>
+                        <ng-container
+                          *ngIf="
+                            input.DocUploadValue;
+                            then HideSelect;
+                            else ShowSelect
+                          "
+                        >
+                        </ng-container>
+                        <ng-template #ShowSelect>
+                          <select
+                            class="txt"
+                            (change)="
+                              eventChange(
+                                $event,
+                                input.sectionwiseSequenceNo - 1
+                              )
+                            "
+                            tabindex="19"
+                            [attr.disabled]="input.DocUploadValue ? '' : null"
+                            [(ngModel)]="input.docUploadValuelabel"
+                          >
+                            <option
+                              *ngFor="let docUpload of dropDownList"
+                              [value]="docUpload"
+                            >
+                              {{ docUpload }}
+                            </option>
+                          </select>
+                        </ng-template>
+                        <ng-template #HideSelect>
+                          <label
+                            class="Formlabel"
+                            style="font-size: 17px; font-weight: 500"
+                            [for]="input.controlName"
+                            >{{ input.docUploadValuelabel }}</label
+                          >
+                        </ng-template>
+                        <input
+                          type="file"
+                          accept="application/pdf"
+                          class="custom-file-input"
+                          (change)="
+                            fileSelectionFunction(
+                              $event,
+                              input.sectionwiseSequenceNo - 1
+                            )
+                          "
+                        />
+                      </div>
+                    </ng-template>
+                  </ng-container>
+                </ng-template>
+              </div>
+              <div id="snackbar" style="line-height: 45px">
+                <div *ngIf="ErrorMsg">{{ this.ErrorMsg }}</div>
+                <!-- <div><span>Error Msg</span></div> -->
+              </div>
+            </ng-template>
+          </div>
+
+          <div
+            class="ACS-maindata-outer"
+            id="accountCreated"
+            *ngIf="accountCreatedsuccessful"
+          >
+            <div
+              class="ACS-SaveCustomerPopUP"
+              *ngIf="NotteMasterID !== '' && !this.CreatingCustomer"
+            >
+              <!-- Account created Successfully -->
+              <div class="AI-rowcontent">
+                <h3 class="textnewentry" style="font-weight: 400">
+                  {{ AccountMessage | translate }}
+                </h3>
+              </div>
+              <div class="AI-rowcontent" *ngIf="Message">
+                <h5
+                  class="textnewentry"
+                  style="margin-bottom: 6%; font-weight: 400"
+                >
+                  {{ Message | translate }}
+                </h5>
+              </div>
+              <div class="AI-rowcontent">
+                <label
+                  for="CustomerType"
+                  style="
+                    text-align: center !important;
+                    font-size: 17px;
+                    padding: 0;
+                  "
+                  class="lbl"
+                  >{{
+                    "Check
+                                    your email and follow the instructions to verify the
+                                    account"
+                      | translate
+                  }}.</label
+                >
+              </div>
+              <div class="AI-rowcontent">
+                <label for="CustomerType" class="lbl emailID">
+                  {{ EmailID }}
+                </label>
+              </div>
+              <div class="AI-rowcontent">
+                <button
+                  style="margin-left: 10px"
+                  (click)="ProceedToProfileVerfication()"
+                >
+                  Ok
+                </button>
+              </div>
+            </div>
+            <div
+              class="ACS-SaveCustomerPopUP"
+              *ngIf="NotteMasterID === '' && !this.CreatingCustomer"
+            >
+              <!-- Account not created Successfully -->
+              <div class="AI-rowcontent">
+                <h3 class="textnewentry" style="font-weight: 100">
+                  Failed: Error occured while creating account.
+                </h3>
+              </div>
+              <div class="AI-rowcontent">
+                <button
+                  style="margin-left: 10px"
+                  [routerLink]="['/login/client']"
+                  routerLinkActive="router-link-active"
+                >
+                  Back
+                </button>
+              </div>
+            </div>
+
+            <div class="loaderdiv" *ngIf="this.CreatingCustomer">
+              <div class="loader-center">
+                <div class="multi-ripple">
+                  <div></div>
+                  <div></div>
+                </div>
+              </div>
+              <!-- <img [src]="isProd ? 'assets/loading_dots.gif' : '../../assets/loading_dots.gif'"
+                                    height="100px" width="100px" /> -->
+            </div>
+            <div id="snackbar" style="line-height: 45px">
+              <div *ngIf="ErrorMsg">{{ this.ErrorMsg }}</div>
+              <!-- <div><span>Error Msg</span></div> -->
+            </div>
+          </div>
+          <!-- </form> -->
+          <div class="page-controller">
+            <div class="action-buttons">
+              <ng-container
+                *ngIf="
+                  IsKYCDoneAtSecStage;
+                  then ShowKYCAtSecStage;
+                  else ShowKYCAtLastStage
+                "
+              >
+              </ng-container>
+              <ng-template #ShowKYCAtSecStage>
+                <button
+                  *ngIf="
+                    !accountCreatedsuccessful &&
+                    activePageNumber !== '1' &&
+                    activePageNumber !== '2'
+                  "
+                  (click)="fnChangePage(false)"
+                >
+                  {{ "Prev" | translate }}
+                </button>
+                <button
+                  *ngIf="!accountCreatedsuccessful"
+                  (click)="fnSaveForFuture()"
+                >
+                  {{ "Save" | translate }}
+                </button>
+                <button
+                  *ngIf="!accountCreatedsuccessful && activePageNumber !== '5'"
+                  [ngClass]="{ disabled: !IsUserRegister }"
+                  [disabled]="!IsUserRegister || DisableNextbtn"
+                  (click)="fnChangePage(true)"
+                >
+                  {{ "Next" | translate }}
+                </button>
+                <button
+                  *ngIf="!accountCreatedsuccessful && activePageNumber === '5'"
+                  (click)="this.saveDetails('Insert')"
+                  [disabled]="isDuplicateUser"
+                >
+                  {{ "Submit" | translate }}
+                </button>
+              </ng-template>
+              <ng-template #ShowKYCAtLastStage>
+                <button
+                  *ngIf="
+                    !accountCreatedsuccessful &&
+                    activePageNumber !== '1' &&
+                    activePageNumber !== '2'
+                  "
+                  (click)="fnChangePage(false)"
+                >
+                  {{ "Prev" | translate }}
+                </button>
+                <button
+                  *ngIf="!accountCreatedsuccessful"
+                  (click)="fnSaveForFuture()"
+                >
+                  {{ "Save" | translate }}
+                </button>
+                <button
+                  *ngIf="!accountCreatedsuccessful && activePageNumber !== '4'"
+                  [ngClass]="{ disabled: !IsUserRegister }"
+                  [disabled]="!IsUserRegister"
+                  (click)="fnChangePage(true)"
+                >
+                  {{ "Next" | translate }}
+                </button>
+                <button
+                  *ngIf="!accountCreatedsuccessful && activePageNumber === '4'"
+                  (click)="this.saveDetails('Insert')"
+                  [disabled]="isDuplicateUser"
+                >
+                  {{ "Submit" | translate }}
+                </button>
+              </ng-template>
+
+              <!-- <app-loader *ngIf="ProcessingLoader" ></app-loader> -->
+            </div>
+            <!-- <div class="action-buttons">
+                            <button *ngFor="let item of ActionButtons; let i=index">{{item.btnname}}</button>
+                        </div> -->
+          </div>
+        </div>
+        <!-- Profile verfication is pending -->
+        <div
+          class="page"
+          *ngIf="
+            !isNewRegistration &&
+            !this.isProfileCreated &&
+            !this.isClientKYCDone
+          "
+        >
+          <div class="form-container">
+            <div class="timer-container">
+              <div class="timer-grid">
+                <div class="timer-icon"></div>
+                <span class="section-header" style="margin: auto">{{
+                  "Profile verification is
+                                    pending. Contact RM for verification."
+                    | translate
+                }}</span>
+              </div>
+            </div>
+          </div>
+          <div style="padding: 20px 0px; text-align: center">
+            <button style="margin-left: 10px" (click)="fnExit()">
+              {{ "Ok" | translate }}
+            </button>
+          </div>
+          <div id="snackbar" style="line-height: 45px">
+            <div *ngIf="ErrorMsg">{{ this.ErrorMsg }}</div>
+            <!-- <div><span>Error Msg</span></div> -->
+          </div>
+        </div>
+        <!-- New Registrtion and KYC is at 2nd stage -->
+        <div
+          *ngIf="
+            this.IsKYCDoneAtSecStage &&
+            this.activePageName === clienRiskAssessmentPageName
+          "
+        >
+          <div class="form-container-client-update-questionnaire">
+            <app-customer-setup-update-cpra-details
+              [OnlyUpdateCIRP]="this.OnlyUpdateCIRP"
+              (KYCCompletedChanged)="IsKYCCompletedChangedHandler($event)"
+              (MoveToNextPage)="MoveToNextPageFromCIRPComp($event)"
+            >
+            </app-customer-setup-update-cpra-details>
+          </div>
+        </div>
+        <!-- KYC pending -->
+        <div
+          *ngIf="
+            !isNewRegistration &&
+            this.isProfileCreated &&
+            !this.isClientKYCDone &&
+            !this.IsKYCDoneAtSecStage
+          "
+        >
+          <div class="form-container-client-update-questionnaire">
+            <app-customer-setup-update-cpra-details
+              [OnlyUpdateCIRP]="this.OnlyUpdateCIRP"
+              (KYCCompletedChanged)="IsKYCCompletedChangedHandler($event)"
+              (MoveToNextPage)="MoveToNextPageFromCIRPComp($event)"
+            >
+            </app-customer-setup-update-cpra-details>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

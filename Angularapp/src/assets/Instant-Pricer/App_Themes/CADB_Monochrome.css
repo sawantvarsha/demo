@@ -1,0 +1,1479 @@
+
+    body {
+        background-color: #393939;           
+    }
+
+    table#mainContent{
+        border-collapse: separate;
+        padding: 0px 5px 5px 5px;
+        background-color: #393939;
+      }
+
+      
+
+    @media screen and (max-width: 768px) {
+      #tbod{
+          display: flex;
+          margin: 0px 0%;
+      }
+    }
+
+     
+      
+      .sorting{
+        box-shadow: 5px 4px 3px #000;       
+        border-radius: 14px;
+        padding: 5px;
+        margin: 7px;       
+        float: left;
+    width: 500px;
+      }
+
+     
+      
+.navIcon, td.sorting, .sidenav{
+    background-image: url(../App_Resorces/Crystal_Tile.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+
+.bgImagesSel{
+    border: 1px solid #5f5f5f;
+    height: 100px;
+    width: 100px;
+    margin: 10px;
+    display: inline-block;
+    background-size: 100px 100px;
+}
+
+
+#bgImagesDiv{
+    width: 627px;
+    padding: 10px;
+    right: 7.6%;
+    top: 33%;
+    z-index: 99999;
+    position: fixed;
+    height: 518px;
+    overflow: auto;
+}
+
+
+
+
+
+.btn:disabled{
+    color: #E7E7E7 !important;
+}
+.btn:hover, .switch-selection
+, .container input:checked~.checkmark, .checkmark:hover, .checkmark:after
+, .container:hover input~.checkmark {
+    background-color: #232323 !important;
+}
+
+      .card, .MainTable, .MainTable td:first-child, .anchorTag,.ddlShares,.ddl,.ddlTenor,select
+      ,.anchorTag,.sidenav a, .sidenav span, .sidenav label, .inputClass, td, .btn,.btn:hover
+      , .switch-input:checked+.switch-label, .switch-label
+     , tr .banksNameRow td,
+        tr .pricesRow td,.sidenav, #mytemplates
+        , .popup, #CurrentTemplate
+        {
+        color: #ffffff;
+
+		/* #ababab; */
+      }
+
+      .card, .MainTable, .MainTable td:first-child, .anchorTag, .popup{        
+        background-color: transparent !important;
+      }
+      
+      .ddlShares, .ddl, .ddlTenor, select, .inputClass, .switch, .btn,.checkmark 
+      ,#mainContent>input[type="text"][disabled], .checkmark
+    {
+        background-color:#0e0e0e !important
+    }
+
+
+    .pricerTable, .banksNameRow td, .pricesRow td, .btn, .btn:hover
+    ,.ddlShares, .ddl, .ddlTenor, select, .inputClass, .switch
+    ,#mainContent>input[type="text"][disabled] 
+    ,.container input:checked~.checkmark
+    , .checkmark:hover, .checkmark:after
+    ,.container:hover input~.checkmark
+    ,.checkmark, .popup, #CurrentTemplate
+    {
+        border: solid 1px #2c2c2c;
+        border-collapse: collapse;
+        background-color: #0000008f !important;
+    }
+   
+    .container{
+
+        padding: 0px !important;
+    }
+
+.ddlShares,.ddl,.ddlTenor,select {
+    padding: 5px;   
+    border-radius: 5px;
+    width: 135px;
+}
+
+
+
+/* Side Nav */
+
+.container {
+    display: block;
+    position: relative;
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-size: 14px;
+    line-height: 20px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    color: grey;
+}
+
+
+/* Hide the browser's default checkbox */
+
+.container input {
+position: absolute;
+opacity: 0;
+cursor: pointer;
+height: 0;
+width: 0;
+}
+
+#ALLProduct label{
+    padding: 5px;
+    line-height: 20px;
+  }
+/* Create a custom checkbox */
+
+.checkmark {
+    position: relative;
+    top: 0;
+    left: 0;
+    height: 20px;
+    width: 20px;
+    padding: 10px;
+    float: left;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+content: "";
+position: absolute;
+display: none;
+}
+
+/* Show the checkmark when checked */
+.container input:checked~.checkmark:after {
+display: block;
+}
+
+
+/* Style the checkmark/indicator */
+.container .checkmark:after {
+left: 9px;
+top: 5px;
+width: 5px;
+height: 10px;
+border: solid white;
+border-width: 0 3px 3px 0;
+-webkit-transform: rotate(45deg);
+-ms-transform: rotate(45deg);
+transform: rotate(45deg);
+}
+
+
+      #CurrentTemplate{      
+      padding: 5px;     
+      border-radius: 5px;
+      }
+    
+    /*Added by AniruddhaJ Start*/
+    
+    .lblUniformFont {
+        font-size: 13px !important;
+        color: #ffffff !important;
+    }
+    
+    .bgImage {
+        height: 200px;
+        width: 200px;
+        position: absolute;
+        top: 30px;
+        left: 30px;
+    }
+    
+    .cadb_product {
+        vertical-align: top;
+        padding-left: 5px;
+        color:#ffffffbf;
+    }
+    
+    #templateList {
+        padding: 10px;
+        padding-left: 0px;
+        background-color:transparent;
+        cursor: pointer;
+    }
+    
+    #mytemplates {
+        font-size: 15px;
+        margin-top: 10px;
+        cursor: pointer !important;
+    }
+    
+    .userInfo {
+        background-color: #fdfdfd;
+        box-shadow: 1px 1px #cacaca;
+        display: none;
+    }
+    
+    .userTemplateInfo td {
+        padding: 10px;
+        color: #0086bb;
+    }
+    
+    .hiddenProductName {
+        display: none;
+    }
+    
+    #ALLProductDiv {
+        font-size: 15px;
+        margin-top: 10px;
+        color: #0086bb;
+        margin-left: 5px;
+        cursor: pointer !important;
+    }
+    
+    #ALLProduct {
+        display: none;
+        padding: 10px;
+    }
+    
+    .templateName {
+        font-size: 13px;
+        color: #ababab;
+        background-color: #000000 !important;
+        padding: 10px;
+        margin-top: 5px;
+        border-radius: 5px;
+        border: 1px solid #2b2b2b;
+    }
+    
+    i {
+        border: solid #636363;
+        border-width: 0 3px 3px 0;
+        display: inline-block;
+        padding: 3px;        
+        /* margin-left: 50px; */
+    }
+    i{
+        float: right !important;
+    }
+    
+    .up {
+        transform: rotate(-135deg);
+        -webkit-transform: rotate(-135deg);
+    }
+    
+    .down {
+        transform: rotate(45deg);
+        -webkit-transform: rotate(45deg);
+    }
+    
+    .right {
+        transform: rotate(-45deg);
+        -webkit-transform: rotate(-45deg);
+        margin-top: 4px;
+    }
+    
+    .left {
+        transform: rotate(135deg);
+        -webkit-transform: rotate(135deg);
+    }
+    
+    .removable>td {
+        
+        cursor: move;
+    }
+    
+    .lblTemplate {
+        font-size: 14px;
+        color: #FFFFFF !important;
+        white-space: nowrap;
+    }
+    
+    div.templateName:hover {
+        font-size: 13px;
+        color: #ababab;
+        background-color: #252525 !important;
+        padding: 10px;
+        margin-top: 5px;
+        border-radius: 5px;
+        border: 1px solid #333;
+    }
+   
+    
+    #hiddenCurrentTemplate {
+        display: none !important;
+    }
+    
+   
+    .removableCard {
+        animation: shake 0.7s;
+        animation-iteration-count: infinite;
+        background: url("../App_Resorces/Blue/iconRemove.png") no-repeat center 50px;
+        cursor: pointer !important;
+        opacity: 0.8;
+    }
+    
+    .bgImage {
+        height: 200px;
+        width: 200px;
+        position: absolute;
+        top: 95px;
+        left: 126px;
+        z-index: 99;
+        opacity: 0.5;
+    }
+    
+   
+    /*End*/
+    
+
+.navIcon {
+    padding: 5px;
+    border: 0px solid #ddd;
+    position: fixed;
+    top: 0px;
+    z-index: 999;
+    background-color: #114263;
+    width: 100%;   
+    box-shadow: 4px 4px 6px #000;
+}
+
+.navIcon input {
+    background-color:transparent;
+}
+
+
+#CurrentTemplate[disabled] {
+    border: solid 0px #a7a6a6 !important;
+    opacity: 1;
+    background-color:transparent;
+    padding: 5px;
+   
+    border-radius: 5px;
+    border-collapse: collapse;
+}
+
+.bar1,
+.bar2,
+.bar3 {
+    width: 25px;
+    height: 3px;
+    background-color: #FFFFFF;
+    margin: 4px 0;
+    transition: 0.4s;
+}
+
+.pricesRow td {
+    font-size: 17px !important;
+    font-weight: normal;        
+    text-align: center;
+    height: 36px;
+    width: 61px;
+}
+
+select:disabled {
+    background-color: #333333 !important;
+    outline: none !important;
+    opacity: 0.65;
+}
+
+.MainTable {
+    background-color: #252525;
+    font-size: 13px;
+    height: auto;
+    white-space: nowrap;
+    border-radius: 5px;
+}
+
+.inputClass {
+    width: 135px;   
+    border-radius: 5px;
+    padding: 5px;
+    text-align: right;
+    outline: none !important;
+}
+
+.MainTable td {
+    padding: 5px;
+    border-collapse: collapse;
+    border: none;
+    vertical-align: middle;
+}
+
+
+.btn,
+.btn:hover {
+   
+    font-size: 13px !important;
+    outline: none !important;
+    cursor: pointer !important;
+    font-family: Montserrat !important;
+    box-shadow: 1px 1px 1px #000000;
+    background: url();
+    border: none;
+
+
+}
+
+.btn {
+    outline: none !important;
+    cursor: pointer;
+    font-family: Montserrat !important;
+}
+
+.btn:hover {
+    outline: none !important;
+    cursor: pointer;
+    font-family: Montserrat !important;
+    background-color: #000000c2 !important
+    }
+
+#mainContent>input[type="text"][disabled] {
+    outline: none !important;
+    opacity: 0.65;
+}
+
+.btn.disabled,
+.btn:disabled:hover {
+    cursor: not-allowed;
+    background-color: #484747 !important;
+}
+
+.banksNameRow td {
+    font-size: 18px;
+    border-collapse: collapse;
+   text-align: center;
+    padding: 5px;
+   
+}
+
+.pricesRow td {
+    font-size: 17px !important;
+    font-weight: normal;    
+    text-align: center;
+    height: 36px;
+    width: 61px;
+    
+}
+
+.productName {
+    font-size: 26px;
+    
+}
+
+.ddlShares {
+    text-align: left !important;
+}
+
+ ::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+}
+
+ ::-webkit-scrollbar-track {
+    background-color: transparent;
+    -webkit-border-radius: 5px;
+    border-radius: 15px;
+}
+
+ ::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    background: #202020;
+}
+
+.loader {
+    left: 165px;
+    position: absolute;
+}
+
+.per {
+    font-size: 10px;
+    margin-left: 3px;
+}
+
+.inputClass:focus,
+.ddl:focus,
+option:focus {
+    outline: none !important;
+}
+
+option {
+    border: none;
+    background-color: #1d1d1d;
+}
+
+.ddlCategory {
+    width: 110%;
+    color: #252525;
+    text-align: left;
+    background-color: #3a3838;
+    border: 0px;
+}
+
+.ddlCategory:focus {
+    border: none;
+    outline-style: none !important;
+    outline-color: transparent;
+    box-shadow: none;
+    border-width: 0;
+}
+
+.lblError {
+    position: absolute !important;
+    left: 18%;
+    color: #f81818;
+    padding: 20px;
+    background-color: #f7f7f7;
+    border-radius: 5px;
+    height: 70px;
+    box-shadow: 2px 2px #7a7373;
+}
+
+.box {
+    overflow: hidden;
+    z-index: 9999;
+    position: fixed;
+    right: 0px;
+    top: 50px;
+}
+
+.box-inner {
+    width: 250px;
+    background: #040404;
+    padding: 10px;
+    color: #b3b3b3;
+    font-size: 14px;
+}
+
+
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: rgba( 255, 255, 255, .8) ;/*url('http://i.stack.imgur.com/FhHRx.gif') 50% 50% no-repeat;*/
+}
+
+
+/* When the body has the loading class, we turn
+   the scrollbar off with overflow:hidden */
+
+body.loading .modal {
+    overflow: hidden;
+}
+
+
+/* Anytime the body has the loading class, our
+   modal element will be visible */
+
+body.loading .modal {
+    display: block;
+}
+
+.chartDiv {
+    width: 400px;
+    height: 260px;
+    margin: 20px 0px 0px 30px;
+    display: flex;
+}
+
+.ui-menu {
+    list-style: none;
+    padding: 5px;
+    margin: 0;
+    font-weight: bold !important;
+    background-color: #f5f5f5;
+    border-radius: 4px !important;
+}
+
+.ui-state-active,
+.ui-widget-content .ui-state-active,
+.ui-widget-header .ui-state-active,
+a.ui-button:active,
+.ui-button:active,
+.ui-button.ui-state-active:hover {
+    border: 1px solid #252525;
+    background-color: #252525 !important;
+    font-weight: bold !important;
+}
+
+.CtlType {
+    padding: 0px 0px 5px 5px !important;
+}
+
+img {
+    height: 30px;
+    width: 35px;
+}
+
+
+/* Added */
+
+.container-fluid {
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+    background-color: #e5e5e5;
+}
+
+.MainTable td {
+    /* padding: 8px; */
+    padding: 6px;
+    border-collapse: collapse;
+    border: none;
+    vertical-align: middle;
+}
+
+.dummyTbl {
+    /* width: 440px !important; */
+}
+
+
+.MainTable td:first-child {
+    font-weight: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+
+.pricerTable td {
+    min-width: 85px;
+    max-width: 120px;
+}
+
+.secondrow {
+    padding-top: 0px;
+    margin-top: -14px;
+}
+
+.pricerTable {
+    width: 100%;
+    padding-left: 15px;
+    padding-right: 15px;
+    box-shadow: 0px 0px 11px #2a2a2a;
+}
+
+.banksNameRow td {
+    color: #ababab;
+    font-size: 18px;
+    background-color: #000 !important;
+    border-collapse: separate;   
+}
+
+.pricesRow td {
+    color: #ababab;
+    font-size: 17px !important;
+    font-weight: normal;
+    background-color: #000 !important;
+    text-align: center;
+    height: 36px;
+    width: 61px;
+    }
+
+.col-sm-3 {
+    padding-right: 1px !important;
+    padding-left: 1px !important;
+}
+
+
+.btnTD {
+    width: 100%;
+}
+
+.btnTD td {
+
+}
+
+.noPadding {
+    padding: 5px !important;
+}
+
+.Divshadow {
+    width: 459px !important;
+     overflow-y: hidden;
+    border: 0px solid #3a3a3a;
+}
+
+.height31 {
+    height: 31px;
+}
+
+
+/* Added By Bhavya M  */
+label {
+    -webkit-perspective: 1000px;
+    perspective: 1000px;
+    -webkit-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+    display: block;
+    cursor: pointer;
+}
+
+.card {
+
+    -webkit-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+    -webkit-transition: all 600ms;
+    transition: all 600ms;
+    background-color: #252525;
+    border: 0px solid rgba(0, 0, 0, .125);
+    border-radius: 0px !important;
+}
+
+.card div {
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+}
+
+.card .back {
+    -webkit-transform: rotateX(180deg);
+    transform: rotateX(180deg);
+    display: none;
+}
+
+
+label:hover .card {
+     box-shadow: 0 20px 20px rgba(50, 50, 50, .19);
+}
+
+input[type='checkbox'] {
+    display: none;
+}
+
+:checked+.card {
+   display: block;
+}
+
+label:hover :checked+.card {
+   box-shadow: 0 20px 20px rgba(255, 255, 255, .2);
+}
+
+.smallDiv {
+    height: 307px;
+	overflow:scroll;
+	overflow-y:hidden !important;
+	}
+
+
+
+label {
+    display: inline !important;
+}
+/* End */
+/* Added By Rizwans For Toggle */
+
+.switch {
+    position: relative;
+    height: 27px;
+    background:transparent;
+    border-radius: 5px;
+	transform:scale(1);
+    
+}
+
+.switch-label {
+    position: relative;
+    z-index: 2;
+    float: left;
+    width: 42%;
+    font-size: 11px;
+    opacity: 0.75;   
+    text-align: center;
+    cursor: pointer;
+    padding: 5px;
+    white-space: nowrap;
+}
+
+.switch-label:active {
+    font-weight: bold;
+}
+
+.switch-label-off {
+    padding-left: 22px !important;
+    font: normal 11px/16px verdana;
+    text-align: center;
+}
+
+.switch-label-on {
+    padding-left: 35px !important;
+    font: normal 11px/16px verdana;
+    text-align: center;
+}
+
+.switch-input {
+    display: none;
+}
+
+.switch-input:checked+.switch-label {
+    -webkit-transition: 0.07s ease-out;
+    -moz-transition: 0.07s ease-out;
+    -ms-transition: 0.07s ease-out;
+    -o-transition: 0.07s ease-out;
+    transition: 0.07s ease-out;
+    -webkit-transition-property: color, text-shadow;
+    -moz-transition-property: color, text-shadow;
+    -ms-transition-property: color, text-shadow;
+    -o-transition-property: color, text-shadow;
+    transition-property: color, text-shadow;
+}
+
+.switch-input:checked+.switch-label-on~.switch-selection {
+    left: 50%;
+}
+
+.switch-selection {
+    position: absolute;
+    z-index: 1;
+    top: 0px;
+    left: 0px;
+    display: block;
+    width: 50%;
+    height: 25px;
+    border-radius: 3px;
+    -webkit-transition: left 0.07s ease-out;
+    -moz-transition: left 0.07s ease-out;
+    -ms-transition: left 0.07s ease-out;
+    -o-transition: left 0.07s ease-out;
+    transition: left 0.07s ease-out;
+}
+
+
+/* End */
+
+.AlignRight {
+    margin-right: 10px;
+    float: right;
+	position:relative;
+}
+
+.AlignCenter {
+    text-align: center;
+}
+
+
+/* PopUPCSS */
+
+.ui-widget-header,
+.ui-state-default,
+ui-button {
+    background: #525252;
+    border: 1px solid #484848;
+    color: #f9f9f9;
+    font-weight: bold;
+}
+
+#OrderPlaced {
+    color: #85ca9e !important;
+    padding: 10px;
+    display: block;
+}
+#OrderPlacedAll {
+    color: #85ca9e !important;
+    padding: 10px;
+    display: block;
+}
+  .booktradepopup {
+        display: none;
+        background-color: rgb(37, 37, 37);
+        padding: 7px 15px 20px;
+        position: absolute;
+        z-index: 994;
+        box-shadow: rgb(29, 29, 29) 3px 4px 4px;
+        border-radius: 5px;
+        font-size: 12px;
+        color: rgb(171, 171, 171);
+        border: 1px solid rgb(16, 16, 16);
+        border-collapse: collapse;
+        /* left: 4%; */
+        width: 313px;
+        /* height: 135px; */
+        min-height: auto;
+        margin-top: 150px !important;
+        margin-left: 70px !important;
+        /* text-align: center;*/
+    }
+
+.ui-widget.ui-widget-content {
+    box-shadow: 3px 4px 4px #1d1d1d !important;
+    font-family: Montserrat !important;
+    background-color: #252525;
+    border: none;
+}
+
+.ui-menu {
+    list-style: none;
+    padding: 5px;
+    margin: 0;
+    font-weight: bold !important;
+    overflow-y: scroll !important;
+    overflow-x: hidden !important;
+    height: 250px !important;
+    white-space: nowrap !important;
+    z-index: 999 !important;
+    box-shadow: 1px 1px #ddd !important;
+    border-radius: 5px !important;
+    font-size: 12px;
+    color: #ababab;
+}
+
+#ui-id-2 {
+    overflow-y: scroll !important;
+    overflow-x: hidden !important;
+    max-height: 250px !important;
+    white-space: nowrap !important;
+    background-color: #252525 !important;
+    padding: 5px !important;
+    z-index: 999 !important;
+    box-shadow: 3px 4px 4px #1d1d1d;
+    border-radius: 5px !important;
+    border: 1px solid #101010;
+    font-size: 12px;
+    z-index: 999;
+    color: #ababab;
+    BORDER-COLLAPSE: collapse;
+}
+
+#ui-id-3 {
+    overflow-y: scroll !important;
+    overflow-x: hidden !important;
+    max-height: 250px !important;
+    white-space: nowrap !important;
+    background-color: #252525 !important;
+    padding: 5px !important;
+    z-index: 999 !important;
+    box-shadow: 3px 4px 4px #1d1d1d;
+    border-radius: 5px !important;
+    border: 1px solid #101010;
+    font-size: 12px;
+    z-index: 999;
+    color: #ababab;
+    BORDER-COLLAPSE: collapse;
+}
+
+#ui-id-4 {
+    max-height: 250px !important;
+    overflow-y: scroll !important;
+    overflow-x: hidden !important;
+    white-space: nowrap !important;
+    background-color: #252525 !important;
+    padding: 5px !important;
+    z-index: 999 !important;
+    box-shadow: 3px 4px 4px #1d1d1d;
+    border-radius: 5px !important;
+    border: 1px solid #101010;
+    font-size: 12px;
+    z-index: 999;
+    color: #ababab;
+    BORDER-COLLAPSE: collapse;
+}
+
+#ui-id-5 {
+    max-height: 250px !important;
+    overflow-y: scroll !important;
+    overflow-x: hidden !important;
+    white-space: nowrap !important;
+    background-color: #252525 !important;
+    padding: 5px !important;
+    z-index: 999 !important;
+    box-shadow: 3px 4px 4px #1d1d1d;
+    border-radius: 5px !important;
+    border: 1px solid #101010;
+    font-size: 12px;
+    z-index: 999;
+    color: #ababab;
+    BORDER-COLLAPSE: collapse;
+}
+
+.dotimg {
+    padding: 1px;
+    opacity: 0.8;
+}
+
+.dotimg:active {
+    transition: 0.40s;
+    -webkit-transition: 0.40s;
+    -moz-transition: 0.40s;
+    -ms-transition: 0.40s;
+    -o-transition: 0.40s;
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    transform: rotate(360deg);
+}
+
+    .button {
+        width: 30px;
+        height: 30px;
+        border: none;
+        
+    }
+
+.button:hover {
+    background-color: #FFFFFF70;
+}
+
+.required {
+    position: fixed;
+    display: none;
+    width: 10px;
+    height: 10px;
+    z-index: 99;
+}
+
+.Divshadow:hover {
+    cursor: -webkit-grab;
+    cursor: grab;
+}
+
+.navbutton {
+    cursor: pointer;
+    width: 25px;
+    height: 25px;
+    background-color: transparent;
+    border: none;
+    color: #ababab;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    visibility: hidden;
+    font-size: 12px;
+    margin: 4px 2px;
+    z-index: 999;
+}
+
+.sorting:hover .navbutton {
+    animation: 1s fadeIn;
+    animation-fill-mode: forwards;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        visibility: visible;
+        opacity: 1;
+    }
+}
+
+.navbutton:hover {
+    background-color: #ffffff70;
+}
+
+.button5 {
+    border-radius: 50%;
+}
+
+input {
+    font-size: 12px !important;
+}
+
+.anchorTag {
+    padding-right: 5px;
+    padding-bottom: 5px;
+}
+
+
+/* Control Popup CSS:: Aniruddha */
+
+.popup {
+    background-color: #080808 !important;
+    padding: 2px;
+    position: absolute;
+    z-index: 999;
+    box-shadow: 3px 4px 4px #1d1d1d;
+    border-radius: 5px;
+    display: none;
+    font-size: 12px;
+    color: #ababab;
+    border: 1px solid #101010;
+    BORDER-COLLAPSE: collapse;
+    display: none; 
+}
+
+.pairs {
+    float: left;
+    margin: 5px;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    box-shadow: 1px 1px #3a3a3a;
+    width: 88px;
+    text-align: center;
+}
+
+.pairs:hover {
+    float: left;
+    margin: 5px;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    box-shadow: 1px 1px #717070;
+    width: 88px;
+    text-align: center;
+}
+
+.tblControl {
+    margin: 8px;
+}
+
+
+.baskets {
+    float: left;
+    margin: 5px;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    box-shadow: 1px 1px #3a3a3a;
+    width: 241px;
+    text-align: center;
+}
+
+.baskets:hover {
+    float: left;
+    margin: 5px;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    box-shadow: 1px 1px #717070;
+    width: 241px;
+    text-align: center;
+}
+
+a:link,
+a {
+    cursor: pointer;
+}
+
+#moreChoicespopup {
+    display: none;
+    top: 211px;
+    left: 461px;
+    background-color: #f1f1f1;
+    padding: 25px;
+    position: absolute;
+    z-index: 9999;
+}
+
+
+/* END */
+
+.NoBorder {
+    border: none !important;
+}
+
+/* Glow CSS Added By RizwanS        */
+
+.pricesRow td {
+    padding: 0px !important;
+}
+
+
+
+
+
+/* Red Glow */
+
+  /* Red Glow */
+    
+  .GlowPrice_Red {
+    font-size: 15px;
+    text-align: center;
+    text-decoration: none;
+    -webkit-animation: glowing_8 500ms infinite;
+    -moz-animation: glowing_8 500ms infinite;
+    -o-animation: glowing_8 500ms infinite;
+    animation: glowing_8 500ms infinite;
+	font-weight:700;
+}
+
+@-webkit-keyframes glowing_8 {
+    100% {
+        color: #735b23;
+    }
+    50% {
+        color: #735b23;
+    }
+    0% {
+        color: #ffffff;
+    }
+}
+
+.LineC {
+    color: #a9a4a4 !important;
+}
+
+
+
+.zoom {
+    position: fixed;
+    top: 23% !important;
+    left: 35% !important;
+    z-index: 999;
+    box-shadow: 3px 3px 3px 3px black;
+}
+
+.zoomIn {
+    transform: scale(1.5); 
+}
+
+.zoomOut {
+     zoom: 100%; 
+
+}
+
+@media only screen and (max-width: 900px) {
+    .zoomIn {
+        transform: scale(1);
+    }
+    .zoom {
+        position: fixed;
+        top: 15% !important;
+        left: 1% !important;
+        z-index: 999;
+        box-shadow: 3px 3px 3px 3px black;
+    }
+    .popup {
+            
+        width: auto !important;
+        
+       
+    }
+
+}
+
+
+#depositOrderDetails table tr td {
+    border: 1px solid #3a3a3a !important;
+}
+
+.change .bar1 {
+    -webkit-transform: rotate(-45deg) translate(-9px, 2px);
+    transform: rotate(-45deg) translate(-9px, 2px);
+}
+
+.change .bar2 {
+    opacity: 0;
+}
+
+.change .bar3 {
+    -webkit-transform: rotate(45deg) translate(-8px, -2px);
+    transform: rotate(45deg) translate(-8px, -2px);
+}
+
+.sidenav {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 9999;
+    top: 47px;
+    left: 0;    
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 10px;
+    box-shadow: 2px 2px 2px #000;
+    background-attachment: scroll;
+    background-position: bottom;
+}
+
+.sidenav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;    
+    display: block;
+    transition: 0.2s;
+}
+
+.sidenav a:hover {
+    color: #f1f1f1;
+}
+
+.sidenav .closebtn {
+    position: absolute;
+    top: 0;
+    right: 5px;
+    font-size: 36px;
+}
+
+@media screen and (max-height: 450px) {
+    .sidenav {
+        padding-top: 15px;
+    }
+    .sidenav a {
+        font-size: 18px;
+    }
+}
+
+#tab-container {
+    color: whitesmoke;
+}
+
+#CommonPairs_ID, #CommonShares_ID, #CommonAmount {
+    background-color: #080808;
+    border: 1px solid #3f3f3f;
+    color: #ababab !important;
+}
+
+.ui-widget.ui-widget-content{
+    /* background-image: url(../App_Resorces/Crystal_Tile.png); */
+    background-size: cover;
+    background-repeat: no-repeat;
+    color: #ababab !important;
+}
+
+
+/* Side Nav End */
+
+
+/* END */
+
+/* CSS for clear icon in input field || Tina K || 10-Dec-2019 */
+input[type="search"]::-webkit-search-cancel-button {
+    -webkit-appearance: none;
+    display:block;
+    width:8px;
+    height:8px;
+    background: -webkit-linear-gradient(-45deg, transparent 0%, transparent 46%, #ababab 46%,  #ababab 56%,transparent 56%, transparent 100%),
+                -webkit-linear-gradient(45deg, transparent 0%, transparent 46%, #ababaa 46%,  #ababaa 56%,transparent 56%, transparent 100%);
+
+    transition: all 0.3s ease;
+    padding-right: 4px;
+    margin-left: 4px;
+    z-index: 999;
+    } 
+    /*END*/
+
+    .sharesListName, .sharesListNameELI{
+
+        border: 1px solid #292929!important;
+    }
+    
+/* Added for UI Issues || RizwanS || 06-Jan-2020 */
+    .ui-button:hover {
+        border: none;
+        background: #191818;
+        font-weight: normal;
+        color: #808080;
+    }
+    
+    .ui-button {
+        border: none;
+        color: #808080;
+        text-decoration: none;
+        BACKGROUND-COLOR: #2f2f2f;
+        font-size: 15px !important;
+        font-family: Montserrat !important;
+    }
+    
+    .ui-button:focus {
+        border: none;
+        color: #808080;
+        text-decoration: none;
+        BACKGROUND-COLOR: #2f2f2f;
+        font-size: 15px !important;
+        font-family: Montserrat !important;
+    }
+    
+    .ui-widget-content {
+        border: none;
+        background: #252525;
+        color: #808080;
+    }
+	
+	.ui-dialog .ui-dialog-buttonpane button {
+    margin: .5em .4em .5em 5px !important;
+}
+    
+    .ui-widget-content a:hover {
+        color: #afacac;
+        text-decoration: none;
+    }
+    
+    .ui-widget-content a {
+        color: #808080;
+    }
+
+    .ui-widget.ui-widget-content {
+        background-color: rgb(37, 37, 37) !important;
+       
+    }
+    .modal-content {
+   
+        background-color: #252525  !important;
+        color: #ababab  !important;
+    }
+    
+    .modal-header {
+ 
+        border-bottom: 1px solid #3a3939  !important;
+        border-top-left-radius: 0  !important;
+        border-top-right-radius: 0  !important;
+    }
+
+    .modal-footer {
+    
+        border-top: 1px solid #3a3939  !important;
+        
+    }
+    #myFile {
+        border: 1px solid #3a3939  !important;
+        margin-left: 38px !important;
+    }
+    .btnUpload {
+  
+        background-color: #000 !important;
+    }
+    #lblinfo_upload {
+        color:#85ca9e !important
+     
+    }
+
+    .inputClass[disabled] {
+        background: #292929 !important;
+    }
+.pricerTD {
+    padding-left: 19px;
+    padding-top: 10px;
+}
+
+.DivOverlayall {
+
+    width: 498px !important;
+    height: 450px !important;
+
+}
+
+/* - Chaitanya */
+.OverlayDiv{
+    width: 500px !important;
+}

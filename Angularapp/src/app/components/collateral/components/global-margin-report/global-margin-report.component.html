@@ -1,0 +1,229 @@
+<div class="mainContainer">
+  <div>
+    <div class="data-container">
+      <div class="header-text">
+        Collateral Details
+      </div>
+      <hr class="header-line">
+      <!-- <google-chart class="chart-margin" *ngIf="collateralChartData.length" #collateralChart
+        [id]="'collateral-chart-' + custId" [title]="collateralChartTitle" [type]="collateralChartType"
+        [data]="collateralChartData" [options]="collateralChartOptions" [columns]="collateralChartColumnNames">
+      </google-chart> -->
+      <div *ngIf="collateralChartData.length !== 0">
+        <app-pie-chart [legendHeight]="200" [width]="380" [graphdata]="collateralChartData" [legendVisible]=true [labelsVisible]=false>
+        </app-pie-chart>
+      </div>
+      <div class="table">
+        <div class="gridTableHeader">
+          <span class="head ">Collateral Type</span>
+
+          <span class="head " style="text-align: center;">Amount</span>
+
+        </div>
+        <div class="table-scroll">
+          <div class="gridTableINS" *ngFor="let cd of collateralDetailsData">
+            <span style="color: var(--inline-label);">{{cd.CollateralType}}</span>
+            <span class="align-right">{{baseCCY}}</span>
+            <span class="align-right" style="color: var(--inline-label);">{{cd.Amount | number:'1.2-2'}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="data-container">
+      <div class="header-text">
+        Exposure Details
+      </div>
+      <!-- <hr class="header-line"> -->
+      <div class="header-line"></div>
+      <div>
+        <!-- <google-chart class="chart-margin" *ngIf="exposureChartData.length" #exposureChart
+          [id]="'exposure-chart-' + custId" [title]="exposureChartTitle" [type]="exposureChartType"
+          [data]="exposureChartData" [options]="exposureChartOptions" [columns]="exposureChartColumnNames">
+        </google-chart> -->
+        <div>
+          <app-pie-chart *ngIf="exposureChartData.length !== 0" [legendHeight]="200" [width]="380" [legendVisible]=true [labelsVisible]=false
+            [graphdata]="exposureChartData">
+          </app-pie-chart>
+        </div>
+
+      </div>
+      <div class="table">
+        <div class="gridTableHeader">
+          <span class="head ">Exposure Type</span>
+
+          <span class="head " style="text-align: center;">Amount </span>
+        </div>
+        <!-- <hr> -->
+        <div class="table-scroll">
+          <div class="gridTableINS2" *ngFor="let cd of exposureDetailsData">
+            <span style="color: var(--inline-label);">{{cd.Facility}}</span>
+            <span>{{baseCCY}}</span>
+            <span style="text-align: right;">{{cd.Amount | number:'1.2-2'}}</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+  <div>
+    <div class="data-container">
+      <div class="header-text">
+        Limits and Collateral
+      </div>
+      <hr class="header-line">
+      <div class="gridTableINS" style="margin-top: 10px;">
+        <span>Margin Status</span>
+        <span></span>
+        <span class="AUM fs24" *ngIf="flag">{{this.ShortfallStatus || '-'}}</span>
+      </div>
+      <div class="gridTableINS">
+        <span>Total Collateral</span>
+
+        <span class="center ccy">{{baseCCY}}</span>
+
+        <span class="AUM fs24"> {{this.Total?.Collateral | number:'1.2-2' ||
+          '0.00'}}</span>
+      </div>
+      <div class="gridTableINS" style="margin-top: 10px;">
+        <span>Total Exposure</span>
+        <span class="center ccy">{{baseCCY}}</span>
+        <span class="AUM ">
+          {{this.Total?.Exposure | number:'1.2-2' || '0.00'}}</span>
+      </div>
+      <div class="gridTableINS " style="margin-top: 10px;">
+        <span>Shortfall Amount</span>
+        <span *ngIf="ShortfallAmount!=='-'" class="center ccy">{{baseCCY}}</span>
+        <span *ngIf="ShortfallAmount==='-'"></span>
+        <span class="AUM " style="color: red;" *ngIf="ShortfallAmount!=='-'">
+
+          {{this.ShortfallAmount| number:'1.2-2' ||'0.00'}}
+        </span>
+        <span style="text-align: right;" class="AUM center" *ngIf="ShortfallAmount==='-'">
+          -
+        </span>
+      </div>
+      <div class="gridTableINS" style="margin-top: 10px;">
+        <span>Margin Shortfall Since</span>
+        <span></span>
+        <span class="AUM center">{{this.ShortfallSince || '-'}}</span>
+
+      </div>
+      <div class="gridTableINS" style="margin-top: 10px;">
+        <span></span>
+        <span></span>
+        <div class="right revaluate">
+          <img *ngIf="RevaluateLoader" [src]="isProd ? 'assets/loading_dots.gif' : '../../assets/loading_dots.gif'"
+            height="150px" width="150px" />
+          <img [src]="isProd?'assets/recalculate1.png':'../../../../../assets/recalculate1.png'"
+            style="cursor: pointer;" title="Revaluate" value="Revaluate" (click)="Revaluate()" />
+        </div>
+      </div>
+
+    </div>
+    <div class="data-container">
+      <div class="header-text">
+        Margin Details
+      </div>
+      <hr class="header-line">
+      <div class="header-text" style="text-align: center;padding: 20px;">
+        <span class="margin-ratio-label AUM ">Margin Ratio:</span> {{collateralApi.FormatNumber(marginRatioValue) +
+        '%'}}
+      </div>
+      <div class="guageChart">
+        
+        <!-- <google-chart *ngIf="chart.data.length" #marginRatioChart [title]="chart.title" [type]="chart.type"
+          [data]="chart.data" [options]="chart.options" (ready)="customizeChart()">
+        </google-chart> -->
+        <!-- <div *ngIf = "marginRatio.length !== 0">
+          <app-radial-chart [chartdata] = "marginRatio"></app-radial-chart>
+        </div> -->
+        <div id="chart">
+          <apx-chart
+            [series]="marginChartOptions.series"
+            [chart]="marginChartOptions.chart"
+            [plotOptions]="marginChartOptions.plotOptions"
+            [labels]="marginChartOptions.labels"
+            [colors]="marginChartOptions.colors"
+          ></apx-chart>
+          <div class="hollow-value">
+            <span>{{ marginRatio }}%</span>
+            <span>Margin Ratio</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    
+  </div>
+
+  <div>
+
+
+    <div class="data-container" style="height: 196px;">
+      <div class="header-text">
+        Limits
+      </div>
+      <hr class="header-line">
+      <div class="gridTableINS1" style="margin-top: 15px;">
+        <span>Approved Limit</span>
+        <span>{{baseCCY}}</span>
+        <span class="AUM ">{{globalMarginData?.Approved_Limit|number:'1.2-2' || '0.00'}}</span>
+      </div>
+      <div class="gridTableINS1">
+        <span>Limit Used</span>
+        <span>{{baseCCY}}</span>
+        <span class="AUM ">{{globalMarginData?.Limit_Used| number:'1.2-2' || '0.00'}}</span>
+      </div>
+      <div class="gridTableINS1">
+        <span>Available Limit</span>
+        <span>{{baseCCY}}</span>
+        <span class="AUM ">{{globalMarginData?.Available_Limit|number:'1.2-2' || '0.00'}}</span>
+      </div>
+    </div>
+    <div class="data-container" style="height: 246px;">
+      <div class="header-text">
+        Margin Required
+      </div>
+      <hr class="header-line" style="height: 2px;">
+      <div class="gridTableINS1" style="margin-top: 15px;">
+        <span>IM</span>
+        <span>{{baseCCY}}</span>
+        <span class="AUM">{{globalMarginData?collateralApi.FormatNumber(globalMarginData.Exposure_Initial_Facility):null
+          |
+          number:'1.2-2' }}</span>
+
+      </div>
+      <div class="gridTableINS1">
+        <span>MM</span>
+        <span>{{baseCCY}}</span>
+        <span
+          class="AUM">{{globalMarginData?collateralApi.FormatNumber(globalMarginData.Exposure_Maintenance_Facility):null
+          |
+          number:'1.2-2'}}</span>
+
+      </div>
+      <div class="gridTableINS1">
+        <span>CM</span>
+        <span>{{baseCCY}}</span>
+        <span class="AUM">{{globalMarginData?collateralApi.FormatNumber(globalMarginData.Exposure_Close_Facility):null |
+          number:'1.2-2'}}</span>
+
+      </div>
+    </div>
+
+    <div class="data-container" *ngIf="limitExposureData?.length">
+      <div class="header-text">
+        Collateral and Exposure
+      </div>
+      <hr class="header-line">
+
+      <app-column-chart [title]="''" [graphdata]="limitExposureData"></app-column-chart>
+    </div>
+
+
+    
+  </div>
+
+</div>

@@ -1,0 +1,9 @@
+<div class="chart-legend">
+    <div class="inline-flex" *ngFor="let item of graphdata">
+        <div class="legend-box" [style.background-color]="item.color">
+        </div>
+        <div class="legend-text">
+            {{item.title}}
+        </div>
+    </div>
+</div>

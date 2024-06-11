@@ -1,0 +1,134 @@
+<div class="backtest-popup-inner">
+
+    <div class="backTestParamDiv">
+        <div>
+            <label>Note Master Id</label>
+        </div>
+        <div>
+            <input type="text" style="text-align: right" [(ngModel)]="backtestNMID" />
+        </div>
+        <div>
+            <label>Start Date</label>
+        </div>
+        <div>
+            <input type="date" [attr.data-date]="StartDate" [(ngModel)]="StartDate" value="StartDate" (change)="StartDate = selectDate(StartDate) ; getTestcaseonDateChange(StartDate)" />
+        </div>
+
+        <div>
+            <label>Test Cases</label>
+        </div>
+        <div>
+            <input type="text" style="text-align: right" [(ngModel)]="TestCases" (blur)="getStartDateNoofTestCase(TestCases)" />
+        </div>
+        <div>
+            <input type="button" class="button button-margin" value="Load" (click)="loadBtnClick()" />
+        </div>
+        <div>
+            <label [(ngModel)]="lblError" style="color: var(--red);">{{lblError}}</label>
+        </div>
+        <div id="dwnldIcon">
+            <div class="download" (click)="downloadBacktest()">
+                <app-svg-icons icon="{{ 'xls' }}" width="{{ '26px' }}" height="{{ '26px' }}">
+                </app-svg-icons>
+            </div>
+        </div>
+    </div>
+
+    <div class="backtestNMIDdetails">
+        <div class="bacltestProdInfo" *ngIf="this.productInfoArr.length > 0">
+            <div style="grid-column: 1 / span 2;">
+                <label class="box-header">Product information</label>
+            </div>
+            <div class="backtestInnerDiv">
+                <label class="heading">Template </label>
+                <label class="value">{{this.productInfoArr[0].Product}} </label>
+                <label class="heading">Trade Date </label>
+                <label class="value">{{(this.productInfoArr[0].TradeDate).split(' ')[0] | date:'dd-MMM-yyyy' }} </label>
+                <label class="heading">KnockIn (%)</label>
+                <label class="value">{{this.productInfoArr[0].KnockIn}} </label>
+                <label class="heading">KnockIn Frequency </label>
+                <label class="value">{{this.productInfoArr[0].KIFrequency}} </label>
+                <label class="heading">Strike (%) </label>
+                <label class="value">{{this.productInfoArr[0].Strike}} </label>
+                <label class="heading">Coupon Frequency </label>
+                <label class="value">{{this.productInfoArr[0].CouponFrequency}}</label>
+            </div>
+            <div class="backtestInnerDiv">
+                <label class="heading">Underlyings </label>
+                <label class="value">{{this.assetUnderlying}} </label>
+                <label class="heading">Tenor (Days)</label>
+                <label class="value">{{this.productInfoArr[0].Tenor}} </label>
+                <label class="heading">KnockOut (%) </label>
+                <label class="value">{{this.productInfoArr[0].KnockOut}} </label>
+                <label class="heading">KnockOut Frequency </label>
+                <label class="value">{{this.productInfoArr[0].KOFrequency}} </label>
+                <label class="heading">Coupon (%) </label>
+                <label class="value">{{this.productInfoArr[0].Coupon}} </label>
+            </div>
+        </div>
+        <div>
+            <div class="summaryGrid">
+                <div>
+                    <label class="box-header">Summary</label>
+                    <label></label>
+                </div>
+                <div class="backtestInnerSummary">
+                    <label class="heading">Total Cases KnockIn </label>
+                    <label class="value">{{this.KnockInCount}}</label>
+                    <label class="heading">Total Cases KnockIn (%)</label>
+                    <label class="value">{{this.KnockinPct}} </label>
+                    <label class="heading">Total Cases KnockOut </label>
+                    <label class="value">{{this.KnockOutCount}} </label>
+                    <label class="heading">Total Cases KnockOut (%) </label>
+                    <label class="value">{{this.KnockOutPct}} </label>
+                    <label class="heading">Average TWRR (%) </label>
+                    <label class="value">{{this.twrrAvg}} </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="this.tradingHistoryArr.length === 0 && this.whatIfBackTestArr.length === 0">
+        <div class="loader-marketdata">
+            <div class="multi-ripple">
+                <div></div>
+                <div></div>
+            </div>
+        </div>
+    </div>
+    <div id="graphSection" *ngIf="this.whatIfBackTestArr?.length > 0">
+
+        <div class="line-chart" *ngIf="chartData.length > 0">
+            <app-lcm-line-chart [chartDataX]="TradingDays" [graphdata]="chartData"></app-lcm-line-chart>
+        </div>
+
+        <div id="whatifbacktestTable" style="min-height: 100px !important; height: 365px; overflow: auto">
+            <table>
+                <tr>
+                    <th>Test Case No.</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>ROI (%)</th>
+                    <th>TWRR (%)</th>
+                    <th>Redemption Day</th>
+                    <th>Knock In</th>
+                </tr>
+                <tr *ngFor="let data of whatIfBackTestArr; let i = index">
+                    <td>{{ i+1 }}</td>
+                    <td>{{ data.StartDate }}</td>
+                    <td>{{ data.EndDate }}</td>
+                    <td>{{ data.ROIPercentage }}</td>
+                    <td>{{ data.twrr }}</td>
+                    <td>{{ data.AutocallDay }}</td>
+                    <td>{{ data.KnockIn }}</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="line-chart" *ngIf="barChartY.length > 0 && barChartX.length > 0">
+            <app-lcm-bar-chart [graphdatay]="barChartY" [graphdatax]="barChartX" [xlabel]="'Redemption Days'" [noOfCol]="barChartX.length"></app-lcm-bar-chart>
+        </div>
+        <div class="line-chart" *ngIf="twrrChartY.length > 0 && twrrChartX.length > 0">
+            <app-lcm-bar-chart [graphdatay]="twrrChartY" [graphdatax]="twrrChartX" [xlabel]="'TWRR'" [noOfCol]="twrrChartXSorted.length"></app-lcm-bar-chart>
+        </div>
+    </div>
+</div>

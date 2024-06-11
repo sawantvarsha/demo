@@ -1,0 +1,223 @@
+// <Start> Vaibhav B | 20-01-2023 | MultiSelect Dropdown changes in 1Europe | Assigned by Pranav D -->
+.custom-ddl {
+    //  width: 200px; //Added by Apurva
+    //width:195px;// 205px;
+    min-width : 115px; //suggested by Nitish - Added By Gargi P // Changed by Jyoti S || 04-Dec-2023 || F5SAAINT-992
+    max-width: 200px;//Changed by Jyoti S || 04-Dec-2023 || F5SAAINT-992
+    height: 35px;
+    position: relative;
+}
+.custom-ddl-multi {
+    height: 35px;
+    position: relative;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    min-width: 8em !important;
+    width: 100%;
+    max-width: none !important;
+    font-family: var(--font-family);
+    font-size: 13px !important;
+    background-color: var(--select-bg);
+    border-bottom: 1px solid #bbb!important;
+    border-radius: 0!important;
+    text-align: left;
+    margin-top: 0.1rem;
+}
+:focus {
+    /* box-shadow: 2px 2px 2px 1px rgba(131, 131, 131, 0.6); */
+    box-shadow: 1px 1px 1px 1px rgba(131, 131, 131, 0.6);
+    outline: none !important;
+}
+label {
+    margin: 0;
+}
+
+.ddl-input,
+.ddl-options,
+.ddl-options-multi {
+    position: absolute;
+    width: 100%;
+}
+
+.ddl-input {
+    padding: 5px;
+    height: 100%;
+    text-align: start;
+    border: none;
+    border-radius: 0.2em;
+    font-family: var(--font-family);
+    font-size: 13px !important;
+    background-color: var(--input-bg);
+    display: grid;
+    grid-template-columns: 1fr 15px;
+    align-items: center;
+    color: var(--text);
+}
+.ddl-input-multi {
+    padding: 5px;
+    height: 100%;
+    text-align: start;
+    border: none;
+    border-radius: 0.2em;
+    font-family: var(--font-family);
+    font-size: 13px !important;
+    background-color: transparent;
+    display: grid;
+    grid-template-columns: 1fr 15px;
+    align-items: center;
+    width:100%;
+    
+}
+.ddl-input-disabled {
+    padding: 5px;
+    height: 100%;
+    text-align: start;
+    border: none;
+    border-radius: 0.2em;
+    font-family: var(--font-family);
+    font-size: 13px !important;
+    background-color: var(--disabled); // FIN1EURINT-454 || Disabled fields background color should be grey
+    display: grid;
+    grid-template-columns: 1fr 15px;
+    align-items: center;
+    width:100%;
+    color: var(--select-text);
+    pointer-events: none;
+}
+.disabled {
+    opacity: 0.5;
+    pointer-events: none; 
+  }
+.ddl-item > input[type=checkbox]{
+    pointer-events: none;
+}
+.ddl-text {
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-family: var(--font-family);
+    font-size: 13px !important;
+    padding-left: inherit;
+    color: var(--select-text);
+}
+
+.ddl-options {
+    top: 101%;
+    background-color:var(--containers);//rgb(245 249 250 / 90%);// var(--input-bg);
+    z-index: 9999;
+    cursor: pointer;
+    position: absolute;
+    width: auto; //FSLINT-41 ||Dropdown CSS Issue || By Gargi || 02-01-24
+    border: 1px solid #aeaeae;//1px solid #262626;
+    box-shadow: 0px 3px 11px -1px rgb(0 0 0 / 40%);
+// height: 110px;// Changed by Jyoti S || 04-Dec-2023 || F5SAAINT-992
+    min-width: 115px; //FSLINT-41 ||Dropdown CSS Issue || By Gargi || 02-01-24
+    max-width: 200px; //FSLINT-41 ||Dropdown CSS Issue || By Gargi || 02-01-24
+
+}
+.ddl-options-multi {
+    background-color: var(--input-bg);
+    z-index: 9999;
+    border: 1px solid #ddd;
+    /* border: 1px solid #000000; */
+    cursor: pointer;
+    position: absolute;
+    width: 100%;
+    background-color: var(--select-bg);
+    box-shadow: 0px 3px 11px 4px rgb(136 136 136 / 40%);
+}
+
+.ddl-item {
+    // display: grid;
+    // grid-template-columns: auto 1fr;
+    // align-items: center;
+    // gap: 10px;
+    // width: 100%;
+    // padding: 0.01rem 1rem;
+    // clear: both;
+    // white-space: nowrap;
+    // background-color: transparent;
+    // border: 0;
+    // text-align: left; 
+    // Changed by Jyoti S || 04-Dec-2023 || F5SAAINT-992 || START
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    grid-gap: 10px;
+    gap: 10px;
+    width: auto;
+    //padding: .01rem 1rem;
+    padding: .01rem 0.4rem; //Added by Apurva
+    clear: both;
+    white-space: nowrap;
+    background-color: transparent;
+    border: 0;
+    text-align: left;
+    justify-content: start;
+    align-content: space-around;
+}
+// Changed by Jyoti S || 04-Dec-2023 || F5SAAINT-992 || END
+
+.ddl-open {
+    // max-height changed by SandipA for Regulatory popup issue || 04-Apr-2023
+    //max-height: 200px;
+    max-height: 170px;// Changed by Jyoti S || 04-Dec-2023 || F5SAAINT-992
+    // display: grid;
+    overflow-y: auto;
+}// Changed by Jyoti S || 04-Dec-2023 || F5SAAINT-992
+
+.ddl-selected {
+    background-color: #d2d2d2;
+}
+
+.ddl-item:hover {
+    background: var(--dropdown-hover) !important;
+    color: var(--dropdown-hover-text) !important;
+    cursor: pointer;
+}
+
+// <End> Vaibhav B | 20-01-2023 | MultiSelect Dropdown changes in 1Europe | Assigned by Pranav D -->
+.ip-border{//Added by Varsha || 31-Mar-2023
+    border: 1px solid var(--btn-border);// Changed by Jyoti S || 04-Dec-2023 || F5SAAINT-992 || 
+    outline: none;
+    border: var(--input-border);
+    // border-bottom: var(--input-border-bottom) !important;// Changed by Jyoti S || 04-Dec-2023 || F5SAAINT-992
+    background-color: var(--input-bg);
+    color: var(--input-text);
+    // border-radius: var(--input-radius);// Changed by Jyoti S || 04-Dec-2023 || F5SAAINT-992
+}
+// button.ip-border:active, button.ip-border:focus {
+//     border: solid 1px var(--light-gray) !important;
+// }
+
+// Multi select dropdown with search option | 12-10-2023
+.ddlSearch{
+    width: 115px !important;  //Suggested by Nitish
+}
+
+.ddlSearch-item{
+    width: 100% !important;
+    white-space: normal !important;
+}
+
+.ddlSearch-open{
+    max-height: 325px;
+    overflow-y: auto;
+    height: 325px;
+    min-height: 100px;
+    padding-bottom: 10px;
+    width: 175px;
+}
+
+.multiSelectSearch{
+    margin-bottom: 8px;
+}
+
+.wrapText{
+    text-wrap:wrap;
+}
+
+.highlight-border {
+    border-bottom: 2px solid var(--red) !important;
+}

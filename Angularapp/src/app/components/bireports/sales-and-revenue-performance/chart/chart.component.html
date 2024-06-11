@@ -1,0 +1,122 @@
+<div class="chart-container">
+  <div class="chart-item-a">
+    <app-treemap-currency></app-treemap-currency>
+  </div>
+  <div class="chart-item-b">
+    <div style="position: relative;">
+      <div style="position: absolute;right: 0;">
+        <!-- <button class="sort" mat-icon-button [matMenuTriggerFor]="mainMenu">
+          <span class="material-icons" matTooltip="More options">more_horiz</span>
+        </button>
+
+        <mat-menu #mainMenu="matMenu">
+          <button mat-menu-item (click)="filterDataCurrency('Ascending')">
+            <span class="tick" *ngIf="selectedOptionCurrency === 'Ascending'">&#10003;</span> Sort Ascending
+          </button>
+          <button mat-menu-item (click)="filterDataCurrency('Descending')">
+            <span class="tick" *ngIf="selectedOptionCurrency === 'Descending'">&#10003;</span> Sort Descending
+          </button>
+          <button mat-menu-item [matMenuTriggerFor]="subMenu1">
+            Sort By
+          </button>
+        </mat-menu>
+
+        <mat-menu #subMenu1="matMenu">
+          <button (click)="filterData1Currency('Currency')" mat-menu-item>
+            <span class="tick" *ngIf="selectedOption1Currency === 'Currency'">&#10003;</span> Currency
+          </button>
+          <button (click)="filterData1Currency('volume')" mat-menu-item>
+            <span class="tick" *ngIf="selectedOption1Currency === 'volume'">&#10003;</span> Trade Volume (USD eq.)
+          </button>
+        </mat-menu> -->
+
+        <div class="button-group">
+          <button class="sort" (click)="display()">
+            <span class="material-icons">more_horiz</span>
+          </button>
+    
+          <div class="menu"  *ngIf="showDiv === 'true'" >
+            <button class="sorting" (click)="filterDataCurrency('Ascending')">
+              <span class="tick" *ngIf="selectedOptionCurrency === 'Ascending'">&#10003;</span> Sort Ascending
+            </button>
+            <button class="sorting" (click)="filterDataCurrency('Descending')">
+              <span class="tick" *ngIf="selectedOptionCurrency === 'Descending'">&#10003;</span> Sort Descending
+            </button>
+    
+            <div class="sub-menu">
+              <button class="sorting" (click)="filterData1Currency('Currency')" mat-menu-item>
+                <span class="tick" *ngIf="selectedOption1Currency === 'Currency'">&#10003;</span> Currency
+              </button>
+              <button class="sorting" (click)="filterData1Currency('volume')" mat-menu-item>
+                <span class="tick" *ngIf="selectedOption1Currency === 'volume'">&#10003;</span> Trade Volume (USD eq.)
+              </button>
+            </div>
+    
+          </div>
+        </div>
+      </div>
+    </div>
+    <app-doughnut-chart-currency></app-doughnut-chart-currency>
+  </div>
+  <div class="chart-item-c">
+    <app-treemap-payoff></app-treemap-payoff>
+  </div>
+  <div class="chart-item-d">
+    <div style="position: relative;">
+      <div style="position: absolute;right: 0;">
+        <!-- <button class="sort" mat-icon-button [matMenuTriggerFor]="mainMenu2">
+          <span class="material-icons" matTooltip="More options">more_horiz</span>
+        </button>
+
+        <mat-menu #mainMenu2="matMenu">
+          <button mat-menu-item (click)="filterDataPayoff('Ascending')">
+            <span class="tick" *ngIf="selectedOptionPayoff === 'Ascending'">&#10003;</span> Sort Ascending
+          </button>
+          <button mat-menu-item (click)="filterDataPayoff('Descending')">
+            <span class="tick" *ngIf="selectedOptionPayoff === 'Descending'">&#10003;</span> Sort Descending
+          </button>
+          <button mat-menu-item [matMenuTriggerFor]="subMenu2">
+            Sort By
+          </button>
+        </mat-menu>
+
+        <mat-menu #subMenu2="matMenu">
+          <button (click)="filterData1Payoff('PayOff')" mat-menu-item>
+            <span class="tick" *ngIf="selectedOption1Payoff === 'PayOff'">&#10003;</span> PayOff
+          </button>
+          <button (click)="filterData1Payoff('volume')" mat-menu-item>
+            <span class="tick" *ngIf="selectedOption1Payoff === 'volume'">&#10003;</span> Trade Volume (USD eq.)
+          </button>
+        </mat-menu> -->
+        
+    <div class="button-group">
+      <button class="sort"(click)="display1()">
+        <span class="material-icons">more_horiz</span>
+      </button>
+
+      <div class="menu" *ngIf="showDiv1 === 'true'" >
+
+        <button class="sorting" (click)="filterDataPayoff('Ascending')">
+          <span class="tick" *ngIf="selectedOptionPayoff === 'Ascending'">&#10003;</span> Sort Ascending
+        </button>
+        <button class="sorting" (click)="filterDataPayoff('Descending')">
+          <span class="tick" *ngIf="selectedOptionPayoff === 'Descending'">&#10003;</span> Sort Descending
+        </button>
+
+        <div class="sub-menu">
+          <button class="sorting" (click)="filterData1Payoff('PayOff')" mat-menu-item>
+            <span class="tick" *ngIf="selectedOption1Payoff === 'PayOff'">&#10003;</span> PayOff
+          </button>
+          <button class="sorting" (click)="filterData1Payoff('volume')" mat-menu-item>
+            <span class="tick" *ngIf="selectedOption1Payoff === 'volume'">&#10003;</span> Trade Volume (USD eq.)
+          </button>
+        </div>
+
+      </div>
+    </div>
+      </div>
+      <app-doughnut-chart-payoff></app-doughnut-chart-payoff>
+    </div>
+
+  </div>
+</div>

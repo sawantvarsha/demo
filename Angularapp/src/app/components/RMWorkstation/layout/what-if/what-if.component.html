@@ -1,0 +1,472 @@
+<div class="container" [ngClass]="{ blur: GBMFlag === true }">
+  <div class="topbar">
+    <div style="display: flex; align-items: center">
+      <app-svg-icons [icon]="'back-button'" [width]="'40'" [height]="'40'" [fill]="'var(--headers)'"
+        (click)="clickBack()"></app-svg-icons>
+
+      <div class="page-title">What-If</div>
+    </div>
+
+    <app-svg-icons style="align-items: center" [icon]="'refresh'" [width]="'26'" [height]="'26'" [fill]="'var(--green)'"
+      (click)="Refresh()">
+    </app-svg-icons>
+  </div>
+
+  <div class="filter-header">
+    <div style="color: var(--label); font-size: 20px; margin-bottom: 5px">
+      {{ EquityAutocallableNote }}
+    </div>
+    <div class="card">
+      <div class="cardbar">
+        <div class="ddTray">
+          <select class="label" [(ngModel)]="selectedSet" (ngModelChange)="setChanged()" name="fieldName"
+            ngDefaultControl>
+            <option *ngFor="let d of setDropdown" value="{{ d }}">
+              Set {{ d }}
+            </option>
+          </select>
+        </div>
+
+        <div class="addSet">
+          <app-svg-icons [icon]="'add-simple'" [width]="'15'" [height]="'15'" [fill]="'var(--label)'"
+            (click)="addSet()">
+          </app-svg-icons>
+        </div>
+
+        <div></div>
+
+        <div class="autoTray">
+          <button (click)="autoSelected = !autoSelected; autoBtnClick()" class="button" [disabled]="autoBtnDisabled">
+            Auto
+          </button>
+        </div>
+
+        <div>
+          <button class="button" (click)="plotBtn()" [disabled]="plotBtnDisabled">
+            Plot
+          </button>
+        </div>
+
+        <!-- <div class="docgenTray">
+                    <input type="checkbox" class="cbsize">
+                    <div class="align label"> Include in Docgen </div>
+                </div> -->
+
+        <div class="iconTray">
+          <div [ngClass]="{ disbaledButton: disableDelete}">
+            <app-svg-icons [icon]="'delete'" [width]="'22'" [height]="'22'" style="justify-content: center; padding: 5%"
+              (click)="DeleteSet()">
+            </app-svg-icons>
+          </div>
+          <div>
+            <app-svg-icons icon="{{ 'pdf' }}" [width]="'26'" [height]="'26'" style="justify-content: center">
+            </app-svg-icons>
+          </div>
+          <div>
+            <app-svg-icons [icon]="'xls'" [width]="'26'" [height]="'26'" style="justify-content: center">
+            </app-svg-icons>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="scenarioCard">
+    <div class="scenarioTabs">
+      <div class="individualCard" [ngClass]="myVar" [(ngModel)]="scenariosArray"
+        *ngFor="let scenario of scenariosArray; let i = index" ngDefaultControl>
+        <div>
+          <div *ngIf="!editFlag" class="cardHeader">
+            <div style="
+                padding-left: 5px;
+                display: flex;
+                justify-content: flex-start;
+                align-items: baseline;
+              ">
+              Scenario
+              <span style="
+                  color: var(--label);
+                  font-size: 25px;
+                  padding-bottom: 10px;
+                  padding-left: 5px;
+                ">{{ scenario.scenarioName }}</span>
+            </div>
+            <div>
+              <!-- <img *ngIf='!editFlag' class="editIcon" (click)="editFlag = !editFlag" src="assets/App_Resorces/Night/edit-icon.png"> -->
+              <app-svg-icons [icon]="'edit-icon'" [width]="'15'" [height]="'15'" [fill]="'var(--icons)'"
+                (click)="editFlag = !editFlag">
+              </app-svg-icons>
+            </div>
+
+            <u style="text-align: end; color: var(--label)"> Save </u>
+            <div>
+              <img class="cancel-btn" (click)="cancelScenario(i)" src="assets/cancel_icon.png" />
+            </div>
+          </div>
+          <div *ngIf="editFlag" class="rename">
+            <input style="width: auto" type="text" [(ngModel)]="scenario.scenarioName"
+              placeholder="{{ scenario.scenarioName }}" (keyup.enter)="editFlag = !editFlag" ngDefaultControl />
+            <div class="button1" (click)="editFlag = !editFlag">Save</div>
+          </div>
+
+          <div class="gridAlign">
+            <!--[ngClass]="{'blur': (editFlag === true)}" -->
+            <div class="innerGrid" *ngFor="let share of scenario.shares; let j = index">
+              <!-- <div> {{name}} </div>  -->
+              <div>
+                <!-- <app-svg-icons 
+                                    [icon]="'Google'" 
+                                    [width]="'15'"
+                                    [height]="'15'"
+                                    [fill]="'var(--icons)'">  
+                                </app-svg-icons> -->
+                <!-- <img class="logo" src="assets/Share Logos/{{share.name}}.png"> -->
+                <span> {{ share.name }}</span>
+              </div>
+              <div [ngClass]="{linkDiv: !share.isGBM && !share.isShape,infoDiv: share.isGBM || share.isShape}">
+                <div *ngFor="let landingOption of scenario.landingoptions; let k = index">
+                  <u *ngIf="!share.isGBM && !share.isShape" class="links" (click)="selectLandingOption(i, j, k)">
+                    {{ landingOption }}
+                  </u>
+                  <!-- <div *ngIf="share.isGBM" style="font-size: small;">{{ scenario.info[k] | number : '1.2-2'}} </div> GBM({{scenario.GBM[1] | number : '1.2-2' }})({{scenario.GBM[2]}})  -->
+                </div>
+                <div *ngIf="share.isGBM" style="font-size: small">
+                  {{ scenario.info[j] }}
+                </div>
+                <div *ngIf="share.isShape" style="font-size: small">
+                  {{ scenario.info[j] }}
+                </div>
+              </div>
+            </div>
+            <div *ngIf="showShapesPanel" class="overlay">
+
+
+              <div class="shapesDiv">
+                <div class="closebtn">
+                  <app-svg-icons [icon]="'cancel-icon'" [width]="'15'" [height]="'15'"
+                    (click)="showShapesPanel = false" class="closebtn">
+                  </app-svg-icons>
+                </div>
+                <div class="tabs tab-active">
+                  <div class="right label">Shapes</div>
+                </div>
+                <div class="shapesArray">
+                  <app-svg-icons style="margin: auto" [icon]="'linear-ascending'" [width]="'35'" [height]="'35'"
+                    (click)="ButtonAscending_Click()"></app-svg-icons>
+                  <app-svg-icons style="margin: auto"[icon]="'linear-descending'" [width]="'35'" [height]="'35'"
+                    (click)="ButtonDescending_Click()"></app-svg-icons>
+                  <app-svg-icons style="margin: auto"[icon]="'semicircle'" [width]="'35'" [height]="'35'"
+                    (click)="ButtonSemicircle_Click()">
+                  </app-svg-icons>
+                  <app-svg-icons style="margin: auto"[icon]="'inverted-semicircle'" [width]="'35'" [height]="'35'"
+                    (click)="ButtonInvertedSemicircle_Click()"></app-svg-icons>
+                  <app-svg-icons style="margin: auto"[icon]="'hyperbola-quadrant2'" [width]="'35'" [height]="'35'"
+                    (click)="ButtonHyperbola2_Click()"></app-svg-icons>
+                  <app-svg-icons style="margin: auto"[icon]="'hyperbola-quadrant4'" [width]="'35'" [height]="'35'"
+                    (click)="ButtonHyperbola4_Click()"></app-svg-icons>
+                  <app-svg-icons style="margin: auto"[icon]="'hyperbola-quadrant3'" [width]="'35'" [height]="'35'"
+                    (click)="ButtonHyperbola3_Click()"></app-svg-icons>
+                  <app-svg-icons style="margin: auto"[icon]="'hyperbola-quadrant1'" [width]="'35'" [height]="'35'"
+                    (click)="ButtonHyperbola1_Click()"></app-svg-icons>
+                  <app-svg-icons style="margin: auto"[icon]="'sin'" [width]="'35'" [height]="'35'" (click)="ButtonSin_Click()">
+                  </app-svg-icons>
+                  <app-svg-icons style="margin: auto"[icon]="'reverse-sin'" [width]="'35'" [height]="'35'"
+                    (click)="ButtonReverseSin_Click()">
+                  </app-svg-icons>
+                  <app-svg-icons style="margin: auto"[icon]="'cos'" [width]="'35'" [height]="'35'" (click)="ButtonCos_Click()">
+                  </app-svg-icons>
+                  <app-svg-icons style="margin: auto"[icon]="'reverse-cos'" [width]="'35'" [height]="'35'"
+                    (click)="ButtonReverseCos_Click()">
+                  </app-svg-icons>
+                  <app-svg-icons style="margin: auto"[icon]="'nike'" [width]="'35'" [height]="'35'" (click)="ButtonNike_Click()">
+                  </app-svg-icons>
+                  <app-svg-icons style="margin: auto"[icon]="'reverse-nike'" [width]="'35'" [height]="'35'"
+                    (click)="ButtonReverseNike_Click()"></app-svg-icons>
+                  <app-svg-icons style="margin: auto"[icon]="'nike-mirror'" [width]="'35'" [height]="'35'"
+                    (click)="ButtonNikeMirror_Click()">
+                  </app-svg-icons>
+                  <app-svg-icons style="margin: auto"[icon]="'reverse-nike-mirror'" [width]="'35'" [height]="'35'"
+                    (click)="ButtonReverseNikeMirror_Click()"></app-svg-icons>
+                  <app-svg-icons style="margin: auto"[icon]="'valley'" [width]="'35'" [height]="'35'" (click)="ButtonValley_Click()">
+                  </app-svg-icons>
+                  <app-svg-icons style="margin: auto"[icon]="'mountain'" [width]="'35'" [height]="'35'" (click)="ButtonHill_Click()">
+                  </app-svg-icons>
+                  <app-svg-icons style="margin: auto"[icon]="'up-and-flat'" [width]="'35'" [height]="'35'"
+                    (click)="ButtonUpAndFlat_Click()">
+                  </app-svg-icons>
+                  <app-svg-icons style="margin: auto"[icon]="'down-and-flat'" [width]="'35'" [height]="'35'"
+                    (click)="ButtonDownAndFlat_Click()"></app-svg-icons>
+                </div>
+                <div class="shapesFooter">
+                  
+
+                  <div class="sf2">
+                    <div class="align">Stretch By</div>
+                    <input style="width: 120px" type="text" [(ngModel)]="stretchBy"/>
+                    <!-- // ChitraM | 3-Jan-22 | shapes what-if not generating | added stretched by -->
+                    <!--  <app-svg-icons [icon]="'arrow'" [width]="25" [height]="25"></app-svg-icons> -->
+                  </div>
+                  <div class="sf1">
+                    <input type="checkbox" class="cbsize" />
+                    <div class="align">Smoothen Curve</div>
+                  </div>
+
+                  <div class="sf3">
+                    <div class="align">As Of Date</div>
+                    <input style="width: 120px" type="date" class="date-field" />
+                  </div>
+                </div>
+
+                <div></div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div style="padding-left: 10px; color: var(--label)">
+              Payoff Outcome
+            </div>
+            <div class="gridAlign1">
+              <div *ngIf="showPayoff" class="textPayoff" [innerHTML] = "PayoffArray[i]">
+                <!-- {{ PayoffArray[i] }} -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="individualCard emptycard">
+        <div class="addScene">
+          <img class="icon" (click)="addScenario()" src="assets/App_Resorces/yellow/plus.png" />
+        </div>
+        <div style="
+            cursor: pointer;
+            width: -webkit-fill-available;
+            position: relative;
+          ">
+          <app-svg-icons class="searchsvgAlign" icon="{{ 'icon-search' }}" [width]="'20'" [height]="'20'">
+          </app-svg-icons>
+          <input class="svgClass" placeholder="Search" (focus)="textChangeSearch($event)"
+            (keyup)="textChangeSearch($event)" (keydown.tab)="textChangeSearch($event)" [(ngModel)]="searchBarString" />
+
+          <div *ngIf="displaySuggestions" class="search-suggestion">
+            <div class="scroll">
+              <div class="btnsize2" *ngFor="
+                  let item of scenariosArray
+                    | filter1: { scenarioName: searchBarString };
+                  let kk = index
+                " #listTrigger tabindex="-1" (keydown)="onKeyDown($event, kk)">
+                <div (click)="selectedSecurityfromSearch(item)">
+                  {{ item.scenarioName }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="configErroFlag" class="errorMsg">{{ errorMsg }}</div>
+
+  <div *ngIf="showPlotArea" class="graphArea">
+    <div class="plotHeader">
+      <!-- <button class="button" (click)="plotBtn()"> Plot </button> -->
+      <!-- <div class="togglebtn">
+        <label class="tablinks" name="tablink" (click)="actualOrSpot('Actual')"> Actual </label>
+        <label class="switch">
+            <input
+            type="checkbox"
+            [(ngModel)]='graphType'
+            class="switch"
+            />
+            <span class="slider round"></span>
+        </label>
+        <label class="tablinks" name="tablink" (click)="actualOrSpot('Spot')"> % of Spot </label>                
+      </div> -->
+      <div></div>
+      <div class="toggle-switch" (click)="
+          StatisticDataType === 'PercentageOfSpot'
+            ? (StatisticDataType = 'Actual')
+            : (StatisticDataType = 'PercentageOfSpot')
+        ">
+        <div style="align-items: center; display: flex; justify-content: center"
+          [ngClass]="{ active: StatisticDataType === 'PercentageOfSpot' }">
+          <div (click)="fnActualOrSpot('Spot')">% Of Spot</div>
+        </div>
+        <div style="align-items: center; display: flex; justify-content: center"
+          [ngClass]="{ active: StatisticDataType === 'Actual' }">
+          <div (click)="fnActualOrSpot('Actual')">Actual</div>
+        </div>
+      </div>
+
+      <div style="display: flex; justify-content: center" (click)="TogglePlotType()">
+        <app-svg-icons *ngIf="showChartFlag" [icon]="'expand-table'" style="padding-top: 4px" [width]="'26'"
+          [height]="'26'" [fill]="'var(--label)'">
+        </app-svg-icons>
+        <app-svg-icons *ngIf="!showChartFlag" class="svgAlign" [icon]="'chart-line-icon'" title="Tabular Data"
+          [width]="'30'" [height]="'30'" [fill]="'var(--label)'"></app-svg-icons>
+      </div>
+    </div>
+
+    <div *ngIf="showChartFlag" class="chartingGrid">
+      <div style="background-color: var(--containers); padding: 10px;">
+        <div class="scenarioDetails">
+          <div style="display: grid; grid-template-columns: 50px auto">
+            <div style="color: var(--label);">Scenario</div>
+            <div style="text-align: center; color: var(--label);">Underlyings</div>
+          </div>
+
+          <div class="underlying-container">
+            <div style="margin: auto;">
+              <button [ngClass]="{
+                  active: allScenarioSelected === true,
+                  btnAllDeselected: allScenarioSelected === false
+                }" class="button1 select-box" (click)=" selectAllScenarios()">
+                All
+              </button>
+            </div>
+            <!-- <div *ngFor="let scenario1 of scenariosArray" style=" display: grid;grid-template-columns: 34% 33% 33%;">
+                      <div *ngFor="let temp of scenario1.name" ><img class="logo" src="assets/Share Logos/{{temp}}.png"> </div>
+                    </div>  -->
+            <div style="display: flex; justify-content: space-around; font-size: 13px;">
+              <div *ngFor="let share of sharesOrder">
+                {{ share }}
+                <!-- <img class="logo" src="assets/Share Logos/{{shareNameListDisplay[0]}}.png"> -->
+              </div>
+            </div>
+
+            <div style="display: grid; justify-content: center;gap: 10px;">
+              <button [ngClass]="{
+                  button2: selectCount[k],
+                  active: selectCount[k]
+                }" class="button2 select-box" *ngFor="let scenario1 of scenariosArray; let k = index"
+                (click)="scenarioSelection(k);">
+                {{ scenario1.scenarioName }}
+              </button>
+            </div>
+            <div class="color-lines" [ngClass]="{row1: scenariosArray.length === 1, row2: scenariosArray.length === 2, row3: scenariosArray.length === 3, row4: scenariosArray.length === 4}">
+              <!-- <ng-template ngFor let-item [ngForOf]="colors"  let-i="index" >
+                <div class="line" [ngStyle]="{ 'backgroundColor': colors[k], 'display' : k > scenariosArray.length * 2 ? 'none' : 'block'  }"></div>
+              </ng-template> -->
+              <div style="margin: auto;" *ngFor="let color of colors; let k = index" [ngStyle]="{ 'display' : k > (scenariosArray.length * sharesOrder.length)-1 ? 'none' : 'block'  }">
+                <div class="line" [ngStyle]="{ 'backgroundColor': colors[k]}"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="prodDetDiv">
+          <div class="prodDetHeader"> Product Details </div>
+          <div class="productDetails" *ngFor="let info of givenInfo; let k = index">
+          <!-- <div style=" padding: 5px 10px;" > -->
+            <div>
+            <!-- {{info}} -->
+            {{ info }} :
+          </div>
+          <div>
+            {{ this.givenInfoData[k] }}
+          </div>
+        </div>
+        </div>
+      </div>
+
+      <div *ngIf="showChart && allScenarioSelected">
+        <app-line-chart [name]="'d'" [title]="'d'" [_graphdata]="finalGraphData" [_colors]="allColors"></app-line-chart>
+      </div>
+      <div *ngIf="showChart && selectCount[0]">
+        <app-line-chart [name]="'d'" [title]="'d'" [_graphdata]="finalGraphData1" [_colors]="colorsRow1"></app-line-chart>
+      </div>
+      <div *ngIf="showChart && selectCount[1]">
+        <app-line-chart [name]="'d'" [title]="'d'" [_graphdata]="finalGraphData2" [_colors]="colorsRow2"></app-line-chart>
+      </div>
+      <div *ngIf="showChart && selectCount[2]">
+        <app-line-chart [name]="'d'" [title]="'d'" [_graphdata]="finalGraphData3" [_colors]="colorsRow3"></app-line-chart>
+      </div>
+      <div *ngIf="showChart && selectCount[3]">
+        <app-line-chart [name]="'d'" [title]="'d'" [_graphdata]="finalGraphData4" [_colors]="colorsRow4"></app-line-chart>
+      </div>
+      <div *ngIf="!showChart">
+        <div class="loader-whatif">
+          <div class="multi-ripple">
+            <div></div>
+            <div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="showTableFlag" class="chartingGrid2">
+      <div></div>
+      <div class="tableDiv">
+        <table>
+          <thead class="stickyHeader">
+            <tr class="dtheader">
+              <th class="simDay">Simulation Day</th>
+              <th *ngFor="let scene of scenariosArray">
+                <div style="margin: 5px">Scenario {{ scene.scenarioNo }}</div>
+                <div style="
+                    display: flex;
+                    justify-content: space-around;
+                    margin: 5px;
+                  ">
+                  <div style="width: 90px" *ngIf="shares[0]">
+                    {{ shares[0] }}
+                  </div>
+                  <div style="width: 90px" *ngIf="shares[1]">
+                    {{ shares[1] }}
+                  </div>
+                  <div style="width: 90px" *ngIf="shares[2]">
+                    {{ shares[2] }}
+                  </div>
+                </div>
+                <!-- <div *ngFor="let header of shares; let i = index;" style="display: flex;">  
+                                    <div class="securityHeader"> {{header || translate}}</div> 
+                                </div> -->
+              </th>
+              <!-- <th *ngFor="let scene of scenariosArray;"> Scenario {{scene.scenarioNo}} </th>
+                            <th *ngFor="let header of tableHeader; let i = index;">
+                                <label> {{header || translate}}</label>
+                            </th> -->
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="tableRow" *ngFor="let data of TableData; let i = index">
+              <td style="
+                  display: flex;
+                  justify-content: center;
+                  width: 130px;
+                  text-align: center;
+                ">
+                {{ i }}
+              </td>
+              <td style="display: flex; justify-content: center" *ngFor="let d of data">
+                {{ d }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="GBMCard" *ngIf="GBMFlag">
+  <div class="GBMHeader">Geometric Brownian Motion</div>
+
+  <div class="volPart">
+    <div style="padding-top: 5px">Scenario volatility (%)</div>
+    <div>
+      <input type="text" [(ngModel)]="volatility" />
+    </div>
+    <div></div>
+    <div style="padding-top: 5px">Scenario Final Spot (%)</div>
+    <div>
+      <input type="text" [(ngModel)]="spotPerc" />
+    </div>
+  </div>
+
+  <div class="GenButton">
+    <button class="button" (click)="GBMFlag = !GBMFlag; genGBM()">
+      Generate
+    </button>
+  </div>
+</div>

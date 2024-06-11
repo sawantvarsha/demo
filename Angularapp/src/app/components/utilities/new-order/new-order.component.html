@@ -1,0 +1,234 @@
+<div class="title-header">
+    <h1 class="page-title">
+      New Order
+    </h1>
+  </div>
+  <div class="page-section">
+    <div class="neworder-grid-top">
+      <!-- Column 1 -->
+      <div>
+        <div class="fund-info">
+          <div class="fundName">
+            <div class="fund-name" *ngIf="Funddata?.Name">
+              {{Funddata?.Name[0]}}
+            </div>
+            <div class="fund-details">
+              <div class="heading" style="text-align: right;">
+                NAV
+              </div>
+              <div class="value emphasis" style="color: #0587DA; text-align: right;" *ngIf="Funddata?.BidNav">
+                {{Funddata?.BidNav[0] | number:'1.4-4'}}
+              </div>
+  
+            </div>
+          </div>
+          <hr class="line">
+          <div class="fundDetails">
+            <div class="fund-details">
+              <div class="heading">
+                Currency
+              </div>
+              <div class="value emphasis" *ngIf="Funddata?.Ccy">
+                {{Funddata["Ccy"][0]}}
+              </div>
+            </div>
+            <div class="fund-details">
+              <div class="heading">
+                Asset Class
+              </div>
+              <div class="value emphasis" *ngIf="Funddata?.AssetClass">
+                {{Funddata["AssetClass"][0]}}
+              </div>
+            </div>
+            <div class="fund-details">
+              <div class="heading">
+                Category
+              </div>
+              <div class="value emphasis" *ngIf="Funddata?.Category">
+                {{Funddata["Category"][0]}}
+              </div>
+            </div>
+            <div class="fund-details">
+              <div class="heading">
+                LTV (%)
+              </div>
+              <div class="value emphasis" *ngIf="Funddata?.LTV">
+                {{Funddata["LTV"][0] | number:'1.2-2'}}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="chart" *ngIf="ShowChart">
+          <div class="graph-action">
+  
+          </div>
+  
+          <!-- <img [src]="isProd?'assets/fundgraph.PNG':'../../assets/fundgraph.PNG'" height="300" width="890"> -->
+          <!-- <canvas height="75%" baseChart [chartType]="'line'" [datasets]="chartData" [labels]="chartLabels"
+            [options]="chartOptions" [legend]="true" [colors]="Chartcolor">
+          </canvas> -->
+        </div>
+        <div class="more-details">
+          <h3>About Fund</h3>
+          <div class="info-grid-4">
+            <h4>Fund Code</h4>
+            <h5 *ngIf="Funddata?.Code">{{Funddata["Code"][0]}}</h5>
+  
+            <h4>Fund Umbrella</h4>
+            <h5 *ngIf="Funddata?.FundUmbrella">{{Funddata["FundUmbrella"][0]}}</h5>
+  
+  
+            <h4>ISIN</h4>
+            <h5 *ngIf="Funddata?.ISIN">{{Funddata["ISIN"][0]}}</h5>
+  
+            <h4>Fund Manager</h4>
+            <h5 *ngIf="Funddata?.Manager">{{Funddata["Manager"][0]}}</h5>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Column 2 -->
+      <div>
+        <div class="more-detail" >
+          <h3>Risk Analysis</h3>
+          <div class="risk-rating-box">
+            <!-- <div class="ratingArea">
+              <div class="rating" [ngClass]="{ratingdark: Funddata['Rating'][0] === '1'}">
+                1
+              </div>
+              <div class="rating" [ngClass]="{ratingdark: Funddata['Rating'][0] === '2'}">
+                2
+              </div>
+              <div class="rating" [ngClass]="{ratingdark: Funddata['Rating'][0] === '3'}">
+                3
+              </div>
+              <div class="rating" [ngClass]="{ratingdark: Funddata['Rating'][0] === '4'}">
+                4
+              </div>
+              <div class="rating" [ngClass]="{ratingdark: Funddata['Rating'][0] === '5'}">
+                5
+              </div>
+            </div> -->
+            <div class="risk-rating-chart">
+              <div *ngFor="let rating of RiskRating;let i = index" [ngClass]="{ratingdark: rating === Funddata['Rating']}">
+                {{rating}}</div>
+            </div>
+            <div class="arrow-line">
+              <div class="arrow-img">
+              </div>
+              <div class="risk-label">
+                <span style="text-align: start;">Low Risk</span>
+                <span style="text-align: end;">High Risk</span>
+              </div>
+  
+            </div>
+           
+          </div>
+          <h3>Details</h3>
+          <div class="info-grid-2">
+            <h4>Min Initial Investment (Lumpsum)</h4>
+            <h5 *ngIf="Funddata?.Ccy"> {{Funddata["Ccy"][0]}}
+              {{Funddata["Min_Inv_Amt"][0] | number:'1.2-2'}}</h5>
+  
+            <h4>Min SIP Amount</h4>
+            <h5 *ngIf="Funddata?.Ccy"> {{Funddata["Ccy"][0]}}
+              {{cfs.FormatNumberValue(Funddata["MinSIPAmount"][0]) | number:'1.2-2'}}</h5>
+  
+            <h4>Min SWP Amount</h4>
+            <h5 *ngIf="Funddata?.Ccy"> {{Funddata["Ccy"][0]}}
+              {{cfs.FormatNumberValue(Funddata["MinSWPAmount"][0]) | number:'1.2-2'}}</h5>
+  
+            <h4>Date of Inception</h4>
+            <h5 *ngIf="Funddata?.InceptionDate">{{Funddata["InceptionDate"][0] | date:'dd-MMM-yyyy'}}</h5>
+  
+            <h4>Fund Size</h4>
+            <h5 *ngIf="Funddata?.FundSize">{{Funddata["FundSize"][0] | number:'1.2-2' }}</h5>
+          </div>
+        </div>
+        <div class="more-detail" style="margin-top: 15px;">
+          <h3>Expense Fees</h3>
+          <div class="info-grid-2">
+            <h4>Annual Management Fee</h4>
+            <h5 *ngIf="Funddata?.AnnualFees">{{Funddata["AnnualFees"][0] | number:'1.2-2' }} %</h5>
+            <h4>Exit Load</h4>
+            <h5 *ngIf="Funddata?.ExitLoad">{{Funddata["ExitLoad"][0].split(" ")[0] | number:'1.2-2'}} %</h5>
+  
+            <h4>Entry Load</h4>
+            <h5 *ngIf="Funddata?.EntryLoad">{{Funddata["EntryLoad"][0].split(" ")[0] | number:'1.2-2'}} %</h5>
+  
+            <h4>Switching Fees</h4>
+            <h5 *ngIf="Funddata?.SwitchingFee">{{Funddata["SwitchingFee"][0].split(" ")[0] | number:'1.2-2'}} %</h5>
+  
+            <h4>Sales Charge</h4>
+            <h5 *ngIf="Funddata?.TradeFee">{{Funddata["TradeFee"][0].split(" ")[0] | number:'1.2-2'}} %</h5>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Column 3 -->
+      <div>
+        <div class="more-detail">
+          <h3>Book Order</h3>
+  
+          <div class="orderbtn">
+            <button class="btnSub" *ngIf="ApplicationType === 'Subscription'"
+              (click)="ApplicationType = 'Subscription';applicationTypeChange()  ">Subscribe</button>
+            <button class="btnRedeem" *ngIf="ApplicationType === 'Redemption'"
+              (click)="ApplicationType = 'Subscription'; applicationTypeChange() ">Subscribe</button>
+            <button class="btnRedeem" *ngIf="ApplicationType === 'Subscription'"
+              (click)="ApplicationType = 'Redemption';applicationTypeChange() ">Redeem</button>
+            <button class="btnSub" *ngIf="ApplicationType === 'Redemption'"
+              (click)="ApplicationType = 'Redemption';applicationTypeChange() ">Redeem</button>
+          </div>
+          <div class="orderContent">
+            <span class="title"> {{nominalText}}</span>
+            <input type="text" [(ngModel)]="notional" class="nominal" maxlength="12" tabindex="2"
+              (onload)="unitCalculations(notional , Funddata['BidNav'][0])"
+              (blur)="cfs.FormatNumber($event);  unitCalculations(notional , Funddata['BidNav'][0])"
+              (change)="notional = cfs.NotionalChange($event);" (focus)="cfs.UnformatNumber($event)"
+              (keypress)=" cfs.NotionalValidate($event)">
+          </div>
+          <div class="notional-add">
+            <button class="notional-add-btn" (click)="addNotional(50000)">+50k</button>
+            <button class="notional-add-btn" (click)="addNotional(100000)">+100k</button>
+            <button class="notional-add-btn" (click)="addNotional(1000000)">+1m</button>
+            <button class="notional-add-btn" (click)="addNotional(2000000)">+2m</button>
+          </div>
+          <div class="subContent">
+            <span class="title"> {{nominalText2}}</span>
+            <input type="text" class="inputtxt" [(ngModel)]="Units" disabled>
+          </div>
+          <div class="subContent">
+            <span class="title"> Portfolio</span>
+            <select [(ngModel)]="portfolio" (change)="ChangeSelectedportfolio()">
+              <option *ngFor="let arr of portfolioList;">{{arr}}
+              </option>
+            </select>
+          </div>
+          <div class="clear">
+            <button class="btnClear" (click)="subscribed()">Book Order</button>
+            <button class="btnClear" (click)="clear()">Clear</button>
+          </div>
+          <div class="order-message">
+            <span>{{successMsg}}</span>
+          </div>
+        </div>
+        <div class="more-detail" style="margin-top: 15px;" *ngIf="isOrderBooked">
+          <h3> Order Details</h3>
+  
+          <div class="orderDetails">
+            <span>{{Msg}}</span>
+            <span *ngIf="isOrderSuccess" style="margin-top: 5px;">Ref No : <span class="value">{{refNo}}</span></span>
+            <span *ngIf="isOrderSuccess" style="margin-top: 5px;">Saved At : <span class="value">09-Oct-2020</span></span>
+          </div>
+  
+        </div>
+  
+      </div>
+    </div>
+  
+    <div>
+    </div>
+  
+  </div>
+  

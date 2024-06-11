@@ -1,0 +1,29 @@
+:host {
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    align-items: center;
+    justify-content: left;
+}
+
+.lbl-calendar {
+    margin: 0;
+    margin-right: 5px;
+}
+
+.icon-calendar {
+    height: 22.4px;
+    margin-left: 0.2em;
+}
+
+.mat-calendar {
+    width: 0px;
+    height: 35px;
+}
+input{
+    width: auto !important;
+}
+
+::ng-deep .mat-datepicker-popup {
+    margin-left: -200px;
+}

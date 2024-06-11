@@ -1,0 +1,184 @@
+<div *ngIf="IsBackButtonEnabled" class="page-navigation" [ngClass]=''>
+  <app-svg-icons class="back-button" [icon]="'back-button'" [width]="'40'" [height]="'40'" [fill]="'var(--headers)'"
+    (click)="fnRedirectToHomePage();"></app-svg-icons>
+  <div class="page-title">My Profile</div>
+</div>
+<div *ngIf="!IsBackButtonEnabled" class="page-title">My Profile</div>
+<div class="client-profile-setup-container" *ngIf="IsPagedataLoaded">
+  <div class="action-buttons-row">
+    <div class="buttons">
+      <button class="button" *ngIf="!['Reject','Verify','ref', 'HideEditProfile'].includes(buttonAction)"
+        (click)="EditProfile()">Edit Profile</button>
+      <button class="button" *ngIf="buttonAction === 'Verify'" (click)="VerifyProfile()">Verify Profile</button>
+      <button class="button" *ngIf="buttonAction === 'Reject'" (click)="RejectProfile()">Reject Profile</button>
+    </div>
+    <div class="message">{{ msg }}</div>
+  </div>
+  <!-- <form [formGroup]="form"> -->
+  <div [ngClass]="{'form-container-popup' :MyProfileMode, 'form-container': !MyProfileMode }">
+    <ng-template ngFor let-headerName [ngForOf]="SectionHeaders">
+      <span class="section-header" *ngIf="headerName.DisplayYN">{{headerName.Name}}</span>
+      <div class="section-container" *ngIf="headerName.DisplayYN">
+        <ng-container *ngFor="let input of MockForm; let i = index">
+          <ng-container [ngSwitch]="input.controlType" *ngIf="input.sectionName === headerName.Name">
+            <ng-template [ngSwitchCase]="'sentence'">
+              <label class="sentenceDiv"> {{input.controlName}}</label>
+            </ng-template>
+            <ng-template [ngSwitchCase]="'label'">
+              <div class="form-group">
+                <label *ngIf="input.validators.DisplayYN" style="color: var(--heading-label);">
+                  {{input.controlName}}</label> <!-- Values label -->
+                <label *ngIf="input.controlName !== 'Last Login time' && input.validators.DisplayYN">
+                  {{input.selectedValue || '-'}}</label>
+                <!-- Normal Values -->
+                <label *ngIf="input.controlName === 'Last Login time'"> {{input.selectedValue | date:'dd-MMM-yyyy hh:mm
+                  a' || '-'}}</label> <!-- Last login only -->
+                <button *ngIf="input.controlName === 'Password' && !MyProfileMode" class="button chngPassword"
+                  value="Change Password" (click)="passwordOverride()" routerLinkActive="router-link-active">
+                  Change Password
+                </button>
+              </div>
+            </ng-template>
+            <ng-template [ngSwitchCase]="'documents'">
+              <!-- To show uploaded documents  -->
+              <div class="form-group" style="padding: 0px 30px !important;" *ngIf="input.selectedValue !== ''">
+                <table class="document-information-table">
+                  <thead *ngIf="input.IsFirstRecord">
+                    <tr>
+                      <th></th>
+                      <th style="text-align: center;padding-bottom: 15px;">Document Type</th>
+                      <th style="text-align: center;overflow-wrap: break-word;padding-bottom: 15px;">
+                        Document</th>
+                      <th style="text-align: center;padding-bottom: 15px;">View</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <!-- <tr *ngFor="let data of input.selectedValue; let k = index"> -->
+                    <tr>
+                      <!-- <td>
+                          {{ k + 1 }}
+                        </td> -->
+                      <td><span class="dot"></span></td>
+                      <td style="color: var(--heading-label);">
+                        {{ input.selectedValue.Event_Name || input.selectedValue.Event_Code }}
+                      </td>
+                      <td style="overflow-wrap: anywhere; white-space: initial;">
+                        {{ input.selectedValue.Document_Output_Path }}
+                      </td>
+                      <td (click)="showFile(input.selectedValue.DGT_ID)"
+                        style="color: var(--off-color);text-align: center;">
+                        <!-- <div class="pdf-icon"></div> -->
+                        <app-svg-icons icon="{{'pdf'}}" [width]="'28'" [height]="'28'" style="justify-content: center;">
+                        </app-svg-icons>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="form-group" *ngIf="input.selectedValue === ''">
+                No data found
+              </div>
+            </ng-template>
+            <ng-template [ngSwitchCase]="'additionalDocuments'">
+              <div class="additional-documents-container">
+                <div style="line-height: 45px;">
+                  <select (change)="eventChange($event, input.sectionwiseSequenceNo - 1)">
+                    <option *ngFor='let item of eventList' [value]="item.Event_Code">{{item.Event_Name}}</option>
+                  </select>
+                </div>
+                <div style="line-height: 45px;">
+                  <input type="file" accept="application/pdf" class="custom-file-input"
+                    (change)="fileSelectionFunction($event, input.sectionwiseSequenceNo - 1)" />
+                </div>
+
+                <!-- <span style="line-height: 45px;">Doc_Name</span> -->
+                <div class="additional-documents-action-controls">
+                  <button class="button" (click)="uploadDoc(input.sectionwiseSequenceNo - 1)">Upload</button>
+                  <button class="button" (click)="removeDocFromList(i)">Cancel</button>
+                </div>
+              </div>
+
+            </ng-template>
+          </ng-container>
+        </ng-container>
+
+        <div *ngIf="headerName.Name === 'Additional Documents' && !this.MyProfileMode">
+          <div class="addition-document-add-doc-control">
+            <button style="width: auto; padding: 0px 10px;min-width: 150px;" class="button"
+              (click)="AddEmptyDoc()">Attach Document(s)</button>
+            <div class="note-section">
+              <span class="note-txt">Note -</span>
+              <span class="note-txt">* Maximum allowed document upload size is: 5MB <br>
+                * Supported file extensions are: .PDF, .PNG, .JPEG, .JPG</span>
+            </div>
+          </div>
+          <div class="notification-message"><span>Alternatively, Drag your files here</span></div>
+          <div>
+            <ngx-file-drop id='iddropfilesdiv' style="border: 3px ​dotted var(--gray) !important;"
+              dropZoneLabel="Drop files here" (onFileDrop)="fndropped($event)" (onFileOver)="fnfileOver($event)"
+              (onFileLeave)="fnfileLeave($event)">
+              <ng-template id='iddropfilesinnerdiv' #dropfilesdiv ngx-file-drop-content-tmp
+                let-openFileSelector="openFileSelector">
+                <img *ngIf="files.length === 0" style="cursor: pointer;"
+                  [src]="isProd ? 'assets/file-upload.png' : '../../../../../assets/file-upload.png'" />
+                <div class="ngx-file-drop">
+                  <label *ngIf="files.length === 0" style="margin-right: 8px;">Drop your file to upload or</label>
+                  <label style="color: var(--active); cursor: pointer;" (click)="openFileSelector()">Browse</label>
+                </div>
+                <div class="uploaded-files" *ngIf="files.length > 0">
+                  <div class="selected-files-to-upload" *ngFor="let file of files ; let i = index">
+                    <label>{{file.relativePath}}</label>
+                    <div class="cancel-icon-div" *ngIf="!file.isUploaded">
+                      <app-svg-icons (click)="fnRemoveSelectedFile(i)" [icon]="'cancel-icon'" [width]="'10'"
+                        [height]="'10'"></app-svg-icons>
+                    </div>
+                    <div class="cancel-icon-div" *ngIf="file.isUploaded">
+                      <app-svg-icons [icon]="'checked-icon'" [width]="'20'" [height]="'20'"></app-svg-icons>
+                    </div>
+                  </div>
+                </div>
+                <div class="uplaod-btn-section" *ngIf="files.length > 0">
+                  <img style="cursor: pointer;" (click)="fnSubmitFiles();"
+                    [src]="isProd ? 'assets/file-upload.png' : '../../../../../assets/file-upload.png'" />
+                  <label style="color: var(--active); cursor: pointer;" (click)="fnUploadDoc()">Upload</label>
+                </div>
+
+              </ng-template>
+            </ngx-file-drop>
+
+            <!-- <div> <span class="notification-message" *ngIf="SelectedfileNames !== ''">{{SelectedfileNames}}</span></div> -->
+          </div>
+        </div>
+      </div>
+      <div id="snackbar" style="line-height: 45px">
+        <div *ngIf="ErrorMsg">{{this.ErrorMsg}}</div>
+      </div>
+    </ng-template>
+  </div>
+  <!-- </form> -->
+  <button *ngIf="MyProfileMode" (click)="fnCloseProfile()">Cancel</button>
+</div>
+
+<div *ngIf="!IsPagedataLoaded" style="text-align: center; margin-top: 15%;">
+  <div class="loader-center">
+    <div class="multi-ripple">
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+  <!-- <img [src]="isProd ? 'assets/loading_dots.gif':'../../../../assets/loading_dots.gif'" height="100px" width="100px"> -->
+</div>
+<div class="overlay" *ngIf="isChangePassword">
+  <app-password-override (cancelPasswordOverride)="overrideCancelled()" [IUSERID]="LoginID"></app-password-override>
+</div>
+<div class="overlay" *ngIf="isEditProfilePopup">
+  <div class="overlay-close-btn">
+    <app-svg-icons [icon]="'cancel-icon'" [width]="'20'" [height]="'20'" (click)="isEditProfilePopup = false"
+      class="closebtn">
+    </app-svg-icons>
+  </div>
+
+  <app-customer-setup-edit-profile (editProfileCancelled)="fnEditProfileCancelled($event)">
+  </app-customer-setup-edit-profile>
+
+</div>

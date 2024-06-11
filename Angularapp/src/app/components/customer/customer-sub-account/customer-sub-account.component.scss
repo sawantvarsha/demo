@@ -1,0 +1,67 @@
+.SubAccount-Main {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 45px;
+    .row {
+        display: grid;
+        width: 100%;
+        grid-template-rows: 1fr 1fr auto;
+    }
+}
+.btn-row {
+    display: flex;
+    justify-content: center;
+    column-gap: 10px;
+    margin-top: 15px;
+}
+
+.lbl {
+    font-size: 15px;
+    line-height: 26px;
+    text-align: initial;
+    color: var(--table-header-text);
+    margin-top: 0.5em;
+}
+
+.view-sub-account {
+    display: flex;
+    flex-direction: column;
+    width: 35vw;
+    .sub-account-row {
+        display: grid;
+        grid-template-columns: 25px 1fr 1fr;
+    }
+}
+
+.document-information-table {
+    font-size: 15px;
+    margin-left: 0px;
+    // width: 57vw;
+    overflow: auto;
+    padding: 0px;
+    thead {
+      // color: var(--table-header-bg);
+      color: var(--off-color);
+      border-bottom: solid 1px var(--table-header-bg) !important;
+      tr {
+        padding-bottom: 10px;
+      }
+    }
+    tr {
+      height: auto !important;
+      display: grid;
+      grid-template-columns: 2% 48% 40% 10%;
+    }
+  
+    td,
+    th {
+      padding:10px 15px !important;
+      margin: 0px !important;
+      // border-radius: 2px;
+      text-align: left;
+      color: var(--text-color);
+      white-space: nowrap;
+      vertical-align: top;
+      white-space: pre-wrap;
+    }
+  }

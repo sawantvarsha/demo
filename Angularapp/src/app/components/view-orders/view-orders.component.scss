@@ -1,0 +1,23 @@
+.viewOrder-container {
+    padding: 2em;
+    display: grid;    
+}
+table {
+    margin-top: 2em;
+}
+thead,tr {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+}
+.numberFormat{
+    padding-right: 4em;
+}
+.textFormat{
+    padding-left: 3.2em;
+}
+.loader-container {
+    display: flex;
+    height: 65vh;
+    align-items: center; 
+    justify-content: center;
+}

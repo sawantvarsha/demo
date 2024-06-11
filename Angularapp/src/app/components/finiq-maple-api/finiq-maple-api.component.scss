@@ -1,0 +1,285 @@
+$assetPath: "http://40.65.134.77";
+
+.maple-gridview-main{
+    display: grid;
+    grid-template-columns: 0.5fr 3fr;
+    // margin-top: 10px;
+    color : peachpuff !important;
+    font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande", "Lucida Sans", verdana, sans-serif, verdana !important;
+    // text-align: center;
+    background-color: #393939;
+    width: 100%;
+    // height: 100%;
+
+}
+
+.finIQ-logo{
+    width: 225px !important;
+    height: 120px !important;
+    padding: 10px;
+}
+.topnav-bar{
+    padding: 5px;
+    border: 0px solid #ddd;
+    position: fixed;
+    top: 0px;
+    z-index: 999;
+    width: 100%;
+    box-shadow: 4px 4px 6px #000;
+    background-image: url(#{$assetPath}/assets/App_Resorces/bg17-min.jpg) !important;
+    
+}
+
+.sidebar{
+    z-index: 9999;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 10px;
+    box-shadow: 2px 2px 2px #000;
+    background-attachment: scroll;
+    background-position: bottom;
+    background-image: url(#{$assetPath}/assets/App_Resorces/bg17-min.jpg) !important;
+    width: 250px;
+    padding-left: 10px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-color: rgb(238, 238, 238);
+    margin-top: 5px;
+  
+
+}
+
+.template-name:hover, .template-name:focus-visible{
+    font-size: 13px;
+    color: rgb(171, 171, 171);
+    padding: 10px;
+    margin-top: 5px;
+    border-radius: 5px;
+    border: 1px solid rgb(51, 51, 51);
+    background-color: #918989 !important;
+    
+}
+
+.template-name{
+    display: inherit !important;
+    position: relative !important;
+    color: rgb(245, 245, 245) !important;
+    font-size: 13px;
+    color: rgb(171, 171, 171);
+    padding: 10px;
+    margin-top: 5px;
+    border-radius: 5px;
+    border: 1px solid rgb(51, 51, 51);
+    background-color: #0e0e0e  !important;
+    
+}
+
+
+.template-list{
+    padding: 10px 10px 10px 0px;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.myTemplate{
+    text-align: left;
+    margin-top:20px;
+}
+
+.center{
+    text-align: center;
+}
+
+
+.cls-products{
+    position: relative;
+    left: -5px;
+}
+
+.edit-icon{
+    margin: 10px;
+    width: 12%;
+    cursor: pointer;
+}
+
+.close-icon{
+    margin: 10px;
+    width: 4%;
+    cursor: pointer;
+    position: relative;
+    top: -38px;
+    left: 455px;
+}
+
+
+.lbl-template{
+    position: relative;
+    top:-18px;
+}
+
+
+.template-cls{
+
+    background-image: url(#{$assetPath}/assets/App_Resorces/bg17-min.jpg) !important;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-color: #252525;
+    position: absolute;
+    height: auto;
+    width: 520px;
+    top: 133.438px;
+    left: 652.5px;
+    background-color: #d9d9d9 !important;
+    border: 0px solid #939393;
+    color: peachpuff !important;
+    box-shadow: 3px 4px 4px black !important;
+    border-radius: 5px;
+    padding : 10px;
+    color: grey !important;
+    font-size: 20px;
+}
+
+.template-checkbox{
+    position: relative;
+    top: 0;
+    left: 0;
+    height: 18px;
+    width: 20px;
+    padding: 10px;
+
+}
+
+.createTemp-div{
+    background: #525252;
+    border: 1px solid #484848;
+    // margin: 10px;
+    padding: 5px;
+    height: 50px;
+}
+
+.create-edit{
+        max-height: 250px!important;
+        overflow-y: scroll !important;
+        overflow-x: hidden !important;
+        white-space: nowrap !important;
+        background-color: #252525 !important;
+        padding: 5px!important;
+        z-index: 999 !important;
+        box-shadow: 3px 4px 4px #1d1d1d;
+        border-radius: 5px!important;
+        border: 1px solid #101010;
+        font-size: 12px;
+        z-index: 999;
+        color: #ababab;
+        BORDER-COLLAPSE: collapse;
+        padding: 10px !important;
+        width: 90%;
+}
+
+input[type=checkbox]{
+    background-color: grey;
+    margin: 5px 10px;
+    filter: opacity(0.1);
+}
+
+.component-div{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin-top: 20px;
+}
+
+.btn-save{
+    background-color: #0e0e0e !important;
+    color: peachpuff !important;
+    width: 100px !important;
+    margin-right: 0px !important;
+   
+    box-shadow: 1px 1px 1px #333333;
+    border: solid 0px #2c2c2c;
+    cursor: pointer;
+    padding-top: 6px;
+    padding-bottom: 8px;
+    border-radius:  5px;
+}
+
+.templateName-cls{
+    width: 40% !important;
+    margin: 0px 10px;
+}
+
+.ary-comp{
+    margin:1px;
+}
+
+.maple-gridview{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    width: 100%;
+    height: 100%;
+    background-color: #393939;
+    // margin:10px;
+    margin-top: 10px;
+    color : peachpuff !important;
+}
+
+.Dark-grass{
+background-image: url(#{$assetPath}/assets/App_Resorces/PersonaliseBG/Dark-Grass.jpg) !important;
+background-repeat: no-repeat !important;
+background-size: cover !important;
+}
+
+.Dark-blue{
+    background-image: url(#{$assetPath}/assets/App_Resorces/PersonaliseBG/Blue-Flash.jpg) !important;
+    background-repeat: no-repeat !important;
+    background-size: cover !important;
+    }
+
+.Dark-cacao{
+    background-image: url(#{$assetPath}/assets/App_Resorces/PersonaliseBG/Cacao.jpg) !important;
+    background-repeat: no-repeat !important;
+    background-size: cover !important;
+}
+
+.Dark-purpleFlash{
+    background-image: url(#{$assetPath}/assets/App_Resorces/PersonaliseBG/Purple-Flash.jpg) !important;
+    background-repeat: no-repeat !important;
+    background-size: cover !important;
+}
+
+.Dark-Saint{
+    background-image: url(#{$assetPath}/assets/App_Resorces/PersonaliseBG/Saint-Emilion-tri.jpg) !important;
+    background-repeat: no-repeat !important;
+    background-size: cover !important;
+}
+
+.Dark-Vermillion{
+    background-image: url(#{$assetPath}/assets/App_Resorces/PersonaliseBG/Vermillion-tri.jpg) !important;
+    background-repeat: no-repeat !important;
+    background-size: cover !important;
+}
+
+.Dark-Verde{
+    background-image: url(#{$assetPath}/assets/App_Resorces/PersonaliseBG/Nero-Verde.jpg) !important;
+    background-repeat: no-repeat !important;
+    background-size: cover !important;
+}
+
+.Dark-Aluminio{
+    background-image: url(#{$assetPath}/assets/App_Resorces/PersonaliseBG/Aluminio.jpg) !important;
+    background-repeat: no-repeat !important;
+    background-size: cover !important;
+}
+
+.cardView{
+    box-shadow: 5px 4px 3px #000 !important;
+    border-radius: 14px;
+    padding: 5px;
+    display: inline-block !important;
+    margin: 7px;
+}
+
+.temp-lbl{
+    font-size: 15px;
+    margin-right: 80px;
+}

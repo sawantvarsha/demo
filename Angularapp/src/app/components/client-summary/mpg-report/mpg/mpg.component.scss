@@ -1,0 +1,227 @@
+$assetPath: "http://52.187.114.119";
+
+.tp-container {
+    position: initial;
+    top: 90px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    /* background: #eee; */
+}
+
+.search {
+    width: 400px;
+}
+
+span {
+    margin-left: 20px;
+}
+
+
+/* 
+  .search{
+      border-radius: 50px;
+      border: 1px solid #e1e1e1;
+      padding: 10px;
+      height: 20px; 
+      margin-top:5px;
+  } */
+
+button,
+button:hover,
+button:not([disabled]):active,
+.mat-raised-button {
+    /* border: 1px solid #1a4269; */
+    /* padding: 5px; */
+    /* background-color:#f3f0f1; SSSSS */
+    background-color: var(--background-color);
+    /* color: #ffffff; */
+    width: 40px;
+    height: 36px;
+    border-radius: 4px;
+    cursor: pointer;
+    /* box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12); */
+    /*box-shadow: 0 3px 1px -2px rgb(0 0 0 / 20%), 0 2px 2px 0 rgb(0 0 0 / 14%), 0 1px 5px 0 rgb(0 0 0 / 12%); */
+    /* box-shadow:  5px 5px 10px #e9e6e7,
+               -5px -5px 10px #fdfafb; */
+    box-sizing: border-box;
+    position: relative;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: pointer;
+    outline: none;
+    display: inline-block;
+    white-space: nowrap;
+    text-decoration: none;
+    vertical-align: middle;
+    text-align: center;
+    font: normal 15px;
+    color: var(--text);
+    border-color: white;
+    border: none;
+}
+
+.date-form-field {
+    background-color: white;
+}
+
+mat-form-field {
+    width: 10% !important;
+    /* caret-color: #673ab7 !important; */
+}
+
+mat-button-toggle-group {
+    height: 38px;
+}
+
+mat-button-toggle {
+    vertical-align: middle;
+}
+
+.list-item {
+    cursor: pointer;
+    list-style-type: none;
+    padding: 5px 10px;
+}
+
+.list-item:hover {
+    background-color: rgb(124, 124, 124);
+}
+
+.cards-list {
+    width: 100%;
+    //   margin-top: 40px;
+    height: 80vh;
+    /* position: static; */
+    display: list-item;
+    overflow-y: scroll;
+}
+
+.card {
+    height: auto;
+    border-radius: 4px;
+    padding: 15px;
+    border: none !important;
+    background: var(--sub-container);
+    box-shadow: var(--shadow);
+    margin-top: 8px;
+}
+
+.label {
+    color: var(--heading-label);
+    font-size: 13px;
+    text-align: left;
+}
+
+.value {
+    color: var(--text);
+    font-size: 15px;
+    text-align: left;
+    margin-top: 3px;
+}
+
+.inner-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    width: 100%;
+    margin-top: 20px;
+    grid-row-gap: 12px;
+    grid-column-gap: 10px;
+}
+
+.more-info {
+    margin-top: 20px;
+    margin-bottom: 0px;
+    color: grey;
+    font-size: 15px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.dropdown {
+    width: 22px;
+    height: 14px;
+    background-image: url(#{$assetPath}/assets/down.png);
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.pagination-class {
+    position: relative;
+    //   height: 50px;
+    bottom: 0px;
+    width: auto;
+}
+
+.record-no {
+    display: flex;
+    flex-direction: column;
+    flex-flow: column-reverse;
+}
+
+.record-no label {
+    font-size: 15px;
+}
+
+.cards-list::-webkit-scrollbar {
+    display: none;
+}
+
+.rows-per-page {
+    margin-left: 50px;
+    /* color: #8d8c8cb8; */
+    padding-right: 3px;
+}
+
+.rows-per-page-input {
+    width: 40px;
+    border: 1px #8d8c8cb8 solid;
+    text-align: center;
+    margin: 0px 20px;
+    /* background: #fbfbfb; */
+}
+
+.UserGrpPopup {
+    z-index: 99999 !important;
+}
+
+.txtSearch {
+    border: none;
+    width: 255px;
+    padding: 0px 0px;
+    background: var(--background-color);
+    margin-left: -16px;
+    color: var(--input-box-text);
+}
+
+.searchInnerDiv {
+    border-radius: 0px;
+    background-color: transparent;
+    border-bottom: 1px solid #ddd;
+    min-height: 33px;
+    display: grid;
+    grid-template-columns: auto auto auto;
+    margin-top: 10px;
+    /* width: 70%; */
+}
+
+.refresh-icon,
+.excel-icon,
+.expand-icon,
+.collapse-icon {
+    width: 30px;
+    height: 30px;
+}
+
+.pag-button {
+    background-color: transparent !important;
+    box-shadow: none !important;
+    padding: 0px;
+    margin: 0px;
+    width: 30px;
+    min-width: 30px;
+}

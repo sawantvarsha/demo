@@ -1,0 +1,31 @@
+<div class="chartWrapper">
+    <div class="chartAreaWrapper">
+      <div class="row">
+        <div style="align-items: center; float: right; color: gray;">Equivalent Notional</div>
+      </div>
+      <span
+    style="float: right; margin-right: 30px; transform: rotate(45deg); color: #777;" (click)="pinChart($event)">
+    <span class="material-icons">push_pin</span>
+   </span>
+      <div class="row">
+        <div class="grad" style="
+        background-color: whitesmoke;
+        display: flex;
+        float: right;
+        justify-content: center;
+        margin-left: 50vw;
+        margin-right: 20px;
+        height: 2.5vh;
+        width: 5vw;
+      ">
+
+          <div class="gradtext"
+            style="text-decoration-style: rgb(209, 231, 255); font-size: 25px; color: rgb(177, 177, 177); align-self: center; text-align: center;">
+            |</div>
+
+
+        </div>
+      </div>
+      <canvas id="kikoChart" style="position: relative; width: 100%;height: 62vh;" ></canvas>
+    </div>
+  </div>

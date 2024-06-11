@@ -1,0 +1,41 @@
+<div class="popup center">
+    <div class="popupcontent">
+        <div class="top-bar">
+            <div>
+                <div class="inline">
+                    <label for=""> Ref ID</label>
+                    <input (keydown.enter)="searchRef()" type="text" [(ngModel)]="searchToken" >
+                </div>
+                
+            </div>
+            <div>
+
+            </div>
+            <div (click)="searchRef()" >
+                <app-svg-icons [icon]="'icon-search'" [width]="'30'" [height]="'30'"  [fill]="'var(--active)'"  
+                title="Search"></app-svg-icons>
+            </div>
+            <div (click)="clear()" > 
+                <app-svg-icons [fill]="'var(--active)'" [icon]="'backspace'" [width]="'34'" [height]="'27'"  title="Clear">
+                </app-svg-icons>
+            </div>
+            <div (click)="closepopup()">
+                <app-svg-icons  [fill]="'var(--active)'" [icon]="'close-icon'" [width]="'23'" [height]="'23'" title="Close" >
+                </app-svg-icons>
+            </div>
+        </div>
+
+        <table *ngIf="showTable" >
+            <thead>
+                <th>Workflow</th>
+                <th>Queue</th>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of searchRes" >
+                    <td class="link"  (click)="navigateToWF(item)" >{{item.WTM_Title}}</td>
+                    <td>{{item.QM_Name}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

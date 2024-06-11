@@ -1,0 +1,384 @@
+.SPComponent {
+    display: grid;
+    // grid-template-rows: 50px 75px auto minmax(50px, auto) 50px;
+    padding: 10px;
+    .funddetails {
+        color: var(--fund-details);
+        justify-content: center;
+        display: flex;
+        flex-direction: column;
+        .fundtitlerow {
+            color: var(--text);
+        font-weight: 500;
+        font-size: 30px;
+        line-height: 40px;
+        margin-bottom: 10px;
+        }
+    }
+    .param-cols {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 50px;
+        margin-top: 10px;
+    }
+    .fundname-row {
+        display: grid;
+        grid-template-columns: 19% 81%;
+    }
+    .fund-details {
+        display: grid;
+        grid-template-columns: 1fr;
+        font-size: 18px;
+        gap: 10%;
+        height: 45px;
+    }
+    .fundparams-row {
+        display: grid;
+        grid-template-columns: 40% 60%;
+        height: 45px;
+    }
+    .fund-button-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr 2fr;
+        gap: 20px;
+        align-items: center;
+        margin-top: 20px;
+        .btn-submit {
+            display: flex;
+            justify-content: flex-end;
+            margin-right: 25px;
+        }
+    }
+    .fund-message-row {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 30px;
+        height: 50px;
+    }
+}
+
+.SPComponentrmw {
+    display: grid;
+    // grid-template-rows: 50px 50px 75px auto minmax(50px, auto) 50px;
+    padding: 10px;
+    .funddetails {
+        color: var(--fund-details);
+        justify-content: center;
+        display: flex;
+        flex-direction: column;
+        .fundtitlerow {
+            color: var(--text);
+        font-weight: 500;
+        font-size: 30px;
+        line-height: 40px;
+        margin-bottom: 10px;
+        }
+    }
+    .param-cols {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 50px;
+        margin-top: 10px;
+    }
+    .fundname-row {
+        display: grid;
+        grid-template-columns: 20% 80%;
+    }
+    .fund-details {
+        display: grid;
+        grid-template-columns: 1fr;
+        font-size: 18px;
+        gap: 10%;
+        height: 45px;
+    }
+    .fundparams-row {
+        display: grid;
+        grid-template-columns: 40% 60%;
+        height: 45px;
+    }
+    .fund-button-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr 2fr;
+        gap: 20px;
+        align-items: center;
+        margin-top: 20px;
+        .btn-submit {
+            display: flex;
+            justify-content: flex-end;
+            margin-right: 25px;
+        }
+    }
+    .fund-message-row {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 30px;
+        height: 50px;
+    }
+}
+
+.details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    align-items: center;
+    text-align: right;
+    cursor: pointer;
+}
+
+.textarea {
+    resize: vertical;
+    max-height: 50px;
+    min-height: 40px;
+    width: 100%;
+    height: 40px;
+    border: 1px solid #cfcfcf;
+}
+
+.input-dob {
+    position: relative;
+    color: white;
+    text-align: center;
+}
+
+.input-dob:before {
+    position: absolute;
+    top: 10px;
+    // left: 5px;
+    left: calc(40%);
+    content: attr(data-date);
+    display: inline-block;
+    color: #676765;
+}
+
+.input-dob::-webkit-datetime-edit,
+.input-dob::-webkit-inner-spin-button,
+.input-dob::-webkit-clear-button {
+    display: none;
+}
+
+.input-dob::-webkit-calendar-picker-indicator {
+    position: absolute;
+    top: 8px;
+    right: 0;
+    color: #676765;
+    opacity: 1;
+}
+
+.UnderlyingSearch {
+    display: flex;
+    align-self: flex-end;
+    position: absolute;
+    width: 99% !important;
+    margin-left: 0.5em;
+    padding-right: 2.2em;
+    margin-right: 0 !important;
+}
+
+.SelectorBox {
+    height: auto;
+    max-height: 10em;
+    overflow-y: scroll;
+    position: absolute;
+    float: right;
+    z-index: 10000;
+    border: 0.05em solid var(--gray);
+    cursor: pointer;
+    width: 50%;
+    margin-left: -4px;
+    background-color: var(--containers);
+    top: -3px;
+}
+
+.gridInfo {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1%;
+}
+
+@media only screen and (max-width: 600px) {
+    .param-cols {
+        display: flex !important;
+        flex-direction: column !important;
+    }
+    .insuranceComponent {
+        display: grid;
+        // grid-template-rows: 50px 75px auto 50px;
+        padding: 10px;
+        .funddetails {
+            color: var(--fund-details);
+            justify-content: center;
+            display: flex;
+            flex-direction: column;
+            .fundtitlerow {
+                color: var(--text);
+            font-weight: 500;
+            font-size: 30px;
+            line-height: 40px;
+            margin-bottom: 10px;
+            }
+        }
+        // .param-cols {
+        //   display: grid;
+        //   grid-template-columns: 1fr 1fr;
+        //   gap: 50px;
+        //   margin-top: 10px;
+        // }
+        .fundname-row {
+            display: grid;
+            // font-size: 18px;
+            grid-template-columns: 40% 60%;
+        }
+        .fund-details {
+            display: grid;
+            grid-template-columns: 1fr;
+            font-size: 18px;
+            gap: 10%;
+            height: 45px;
+        }
+        .fundparams-row {
+            display: grid;
+            grid-template-columns: 40% 60%;
+            // gap: 10%;
+            height: 45px;
+        }
+        .fund-button-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr 2fr;
+            gap: 20px;
+            align-items: center;
+            margin-top: 20px;
+            .btn-submit {
+                display: flex;
+                justify-content: flex-end;
+                margin-right: 25px;
+            }
+        }
+        .details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            align-items: center;
+            text-align: right;
+            cursor: pointer;
+        }
+        .fund-message-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 30px;
+            height: 50px;
+        }
+    }
+}
+
+.overlay {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 20;
+}
+
+.popuptab1 {
+    position: absolute;
+    border: 1px solid var(--containers);
+    border-radius: 5px;
+    background-color: var(--containers);
+    z-index: 999;
+    height: 60%;
+    width: 65%;
+    top: 15%;
+    left: 25%;
+    .closebtn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 25px;
+        width: 25px;
+        border-radius: 2px;
+        font-size: 18px;
+        color: var(--text);
+        font-weight: 800;
+        // margin-top: 7px;
+    }
+}
+
+.popupHeader {
+    background-color: var(--beige);
+    width: 100%;
+}
+
+.popupContent {
+    width: 100%;
+}
+
+.content-header {
+    height: 50px;
+    padding: 10px;
+    display: grid;
+    grid-template-columns: 97% 3%;
+    background-color: var(--content-header);
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    .content-header-name {
+        font-size: 18px;
+        color: white;
+        display: flex;
+        margin: 0;
+        padding: 0;
+        padding-bottom: 5px;
+        img {
+            margin: 0px 5px;
+            width: 25px;
+            height: 25px;
+            // filter: invert(1);
+        }
+    }
+}
+
+.gridclass {
+    display: grid;
+    grid-template-columns: 60% 40%;
+    padding: 10px;
+    margin-left: 20px;
+    margin-top: 10px;
+}
+
+.tableheadGrid {
+    // display: grid;
+    // grid-template-columns: 25% 10% 10% 33% 15% 5%;
+    height: 35px;
+}
+
+.tableGrid {
+    // display: grid;
+    // grid-template-columns: 25% 10% 10% 35% 15% 5%;
+    height: 35px;
+}
+
+input[type="checkbox"] {
+    position: relative;
+    width: 20px;
+}
+
+.display {
+    display: flex;
+    align-items: center;
+}
+
+.margin-top {
+    margin-top: 0px !important;
+}
+
+.header{
+    display: grid;
+    grid-template-columns: 40px 2fr 1fr 1fr 1fr 1fr;
+   
+    gap: 2%;
+}

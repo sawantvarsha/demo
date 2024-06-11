@@ -1,0 +1,107 @@
+.table-header {
+    display: grid;
+    grid-template-columns: 40px 1fr 100px 100px 100px 2fr;
+    // gap: 10px;
+    font-size: 15px;
+    align-items: center;
+    margin-bottom: 10px;
+    label {
+        // background-color: var(--table-header-bg);
+        color: var(--table-header-text);
+        text-align: center;
+        padding: 3px;
+        height: 26px;
+        border-bottom: 1px solid var(--table-header-text);
+        padding: 0px 10px 45px;
+    }
+    .left{
+        text-align: left !important;
+    }
+    .right{
+        text-align: right !important;
+    }
+    .center{
+        text-align: center !important;
+    }
+}
+.table-data {
+    .data {
+        display: grid;
+        grid-template-columns: 40px 1fr 100px 100px 100px 2fr;
+        // gap: 10px;
+        .headercolor {
+            color: var(--inline-label);
+            font-size: 15px;
+        }
+        .circle {
+            height: 16px;
+            width: 16px;
+            background-color: var(--green);
+            border-radius: 50%;
+            margin: auto 6px;
+        }
+        .triangle {
+            height: 16px;
+            width: 16px;
+            background-color: var(--red);
+            border-radius: 50%;
+            margin: auto 6px;
+        }
+        label{
+            padding: 10px;
+        }
+        .left{
+            text-align: left !important;
+        }
+        .right{
+            text-align: right !important;
+        }
+        .center{
+            text-align: center !important;
+        }
+    }
+}
+
+// Ended by Rohit T. | 03-Feb-2021
+
+
+// Started by Alolika G. | 07-Feb-2021
+
+.upper-div {
+    grid-template-columns: 1fr 100px 1fr;
+    display: grid;
+    margin: 10px 10px 30px 22px;
+    align-items: center;
+}
+
+.table-data{
+    height: 53vh;
+    overflow-y: auto;
+    max-height: 520px;
+}
+
+.empty-state {
+    display: flex;
+    width: 100%;
+    margin: 20% auto;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+    .state-big {
+      font-size: 15px;
+      color: var(--table-header-text);
+    }
+    .state-small {
+      font-size: 15px;
+      color: var(--table-header-text);
+    }
+  }
+
+  .table-header1 {
+    display: grid;
+    grid-template-columns: 40px 1fr 100px 100px 100px 2fr;
+    // gap: 10px;
+    // font-size: 15px;
+    align-items: center;
+    margin-bottom: 10px;
+  }

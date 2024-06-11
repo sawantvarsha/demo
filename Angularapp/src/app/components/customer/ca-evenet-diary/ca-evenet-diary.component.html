@@ -1,0 +1,303 @@
+<div class="page-navigation" [ngClass]="">
+  <app-svg-icons class="back-button" [icon]="'back-button'" [width]="'40'" [height]="'40'" [fill]="'var(--headers)'"
+    (click)="back()"></app-svg-icons>
+  <div class="page-title module">Event Diary</div>
+  <div style="display: flex; gap: 30px; align-items: center;">
+    <app-svg-icons class="cursor" (click)="refreshPage()" [icon]="'refresh'" [width]="'26'" [height]="'26'">
+    </app-svg-icons>
+    <button class="button button-margin svgFilter" (click)="toggleFilter()">
+      <app-svg-icons style="padding-right: 8px;" style="display: contents !important;"
+        icon="{{'filter'}}"></app-svg-icons>
+      <label>Filter</label>
+    </button>
+  </div>
+
+</div>
+<div class="CAEvenetDiaryComponent">
+  <!-- <div class="page-title module">Corporate Action Event Diary</div> -->
+  <div class="filter-container" *ngIf="showfilter">
+    <div class="statement-row" [ngClass]="{'disabled-inputs': !checked}">
+      <div>
+        <div>
+
+          <label style="display: flex;
+    align-items: center;
+    gap: 10px;"><input type="checkbox" style="height: 18px;
+    width: 18px;" value="Customerfilter" (change)="onCheckboxChange($event)" />Customer:</label>
+        </div>
+      </div>
+      <div>
+        <app-customer-search *ngIf="checked"
+          (selectedCustomerValue)="selectedCustomerValue1($event)"></app-customer-search>
+        <input disabled *ngIf="!checked" placeholder="Enter Customer" type="text" [(ngModel)]='customerIDText'>
+      </div>
+    </div>
+    <div class="filter-row">
+      <div class="middle" style="width: max-content">View By</div>
+      <div class="middle">
+        <select name="viewBy" id="viewBy" [(ngModel)]="viewBy" (change)="changeView(viewBy)">
+          <option value="Schedule" selected>Schedule Date</option>
+          <option value="Payment">Payment Date</option>
+        </select>
+      </div>
+    </div>
+    <!-- <div class="filter-row2">
+      <div class="middle">Event</div>
+      <div class="middle">
+        <select name="template" id="template" [(ngModel)]="template" (change)="changeEvent(template);">
+          <option selected>All</option>
+          <option *ngFor="let item of events">
+            {{item}}</option>
+        </select>
+      </div>
+    </div> -->
+    <div class="filter-row2">
+      <div class="middle">Event</div>
+      <div class="middle">
+        <select name="template" id="template" [(ngModel)]="template" (change)="changeEvent($event)">
+          <option *ngFor="let item of eventArray">
+            {{ item.Event_Name }}
+          </option>
+        </select>
+      </div>
+    </div>
+    <div class="filter-row2">
+      <div class="middle">Event Type</div>
+      <div class="middle">
+        <select name="eventTypeSelected" id="eventTypeSelected" [(ngModel)]="eventTypeSelected" (change)="changeEventType($event)">
+          <option *ngFor="let item of eventType">
+            {{ item }}
+          </option>
+        </select>
+      </div>
+    </div>
+    <div class="filter-row2">
+      <div class="middle">Month</div>
+      <div class="middle monthFilter">
+        <select style="width: 90px" name="month" id="month" [(ngModel)]="selectedMonth"
+          (change)="getSelectedMonth(selectedMonth)" (monthEvent)="setMonth($event)">
+          <option value="">--Select Month--</option>
+          <option value="0">Janaury</option>
+          <option value="1">February</option>
+          <option value="2">March</option>
+          <option value="3">April</option>
+          <option value="4">May</option>
+          <option value="5">June</option>
+          <option value="6">July</option>
+          <option value="7">August</option>
+          <option value="8">September</option>
+          <option value="9">October</option>
+          <option value="10">November</option>
+          <option value="11">December</option>
+        </select>
+        <select style="width: 90px" name="year" id="year" [(ngModel)]="selectedYear"
+          (change)="getSelectedYear(selectedYear)">
+          <option value="2002">2002</option>
+          <option value="2003">2003</option>
+          <option value="2004">2004</option>
+          <option value="2005">2005</option>
+          <option value="2006">2006</option>
+          <option value="2007">2007</option>
+          <option value="2008">2008</option>
+          <option value="2009">2009</option>
+          <option value="2010">2010</option>
+          <option value="2011">2011</option>
+          <option value="2012">2012</option>
+          <option value="2013">2013</option>
+          <option value="2014">2014</option>
+          <option value="2015">2015</option>
+          <option value="2016">2016</option>
+          <option value="2017">2017</option>
+          <option value="2018">2018</option>
+          <option value="2019">2019</option>
+          <option value="2020">2020</option>
+          <option value="2021">2021</option>
+          <option value="2022">2022</option>
+          <option value="2023">2023</option>
+          <option value="2024">2024</option>
+          <option value="2025">2025</option>
+          <option value="2026">2026</option>
+          <option value="2027">2027</option>
+          <option value="2028">2028</option>
+          <option value="2029">2029</option>
+          <option value="2030">2030</option>
+          <option value="2031">2031</option>
+          <option value="2032">2032</option>
+          <option value="2033">2033</option>
+          <option value="2034">2034</option>
+          <option value="2035">2035</option>
+          <option value="2036">2036</option>
+          <option value="2037">2037</option>
+          <option value="2038">2038</option>
+          <option value="2039">2039</option>
+          <option value="2040">2040</option>
+        </select>
+      </div>
+    </div>
+    <!-- 
+    <div class="filter-row">
+      <div class="middle">Security</div>
+      <div class="middle">
+        <div style="width: -webkit-fill-available;"> <input type="text" placeholder="Search" [(ngModel)]="search"
+            (keydown.enter)="selectShareOnEnter($event); showSuggestions = false; "
+            (keydown.ArrowUp)="selectedBIndex = com.moveUpSelection($event, selectedBIndex)"
+            (keydown.ArrowDown)="selectedBIndex = com.moveDownSelection($event, selectedBIndex)"
+            (keypress)="searchShare(); showSuggestions = true">
+          <span>
+
+          </span>
+          <div class="top UnderlyingSearch " *ngIf="search && showSuggestions">
+            <div style="width: 18% !important;" class="SelectorBox">
+              <a *ngFor="let b of shareList; let i = index" (keypress)="ChangeIndex($event)">
+                <div *ngIf="b" [attr.data-ShareData]="b['Note_Master_Id']"
+                  (click)="selectShareOnClick(b['Note_Master_Id'])"
+                  (keydown.enter)="selectShareOnClick(b['Note_Master_Id'])"
+                  [ngClass]="{'HoverSuggestion': (i === selectedBIndex)}">
+                  <span>{{b['Product_Name']}} ({{b['Currency']}} | {{b['Exchange']}})</span>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div> -->
+  </div>
+
+  <!-- <div *ngIf="IsLoading">
+    <div class="loaderdiv content-layout">
+      <img [src]="isProd?'assets/loading_dots.gif':'../../assets/loading_dots.gif'" height="100px" width="100px">
+    </div>
+  </div> -->
+
+  <div *ngIf="!IsLoading" class="content-layout">
+    <div class="content-container" style="margin-right: 10px">
+      <div class="content-row title" style="display: flex">
+        Event Calender &nbsp;: :
+      </div>
+
+      <div class="calendar">
+        <div class="calendarControlsContainer">
+          <button class="btnCalendarControls" (click)="prevMonth()">
+            &lt;
+          </button>
+          <div class="calendarTopTextContainer">
+            <span class="calendarTopText" ngDefaultControl>{{
+              Months[selectedMonth]
+              }}</span>
+            <span class="calendarTopText" name="activeYear" ngDefaultControl>{{
+              selectedYear
+              }}</span>
+          </div>
+          <button class="btnCalendarControls" (click)="nextMonth()">
+            &gt;
+          </button>
+        </div>
+
+        <div class="calendarDatesContainer">
+          <div class="days" *ngFor="let i of Days; let day = index">
+            {{ i }}
+          </div>
+          <div class="dates" *ngFor="let i of Dates; let j = index" [ngClass]="{
+              blankDate: i === 0,
+              'dates-active': selectedDate === i
+            }" (click)="selectDate(i, Months[selectedMonth], selectedYear)">
+            {{ i || "" }}
+            <div class="event-details" *ngFor="let count of counts; let d = index">
+              <span *ngIf="
+                  i &&
+                  count.DateNumber === i &&
+                  count.month === selectedMonth &&
+                  count.year === selectedYear
+                " class="pendingCount">Count: {{ count.Count.length }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="content-container" style="margin-left: 10px">
+      <div class="content-row title" style="display: flex">
+        Events &nbsp;: :
+      </div>
+      <div class="content-row table-title" *ngIf="AllProductEventCA?.length === 0 && !noDataFlag">
+        <p>
+          No data for {{ template }} event under {{ viewBy }} found for
+          {{ Months[selectedMonth] }} {{ selectedYear }}
+        </p>
+      </div>
+      <div style="margin: auto;" [ngStyle]="{ display: !noDataFlag ? 'none' : '' }">
+        <img [src]="
+            isProd ? 'assets/loading_dots.gif' : '../../assets/loading_dots.gif'
+          " height="100px" width="100px" />
+      </div>
+      <div id="EventDiary" *ngIf="AllProductEventCA?.length && !noDataFlag" class="content-row"
+        style="align-self: center; justify-self: center">
+        <!-- <google-chart [title]="collateralChartTitle" [type]="collateralChartType" [data]="collateralChartData"
+          [options]="collateralChartOptions" [columns]="collateralChartColumnNames">
+        </google-chart> -->
+        <app-pie-chart [title]="'eventsChart'" [legendHeight]="300" [width]="550" [legendVisible]="true" [graphdata]="collateralChartData">
+        </app-pie-chart>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="blotter-container">
+  <div *ngIf="!noDataFlag && AllProductEventCA?.length === 0" class="table-title">
+    No data for {{ template }} event under {{ viewBy }} found for
+    {{ Months[selectedMonth] }} {{ selectedYear }}
+  </div>
+  <div *ngIf="!noDataFlag && !IsLoading && AllProductEventCA?.length > 0" class="table-title">
+    Data for {{ template }} event under {{ viewBy }} found for
+    {{ Months[selectedMonth] }} {{ selectedYear }} &nbsp;: :
+  </div>
+
+  <div class="loaderdiv" *ngIf="IsLoading && noDataFlag">
+    <img [src]="
+        isProd ? 'assets/loading_dots.gif' : '../../assets/loading_dots.gif'
+      " height="100px" width="100px" />
+  </div>
+
+  <div *ngIf="!noDataFlag && !IsLoading">
+    <table id="excel-table" class="content-container2">
+      <thead>
+        <tr>
+          <th class="maxwidth170" style="text-align: left;">FinIQ Product Ref</th>
+          <th class="maxwidth300" style="text-align: left;">Product Name</th>
+          <th class="maxwidth120" style="text-align: left;">Event Name</th>
+          <th class="maxwidth150">Schedule Date</th>
+          <th class="maxwidth150">Payment Date</th>
+          <th class="maxwidth150">ISIN</th>
+          <th class="maxwidth170">Processing Status</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="
+            let item of AllProductEventCA
+              | paginate: { itemsPerPage: 10, currentPage: p }
+          ">
+          <td class="left maxwidth170">{{ item.PrdID }}</td>
+          <td class="left maxwidth300">{{ item.Product_Name }}</td>
+          <td class="left maxwidth120">{{ item.Event_Name }}</td>
+          <td class="center maxwidth150">
+            {{ item.sdate | date: "dd-MMM-yyyy" }}
+          </td>
+          <td class="center maxwidth150">
+            {{ item.pdate | date: "dd-MMM-yyyy" }}
+          </td>
+          <td class="center maxwidth150">{{ item.ISIN || "-" }}</td>
+          <td class="center maxwidth170">
+            <div class="status" [ngClass]="{
+              'pending-tag': item.status === 'Pending',
+              'processed-tag': item.status === 'Processed'}">
+              {{ item.status || "-" }}
+            </div>
+          </td>
+        </tr>
+        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,170 @@
+<div class="Main-container">
+    <div class="fund-container" *ngIf="SelectedFunds.length > 0">
+        <div class="fromtodiv">
+            <label></label>
+            <div class="fromtolabeldiv">
+                <label class="label" style="justify-content: flex-start;">Switch From</label>
+                <img src="{{ assetURL }}/right.png" width="25px" height="auto" class="arrow1" />
+                <label class="label" style="justify-content: flex-start;padding-left: 25px;">Switch To</label>
+            </div>
+        </div>
+        <div class="fund-detail-information">
+            <label></label>
+            <label></label>
+            <div>
+                <input type="text" [tabindex]=1 placeholder="Search" [(ngModel)]="SecFundName"
+                    (keydown.enter)="selectShare1($event); showSuggestions = false ;" (keypress)="ChangeIndex($event)"
+                    (keydown.ArrowUp)="selectedMFIndex = Common_cfs.moveUpSelection($event, selectedMFIndex)"
+                    (keydown.ArrowDown)="selectedMFIndex = Common_cfs.moveDownSelection($event, selectedMFIndex)"
+                    (keypress)="showSuggestions = true ; " (keyup)="filterFun($event)">
+                <div class="UnderlyingSearch " *ngIf="SecFundName && showSuggestions">
+                    <div class="SelectorBox">
+                        <a *ngFor="let mf of AllFundsList; let i = index">
+                            <div *ngIf="mf" [attr.data-mf]="mf['FundDetails']"
+                                (click)="selectShare(mf['FundDetails']) ; " (keydown.enter)="selectShare(mf)"
+                                [ngClass]="{'HoverSuggestion': (i === selectedMFIndex)}">
+                                <span>{{mf['FundDetails']}}</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <label class="label">Fund</label>
+
+            <div>
+                <div>
+                    <label>{{SelectedFunds[0].Name}}</label>
+                    <div class="fundinfo" *ngIf="SelectedFunds[0].Manager">
+                        <span id="fundManager" class="small">{{SelectedFunds[0].Manager}}</span>
+                        <span class="small">|</span>
+                        <span class="small"> {{SelectedFunds[0].Ccy || ''}} </span>
+                        <span class="small">|</span>
+                        <span class="fs12"> Min. Investment </span>
+                        <span class="small">{{SelectedFunds[0].Min_Inv_Amt | number}}</span>
+                        <span class="small">|</span>
+                        <span class="fs12"> Fund Code </span>
+                        <span class="small">{{SelectedFunds[0].Code}}</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <div *ngIf="SelectedFunds.length > 1">
+                <label style="color: var(--btn-hover-bg) !important;">{{SelectedFunds[1].Name}}</label>
+
+                <div class="fundinfo">
+                    <span id="fundManager" class="small">{{SelectedFunds[1].Manager || ''}}</span>
+                    <span class="small">|</span>
+                    <span class="small"> {{SelectedFunds[1].Ccy || ''}} </span>
+                    <span class="small">|</span>
+                    <span class="fs12"> Min. Investment </span>
+                    <span class="small">{{SelectedFunds[1].Min_Inv_Amt}}</span>
+                    <span class="small">|</span>
+                    <span class="fs12"> Fund Code </span>
+                    <span class="small">{{SelectedFunds[1].Code}}</span>
+                </div>
+
+            </div>
+
+        </div>
+
+        <label>Trade Parameters ::</label>
+
+        <div class="tradeparams-row" *ngIf="SelectedFunds.length > 0">
+            <label class="label">NAV</label>
+            <input type="text" class="right" *ngIf="SelectedFunds[0].BidNAV !== 0"
+                value="{{SelectedFunds[0].BidNAV | number:'1.6-6' || ''}}" disabled />
+            <div><input type="text" class="right" *ngIf="SelectedFunds.length > 1"
+                    value="{{SelectedFunds[1].BidNAV| number:'1.6-6' || ''}}" disabled /></div>
+
+            <label class="label">Available Units</label>
+            <div><input type="text" class="right" value="{{  SelectedFunds[0].AvailableUnits | number:'1.2-2'}}"
+                    (change)="Common_cfs.FormatNumber($event)" disabled></div>
+            <div><input type="text" class="right" *ngIf="SelectedFunds.length > 1"
+                    value="{{  SelectedFunds[1].AvailableUnits | number:'1.2-2'}}"
+                    (change)="Common_cfs.FormatNumber($event)" disabled></div>
+            <!-- <div style="display: flex; align-items: center;justify-content: end;"> <label class="available-units" *ngIf="SelectedFunds.length > 1">{{SelectedFunds[1].AvailableUnits ||
+                    0.00}}</label></div> -->
+
+            <label class="label">Units</label>
+            <input type="text" [(ngModel)]="SwitchUnits" class="right" (blur)="Common_cfs.FormatNumber($event)"
+                (focus)="Common_cfs.UnformatNumber($event);Common_cfs.SelectFullText($event);"
+                (keypress)=" Common_cfs.NotionalValidate($event)" (change)="Units = Common_cfs.NotionalChange($event);fnUnitsChanged();">
+
+        </div>
+
+        <div class="product-information">
+            <app-svg-icons [icon]="'add-icon'" [width]="'22'" [height]="'22'" [fill]="'var(--active)'"
+                (click)="ShowHideProductInfo = true" *ngIf="!ShowHideProductInfo"></app-svg-icons>
+            <app-svg-icons [icon]="'subtract-icon'" [width]="'20'" [height]="'20'" [fill]="'var(--gray)'"
+                (click)="ShowHideProductInfo = false" *ngIf="ShowHideProductInfo"></app-svg-icons>
+            <label>Product Information ::</label>
+        </div>
+
+
+        <div class="fund-detail-information" *ngIf="ShowHideProductInfo">
+            <!-- <button>Expand All</button> -->
+
+            <label class="label">Rating</label>
+
+            <input type="text" class="right" disabled value="{{SelectedFunds[0].Rating || ''}}" />
+
+            <div> <input type="text" class="right" *ngIf="SelectedFunds.length > 1" disabled
+                    value="{{SelectedFunds[1].Rating || ''}}" /> </div>
+
+            <label class="label">Sector</label>
+
+            <input type="text" class="left" disabled value="{{SelectedFunds[0].Sector || ''}}" />
+
+            <div> <input type="text" class="left" *ngIf="SelectedFunds.length > 1" disabled
+                    value="{{SelectedFunds[1].Sector || ''}}" /> </div>
+
+            <label class="label">Annual Fees (%)</label>
+
+            <input type="text" class="right" disabled value="{{SelectedFunds[0].AnnualFees | number:'1.2-2' || ''}}" />
+
+            <div><input type="text" class="right" *ngIf="SelectedFunds.length > 1" disabled
+                    value="{{SelectedFunds[1].AnnualFees | number:'1.2-2' || ''}}" /> </div>
+
+            <label class="label">Switching fees (%)</label>
+
+            <input type="text" class="right" value="{{SelectedFunds[0].SwitchingFee | number:'1.2-2' }}" disabled />
+
+            <div><input type="text" class="right" *ngIf="SelectedFunds.length > 1"
+                    value="{{SelectedFunds[1].SwitchingFee | number:'1.2-2'}}" disabled /> </div>
+        </div>
+
+        <div class="CustomerDetails" *ngIf="this.moredetails !== 'More Details'">
+            <label class="label">Customer</label>
+            <input type="text" [(ngModel)]="CustomerName" disabled placeholder="Customer" />
+            <label class="label" style="padding-left: 20px !important;">Currency</label>
+            <input type="text" class="center" [(ngModel)]="this.SelectedFunds[0].Ccy" disabled />
+            <label class="label">Portfolio</label>
+            <select [(ngModel)]="portfolio" (change)="updatePortfolio()" [disabled]="!enablePortfolio">
+                <option *ngFor="let arr of portfolioList;" [value]="arr.FacDesc">{{arr.PortfolioName}}
+                </option>
+            </select>
+            <label class="label" style="padding-left: 20px !important;">Account Number</label>
+            <select class="right paddingR_30px" [(ngModel)]="Account_Number" (change)="updateCcy()">
+                <option *ngFor="let arr of accountList;">{{arr.Param1}}
+                </option>
+            </select>
+        </div>
+
+        <div class="btn-row">
+            <div class="link" (click)="moredetailsCheck()"> <u>{{moredetails}}</u></div>
+            <button class="button" [disabled]="SelectedFunds.length === 1" (click)="fnTradebtnAction()">Submit</button>
+            <button class="button" (click)="fnResetAll()">Clear</button>
+        </div>
+        <div class="btn-row">
+            <div *ngIf="loadflag">
+                <img [src]="isProd?'assets/loading_dots.gif':'../../assets/loading_dots.gif'" height="100px"
+                    width="100px">
+            </div>
+            <div *ngIf="!loadflag">
+                {{successMsg}}
+            </div>
+        </div>
+    </div>
+</div>

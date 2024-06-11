@@ -1,0 +1,228 @@
+.container {
+    position: absolute;
+    background: var(--containers);
+    height: 450px;
+    width: 741px;
+    box-shadow:0 0 10px 1px var(--gray);
+
+}
+
+.content {
+    padding: 15px;
+    height: inherit;
+}
+
+.center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -moz-transform: translateX(-50%) translateY(-50%);
+    -webkit-transform: translateX(-50%) translateY(-50%);
+    transform: translateX(-50%) translateY(-50%);
+}
+
+.header {
+    display: grid;
+    grid-template-columns: 22fr 1fr 1fr;
+    grid-gap: 14px;
+    gap: 14px;
+}
+
+.settings-grid {
+    display: grid;
+    grid-template-columns: 1fr 265px;
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    gap: 40px;
+    margin-top: 40px;
+    height: inherit;
+}
+
+.form-grp {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 10px;
+    justify-items: start;
+    align-items: center;
+}
+
+.form-grp3 {
+    display: grid;
+    grid-template-columns: 10px 73px 150px;
+    grid-gap: 20px;
+    gap: 29px;
+    justify-items: start;
+    align-items: center;
+}
+
+.col {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; //Changed by Mitali D - 01-11-23
+}
+
+.form-label {
+    text-align: left;
+    // padding-top: 10%;
+    font-size: 12px;
+}
+
+.radio-label{
+    padding-top: 6%;
+    font-size: 12px;
+}
+
+input[type="radio"] {
+    height: 14px;
+    width: 14px;
+    margin-top: 6%;
+}
+
+.radio-grp {
+    display: inline-flex;
+    gap: 10px;
+}
+
+.FromDateLabel,
+.ToDateLabel {
+    position: relative;
+
+    span {
+        position: absolute;
+        left: 8px;
+        top: 14px;
+        font-size: 13px;
+        white-space: nowrap; //Added by Mitali D - 17-04-2023 - LGTGTWINT-1878
+    }
+}
+
+.heading {
+
+    color: var(--active);
+    font-size: 18px;
+    text-align: left;
+    white-space: nowrap;
+}
+
+.input-toggle {
+    line-height: 0;
+    font-size: 0;
+    display: inline-block;
+    margin: 0;
+}
+
+.input-toggle input {
+    display: block;
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.switch {
+    display: inline-block;
+    position: relative;
+    height: 16px;
+    width: 2.5rem;
+    border-radius: 0.5rem;
+    background-color: #ccc;
+    cursor: pointer;
+    transition: all 200ms ease-in-out;
+    margin-top: 8px;
+}
+
+.switch:before {
+    content: "";
+    display: block;
+    height: 1.25rem;
+    width: 1.25rem;
+    border-radius: 100%;
+    background-color: #fafafa;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+    position: absolute;
+    top: -11%;
+    left: 0;
+    transition: all 200ms ease-in-out;
+    // height: inherit;
+}
+
+.input-toggle input:checked+.switch {
+    background-color: var(--active);
+    transition: all 200ms ease-in-out;
+}
+
+.input-toggle input:checked+.switch:before {
+    left: 1.25rem;
+    transition: all 200ms ease-in-out;
+}
+
+.inline-flex {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.color-grp {
+    display: grid;
+    grid-template-columns: 91px 95px 88px;
+    gap:5px;
+}
+
+input[type="color"] {
+    width: 50px;
+}
+
+input[type="checkbox"] {
+    width: 14px;
+    height: 14px;
+    margin-top: 20%;
+}
+
+.auto-refresh-grid {
+    display: grid;
+    grid-template-columns: 69px 25px 107px;
+    margin-top: 6px;
+    align-items: center;
+}
+
+input{
+    accent-color: var(--active);
+}
+
+.wfl-input {
+    display: inline-flex;
+    gap: 6px;
+    align-items: center;
+    width: 111%;
+}
+
+.left{
+    float: left;
+}
+
+.small-input
+{
+    width: 78px !important;
+}
+
+// input[type=date] {
+//     position: relative;
+//     height: 35px;
+//     width: 218px;
+//     margin-top: 7px;
+// }
+
+//Added by Mitali D - 31-03-2023 - LGTGTWINT-1494
+input[type='range'] {
+    width: fit-content;
+}
+
+//Added by Mitali D - 04-03-2023 - LGTGTWINT-1818
+.link{
+    cursor: pointer;
+}
+
+//Added by Mitali D - 17-04-2023 - LGTGTWINT-1878
+input[type=date] {
+    width: 150px;
+    min-width: 150px;
+}

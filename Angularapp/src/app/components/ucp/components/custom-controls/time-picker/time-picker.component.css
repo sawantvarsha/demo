@@ -1,0 +1,13 @@
+
+::ng-deep .mat-focus-indicator.mat-button.mat-stroked-button.mat-button-base.mat-primary {
+    margin-left: -42px !important;
+    margin-top: 5px !important;
+}
+
+::ng-deep .spacer {
+    padding-top: 26px !important;
+}
+
+::ng-deep .mat-datepicker-content.actions{
+    padding: 0px 10px 0px !important;
+}

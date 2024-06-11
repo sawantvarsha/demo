@@ -1,0 +1,1247 @@
+/* .card>div.front { */
+    /* overflow: hidden; */
+/* } */
+
+.CashEQTable td:first-child {
+        min-width: 145px !important;
+        max-width: 145px !important;
+    }
+    
+    .CashEQTable td:nth-child(2),
+    .CashEQTable td:nth-child(3) {
+        max-width: 145px !important;
+        min-width: 145px !important;
+    }
+	#OrderPlacedAll {
+    color: #85ca9e !important;
+    padding: 10px;
+    display: block;
+}
+    
+    .pricerTableCashFX td {
+        min-width: 90px;
+    }
+    
+    .aqDqDdl:focus {
+        outline: -webkit-focus-ring-color auto 1px !important;
+    }
+    
+    #tbod {
+        display: inline-table;
+    }
+    
+    .marginTBL {
+        margin-top: 45px;
+    }
+    
+    #CurrentTemplate[disabled] {
+        border: solid 1px #3a2d2d !important;
+        opacity: 1;
+        background-color: #ddd;
+        padding: 5px;
+        color: #a97958 !important;
+        border-radius: 5px;
+    }
+    
+    .lblTemplate {
+        font-size: 14px;
+        color: #FFFFFF;
+        padding: 20px;
+       
+    }
+    
+    .btn {
+        width: 115px !important;
+        margin-right: 0px !important;
+    }
+    
+    .hiddenPanelCntrls {
+        display: none;
+    }
+    
+    .switch {
+        width:140px;
+    }
+    
+    .MainTable td td {
+        padding: 0px !important;
+    }
+    
+    .btnTD td:nth-child(2),
+    .btnTD td:nth-child(3) {
+        text-align: right !important;
+        padding-right: 8px !important;
+        width: 98px !important;
+    }
+    
+    .btnTD td:nth-child(2) .btn,
+    .btnTD td:nth-child(3).btn {
+        min-width: 100px;
+    }
+    
+    .navTable>tbody>tr>td img {
+        vertical-align: top !important;
+        cursor: pointer;
+    }
+    
+    .priceCard {
+        min-height: 135px !important;
+        padding: 0px !important;
+    }
+    
+/* .pricerTD {
+        padding: 9px !important;
+    } */
+    
+    #overlayer {
+        /* width: 100%;
+        height: 100%;
+        position: fixed;
+        z-index: 9999;
+        background: linear-gradient(-45deg, #383f44, #101111, #4c3a32, #313538, #735746);
+        background-size: 400% 400%;
+        animation: Gradient 7s ease infinite;
+        display: flex;
+        justify-content: center;
+        align-items: center; */
+    }
+    
+    #DivOverlay {
+        width: 100%;
+        height: 300%;
+        position: absolute;
+        z-index: 997;
+        background-color: #333;
+        opacity: 0.5;
+        top: -5px;
+        display: none;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .DivOverlayall {
+        width: 478px;
+        height: 460px;
+        position: absolute;
+        z-index: 990;
+        background-color: #333;
+        opacity: 0.5;
+        /* top: -5px; */
+        display: none;
+        /* justify-content: center; */
+        /* align-items: center; */
+    }
+    
+    .pointer {
+        cursor: pointer;
+    }
+    
+    .centerOverLay {}
+    
+    .spinner {}
+    
+    .spinner>div {
+       /* margin-left: 10px;
+        margin-bottom: 10px;
+        width: 18px;
+        height: 18px;
+        border-radius: 100%;
+        display: inline-block;
+        animation: sk-bouncedelay 1.6s infinite ease-in-out both; */
+
+        margin-left: 10px;
+    margin-bottom: 10px;
+    width: 10px;
+    height: 10px;
+    border-radius: 100%;
+    display: inline-block;
+    animation: sk-bouncedelay 1.6s infinite ease-in-out both;
+    }
+    
+    .spinner .bounce1 {
+        -webkit-animation-delay: -0.40s;
+        animation-delay: -0.40s;
+        background-color: #ce9a6b;
+    }
+    
+    .spinner .bounce2 {
+        -webkit-animation-delay: -0.20s;
+        animation-delay: -0.20s;
+        background-color: #ce9a6b;
+    }
+    
+    .spinner .bounce3 {
+        -webkit-animation-delay: -0.10s;
+        animation-delay: -0.10s;
+        background-color: #ce9a6b;
+    }
+    
+    .spinner .bounce4 {
+        background-color: #ce9a6b;
+    }
+    
+    @-webkit-keyframes sk-bouncedelay {
+        0%,
+        80%,
+        100% {
+            -webkit-transform: scale(0)
+        }
+        40% {
+            -webkit-transform: scale(1.0)
+        }
+    }
+    
+    @keyframes sk-bouncedelay {
+        0%,
+        80%,
+        100% {
+            -webkit-transform: scale(0);
+            transform: scale(0);
+        }
+        40% {
+            -webkit-transform: scale(1.0);
+            transform: scale(1.0);
+        }
+    }
+    
+    @keyframes Gradient {
+        0% {
+            background-position: 0% 50%
+        }
+        50% {
+            background-position: 100% 50%
+        }
+        100% {
+            background-position: 0% 50%
+        }
+    }
+    /*------------PRELOADING END------------ */
+    
+    #CommonPairs_ID,
+    #CommonShares_ID,
+    #CommonAmount {
+        padding: 5px;
+        border-radius: 5px;
+        width: 164px;
+    }
+    
+    .ValidateFieldCSS {
+        border: 1px solid #b34b3b !important;
+    }
+    
+    .reportsimg {
+        width: 30px;
+    }
+    /* Login */
+    
+    .container-login {
+        width: 100%;
+        min-height: 100vh;
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -moz-box;
+        display: -ms-flexbox;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        padding: 15px;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+        position: relative;
+        z-index: 1;
+    }
+    
+    .limiter {
+        width: 100%;
+        margin: 0 auto;
+    }
+    
+    .wrap-login {
+        width: 350px;
+        border-radius: 10px;
+        overflow: hidden;
+        background: 0 0;
+        margin-left: 10%;
+        padding: 10px;
+    }
+    
+    .p-b-50 {
+        padding-bottom: 50px;
+    }
+    
+    .p-t-30 {
+        padding-top: 30px;
+    }
+    
+    .login-form-title {
+        font-family: Ubuntu-Bold;
+        font-size: 28px;
+        color: #fff;
+        line-height: 1.2;
+        text-align: center;
+        text-transform: uppercase;
+        display: block;
+    }
+    
+    .p-b-41 {
+        padding-bottom: 41px;
+    }
+    
+    .login-form {
+        width: 100%;
+        border-radius: 10px;
+        background-color: #212121ad;
+    }
+    
+    .p-b-33 {
+        padding-bottom: 33px;
+    }
+    
+    .p-t-5 {
+        padding-top: 5px;
+    }
+    
+    .validate-input {
+        position: relative;
+    }
+    
+    .wrap-input {
+        width: 100%;
+        position: relative;
+        padding-top: 20px;
+    }
+    
+    .borderBox {
+        border-bottom: 1px solid #514336;
+        width: 70%;
+        margin-left: 50px;
+    }
+    
+    .input {
+        font-family: Ubuntu-Regular;
+        font-size: 20px;
+        color: #be8e64;
+        line-height: 1.2;
+        display: block;
+        width: 100%;
+        height: 50px;
+        background: 0 0;
+        padding: 0 10px 0 80px;
+        -webkit-transition: all .4s;
+        -o-transition: all .4s;
+        -moz-transition: all .4s;
+        transition: all .4s;
+        outline: none;
+        border: none;
+    }
+    
+    .focus-input {
+        position: absolute;
+        display: block;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        pointer-events: none;
+    }
+    
+    .container-login-form-btn {
+        width: 100%;
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -moz-box;
+        display: -ms-flexbox;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .m-t-32 {
+        margin-top: 32px;
+    }
+    
+    .login-form-btn:hover {
+        background-color: transparent;
+    }
+    
+    .buttonLogin:hover {
+        cursor: pointer;
+    }
+    
+    .buttonLogin:focus {
+        outline: 1px dotted;
+        outline: 5px auto -webkit-focus-ring-color;
+    }
+    
+    .login-form-btn {
+        font-family: Ubuntu-Bold;
+        font-size: 18px;
+        color: #fbdcc1;
+        line-height: 1.2;
+        text-transform: uppercase;
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -moz-box;
+        display: -ms-flexbox;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0 20px;
+        min-width: 160px;
+        height: 42px;
+        border-radius: 21px;
+        background: -webkit-linear-gradient(left, #ce9a6b, #84654a, #504235) !important;
+        position: relative;
+        z-index: 1;
+        -webkit-transition: all .4s;
+        -o-transition: all .4s;
+        -moz-transition: all .4s;
+        transition: all .4s;
+    }
+    
+    .buttonLogin {
+        outline: none!important;
+        border: none;
+        background: 0 0;
+    }
+    
+    [type=reset],
+    [type=submit],
+    button,
+    html [type=button] {
+        -webkit-appearance: button;
+    }
+    
+    .buttonLogin,
+    select {
+        text-transform: none;
+    }
+    
+    .buttonLogin,
+    input {
+        overflow: visible;
+    }
+    
+    .buttonLogin,
+    input,
+    optgroup,
+    select,
+    textarea {
+        margin: 0;
+        font-family: inherit;
+        font-size: inherit;
+        line-height: inherit;
+    }
+    
+    .padding-five {
+        padding: 5px;
+    }
+    
+    .clear-graph {
+        width: 30px;
+        height: 30px;
+        float: right;
+    }
+    
+    .canvas-style {
+        height: 260px;
+        width: 400px;
+    }
+    
+    .pricer-style {
+        padding-left: 30px !important;
+        display: none;
+    }
+    
+    .name-width {
+        width: 319px;
+    }
+    
+    .height-in-ELI {
+        height: 54px;
+    }
+    
+    .width-one-hundred-seventy {
+        width: 170px;
+    }
+    
+    .width-ninety-four {
+        width: 94px;
+    }
+    
+    .width-one-hundred-forty {
+        width: 135px;
+    }
+    
+    .width-four-six-four {
+        max-width: 464px;
+    }
+    
+    .margin-left-minus-forty {
+        margin-left: -40px;
+    }
+    
+    .height-six-two {
+        height: 62px;
+    }
+    
+    .width-hundred {
+        width: 100px;
+    }
+    
+    .padding-bottom-twenty {
+        padding-bottom: 20px
+    }
+    
+    .padding-ten {
+        padding: 10px;
+    }
+    
+    .width-four-five {
+        width: 455px !important;
+    }
+    
+    .width-hundred-per-cent {
+        width: 100%;
+    }
+    
+    .width-one-five-zero {
+        width: 150px;
+    }
+    
+    .mf1 {
+        display: none;
+        position: absolute;
+        left: 200px;
+        top: 20px;
+    }
+    
+    .mf2 {
+        width: 618px;
+        height: 800px;
+    }
+    
+    .deopsit-one {
+        width: 30px;
+        height: 30px;
+        float: right;
+        margin-bottom: 5px;
+    }
+    
+    .deposit-two {
+        height: 300px;
+        display: inline-flex;
+        overflow: scroll;
+        width: 100%
+    }
+    
+    .deposit-three {
+        display: table;
+        text-align: center;
+        color: #ababab;
+        margin: 5px;
+        font-size: 12px;
+    }
+    
+    .font-size-fifteen {
+        font-size: 15px;
+    }
+    
+    .filter {
+        filter: blur(5px);
+    }
+    /******** Global CSS End ******/
+    /********************** Back Div Tabs *********************/
+    
+    h2 {
+        color: #ababab;
+    }
+    
+    .tablabel {
+        position: relative;
+        display: inline-block;
+        padding: 10px 10px 10px;
+        border: 1px solid transparent;
+        border-bottom: 0;
+        cursor: pointer;
+        font-weight: 300;
+        color: whitesmoke;
+        font-size: 12px;
+        margin-left: 7px;
+        box-shadow: inset 0px 5px 10px -2px black;
+        border-top-left-radius: 7px;
+        border-top-right-radius: 7px;
+    }
+    
+    .tablabel:hover {
+        color: #a97958;
+    }
+    
+    .tab-panels {
+        margin-top: 6px;
+        border: 0px;
+        border-top: 1px solid;
+        border-image: linear-gradient(to right, rgb(124, 93, 71), rgb(58, 123, 213, 0));
+        border-image-slice: 1;
+    }
+    
+    .tabset {
+        margin-top: 10px;
+        max-width: 65em;
+    }
+    /************* Back Div Tabs END *************/
+    
+    .depositblotter {
+        height: 300px;
+        display: inline-flex;
+        overflow: scroll;
+        width: 100%
+    }
+    
+    .deposittable {
+        display: table;
+        width: 100%;
+        text-align: center;
+        color: #ababab;
+        margin: 5px;
+        font-size: 12px;
+        border-spacing: 10px;
+    }
+    
+    .selectedTab {
+        border-color: #a97958;
+        border-bottom: 1px solid #252525;
+    }
+    
+    .btnTD td:nth-child(2),
+    .btnTD td:nth-child(3) {
+        text-align: right !important;
+        padding-right: 8px !important;
+        width: 98px !important;
+    }
+    
+
+    .buttonsTD button{
+        margin-left: 5px;
+    }
+    .buttonsTD{
+    display: flex;
+    }
+    .btnTD td:nth-child(2) .btn,
+    .btnTD td:nth-child(3).btn {
+        min-width: 70px;
+    }
+    /*To Fetch error from console and highlight hidden span || Tina K || 16-Sep-2019 */
+    
+    .hiddenSpan {
+        display: none;
+    }
+    /*End*/
+    
+    .inactiveLink {
+        /*pointer-events: none;
+        cursor: default;*/
+    }
+    
+    #SettingPanel {
+           display: block;
+    width: 180px;
+    height: max-content;
+    padding: 10px;
+    right: 0px;
+    top: 60px;
+    z-index: 9999;
+    position: fixed;
+    /* box-shadow: 2px 2px 2px #000; */
+    background-color: none;
+    /* color: #fff; */
+    font: normal 11px/18px verdana;
+    float: right;
+    
+    }
+
+    .EQCOpt{
+      
+      position: absolute;
+    width: 120px;
+    background-color: #333;
+    padding: 5px;
+    z-index: 111;
+    font: normal 11px/18px verdana;
+    margin-top: 300px;
+    margin-left: 137px;
+    cursor: pointer;
+    box-shadow: 0 0 10px #a3a199;
+    border-radius: 3px;
+
+    }
+
+    .EQCOpt li {
+        list-style-type: none;
+        padding:5px;
+        /* text-align: center; */
+    }
+
+    .EQCOpt li:hover {
+        background-color: black;
+    }
+    
+    @media screen and (max-width: 768px) {
+        .hiddenPanelCntrls {
+            display: block;
+            padding: 0px 30px;
+            white-space: nowrap;
+        }
+        #SettingPanel {
+            left: 25%;
+            top: 25%;
+        }
+        .hideOnSmallScreen {
+            display: none;
+        }
+    }
+    
+    #SettingPanel ul {
+        margin: 0px;
+        padding: 2px;
+        width: 100%;
+        display: inline-block;
+    }
+    
+    #SettingPanel li {
+        display: block;
+    width: 100%;
+    padding: 30px;
+    box-shadow: 2px 2px 2px #000;
+    background-color: #484747;
+    color: #fff;
+    font: normal 11px/11px verdana;
+    margin: 2px;
+    vertical-align: middle;
+    list-style-position: outside;
+    list-style: none;
+    float: left;
+    text-align: center;
+    }
+    
+    .banksNameRow td {
+        font-size: 13px !important;
+    }
+    
+    .pricesRow td {
+        font-size: 15px !important;
+    }
+    
+    .pricerTable td {
+        min-width: 72px !important;
+    }
+    
+    .container {
+        display: block;
+        position: relative;
+        padding-left: 35px;
+        margin-bottom: 12px;
+        cursor: pointer;
+        font-size: 22px;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        color: grey;
+    }
+    
+    .container {
+        width: 100%;
+        padding-right: 15px;
+        margin-right: auto;
+        margin-left: auto;
+    }
+    
+    .ui-widget.ui-widget-content {
+        box-shadow: 3px 4px 4px black !important;
+        font-family: Montserrat !important;
+    }
+    .ui-state-default{
+        border: 1px solid #252525 !important;
+    background: #252525 !important;
+    font-weight: normal !important;
+    color: #ababab !important;
+    }
+    
+    .ui-widget-header,
+    .ui-state-default {
+        /* display: none !important; */
+        background: #525252;
+    border: 1px solid #484848;
+    color: #ababab;
+    font-weight: bold;
+    }
+    
+    .ui-dialog .ui-dialog-content {
+        position: relative;
+        border: 0;
+        padding: .5em 1em;
+        background: none;
+        overflow: auto;
+    }
+    
+    .container {
+        font-size: 22px !important;
+    }
+    
+    .uploadwrapper {
+        display: inline-block;
+    }
+    
+    .btnUpload {
+        top: 13px;
+        position: absolute;
+    }
+    
+    #myFile {
+        
+        margin-left: 29px;
+        width: 300px;
+    }
+    
+    #lblinfo_upload {
+        margin-left: 5px;
+        margin-left: 5px;
+        font-size: 14px;
+    }
+    .smallDiv{
+/* overflow: hidden !important; */
+    
+    }
+   
+    /*
+input[type='file'].hoverCntrl {
+        box-shadow: 1px 1px #717070 !important;
+    }
+
+    input[type='file'].upload-btn-wrapper {
+        position: relative;
+        overflow: hidden;
+        display: inline-block;
+      }
+      
+      input[type='file'].btn {
+        border: 2px solid gray;
+        color: gray;
+        background-color: white;
+        padding: 8px 20px;
+        border-radius: 8px;
+        font-size: 20px;
+        font-weight: bold;
+      }
+      
+      .upload-btn-wrapper input[type=file] {
+        font-size: 100px;
+        position: absolute;
+        left: 0;
+        top: 0;
+        opacity: 0;
+      }
+      */
+    /* booktradepopup css*/
+
+    
+    .required {
+        position: fixed;
+        display: none;
+        width: 10px;
+        height: 10px;
+        z-index: 99;
+    }
+    
+
+     /* Added By AniruddhaJ Start  */
+   
+        .dropdown-menu {
+            width: auto;
+            position: absolute;
+            transform: translate3d(0px, 33px, 0px);
+            top: 0px;
+            padding: 8px;
+            color: #808080 !important;
+            left: 0px;
+            background-color: inherit;
+            will-change: transform;
+        }
+
+        div[aria-describedby='dialogSelect'] {
+            min-width: 610px !important;
+        }
+
+        .pricerTableCashFX {
+            width: 100%;
+        }
+
+        .notionalCcy {}
+
+        .Instructiontext {
+            font-size: 15px;
+            color: #b59f95;
+            text-align: center;
+        }
+
+        .tblDialog td {
+            padding: 5px;
+        }
+
+        .CADBBasicPrototype {
+            display: none !important;
+            position: relative;
+            cursor: move;
+        }
+
+        img[title="Remove Tile"],
+        img[title="Add Tile"] {
+            /*    display:none;*/
+        }
+
+        .loaderDivMain {
+            position: absolute;
+            top: 47%;
+            left: 47%;
+            z-index: 999;
+        }
+
+        .shareNameCntrlFCNELI {
+            width: 60px;
+            border: 0px solid #2f2f2f !important;
+        }
+
+        .sharesListName,
+        .sharesListNameELI {
+            padding: 5px;
+            font-size: 12px;
+            border: 1px solid #2f2f2f;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 2px;
+        }
+        .TDwrapStyle{
+           white-space: normal !important; 
+      font-size: smaller !important; 
+        }
+
+
+        /* Added For Import/Export popup */
+
+        .modal-backdrop {
+       
+            z-index: 0 !important;
+           
+        }
+        .modal {
+           
+            background: #0000007d 100% 100% no-repeat;
+        }
+        .mainLoader{
+
+            left: 450px !important;
+        }
+
+
+
+        /*  END */
+
+
+        td.widgetsTD{
+            width: 50%;
+        }
+
+        .imgsaveUnderlyings{
+         height: 25px;
+         width: 25px;
+         display: inline-block;
+         cursor: pointer;
+        }
+
+        .per{
+            font-size: 12px !important;
+        }
+	 .ddlCNSDFREQ{
+            width: 121px !important;
+    float: right;
+        }
+
+        .temppopupTD{
+
+            vertical-align: top;
+
+        }
+
+        .temppopupTD tr td label {
+            vertical-align: middle;
+        }
+		
+		/* Added by rizwanS for checkbox css chnages for FCI payoff  */
+        
+.chkboxcustome{
+    left: -1px !important;
+    top: 9px !important;
+    height: 10px !important;
+    width: 5px !important;
+    padding: 5px !important;
+}
+
+.container .chkboxcustome:after {
+    left: 5px !important;
+    top: -2px !important;
+}
+.basketsPopup{
+    width: 60px !important;
+    border: 0px solid #2f2f2f !important;
+}
+
+#MAPLEACTBL ul {
+   
+        display: block;
+        width: fit-content;
+        height: fit-content;
+        min-width: 100%;
+        list-style-position: inside;
+        min-height: 100%;
+        margin: 0px;
+        padding: 0px;
+    
+}
+
+#MAPLEACTBL ul li {
+ 
+    list-style: none;
+    float: left;
+    min-width: 230px;
+    margin: 0px;
+    padding: 5px;
+    white-space: nowrap;
+    
+}
+.selectAllTD{
+padding-left: 10px !important;
+}
+/* END */
+
+
+.DefaultOverLayer{
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    z-index: 9999;
+    background: linear-gradient(-45deg, #383f44, #101111, #4c3a32, #313538, #735746);
+    background-size: 400% 400%;
+    animation: Gradient 7s ease infinite;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.MapleOverLayer {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    z-index: 9999;
+    /* background-size: 400% 400%; */
+    /* animation: Gradient 7s ease infinite; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url(../App_Resorces/maple1.jpg) !important;
+    background-repeat: no-repeat;
+    background-size: 100%;
+}
+
+.DefaultcenterOverLay{
+
+}
+.MaplecenterOverLay{
+    background-color: black;
+    padding: 30px;
+    border-radius: 5px;
+    box-shadow: 4px 2px 3px 1px #424242;
+}
+
+
+/*Added By RizwanS form JIRA -INT1FIN47-324 / 12 Jan 2022*/
+
+table.EstPrice tr td {
+
+    padding: 10px !important;
+    font-size: 15px;
+}
+
+td.estValues span {
+    font-size: 15px;
+}
+
+.EstPrice {
+    margin: 0 auto;
+}
+
+.estValues {
+    text-align:right;
+    font-weight:bold;
+}
+
+/*END*/
+
+/* Added For Maple Access Control Popup UI  / 01 March 2022 */
+
+#MAPLEACTBL {
+   
+      padding: 0;
+      margin: 10;
+      border-left: none;
+      border-right: none;
+      text-align:left;      
+      border-collapse:separate;
+      border-spacing: 0 2px;
+    }
+
+
+#MAPLEACTBL ul {
+   
+        display: block;        
+        min-width: 100%;
+        list-style-position: inside;
+        /* min-height: 100%; */
+        margin: 0px;
+        padding: 0px;
+        overflow-x: scroll;
+        
+    
+}
+
+#MAPLEACTBL ul li {
+ 
+    list-style: none;
+    float: left;
+    min-width: 230px;
+    margin: 0px;
+    padding: 5px;
+    white-space: nowrap;
+    overflow-x: scroll;
+    list-style: none !important;
+    
+    
+}
+#MAPLEACTBL li
+{
+    list-style: none !important;
+}
+
+.wip {
+    background-image: url(../App_Resorces/Spinner-1s-200px-unscreen.gif) !important;
+    background-repeat: no-repeat !important;
+    background-attachment: scroll !important;
+    background-size: 30px 30px !important;
+    background-position: 98% center !important;
+}
+
+/* Chaitanya */
+.OverlayDiv {
+    width: 478px;
+    height: 345px;
+    position: absolute;
+    z-index: 990;
+    background-color: #bdbbbb;
+    background-image: url(../App_Resorces/Backgrounds/horse_loader.gif) ;
+	/* background-image: url(../App_Resorces/Spinner-1s-200px-unscreen.gif) ; */
+    background-repeat: no-repeat;
+    background-position-x: center;
+    background-position-y: center;
+    border-radius: 8px;
+    opacity: 0.5;    
+    display: none;    
+}
+ /* Chaitanya */
+.NewTileBorder{
+        box-shadow: wheat 4px 6px 6px;
+    
+}
+/* END */
+
+* Added by SoumyaP - START*/
+
+
+.priceButton {
+    background: transparent;
+    box-shadow: none;
+    color: inherit;
+    border: none;
+}
+
+
+.err{
+    display: block;
+    padding: 10px;
+    margin-left: 22px;
+    margin-right: 10px;
+}
+
+.box-inner {                            
+    width: 200px;
+    background: #272525c2;
+    padding: 10px;
+    color: #b3b3b3;
+    font-size: 14px;
+    border-radius: 5px;
+    text-align: center;
+    margin-left: 45px;
+    margin-top: 1px;
+}
+
+.errorbox {                      
+    position: absolute;
+    /* display: block; */
+    width: 0px;
+    z-index: 999;
+    background-color: rgb(37, 37, 37);
+    box-shadow: rgb(29 29 29) 3px 4px 4px;
+    border-radius: 8px;
+    /* margin: 2px; */
+    margin-top: 150px !important;
+    margin-left: 75px !important;
+    padding: 8px;
+    font-size: 14px;
+    /* transition: all .5s ease-in-out;  */
+    height: auto;
+    text-align: center;
+     
+}
+/* END */
+
+/* Added by Atharva - Timers - START */
+.priceButton {
+    background: transparent;
+    box-shadow: none;
+    color: inherit;
+    border: none;
+}
+
+.priceButton:disabled:hover {
+    cursor:not-allowed
+ }
+
+.priceButton:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+.fxdTimer {
+    font-size: 15px;
+    text-align: center; 
+}
+
+td.timerTD span {
+    font-size: 20px;
+    font-weight: 500;
+    color: darkseagreen;
+}
+
+
+/* END */
+
+

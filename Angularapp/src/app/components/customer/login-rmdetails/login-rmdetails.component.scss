@@ -1,0 +1,161 @@
+.LoginRMDeatils {
+  display: flex;
+  background-color: var(--main-bg-color);
+  flex-direction: column;
+  font-size: 15px;
+  width: calc(100% - 50px);
+}
+.content-container {
+  margin: 0px 40px;
+  overflow-x: scroll;
+  width: calc(100%);
+}
+.title {
+  display: grid;
+  grid-template-columns: 15% 1% auto;
+  gap: 0px;
+}
+.graphToggle {
+  grid-column: 3;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+}
+.graphMode {
+  padding-bottom: 2px;
+  padding-right: 9px;
+}
+.tableToggle {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+}
+td {
+  font-size: 12px;
+}
+.maxwidth100 {
+  max-width: 100px !important;
+  min-width: 100px !important;
+}
+.maxwidth120 {
+  max-width: 120px !important;
+  min-width: 120px !important;
+}
+.maxwidth150 {
+  max-width: 150px !important;
+  min-width: 150px !important;
+}
+.minwidth600 {
+  max-width: 350px !important;
+  min-width: 350px !important;
+  white-space: pre-line;
+}
+.maxwidth120 {
+  max-width: 120px !important;
+  min-width: 120px !important;
+}
+.maxwidth200 {
+  max-width: 180px !important;
+  min-width: 180px !important;
+  white-space: pre-line;
+}
+
+thead,
+tbody {
+  display: block;
+}
+
+tbody {
+  overflow-y: auto; /* Trigger vertical scroll    */
+  overflow-x: hidden; /* Hide the horizontal scroll */
+}
+
+::-webkit-scrollbar {
+    width: 5px;
+    height: 0px;
+}
+
+.xls-icon {
+  padding: 0px !important;
+  min-width: 30px !important;
+  min-height: 30px !important;
+  margin: 0px 10px 0px 5px !important;
+  cursor: pointer;
+  // filter: grayscale(1);
+}
+
+.xls-icon {
+  background: var(--xls-icon) no-repeat scroll calc(50%) center/25px auto !important;
+}
+.icon {
+  display: flex;
+  align-items: center;
+  padding-top: 8px;
+}
+
+//toggle switch
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 55px;
+  height: 28px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 22px;
+  width: 22px;
+  left: 4px;
+  bottom: 3px;
+  background-color: white;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+input:checked + .slider {
+  background-color: #1261a0;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #1261a0;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+.iframeTag {
+  width: 100vw;
+  // height: 100vw;
+}

@@ -1,0 +1,19 @@
+<div class="timeline-container">
+    <div>
+        <div *ngFor="let a of temp; let i = index">
+            <div class="accordion">
+                <app-svg-icons (click)="expandRow(i)" class="accordion-arrow" [ngStyle]="visibleRow[i]?{'transform':'rotate(-90deg)','transition':'0.4s'}:{'transform':'rotate(90deg)','transition':'0.4s'}" [icon]="'arrow'" [width]="'8'" [height]="'14'"></app-svg-icons>
+                <label class="accordion-header">{{a.PS_TSM_Code}} ({{a.records.length}})</label>
+            </div>
+            <div *ngIf="visibleRow[i]" class="accordion-data">
+                <div *ngFor="let b of a.records">
+
+                    <label>{{b.PS_Fixing_Date.split(' ')[0] | date:'dd-MMM-yyyy'}}</label>
+                    <label *ngIf="b.PS_Status"> ({{b.PS_Status}})</label>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>

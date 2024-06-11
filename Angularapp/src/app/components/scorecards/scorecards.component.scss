@@ -1,0 +1,297 @@
+@media screen and (max-width: 1420px) and (min-width: 451px) {
+    .productCard {
+        margin: 15px 0px !important;
+    }
+
+    .row {
+        padding: 0em 1em 0em 3em !important;
+    }
+}
+
+mat-icon {
+    font-family: 'Material Icons' !important;
+}
+
+.productCard:hover {
+    background-color: var(--container-hover);
+    box-shadow: 0px 0px 15px #ccc;
+    cursor: pointer;
+    border: 1px solid var(--border);
+}
+
+.productCard {
+    background-color: var(--container);
+    box-shadow: 2px 2px 2px 1px #04172726;
+    width: 100%;
+    height: 180px;
+    margin: 15px 0px !important;
+    text-align: center;
+    padding: 11%;
+    border: 1px solid var(--border);
+    cursor: pointer;
+}
+
+app-root .cardDiv {
+    width: calc(100vw - 240px) !important;
+}
+
+.contentdiv {
+    /* padding-top: 56px; */
+    /* margin-left: 10% !important; */
+    height: 100%;
+    /* overflow-y: auto; */
+    width: 100% !important;
+}
+
+.container {
+    padding-left: 0 !important;
+}
+
+.row {
+    padding: 1em 1em 0 0.5em !important;
+}
+
+.container {
+    margin: 0 auto;
+    padding: 1.3em;
+}
+
+.contentdiv * {
+    font-family: var(--font-family) !important;
+}
+
+.contain {
+    display: flex;
+    /* flex-flow: row wrap; */
+    justify-content: space-evenly;
+}
+
+.productName {
+    cursor: pointer;
+    font-size: 20px;
+    color: var(--header);
+    letter-spacing: 0;
+    margin: 5% 0 15% 0;
+    font-family: var(--font-family) !important;
+}
+
+.Main-container {
+    justify-content: center;
+    display: grid;
+    grid-template-columns: 20% 20%;
+    grid-gap: 3%;
+}
+
+
+.lpFlex+* {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+
+.main-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80vh;
+    // padding-left: 5em;
+}
+
+.sub-container {
+    // height: 62vh;
+    // width: 50vw;
+    // display: grid;
+    // grid-template-columns: 1fr 1fr;
+    // gap: var(--gap);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 1100px;
+    //Added by Jyoti S || 19-Apr-2023
+    text-align: center;
+}
+
+.cards-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: var(--gap) !important;
+}
+
+.card {
+    box-shadow: var(--box-shadow-thin);
+
+    .card-header {
+        width: 100%;
+        font-size: larger;
+        color: var(--heading-label);
+        text-align: center;
+        padding: 0px 0px 10px 0px;
+    }
+}
+
+.card:hover {
+    box-shadow: var(--box-shadow-hovered);
+    cursor: pointer;
+}
+
+.container {
+    height: 450px;
+    position: absolute;
+    width: -webkit-fill-available;
+    left: 40px;
+    display: flex;
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    row-gap: 10px;
+    width: 200px;
+    height: 200px;
+    background-color: var(--containers);
+    border-radius: 10px;
+    transition: 0.4s ease-out;
+    position: relative;
+    left: 0px;
+    align-items: center;
+}
+
+.title {
+    color: var(--heading-label);
+    font-weight: 400;
+    position: absolute;
+    left: 20px;
+    top: 15px;
+}
+
+.tabs-container {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--containers);
+    letter-spacing: 0.72px;
+    border-radius: 4px;
+    width: auto;
+    box-shadow: var(--box-shadow-thin);
+    height: auto;
+    margin: 0px 20px;
+
+    .tabs-pages {
+        display: flex;
+        justify-content: space-around;
+        font-size: 15px;
+        height: 50px;
+        grid-gap: var(--tab-gap);
+        gap: var(--tab-gap);
+
+        .tabs-pages-container {
+            width: auto;
+        }
+
+        .tabs {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            cursor: pointer;
+            border-bottom: 1px solid var(--inactive-tab-border);
+            // border-bottom: none;
+            height: 3em;
+            // text-decoration: underline;
+            text-decoration: none;
+            text-underline-offset: 4px;
+            font-weight: 400;
+            box-shadow: var(--neumorphic-up);
+            border-radius: var(--tab-radius);
+        }
+
+        .tabs:hover {
+            border-bottom: 2px solid var(--inactive-tab-border);
+        }
+
+        .tab-active {
+            border-bottom: var(--border-tabs) !important;
+            box-shadow: var(--neumorphic-down);
+            border-radius: var(--tab-radius);
+        }
+    }
+}
+
+.page-navigation {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0px !important;
+    margin: 0px 20px;
+}
+
+// .myButton:after {
+//     position: absolute;
+//     top: 0px;
+//     left: 0px;
+//     width: 0%;
+//     height: 100%;
+//     background-color: rgba(255,255,255,0.4);
+//     -webkit-transition: none;
+//     -moz-transition: none;
+//     -ms-transition: none;
+//     -o-transition: none;
+//     transition: none;
+
+// }
+// .myButton:hover:after {
+//     width: 120%;
+//     background-color: rgba(255,255,255,0);
+//     -webkit-transition: all 0.3s ease-out;
+//     -moz-transition: all 0.3s ease-out;
+//     -ms-transition: all 0.3s ease-out;
+//     -o-transition: all 0.3s ease-out;
+//     transition: all 0.3s ease-out;
+// }
+
+.card:hover {
+    // background-image: linear-gradient(to right,
+    //         #2c2c2c00 0%,
+    //         #2c2c2c 20%,
+    //         #323232 40%,
+    //         #262626 100%);
+    background-image: var(--card-bg-hover);// Added by Sandip for card background hover effect @27-06-2023
+    background-repeat: no-repeat;
+
+    -webkit-animation-duration: 1s;
+    -webkit-animation-fill-mode: forwards;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-name: placeholderShimmer;
+    -webkit-animation-timing-function: linear;
+}
+
+@-webkit-keyframes placeholderShimmer {
+    0% {
+        background-position: -468px 0;
+    }
+
+    100% {
+        background-position: 468px 0;
+    }
+}
+
+.page-title {
+    padding: 10px 35px !important;
+}
+
+//Bulk Pricer - Loader until shares and currency api fetch data
+.pageload-overlay {
+    position: fixed;
+    top: 0px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    background-color: var(--overlay-bg);
+    transition: opacity 500ms;
+    visibility: visible;
+    opacity: 1;
+    z-index: 100;
+    width: auto;
+    height: auto;
+}

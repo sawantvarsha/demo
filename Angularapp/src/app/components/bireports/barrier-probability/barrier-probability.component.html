@@ -1,0 +1,170 @@
+<div class="container" #screen [ngClass]="{'container-expanded':showDiv}">
+
+  <div class="item item-capture">
+    <div class="popup-container" *ngIf="showScreenshotPopup">
+      <div class="popup">
+        <p style="color: white;background-color: gray;">{{popup}}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="item item-7" style="display: flex; align-items: center; ">
+    <div class="barrierHeader" style="display: flex;">Distances &
+      Probabilities
+
+      <div style="position:absolute;right: 5%;">
+        <span class="button-85" role="button" color="primary" (click)="goToOriginalState()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 37.242 30.121">
+            <g id="recompute" transform="translate(0.621 -2.939)">
+              <path id="Path_38893" data-name="Path 38893" d="M34.5,6v9h-9" fill="none" stroke="#a7a7a7" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
+              <path id="Path_38894" data-name="Path 38894" d="M1.5,30V21h9" fill="none" stroke="#a7a7a7" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
+              <path id="Path_38895" data-name="Path 38895" d="M5.265,13.5A13.5,13.5,0,0,1,27.54,8.46L34.5,15m-33,6,6.96,6.54A13.5,13.5,0,0,0,30.735,22.5" fill="none" stroke="#a7a7a7" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"/>
+            </g>
+          </svg>
+          </span>
+        <span class="button-81" role="button" color="primary" (click)="makeCapture()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18.322" height="15.75" viewBox="0 0 18.322 15.75">
+            <g id="menu" transform="translate(-4.5 -10.125)">
+              <path id="Path_38890" data-name="Path 38890" d="M22.059,12.375H5.263c-.42,0-.763-.506-.763-1.125h0c0-.619.344-1.125.763-1.125h16.8c.42,0,.763.506.763,1.125h0C22.822,11.869,22.479,12.375,22.059,12.375Z" fill="#848484"/>
+              <path id="Path_38891" data-name="Path 38891" d="M22.059,19.125H5.263c-.42,0-.763-.506-.763-1.125h0c0-.619.344-1.125.763-1.125h16.8c.42,0,.763.506.763,1.125h0C22.822,18.619,22.479,19.125,22.059,19.125Z" fill="#848484"/>
+              <path id="Path_38892" data-name="Path 38892" d="M22.059,25.875H5.263c-.42,0-.763-.506-.763-1.125h0c0-.619.344-1.125.763-1.125h16.8c.42,0,.763.506.763,1.125h0C22.822,25.369,22.479,25.875,22.059,25.875Z" fill="#848484"/>
+            </g>
+          </svg>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="item item-1" style="color: white;">
+
+    <div class="item item-12">
+      <div class="barrierSubHeader">KI Probabilities </div>
+    </div>
+
+    <div class="item item-13">
+      <input type="number" class="input-min-ko" [value]="currentminimumki" [min]="minimumki" [max]="maximumki"  (change)="binder($event)" step="0.01"
+        name="ki-input1">
+    </div>
+
+    <div class="item item-14">
+      <!-- <input class="input-max-ko" [min]="minimumki" [max]="maximumki" [(ngModel)]="currentmaximumki"
+        (change)="updateSlider($event)" name="inputMaxKI" type="number" step="0.0001"> -->
+        <input type="number" class="input-max-ko" [value]="currentmaximumki" [min]="minimumki" [max]="maximumki"  (change)="binder($event)" step="0.01"
+        name="ki-input2">
+    </div>
+
+    <div class="item item-15" style="color: white; ">
+
+      <div>
+        <!-- <mat-slider class="slider" [min]="minimumki" [max]="maximumki" step="0.0001">
+                            <input matSliderStartThumb [(ngModel)]="currentminimumki" (change)="updateKIRange($event)"
+                                name="inputMinKISlider">
+                            <input matSliderEndThumb [(ngModel)]="currentmaximumki" (change)="updateKIRange($event)"
+                                name="inputMaxKISlider">
+                        </mat-slider> -->
+        <!-- <ngx-slider class="ngx-ko-dist-slider " style="margin: 15px 0px 15px;" [(value)]="currentminimumki"
+                        [(highValue)]="currentmaximumki" [options]="options1" (valueChange)="updateKIRange($event)"
+                        (highValueChange)="updateKIRange($event)"></ngx-slider> -->
+        <ngx-slider class="ngx-ko-dist-slider" style="margin: 15px 0px 15px;" [(value)]="currentminimumki" [(highValue)]="currentmaximumki" [options]="options1"
+          (userChange)="sliderToInputBinder()"></ngx-slider>
+
+      </div>
+    </div>
+
+    <div class="item item-16" style="color: white; ">
+      <div class="barrierSubHeader">KO Probabilities</div>
+
+    </div>
+
+    <div class="item item-17" style="color: white; ">
+      <!-- <input class="input-min-ko" [min]="minimumko" [max]="maximumko" [(ngModel)]="currentminimumko"
+        (change)="updateSlider($event)" name="inputMinKO" type="number" step="0.0001"> -->
+        <input type="number" class="input-min-ko" [value]="currentminimumko" [min]="minimumko"
+         [max]="maximumko"  (change)="binder($event)" step="0.01"
+        name="ko-input1">
+    </div>
+
+    <div class="item item-18" style="color: white; ">
+      <input type="number" class="input-max-ko" [value]="currentmaximumko" [min]="minimumko"
+         [max]="maximumko"  (change)="binder($event)" step="0.01"
+        name="ko-input2">
+    </div>
+
+    <div class="item item-19" style="color: white; ">
+      <div>
+        <!-- <ngx-slider class="ngx-ko-dist-slider " style="margin: 15px 0px 15px;" [(value)]="currentminimumko"
+          [(highValue)]="currentmaximumko" [options]="options2" (valueChange)="updateKIRange($event)"
+          (highValueChange)="updateKIRange($event)"></ngx-slider> -->
+          <ngx-slider class="ngx-ko-dist-slider" style="margin: 15px 0px 15px;" [(value)]="currentminimumko"
+            [(highValue)]="currentmaximumko" [options]="options2"
+            (userChange)="sliderToInputBinder()"></ngx-slider>
+      </div>
+    </div>
+
+    <div class="item item-20" style=" color: white;text-align: center;background-color: rgba(28,69,99,255);">
+      <h1 class="productsCount">{{productCount}}</h1>
+      <h2 class="products">Products</h2>
+    </div>
+
+
+
+  </div>
+
+
+
+  <div class="item item-2">
+    <div class="item item-21">
+      <div class="barrierSubHeader">KI Probabilities & Distance
+      </div>
+      <app-barrier-probability-chart1></app-barrier-probability-chart1>
+    </div>
+
+    <div class="item item-22">
+      <div class="barrierSubHeader">KO Probabilities & Distance</div>
+      <app-barrier-probability-chart2></app-barrier-probability-chart2>
+    </div>
+
+  </div>
+
+  <div class="item item-9">
+    <span class="material-icons info" (click)="toggleDiv()">info</span>
+
+    <div class="hidden" [ngClass]="{ show: showDiv }">
+      <div>
+        <button class="button-82" role="button" color="primary" (click)="toggleScroll()">
+          {{scroll}}
+        </button>
+      </div>
+      <div class="sliderImg">
+        <div class="slide-track" *ngIf="scroll === 'Scroll off'" id="square">
+          <div class="slide" *ngFor="let imageObj of screenshotData" (click)="goToState(imageObj)"
+            style="border: 1px solid white">
+            <div class="image-container" (mouseenter)="showTooltip($event, imageObj)" (mouseleave)="hideTooltip()">
+              <img src="{{ imageObj.image }}" height="200" width="268" alt="" />
+              <div style="height: 45px; line-height: 12px; margin-left: 2%">
+                <p style="font-size: 13px; position: absolute; right: 0">
+                  {{ getTimestamp(imageObj.timestamp) }}
+                </p>
+              </div>
+              <div class="custom-tooltip" [ngStyle]="tooltipStyle" [innerHTML]="tooltipContent"></div>
+            </div>
+          </div>
+        </div>
+        <div class="slider-off" *ngIf="scroll === 'Scroll on'" style="display: block;" id="square">
+          <div class="slide" *ngFor="let imageObj of screenshotData" (click)="goToState(imageObj)"
+            style="border: 1px solid white">
+            <div class="image-container" (mouseenter)="showTooltip($event, imageObj)" (mouseleave)="hideTooltip()">
+              <img src="{{ imageObj.image }}" height="200" width="268" alt="" />
+              <div style="height: 45px; line-height: 12px; margin-left: 2%">
+                <p style="font-size: 13px; position: absolute; right: 0">
+                  {{ getTimestamp(imageObj.timestamp) }}
+                </p>
+              </div>
+              <div class="custom-tooltip" [ngStyle]="tooltipStyle" [innerHTML]="tooltipContent"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

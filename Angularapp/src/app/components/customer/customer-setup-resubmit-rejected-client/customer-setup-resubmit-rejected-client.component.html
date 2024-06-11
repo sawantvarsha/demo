@@ -1,0 +1,90 @@
+<div *ngIf="showLanding">
+    <div class="ResubmitRejectedClient">
+        <!-- <div class="img"> -->
+        <app-svg-icons icon="{{'error-icon'}}"></app-svg-icons>
+        <!-- <img [src]="isProd? 'assets/Exclamation.png': '../../assets/Exclamation.png'" height="150px"
+                width="150px" /> -->
+        <!-- </div> -->
+        <span style="font-size: 20px;">Your profile creation request has been rejected.</span>
+        <span style="font-size: 19px;">Please Contact RM.</span>
+        <span style="color: var(--off-color);font-weight: 400;"> Rejection reason - {{RMComment}} </span>
+
+        <div class="buttons-section">
+            <button (click)="fnReSubmissionProcess();">
+                Resubmit
+            </button>
+            <button (click)="fnlogout();">
+                Cancel
+            </button>
+        </div>
+    </div>
+</div>
+<div *ngIf="!showLanding">
+    <div class="container">
+        <div class="page-title">
+            Profile Resubmit
+        </div>
+        <div class="row-container">
+            <div class="additional-documents-action-controls">
+                <button (click)="fnOpenProfile();">View Profile</button>
+            </div>
+        </div>
+        <div class="row-container">
+            <label>*Remark</label>
+            <textarea class="remarkInput" rows="8" [(ngModel)]="ClientComment" type="text"
+                placeholder="Enter Remark"></textarea>
+        </div>
+        <div style="padding: 0px 40px;">
+            <span class="section-header">{{AdditionalDocHeader}}</span>
+            <div class="additional-documents-setion">
+                <div *ngFor="let input of UploadingDocs; let i = index">
+                    <div class="additional-documents-container">
+                        <div style="line-height: 50px;">
+                            <select (change)="fneventChange($event, input.SequenceNo - 1)">
+                                <option *ngFor='let item of eventList' [value]="item.Event_Code">{{item.Event_Name}}
+                                </option>
+                            </select>
+                        </div>
+                        <div style="line-height: 45px;">
+                            <input type="file" class="custom-file-input"
+                                (change)="fnfileSelectionFunction($event, input.SequenceNo - 1)" />
+                        </div>
+
+                        <div class="additional-documents-action-controls">
+                            <button class="button" (click)="fnuploadDoc(input.SequenceNo - 1)">Upload</button>
+                            <button class="button" (click)="fnremoveDocFromList(i)">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="addition-document-add-doc-control">
+                    <button class="button" (click)="fnAddDocinUploadingDocList()">Add Doc</button>
+                </div>
+            </div>
+            <div class="section-container">
+
+            </div>
+        </div>
+        <div class="row-container">
+            <div class="additional-documents-action-controls">
+                <button (click)="fnSubmit();">Submit</button>
+                <button (click)="fnShowlanding();">Cancel</button>
+                <span style="width: auto;">{{SuccesMsg}}</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="snackbar" style="line-height: 45px">
+    <div *ngIf="Msg">{{ this.Msg }}</div>
+</div>
+
+<div class="overlay" *ngIf="showProfile">
+    <div style="display: flex;justify-content: flex-end;padding: 20px;">
+        <img [src]="'http://'+domainURL+'/assets/cancel_icon.png'" (click)="fnCloseProfileFlag(false)" height="40px"
+            width="40px" />
+    </div>
+
+    <app-customer-setup-view style="top: 10%;left: 15%;width: 70%;height: 82vh;overflow: inherit;"
+        [MyProfileMode]="ViewProfilFlag" (closeProfile)="fnCloseProfileFlag($event)"></app-customer-setup-view>
+</div>

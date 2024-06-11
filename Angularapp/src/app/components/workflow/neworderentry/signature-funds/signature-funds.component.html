@@ -1,0 +1,220 @@
+<div [ngClass]="{'SPComponentrmw': isUserRM === true, 'SPComponent': isUserRM === false}">
+
+
+    <div class="fundname-row" *ngIf="isUserRM">
+        <div class="middle">Customer</div>
+        <div class="middle">
+            <app-common-customer-search (sendCustomerDetails)="getCustomerDetails($event)"
+                (selectedCustomerValue)="selectedCustomerValue1($event)"></app-common-customer-search>
+        </div>
+    </div>
+
+    <div class="fundname-row" *ngIf="!displaySearch">
+        <div class="middle">Signature Funds</div>
+        <div class="middle">
+            <input type="text" placeholder="Search">
+            <!--to be removed-->
+            <!-- <input type="text" placeholder="Search" [(ngModel)]="search" (keydown.enter)="selectbondOnEnter($event); showSuggestions = false" (keydown.ArrowUp)="selectedBIndex = com.moveUpSelection($event, selectedBIndex)" (keydown.ArrowDown)="selectedBIndex = com.moveDownSelection($event, selectedBIndex)"
+                (keypress)="delaySmartSearch($event); showSuggestions = true" (change)="showSuggestions = true;">
+            <div class="top UnderlyingSearch " *ngIf="search.length > 1 && showSuggestions">
+                <div class="SelectorBox">
+                    <a *ngFor="let b of bondsList; let i = index" (keypress)="ChangeIndex($event)">
+                        <div *ngIf="b" [attr.data-BondData]="b['Note_Master_id']" (click)="selectbondOnClick(b['Note_Master_id'])" (keydown.enter)="selectbondOnEnter($event)" [ngClass]="{'HoverSuggestion': (i === selectedBIndex)}">
+                            <label>{{b['Product_Name']}}</label>
+                        </div>
+                    </a>
+                </div>
+            </div> -->
+        </div>
+    </div>
+
+    <div class="gridInfo">
+        <div class="funddetails">
+            <div class="fundtitlerow">{{productName}}</div>
+            <div class="shareinfo">
+                <span class="fs12 heading">Currency </span>
+                <span class="medium value-top">{{currency}}</span>
+                <span class="medium value-top">|</span>
+                <span class="fs12 heading"> ISIN </span>
+                <span class="medium value-top"> {{ISIN}} </span>
+                <span class="medium value-top">|</span>
+                <span class="fs12 heading">Rating </span>
+                <span class="medium value-top"> {{rating}} </span>
+            </div>
+            <!-- <div class="funddetails " style="color: red;" *ngIf="details['ProductName']">{{msg}}
+            </div> -->
+        </div>
+    </div>
+
+    <div class="param-cols">
+        <div class="column1">
+            <div class="fundparams-row">
+                <div class="middle">Order Type</div>
+                <div class="middle">
+                    <input type="text" class=" " [(ngModel)]="orderType" value="{{orderType}}" [disabled]="true" />
+                </div>
+            </div>
+
+            <div class="fundparams-row">
+                <div class="middle">Nominal Amount</div>
+                <div class="middle">
+                    <input type="text" [(ngModel)]="notional" class=" right floatRight placeholder-right"
+                        placeholder="Enter Nominal Amount"
+                        (focus)="com.UnformatNumber($event);com.SelectFullText($event);"
+                        (blur)="com.FormatNumber($event)"
+                        (change)="notional = com.NotionalChange($event);calculateInvestmentAmount();"
+                        (keypress)=" com.NotionalValidate($event)" [disabled]="!isEditable" />
+                </div>
+            </div>
+
+
+        </div>
+        <div class="column2">
+
+            <div class="fundparams-row">
+                <div class="middle">Trade Date </div>
+                <div class="middle">
+                    <input type="text" class=" center" disabled="disabled" value="{{tradeDate }}" />
+                </div>
+            </div>
+            <div class="fundparams-row">
+                <div class="middle">Currency</div>
+                <div class="middle">
+                    <input type="text" [(ngModel)]="currency" class="left" value="" [disabled]="isEditable">
+                </div>
+            </div>
+
+            <!-- <div class="fundparams-row">
+                <div class="middle">Maturity Date </div>
+                <div class="middle">
+                    <input type="text" class=" center" disabled="disabled" value="{{maturityDate }}" />
+                </div>
+            </div> -->
+
+
+
+        </div>
+    </div>
+
+    <div class="param-cols margin-top" *ngIf="this.moredetails !== 'More Details'">
+
+        <div class="column1">
+            <div class="fundparams-row">
+                <div class="middle">Customer</div>
+                <div class="middle">
+                    <input type="text" [(ngModel)]="CustomerName" disabled placeholder="Customer" />
+                </div>
+            </div>
+
+            <div class="fundparams-row">
+                <div class="middle">Portfolio</div>
+                <div class="middle">
+                    <select [(ngModel)]="portfolio" (change)="updatePortfolio()">
+                        <option *ngFor="let arr of portfolioList;" [value]="arr.FacDesc">{{arr.PortfolioName}}
+                        </option>
+                    </select>
+                    <input type="text" disabled placeholder="Portfolio" *ngIf="!isEditable" />
+                </div>
+            </div>
+
+        </div>
+
+        <div class="column2">
+
+            <div class="fundparams-row">
+                <div class="middle">Account Number</div>
+                <div class="middle">
+                    <select class="right paddingR_30px" [(ngModel)]="Account_Number" (change)="cashBalance()">
+                        <!--cashBalance() Added by AlolikaG on 2nd Feb 2022-->
+                        <!-- [disabled]="isUserRM === false"-->
+                        <option *ngFor="let arr of accountList;">{{arr.Param1}}
+                        </option>
+                    </select>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="fundDetails">
+        <div class="header" style="margin: 20px 0px;">
+            <!-- <app-svg-icons [icon]="'add-new'" [width]="'25'" [height]="'25'" style="margin: auto;" [fill]="'var(--active)'" (click)="addRow()">
+            </app-svg-icons> -->
+            <app-svg-icons [icon]="'add-icon'" [width]="'22'" [height]="'22'" style="margin: auto;"
+                [fill]="'var(--active)'">
+                <!--(click)="addRow()"-->
+            </app-svg-icons>
+            <!-- <app-svg-icons [icon]="'add-icon'" [width]="'22'" [height]="'22'" style="margin: auto;"
+                [fill]="'var(--active)'" *ngIf="sipFlag" class="svg">
+            </app-svg-icons> -->
+            <!-- <div *ngIf="sipFlag"></div> -->
+            <div class="center">Fund</div>
+            <div class="center">Contribution (%)</div>
+            <div class="center">Investment Amount</div>
+            <div class="center">NAV</div>
+            <div class="center">Currency</div>
+        </div>
+        <div class="header" *ngFor="let row of SelectedfundsList; let i = index" style="margin-bottom: 10px;">
+            <app-svg-icons [icon]="'subtract-icon'" [width]="'20'" [height]="'20'" style="margin: auto;"
+                [fill]="'var(--gray)'">
+                <!--(click)="removeRow(i)"-->
+            </app-svg-icons>
+            <!-- <app-svg-icons [icon]="'subtract-icon'" [width]="'20'" [height]="'20'" style="margin: auto;"
+                [fill]="'var(--gray)'" *ngIf="sipFlag" class="svg">
+            </app-svg-icons> -->
+            <!-- <div *ngIf="sipFlag"></div> -->
+            <div>
+                <input type="text" [tabindex]=1 placeholder="Search" [(ngModel)]="row.FundName" [disabled]="true">
+
+                <!-- <div class="UnderlyingSearch " *ngIf="row.FundName.length > 0 && row.showSuggestions">
+                    <div class="SelectorBox">
+
+                        <a *ngFor="let mf of mfList; let j = index" (keypress)="ChangeIndex($event)">
+                            <div *ngIf="mf" [attr.data-mf]="mf['Param5']" (click)="selectShareOnClick(mf.Param5,i); "
+                                (keydown.enter)="selectShareOnEnter($event,i)"
+                                [ngClass]="{'HoverSuggestion': (j === selectedMFIndex)}">
+                                <span>{{mf['Param5']}} {{mf['Param4']}}</span>
+                            </div>
+                        </a>
+                    </div>
+                </div> -->
+            </div>
+            <!-- <input type="text " class="right" [(ngModel)]="Contribution[i]" (change)="changeContribution(i)" />
+            <input type="text " class="right" [(ngModel)]="InvestmentAmountSelectedFund[i]" (change)="cfs.FormatNumber($event)" disabled/>
+            <input type="text " class="right" [(ngModel)]="NAV[i]" disabled/>
+            <input type="text " class="right" [(ngModel)]="SelectedCurrency[i]" disabled/> -->
+            <input type="text " class="right" [(ngModel)]="row.ContributionPer"
+                (change)="changeContribution(i);cfs.FormatNumber($event)" [disabled]="true" />
+            <input type="text " class="right" [(ngModel)]="row.InvestedAmount" (change)="cfs.FormatNumber($event)"
+                disabled />
+            <input type="text " class="right" [(ngModel)]="row.Nav" disabled />
+            <input type="text " class="right" [(ngModel)]="row.FundCurrency" disabled />
+        </div>
+    </div>
+
+    <div class="fund-button-row">
+        <div></div>
+        <div class="details right">
+            <div class="link" (click)="moredetailsCheck()">
+                <u>{{moredetails}}</u>
+            </div>
+            <div>
+                <button class="button" (click)="saveOrder()">Submit</button>
+            </div>
+        </div>
+        <div>
+            <button class="button" (click)=reset();>Clear</button>
+        </div>
+    </div>
+
+    <div class="fund-message-row">
+        <div *ngIf="loadflag">
+            <img [src]="isProd?'assets/loading_dots.gif':'../../../../../assets/loading_dots.gif'" height="100px"
+                width="100px">
+        </div>
+        <div *ngIf="!loadflag">
+            {{successMsg}}
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,31 @@
+<!-- <p>fx-order-abn works!</p> -->
+<div class="fx-order-abn-header">
+    <div class="row statusbar-grid">
+        <div class="statusbar">
+            <div class="statusbar-inner">
+                <img src="{{assetURL}}/unknown.png" alt="" class="divleft">
+                <div class="blacklabel"> You have 4 active orders. </div>
+            </div>
+
+        </div>
+        <div class="resclass" style="margin: auto 0;display: flex;" (click)="refreshTiles()">
+            <!-- <button (click)="RefreshAll()" class="btn_refresh"> Refresh </button> -->
+            <!-- <img src="{{assetURL}}/refresh.png" alt="" style="width: 1.5em;" (click)="RefreshAll()"> -->
+            <app-svg-icons [icon]="'refresh'" [width]="'26'" [height]="'26'"></app-svg-icons>
+        </div>
+    </div>
+</div>
+
+<div class="fx-order-abn">
+    <app-fx-card *ngFor="let card of cards" [card]="card"></app-fx-card>
+    <div class="add-pair">
+        <div class="plus-icon" *ngIf="!showCurrencySelection">
+            <img src="{{assetURL}}/plus.png" alt="" style="height: 4em; cursor: pointer;"
+                (click)="showCurrencySelection = true">
+        </div>
+
+        <div class="ccybox" *ngIf="showCurrencySelection">
+            <span *ngFor = "let pair of availablePairs" (click)="addNewCard(pair)">{{pair.ccy}}</span>
+        </div>
+    </div>
+</div>

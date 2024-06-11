@@ -1,0 +1,27 @@
+<!-- <label class="card-header">Previous Quotes</label> -->
+<div class="response-list">
+    <ul>
+        <li *ngFor="let data of prevQuoteArr; let i = index">
+            <div class="item-prev">
+                <div class="alignIDProdName">
+                    <label class=""><span>RFQ ID:</span > <span style="color: var(--text) !important;">{{data.RFQ_x0020_ID}} </span></label>
+                    <label class="">{{data.Queue_x0020_Status}}</label>
+                </div>
+                <div style="padding-top: 3px;">
+                    <label style="color: var(--text) !important;">{{data.Product_x0020_Name}}</label>
+                </div>
+                <div>
+                    <label class="underlyings-card">{{data.Underlyings}}</label>
+                    <label style="float:right; " (click)="fetchRFQIDDetails(data.RFQ_x0020_ID[0], false)"><span class="Hlink">{{this.commonfunctions.Clone | translate}}</span></label>
+                    <label style="float:right;margin-right: 15px;" (click)="fetchRFQIDDetails(data.RFQ_x0020_ID[0], true)"><span class="Hlink">View</span></label>
+                </div>
+            </div>
+
+            <hr class=" line ">
+        </li>
+
+    </ul>
+    <div *ngIf = "prevQuoteArr.length <= 0">No Data Found</div>
+
+
+</div>

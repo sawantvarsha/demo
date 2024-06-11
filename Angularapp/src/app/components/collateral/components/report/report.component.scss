@@ -1,0 +1,179 @@
+.workflowblotter-component {
+    display: flex;
+    background-color: var(--main-bg-color);
+    flex-direction: column;
+    font-size: 15px;
+    width: calc(100% - 67px);
+}
+
+.content-container {
+    overflow-x: scroll;
+    width: calc(100%);
+}
+
+@media screen and (min-width: 1600px) and (max-width: 1800px) {
+    .table-container {
+        zoom: 100%;
+    }
+}
+
+@media screen and (max-width: 1600px) {
+    .table-container {
+        zoom: 90%;
+    }
+}
+
+@media screen and (max-width: 1440px) {
+    .table-container {
+        zoom: 85%;
+    }
+}
+
+@media screen and (max-width: 1280px) {
+    .table-container {
+        zoom: 80%;
+    }
+}
+
+td {
+    font-size: 12px;
+}
+
+.maxwidth100 {
+    max-width: 100px !important;
+    min-width: 100px !important;
+    white-space: pre-line;
+}
+
+.maxwidth120 {
+    max-width: 120px !important;
+    min-width: 120px !important;
+    white-space: pre-line;
+}
+
+.maxwidth150 {
+    max-width: 150px !important;
+    min-width: 150px !important;
+    white-space: pre-line;
+}
+
+.minwidth600 {
+    max-width: 350px !important;
+    min-width: 350px !important;
+    white-space: pre-line;
+}
+
+.maxwidth120 {
+    max-width: 120px !important;
+    min-width: 120px !important;
+    white-space: pre-line;
+}
+
+.maxwidth200 {
+    max-width: 150px !important;
+    min-width: 150px !important;
+    white-space: pre-line;
+}
+
+.maxwidth70 {
+    max-width: 70px !important;
+    min-width: 70px !important;
+    white-space: pre-line;
+}
+
+.maxwidth300 {
+    max-width: 200px !important;
+    min-width: 200px !important;
+    white-space: pre-line;
+}
+
+thead,
+tbody {
+    display: block;
+}
+
+tbody {
+    min-height: 150px;
+    /* Just for the demo          */
+    overflow-y: auto;
+    /* Trigger vertical scroll    */
+    overflow-x: hidden;
+    /* Hide the horizontal scroll */
+}
+
+.head {
+    padding: 5px;
+    font-size: 20px;
+    // background-color: #889daf;
+}
+
+ ::-webkit-scrollbar {
+    width: 5px;
+    height: 0px;
+}
+
+.table1 {
+    // border: solid 1px lightgray;
+    // margin-left: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.gridMain {
+    display: grid;
+    grid-template-rows: repeat(14, 1fr);
+}
+
+.subdiv {
+    background: var(--table-row-odd);
+    padding: 5px;
+    margin-left: 2px;
+    margin-bottom: 2px;
+}
+
+.singlevalue {
+    display: grid;
+    align-items: center;
+}
+
+.main-container {
+    display: flex;
+    margin-left: 40px; // 16-Mar-2021 || Viplav T. || change 20px to 40px
+    flex-direction: column;
+    background-color: var(--containers);
+    letter-spacing: 0.72px;
+    border-radius: 4px;
+    width: 100%;
+    padding-left: 10px;
+    padding-right: 10px;
+    box-shadow: var(--box-shadow-thin);
+    .tabs-pages {
+        display: flex;
+        justify-content: space-around;
+        font-size: 15px;
+        margin-bottom: 10px;
+        height: 50px;
+        gap: var(--tab-gap);
+        .tabs {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            cursor: pointer;
+            border-bottom: 1px solid var(--border);
+            text-decoration: underline;
+            text-underline-offset: 4px;
+            font-weight: 400;
+            box-shadow: var(--neumorphic-up);
+        }
+        .tabs:hover {
+            border-bottom: 2px solid var(--border);
+        }
+        .tab-active {
+            font-weight: 500;
+            border-bottom: 2px solid var(--active) !important;
+            font-weight: 500;
+            box-shadow: var(--neumorphic-down);
+        }
+    }
+}

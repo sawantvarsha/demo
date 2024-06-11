@@ -1,0 +1,91 @@
+<div class="CK-maindata-outer" id="completeKYC">
+    <div class="CK-questiondata" *ngIf="!showKYCResult">
+        <div class="CK-rowcontent">
+            <div class="page-title">Customer KYC Details</div>
+            <br />
+        </div>
+
+        <div class="CK-rowoptions" *ngIf="!IsLoading">
+            <div class="form-container100" *ngFor="let item of quationsList; let i = index">
+                <ng-container [ngSwitch]="item.controlType">
+                    <ng-template [ngSwitchCase]="'sectionHeader'">
+                        <div class="section-header">{{item.Section}}</div>
+                    </ng-template>
+                    <ng-template [ngSwitchCase]="'sectionContent'">
+                        <div class="questiondiv" [id]="'Question_NO_'+item.Question_NO+'_ID'">
+                            <div class="KYC-card">
+                                <label class="KYC-card-header" for="CustomerType"
+                                    style="text-align: center !important;padding: 0;font-size: 17px;color: var(--off-color);"
+                                    class="lbl">{{ item.Question_NO }}. &nbsp;{{ item.quation }}</label>
+                                <div class="form-container2080 KYC-card-content"
+                                    *ngFor="let option of item.optionsList; let i = index">
+
+                                    <input *ngIf="item.optionsType === 'radio'" type="radio"
+                                        [id]="'option' + i + item.Question_NO"
+                                        style="align-self: center;display: inline-flex;margin: 0;margin-left: auto;height: 13px;"
+                                        name="{{ item.Question_NO }}" [value]="option" [(ngModel)]="item.answer" />
+
+                                    <input *ngIf="item.optionsType === 'checkbox'" type="checkbox"
+                                        [id]="'option.optionName' + i + item.Question_NO"
+                                        style="align-self: center;display: inline-flex;margin: 0;margin-left: auto;height: 13px;"
+                                        name="{{ item.Question_NO }}" [value]="option.value"
+                                        [(ngModel)]="option.Ischecked" />
+
+                                    <label *ngIf="item.optionsType === 'radio'" [for]="'option' + i + item.Question_NO"
+                                        style="text-align: left !important;font-size: 17px;margin: 0 !important;padding-left: 10px;width: fit-content;"
+                                        class="lbl">{{ option }}</label>
+
+                                    <label *ngIf="item.optionsType === 'checkbox'"
+                                        [for]="'option.optionName' + i + item.Question_NO"
+                                        style="text-align: left !important;font-size: 17px;margin: 0 !important;padding-left: 10px;width: fit-content;"
+                                        class="lbl">{{ option.optionName }}</label>
+                                </div>
+                                <div class="question-count">
+                                    {{ item.Question_NO }} of {{ quationsList[quationsList.length - 1].Question_NO }}
+                                </div>
+                            </div>
+                        </div>
+                    </ng-template>
+                </ng-container>
+                <div class="form-header">
+                    {{item.DisplayName}}
+                </div>
+            </div>
+
+            <div class="buttonsdiv">
+                <button style="margin: 10px" class="button" (click)="IsValidKYCAnswers()">
+                    Submit
+                </button>
+
+            </div>
+        </div>
+        <div class="loaderdiv" *ngIf="IsLoading" style="text-align: center; margin-top: 15%;">
+            <div class="loader-center">
+                <div class="multi-ripple">
+                    <div></div>
+                    <div></div>
+                </div>
+            </div>
+            <!-- <img [src]="isProd ? 'assets/loading_dots.gif' : '../../assets/loading_dots.gif'" height="100px" width="100px" /> -->
+        </div>
+    </div>
+    <div class="CKSuccess" *ngIf="showKYCResult && !IsLoading">
+        <div class="KYC-success-popup">
+            <div class="img">
+                <!-- <img [src]="isProd? 'assets/checked.png': '../../assets/checked.png'" height="200px" width="200px" /> -->
+                <app-svg-icons [icon]="'checked-icon'" [width]="'60'" [height]="'60'"></app-svg-icons>
+            </div>
+            <span style="font-size: 33px;">KYC Information Updated.</span>
+            <span style="font-size: 19px; padding: 20px 0px;">Preliminary KYC Record for <label style="color: var(--off-color);font-weight: 400;"> {{CustomerName}} </label> has been successfully updated.</span>
+            <div class="buttons-section">
+                <button (click)="completeKYC()">
+                    Ok
+                </button>            
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="snackbar" style="line-height: 45px">
+    <div *ngIf="ErrorMsg">{{ this.ErrorMsg }}</div>
+</div>

@@ -1,0 +1,283 @@
+<!-- Changes added by Mayuri D. on 05-July-2022. -->
+
+<mat-tab-group [selectedIndex]="0" (selectedTabChange)="GetGridData($event)">
+  <mat-tab
+    class="label"
+    label="Market Intelligence"
+    style="font-size: 28px !important"
+  >
+    <ng-template matTabContent>
+      <div class="btnDiv">
+        <div class="bottomDiv" style="padding-left: 20px; padding-right: 20px">
+          <label
+            style="
+              margin: auto;
+              font-size: 16px;
+              text-align: left;
+              color: white;
+            "
+            >Select Parameters below and place a new request</label
+          >
+        </div>
+        <div class="bottomDiv">
+          <button
+            class="button landingPage-Button"
+            [routerLink]="[
+              '/euroconnect/pricers/',
+              {
+                Product:ePricerSelection,
+                Tenor: PopularTenorChecked,
+                Underlyings: CheckedUnderlyingString
+              }
+            ]"
+            routerLinkActive="active-link"
+          >
+            Create Request in ePricer
+          </button>
+        </div>
+      </div>
+      <div
+        class="btnDiv"
+        style="padding-bottom: 0px; height: 20px; padding-top: 5px"
+      >
+        <span
+          style="color: #ff4545 !important; float: right; padding: 0px 10px"
+          *ngIf="ErrorMsg !== ''"
+          >{{ ErrorMsg }}</span
+        >
+        <span class="successMsg" style="float: right; padding: 0px 10px">{{
+          successMsg
+        }}</span>
+      </div>
+      <div class="innerGrid">
+        <div
+          class="bottomDiv popular-tabs"
+          (click)="changePopular(0)"
+          [ngClass]="{ active: selectedPopular[0] }"
+        >
+          <label class="labelHeader">Product</label>
+          <br />
+          <label class="labelTextbox">{{ PopularProductChecked }}</label>
+        </div>
+        <div
+          class="bottomDiv popular-tabs"
+          (click)="changePopular(1)"
+          [ngClass]="{ active: selectedPopular[1] }"
+        >
+          <label class="labelHeader">Underlying</label>
+          <br />
+          <label class="labelTextbox">{{ CheckedUnderlyingString }}</label>
+        </div>
+        <div
+          class="bottomDiv popular-tabs"
+          (click)="changePopular(2)"
+          [ngClass]="{ active: selectedPopular[2] }"
+        >
+          <label class="labelHeader">Tenor</label>
+          <br />
+          <label class="labelTextbox">{{ PopularTenorChecked }}</label>
+        </div>
+      </div>
+      <div class="innerGrid popular-grid">
+        <div class="chartDiv" *ngIf="selectedPopular[0]">
+          <div style="display: flex; justify-content: space-between">
+            <div #chart class="chartHeader">Popular Products</div>
+            <select
+              id="Period"
+              class="FilterPeriod"
+              name="Period Filter"
+              [(ngModel)]="SelectedPeriodProduct"
+              (ngModelChange)="PopularProducts(true)"
+            >
+              <option value="Month">This Month</option>
+              <option value="Week">This Week</option>
+            </select>
+          </div>
+
+          <div class="ProductChart">
+            <div>
+              <!-- <google-chart [type]="PopularProdChart.type" style="padding-left: 10px" [data]="PopularProdChart.data" [options]="PopularProdChart.options" [height]="PopularProdChart.height" [width]="PopularProdChart.width">
+                                        </google-chart> -->
+            </div>
+            <div class="chkBoxGrid">
+              <!-- (ngModelChange)="PopularProducts(SelectedPeriodProduct)" -->
+              <div
+                class="checkboxes"
+                *ngFor="let item of PopularProdList; let i = index"
+              >
+                <mat-checkbox
+                  class="PopularProductChkboxes"
+                  [checked]="popularProdSelected === i"
+                  (change)="
+                    popularProdSelected = i;
+                    PopularProductsCheckedChanged(i, $event.checked, item)
+                  "
+                  id="{{ 'Prodchk' + i }}"
+                  >{{ item }}</mat-checkbox
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="chartDiv" *ngIf="selectedPopular[1]">
+          <div style="display: flex; justify-content: space-between">
+            <div class="chartHeader">Popular Underlyings</div>
+            <div style="text-align: right; position: relative; width: 220px">
+              <!-- Changed by Amogh K | 2May2022 | allowed integers only in no of shares   -->
+              <input
+                type="text"
+                style="width: 30% !important"
+                class="FilterPeriod"
+                [(ngModel)]="inputudl"
+                id="txtinputudl"
+                maxlength="10"
+                (blur)="Underlying(true)"
+                (keypress)="cfs.allowIntegerOnly($event)"
+              />
+              <select
+                id="PeriodUnderlying"
+                class="FilterPeriod"
+                name="Period Filter"
+                [(ngModel)]="SelectedPeriodUnderlying"
+                (ngModelChange)="Underlying(true)"
+              >
+                <option value="Month">This Month</option>
+                <option value="Week">This Week</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="ProductChart">
+            <div>
+              <google-chart
+                [type]="PopularUnderlying.typePiechart"
+                style="padding-left: 10px"
+                [data]="PopularUnderlying.data"
+                [options]="PopularUnderlying.options"
+                [height]="PopularUnderlying.height"
+                [width]="PopularUnderlying.width"
+              >
+              </google-chart>
+            </div>
+
+            <div class="chkBoxGrid">
+              <div
+                class="checkboxes"
+                *ngFor="let item of underlyingData; let i = index"
+              >
+              <input type="checkbox" class="share_Checkbox" id="{{ 'UnderlyingChk' + i }}"
+                [(ngModel)]="underlyingVal[i]"
+                  [checked]="popularProdSelected === i"
+                  [disabled]="
+                    disableTenorOption === item.UnderlyingCode ||
+                    (this.CheckedUnderlyingList.length === 5 &&
+                      !underlyingVal[i]) ||
+                    (this.CheckedUnderlyingList.length === 1 &&
+                      PopularProductChecked === 'Participation' &&
+                      !underlyingVal[i]) ||
+                    (this.CheckedUnderlyingList.length === 1 &&
+                      PopularProductChecked === 'Accumulator' &&
+                      !underlyingVal[i]) ||
+                    (this.CheckedUnderlyingList.length === 1 &&
+                      PopularProductChecked === 'Decumulator' &&
+                      !underlyingVal[i])
+                  "
+                  (change)="
+                    PopularUnderlyingCheckedChange(
+                      $event,
+                      $event.target.checked,
+                      item.UnderlyingCode,
+                      item.AssetType,
+                      i
+                    )">
+              <label>{{ item.UnderlyingCode }}</label>
+                <!-- <mat-checkbox
+                  id="{{ 'UnderlyingChk' + i }}"
+                  class="chkboxPadding"
+                  labelPosition="after"
+                  [(ngModel)]="underlyingVal[i]"
+                  [checked]="popularProdSelected === i"
+                  [disabled]="
+                    disableTenorOption === item.UnderlyingCode ||
+                    (this.CheckedUnderlyingList.length === 5 &&
+                      !underlyingVal[i]) ||
+                    (this.CheckedUnderlyingList.length === 1 &&
+                      PopularProductChecked === 'Participation' &&
+                      !underlyingVal[i]) ||
+                    (this.CheckedUnderlyingList.length === 1 &&
+                      PopularProductChecked === 'Accumulator' &&
+                      !underlyingVal[i]) ||
+                    (this.CheckedUnderlyingList.length === 1 &&
+                      PopularProductChecked === 'Decumulator' &&
+                      !underlyingVal[i])
+                  "
+                  (change)="
+                    PopularUnderlyingCheckedChange(
+                      $event,
+                      $event.checked,
+                      item.UnderlyingCode,
+                      item.AssetType,
+                      i
+                    )
+                  "
+                > -->
+                  <!-- [Disabled] -> popularProdSelected conditon added by Apurva C for multiple underlyings selection on Home screen|| 28th Aor 2022|| JIRA- EUJARINT-480	 -->
+                  <!-- || popularProdSelected===0 || popularProdSelected===1 : to disabled all checkboxes : Commented by Mayuri D. -->
+                  <!-- </mat-checkbox> -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="chartDiv" *ngIf="selectedPopular[2]">
+          <div style="display: flex; justify-content: space-between">
+            <div class="chartHeader">Popular Tenors</div>
+            <select
+              id="PeriodTenor"
+              class="FilterPeriod"
+              name="Period Filter"
+              [(ngModel)]="SelectedPeriodTenor"
+              (change)="Tenor(true)"
+            >
+              <option value="Month">This Month</option>
+              <option value="Week">This Week</option>
+            </select>
+          </div>
+
+          <div class="ProductChart">
+            <div>
+              <!-- <google-chart
+                [type]="PopularTenor.type"
+                style="padding-left: 10px"
+                [data]="PopularTenor.data"
+                [options]="PopularTenor.options"
+                [height]="PopularTenor.height"
+                [width]="PopularTenor.width"
+              >
+              </google-chart> -->
+            </div>
+            <div class="chkBoxGrid">
+              <div
+                class="checkboxes"
+                *ngFor="let item of PopularTenorList; let i = index"
+              >
+                <mat-checkbox
+                  class="PopularProductChkboxes"
+                  [checked]="PopularTenorSelected === i"
+                  [disabled]="disableTenorOption === item"
+                  (change)="
+                    PopularTenorSelected = i;
+                    PopularTenorCheckedChanged(i, $event.checked, item)
+                  "
+                  id="{{ 'tenorChk' + i }}"
+                  >{{ item }}</mat-checkbox
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </mat-tab>
+</mat-tab-group>

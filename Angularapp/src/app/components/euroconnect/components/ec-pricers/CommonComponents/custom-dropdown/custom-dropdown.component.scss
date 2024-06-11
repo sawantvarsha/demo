@@ -1,0 +1,113 @@
+.custom-ddl {
+    width: 200px;
+    height: 35px;
+    position: relative;
+}
+
+.ddl-icon {
+    /* transform: rotate(45deg) translateY(-5px); */
+    text-align: center;
+}
+
+.ddl-input,
+.ddl-options {
+    position: absolute;
+    width: 100%;
+}
+
+.ddl-input {
+    padding: 5px;
+    height: 100%;
+    text-align: start;
+    border: none;
+    border-radius: 0.2em;
+    font-size: 14px;
+    background-color: var(--input-bg);
+    color: var(--input-text);
+}
+
+.ddl-content {
+    display: grid;
+    grid-template-columns: 20px calc(100% - 50px) 20px;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    gap: 5px;
+}
+
+.ddl-options {
+    display: none;
+    top: 100%;
+    /* calc(100% + 5px); */
+    /* box-shadow: 0px 5px 5px 0px #000000; */
+    background-color: var(--input-bg);
+    z-index: 9999;
+    border: 1px solid #000000;
+}
+
+.ddl-open {
+    max-height: 200px;
+    display: grid;
+    overflow-y: auto;
+}
+
+.ddl-item-group {
+    display: grid;
+    grid-template-columns: 30px 1fr;
+    padding: 5px;
+    cursor: pointer;
+}
+
+.ddl-selected {
+    background-color: #d2d2d2;
+}
+
+.ddl-item-icon {
+    width: 15px;
+    height: 15px;
+}
+
+.ddl-item-text {
+    align-self: flex-end;
+    color: var(--input-text);
+}
+
+.ddl-content > div{
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+/* .ddl-content:hover{
+box-shadow: 0 2px 7px rgb(136 136 136 / 40%) !important;
+} */
+
+
+.ddl-item-group:hover {
+    background: var(--dropdown-hover) !important;
+    color: var(--dropdown-hover-text) !important;
+}
+
+.ddl-item-group:hover >.ddl-item-text {
+    
+        background: var(--dropdown-hover);
+        color: white !important;
+    
+}
+
+.ip-border{//Added by Varsha || 24-Mar-2023
+    border: 1px solid var(--btn-border);
+}
+
+textarea:active, textarea:focus, select:active, input:active, select:focus, input:focus{
+    border: solid 1px var(--light-gray) !important;
+}
+//Added by VarshaG || 24-Mar-2023
+button.ddl-input:active, button.ddl-input:focus {
+    border: solid 1px var(--light-gray) !important;
+}
+
+.hidden-element {
+    visibility: hidden;
+}

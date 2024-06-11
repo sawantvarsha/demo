@@ -1,0 +1,70 @@
+<div class="LoginRMDeatils">
+    <div class="page-title title">
+        <div>Login RM Details</div>  
+ 
+        <div *ngIf= "!toggleGraph" class="xls-icon" (click)="ExportToExcel();"></div>
+        <div class="graphToggle">
+          <h6 class="graphMode">Graph Mode</h6>
+          <label class="switch">
+            <input type="checkbox" (click)="toggleTheme()">
+            <span class="slider round"></span>
+          </label>
+          </div> 
+    </div>
+
+    <div class="content-container" *ngIf= "!toggleGraph">
+      <table id="excel-table">
+        <thead>
+          <tr>
+            <th class="maxwidth100">Login ID</th>
+            <th class="maxwidth100">RM Name</th>
+            <th class="maxwidth100">RM group</th>
+            <th class="maxwidth100">RM Branch</th>
+            <th class="maxwidth200">Customer Group</th>
+            <th class="maxwidth100">CIF</th>
+            <th class="maxwidth100">ID type</th>
+            <th class="maxwidth100">ID </th>          
+            <th class="maxwidth100">Age</th> 
+            <th class="maxwidth100">Preferred Ccy</th>
+            <th class="maxwidth200">Segment</th>
+            <th class="maxwidth100">Risk Rating</th>
+            <th class="maxwidth200">Risk Profile</th>
+            <th class="maxwidth200">Risk Score Updated At</th>
+            <th class="maxwidth100">Contact</th>
+            <th class="maxwidth200">Email</th>
+            <th class="maxwidth200">Address</th>
+          </tr>         
+        </thead>  
+
+
+        
+     
+        <tbody>  
+          <tr *ngFor="let item of this.loginRMDetails  | paginate: { itemsPerPage: 20, currentPage: p }">          
+            <td class="left maxwidth100">{{ item.LoginID }}</td>
+            <td class="left maxwidth100">{{ item.RMName }}</td>
+            <td class="left maxwidth100">{{ item.RMGroup }}</td>
+            <td class="left maxwidth100">{{ item.RMBranch }}</td>
+            <td class="left maxwidth200">{{ item.CustomerGroup }}</td>
+            <td class="left maxwidth100">{{ item.CIF }}</td>
+            <td class="center maxwidth100">{{ item.IDType }}</td>
+            <td class="left maxwidth100">{{ item.ID }}</td>
+            <td class="right maxwidth100">{{ item.Age }}</td>
+            <td class="center maxwidth100">{{ item.PreferredCcy }}</td>
+            <td class="left maxwidth200">{{ item.Segment }}</td>
+            <td class="right maxwidth100">{{ item.RiskRating }}</td>
+            <td class="left maxwidth200">{{ item.RiskProfile }}</td>
+            <td class="center maxwidth200">{{ item.RiskScoreUpdatedAt | date:'dd-MMM-yyyy hh:mm a' }}</td>
+            <td class="right maxwidth100">{{ item.contact }}</td>
+            <td class="left maxwidth200">{{ item.Email }}</td>
+            <td class="left maxwidth200">{{ item.Address }}</td>        
+          </tr>
+          <pagination-controls (pageChange)="p = $event"></pagination-controls>
+        </tbody>
+      </table> 
+    </div>
+  </div>
+
+  <div class="iframeTag">
+    <iframe  *ngIf= "toggleGraph" width="1550" height="850" src="https://app.powerbi.com/reportEmbed?reportId=66a6009b-0792-4da6-92b5-2fa434d6950a&autoAuth=true&ctid=9414d0a4-434e-4d2f-8f38-716f3cfd79e5&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly93YWJpLXNvdXRoLWVhc3QtYXNpYS1yZWRpcmVjdC5hbmFseXNpcy53aW5kb3dzLm5ldC8ifQ%3D%3D&navContentPaneEnabled=false&filterPaneEnabled=false" frameborder="0" allowFullScreen="true"></iframe>
+  </div>

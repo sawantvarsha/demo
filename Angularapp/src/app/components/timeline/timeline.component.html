@@ -1,0 +1,239 @@
+<div class="BlotterContainer">
+
+    <div class="showTitle"> <!--class="showTitle"-->
+        <div class="pageHeader"> Portfolio</div>
+        <!-- <hr width="100%" class="productHeaderhr"> -->
+        <div  style="align-self: center;">
+            <div class="serchbarDiv">
+                <!-- <div>
+                    <div style="line-height: 17px; margin-right: 0.5em !important; font-size: 13px; font-family: var(--font-family) !important;">
+                        Sort By 
+                    </div>
+                    <div>
+                        
+
+                        <select  placeholder="Product Type"   class="filterSelect">
+                            
+                            <option  >Start Date </option>
+                            <option  >AC Prob </option>
+                            <option  >Obs near to far</option>
+                            <option  >Maturity near to far </option>
+                            <option  >KI near to far</option>
+    
+                        </select>
+                    </div>
+                </div> -->
+                <div class="searchInnerDiv">
+                    <!-- <img style="width:15px;height:15px;margin-left:5px; margin-top:10px;" src="{{asseturl}}search.png"> -->
+                    <input type="text" placeholder="Search" name="search" class="txtSearch"><!-- [(ngModel)]="search"-->
+
+                    <app-svg-icons class="filterIcon" (click)="showFilterDropdown=!showFilterDropdown" [icon]="'filter-icon'" [width]="'18'" [height]="'20'"
+                                [fill]="'var(--table-header-text)'" ></app-svg-icons>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="showFilterDropdown==true" class="filterDiv"> <!--tyle="border: 1px solid #696969 !important;align-self: center;"-->
+        <table>
+            <tr>
+                <th class="filterTH alignLeft">Client Filters:</th>
+                <td> <input type="text" placeholder="Group" name="Group" class="filterIputs"></td>
+                <td> <input type="text" placeholder="Client" name="Group" class="filterIputs"></td>
+                <td> <input type="text" placeholder="Type" name="Group" class="filterIputs"></td>
+                <td> <input type="text" placeholder="Territory" name="Group" class="filterIputs"></td>
+                <td> <input type="text" placeholder="Zone" name="Group" class="filterIputs"></td>
+                <td> <input type="text" placeholder="Tutela" name="Group" class="filterIputs"></td>
+                <td> <input type="text" placeholder="Subtutela" name="Group" class="filterIputs"></td>
+            </tr>
+            <tr>
+                <th class="filterTH">Product Filters:</th>
+                <td> <input type="text" placeholder="Format" (keyup)="FilterForAll($event)"
+                    [(ngModel)]="selectedFormat" name="Group" class="filterIputs"></td>
+                <td> <input type="text" placeholder="Currency" (keyup)="FilterForAll($event)"
+                    [(ngModel)]="selectedCurrency" name="Group" class="filterIputs"></td>
+                <td> <!-- <input type="text" placeholder="Product Type" name="Group" class="filterIputs"> -->
+                    <select  placeholder="Product Type" (change)="openMPGs($event)"  class="filterSelect">
+                        <option value="" disabled selected>Product Type</option>
+                        <option [ngValue]="i" (click)="selectedMPG=item" >Autocallable </option>
+                        <option [ngValue]="i" (click)="selectedMPG=item" >Digital </option>
+                        <option [ngValue]="i" (click)="selectedMPG=item" >European Digital </option>
+                        <option [ngValue]="i" (click)="selectedMPG=item" >Reverse Convertible </option>
+                        <option [ngValue]="i" (click)="selectedMPG=item" >Vanilla Option </option>
+                        <option [ngValue]="i" (click)="selectedMPG=item" >Issuer Callable </option>
+                        <option [ngValue]="i" (click)="selectedMPG=item" >Double Tranche(*)</option>
+
+                    </select>
+                </td>
+                <td> <input type="text" placeholder="Cap. At Risk"  [(ngModel)]="selectedCapAtRisk" name="Group" class="filterIputs" (keyup)="FilterForAll($event)"></td>
+                <td> <!-- <input type="text" placeholder="U/L Type" name="Group" class="filterIputs"> -->
+                    <select  placeholder="U/L Type" (change)="openMPGs($event)"  class="filterSelect">
+                        <option value="" disabled selected>U/L Type</option>
+                        <option [ngValue]="i" (click)="selectedMPG=item" >Basket </option>
+                        <option [ngValue]="i" (click)="selectedMPG=item" >Index </option>
+                        <option [ngValue]="i" (click)="selectedMPG=item" >ETF </option>
+                    </select>            
+                </td>
+                <td> <input type="text" placeholder="Underlying" name="Group" class="filterIputs"></td>
+                <td> 
+                    <mat-slide-toggle (change)="commonfunctions.changeLayout(); getToggleData($event)" [checked]="toggleCheck"  class="slide-toggle"
+                [disabled]="toggleDisabledFlag"></mat-slide-toggle>
+                </td>
+            </tr>
+            <tr>
+                <th class="filterTH">Product Specs:</th>
+                <td> 
+                    <div [ngClass]="{ 'showFilter': showSDate,'hideFilter': (!showSDate) }" style="position: relative;">
+                        <input type="date" class="input-dob filterIputs" [(ngModel)]="StartDate" value="StartDate"
+                            (change)="selectDate(StartDate); FilterForAll($event)" #SDateField id="SDate" >
+                        <span *ngIf="StartDate === '' || StartDate === undefined" class="sDatePlaceHolder">Start Date</span>
+                        <span *ngIf="StartDate !== '' && StartDate !== undefined" class="sDate">{{StartDateDisplay}}</span>
+                    </div>
+                    <div [ngClass]="{ 'showFilter': showSDate,'hideFilter': (!showSDate) }" style="position: relative;">
+                        <input type="date" class="input-dob filterIputs" [(ngModel)]="EndDate" value="EndDate"
+                            (change)="selectEndDate(EndDate); FilterForAll($event)" #SDateField id="SDate" >
+                        <span *ngIf="EndDate === '' || EndDate === undefined" class="sDatePlaceHolder">End Date</span>
+                        <span *ngIf="EndDate !== '' && EndDate !== undefined" class="sDate">{{EndDateDisplay}}</span>
+                    </div>
+                </td>
+                <td> 
+                    <div style="line-height: 17px; margin-right: 0.5em !important; font-size: 13px; font-family: var(--font-family) !important;">
+                        Observation in 
+                    </div>
+                    <div>
+                        <input type="text" placeholder="x" name="Group" class="filterIputs right1">
+                        <span style="margin-right: 0.5em !important; font-size: 13px; font-family: var(--font-family) !important;">&nbsp;days</span> 
+                    </div>
+                    
+                </td>
+                <td> 
+                    <div style="line-height: 17px; margin-right: 0.5em !important; font-size: 13px; font-family: var(--font-family) !important;">
+                        AC in 
+                    </div>
+                    <div>
+                        <input type="text" placeholder="x" name="Group" class="filterIputs">
+                        <span style="margin-right: 0.5em !important; font-size: 13px; font-family: var(--font-family) !important;">&nbsp;days</span>
+                    </div>
+                </td>
+                <td> 
+                    <div style="line-height: 17px; margin-right: 0.5em !important; font-size: 13px; font-family: var(--font-family) !important;margin-left: 14px;">
+                        AC prob > 
+                    </div>
+                    <div>
+                        <span style="margin-right: 0.5em !important; font-size: 13px; font-family: var(--font-family) !important;">±</span>
+                        <input type="text" placeholder="xx.xx %" name="Group" class="filterIputs">
+                    </div>
+                </td>
+                <td> 
+                    <div style="line-height: 17px; margin-right: 0.5em !important; font-size: 13px; font-family: var(--font-family) !important;">
+                        KI in Range 
+                    </div>
+                    <div>
+                        <input type="text" placeholder="xx.xx %" name="Group" class="filterIputs">
+                    </div>
+                </td>
+                <td> 
+                    <div style="line-height: 17px; margin-right: 0.5em !important; font-size: 13px; font-family: var(--font-family) !important;">
+                        Sort By 
+                    </div>
+                    <div>
+                        <!-- <input type="text" placeholder="Select" name="Group" class="filterIputs"> -->
+
+                        <select  placeholder="Product Type" (change)="openMPGs($event)"  class="filterSelect">
+                            <!-- <option value="" disabled selected>Product Type</option> -->
+                            <option [ngValue]="i" (click)="selectedMPG=item" >Start Date </option>
+                            <option [ngValue]="i" (click)="selectedMPG=item" >AC Prob </option>
+                            <option [ngValue]="i" (click)="selectedMPG=item" >Obs near to far</option>
+                            <option [ngValue]="i" (click)="selectedMPG=item" >Maturity near to far </option>
+                            <option [ngValue]="i" (click)="selectedMPG=item" >KI near to far</option>
+    
+                        </select>
+                    </div>
+                </td>
+                <!-- <td> <input type="text" placeholder="Subtutela" name="Group" class="filterIputs"></td> -->
+            </tr>
+        </table>
+    </div>
+
+    <div class="DataTable">
+        <table>
+            <thead class="thead1">
+                <tr class="headerFix">
+                    <th>Product reference/Notional Size</th>
+                    <th>Decisive underlying</th>
+                    <th>To autocall</th>
+                    <th>To protection</th>
+                    <th>Next obs</th>
+                    <th>Maturity</th>
+                    <th>Mid MX price</th>
+                    <th>Hist. cashflows</th>
+                    <th>TimeLine</th>
+                    <th>What If</th>
+                    <th>Doc</th>
+                </tr>
+                <tr *ngFor="let item of blotterData" class="tRows" >
+                    <td class="eachCell">
+                        <div class="tdataWrap">{{item.product_Name}}</div>
+                        <div class="tdataWrap nextRow">{{item.product_Ref}}-{{item.isin}}-{{item.start_Date}}-{{item.notional_Amt}}&nbsp;{{item.currency}}</div>
+                    </td>
+                    <td class="eachCell">
+                        <div *ngIf="item.worst!=null && item.worst!='N.A.'">{{item.worst}}</div>
+                        <div *ngIf="item.worst==null || item.worst=='N.A.'" class="alignCenter">-</div>
+                        <div *ngIf="item.basketType!=null && item.basketType!='N.A.'" class="nextRow">{{item.basketType}}</div>
+                        <div *ngIf="item.basketType==null || item.basketType=='N.A.'"class="nextRow alignCenter">-</div>
+                    </td>
+                    <td class="eachCell">
+                        <div *ngIf="item.kO_Distance!=null && item.kO_Distance!='N.A.'">{{item.kO_Distance}}</div>
+                        <div *ngIf="item.kO_Distance==null || item.kO_Distance=='N.A.'" class="alignCenter">-</div>
+                        <div *ngIf="item.kO_Level!=null && item.kO_Level!='N.A.'" class="nextRow">{{item.kO_Level}}</div>
+                        <div *ngIf="item.kO_Level==null || item.kO_Level=='N.A.'"class="nextRow alignCenter">-</div>
+                    </td>
+                    <td class="eachCell">
+                        <div *ngIf="item.kI_Distance!=null && item.kI_Distance!='N.A.'">{{item.kI_Distance}}</div>
+                        <div *ngIf="item.kI_Distance==null || item.kI_Distance=='N.A.'" class="alignCenter">-</div>
+                        <div *ngIf="item.kI_Level!=null && item.kI_Level!='N.A.'" class="nextRow">{{item.kI_Level}}</div>
+                        <div *ngIf="item.kI_Level==null || item.kI_Level=='N.A.'"class="nextRow alignCenter">-</div>
+                    </td>
+                    <td class="eachCell">
+                        <div *ngIf="item.m2NextObs!=null && item.m2NextObs!='N.A.'">{{item.m2NextObs}}</div>
+                        <div *ngIf="item.m2NextObs==null || item.m2NextObs=='N.A.'" class="alignCenter">-</div>
+                        <div *ngIf="item.nextObsDate!=null && item.nextObsDate!='N.A.'" class="nextRow">{{item.nextObsDate}}</div>
+                        <div *ngIf="item.nextObsDate==null || item.nextObsDate=='N.A.'"class="nextRow alignCenter">-</div>
+                    </td>
+                    <td class="eachCell">
+                        <div *ngIf="item.m2Maturity!=null && item.m2Maturity!='N.A.'">{{item.m2Maturity}}</div>
+                        <div *ngIf="item.m2Maturity==null || item.m2Maturity=='N.A.'" class="alignCenter">-</div>
+                        <div *ngIf="item.maturity_date!=null && item.maturity_date!='N.A.'" class="nextRow">{{item.maturity_date}}</div>
+                        <div *ngIf="item.maturity_date==null || item.maturity_date=='N.A.'"class="nextRow alignCenter">-</div>
+                    </td>
+                    <td class="eachCell">
+                        <div *ngIf="item.mtm!=null && item.mtm!='N.A.'">{{item.mtm}}</div>
+                        <div *ngIf="item.mtm==null || item.mtm=='N.A.'" class="alignCenter">-</div>
+                    </td>
+                    <td class="eachCell">
+                        <div *ngIf="item.couponTillDate!=null && item.couponTillDate!='N.A.'">{{item.couponTillDate}}</div>
+                        <div *ngIf="item.couponTillDate==null || item.couponTillDate=='N.A.' ||item.couponTillDate==''" class="alignCenter">-</div>
+                    </td>
+                    <td class="eachCell">
+                        <div *ngIf="item.client!=null && item.client!='N.A.'">{{item.client}}-{{item.format}}</div>
+                        <div *ngIf="item.client==null || item.client=='N.A.'" class="alignCenter">-</div>
+                    </td>
+                    <td class="eachCell">
+                        <div class="alignCenter"> 
+                            <input type="radio" style="height: 13px;" [(ngModel)]="item.answer" />
+                        </div>
+                    </td>
+                    <td>Doc</td>
+                </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- <svg style="margin-top:3px"  focusable="false" height="24px" viewBox="0 0 24 24" width="24px">
+    <path d="M7 10l5 5 5-5z" fill="var(--text)"></path>
+    <path d="M0 0h24v24H0z" fill="none"></path>
+</svg> -->

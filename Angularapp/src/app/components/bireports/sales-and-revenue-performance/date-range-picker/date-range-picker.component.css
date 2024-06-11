@@ -1,0 +1,342 @@
+/* 
+
+.slider{
+    width: 95%;
+}
+@media (min-width: 1200px) and (max-width: 1440px){
+    .datepicker{
+        display: flex;
+        width: 100%;
+    }
+    .second{
+        margin-top: 4px;
+    }
+}
+
+@media  (min-width: 1440px) and (max-width: 1600px){
+    .datepicker{
+        display: flex;
+        width: 100%;
+    }
+    .second{
+        margin-top: 5px;
+    }
+}
+
+@media  (min-width: 1600px) and (max-width: 1920px){
+    .datepicker{
+        width: 48%;
+    }
+    .second{
+        margin-left: 3%;
+    }
+}
+
+@media (min-width: 1920px) {
+    .datepicker{
+        width: 45%;
+    }
+    .second{
+        margin-left: 4%;
+    }
+}
+
+/* ::ng-deep .ngx-slider .ngx-slider-pointer {
+    cursor: pointer;
+    width: 25px !important;
+    height: 25px !important;
+    top: -12px !important;
+    background-color: grey !important;
+    z-index: 3;
+    border-radius: 16px;
+}
+
+::ng-deep .ngx-slider .ngx-slider-selection{
+    background: grey !important;
+} 
+.ngx-date-slider{
+    width: 95%;
+}
+::ng-deep .ngx-date-slider .ngx-slider-pointer{
+    width: 20px !important;
+    height: 20px !important;
+    top: -9px !important;
+    background-color: white !important;
+    z-index: 3;
+    border-radius: 16px;
+}
+
+::ng-deep .ngx-date-slider .ngx-slider-selection {
+    background: rgba(8, 80, 134, 255) !important;
+}
+
+::ng-deep .ngx-date-slider .ngx-slider-pointer::after {
+    background: white !important;
+    top: 9px !important;
+    left: 9px !important;
+}
+
+::ng-deep .ngx-date-slider .ngx-slider-pointer.ngx-slider-active::after {
+    background: white !important;
+}
+
+/* changed by Amogh K | 4/4/2022 | styling changes 
+/* changed by Kaustubh S | 21/03/2023 | for editable datetime field :: START 
+.datetime-container{
+    display:inline-flex;
+    position: relative;
+    align-items: center; 
+    color-scheme: var(--calendar-bg-theme);
+ }
+ /* changed by Kautubh S | 21/03/2023 | for editable datetime field :: END 
+ .date-icon{
+     width:1.2rem !important;
+ }
+ /* changed by Amogh K | 10May2022 | styling changes 
+ /* changed by Kaustubh S | 21/03/2023 | for editable datetime field :: START 
+ .display-date{
+    
+     border: solid 1px var(--btn-border);
+     border-right: 0px;
+     margin-right: 0 !important;
+     border-top-right-radius: 0 !important;
+     border-bottom-right-radius: 0 !important;
+     flex:1;  
+     background-color: var(--date-bg-color);  
+ }
+ /* changed by Kaustubh S | 21/03/2023 | for editable datetime field :: END 
+ /* changed by Amogh K | 10May2022 | styling changes 
+ 
+ .hidden-datetime{
+      /* width: min-content !important; 
+    width: 1.5em !important; 
+    z-index: 99;
+      /* position: absolute; changed by Kaustubh S | 21/03/2023 | for editable datetime field 
+    margin-right:0 !important;
+    border-bottom-left-radius: 0 !important;
+    border-top-left-radius: 0 !important;
+    border: solid 1px var(--btn-border);
+    border-left: 0px;
+ }
+ .hidden-date-container{
+     position: absolute;
+ }
+ img{
+     vertical-align: -webkit-baseline-middle;
+     margin: 0 auto;
+ }
+ .image-wrapper{
+     height: 100%;
+     width:2.5em !important;
+     text-align: center;
+     background: #eeeeee;
+     align-items: center;
+     border-top-right-radius: 0.2em;
+     display:flex;
+     flex-direction: row;
+     border-bottom-right-radius: 0.2em;
+ }
+ 
+ .hidden-datetime::-webkit-inner-spin-button,
+ .hidden-datetime::-webkit-calendar-picker-indicator {
+     /* display: none;
+     -webkit-appearance: none; 
+     margin:0;
+ }
+ .hidden-datetime::-webkit-datetime-edit {
+     display:none;
+ }
+ input{
+     box-sizing: border-box;
+ }
+
+ 
+input[type=date] {
+    margin-top: 0px !important;
+    background-color: var(--date-bg-color);  
+}
+
+.hidden-datetime:focus {
+    border: solid 1px var(--light-gray) !important;
+     /* border-left: 0px !important; 
+}
+
+.display-date:focus{
+    border: solid 1px var(--light-gray) !important;
+     /* border-right: 0px !important; 
+} */
+
+
+
+
+.slider{
+    width: 95%;
+}
+@media (min-width: 1200px) and (max-width: 1440px){
+    .datepicker{
+        display: flex;
+        width: 100%;
+    }
+    .second{
+        margin-top: 4px;
+    }
+}
+
+@media  (min-width: 1440px) and (max-width: 1600px){
+    .datepicker{
+        display: flex;
+        width: 100%;
+    }
+    .second{
+        margin-top: 5px;
+    }
+}
+
+@media  (min-width: 1600px) and (max-width: 1920px){
+    .datepicker{
+        width: 48%;
+    }
+    .second{
+        margin-left: 3%;
+    }
+}
+
+@media (min-width: 1920px) {
+    .datepicker{
+        width: 45%;
+    }
+    .second{
+        margin-left: 4%;
+    }
+}
+
+/* ::ng-deep .ngx-slider .ngx-slider-pointer {
+    cursor: pointer;
+    width: 25px !important;
+    height: 25px !important;
+    top: -12px !important;
+    background-color: grey !important;
+    z-index: 3;
+    border-radius: 16px;
+}
+
+::ng-deep .ngx-slider .ngx-slider-selection{
+    background: grey !important;
+} */
+.ngx-date-slider{
+    width: 95%;
+    margin-top: 20px;
+}
+@media  (min-width: 1440px) and (max-width: 1600px){
+    .ngx-date-slider{
+        margin-top: 15px;
+    }
+}
+::ng-deep .ngx-date-slider .ngx-slider-pointer{
+    width: 20px !important;
+    height: 20px !important;
+    top: -9px !important;
+    background-color: white !important;
+    z-index: 3;
+    border-radius: 16px;
+}
+
+::ng-deep .ngx-date-slider .ngx-slider-selection {
+    background: rgba(8, 80, 134, 255) !important;
+}
+
+::ng-deep .ngx-date-slider .ngx-slider-pointer::after {
+    background: white !important;
+    top: 9px !important;
+    left: 9px !important;
+}
+
+::ng-deep .ngx-date-slider .ngx-slider-pointer.ngx-slider-active::after {
+    background: white !important;
+}
+
+/* changed by Amogh K | 4/4/2022 | styling changes */
+/* changed by Kaustubh S | 21/03/2023 | for editable datetime field :: START */
+.datetime-container{
+    display:inline-flex;
+    position: relative;
+    align-items: center; 
+    color-scheme: var(--calendar-bg-theme);
+ }
+ /* changed by Kautubh S | 21/03/2023 | for editable datetime field :: END */
+ .date-icon{
+     width:1.2rem !important;
+ }
+ /* changed by Amogh K | 10May2022 | styling changes */
+ /* changed by Kaustubh S | 21/03/2023 | for editable datetime field :: START */
+ .display-date{
+    
+     border: solid 1px var(--btn-border);
+     border-right: 0px;
+     margin-right: 0 !important;
+     border-top-right-radius: 0 !important;
+     border-bottom-right-radius: 0 !important;
+     flex:1;  
+     background-color: var(--date-bg-color);  
+ }
+ /* changed by Kaustubh S | 21/03/2023 | for editable datetime field :: END */
+ /* changed by Amogh K | 10May2022 | styling changes */
+ 
+ .hidden-datetime{
+      /* width: min-content !important; */
+    width: 1.8em !important; 
+    z-index: 99;
+      /* position: absolute; changed by Kaustubh S | 21/03/2023 | for editable datetime field */
+    margin-right:0 !important;
+    border-bottom-left-radius: 0 !important;
+    border-top-left-radius: 0 !important;
+    border: solid 1px var(--btn-border);
+    border-left: 0px;
+ }
+ .hidden-date-container{
+     position: absolute;
+ }
+ img{
+     vertical-align: -webkit-baseline-middle;
+     margin: 0 auto;
+ }
+ .image-wrapper{
+     height: 100%;
+     width:2.5em !important;
+     text-align: center;
+     background: #eeeeee;
+     align-items: center;
+     border-top-right-radius: 0.2em;
+     display:flex;
+     flex-direction: row;
+     border-bottom-right-radius: 0.2em;
+ }
+ 
+ .hidden-datetime::-webkit-inner-spin-button,
+ .hidden-datetime::-webkit-calendar-picker-indicator {
+     /* display: none;
+     -webkit-appearance: none; */
+     margin:0;
+ }
+ .hidden-datetime::-webkit-datetime-edit {
+     display:none;
+ }
+ input{
+     box-sizing: border-box;
+ }
+
+ 
+input[type=date] {
+    margin-top: 0px !important;
+    background-color: var(--date-bg-color);  
+}
+
+.hidden-datetime:focus {
+    border: solid 1px var(--light-gray) !important;
+     /* border-left: 0px !important; */
+}
+
+.display-date:focus{
+    border: solid 1px var(--light-gray) !important;
+     /* border-right: 0px !important; */
+}

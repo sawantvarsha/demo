@@ -1,0 +1,587 @@
+<div class="BlotterContainer">
+
+    <div class="showTitle"> <!--class="showTitle"-->
+    <div class="pageHeader">{{"Simulation" | translate}}</div>
+        <!-- <hr width="100%" class="productHeaderhr"> -->
+        <div style="align-self: center;">
+            <div class="serchbarDiv">
+                <div style="line-height: 17px; margin-right: 0.5em !important; font-size: 13px; font-family: var(--font-family) !important;align-self: center;">
+                    {{"View" | translate}} 
+                </div>
+                <div class="shares-search-box" (clickOutside)="showDropdown=false" >
+                    <div class="input-field">
+
+                        <input  type="text" placeholder="{{'View' | translate}}" [(ngModel)]="viewName" (focus)="selectView()"
+                        (keyup)="showDropdown=true;filterViews()" (keyup.arrowup)="changeSearchIndex('UP')" (keyup.enter)="showDropdown=false;"
+                        (keyup.arrowdown)="changeSearchIndex('DOWN')" (keyup.backspace)="onBackspaceKeyUp()"style="min-width:100px" >
+                        <app-svg-icons class="drop-icon" [icon]="'arrow-drop-down'" style="justify-content: center;" [width]="'8'" [height]="'8'" (click)="showDropdown=!showDropdown;filterViews()">
+                        </app-svg-icons>
+                        
+                    </div>
+                        <div class="shares-list" *ngIf="showDropdown">
+                            <ul >
+                                <li *ngFor="let view of backUpList"  style="display: flex; justify-content: space-between; align-items: center;" >
+                                    <span (click)="viewName=view;GetPortfolio_View_Details();showDropdown=false;" style="width:-webkit-fill-available ;">{{view | translate}}</span>
+                                    <span><app-svg-icons class="deleteIcon" [icon]="'delete'"  [width]="'13'" [height]="'13'"  (click)="DeletePortfolio_View_Details(view);showDropdown=false"></app-svg-icons>
+                                    <!-- <span><app-svg-icons class="deleteIcon" [icon]="'delete'"  [width]="'13'" [height]="'13'"  ></app-svg-icons> -->
+                                    </span>
+                                    </li>
+                                
+                            </ul>
+                        </div>
+                </div>
+
+                <div class="btn-group btnSaveMargin dropdown" (clickOutside)="saveoptionflag = false"> <!--(clickOutside)="saveoptionflag = false"-->
+                    <button type="button" class="btn btn_Save"  tabindex="50" (click)="SavePortfolio_View_Details()" >{{ "Save" | translate }}</button> <!-- (click)="Save()" [disabled]="priceBtnActive === 'N'"-->
+                    <!-- (click)="Price()" -->
+                    <button type="button"  class="sidebutton btnSaveNShare save-view-btn" (click)="saveoptionflag=!saveoptionflag"> <!-- (click)="saveOptions()" [disabled]="(priceBtnActive === 'N')"-->
+                        <app-svg-icons class="arrow-drop-icon" [icon]="'arrow-drop-down'" style="justify-content: center; fill: var(--btn-txt);" [width]="'8'" [height]="'8'" >
+                        </app-svg-icons>
+                    </button>
+                    <div *ngIf="(saveoptionflag)" class="dropdown-content" >
+                        <button type="button" class="btn btn_Save update"  tabindex="50" (click)="UpdatePortfolio_View_Details() ;saveoptionflag = false" >
+                            <span><app-svg-icons [icon]="'update-icon'" [width]="'15'" [height]="'15'" class="update-icon"></app-svg-icons></span>
+                            <span>{{ "Update" | translate }}</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div style="display:flex">
+                    <div style="width: max-content; line-height: 17px; margin-right: 0.5em !important; font-size: 13px; font-family: var(--font-family) !important;align-self: center;">
+                        {{'Sort By' | translate}} 
+                    </div>
+                    <div style="display: flex; gap:1em " >
+                        
+
+                        <!--//Portfolio sort: changes by Prateek & Akash on 29 Aug 2023-->
+                        <select  placeholder='Product Type' [(ngModel)]="selectedSorting"  class="filterSelect" (change)="portfolioSort()"> <!--[(ngModel)]="selectedSorting"-->
+                            
+                            <!-- <option value="" [ngValue]="'SelectOption'" disabled selected hidden >Select Option</option> -->
+                            <option  >{{'Format' | translate}}</option>                            
+                            <option [ngValue]="'Issue Date'" selected>{{'Issue Date' | translate}}</option>
+                            <option  >{{'Notional' | translate}}</option>
+                            <option  >{{'Product Situation' | translate}}</option>
+                            <!-- <option  >KI near to far</option> -->
+                            <!--END-->
+                        </select>
+
+                        <select [(ngModel)]="direction" class="filterSelect" (change)="portfolioSort()" style="width:110px !important; margin-left: 15px;" [disabled]="disableDirection" > <!--[(ngModel)]="selectedSorting"-->
+                            
+                            <option >{{'Ascending' | translate}}</option>                            
+                            <option [ngValue]="'Descending'" selected >{{'Descending'| translate}}</option>
+
+                        </select>
+
+                    </div>
+                </div>
+                <div class="searchInnerDiv">
+                    <!-- <img style="width:15px;height:15px;margin-left:5px; margin-top:10px;" src="{{asseturl}}search.png"> -->
+                    <input [ngClass]="{'highlight-border': selectedExternal !=''}" type="text" placeholder="{{'External1, External2, ...' | translate}}" [(ngModel)]="selectedExternal" name="search" class="txtSearch" (keyup)="FilterForAll($event)"><!-- [(ngModel)]="search"-->
+
+                    <app-svg-icons class="filterIcon" (click)="showFilterDropdown=!showFilterDropdown" [icon]="'filter-icon'" [width]="'18'" [height]="'20'"
+                                [fill]="'var(--input-icon)'" ></app-svg-icons>
+                </div>
+                <div class="forTitleRow">
+                    <input id="colorpicker" type="color" list="preferredlist" [(ngModel)]="color"
+                        (ngModelChange)="onColorChange($event)">
+                    <datalist id="preferredlist">
+                        <option>#5f72bf</option>
+                        <option>#aa5555</option>
+                        <option>#255272</option>
+                        <option>#a55fbf</option>
+                        <option>#6d97bf</option>
+                    </datalist>
+                </div>
+                <div class="forTitleRow">
+                    <app-svg-icons [ngClass]="{ 'rotateCircle': loader }" [icon]="'refresh'" [width]="'30'"
+                        [height]="'30'" (click)="refresh()"></app-svg-icons>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="showFilterDropdown==true" class="filterDiv">
+        <!--tyle="border: 1px solid #696969 !important;align-self: center;"-->
+        <div class="filterMainDiv">
+            <div class="labelRowContainer">
+                <div class="filterTH alignLeft labelDivWidth labelFilerBlock">
+                    <span>{{'Client Filters:' | translate}}</span>
+                    <span class="link eachRowFilter " (click)="clearClient()" >{{'Clear Filters' | translate}}</span>
+                </div>
+                <div class="clientFilterDiv">
+
+                    <!-- <div><input type="text" placeholder="Group" [(ngModel)]="selectedGroup" (keyup)="FilterForAll($event)" class="filterIputs"></div> -->
+                    <app-custom-dropdown-multi-select [options]="groupArr" [backupOptions]="groupArr" [(ngModel)]="selectedGroup" [displayText2]=" groupArr?.length === 1 ? groupArr[0]['value'] : 'Group'" [pricerType]="'dropdownSearch'" [isRefreshed]="clearClientFilter" (selectOptionsEmitter)="clientFilterData($event)" [ngClass]="{ 'disabled': groupArr.length <= 1 }" >
+                    </app-custom-dropdown-multi-select>
+
+                    <!-- <div><input type="text" placeholder="Client" [(ngModel)]="selectedClient" (keyup)="FilterForAll($event)" class="filterIputs"></div> -->
+                    <app-custom-dropdown-multi-select [options]="clientArr" [backupOptions]="clientArr" [(ngModel)]="selectedClient" [displayText2]="'Client'"  [pricerType]="'dropdownSearch'" [isRefreshed]="clearClientFilter" (selectOptionsEmitter)="clientFilterData($event)" >
+                    </app-custom-dropdown-multi-select>
+
+                    <!-- <div><input type="text" placeholder="Internal Ref./J" [(ngModel)]="selectedIntRef" (keyup)="FilterForAll($event)" class="filterIputs"></div> -->
+                    <app-custom-dropdown-multi-select [options]="intRefArr" [backupOptions]="intRefArr" [(ngModel)]="selectedIntRef" [displayText2]="'Internal Ref./J'"  [pricerType]="'dropdownSearch'" [isRefreshed]="clearClientFilter" (selectOptionsEmitter)="clientFilterData($event)" >
+                    </app-custom-dropdown-multi-select>
+
+                    <!-- <div><input type="text" placeholder="Type" [(ngModel)]="selectedType" (keyup)="FilterForAll($event)" class="filterIputs"></div> -->
+                    <app-custom-dropdown-multi-select [options]="typeArr" [backupOptions]="typeArr" [(ngModel)]="selectedType" [displayText2]="'Type'"  [pricerType]="'dropdownSearch'" [isRefreshed]="clearClientFilter" (selectOptionsEmitter)="clientFilterData($event)" >
+                    </app-custom-dropdown-multi-select>
+
+
+                    <!-- <div><input type="text" placeholder="Tutela" [(ngModel)]="selectedTutela" (keyup)="FilterForAll($event)"  class="filterIputs"></div> -->
+                    <app-custom-dropdown-multi-select [options]="tutelaArr" [backupOptions]="tutelaArr" [(ngModel)]=" tutelaArr?.length === 1 ? tutelaArr[0]['value'] : selectedTutela" [displayText2]=" tutelaArr?.length === 1 ? tutelaArr[0]['value'] : 'Tutela'"  [pricerType]="'dropdownSearch'" [isRefreshed]="clearClientFilter" (selectOptionsEmitter)="clientFilterData($event)" [ngClass]="{ 'disabled': tutelaArr.length <= 1 }" >
+                    </app-custom-dropdown-multi-select>
+
+                    <!-- <div><input type="text" placeholder="Subtutela" [(ngModel)]="selectedSubtutela" (keyup)="FilterForAll($event)" class="filterIputs"></div> -->
+                    <app-custom-dropdown-multi-select [options]="subtutelaArr" [backupOptions]="subtutelaArr" [(ngModel)]="selectedSubtutela" [displayText2]="'Subtutela'"  [pricerType]="'dropdownSearch'" [isRefreshed]="clearClientFilter" (selectOptionsEmitter)="clientFilterData($event)" >
+                    </app-custom-dropdown-multi-select>
+
+                    <!-- <div><input type="text" placeholder="Branch" [(ngModel)]="selectedBranch" (keyup)="FilterForAll($event)" class="filterIputs"></div> -->
+                    <app-custom-dropdown-multi-select [options]="branchArr" [backupOptions]="branchArr" [(ngModel)]="selectedBranch" [displayText2]="'Branch'"  [pricerType]="'dropdownSearch'" [isRefreshed]="clearClientFilter" (selectOptionsEmitter)="clientFilterData($event)" >
+                    </app-custom-dropdown-multi-select>
+
+                    <!-- <div><input type="text" placeholder="Territory" [(ngModel)]="selectedTerritory" (keyup)="FilterForAll($event)" class="filterIputs"></div> -->
+                    <app-custom-dropdown-multi-select [options]="territoryArr" [backupOptions]="territoryArr" [(ngModel)]="selectedTerritory" [displayText2]="'Territory'"  [pricerType]="'dropdownSearch'" [isRefreshed]="clearClientFilter" (selectOptionsEmitter)="clientFilterData($event)" >
+                    </app-custom-dropdown-multi-select>
+
+                    <!-- <div><input type="text" placeholder="Zone" [(ngModel)]="selectedZone" (keyup)="FilterForAll($event)" class="filterIputs"></div> -->
+                    <app-custom-dropdown-multi-select [options]="zoneArr" [backupOptions]="zoneArr" [(ngModel)]="selectedZone" [displayText2]="'Zone'"  [pricerType]="'dropdownSearch'" [isRefreshed]="clearClientFilter" (selectOptionsEmitter)="clientFilterData($event)" >
+                    </app-custom-dropdown-multi-select>
+
+                </div>
+                <!-- <div class="clearFilter">
+                    <span class="link " (click)="refresh()" >Clear All Filters</span>
+                </div> -->
+            </div>
+            <div class="labelRowContainer">
+                <div style="" class="filterTH labelDivWidth labelFilerBlock">
+                    <span>{{'Product Filters:' | translate}}</span> 
+                    <span class="link eachRowFilter " (click)="clearProduct()" >{{'Clear Filters' | translate}}</span>    
+                </div>
+                <div class="productFilterDiv">
+
+                    <div class="columnContainer">
+                        <!-- Added by MuditB || 27-Sep-23 || Start || MultiSelect Dropdown Filter -->
+
+                        <app-custom-dropdown-multi-select [options]="formatData" 
+                            [displayText2]="'Format'" [pricerType] = "'dropdown'" [isRefreshed]="refreshed || clearProductFilter" 
+                            [(ngModel)]="selectedFormat" 
+                            *ngIf="formatData?.length <= 0 || formatData=='' || formatData==undefined" disabled
+                            (selectOptionsEmitter)="FilterForAll($event)">
+                        </app-custom-dropdown-multi-select>
+                        
+                        <app-custom-dropdown-multi-select [options]="formatData"  
+                            [displayText2]="'Format'"  [pricerType] = "'dropdown'" [isRefreshed]="refreshed || clearProductFilter"
+                            [(ngModel)]="selectedFormat" *ngIf="formatData?.length > 0 && formatData!='' && formatData!=undefined" 
+                            (selectOptionsEmitter)="FilterForAll($event)">
+                        </app-custom-dropdown-multi-select>
+
+                        <!-- Added by MuditB || 27-Sep-23 || End || MultiSelect Dropdown Filter -->
+                    </div>
+                    <div class="columnContainer">
+                        <!-- <input type="text" placeholder="Currency" (keyup)="FilterForAll($event)"
+                        [(ngModel)]="selectedCurrency" name="Group" class="filterIputs"> -->
+                        <!-- <select [(ngModel)]="selectedCurrency"  placeholder="Currency"  (change)="FilterForAll($event)"  class="filterSelect">
+                            <option value="" disabled hidden>Currency</option>
+                            <option [ngValue]="'all'">All</option>
+                            <option *ngFor="let item of currencyData;" [ngValue]="item" (click)="selectedMPG=item">{{item}}</option>
+                        </select> -->
+
+                        <!-- Added by MuditB || 27-Sep-23 || Start || MultiSelect Dropdown Filter -->
+
+                        <app-custom-dropdown-multi-select [options]="currencyData" 
+                            [displayText2]="'Currency'"    [pricerType] = "'dropdown'" [isRefreshed]="refreshed || clearProductFilter"
+                            [(ngModel)]="selectedCurrency" 
+                            *ngIf="currencyData?.length <= 0 || currencyData=='' || currencyData==undefined" disabled
+                            (selectOptionsEmitter)="FilterForAll($event)">
+                        </app-custom-dropdown-multi-select>
+                        
+                        <app-custom-dropdown-multi-select [options]="currencyData" 
+                            [displayText2]="'Currency'"   [pricerType] = "'dropdown'" [isRefreshed]="refreshed || clearProductFilter"
+                            [(ngModel)]="selectedCurrency" *ngIf="currencyData?.length > 0 && currencyData!='' && currencyData!=undefined" 
+                            (selectOptionsEmitter)="FilterForAll($event)">
+                        </app-custom-dropdown-multi-select>
+
+                        <!-- Added by MuditB || 27-Sep-23 || End || MultiSelect Dropdown Filter -->
+                    </div>
+                    <div class="columnContainer">
+                        <!-- Added by MuditB || 27-Sep-23 || Start || MultiSelect Dropdown Filter -->
+
+                        <app-custom-dropdown-multi-select [options]="productTypeData" 
+                            [displayText2]="'Product Type'"  [pricerType] = "'dropdown'" [isRefreshed]="refreshed || clearProductFilter"
+                            [(ngModel)]="selectedPType" 
+                            *ngIf="productTypeData?.length <= 0 || productTypeData=='' || productTypeData==undefined" disabled
+                            (selectOptionsEmitter)="FilterForAll($event)">
+                        </app-custom-dropdown-multi-select>
+                        
+                        <app-custom-dropdown-multi-select [options]="productTypeData" 
+                            [displayText2]="'Product Type'"   [pricerType] = "'dropdown'" [isRefreshed]="refreshed || clearProductFilter"
+                            [(ngModel)]="selectedPType" *ngIf="productTypeData?.length > 0 && productTypeData!='' && productTypeData!=undefined" 
+                            (selectOptionsEmitter)="FilterForAll($event)">
+                        </app-custom-dropdown-multi-select>
+
+                        <!-- Added by MuditB || 27-Sep-23 || End || MultiSelect Dropdown Filter -->
+                    </div>
+                    <!-- <div> <input type="text" placeholder="Cap. At Risk"  [(ngModel)]="selectedCapAtRisk" name="Group" class="filterIputs" (keyup)="FilterForAll($event)"></div> -->
+                    <div class="columnContainer">
+                         <input type="text" placeholder="{{'Underlying' | translate}}" name="Group" class="filterIputs" style="width:195px !important" [(ngModel)]="selectedUnderlying" (keyup)="FilterForAll($event); disableULType()" >
+                    </div>
+    
+                    <div class="toggleDiv"> 
+                        <div class="toggleLabels ">{{'Incl. Basket:' | translate}}</div>
+                        <div class="togglePos">
+                            <mat-slide-toggle (change)="checkInBasketToggle($event);FilterForAll($event)" class="slide-toggle"
+                            [checked]="inBasketCheck"></mat-slide-toggle> <!--[checked]="inBasketCheck"-->
+                        </div>
+                    </div>
+
+                    <div class="columnContainer">
+                        <!-- <input type="text" placeholder="U/L Type" name="Group" class="filterIputs"> -->
+                        <!-- <select [(ngModel)]="selectedULType"  placeholder="U/L Type"  (change)="FilterForAll($event)"  class="filterSelect">
+                            <option value="" disabled hidden>U/L Type</option>
+                            <option [ngValue]="'all'">All</option>
+                            <option *ngFor="let item of ulTypeData;" [ngValue]="item" (click)="selectedMPG=item">{{item}}</option>
+                        </select> -->
+
+                        <!-- Added by MuditB || 27-Sep-23 || Start || MultiSelect Dropdown Filter -->
+
+                        <app-custom-dropdown-multi-select [options]="ulTypeData" 
+                            [displayText2]="'U/L Type'"   [pricerType] = "'dropdown'" [isRefreshed]="refreshed || clearProductFilter"
+                            [(ngModel)]="selectedULType" 
+                            *ngIf="ulTypeData?.length <= 0 || ulTypeData=='' || ulTypeData==undefined" disabled
+                            (selectOptionsEmitter)="FilterForAll($event)">
+                        </app-custom-dropdown-multi-select>
+                        
+                        <app-custom-dropdown-multi-select [options]="ulTypeData" 
+                            [displayText2]="'U/L Type'"  [pricerType] = "'dropdown'" [isRefreshed]="refreshed || clearProductFilter"
+                            [(ngModel)]="selectedULType" *ngIf="ulTypeData?.length > 0 && ulTypeData!='' && ulTypeData!=undefined" 
+                            (selectOptionsEmitter)="FilterForAll($event)" [disabled]="checkULType"> 
+                        </app-custom-dropdown-multi-select>
+
+                        <!-- Added by MuditB || 27-Sep-23 || End || MultiSelect Dropdown Filter -->
+                    </div>
+                    <div class="toggleDiv" style="width: unset;">
+                        <div class="toggleLabels">{{'Live' | translate}}</div>
+                        <div class="togglePos">
+                            <mat-slide-toggle (change)="checkLiveToggle($event);FilterForAll($event)" [checked]="LiveCheck"  class="slide-toggle"
+                            ></mat-slide-toggle>
+                        </div>
+                    </div>
+                  
+                    <div class="toggleDiv" style="width: unset;">
+                        <div class="toggleLabels">{{'Dead' | translate}}</div>
+                        <div class="togglePos">
+                            <mat-slide-toggle (change)="checkDeadToggle($event);FilterForAll($event)" [checked]="DeadCheck"  class="slide-toggle"
+                            ></mat-slide-toggle>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="labelRowContainer">
+                <div style="    margin-top: 25px;" class="filterTH labelDivWidth labelFilerBlock">
+                    <span> {{'Product Specs:' | translate}}</span> 
+                    <span class="link eachRowFilter " (click)="clearProductSpecs()" >{{'Clear Filters' | translate}}</span>
+                </div>
+
+                <div class="productSpecsDiv">
+
+                    <div class="columnContainer">
+                        <div class="filterLabels">
+                            {{'Issue Date' | translate}} 
+                        </div>
+                        <div [ngClass]="{ 'showFilter': showSDate,'hideFilter': (!showSDate) }" style="position: relative;">
+                            <input type="date" [ngClass]="{'highlight-border': StartDate!=''}" class="input-dob filterIputs" [(ngModel)]="StartDate" value="StartDate"
+                                (change)="selectDate(StartDate); FilterForAll($event)" #SDateField id="SDate" >
+                            <span *ngIf="StartDate === '' || StartDate === undefined" class="sDatePlaceHolder">{{'From Date' | translate}}</span>
+                            <span *ngIf="StartDate !== '' && StartDate !== undefined" class="sDate">{{StartDateDisplay}}</span>
+                        </div>
+                        <div [ngClass]="{ 'showFilter': showSDate,'hideFilter': (!showSDate) }" style="position: relative;">
+                            <input type="date" [ngClass]="{'highlight-border': EndDate!=''}" class="input-dob filterIputs" [(ngModel)]="EndDate" value="EndDate"
+                                (change)="selectEndDate(EndDate); FilterForAll($event)" #SDateField id="SDate" >
+                            <span *ngIf="EndDate === '' || EndDate === undefined" class="sDatePlaceHolder">{{'To Date' | translate}}</span>
+                            <span *ngIf="EndDate !== '' && EndDate !== undefined" class="sDate">{{EndDateDisplay}}</span>
+                        </div>
+                    </div>
+                    <div class="alignBottom columnContainer">
+                        <div class="filterLabels">
+                            {{'Maturity in' | translate}} 
+                        </div>
+                        <div class="daysLabel">
+                            <input type="text" [ngClass]="{'highlight-border': selectedMaturityIn!=''}" placeholder="x" name="Group" class="daysInput right1" [(ngModel)]="selectedMaturityIn" (keyup)="FilterForAll($event)">
+                        </div>
+                        <div>
+                            <span class="daysSuffix">&nbsp;{{'days' | translate}}</span>
+                        </div> 
+                        
+                    </div>
+                    <div class="alignBottom columnContainer">
+                        <div class="filterLabels">
+                            {{'Observation in' | translate}} 
+                        </div>
+                        <div class="daysLabel">
+                            <input type="text" [ngClass]="{'highlight-border': selectedObservationIn!=''}" placeholder="x" name="Group" class="daysInput right1" [(ngModel)]="selectedObservationIn" (keyup)="FilterForAll($event)">
+                        </div>
+                        <div>
+                            <span class="daysSuffix">&nbsp;{{'days' | translate}}</span>
+                        </div>
+
+
+                    </div>
+                    <!-- Added by MuditB || 30-Aug-23 || Start -->
+                    <div class="alignBottom columnContainer">
+                        <div class="filterLabels">
+                            {{'Cancel Date in' | translate}} 
+                        </div>
+                        <div class="daysLabel">
+                            <input type="text" [ngClass]="{'highlight-border': selectedCancelDateIn!=''}" placeholder="x" name="Group" class="daysInput" [(ngModel)]="selectedCancelDateIn" (keyup)="FilterForAll($event)">
+                        </div>
+                        <div>
+                            <span class="daysSuffix">&nbsp;{{'days' | translate}}</span>
+                        </div>
+                    </div>
+                    <div class="alignBottom sliderPosition columnContainer">
+                        <div class="filterLabels">
+                            {{'Capital At Risk:' | translate}}
+                        </div>
+                        <div style="display:flex; gap:1em;">
+                            <div  class="ki-number">
+                                <input [ngClass]="{'highlight-border': startCapAtRiskValue!=current_CapAtRisk_StartValue}" type="number" class="knumber"  placeholder="{{startCapAtRiskValue}} %" 
+                                    [min]="startCapAtRiskValue"
+                                    [max]="endCapAtRiskValue" 
+                                    (change)="binder($event);selectedCapAtRisk=true; FilterForAll($event)"class="inputBox"  step="0.01" name="CapAtRisk-input1" 
+                                    [(value)]="current_CapAtRisk_StartValue"><!--[value]="current_CancelProb_StartValue"-->
+                            </div>
+                            <div  class="ki-number second">
+                                <input [ngClass]="{'highlight-border': endCapAtRiskValue!=current_CapAtRisk_LastValue}" type="number" class="knumber"  placeholder="{{endCapAtRiskValue}} %"
+                                    [min]="startCapAtRiskValue" 
+                                    [max]="endCapAtRiskValue" 
+                                    (change)="binder($event);selectedCapAtRisk=true; FilterForAll($event)"class="inputBox" step="0.01"  name="CapAtRisk-input2" 
+                                    [(value)]="current_CapAtRisk_LastValue"> <!--[value]="current_CancelProb_LastValue"-->
+                            </div>
+                        </div>
+                        <ng-container  [ngSwitch]="display">
+                            <ng-template [ngSwitchCase]="1"><ngx-slider class="ngx-mtm-slider cancelProbSlider" [(value)]="current_CapAtRisk_StartValue" [(highValue)]="current_CapAtRisk_LastValue" 
+                                [options]="options1"  
+                                (userChangeEnd)="selectedCapAtRisk=true; FilterForAll($event)" ></ngx-slider ></ng-template>
+                            <ng-template [ngSwitchCase]="2"><ngx-slider class="ngx-mtm-slider cancelProbSlider" [(value)]="current_CapAtRisk_StartValue" [(highValue)]="current_CapAtRisk_LastValue" 
+                                [options]="options1"  
+                                (userChangeEnd)="selectedCapAtRisk=true; FilterForAll($event)" ></ngx-slider ></ng-template>
+                        </ng-container>
+                    </div>
+                    <div class="alignBottom sliderPosition columnContainer">
+                        <div class="filterLabels">
+                            {{'Cancel Probability in:' | translate}}
+                        </div>
+                        <div style="display:flex; gap:1em;">
+                            <div  class="ki-number">
+                                <input [ngClass]="{'highlight-border': startCancelProbValue!=current_CancelProb_StartValue}" type="number" class="knumber"  placeholder="{{startCancelProbValue}} %" 
+                                    [min]="startCancelProbValue"
+                                    [max]="endCancelProbValue" 
+                                    (change)="binder($event);selectedCancelProb=true; FilterForAll($event)" class="inputBox" step="0.01" name="CancelProb-input1"
+                                    [(value)]="current_CancelProb_StartValue" ><!--[value]="current_CancelProb_StartValue"-->
+                            </div>
+                            <div  class="ki-number second">
+                                <input [ngClass]="{'highlight-border': endCancelProbValue!=current_CancelProb_LastValue}" type="number" class="knumber"  placeholder="{{endCancelProbValue}}%"
+                                    [min]="startCancelProbValue" 
+                                    [max]="endCancelProbValue" 
+                                    (change)="binder($event);selectedCancelProb=true; FilterForAll($event)" class="inputBox" step="0.01"  name="CancelProb-input2"
+                                    [(value)]="current_CancelProb_LastValue"> <!--[value]="current_CancelProb_LastValue"-->
+                            </div>
+                        </div>
+                        <ng-container  [ngSwitch]="display">
+                            <ng-template [ngSwitchCase]="1"><ngx-slider class="ngx-mtm-slider cancelProbSlider" [(value)]="current_CancelProb_StartValue" [(highValue)]="current_CancelProb_LastValue" 
+                                [options]="options2" 
+                                (userChangeEnd)="selectedCancelProb=true; FilterForAll($event)"></ngx-slider ></ng-template>
+                            <ng-template [ngSwitchCase]="2"><ngx-slider class="ngx-mtm-slider cancelProbSlider" [(value)]="current_CancelProb_StartValue" [(highValue)]="current_CancelProb_LastValue" 
+                                [options]="options2" 
+                                (userChangeEnd)="selectedCancelProb=true; FilterForAll($event)"></ngx-slider ></ng-template>
+                        </ng-container>
+                    </div>
+                    <div class="alignBottom sliderPosition columnContainer">
+                        <div class="filterLabels">
+                            {{'Protection Distance:' | translate}}
+                        </div>
+                        <div style="display:flex; gap:1em;">
+                            <div  class="ki-number">
+                                <input [ngClass]="{'highlight-border': startBarrierDValue!=current_BarrierD_StartValue}" type="number" class="knumber"  placeholder="{{startBarrierDValue}} %" 
+                                    [min]="startBarrierDValue"
+                                    [max]="endBarrierDValue" class="inputBox"  
+                                    (change)="binder($event);selectedBarDist=true; FilterForAll($event)" step="0.01" name="BarrierD-input1" 
+                                    [(value)]="current_BarrierD_StartValue" 
+                                    
+                                    ><!--[value]="current_BarrierD_StartValue"-->
+                                    <!-- <span>%</span> -->
+                            </div>
+                            <div  class="ki-number second">
+                                <input [ngClass]="{'highlight-border': endBarrierDValue!=current_BarrierD_LastValue}" type="number" class="knumber"  placeholder="{{endBarrierDValue}} %"
+                                    [min]="startBarrierDValue" 
+                                    [max]="endBarrierDValue" class="inputBox"  
+                                    (change)="binder($event); selectedBarDist=true;FilterForAll($event)" step="0.01" name="BarrierD-input2" 
+                                    [(value)]="current_BarrierD_LastValue" 
+                                    
+                                    > <!--[value]="current_BarrierD_LastValue"-->
+                            </div>
+                        </div>
+                        <ng-container  [ngSwitch]="display">
+                            <ng-template [ngSwitchCase]="1"><ngx-slider class="ngx-mtm-slider cancelProbSlider" [(value)]="current_BarrierD_StartValue" [(highValue)]="current_BarrierD_LastValue" 
+                                [options]="options3" 
+                                (userChangeEnd)="selectedBarDist=true; FilterForAll($event)"  
+                                ></ngx-slider ></ng-template>
+                            <ng-template [ngSwitchCase]="2"><ngx-slider class="ngx-mtm-slider cancelProbSlider" [(value)]="current_BarrierD_StartValue" [(highValue)]="current_BarrierD_LastValue" 
+                                [options]="options3" (userChangeEnd)="selectedBarDist=true; FilterForAll($event)"
+                                ></ngx-slider ></ng-template>
+                        </ng-container>
+                    </div>
+                    <div class="alignBottom sliderPosition columnContainer">
+                        <div class="filterLabels">
+                            {{'Indicative Valuation:' | translate}}
+                        </div>
+                        <div style="display:flex; gap:1em;">
+                            <div  class="ki-number">
+                                <input [ngClass]="{'highlight-border': startIndValValue!=current_IndVal_StartValue}" type="number" class="knumber"  placeholder="{{startIndValValue}} %"
+                                    [min]="startIndValValue"
+                                    [max]="endIndValValue" class="inputBox" 
+                                    (change)="binder($event) ;selectedIndVal=true; FilterForAll($event)" step="0.01" name="IndVal-input1"  
+                                    [(value)]="current_IndVal_StartValue"><!--[value]="current_IndVal_StartValue"-->
+                            </div>
+                            <div  class="ki-number second">
+                                <input [ngClass]="{'highlight-border': endIndValValue!=current_IndVal_LastValue}" type="number" class="knumber" placeholder="{{endIndValValue}} %"
+                                    [min]="startIndValValue" 
+                                    [max]="endIndValValue" class="inputBox"  
+                                    (change)="binder($event) ;selectedIndVal=true; FilterForAll($event)" step="0.01" name="IndVal-input2"  
+                                    [(value)]="current_IndVal_LastValue"><!--[value]="current_IndVal_LastValue"-->
+                            </div>
+                        </div>
+                        <ng-container  [ngSwitch]="display">
+                            <ng-template [ngSwitchCase]="1"><ngx-slider class="ngx-mtm-slider cancelProbSlider" [(value)]="current_IndVal_StartValue" [(highValue)]="current_IndVal_LastValue" 
+                                [options]="options4"  
+                                (userChangeEnd)="selectedIndVal=true; FilterForAll($event)"></ngx-slider ></ng-template>
+                            <ng-template [ngSwitchCase]="2"><ngx-slider class="ngx-mtm-slider cancelProbSlider" [(value)]="current_IndVal_StartValue" [(highValue)]="current_IndVal_LastValue" 
+                                [options]="options4" 
+                                (userChangeEnd)="selectedIndVal=true; FilterForAll($event)"></ngx-slider ></ng-template>
+                        </ng-container>
+                    </div>
+                    <!-- Added by MuditB || 30-Aug-23 || End -->
+
+                    <!-- <div> 
+                        <div style="line-height: 17px; margin-right: 0.5em !important; font-size: 13px; font-family: var(--font-family) !important;margin-left: 14px;">
+                            AC prob > 
+                        </div>
+                        <div>
+                            <span style="margin-right: 0.5em !important; font-size: 13px; font-family: var(--font-family) !important;">±</span>
+                            <input type="text" placeholder="xx.xx %" name="Group" class="filterIputs">
+                        </div>
+                    </div>
+                    <div> 
+                        <div class="filterLabels">
+                            KI in Range 
+                        </div>
+                        <div>
+                            <input type="text" placeholder="xx.xx %" name="Group" class="filterIputs">
+                        </div>
+                    </div> -->
+                    <!-- <div> 
+                        <div class="filterLabels">
+                            Sort By 
+                        </div>
+                        <div>
+                            
+    
+                            <select  placeholder="Product Type" (change)="openMPGs($event)"  class="filterSelect">
+                                
+                                <option [ngValue]="i" (click)="selectedMPG=item" >Start Date </option>
+                                <option [ngValue]="i" (click)="selectedMPG=item" >AC Prob </option>
+                                <option [ngValue]="i" (click)="selectedMPG=item" >Obs near to far</option>
+                                <option [ngValue]="i" (click)="selectedMPG=item" >Maturity near to far </option>
+                                <option [ngValue]="i" (click)="selectedMPG=item" >KI near to far</option>
+        
+                            </select>
+                        </div>
+                    </div> -->
+                    <!-- <td> <input type="text" placeholder="Subtutela" name="Group" class="filterIputs"></td> -->
+                </div>
+            </div>
+            
+            <div class="labelRowContainer" >
+                <div  class="filterTH labelDivWidth labelFilerBlock" style="margin-top:10px" >
+                    <span>{{'What-If Scenarios:' | translate}}</span>
+                    <span class="link eachRowFilter " (click)="clearWhatIf()" >{{'Clear Filters' | translate}}</span>
+                </div>
+
+                <div class="whatIfScenarioDiv">
+
+                    <div class="columnContainer">
+
+                        <div class="radioDiv" >
+                            <input id="noneid" class="btnsize" type="radio"  name="oneByOne"  (click)="oneByOne='one';" checked="oneByOne=='one'"/>
+                            <span>{{'Equity Spot Ladder Scenario (One-by-One)' | translate}}</span> 
+                        </div>
+                        
+                        <div class="radioDiv" >
+                            <input id="noneid" class="btnsize" type="radio"    name="oneByOne" (click)=" oneByOne='market';" />
+                            <span>{{'Equity Spot Ladder Scenarios' | translate}}</span> 
+                        </div>
+
+                        <!-- <input type="text" placeholder="Equity Spot Ladder Scenario (One-by-One)" name="Group" class="filterIputs" style="width:277px !important">
+                        <input type="text" placeholder="Equity Spot Ladder Scenarios" name="Group" class="filterIputs" style="width:277px !important"> -->
+                    </div>
+
+                    <div class="columnContainer">
+                        <!-- <input type="text" placeholder="Underlying" name="Group" class="filterIputs" style="width:277px !important"> -->
+                        <!-- <input type="text" placeholder="Market Spot % Variation" name="Group" class="filterIputs" style="width:277px !important"> -->
+
+                        <select   placeholder="{{'Underlying' | translate}}" [(ngModel)]="selectedScenarioUnderlying" class="filterIputs" style="width:185px !important" [disabled]="oneByOne!='one'">
+                            <option value="" [ngValue]="'Underlying'" disabled selected hidden>{{'Underlying' | translate}}</option>
+                            <!-- <option [ngValue]="'all'">All</option> -->
+                            <option *ngFor="let item of scenariouUnderlying;" [ngValue]="item.distinctBBG" >{{item.distinctBBG}}</option>
+                        </select>
+
+                        <div style="width:fit-content !important; min-width: 198px; ">
+                            <select   placeholder="{{'Market Spot % Variation' | translate}}" [(ngModel)]="selectedMarketSpotVar"  style="width:185px !important"  [disabled]="oneByOne!='market'" (change)="checkMarketSpot()">
+                                <option value=""  [ngValue]="'Market Spot % Variation'" disabled selected hidden>{{'Market Spot % Variation' | translate}}</option>
+                                <!-- <option [ngValue]="'all'">All</option> -->
+                                <option *ngFor="let item of bottomWhatIf;" [ngValue]="item" >{{item}}</option>
+                            </select>
+                            <span *ngIf="selectedMSpot" >%</span>
+                        </div>
+                    </div>
+                    <div class="columnContainer">
+                        <!-- <input type="text" placeholder="Spot % Variation" name="Group" class="filterIputs" style="width:277px !important"> -->
+                        <div style="width:fit-content !important; min-width: 161px; display:flex " >
+                            <select   placeholder="{{'Spot % Variation' | translate}}" [(ngModel)]="selectedSpotVar"  [disabled]="oneByOne!='one'" (change)="checkSpot()" >
+                                <option value="" [ngValue]="'Spot % Variation'"  disabled selected hidden>{{'Spot % Variation' | translate}}</option>
+                                <!-- <option [ngValue]="'all'">All</option> -->
+                                <option *ngFor="let item of topWhatIf;" [ngValue]="item" >{{item}}</option>
+                            </select>
+                            <span *ngIf="selectedSpot" style="align-self:center" >%</span>
+                        </div>
+                    </div>
+                    <div class="columnContainer">
+
+                        <div>
+                            <button style="width:120px"
+                                (click)="checkWhatIfData=true;whatIfDataIconFlag=true;loaderForWhatIF = true ;getScenarioAnalysis()"
+                                class="button">{{'Scenario Analysis' | translate}}</button>
+                        </div>
+
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="lastRow">
+                <div class="clearFilter">
+                    <span class="link " (click)="refresh()">Clear All Filters</span>
+                </div>
+                <div class="pageCount">
+                    <span class="paginationtext">Trade Count: {{totalCount}} </span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<ng-container *ngIf="!!blotterData">
+    <app-simulation-chart [blotterData]="blotterData" [changePer]="changePer" [loaderForWhatIF]='loaderForWhatIF'></app-simulation-chart>
+</ng-container>

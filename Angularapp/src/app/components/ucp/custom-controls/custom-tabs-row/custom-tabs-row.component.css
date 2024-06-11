@@ -1,0 +1,24 @@
+.mandate-fix {
+  display: flex;
+  justify-content: center;
+  height: 32px;
+}
+
+.btnCustomTab {
+  cursor: pointer;
+}
+
+.tdPadding {
+  padding-left: 20px;
+}
+.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  /* pointer-events: none; */
+}
+.custom-tab-disabled {
+  /* opacity: 0.5; */
+  /* pointer-events: none; */
+  color: white;
+  cursor: not-allowed;
+}

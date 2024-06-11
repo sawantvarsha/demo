@@ -1,0 +1,17 @@
+  <!-- <table>
+    <tr>
+      <td>
+        <mat-label>{{ input.displayName }}</mat-label>
+      </td>
+    </tr>
+    <tr>
+      <td [ngClass]="'line'" > -->
+      <div>
+        <mat-radio-group ngClass="line" class="font-railway-line" [(ngModel)]="currentValue">
+          <mat-radio-button class="radio-label-above radtio-railway-line" *ngFor="let value of radioValues" [value]="value.code"
+            (change)="radioSelectionChange($event)">{{value.code}}</mat-radio-button>
+        </mat-radio-group>
+      </div>
+      <!-- </td>
+    </tr>
+  </table> -->

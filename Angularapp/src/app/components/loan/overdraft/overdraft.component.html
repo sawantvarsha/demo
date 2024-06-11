@@ -1,0 +1,179 @@
+<div [ngClass]="{'loanComponentrmw': isUserRM === true, 'loanComponent': isUserRM === false}">
+  <div class="loanname-row" *ngIf="isUserRM">
+    <div class="middle">Customer</div>
+    <div class="middle">
+      <app-customer-search (sendCustomerDetails)="getCustomerDetails($event)"></app-customer-search>
+    </div>
+  </div>
+  <div class="param-cols">
+    <div class="column1">
+      <div class="loanparams-row">
+        <div class="middle">Currency</div>
+        <div class="middle">
+          <!-- <input type="text" [(ngModel)]="loanCurrency" disabled> -->
+          <select [(ngModel)]="ODCurrency" (change)="PortfolioChange()">
+            <option [value]="arr" *ngFor="let arr of currencyList;">{{arr}}
+            </option>
+          </select>
+
+        </div>
+      </div>
+
+      <div class="loanparams-row">
+        <div class="middle">Amount</div>
+        <div class="middle">
+          <input type="text" class="right" [(ngModel)]="ODAmount" (change)="ODAmount = this.cfs.NotionalChange($event);"
+            (focus)="this.cfs.UnformatNumber($event);" (blur)="this.cfs.FormatNumber($event);"
+            (keypress)="this.cfs.NotionalValidate($event);">
+        </div>
+      </div>
+
+      <div class="loanparams-row">
+        <div class="middle">Base Lending Rate</div>
+        <div class="middle">
+          <input class="right" type="text" [(ngModel)]="baseLendingRate">
+        </div>
+      </div>
+
+      <div class="loanparams-row">
+        <div class="middle">Int. Calculation Frequency</div>
+        <div class="middle">
+          <select [(ngModel)]="intCalcFreq">
+            <option>Monthly</option>
+            <option>Quarterly</option>
+            <option>SemiAnnually</option>
+            <option>Annually</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- <div class="loanparams-row">
+        <div class="middle">Collaterized</div>
+        <select [(ngModel)]="isCollaterized" (change)="ChangeSelectedportfolio()">
+          <option> Y </option>
+          <option> N </option>
+        </select>
+      </div> -->
+
+
+      <div *ngIf="this.moredetails !== 'More Details'">
+        <div class="loanparams-row">
+          <div class="middle">Account Type</div>
+          <div class="middle">
+            <!-- <input type="text" class="center" disabled="disabled" value="{{accountType}}" [(ngModel)]="accountType" /> -->
+            <select disabled [(ngModel)]="accountType" (change)="ChangeSelectedportfolio()">
+              <option *ngFor="let arr of AccountTypeList;">{{arr}}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <div class="loanparams-row">
+          <div class="middle">Portfolio</div>
+          <div class="middle">
+            <select [(ngModel)]="portfolioID" (change)="updatePortfolio()">
+              <option *ngFor="let arr of portfolioList;">{{arr}}
+              </option>
+            </select>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class="column2">
+
+      <div class="loanparams-row">
+        <div class="middle">Tenor</div>
+        <div class="middle">
+          <input class="right" type="text" [(ngModel)]="tenor" maxlength="3" (change)="changeEndDate()"
+            pattern="^[0-9]*$">
+
+          <select name="TenorUnit" [(ngModel)]="tenorUnit" style="margin-left: 10px;" (change)="changeEndDate()">
+            <option *ngFor="let tenorUnit of tenorUnitList">
+              {{tenorUnit}}</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="loanparams-row">
+        <div class="middle">Start Date</div>
+        <div class="middle">
+          <input type="date" name="DOB" id="DOB" class="txt input-dob center" [attr.data-date]="startDate"
+            data-date-format="DD-MMM-YYYY" tabindex="16" [(ngModel)]="startDate" required="required"
+            (change)="selectDate(startDate);">
+        </div>
+      </div>
+
+      <div class="loanparams-row">
+        <div class="middle">End Date</div>
+        <div class="middle">
+          <input type="text" disabled="disabled" class="center" value="{{drawdownDate}}" [(ngModel)]="drawdownDate" />
+        </div>
+      </div>
+
+
+      <div class="loanparams-row">
+        <div class="middle">Limit</div>
+        <div class="middle">
+          <input type="text" class="right" [(ngModel)]="ODLimit" (change)="ODLimit = this.cfs.NotionalChange($event);"
+            (focus)="this.cfs.UnformatNumber($event);" (blur)="this.cfs.FormatNumber($event);"
+            (keypress)="this.cfs.NotionalValidate($event);">
+        </div>
+      </div>
+
+      <!-- <div class="loanparams-row">
+        <div class="middle">Pledged Against</div>
+        <div class="middle">
+          <select [(ngModel)]="pledgedAgainst">
+            <option  [value]="arr" *ngFor="let arr of pledgedAgainstDataArray;">
+              {{arr}}
+            </option>
+          </select>
+        </div>
+      </div> -->
+
+      <div *ngIf="this.moredetails !== 'More Details'">
+        <div class="loanparams-row">
+          <div class="middle">Account No</div>
+          <div class="middle">
+            <select [(ngModel)]="accountNumber" disabled>
+              <option *ngFor="let arr of accountList;">{{arr}}
+              </option>
+            </select>
+          </div>
+        </div>
+
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="loan-button-row">
+    <div></div>
+    <div class="details right">
+
+      <div class="link" (click)="moredetailsCheck()"> <u>
+          {{moredetails}}</u></div>
+      <div>
+        <button class="button  btn" value="Buy" tabindex="3" [disabled]="showSubmit===false"
+          (click)="OrderSubmit()">Submit</button>
+      </div>
+
+    </div>
+    <div>
+      <button class="button  btn" (click)=" clearBtn('subscribe');" tabindex="4">Clear</button>
+
+    </div>
+  </div>
+
+  <div class="loan-message-row">
+    <div *ngIf="loadflag">
+      <img [src]="isProd?'assets/loading_dots.gif':'../../assets/loading_dots.gif'" height="100px" width="100px">
+    </div>
+    <div *ngIf="!loadflag">
+      {{successMsg}}
+    </div>
+  </div>
+</div>

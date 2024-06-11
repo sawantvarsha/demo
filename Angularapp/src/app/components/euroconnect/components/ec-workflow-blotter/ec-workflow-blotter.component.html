@@ -1,0 +1,642 @@
+<div class="main-grid-container" style="padding-top: 0px !important;">
+
+    <div class="main-grid-item">
+        <div class="wfblotterClass">
+            <div class="innergrid">
+                <label class="pageHeader">{{pageTitle}}</label>
+                <hr width="100%" class="productHeaderhr">
+            </div>
+            <div [ngClass]="{'container': !showQueueBar, 'collapsed-container': showQueueBar}">
+
+
+                <div [ngClass]="{'blotter': !showQueueBar, 'collapsed-blotter': showQueueBar}">
+
+                    <div class="filters">
+                        <div class="filter-element1">
+                            <div class="right-col">
+                                <div class="dateFilter">
+                                    <!-- Change for colon removal for title || VarshaG || 21-03-2023 -->
+                                    <div> <label class="WFLabel" for="fromdate">Workflow</label></div>
+                                    <select [(ngModel)]="workflowId" (change)="workflowChange()" style="max-width: 18em !important; font-family: 'Open Sans',sans-serif !important;
+                                        font-size: 14px !important" class="ip-border">
+                                        <option *ngFor="let workflow of workflowDD" [value]="workflow.id" style="font-family: 'Open Sans',sans-serif !important;
+                                        font-size: 14px !important;">
+                                            {{workflow.value}}</option>
+                                    </select>
+                                    <div> <label class="WFLabel" for="fromdate">From</label>
+                                    </div>
+                                    <div style="position: relative;">
+                                        <!--<input style="font-size: 14px !important;" id="txtfromdate" type="date"
+                                            [attr.data-date]="fromdate" [(ngModel)]="fromdate" tabindex="6"
+                                            (change)="selectDate('fromDate',fromdate )">-->
+                                        <div>
+                                            <!-- changed by Amogh K | 4/4/2022 | datetime controller changes -->
+                                            <app-custom-datetime-field [format]="'date'" id="txtfromdate" [width]="12"
+                                                [(ngModel)]="fromdate" (change)="selectDate('fromDate',fromdate )">
+                                            </app-custom-datetime-field>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label class="WFLabel" for="toDate">To</label>
+                                    </div>
+                                    <div style="position: relative;">
+                                        <div>
+                                            <!-- changed by Amogh K | 4/4/2022 | datetime controller changes -->
+                                            <app-custom-datetime-field [format]="'date'" id="txttodate" [width]="12"
+                                                [(ngModel)]="todate" (change)="selectDate('toDate',todate )">
+                                            </app-custom-datetime-field>
+                                        </div>
+                                        <!--<input style="font-size: 14px !important;" id="txttodate" type="date"
+                                            [attr.data-date]="todate" [(ngModel)]="todate" tabindex="6"
+                                            (change)="selectDate('toDate',todate )">-->
+                                    </div>
+                                    <!-- <button class="button btn button" style="height: 35px !important;" value="Filter Records" (click)="filterByDate()">Load</button> -->
+                                    <button class="button" style="height: 35px !important;" value="Filter Records"
+                                        (click)="filterByDate()" [disabled]="disableLoadFlg">Load</button>
+                                    <div class="reload">
+                                        <!-- <img value="Reload" width="30px" (click)="reloadRecords()" src="https://cdn0.iconfinder.com/data/icons/social-messaging-ui-color-shapes/128/sync-circle-blue-512.png" /> -->
+                                    </div>
+                                    <div>
+                                    </div>
+                                    <!-- Added by AdilP @26-05-2023 -->
+                                    <div *ngIf="errorMsg !== ''">
+                                        <span class="errorMsg" *ngIf="errorMsg!==''">
+                                            {{errorMsg}} </span>
+                            
+                            
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="wf-queues" *ngIf="showQueueBar">
+
+                                <ng-template ngFor let-i="index" let-q [ngForOf]="queues">
+
+                                    <!-- <div class="queue-element queueCard" *ngIf="!loader &&  i < 4" (click)="getTokens(workflowId,q.QM_ID, q.TokenCount);" [ngStyle]="{'background-color': q.QM_ID === selectedqueueId ? 'white' : 'rgb(248, 248, 248)', 'border': q.QM_ID === selectedqueueId ? '1px solid lightgrey' : '' }"> -->
+                                    <div class="queue-element queueCard"
+                                        *ngIf="!loader &&  (queues.length == 5 ? i <= 4 : i < 4)"
+                                        (click)="setPaginatorValues(); getTokens(workflowId,q.QM_ID, q.TokenCount);"
+                                        [ngStyle]="{'background-color': q.QM_ID === selectedqueueId ? 'var(--fx-line)' : 'var(--bg-color)', 'border': q.QM_ID === selectedqueueId ? '1px solid var(--queueCard-border-color)' : '' }">
+
+                                        <span class="queue-label">{{
+                                            !q.QM_Name || q.QM_Name === '' ? 'All' : q.QM_Name}}
+                                        </span>
+                                        <!-- <span style="font-size: 30px;" *ngIf="!loader &&  i < 4">{{q.TokenCount}}</span> -->
+                                        <span style="font-size: 18px;">{{q.TokenCount}}</span>
+
+
+
+                                    </div>
+                                </ng-template>
+                                <!-- <div class="queue-element queueCard restCard" *ngIf="!loader && this.queues && this.queues.length > 4" (click)="getRestTokens()" [ngStyle]="{'background-color': selectedqueueId === 'Rest' ? 'white' : 'rgb(248, 248, 248)', 'border': selectedqueueId === 'Rest' ? '1px solid lightgrey' : '' }"> -->
+                                <div class="queue-element queueCard restCard"
+                                    *ngIf="!loader && this.restQueues && this.restQueues.length > 0"
+                                    (click)="setPaginatorValues(); getRestTokens()"
+                                    [ngStyle]="{'background-color': selectedqueueId === 'Rest' ? 'var(--fx-line)' : 'var(--bg-color)', 'border': selectedqueueId === 'Rest' ? '1px solid var(--queueCard-border-color)' : '' }">
+                                    <span class="queue-label">
+
+                                        {{"Rest"}}
+                                    </span>
+                                    <span style="font-size: 18px;">{{restCount}}</span>
+                                    <div class="restList" *ngIf="restQueues.length > 0">
+                                        <label
+                                            *ngFor="let restQueue of restQueues">{{restQueue.QM_Name}}({{restQueue.TokenCount}})
+                                            <!-- {{restQueue.QM_ID}} -->
+                                        </label>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                        <div *ngIf="(!queueLoader)&&(status)">{{status}} </div>
+                    </div>
+                    <!-- {{noOfRecords}}
+{{tokens.length}} -->
+                    <!-- <mat-paginator #paginator [length]="noOfRecords" [pageSize]="pageSize"
+                        [pageSizeOptions]="pageSizeOptions" (page)="pageEvent = $event;getPageInfo($event)">
+                    </mat-paginator> -->
+                    <div class="pagination-wrapper">
+                        <div class="custom-pagination">
+                            <div class="flex_Euroconnect">
+                                <p>Items per page</p>
+                                <select class="pagination-select_Euroconnect ip-border" [ngModel] = "pageSize" (change)="getPageInfo({'pageNo':pageNo-1,'pageSize':$event.target.value,'reload':true, 'length':noOfRecords}, true)">
+                                    <option *ngFor="let option of pageSizeOptions" style="text-align:center;">
+                                        {{option}}
+                                    </option>
+                                </select>
+                            </div>
+                            <div>
+                                {{noOfRecords!==0? this.pageFirstRecord:0}}-{{this.pageLastRecord}} of {{this.noOfRecords}}
+                            </div>
+                            <div>
+                                <app-svg-icons class="arrow-img" [ngClass]="{'btn-disabled':pageNo==0}" [icon]="'arrow-left'" [width]="'15'" [height]="'15'" [fill]="'var(--heading-label)'" (click)="pageNo!==0 ? getPageInfo({'pageNo':pageNo-1,'pageSize':pageSize, 'reload':false, 'length':noOfRecords}, true):''"></app-svg-icons>
+                                <!-- <img class="arrow-img" src="{{asseturl}}arrow-down.png" style="transform: rotate(90deg);"
+                                [ngClass]="{'btn-disabled':pageNo==0}" (click)="pageNo!==0 ? getPageInfo({'pageNo':pageNo-1,'pageSize':pageSize, 'reload':false, 'length':noOfRecords}):''"> -->
+                            </div>
+                            <div>
+                                <app-svg-icons class="arrow-img" [ngClass]="{'btn-disabled':pageLastRecord==noOfRecords}" [icon]="'arrow'" [width]="'15'" [height]="'15'" [fill]="'var(--heading-label)'" (click)="pageLastRecord!==noOfRecords ? getPageInfo({'pageNo':pageNo+1,'pageSize':pageSize, 'reload':false, 'length':noOfRecords}, true):''"></app-svg-icons>
+                                <!-- <img class="arrow-img" src="{{asseturl}}arrow-down.png" style="transform: rotate(270deg);"
+                                [ngClass]="{'btn-disabled':pageLastRecord==noOfRecords}" (click)="pageLastRecord!==noOfRecords ? getPageInfo({'pageNo':pageNo+1,'pageSize':pageSize, 'reload':false, 'length':noOfRecords}):''"> -->
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Start || Added by AdilP for Page Loader || 04-05-2023 || FIN1EURINT-282 -->
+                    <div class="pageload-overlay" *ngIf="pageloadflag">
+                        <div>
+                            <svg version="1.1" id="L4" xmlns="http://www.w3.org/2000/svg"
+                                xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                [ngStyle]="{ width:  + '25px', height:  + '25px' }" style="margin-left: 30px"
+                                viewBox="0 0 100 100" enable-background="new 0 0 0 0" xml:space="preserve">
+                                <circle stroke="#a1a1a1" cx="45" cy="15" r="1.4" stroke-width="0.1">
+                                    <animate attributeName="opacity" dur="1s" values="0;1;0" repeatCount="indefinite"
+                                        begin="0.1" />
+                                </circle>
+                                <circle stroke="#a1a1a1" cx="45" cy="15" r="1.5" stroke-width="0.1">
+                                    <animate attributeName="opacity" dur="1s" values="0;1;0" repeatCount="indefinite"
+                                        begin="0.1" />
+                                </circle>
+                            </svg>
+                        </div>
+                    </div>
+                    <!-- End || Added by Adil P || 03-05-2023 -->
+
+                    <div class="blotter-data" *ngIf="tokens && tokens.length !== 0">
+                        <table *ngIf="tokens && tokens.length !== 0" class="table-fixed">
+                            <thead>
+                                <th
+                                    style="width: 30px !important;min-width: none !important;max-width: none !important;">
+                                </th>
+
+                                <!-- <th> FinIQ Ref No.</th> -->
+
+                                <th *ngFor="let header of columnNames; let i = index">
+                                    <div class="filter-grid">
+                                        <span>{{header}}</span>
+                                        <img style="width: 13px; height: 10px; cursor: pointer; margin: auto;"
+                                            src="{{asseturl}}filter-icon.png" (click)="filterColumn(i);">
+                                        <div class="filterbox" *ngIf="filterflag[i]">
+                                            <input placeholder="Filter By...." class="filter-search"
+                                                (keydown.enter)="searchFilter(i); this.filterflag[i] = false;"
+                                                [(ngModel)]="FilterBySearchInput" type="text">
+                                            <!-- //Added by AdilP for FIN1EURINT-668 -02-12-2023 -->
+
+                                            <div class="filterlabelNew" (click)="showAscOrder(i)"><img
+                                                    style="width: 13px; height: 13px; margin: auto;"
+                                                    src="{{asseturl}}ascending.png"><label>Ascending</label></div>
+                                            <!-- DrishtyR | 29-Jul-2021 | Added calling of showDescOrder function to fix "On Workflow Blotter, Descending Filters not working" issue -->
+                                            <div class="filterlabelNew" (click)="showDescOrder(i)"><img
+                                                    style="width: 13px; height: 13px; margin: auto;"
+                                                    src="{{asseturl}}descending.png"><label>Descending</label></div>
+                                        </div>
+                                    </div>
+                                </th>
+                            </thead>
+
+                            <tbody class="div-table-body">
+                                <ng-template ngFor let-j="index" let-token
+                                    [ngForOf]="filterBySearch ? filterData : tokens | filter : filterObj">
+                                    <!-- //Added by AdilP for FIN1EURINT-668 -02-12-2023  -->
+                                    <tr>
+
+                                        <!-- <tr *ngFor="let j=index,let token of tokens | filter : filterObj"> -->
+                                        <td id="checkboxID"
+                                            (clickOutside)="clickOutsideActions(j, token['Ref_x0020_No'])"
+                                            style="text-align: center;width: 30px !important;min-width: 30px !important;max-width: none !important;">
+
+                                            <img class="more-actions" src="{{asseturl}}settings_grey.png"
+                                                (click)="showActions(j,token['Ref_x0020_No'])">
+                                            <div *ngIf="token.showActionButtons && token['Actions'] && token['Actions'].length >0"
+                                                class="optionsPopUp">
+                                                <!-- min-width: 180px -->
+
+                                                <!-- *ngFor="let action of token['Actions'].split(',')"> -->
+                                                <ng-template ngFor let-i="index" let-action
+                                                    [ngForOf]="token['Actions'].split(',')">
+                                                    <div class="filterlabel"
+                                                        style="line-height: 2.5;border-radius: 5px;"
+                                                        *ngIf="action !== ''">
+                                                        <!-- *ngIf="action !== ''&& action !== 'Attach Document'"> -->
+                                                        <div class="iconToggle">
+                                                            <img class="popupIcon1"
+                                                                src="{{asseturl}}{{getAction(action)}}">
+                                                            <!-- <img class="popupIcon" src="../../assets/{{getAction(action)}}"> -->
+                                                            <li class="list-item active1"
+                                                                (click)="performAction(token, action)"
+                                                                style="padding: 4px; margin-right: 4px !important;font-family: var(--font-family) !important;">
+                                                                <!-- *ngIf="token['Actions'].split(',').includes(action.WB_Caption)" -->
+                                                                <!-- {{action.WB_Caption}} -->
+                                                                <div class="loaderIcon" >
+                                                                {{action}}
+																<!-- Added by AdilP @26-05-2023 -->
+                                                                <div style="text-align: center;" *ngIf="(action == 'View Termsheet' || action == 'View TS') && TSLoadFlag">
+                                                                    <img src="{{asseturl}}Ajaxloader.gif" alt="" width="100px" style="width: 15px; height: 15px;"> 
+                                                                </div>
+                                                                <div style="text-align: center;" *ngIf="(action == 'View KID') && KIDLoadFlag">
+                                                                    <img src="{{asseturl}}Ajaxloader.gif" alt="" width="100px" style="width: 15px; height: 15px;"> 
+                                                                </div>
+                                                            </div>
+                                                            </li>
+                                                        </div>
+                                                    </div>
+
+
+
+
+                                                    <!-- <label class="filterlabel" for="fileUpload" style="line-height: 2.2 !important;
+                                                               margin-top: 0px !important;
+                                                               margin-bottom: 0px !important;
+                                                               padding-bottom: 0px !important;border-radius: 5px;width: 100%;"
+                                                        *ngIf="action !== ''&& action === 'Attach Document'">
+                                                      
+                                                            <div class="iconToggle">
+                                                        <img class="popupIcon1" src="{{asseturl}}link.png">
+                                                        <li class="list-item active"
+                                                            style="padding-left : 4px; margin-right: 4px !important">
+                                                            Add Attachment
+                                                            <input type="file" id="fileUpload" style="display: none"
+                                                                name="fileUpload" multiple="multiple"
+                                                                (change)="onSelectFile($event, token)"
+
+                                                                accept=".xlsx,.xls,.doc,.docx,.txt,.pdf" />
+                                                        </li>
+                                                    </div>
+                                                    </label> -->
+
+                                                </ng-template>
+
+
+                                                <!-- <div class="filterlabel" *ngFor="let action of actions">
+                                                    <img *ngIf="token['Actions'].split(',').includes(action.WB_Caption) && action.WB_Caption === 'Barclays Response'"
+                                                        class="popupIcon" src="{{asseturl}}amend.png">
+                                                    <img *ngIf="token['Actions'].split(',').includes(action.WB_Caption) && action.WB_Caption === 'Amend Pool'"
+                                                        class="popupIcon" src="{{asseturl}}amend.png">
+
+                                                    <div class="file-upload"
+                                                        *ngIf="token['Actions'].split(',').includes(action.WB_Caption) && action.WB_Caption === 'Attach Document'">
+                                                        <label for="fileUpload">
+                                                            <mat-icon class="attachment"
+                                                                style="font-family: 'Material Icons' !important;">link
+                                                            </mat-icon>
+                                                            <input type="file" id="fileUpload" style="display: none"
+                                                                name="fileUpload" multiple="multiple"
+                                                                (change)="onSelectFile($event, token)"
+                                                                accept=".xlsx,.xls,.doc,.docx,.txt,.pdf" />
+
+                                                        </label>
+                                                    </div>
+
+                                                    <img *ngIf="token['Actions'].split(',').includes(action.WB_Caption) && action.WB_Caption === 'Cancel Order'"
+                                                        class="popupIcon" src="{{asseturl}}cancel-icon.png">
+                                                    <img *ngIf="token['Actions'].split(',').includes(action.WB_Caption) && action.WB_Caption === 'Cancel Pool'"
+                                                        class="popupIcon" src="{{asseturl}}cancel-icon.png">
+                                                    <img *ngIf="token['Actions'].split(',').includes(action.WB_Caption) && action.WB_Caption === 'Close Pool'"
+                                                        class="popupIcon" src="{{asseturl}}close-icon.png">
+                                                    <img *ngIf="token['Actions'].split(',').includes(action.WB_Caption) && action.WB_Caption === 'Manual Execution'"
+                                                        class="popupIcon" src="{{asseturl}}manual.png">
+                                                    <img *ngIf="token['Actions'].split(',').includes(action.WB_Caption) && (action.WB_Caption === 'Manual Allocations' || action.WB_Caption === 'Assign Allocations')"
+                                                        class="popupIcon" src="{{asseturl}}manual.png">
+                                                    <img *ngIf="token['Actions'].split(',').includes(action.WB_Caption) && action.WB_Caption === 'Open For Subscription'"
+                                                        class="popupIcon" src="{{asseturl}}manual.png">
+                                                    <img *ngIf="token['Actions'].split(',').includes(action.WB_Caption) && action.WB_Caption === 'Reject'"
+                                                        class="popupIcon" src="{{asseturl}}reject.png">
+                                                    <img *ngIf="token['Actions'].split(',').includes(action.WB_Caption) && action.WB_Caption === 'Reject Pool'"
+                                                        class="popupIcon" src="{{asseturl}}reject.png">
+                                                    <img *ngIf="token['Actions'].split(',').includes(action.WB_Caption) && action.WB_Caption === 'Dealer Approve'"
+                                                        class="popupIcon" src="{{asseturl}}approve.png">
+                                                    <img *ngIf="token['Actions'].split(',').includes(action.WB_Caption) && action.WB_Caption === 'Dealer Reject'"
+                                                        class="popupIcon" src="{{asseturl}}reject.png">
+                                                    <img *ngIf="token['Actions'].split(',').includes(action.WB_Caption) && action.WB_Caption === 'Workflow Journey'"
+                                                        class="popupIcon" src="{{asseturl}}journey.png">
+                                                    <img *ngIf="token['Actions'].split(',').includes(action.WB_Caption) && action.WB_Caption === 'Cancel Request'"
+                                                        class="popupIcon" src="{{asseturl}}cancel-icon.png">
+                                                    <img *ngIf="token['Actions'].split(',').includes(action.WB_Caption) && action.WB_Caption === 'Accept Cancellation'"
+                                                        class="popupIcon" src="{{asseturl}}approve.png">
+                                                    <img *ngIf="token['Actions'].split(',').includes(action.WB_Caption) && action.WB_Caption === 'Reopen Pool'"
+                                                        class="popupIcon" src="{{asseturl}}amend.png">
+                                                    <img *ngIf="token['Actions'].split(',').includes(action.WB_Caption) && (action.WB_Caption === 'Place with CTPY' || action.WB_Caption === 'Place with CPTY' )"
+                                                        class="popupIcon" src="{{asseturl}}shared.png">
+                                                    <li class="list-item active1"
+                                                        (click)="clickOutsideActions(j);performAction(token, action)"
+                                                        *ngIf="token['Actions'].split(',').includes(action.WB_Caption)"
+                                                        style="padding: 4px;">
+                                                        {{action.WB_Caption}}
+                                                    </li>
+
+
+                                                </div> -->
+
+                                            </div>
+                                        </td>
+
+                                        <!-- <td>{{token['Ref_x0020_No']}}</td> -->
+
+
+                                        <ng-template ngFor let-i="index" let-header [ngForOf]="columnTargetValues">
+                                            <!-- <td [ngClass]="{'prodNameWidth': header ==='Product_Name'}">
+                                            <td [ngClass]="{'prodNameWidth': header ==='Product_Name'}"> -->
+                                            <td [ngClass]="header ==='Product_Name' ? 'prodNameWidth' : 
+                                                header ==='Status' ? 'statusColor' : ''">
+
+                                                <!-- [ngStyle]="{'background-color': header === 'Status'  ? getStatusColourArray(token[header]) : ''}"> -->
+                                                <!-- [ngStyle]="{'background-color': header === 'Status'  ? ('#'+ token['Queue_Colour']) : ''}">  -->
+
+
+
+                                                <!-- [ngStyle]="{'background-color': header === 'Status'  ? getStatusColourArray(token[header]) : ''}"> -->
+                                                <!-- getStatusColor(token['Queue_Colour'])  -->
+                                                <!-- {{columnDataType[i]}} -->
+                                                <!-- {{header}} -->
+                                                <!-- {{header === 'Status'  ? token['Queue_Colour'] :''}}
+                                                {{header === 'Status'  ? getStatusColor(token['Queue_Colour']) : ''}} -->
+                                                <div
+                                                    [ngClass]="{'center1':header === 'Status','right': columnDataType[i] ==='NUMBER'|| columnDataType[i] ==='NUMERIC' || columnDataType[i] ==='NUMERIC2' || columnDataType[i] ==='NUMERIC4','left':columnDataType[i] ==='TEXT' || columnDataType[i] ==='TEXTWITHCOLOUR','center':columnDataType[i] ==='DATE' || columnDataType[i] ==='DATETIME' || columnDataType[i] ==='CURRENCY'}">
+                                                    <div
+                                                        *ngIf="columnDataType[i] ==='NUMERIC' || columnDataType[i] ==='NUMERIC2' || columnDataType[i] ==='NUMERIC4'">
+                                                        {{api.FormatNumberr(token[header])}}
+                                                    </div>
+
+                                                    <div
+                                                        *ngIf="columnDataType[i] ==='TEXT' || columnDataType[i] ==='CURRENCY'">
+                                                        <!-- {{workflowId}} {{header}} -->
+
+                                                        <!-- Start || Avinash G || HSBCECCLI-118 || -8-Apr-2024 || Opening Product Details Pop up via clicking on FinIQ RefID on the Order Workflow  -->
+                                                        <!-- <span
+                                                            *ngIf="(token[header] | json) !== '{}' && ((workflowCode === 'OrderWorkflowEQCEurope' && header !== 'Status') || ((workflowCode === 'PoolWorkflowEQCEurope' && header !== 'Ref_x0020_No') && (workflowCode === 'PoolWorkflowEQCEurope' && header !== 'Status')))">
+                                                            {{token[header]}}</span> -->
+
+                                                        <span
+                                                            *ngIf="(token[header] | json) !== '{}' && ((workflowCode === 'OrderWorkflowEQCEurope' && header !== 'Status' && header !== 'Ref_x0020_No') || ((workflowCode === 'PoolWorkflowEQCEurope' && header !== 'Ref_x0020_No') && (workflowCode === 'PoolWorkflowEQCEurope' && header !== 'Status')))">
+                                                            {{token[header]}}</span>
+                                                        <!-- <span
+                                                            *ngIf="(token[header] | json) !== '{}' && ((workflowCode === 'OrderWorkflowEQCEurope' && header !== 'Status' && header !== 'Ref_x0020_No') || ((workflowCode === 'PoolWorkflowEQCEurope' && header !== 'Ref_x0020_No') && (workflowCode === 'PoolWorkflowEQCEurope' && header !== 'Status')))">
+                                                            {{token[header]}}</span> -->
+                                                        
+                                                        <!-- End || Avinash G || HSBCECCLI-118 || -8-Apr-2024 || Opening Product Details Pop up via clicking on FinIQ RefID on the Order Workflow  -->
+
+                                                        <!-- <span *ngIf="(token[header] | json) !== '{}' && header !== 'Ref_x0020_No' && workflowCode === PoolWorkflowEQCEurope ">{{token[header]}}</span> -->
+                                                        <span
+                                                            *ngIf="(token[header] | json) !== '{}' && ((workflowCode === 'PoolWorkflowEQCEurope' || workflowCode === 'OrderWorkflowEQCEurope' ) && header === 'Ref_x0020_No') "><a
+                                                            (click)="showProdDetails(token)">{{token[header]}}</a></span>
+                                                        <!-- <span
+                                                            *ngIf="(token[header] | json) !== '{}' && (workflowCode === 'PoolWorkflowEQCEurope' && header === 'Ref_x0020_No') "><a
+                                                                (click)="showProdDetails(token)">{{token[header]}}</a></span> -->
+                                                        
+                                                        <!-- Start || Avinash G || HSBCECCLI-118 || -8-Apr-2024 || New Addeded to Create Anchor Tag || Opening Product Details Pop up via clicking on FinIQ RefID on the Order Workflow  -->
+                                                        <!-- <span
+                                                            *ngIf="(token[header] | json) !== '{}' && (workflowCode === 'OrderWorkflowEQCEurope' && header === 'Ref_x0020_No') "><a
+                                                                (click)="showProdDetails(token)">{{token[header]}}</a></span> -->
+                                                        <!-- End || Avinash G || HSBCECCLI-118 || -8-Apr-2024 || Opening Product Details Pop up via clicking on FinIQ RefID on the Order Workflow  -->
+                                                        
+                                                        <span
+                                                            *ngIf="(token[header] | json) !== '{}' && ((workflowCode === 'OrderWorkflowEQCEurope' && header === 'Status') || (workflowCode === 'PoolWorkflowEQCEurope' && header === 'Status') )"
+                                                            style="text-align: center;" class="statusColor1">
+                                                            {{token[header]}}</span>
+                                                            <!-- Kaustubh /Sudarshan | 24-May-23 -->
+                                                        <span
+                                                            *ngIf="(token[header] | json) !== '{}' && (workflowCode === 'DocumentWorkflowEQCEurope' && header !== 'Status')">
+                                                            {{token[header]}}</span>
+                                                    </div>
+                                                    <div *ngIf="columnDataType[i] ==='DATE'">
+                                                        {{api.checkAndFormatDate(token[header])}}
+                                                    </div>
+                                                    <div *ngIf="columnDataType[i] ==='DATETIME'">
+                                                        {{api.checkAndFormatDateTime(token[header])}}
+                                                    </div>
+                                                    <div *ngIf="columnDataType[i] ==='NUMBER'">
+                                                        {{token[header]}}
+                                                    </div>
+                                                    <div  *ngIf="columnDataType[i] ==='TEXTWITHCOLOUR'" [ngStyle]="{'background-color': header === 'Status'  ? getStatusColor(token['Queue_Colour']) : ''}">
+                                                        {{token[header]}}
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </ng-template>
+                                    </tr>
+                                </ng-template>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+ 
+<div class="success-overlay" *ngIf="successMessage">
+    <div class="success-grid">
+        <div class="close-success-modal">
+            <div (click)="toggleSuccessMessage()" class="modal-close success-close"></div>
+        </div>
+        <div class="success-div">
+            <div class="success-icon"></div>
+        </div>
+        <div class="success-div">
+            <label class="success-message-bold">{{successMsgButtonAction}}</label>
+        </div>
+        <div class="success-div">
+            <button (click)="toggleSuccessMessage();getQueues(workflowId, workflow);"
+                class="button success-button">Continue</button>
+        </div>
+    </div>
+</div>
+
+<!-- confirm pop up changes by Suvarna P || 26Mar2022 || assigned by Pranav D || start -->
+<div class="success-overlay" *ngIf="confirmPopUp">
+    <div class="success-grid" style="width: 540px !important;">
+        <div class="close-success-modal">
+            <div (click)="confirmPopUp = false" class="modal-close success-close"></div>
+        </div>
+        <div class="success-div">
+            <!-- <div class="success-icon"></div> -->
+            <!-- <div class="warning-icon"></div> -->
+            <!-- Changed by Apurva K||03-May-2024||for changing error icon on Workflow Blotter -->
+            <app-svg-icons [icon]="'error-icon'" [width]="'15'" [height]="'15'" ></app-svg-icons>
+        </div>
+        <div class="success-div">
+            <!-- <label class="success-message-bold">{{successMsgButtonAction}}</label> -->
+            <label class="success-message-bold">Product ID: {{selectedToken['Ref_x0020_No']}} is being sent to Pool Closed queue.
+                <br />Please confirm.</label>
+        </div>
+        <div class="success-div">
+            <button (click)="confirmPopUp = false"
+                class="button warning-button" style="width: 40% !important; margin: 5px !important;">Cancel</button>
+            <button (click)="performActionClosePool(selectedToken, selectedToken['selectedAction'])"
+                class="button success-button" style="width: 40% !important; margin: 5px !important;">Confirm</button>
+            
+        </div>
+    </div>
+</div>
+<!-- confirm pop up changes by Suvarna P || 26Mar2022 || assigned by Pranav D || start -->
+
+
+
+<div class="overlaybondBlox" *ngIf="false">
+    <div class="popupbondBlox">
+        <div class="box-content">
+            <!-- <label class="popup-title BondbloX">Close Pool</label> -->
+            <!-- <label class="popup-text">Send to BondbloX : {{bondBloxOrderId}}</label> -->
+            <label class="popup-text">
+                Product ID: {{selectedToken['Ref_x0020_No']}} is being sent to Pool Closed queue.
+                <br />Please confirm.
+            </label>
+            <div class="popup-buttons">
+                <button class="button"
+                    style="height: 35px !important; font-family: 'Open Sans',sans-serif!important; font-size: 12px !important;"
+                    (click)="confirmPopUp = false ">Cancel</button>
+                <!-- class="ordercancel" (click)="closeBondBloXPopUp()" -->
+                <button class="button"
+                    style="height: 35px !important; font-family: 'Open Sans',sans-serif!important; font-size: 12px !important;"
+                    (click)="performActionClosePool(selectedToken, selectedToken['selectedAction'])">Continue</button>
+                <!-- (click)="sendToBondBloX()" -->
+            </div>
+            <!-- <span style="font-size: 14px;" class="successMsg" >
+                SuuccMSG" </span> -->
+            <!-- <span style="font-size: 14px; ;" class="errorMsg" >
+                {{bondBloxMsg}} </span> -->
+        </div>
+
+        <!-- <a class="orpopupclose" (click)="closeBondBloXPopUp()">&times;</a> -->
+    </div>
+</div>
+
+<app-ec-previous-quotes [RFQ_ID]="selectedToken['Reference_Number']" [Template_Code]="selectedToken['TemplateCode']"
+    [redirectFrom]="selectedToken['RedirectedFrom']" [Mode]="selectedToken['Mode']"
+    [OrderNotional]="selectedToken['Order_Notional']" [buttonID]="selectedToken['buttonID']"
+    [buttonName]="selectedToken['buttonName']" [tokenID]="selectedToken['Token_x0020_Id']"
+    [FilledQty]="selectedToken['FilledQty']" [prevQuoteLaunchPopUp]="prevQuoteLaunchPopUp" [srcComponent]="'WFBlotter'"
+    [selectedToken]="selectedToken" *ngIf="prevQuoteLaunchPopUp">
+</app-ec-previous-quotes>
+<!-- [OrderNotional]="selectedToken['Nominal_Amount_x0020_SCB_x0020_Merge']" -->
+
+<!-- View action shown as popup -- added by Priya L . on 14-Dec-2021 -->
+
+<!-- Attach Document by Suvarna 21Jan2022-->
+<div class="overlay" *ngIf="shwAttachmentPopUp">
+    <div class="stage2-popup-container attachmentPopUp">
+        <div class="stage2-popup-title-bar">
+            <div class="stage2-popup-headline-wrapper">
+                <div class="stage2-popup-headline-text">
+                    Attachment Details
+                </div>
+
+            </div>
+
+            <div class="stage2-popup-close" (click)="hideAttachmentPopup()">
+                <img class="stage2-popup-close-img" src="{{asseturl}}close.png" />
+            </div>
+        </div>
+
+        <div class="file-upload">
+
+            <label for="fileUpload">
+
+                <button class="button" style="font-weight: 500 !important;
+                font-family: 'Open Sans',sans-serif!important;" (click)="fileUpload.click();postBackMethod()">
+                    Add Document
+
+                </button>
+                <button class="button" style="font-weight: 500 !important;
+                font-family: 'Open Sans',sans-serif!important;" (click)="saveAttachment(selectedToken['Ref_x0020_No']);postBackMethod()">
+                    Save
+                </button>
+                <input type="file" id="fileUpload" style="display: none" (change)="onSelectFile($event)" #fileUpload
+                    name="fileUpload" multiple="multiple" accept=".xlsx,.xls,.doc,.docx,.txt,.pdf" />
+            </label>
+            <label style="margin-left: 10em;font-size: 10px !important; color:#ff4545;">{{attachmentErrorMsg}}</label>
+        </div>
+        <div>
+            <table class="orderTable" style="border-spacing: unset !important;border-collapse: collapse !important;">
+                <span *ngIf="!fileNameArr || fileNameArr.length == 0">
+                    No file attached</span>
+                <tr *ngIf="fileNameArr && fileNameArr.length > 0">
+                    <th style="padding:10px !important; text-align: left !important;border-radius: 0px !important">File
+                        Name</th>
+                    <th style="padding:10px !important; border-radius: 0px !important"></th>
+
+                </tr>
+                <ng-template ngFor let-i="index" let-fileName [ngForOf]="fileNameArr">
+                    <tr>
+                        <td class="leftAlign">{{fileName.DocumentName}}</td>
+                        <td class="rightAlign">
+                            <a class="centerAlign" style="margin-right: 10px !important;"
+                                (click)="downloadAttachment(i)">View</a>
+                            <img src="{{asseturl}}delete.png" width="30px"
+                                style="filter: invert(50%);cursor: pointer;float: right;width: 20px;" title="Delete"
+                                (click)="removeAttachment(i)">
+                        </td>
+                    </tr>
+                </ng-template>
+
+            </table>
+        </div>
+    </div>
+</div>
+
+<app-phoenix [viewRFQID]="viewRFQID" [viewOnlyFlag]="viewOnlyFlag" [sendtocptyflag]="sendtocptyflag" [NMID]="NMID"
+    [RepriceIssuer]="Issuer" [TokenIdReprice]="TokenIdReprice" [Order_Notional]="selectedToken['Order_Notional']"
+    *ngIf="showPricerScreeninViewMode && accord == 1" [selectedToken]="selectedToken">
+</app-phoenix>
+
+<app-brc [viewRFQID]="viewRFQID" [viewOnlyFlag]="viewOnlyFlag" [sendtocptyflag]="sendtocptyflag" [NMID]="NMID"
+    [RepriceIssuer]="Issuer" [TokenIdReprice]="TokenIdReprice" [Order_Notional]="selectedToken['Order_Notional']"
+    *ngIf="showPricerScreeninViewMode && accord == 2" [selectedToken]="selectedToken">
+</app-brc>
+
+<app-credit [viewRFQID]="viewRFQID" [viewOnlyFlag]="viewOnlyFlag" [sendtocptyflag]="sendtocptyflag" [NMID]="NMID"
+    [RepriceIssuer]="Issuer" [TokenIdReprice]="TokenIdReprice" [Order_Notional]="selectedToken['Order_Notional']"
+    *ngIf="showPricerScreeninViewMode && accord == 3" [selectedToken]="selectedToken">
+</app-credit>
+
+<app-participation [viewRFQID]="viewRFQID" [viewOnlyFlag]="viewOnlyFlag" [sendtocptyflag]="sendtocptyflag" [NMID]="NMID"
+    [RepriceIssuer]="Issuer" [TokenIdReprice]="TokenIdReprice" [Order_Notional]="selectedToken['Order_Notional']"
+    *ngIf="showPricerScreeninViewMode && accord == 4" [selectedToken]="selectedToken">
+</app-participation>
+
+<app-early-redemption [viewRFQID]="viewRFQID" [viewOnlyFlag]="viewOnlyFlag" [sendtocptyflag]="sendtocptyflag"
+    [NMID]="NMID" [RepriceIssuer]="Issuer" [TokenIdReprice]="TokenIdReprice"
+    [Order_Notional]="selectedToken['Order_Notional']" *ngIf="showPricerScreeninViewMode && accord == 5" [selectedToken]="selectedToken">
+</app-early-redemption>
+<!-- [tokenId]="tokenID" -->
+
+<app-yield-enhancement [viewRFQID]="viewRFQID" [viewOnlyFlag]="viewOnlyFlag" [sendtocptyflag]="sendtocptyflag"
+    [NMID]="NMID" [RepriceIssuer]="Issuer" [TokenIdReprice]="TokenIdReprice"
+    [Order_Notional]="selectedToken['Order_Notional']" *ngIf="showPricerScreeninViewMode && accord == 6" [selectedToken]="selectedToken">
+</app-yield-enhancement>
+
+<app-discount-certificates [viewRFQID]="viewRFQID" [viewOnlyFlag]="viewOnlyFlag" [sendtocptyflag]="sendtocptyflag"
+    [NMID]="NMID" [RepriceIssuer]="Issuer" [TokenIdReprice]="TokenIdReprice"
+    [Order_Notional]="selectedToken['Order_Notional']" *ngIf="showPricerScreeninViewMode && accord == 7" [selectedToken]="selectedToken">
+</app-discount-certificates>
+
+<app-aq [viewRFQID]="viewRFQID" [viewOnlyFlag]="viewOnlyFlag" [sendtocptyflag]="sendtocptyflag" [NMID]="NMID"
+    [RepriceIssuer]="Issuer" [TokenIdReprice]="TokenIdReprice" [Order_Notional]="selectedToken['Order_Notional']"
+    *ngIf="showPricerScreeninViewMode && accord == 8" [selectedToken]="selectedToken">
+</app-aq>
+
+<app-dq [viewRFQID]="viewRFQID" [viewOnlyFlag]="viewOnlyFlag" [sendtocptyflag]="sendtocptyflag" [NMID]="NMID"
+    [RepriceIssuer]="Issuer" [TokenIdReprice]="TokenIdReprice" [Order_Notional]="selectedToken['Order_Notional']"
+    *ngIf="showPricerScreeninViewMode && accord == 9" [selectedToken]="selectedToken">
+</app-dq>
+
+<!-- <div class="file-upload">
+    <label for="fileUpload">
+     <mat-icon class="attachment" style="font-family: 'Material Icons' !important;">link
+        </mat-icon>
+<input type="file" id="fileUpload" style="display: none" 
+ name="fileUpload" multiple="multiple" accept=".xlsx,.xls,.doc,.docx,.txt,.pdf" />
+                               
+                        </label>
+</div> -->
+<!-- (change)="onSelectFile($event)" -->
+<app-docs-modal *ngIf="showDocsPopup"
+    [tableData]="docsData"
+    [labelsData]="docsPopupLabels"
+    [displayMode]="docsView"
+    
+    (closeModalEvent)="closeDocsModal(val)"></app-docs-modal>
+<router-outlet> </router-outlet>
+

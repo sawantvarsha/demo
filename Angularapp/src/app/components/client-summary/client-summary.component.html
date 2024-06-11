@@ -1,0 +1,590 @@
+<div class="client-summary-dashboard">
+  <div class="title-container">
+    <div class="page-title">Client Summary</div>
+    <div
+      style="
+        display: grid;
+        align-items: center;
+        grid-template-columns: 50px 60px 50px;
+      "
+    >
+      <label>Grid</label>
+      <label class="switch">
+        <input type="checkbox" [(ngModel)]="isChecked" (change)="toggle()" />
+        <span class="slider round"></span>
+      </label>
+      <label>Card</label>
+    </div>
+  </div>
+  <div class="search-customer">
+    <div class="search-customer-div">
+      <app-svg-icons
+        class="searchsvgAlign"
+        icon="{{ 'icon-search' }}"
+        [width]="'20'"
+        [height]="'20'"
+      >
+      </app-svg-icons>
+      <input
+        class="svgClass"
+        type="text"
+        [(ngModel)]="searchName"
+        placeholder="Search"
+      />
+    </div>
+  </div>
+  <!--End Code Added by Ketan S on 15-Sep-21 asked by Parikshit Sir -->
+
+  <div *ngIf="loader" style="text-align: center; margin-top: 15%">
+    <img
+      [src]="
+        isProd
+          ? 'assets/loading_dots.gif'
+          : '../../../../assets/loading_dots.gif'
+      "
+      height="150px"
+      width="150px"
+    />
+  </div>
+  <div *ngIf="!loader && !showGrid" class="container">
+    <div
+      class="main-container gap"
+      *ngFor="
+        let item of ClientSummaryResult
+          | customersearchclientsummary: searchName
+      "
+    >
+      <div class="container-split">
+        <div style="display: grid; grid-template-columns: 1fr 1fr">
+          <div>
+            <span class="clientName">{{ item.LongName }}</span>
+            <h5>{{ item.Segment }}</h5>
+          </div>
+          <div></div>
+        </div>
+        <div class="part2">
+          <div>
+            <div class="header">Free Cash ({{ baseCCY }})</div>
+            <div class="value">
+              {{ item["Free Cash"] | number: "1.2-2" || "0.00" }}
+            </div>
+          </div>
+          <div></div>
+          <div>
+            <div class="header">CRR</div>
+            <div class="value">
+              {{ item["Risk Rating"] || "-" }}
+              <span class="small" *ngIf="item['CPRA Review Date'] !== null"
+                >(<span class="extrasmall">Review on</span>
+                {{ item["CPRA Review Date"] | date: "dd-MMM-yyyy" }})
+              </span>
+            </div>
+          </div>
+          <div>
+            <div class="header">Contact</div>
+            <div class="value">{{ item.Contact1 }}</div>
+          </div>
+        </div>
+      </div>
+      <div class="sub-container">
+        <div>
+          <div class="header">Volume ({{ baseCCY }})</div>
+          <div class="value">{{ item.Volume | number: "1.2-2" || "0.00" }}</div>
+        </div>
+        <div>
+          <div class="header">Sales Charges ({{ baseCCY }})</div>
+          <div class="value">{{ item.SalesCharge || "0.00" }}</div>
+        </div>
+
+        <div>
+          <div class="header">AUM ({{ baseCCY }})</div>
+          <div class="value">{{ item.AUM | number: "1.2-2" || "0.00" }}</div>
+        </div>
+        <div>
+          <div class="header">TWRR</div>
+          <div
+            class="value"
+            [ngClass]="{ profit: item.TWRR > 0, loss: item.TWRR < 0 }"
+          >
+            {{ item.TWRR || "0.00" }}%
+          </div>
+        </div>
+        <div>
+          <div class="header">KYC</div>
+          <div class="value">
+            <span
+              [ngClass]="{
+                profit: item['KYC Status'] === 'Valid',
+                loss: item['KYC Status'] !== 'Valid'
+              }"
+              >{{ item["KYC
+              Status"] || "-" }}</span
+            >
+            <span class="small" *ngIf="item['KYC Review Date'] !== null">
+              (<span class="extrasmall">Next on </span
+              >{{ item["KYC Review Date"] | date: "dd-MMM-yyyy" }} )</span
+            >
+          </div>
+        </div>
+        <div>
+          <div class="header">E-mail</div>
+          <div class="value">{{ item.EmailId }}</div>
+        </div>
+      </div>
+      <div class="sub-container">
+        <div>
+          <div class="header">Total Orders</div>
+          <div class="value">{{ item.Orders || "0" }}</div>
+        </div>
+        <div>
+          <div class="header">Sales Charges %</div>
+          <div class="value">{{ item.SalesChargePerc || "0.00" }}%</div>
+        </div>
+
+        <div>
+          <div class="header">P/L ({{ baseCCY }})</div>
+          <div
+            class="value"
+            [ngClass]="{
+              profit: com.UnformatNumberFromFloat(item.PnL) > 0,
+              loss: com.UnformatNumberFromFloat(item.PnL) < 0
+            }"
+          >
+            {{ item.PnL || "0.00" }}
+          </div>
+        </div>
+        <div>
+          <div class="header">MWRR</div>
+          <div
+            class="value"
+            [ngClass]="{ profit: item.MWRR > 0, loss: item.MWRR < 0 }"
+          >
+            {{ item.MWRR || "0.00" }}%
+          </div>
+        </div>
+        <div>
+          <div class="header">Margin Ratio</div>
+          <div class="value">
+            {{ item.MarginRation || "0.00" }}%
+            <span
+              class="small"
+              [ngClass]="{
+                profit: item['Margin Status'] === 'Normal',
+                yellow: item['Margin Status'] === 'Alert',
+                loss: item['Margin Status'] !== 'Normal'
+              }"
+            >
+              <span *ngIf="item['Margin Status'] !== null"
+                >({{ item["Margin Status"] }})</span
+              >
+            </span>
+          </div>
+        </div>
+        <div>
+          <div class="header">
+            Last Activity
+            <span class="value">{{
+              item.Created_At | date: "dd-MMM-yyyy hh:mm a"
+            }}</span>
+          </div>
+          <div class="header">{{ item.Note_Product_Name }}</div>
+        </div>
+      </div>
+      <div class="linkGrid">
+        <div
+          (click)="
+            callDashboard(item, item.CustomerID, item.UserLogin);
+            showDashboard = true
+          "
+        >
+          <u> Summary</u>
+        </div>
+        <div (click)="callProfile(item.UserLogin); showProfile = true">
+          <u> Profile</u>
+        </div>
+        <div
+          (click)="
+            callPortfolioDetails(
+              item.CustomerID,
+              item.LongName,
+              item.UserLogin
+            );
+            showPortfolioDetails = true
+          "
+        >
+          <u> Portfolio Details</u>
+        </div>
+        <div
+          (click)="
+            callAccount(item.CustomerID, item.LongName, item.UserLogin);
+            showAccount = true
+          "
+        >
+          <u> Account</u>
+        </div>
+        <div
+          (click)="
+            callPortfolio(
+              item.CustomerID,
+              item.UserLogin,
+              item.CIF,
+              item.LongName
+            );
+            showPortfolio = true
+          "
+        >
+          <u> Portfolio Summary</u>
+        </div>
+        <div
+          (click)="
+            callCreditSummary(item.CustomerID, item.LongName, item.UserLogin);
+            showCreditSummary = true
+          "
+        >
+          <u> Credit Summary</u>
+        </div>
+
+        <!-- Added by Arsh P for View Profile component -->
+        <div (click)="viewProfile(item); viewDetailedProfile = true">
+          <u> View Profile </u>
+        </div>
+        <div
+          (click)="
+            callMPGReport(item.UserLogin, item.CustomerID, item.LongName);
+            showStatements = true
+          "
+        >
+          <u> Statements</u>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="viewDetailedProfile" class="overlay">
+    <div class="page-content-container-popup">
+      <app-svg-icons
+        [icon]="'cancel-icon'"
+        [width]="'20'"
+        [height]="'20'"
+        (click)="viewDetailedProfile = false"
+        class="closebtn"
+      ></app-svg-icons>
+      <app-view-profile
+        class="inside-Component"
+        [clientDetails]="clientDetails_"
+      >
+      </app-view-profile>
+    </div>
+  </div>
+  <div *ngIf="!loader && showGrid" class="container-card">
+    <div
+      class="grid-container"
+      *ngFor="
+        let item of ClientSummaryResult
+          | customersearchclientsummary: searchName;
+        let i = index
+      "
+    >
+      <div
+        style="
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+        "
+      >
+        <div
+          style="
+            display: grid;
+            grid-template-columns: 15.3em 18em;
+            align-items: center;
+          "
+        >
+          <div class="flex-col">
+            <label class="fs24">{{ item.LongName }}</label>
+            <label class="header">{{ item.EmailId }}</label>
+          </div>
+          <div class="port-class">
+            <label class="header">Portfolio</label>
+            <select (change)="portfolioChange($event, item, item.index)">
+              <option
+                *ngFor="let value of item.portfolio"
+                [value]="value.FacDesc"
+              >
+                {{ value.PortfolioName }}
+              </option>
+            </select>
+          </div>
+        </div>
+        <app-svg-icons
+          [icon]="'expand'"
+          [width]="'20'"
+          [height]="'20'"
+          title="View Details"
+          style="cursor: pointer"
+          (click)="viewProfile(item); viewDetailedProfile = true"
+        >
+        </app-svg-icons>
+      </div>
+      <div class="horizontal-line"></div>
+      <div class="title-container chart-gap">
+        <div class="details-grid">
+          <div class="flex-col grid-gap">
+            <label class="header">Invested ({{ baseCCY }})</label>
+            <label class="value"
+              >{{
+                item.AUM - com.UnformatNumberFromFloat(item.PnL)
+                  | number: "1.2-2" || "0.00"
+              }}
+            </label>
+          </div>
+          <div class="flex-col grid-gap">
+            <label class="header">Commission (%)</label>
+            <label class="value">{{ item.SalesChargePerc || "0.00" }}</label>
+          </div>
+          <div class="flex-col grid-gap">
+            <label class="header">Current({{ baseCCY }})</label>
+            <label class="value">{{
+              item.AUM | number: "1.2-2" || "0.00"
+            }}</label>
+          </div>
+          <div class="flex-col grid-gap">
+            <label class="header">Commission ({{ baseCCY }})</label>
+            <label class="value">{{ item.SalesCharge || "0.00" }}</label>
+          </div>
+          <div class="flex-col grid-gap">
+            <label class="header">Total Returns ({{ baseCCY }})</label>
+            <label
+              class="value"
+              [ngClass]="{
+                profit: com.UnformatNumberFromFloat(item.PnL) > 0,
+                loss: com.UnformatNumberFromFloat(item.PnL) < 0
+              }"
+            >
+              {{ item.PnL || "0.00" }}</label
+            >
+          </div>
+          <div class="flex-col grid-gap">
+            <label class="header">Risk Rating</label>
+            <label class="value">{{ item["Risk Rating"] || "-" }}</label>
+          </div>
+        </div>
+        <div style="position: relative" *ngIf="item.assetAlloc?.length > 0">
+          <app-pie-chart
+            [legendHeight]="250"
+            [width]="380"
+            [graphdata]="item.assetAlloc"
+            [legendVisible]="true"
+            [labelsVisible]="false"
+          >
+          </app-pie-chart>
+          <div class="hollow-value">
+            <label>Asset Level Allocation</label>
+          </div>
+        </div>
+        <div
+          style="
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            align-self: center;
+          "
+          *ngIf="item.assetAlloc?.length === 0"
+        >
+          <label>Asset Level Allocation</label>
+          <label class="header fs13">No data found.</label>
+        </div>
+        <div
+          *ngIf="item.pnlAlloc?.length > 0"
+          style="display: flex; flex-direction: column; align-items: center"
+        >
+          <label>PnL Asset Wise</label>
+          <app-basic-bar-chart
+            [height]="250"
+            [width]="500"
+            [name]="'PnL Asset Wise'"
+            [title]="''"
+            [graphdata]="item.pnlAlloc"
+          >
+          </app-basic-bar-chart>
+        </div>
+        <div
+          style="
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            align-self: center;
+          "
+          *ngIf="item.pnlAlloc?.length === 0"
+        >
+          <label>PnL Asset Wise</label>
+          <label class="header fs13">No data found.</label>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="showDashboard" class="overlay">
+    <div class="page-content-container-popup">
+      <app-svg-icons
+        [icon]="'cancel-icon'"
+        [width]="'20'"
+        [height]="'20'"
+        (click)="showDashboard = false"
+        class="closebtn"
+      ></app-svg-icons>
+      <app-home
+        class="inside-Component"
+        [CustomerDetails]="selectedCustomer"
+        [Mode]="'RM'"
+      ></app-home>
+    </div>
+  </div>
+  <div *ngIf="showPortfolio" class="overlay">
+    <div class="page-content-container-popup">
+      <app-svg-icons
+        [icon]="'cancel-icon'"
+        [width]="'20'"
+        [height]="'20'"
+        (click)="showPortfolio = false"
+        class="closebtn"
+      ></app-svg-icons>
+      <app-portfolioallocation
+        class="inside-Component"
+      ></app-portfolioallocation>
+    </div>
+  </div>
+  <div *ngIf="showCreditSummary" class="overlay">
+    <div class="page-content-container-popup">
+      <app-svg-icons
+        [icon]="'cancel-icon'"
+        [width]="'20'"
+        [height]="'20'"
+        (click)="showCreditSummary = false"
+        class="closebtn"
+      ></app-svg-icons>
+      <app-margin
+        class="inside-Component"
+        [CustomerDetails]="selectedCustomer"
+      ></app-margin>
+    </div>
+  </div>
+  <div *ngIf="showProfile" class="overlay">
+    <div class="page-content-container-popup">
+      <app-svg-icons
+        [icon]="'cancel-icon'"
+        [width]="'20'"
+        [height]="'20'"
+        (click)="showProfile = false"
+        class="closebtn"
+      ></app-svg-icons>
+      <app-customer-setup-view class="inside-Component" [MyProfileMode]="true">
+      </app-customer-setup-view>
+    </div>
+  </div>
+  <div *ngIf="showPortfolioDetails" class="overlay">
+    <div class="page-content-container-popup">
+      <app-svg-icons
+        [icon]="'cancel-icon'"
+        [width]="'20'"
+        [height]="'20'"
+        (click)="showPortfolioDetails = false"
+        class="closebtn"
+      ></app-svg-icons>
+      <app-customer-portfolio-details
+        class="inside-Component"
+      ></app-customer-portfolio-details>
+    </div>
+  </div>
+  <div *ngIf="showAccount" class="overlay">
+    <div class="page-content-container-popup">
+      <app-svg-icons
+        [icon]="'cancel-icon'"
+        [width]="'20'"
+        [height]="'20'"
+        (click)="showAccount = false"
+        class="closebtn"
+      ></app-svg-icons>
+      <app-customer-account-details
+        class="inside-Component"
+        [CustomerDetails]="selectedCustomer"
+        [LoginMode]="'RM'"
+      >
+      </app-customer-account-details>
+    </div>
+  </div>
+  <div *ngIf="showPortfolio" class="overlay">
+    <div class="page-content-container-popup">
+      <app-svg-icons
+        [icon]="'cancel-icon'"
+        [width]="'20'"
+        [height]="'20'"
+        (click)="showPortfolio = false"
+        class="closebtn"
+      ></app-svg-icons>
+      <app-portfolioallocation
+        [CustomerDetails]="selectedCustomer"
+      ></app-portfolioallocation>
+    </div>
+  </div>
+
+  <div *ngIf="showProfile" class="overlay">
+    <div class="page-content-container-popup">
+      <app-svg-icons
+        [icon]="'cancel-icon'"
+        [width]="'20'"
+        [height]="'20'"
+        (click)="showProfile = false"
+        class="closebtn"
+      ></app-svg-icons>
+
+      <app-customer-setup-view [MyProfileMode]="true">
+      </app-customer-setup-view>
+    </div>
+  </div>
+  <div *ngIf="showPortfolioDetails" class="overlay">
+    <div class="page-content-container-popup">
+      <app-svg-icons
+        [icon]="'cancel-icon'"
+        [width]="'20'"
+        [height]="'20'"
+        (click)="showPortfolioDetails = false"
+        class="closebtn"
+      ></app-svg-icons>
+      <app-customer-portfolio-details></app-customer-portfolio-details>
+    </div>
+  </div>
+  <!-- <div *ngIf="showAccount" class="overlay">
+    <div class="page-content-container-popup">
+      <app-svg-icons
+        [icon]="'cancel-icon'"
+        [width]="'20'"
+        [height]="'20'"
+        (click)="showAccount = false"
+        class="closebtn"
+      ></app-svg-icons>
+      <app-customer-account-details></app-customer-account-details>
+    </div>
+  </div> -->
+  <div *ngIf="showReport" class="overlay">
+    <div class="page-content-container-popup">
+      <app-svg-icons
+        [icon]="'cancel-icon'"
+        [width]="'20'"
+        [height]="'20'"
+        (click)="showReport = false"
+        class="closebtn"
+      ></app-svg-icons>
+      <app-statements></app-statements>
+    </div>
+  </div>
+  <div *ngIf="showStatements" class="overlay">
+    <div class="page-content-container-popup">
+      <app-svg-icons
+        [icon]="'cancel-icon'"
+        [width]="'20'"
+        [height]="'20'"
+        (click)="showStatements = false; closeStatement()"
+        class="closebtn"
+      ></app-svg-icons>
+      <app-statements class="inside-component-statements"></app-statements>
+    </div>
+  </div>
+</div>

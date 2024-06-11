@@ -1,0 +1,36 @@
+<div class="mtm-history-container" *ngIf="mtmHistoryDataTable.length > 0">
+  <div class="mtm-history-table">
+    <table>
+      <thead>
+        <tr>
+          <th style="text-align: left; padding: 5px 10px;">MTM Done On</th>
+          <th style="text-align: right; padding: 5px 10px;">MTM Price</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let ph of mtmHistoryDataTable">
+          <td style="text-align: left;">{{ ph.MTM_Done_at | date: "dd-MMM-yyy" }}</td>
+          <td style="text-align: right;">{{ ph.MTM | number: "1.2-2" }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="mtm-price-history">
+    <app-line-chart-basic [_graphdata]="mtmHistoryLineChartDataSeries" [xTitle]="'Trading Days'" [yTitle]="'MTM Price'" [height]="300"></app-line-chart-basic>
+  </div>
+  <div class="mtm-price-distribution">
+    <app-column-chart [_graphdata]="mtmHistoryColumnChartData" [name]="'MTM Colum Chart'" [xTitle]="'MTM Price'" [yTitle]="'Frequency'" [title]="''"
+      [height]="300"></app-column-chart>
+  </div>
+</div>
+<div class="mtm-history-container" *ngIf="mtmHistoryDataTable.length === 0 && !isLoader">
+  No Records Found
+</div>
+<div class="mtm-history-loader" *ngIf="isLoader">
+  <div class="loader-center">
+    <div class="multi-ripple">
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,64 @@
+<div class="main-container">
+    <div class="header">
+        <div>{{policyData.Policy_Name}}: {{policyData.Policy_Number}}</div>
+        <app-svg-icons class="closebtn" [icon]="'cancel-icon'" [width]="'15'" [height]="'15'" (click)="EmitColseAction()">
+        </app-svg-icons>
+    </div>
+    <div class="main-body">
+        <div class="section">
+            <div class="section-header">
+                <!-- <app-svg-icons [icon]="'pdf'" [width]="'30'" [height]="'30'"></app-svg-icons> -->
+                <app-svg-icons class="" [icon]="'accident-icon'" [width]="'30'" [height]="'30'">
+                </app-svg-icons>
+
+                <div class="">What is Policy Surrender Value?</div>
+            </div>
+            <div class="section-body">
+                If a policyholder decides to terminate the policy before maturity, the amount which the insurance company will pay to the policyholder is known as surrender value.
+            </div>
+        </div>
+        <div class="section">
+            <div class="section-header">
+                <!-- <app-svg-icons [icon]="'pdf'" [width]="'30'" [height]="'30'"></app-svg-icons> -->
+                <app-svg-icons class="" [icon]="'surrender-policy-icon'" [width]="'30'" [height]="'30'">
+                </app-svg-icons>
+
+                <div class="">
+                    Surrender Policy
+                </div>
+            </div>
+            <div class="section-body">
+                <div class="sub-section">
+                    <div class="header-title">Policy No</div>
+                    <input  value="{{policyData.Policy_Number}}"/>
+                    <div></div>
+                    <div class="header-title">Cash Value</div>
+                    <input class="right" value="{{policyData.Sum_Assured_BaseCcy | number : '.2'}}"/>
+                    <div></div>
+                    <div class="header-title">Surrender Value</div>
+                    <input class="right" value="{{policyData.Surrender_Value_BaseCcy| number : '.2'}}"/>
+                    <div></div>
+                    <div class="header-title">Processing Date</div>
+                    <input class="align-center" value="{{policyData.Processing_date| date : 'dd-MMM-yyyy, h:mm a'}}"/>
+                    <div></div>
+                    <div></div>
+                    <button class="button">Surrender Policy</button>
+                    <!-- <div class="sub-section-btn-container">
+                        <button class="button">Surrender Policy</button>
+                    </div> -->
+                        <!-- <button class="button" (click)="EmitColseAction()">Cancel</button> -->
+                </div>
+            </div>
+        </div>
+        <div class="section">
+            <div class="section-header" style="color: var(--off-color);">
+                Terms
+            </div>
+            <div class="section-pdf">
+                <!-- <button class="button ">Terms</button> -->
+                <app-svg-icons [icon]="'pdf'" [width]="'30'" [height]="'30'" title="Download Terms and Conditions"></app-svg-icons>
+                <span>Click here to download terms and conditions PDF</span>
+            </div>
+        </div>
+    </div>
+</div>

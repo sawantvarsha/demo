@@ -1,0 +1,825 @@
+$assetURL: "../../../../../";
+
+.contentdiv * {
+    font-size: 13px;
+}
+
+@media screen and (min-width:300px) and (max-width: 600px) {
+    .main-grid-container {
+        padding-top: 45px;
+        height: 100%;
+        /* width: 49%; */
+        margin-left: 40%;
+        /* grid-template-columns: 10px 175% auto 10px; */
+    }
+}
+
+@media only screen and (min-width: 850px) {
+    .main-grid-container {
+        display: grid;
+        /* grid-template-columns: 10px 170% auto 10px; */
+        padding-top: 45px;
+        height: 100%;
+        /* width: 50%; */
+        /* margin-left: 10%; */
+    }
+}
+
+@media screen and (min-width:600px) and (max-width: 850px) {
+    .main-grid-item {
+        width: 350px;
+        /* overflow-x: auto; */
+        margin: 5px auto;
+    }
+
+    .main-grid-container {
+        padding-top: 45px;
+        height: 100%;
+        /* margin-left: 10%; */
+        /* grid-template-columns: 10px 175% auto 10px; */
+    }
+}
+
+@media screen and (min-width:300px) and (max-width: 600px) {
+    .main-grid-item {
+        margin-left: 30%;
+    }
+}
+
+@media only screen and (min-width: 1366px) {
+    .main-grid-container {
+        display: grid;
+        /* grid-template-columns: 10px 175% auto 10px; */
+        /*  */
+        padding-top: 45px;
+        font-size: 10px !important;
+        /* margin-left: 250px; */
+        font-family: var(--font-family) !important;
+    }
+}
+
+.inner-grid {
+    display: grid;
+    /* changed by Amogh K | 28Apr2022 | load button alignment fixed | assigned by Pranav D */
+    grid-template-columns: 410px auto;
+}
+
+.rfq-table {
+    border-right: 1px solid var(--tbl-audtitrail-border);
+    height: calc(100vh - 160px);
+}//Changes done by Jyoti S || 31-Mar-2023
+
+
+
+.flex-row {
+    display: flex;
+    /* justify-content: space-between; */
+    /*DrishtyR | 26-Aug-2021 | Change to remove space between timeline columns */
+    padding: 0px 5px;/*Padding changed by Jyoti S || 20-Mar-2023*/
+}
+
+.custom-tabs a {
+    font-size: 13px;
+    font-weight: 500;
+    text-decoration: none;
+    display: inline;
+    /* line-height: 60px; */
+    /* padding-left: 20px; */
+    /* padding-right: 20px; */
+}
+
+.custom-tabs ul li a.active {
+    // color: #1A3863;
+    color: var(--date-active);
+    // color: #98999A; //ChitraM | 24-Feb-23 | Added color as per 1Europe theme
+    /* border-bottom-color: var(--blue);
+    border-bottom-width : 2px;
+    border-bottom-style : solid; */
+}
+
+.custom-tabs {
+    grid-template-columns: minmax(100px, 1fr);
+    display: grid;
+    gap: 20px;
+}
+
+.custom-tabs ul li {
+    line-height: 40px;
+    color: #98999A;
+    cursor: pointer;
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+li {
+    font-size: 13px;
+    font-weight: 500;
+    text-decoration: none;
+    display: inline;
+    line-height: 40px;
+    padding-left: 0px;
+    padding-right: 25px;
+}
+
+label {
+    font-size: 13px;
+}
+
+.searchbar {
+    // min-width: 110px;
+    min-width: 148px;//Width changed by YASH A. || 13-Apr-2023
+    width: 100%;
+    max-width: 110px;
+    text-align: left;
+}
+
+.row-grid {
+    display: grid;
+    grid-template-columns: 2fr 1.5fr 35px;
+
+    // Changes made by Yash Agrawal on 20th March, 2023
+    // border-top: 1px solid #F3F3F3;
+    border-top: 1px solid #414040;
+
+    padding: 5px 10px;
+    gap: 10px;
+}
+
+.row-grid:hover {
+    // background-color: #e9e9e9; ChitraM | UI Changes | 27-Feb-23
+    background-color: var(--table-header-bg);
+    cursor: pointer;
+}
+
+.row-grid.active {
+    // background-color: #dbeff7; // ChitraM | UI Changes | 27-Feb-23
+    background-color: var(--table-header-bg);
+    // --btn-bg
+}
+
+.row-grid div {
+    display: flex;
+    cursor: pointer;
+}
+
+.row-grid label {
+    cursor: pointer;
+}
+
+.flex-column {
+    display: flex;
+    flex-direction: column;
+    gap: 0px;
+}
+
+.circle {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+
+.arrow-img {
+    width: 15px;
+    cursor: pointer;
+    // transform: rotate(270deg);
+    margin: auto;
+    // filter: grayscale(1);
+}
+
+.wfblotterClass {
+    margin-left: 15px;
+}
+
+.rfq-inner-table {
+    height: calc(100vh - 322px);
+    overflow: auto;
+    margin-top: 10px;
+}
+
+.rfq-inner-table.active {
+    /* changed by Amogh K | 18Apr2022 | Assigned by Pranav D | pagination disappearing on audit trail */
+    height: calc(100vh - 380px);
+    overflow: auto;
+    margin-top: 10px;
+}
+
+.blue {
+    color: #1E496D;
+    font-weight: 500;
+}
+
+.darkgrey {
+    color: #2E2E2E;
+}
+
+.midgrey {
+    color: #707070;
+}
+
+.quotes-table {
+    width: 100%;
+    margin-top: 20px;
+    grid-template-columns: 425px auto;
+    display: grid;
+    padding: 0px 0px 0px 15px;
+}
+
+.table-header {
+    display: grid;
+    /* modified grid column css || PriyaL || 30Apr2022 || issue reported by Abeer J */
+    grid-template-columns: 78px 115px 122px 114px; 
+    // background-color: #1A3863;
+    background-color: var(--table-header-bg); //ChitraM | 24-Feb-23 | Added backgroud color as per 1Europe theme
+    gap: 0px;
+    // color: white;
+    color: var(--table-th); //ChitraM | 24-Feb-23 | Added color as per 1Europe theme
+    height: 46px;
+    font-size: 13px;
+    font-family: var(--font-family) !important;
+    line-height: 32px;
+    /* padding: 10px; */
+
+    // Added by Yash Agrawal on 20th March, 2023
+    font-weight: bold;
+}
+
+.table-header .line-height {
+    line-height: 35px;
+}
+
+.table-header div {
+    /* border: 1px solid white; */
+    padding: 8px 10px;
+    height: 46px;
+
+    // Changes made by Yash Agrawal on 20th March, 2023
+    // border-right: 1px solid white;
+    border-right: 1px solid var(--tbl-th-audit-trail)
+}
+
+.table-data div {
+    /* border: 1px solid white; */
+    padding: 5px 8px;
+}
+
+.table-data {
+    display: grid;
+    grid-template-columns: 78px 115px 118px 114px;
+    height: auto;
+    cursor: pointer;
+}
+
+.table-data:hover {
+    // background-color: #e9e9e9; ChitraM  | 27-Feb-23 | UI Changes
+    background-color: var(--table-header-bg);
+    cursor: pointer;
+}
+
+.table-data.active {
+    // background-color: #dbeff7; // ChitraM | 27-Feb-23 | UI Changes
+    background-color: var(--table-header-bg);
+}
+
+.sub-header {
+    font-size: 16px;
+    font-weight: 500;
+    // color: #2E2E2E;
+    color: var(--table-th); //ChitraM | 24-Feb-23 | Added color as per 1Europe theme
+    margin-left: 15px;
+}
+
+.table-section {
+    height: calc(100vh - 280px);
+    border: 1px solid var(--tbl-audtitrail-border);
+    overflow: hidden;
+    overflow-x: hidden;
+}//Changes done by Jyoti S || 31-Mar-2023
+
+.table-data label {
+    padding: 10px 12px;
+    cursor: pointer;
+}
+
+.product-img {
+    width: 80px;
+    height: 80px;
+    margin-right: 20px;
+}
+
+.right {
+    text-align: right;
+}
+
+.large {
+    font-size: 13px;
+    font-weight: 500;
+    margin-top: 0px;
+}
+
+input[type="search"]:-ms-input-placeholder {
+    text-align: left;
+}
+
+.yellow {
+    background-color: rgb(202, 206, 0) !important;
+    color: white !important;
+}
+
+.blues {
+    background-color: rgb(70, 127, 179) !important;
+    color: white !important;
+}
+
+.purple {
+    background-color: rgb(117 147 222) !important;
+    color: white !important;
+}
+
+.orange {
+    background-color: rgb(226, 136, 0) !important;
+    color: white !important;
+}
+
+.default {
+    background-color: #828282;
+    color: white !important;
+}
+
+.green {
+
+    color: white !important;
+    background-color: #4fbb94 !important;
+    color: #fff !important;
+    min-width: 5em;
+    /* margin: 5px;  */
+    /* DrishtyR | 26-Aug-2021 | Chagne to fix Active button width issue  */
+    border-radius: 0.5em;
+    border: solid 3px #4fbb94 !important;
+}
+
+//ChitraM | UI Changes | 27-Feb-23
+.greys {
+    background-color: var(--btn-bg) !important;
+    color: black !important;
+}
+
+.red {
+    background-color: rgb(234, 108, 100) !important;
+    color: white !important;
+}
+
+.vl {
+    border-left: 2px solid #a3a3a3;
+    height: 60px;
+    position: relative;
+    margin-left: 50%;
+    margin-top: -3px;
+    z-index: 99;
+    grid-column: 1 / span 3;
+    row-gap: 0px;
+}
+
+.timeline-row {
+    display: grid;
+    grid-template-columns: 1fr 36px 1fr;
+    gap: 20px;
+    line-height: 34px;
+    row-gap: 0px;
+}
+
+.timestamp {
+    text-align: right;
+    color: rgb(124, 124, 124);
+    font-size: 13px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 5px;
+    /* grid-template-rows: 20px 20px; */
+}
+
+.timestamp label {
+    margin-top: 0;
+}
+
+.timeline {
+    // padding-bottom: 40px; //Commented by Jyoti S || 22-Apr-2024 || FIN1EURINT-716 || To remove scrollbar in timeline
+    padding-bottom: 30px; //Added by Jyoti S || || 22-Apr-2024 || FIN1EURINT-716 || To remove scrollbar in timeline
+    padding-top: 30px;
+    overflow: auto;
+    height: calc(100vh - 425px) !important; //Changes done by Jyoti S || FIN1EURINT-582 || 09-Aug-2023
+}
+
+@media screen and (min-width: 1300px) and (max-width: 1600px) {
+    .timeline {
+        height: calc(100vh - 330px);
+    }
+}
+
+@media screen and (min-width: 800px) and (max-width: 1300px) {
+    .timeline {
+        height: calc(100vh - 260px);
+    }
+}
+
+.milestone {
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    padding: 8px;
+    background: #fff;
+    /* border: 2px solid #eeeeee; */
+    color: #eeeeee;
+    text-align: center;
+    // background-color: #0d445b; ChitraM | 27-Feb-23 | UI Changes
+    background-color: #98999A;
+    z-index: 1; // Changed by Jyoti S || FIN1EURINT-511 || 29-Jun-2023
+    line-height: 15px;
+    display: grid;
+}
+
+.milestone img {
+    width: 16px;
+    height: 16px;
+    margin: auto;
+}
+
+.status {
+    text-align: center;
+    border-radius: 3px;
+    height: 35px;
+    color: #FFF;
+    line-height: 35px;
+    width: 100%;
+    border: none !important;
+}
+
+.status-timeline {
+    font-size: 13px;
+    font-weight: 500;
+    // color: #1A3863; ChitraM | UI changes | 27-Feb-23
+    color: #98999A;
+    display: flex;
+    gap: 5px;
+}
+
+.status-timeline label {
+    margin-top: 0;
+}
+
+.ripple {
+    box-sizing: border-box;
+    position: relative;
+}
+
+.ripple:before {
+    animation: ripple 2s ease-out infinite;
+    border: solid 2px var(--ripple-color);//Ripple color changes done by Jyoti S || 31-Mar-2023
+    border-radius: 50%;
+    bottom: 0;
+    box-sizing: border-box;
+    content: "";
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.ripple:after {
+    animation: ripple 2s 1s ease-out infinite;
+    border: solid 2px var(--ripple-color);//Ripple color changes done by Jyoti S || 31-Mar-2023
+    border-radius: 50%;
+    bottom: 0;
+    box-sizing: border-box;
+    content: "";
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+@keyframes ripple {
+    0% {
+        opacity: 0.25;
+    }
+
+    100% {
+        border-radius: 2em;
+        opacity: 0;
+        transform: scale(2.5);
+    }
+}
+
+.link {
+    // color: #1A3863;// ChitraM | UI Changes | 27-Feb-23
+    color: #98999A;
+    cursor: pointer;
+}
+
+.link:hover {
+    text-decoration: underline;
+}
+
+.link img {
+    filter: grayscale(1);
+    width: 12px;
+    margin-right: 5px;
+}
+
+.default-icon {
+    width: 18px;
+    height: 24px;
+    // margin: auto;
+    /* background-image: url(./../../assets/create.png); */
+    // background-image: url(/assets/create.png) !important;
+    //background-image: url($assetURL + 'assets/create.png') !important;
+    background-image: url($assetURL + 'assets/Milestone_Icon.svg') !important;//Milestone Icon Added by SandipA as suggested by VipulB || 06-Jul-2023
+    background-size: contain;
+    background-position: center;
+    background: no-repeat;
+    margin-top: 3px !important;
+    margin-left: 4px !important;
+
+}
+
+.price-icon {
+    /* background-image: url(./../../assets/create.png) !important; */
+    // background-image: url($assetURL + 'assets/create.png') !important;
+    background-image: url($assetURL + 'assets/Milestone_Icon.svg') !important;
+}
+
+.response-icon {
+    /* background-image: url(./../../assets/response-icon.png) !important; */
+    //background-image: url(/assets/response-icon.png) !important;
+    // background-image: url($assetURL + 'assets/response-icon.png') !important;
+    background-image: url($assetURL + 'assets/Milestone_Icon.svg') !important;
+}
+
+.termsheet-icon {
+    /* background-image: url(./../../assets/termsheet-icon.png) !important; */
+    // background-image: url($assetURL + 'assets/termsheet-icon.png') !important;
+    background-image: url($assetURL + 'assets/Milestone_Icon.svg') !important;//Milestone Icon Added by SandipA as suggested by VipulB || 06-Jul-2023
+}
+
+.kid-icon {
+    /* background-image: url(./../../assets/kid.png) !important; */
+    // background-image: url($assetURL + 'assets/kid.png') !important;
+    background-image: url($assetURL + 'assets/Milestone_Icon.svg') !important;//Milestone Icon Added by SandipA as suggested by VipulB || 06-Jul-2023
+}
+
+.pool-icon {
+    /* background-image: url(./../../assets/pool.png) !important; */
+    // background-image: url($assetURL + 'assets/pool.png') !important;
+    background-image: url($assetURL + 'assets/Milestone_Icon.svg') !important;
+}
+
+.bestPrice {
+    font-weight: 700;
+}
+
+table {
+    border-collapse: separate;
+    border-spacing: 0.2em 0.2em;
+    font-size: 15px !important;
+    width: 100%;
+    font-family: var(--font-family) !important;
+}
+
+.underlying-table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 0px 20px;
+    width: -webkit-fill-available;
+    margin-bottom: 30px;
+    /* border-spacing: none; */
+}
+
+.underlying-table tr:nth-child(odd) {
+    background-color: rgb(247, 247, 247) !important;
+    /* border: 1px solid rgb(211, 211, 211); */
+}
+
+.underlying-table tr:nth-child(even) {
+    background-color: rgb(236, 236, 236) !important;
+    /* border: 1px solid rgb(211, 211, 211); */
+}
+
+tr:nth-child(odd) {
+    background-color: #d3d9e1;
+}
+
+.underlying-table th {
+    text-align: left;
+    background-color: var(--subscription-th);
+    text-transform: capitalize;
+    color: #fcfcfc;
+    padding: 10px;
+    font-weight: 400;
+    font-size: 13px !important;
+    font-family: var(--font-family) !important;
+
+    // Changes made by Yash Agrawal on 20th March, 2023
+    // border-right: 1px solid white;
+    border-right: 1px solid var(--tbl-th-audit-trail);
+}
+
+.underlying-table th:last-child {
+    border-right: none;
+}
+
+.underlying-table td {
+    text-align: left;
+    padding: 10px;
+    font-size: 13px !important;
+    font-family: var(--font-family) !important;
+}
+
+td {
+    background-color: rgba(243, 241, 241, 0.425);
+    margin: 10px !important;
+    padding: 5px 5px;
+    border-radius: 2px;
+    text-align: left;
+    color: #343a40;
+    max-width: 50em;
+    width: 25%;
+}
+
+.trailtable-header {
+    display: grid;
+    // background-color: #1A3863;
+    background-color: var(--table-header-bg); //ChitraM | 24-Feb-23 | Added color as per 1Europe theme;
+    gap: 0px;
+    color:  var(--table-th);
+    height: 46px;
+    font-size: 13px;
+    font-family: var(--font-family) !important;
+    line-height: 21px;
+    /* padding: 10px; */
+    
+    // Added by Yash Agrawal on 20th March, 2023
+    border-left: 1px solid var(--tbl-th-audit-trail);
+    font-weight: bold;
+    line-height: 35px;
+}
+
+.trailtable-header div {
+    /* border: 1px solid white; */
+
+    // Changes made by Yash Agrawal on 20th March, 2023
+    // padding-top: 12px;
+    padding: 8px 0px;
+
+    height: 46px;
+    margin: 0 auto;
+}
+
+.tdCenter {
+    text-align: center !important;
+    font-weight: bold !important;
+}
+
+.orderPlacedBold {
+    font-weight: 500 !important;
+}
+
+.btnLoad:hover {
+    background: var(--button-bg);
+    /* box-shadow: 0 15px 20px rgba(136, 136, 136, 0.4) !important; */
+    box-shadow: var(--button-hover) !important;
+    color: var(--button-text);
+}
+
+@media screen and (max-width: 1600px) and (min-width: 1450px) {
+
+    .contentdiv {
+        zoom: 80% !important;
+        padding-top: 10px;
+    }
+}
+
+@media screen and (max-width: 1450px) and (min-width: 700px) {
+
+    .contentdiv {
+        zoom: 70%;
+        padding-top: 10px;
+    }
+}
+
+@media screen and (max-width: 900px) and (min-width: 500px) {
+    .contentdiv {
+        height: 100%;
+    }
+}
+
+@media screen and (max-width: 1420px) and (min-width: 451px) {
+    .contentdiv {
+        height: 100%;
+    }
+}
+.pagination-wrapper {
+    align-self: flex-end;
+    min-width: 23rem;
+    padding: 10px;
+}
+.custom-pagination {
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-evenly;
+}
+.pagination-select {
+	// UI Changes by Vaibhav B | 01-03-2023
+    // background: #fff!important;
+    width: 4.5em!important;
+    // border-bottom: 1px solid #000!important;
+    border-radius: 0!important;
+    font-size: 12px!important;
+    padding: 0!important;
+    margin: 0 0 0 3px!important;
+    padding-left: 5px !important;			
+    border-radius: 4px !important;
+}
+// Start | ChitraM | 28-Feb-23 | Page header css
+.pageHeader {
+    color: var(--heading-label);//changed by Jyoti S || 10-Apr-2023
+    font-size: 24px !important;
+    font-family: var(--font-family) !important;
+    margin-top: 0px;
+    font-weight: 500;
+}
+.productHeaderhr {
+    margin: 8px 0px 18px 0px;
+  }
+  // End | ChitraM | 28-Feb-23 | Page header css
+
+// Added by Yash Agrawal on 20th March, 2023
+.left-table-section{
+    border-right: none;
+}
+
+.dropDown-with-tooltip:hover{
+    .tooltip{
+        visibility: visible;
+    }
+}
+
+.tooltip{
+    visibility: hidden;
+    background-color: var(--select-product);//changes done by Jyoti S || 31-Mar-2023
+    color: var(--select-product-color);//changes done by Jyoti S || 31-Mar-2023
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px;
+    /* Position the tooltip */
+    position: relative;
+    top: 10%;
+    left: 15%;
+    z-index: 1;
+    border: 1px solid var(--select-product-color);
+  }
+
+.dates-flex-row{
+    align-items: center;
+}
+
+.ip-border{
+    border: solid 1px var(--btn-border);
+}
+
+textarea:active, textarea:focus, select:active, input:active, select:focus, input:focus{
+    border: solid 1px var(--light-gray) !important;
+}
+
+.left-arrow{
+    margin-right: 10px;
+}
+
+.date-flex{
+    align-items: baseline;
+}
+
+
+//Added by AdilP || FIN1EURINT-282
+.pageload-overlay {
+    position: fixed;
+    top: 60px;
+    bottom: 0;
+    left: 260px;
+    right: 0;
+    background-color: var(--overlay-bg);
+    //background-color: #4f4646a1;;
+
+    transition: opacity 500ms;
+    visibility: visible;
+    opacity: 1;
+    z-index: 100;
+}
+// <!-- Changes made for FIN1EURINT-383 : to show refresh/reload button || Kaustubh S || 06-Jun-2023 || START -->
+.refreshIcon:hover {
+    transform: rotate(20deg);
+    cursor: pointer;
+}
+// <!-- Changes made for FIN1EURINT-383 : to show refresh/reload button || Kaustubh S || 06-Jun-2023 || END -->

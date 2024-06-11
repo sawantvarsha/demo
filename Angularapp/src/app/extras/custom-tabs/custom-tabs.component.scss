@@ -1,0 +1,88 @@
+:host {
+    // display: flex;
+    // width: 100%;
+    min-height: 28px; //change on 5 April 2022 by Ashwini H.
+    max-height: calc(1.4em + 5px);
+    overflow: hidden;
+    // width: 100%;
+  }
+  
+  .wrapper {
+    display: flex;
+    flex-wrap: nowrap;
+    position: relative;
+    // border-bottom: 2px solid var(--border);
+  }
+  
+  .Visited_tab {
+    color: var(--text);
+    // letter-spacing: 0.5px;   commented on 30 March 2022
+  }
+  
+  .tabHeaders {
+    text-align: center;
+    white-space: nowrap;
+    cursor: pointer;
+    border-radius: var(--border-radius);
+    padding: 0 0.8em;
+    pointer-events: all;
+    // text-transform: capitalize;
+    font-weight: 400;
+    color: var(--heading-label);
+    padding-bottom: 6px;
+  
+    &:first-child {
+      padding-left: 0;
+    }
+  
+    &:nth-last-child(2) {
+      padding-right: 0;
+    }
+  }
+  
+  .tabHeaders_uppercase {
+    text-transform: uppercase;
+  }
+  //added by anjali
+  .tabHeaders_camelcase {
+    text-transform: capitalize !important;
+    font-weight: 400;
+    letter-spacing: 0.2px;
+    font-size: 16px;
+  }
+  .tabHeaders_lowercase {
+    text-transform: lowercase;
+  }
+  //added by Anjali T on 16mar
+  /* Commented by MohanP */
+  
+  // .tabHeaders:hover {
+  //     color: var(--blue-color-line);
+  //     font-weight: 400;
+  // }
+  
+  .marker {
+    position: absolute;
+    top: calc(100% + 0px);
+    left: 0px;
+    transition: left 300ms ease-in-out;
+  }
+  
+  .marker::after {
+    content: "";
+    position: absolute;
+    height: 2px;
+    width: 100%;
+    // top: calc(100% - 2px);
+  
+    //added by Anjali T on 16mar
+    // background-color: var(--blue-color);
+    background-color: var(--active);
+  }
+  
+  /* Commented by MohanP */
+  // .Visited_tab
+  // {
+  //     color : var(--blue-color-line)
+  // }
+  

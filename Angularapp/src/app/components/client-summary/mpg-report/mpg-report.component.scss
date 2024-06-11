@@ -1,0 +1,83 @@
+.main-grid0{
+    /* ss grid-template-columns: 300px auto 300px; */
+    /* grid-template-columns: 360px auto 360px; */
+    grid-template-columns: 28px auto 5fr auto 20px;
+    width: 100%;
+    display: grid;
+    padding: 0;
+    margin: 0;
+    height: calc(100vh - 175px);
+  	/* background-color: #f3f0f1     SSSSS */
+	  background-color:none;   /*added on 18-03-2021*/
+
+}
+.main-grid1{
+    /* ss grid-template-columns: 300px auto 300px; */
+    /* grid-template-columns: auto 360px; */
+    grid-template-columns: 28px 50px auto 50px 20px;
+    width: 100%;
+    display: grid;
+    padding: 0;
+    margin: 0;
+    height: calc(100vh - 175px);
+}
+.main-grid2{
+    /* ss grid-template-columns: 300px auto 300px; */
+    /* grid-template-columns: 360px auto ; */
+    grid-template-columns: 28px auto 7fr 50px 20px ;
+    width: 100%;
+    display: grid;
+    padding: 0;
+    margin: 0;
+    height: calc(100vh - 175px);
+}
+.main-grid3{
+    /* ss grid-template-columns: 300px auto 300px; */
+    grid-template-columns:  28px 50px 7fr auto 20px ;
+    width: 100%;
+    display: grid;
+    padding: 0;
+    margin: 0;
+    height: calc(100vh - 175px);
+}
+
+
+/* width */
+
+::-webkit-scrollbar {
+    width: 1px;
+}
+
+
+/* Track */
+
+ ::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+
+/* Handle */
+
+ ::-webkit-scrollbar-thumb {
+    background: transparent;
+}
+
+
+/* Handle on hover */
+
+ ::-webkit-scrollbar-thumb:hover {
+    background: transparent;
+}
+
+.main-component {
+    display: flex;
+    flex-direction: column;
+    font-size: 15px;
+    // width: 85vw;
+}
+
+.btnGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin: 10px 0px;
+}

@@ -1,0 +1,370 @@
+$assetPath: "http://52.187.114.119";
+:host {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  z-index: 999;
+}
+
+.nav-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  // bottom: 0;
+  z-index: 99;
+  .nav {
+    border-bottom: 2px solid #d2d2d2;
+  }
+  .nav-container {
+    padding: 5px 10px;
+    img {
+      width: 8em;
+      // height: 5em;
+    }
+  }
+}
+
+.welcome-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  // padding-top: 6%;
+  background-color: #eeeeee;
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  display: grid;
+  grid-template-rows: auto 25px;
+  height: 100%;
+  width: 100%;
+}
+
+.portal-container {
+  background-color: #ffffff;
+  box-shadow: rgba(0, 25, 40, 0.2) 0px 1px 3px 0px;
+  padding: 15px 30px;
+  transform: translate(0%, 8%);
+  .logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    img {
+      height: 120px;
+    }
+  }
+  .portal-header {
+    font-size: 30px;
+    font-variant: small-caps;
+    text-align: center;
+    padding: 5% 0px 5% 0px;
+    // padding: 30px;
+  }
+  .portal-body {
+    margin: 2% 0px 5% 0px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    cursor: pointer;
+    .portal-box {
+      width: 250px;
+      height: 250px;
+      border-radius: 3px;
+      border: 2px solid var(--container-border);
+      display: grid;
+      align-items: center;
+      justify-content: center;
+      grid-template-rows: 1fr auto;
+      padding: 15px;
+      cursor: pointer;
+    }
+    .portal-box-active {
+      border: 2px solid var(--container-border-active);
+      box-shadow: var(--box-shadow);
+    }
+    .portal-box:hover {
+      border: 2px solid var(--container-border-active);
+      box-shadow: var(--box-shadow);
+    }
+    .portal-icon {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      img {
+        width: 40%;
+        height: 40%;
+      }
+    }
+    .portal-label {
+      text-align: center;
+      font-variant: small-caps;
+      font-size: 20px;
+    }
+  }
+}
+
+.footer {
+  // position: absolute;
+  // bottom: 10px;
+  // right: 0;
+  // left: 0;
+  color: #343a40;
+  text-align: center;
+}
+
+.glass-container {
+  position: absolute;
+  height: 100%;
+  right: 0;
+  top: 0;
+  background: linear-gradient(0deg, #092434, #0d445b, #092434);
+  width: 34vw;
+  min-width: calc(500px + (100) * ((100vw - 1200px) / (1920 - 1200)));
+}
+
+.flex-down {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+}
+
+.logo {
+  // background-image: url(#{$assetPath}/ClientSelfServicePortalV3/assets/finiq_logo.png);
+  background-image: url(#{$assetPath}/assets/finiq_logo.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 300px;
+  height: 164px;
+  background-position: center;
+  margin-top: 20px;
+}
+
+.heading {
+  font-family: "Montserrat", sans-serif;
+  font-size: 40px;
+  text-align: center;
+  color: white;
+  margin: 30px;
+  // margin-bottom: 30px;
+}
+
+.select-service {
+  width: 100%;
+  text-align: center;
+  // margin-top: 12%;
+}
+
+.flex-across {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  text-align: center;
+  margin: 0px 30px;
+}
+
+.glass-service {
+  width: 118px;
+  height: 118px;
+  background: #305e73 0% 0% no-repeat padding-box;
+  border-radius: 9px;
+  display: grid;
+}
+
+.service {
+  display: flex;
+  flex-direction: column;
+  gap: 0px;
+  margin-top: 50px;
+  cursor: pointer;
+  align-items: center;
+}
+
+.service:hover .glass-service {
+  background: #417d99 0% 0% no-repeat padding-box;
+}
+
+.service label {
+  color: white;
+  font-family: "Montserrat", sans-serif;
+  font-size: 20px;
+  margin-top: 20px;
+}
+
+.service-img {
+  margin: auto;
+  width: 74px;
+  height: 74px;
+}
+
+.copyright {
+  text-align: center;
+  font-size: 12px;
+  letter-spacing: 0px;
+  color: #e6e6e6;
+  margin-bottom: 20px;
+  font-family: "Open Sans", sans-serif;
+  p {
+    font-family: "Open Sans", sans-serif;
+  }
+}
+
+.stanhope-logo {
+  background-image: url(#{$assetPath}/ClientSelfServicePortalV3/assets/StanhopeCapitalLogo.png);
+  background-repeat: no-repeat;
+  // background-color: white;
+  height: 60px;
+  width: 220px;
+  background-size: 100%;
+  background-position: center;
+  margin: auto;
+  // margin-top: 4%;
+}
+
+.bluewater-logo {
+  height: 90px;
+  width: 220px;
+  margin-top: 4%;
+}
+
+.gateway-logo {
+  height: calc(120px + (150 - 120) * ((100vw - 1200px) / (1920 - 1200)));
+  width: calc(250px + (310 - 250) * ((100vw - 1200px) / (1920 - 1200)));
+  margin-top: calc(5% + (6 - 5) * ((100vw - 1200px) / (1920 - 1200)));
+}
+
+.logo-div {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 100vw;
+  gap: 30px;
+}
+
+.finiq-logo-top {
+  // background-image: url(#{$assetPath}/ClientSelfServicePortalV3/assets/FinIQ_logo.png);
+  background-image: url(#{$assetPath}/assets/FinIQ_logo.png);
+  background-repeat: no-repeat;
+  // background-color: white;
+  height: 90px;
+  width: 220px;
+  background-size: 100%;
+  background-position: center;
+  margin-top: 7%;
+  margin-bottom: -10em;
+}
+
+.finiq-logo {
+  background-image: url(#{$assetPath}/assets/FinIQ_logo.png);
+  background-repeat: no-repeat;
+  // background-color: white;
+  height: 90px;
+  width: 220px;
+  background-size: 100%;
+  background-position: center;
+  margin-top: 7%;
+  margin-bottom: -4em;
+}
+.finiq-logo-bottom {
+  background-image: url(#{$assetPath}/assets/FinIQ_logo.png);
+  background-repeat: no-repeat;
+  // background-color: white;
+  width: 115px;
+  height: 50px;
+  background-position: center;
+  margin: 7px auto;
+  background-size: contain;
+}
+
+.website-link {
+  text-decoration: none;
+  color: white;
+  font-family: "Montserrat", sans-serif;
+  font-size: calc(14px + (2) * ((100vw - 1200px) / (1920 - 1200)));
+  // line-height: 14px;
+}
+
+// SH CAPTIAL
+.logos-div {
+  display: grid;
+  grid-template-columns: 1fr 30px 1fr;
+}
+
+// GATEWAY MARKETS
+.logos-div-gateway {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+.vl {
+  border-left: 1px solid grey;
+  height: 72px;
+  margin: auto;
+}
+
+@media screen and (max-width: 1400px) {
+  .flex-down {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    zoom: 82%;
+  }
+  .stanhope-logo {
+    height: 56px;
+    width: 160px;
+  }
+  .vl {
+    height: 56px;
+  }
+  .bluewater-logo {
+    height: 90px;
+    width: 220px;
+    margin-top: 3%;
+  }
+}
+@media screen and (max-width: 500px) {
+  .flex-down {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    zoom: 82%;
+  }
+  .stanhope-logo {
+    height: 56px;
+    width: 160px;
+  }
+  .vl {
+    height: 56px;
+  }
+  .bluewater-logo {
+    height: 90px;
+    width: 220px;
+    margin-top: 3%;
+  }
+  .glass-container {
+    width: 100% !important;
+  }
+}
+
+.gateway-markets-loader {
+  background-image: url(#{$assetPath}/assets/gateway-markets-logo.png);
+  background-repeat: no-repeat;
+  width: 350px;
+  background-size: 100%;
+  background-position: center;
+  margin: 0px 55px;
+  padding: 122px 0px;
+}

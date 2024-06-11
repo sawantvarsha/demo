@@ -1,0 +1,111 @@
+.chart-container{
+    /* height: 100%; */
+    /* width:100%; */
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
+    row-gap: 30px;
+    column-gap: 30px;
+    margin: 0px 30px;
+    height: 100%;
+}
+
+.chart-item-a{
+    grid-row: 1 / 2;
+    grid-column:1/2 ;
+    background-color: black
+    /* margin-left: 5%; */
+    /* margin-right: 5%; */
+}
+
+.chart-item-b{
+    grid-row: 2 / span 1;
+    grid-column:1/2 ;
+    background-color: black
+    /* margin-left: 5%; */
+    /* margin-right: 5%; */
+}
+
+.chart-item-c{
+    grid-row: 1 / 2;
+    grid-column: 2 / span 1;
+    background-color: black
+    /* margin-left: 5%; */
+    /* margin-right: 5%; */
+    
+}
+
+.chart-item-d{
+    grid-row: 2 / span 1;
+    grid-column: 2 / span 1;
+    background-color: black
+    /* margin-left: 5%; */
+    /* margin-right: 5%; */
+}
+
+.button-group {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+  
+    background-color: #f9f9f9;
+    min-width: 160px;
+  
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    
+  }
+  
+  /* .button-group:hover .menu {
+    display: block;
+  } */
+  
+  .menu button {
+    display: block;
+    width: 100%;
+    text-align: center;
+    /* padding: 12px 16px; */
+    background-color: rgb(43, 42, 42);
+    color:white;
+  }
+  
+  .sub-menu {
+    position: absolute;
+    top: 20px;
+    right: 100%;
+    display: none;
+    
+    min-width: 160px;
+    max-width: 160px;
+    color:white;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+  }
+  
+  /* .menu button:hover,
+  .sub-menu button:hover {
+    background-color: #ddd;
+  } */
+  
+  .menu .sub-menu button {
+    background-color: rgb(43, 42, 42);
+    color:white;
+  }
+  
+  .menu:hover .sub-menu {
+    display: block;
+  }
+  
+  .tick {
+    margin-right: 5px;
+  }
+  
+  .sorting{
+    color: white;
+    height: 30px;
+  }

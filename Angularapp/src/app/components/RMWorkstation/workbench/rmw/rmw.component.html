@@ -1,0 +1,830 @@
+<div class="cashdeposit-component" [ngClass]="{'maincontainer-opacity':portfoliopopflag}">
+    <!-- <div class="filter">
+        <div class="page-title ">Product Catalogue</div>
+        <div *ngFor="let item of rmwdata">
+            <app-layout [data]="item" [product]="selectedProduct" [templateID]="item.Template_ID"></app-layout>
+        </div>e
+    </div> -->
+    <div class="filter">
+        <div class="page-title">
+            <app-svg-icons class="back-button" [icon]="'back-button'" [width]="'40'" [height]="'40'"
+                [fill]="'var(--headers)'" (click)="back();"></app-svg-icons>
+            <div>Product Catalogue</div>
+        </div>
+
+        <div style="display: flex;align-items: baseline;gap:5%">
+            <div
+                style="cursor: pointer; position: absolute; top: 25px; left: calc(51% + -70px); transform: translateX(-50%);z-index: 9999;">
+                <app-svg-icons class="searchsvgAlign" icon="{{'icon-search'}}" [width]="'20'" [height]="'20'">
+                </app-svg-icons>
+                <input class="svgClass" placeholder="Search" (keydown.enter)='textChangeSearch($event)'
+                    (keydown.tab)='textChangeSearch($event)' [(ngModel)]="searchBarString">
+                <app-svg-icons *ngIf="searchBarString.length > 0" class="closeSvg closebtn cursor"
+                    [icon]="'cancel-icon'" [width]="'15'" [height]="'15'" (click)="clearSearchString()"></app-svg-icons>
+                <app-svg-icons class="svgAlign" icon="{{'filter-search'}}" [width]="'20'" [height]="'20'"
+                    [fill]="'var(--text)'" (click)="searchPopup()"></app-svg-icons>
+            </div>
+            <!-- <input type="text" class="sortInput" [(ngModel)]="sort"> -->
+        </div>
+
+        <div>
+            <app-svg-icons class="cursor" (click)="refreshPage()" [icon]="'refresh'" [width]="'26'" [height]="'26'">
+            </app-svg-icons>
+        </div>
+
+        <div class="sort-by">
+            <label>Sort By</label>
+            <div class="sort">
+
+                <input [(ngModel)]="sort" style="width: 130px;" (click)="showSortingData = !showSortingData"
+                    (keydown.ArrowUp)="selectedMFIndex = cfs.moveUpSelection($event, selectedMFIndex)"
+                    (keydown.ArrowDown)="selectedMFIndex = cfs.moveDownSelection($event, selectedMFIndex)"
+                    (keypress)="disableEvent($event)">
+                <div class="arrowUp" [ngClass]="{'asc':order === 'asc'}" (click)="toggleSorting('asc');"></div>
+                <div class="arrowDown" [ngClass]="{'desc': order === 'desc'}" (click)="toggleSorting('desc');"></div>
+                <!-- <app-svg-icons style="padding-right: 8px;" icon="{{'filter'}}"></app-svg-icons> -->
+                <!-- <label>Sort By</label> -->
+
+                <div class="sortby" *ngIf="showSortingData">
+                    <div class="selectedSortIndex" *ngFor="let data of sortingData; let i =index">
+                        <div (click)="callSorting(data,order);showSortingData = !showSortingData; ">
+                            {{data.RSM_Display_Name}} </div>
+                        <!-- <div (click)="callSorting(data,'desc');showSortingData = !showSortingData; ">
+                            {{data.RSM_Display_Name}} </div> -->
+                    </div>
+                </div>
+            </div>
+            <!-- <input type="text" class="sortInput" [(ngModel)]="sort"> -->
+        </div>
+        <div class="sort-by" style="justify-content: end;">
+            <div>
+                <button class="button button-margin svgFilter" (click)="searchFlag = false; togglePopup()">
+                    <app-svg-icons style="padding-right: 8px;" style="display: contents !important;"
+                        icon="{{'filter'}}"></app-svg-icons>
+                    <label>Filter</label>
+                </button>
+            </div>
+
+        </div>
+        <!-- <div style="display: grid;
+                align-items: baseline;
+                grid-template-columns: 4em 3.5em 4em;">
+            <label>Sidebar</label>
+            <label class="switch">
+                <input type="checkbox" checked [(ngModel)]="toggleChecked">
+                <span class="slider1 round"></span>
+            </label>
+            <label>Popup</label>
+        </div> -->
+    </div>
+    <div class="rmw-outer-container" [ngClass]="{'filters-open':hideSidebar}">
+        <div [ngClass]="{overlay: popupFlag && !searchFlag, 'overlay1': searchFlag}">
+            <div class="filter-menu"
+                [ngClass]="{'sidebar-component':hideSidebar && !searchFlag, 'popuptab1':popupFlag && !searchFlag, 'popuptab2': searchFlag}"
+                [ngStyle]="{'top':showTicker ? '150px' : '118px'}">
+                <div *ngIf="!searchFlag" class="content-header" [ngClass]="{'maincontainer-opacity':!portfoliopopflag}">
+                    <div class="content-header-name">
+                        Product Catalogue Filters
+                    </div>
+                    <app-svg-icons class="closebtn" [icon]="'cancel-icon'" [width]="'15'" [height]="'15'"
+                        (click)="togglePopup()">
+                    </app-svg-icons>
+                    <!-- <div *ngIf="searchFlag" class="closebtn" (click)="searchPopup()">X</div> -->
+                </div>
+                <div *ngIf="searchFlag" [ngClass]="{'maincontainer-opacity':!portfoliopopflag}"
+                    style="text-align: -webkit-right !important;margin-right: 10px;margin-top: 5px;">
+                    <!-- <div *ngIf="searchFlag" class="closebtn" (click)="searchPopup()">X</div> -->
+                    <app-svg-icons class="closebtn" [icon]="'cancel-icon'" [width]="'15'" [height]="'15'"
+                        *ngIf="searchFlag" (click)="searchPopup()">
+                    </app-svg-icons>
+                </div>
+                <div class="content">
+                    <div class="applied-filter" *ngIf="saveFilter.length > 0">Search By:
+                        <div class="applied" *ngFor="let i of saveFilter">{{i[0]}}: {{i[1]}}
+                            <!-- <span class="cancel-icon" (click)="removeFilter(i, [])"></span> -->
+                            <span>
+                                <app-svg-icons [icon]="'cancel-icon'" [width]="'10'" [height]="'10'" class="close"
+                                    style="display: contents !important;" (click)="removeFilter(i, [])"></app-svg-icons>
+                            </span>
+
+                        </div>
+                    </div><br>
+
+                    <hr *ngIf="saveFilter.length > 0">
+
+                    <div class="btnFilter">
+                        <button class="button button-filter" (click)='addFilter(); showccy = false;'>Apply
+                            Filter</button>
+                        <button class="button button-filter"
+                            (click)='clearFilter(); showccy = false; clearFlag = true;'>Clear
+                            Filter</button>
+                    </div>
+
+
+                    <!-- <div class="applied" *ngFor="let i of saveFilter">{{i[0]}}:{{i[1]}} <span class="cancel-icon" (click)="removeFilter(i)"></span></div> -->
+
+                    <div class="content-scroll" *ngIf="!filterLoader">
+
+                        <div *ngFor='let item of ratingArr' class="filtergrid3" (click)="closeRating()">
+
+                            <!-- <div class="filtergrid3" (click)="closeRating()"> -->
+                            <div *ngIf="item[0] === 'PRR' || item[0] === 'Risk Rating'">
+                                <!-- <div> -->
+
+                                <button #el class="accordion" (click)="toggleHelper(0); ">
+                                    <slot name="header">{{item[0]}}</slot>
+                                    <!-- <slot name="header">PRR</slot> -->
+                                </button>
+                                <div class="panel">
+                                    <div class="details">
+                                        <!--<app-svg-icons class="searchsvgAlign" icon="{{'icon-search'}}" [width]="'20'" [height]="'20'"></app-svg-icons>-->
+                                        <input class="" placeholder="Search" [(ngModel)]="searchString"
+                                            (keyup)="filterSearch($event, 'PRR')">
+                                        <label class="container"
+                                            *ngFor="let i of checkboxArray; let j = index">P{{i.rate}}
+                                            <input #checkboxes type="checkbox" [(ngModel)]="i.selected" value="i"
+                                                name="i" [checked]="i.isChecked"
+                                                (change)="riskratingChange(i.rate,item[1],i.selected,j, item[0])"
+                                                value="i.rate">
+                                            <span class="checkmark"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <!-- <div class="panel" *ngIf="item[0] === 'Risk Rating'">
+                                    <div class="details">
+                                        <input class="" placeholder="Search" [(ngModel)]="searchString"
+                                            (keyup)="filterSearch($event, 'PRR')">
+                                        <label class="container"
+                                            *ngFor="let i of checkboxArray; let j = index">P{{i.rate}}
+                                            <input #checkboxes type="checkbox" [(ngModel)]="i.selected" value="i"
+                                                name="i" [checked]="i.isChecked"
+                                                (change)="riskratingChange(i.rate,item[1],i.selected,j, item[0])"
+                                                value="i.rate">
+                                            <span class="checkmark"></span>
+                                        </label>
+                                    </div>
+                                </div> -->
+                            </div>
+                        </div>
+
+
+
+                        <!-- <div *ngFor="let item of faq; let i = index;">
+                                <button #el class="accordion" (click)="toggleHelper(i)">
+                                    <slot name="header">{{ item.question }}</slot>
+                                </button>
+                                <div class="panel">
+                                    <slot name="details">
+                                        {{ item.answer }}
+                                    </slot>
+                                </div>
+                            </div> -->
+
+                        <!-- <div class="filtergrid3" *ngFor="let item of listArr; let k = index;" (click)="closeRating()"> -->
+                        <div class="filtergrid3" (click)="closeRating()">
+                            <!-- <div *ngIf = "item[0] === 'Public List'"> -->
+                            <div *ngIf="!showNifty">
+                                <button *ngIf="!showInsurance" #el class="accordion"
+                                    (click)="toggleHelper(1); showccy = true;">
+                                    <!-- <slot name="header">{{item[0]}}</slot> -->
+                                    <slot name="header">Public List</slot>
+                                </button>
+                                <button *ngIf="showInsurance" #el class="accordion"
+                                    (click)="toggleHelper(0); showccy = true;">
+
+                                    <!-- <slot name="header">{{item[0]}}</slot> -->
+                                    <slot name="header">Public List</slot>
+                                </button>
+
+                                <div class="panel">
+                                    <div class="details">
+                                        <input class="" placeholder="Search" [(ngModel)]="searchStringPublic">
+                                        <!--(keyup)="filterSearch($event, 'Public List')"-->
+                                        <label class="container disabled"
+                                            *ngFor="let listItem of publicList | filter: searchStringPublic; let j = index"
+                                            [ngClass]="{'disabled':disabled1}">
+                                            {{listItem.PF_Folder_Name}}
+                                            <input #checkboxes type="radio" name="publicItem" id="publicItem"
+                                                [disabled]="disabled1"
+                                                (change)="changePublicItem(listItem.PF_Folder_Name,j)"
+                                                [checked]="listItem.isChecked">
+                                            <span class="checkmark1"></span>
+                                        </label>
+                                        <!-- <select [(ngModel)]="publicItem" name="publicItem" id="publicItem" (change)="changePublicItem(publicItem);">
+                                                    <option *ngFor="let listItem of publicList">
+                                                        {{listItem.PF_Folder_Name}}
+                                                    </option>
+                                                </select> -->
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- <div *ngIf = "item[0] === 'Private List'"> -->
+                            <div *ngIf="!showNifty">
+                                <button *ngIf="!showInsurance" #el class="accordion"
+                                    (click)="toggleHelper(2); showccy = true;">
+                                    <!-- <slot name="header">{{item[0]}}</slot> -->
+                                    <slot name="header">Private List</slot>
+                                </button>
+                                <button *ngIf="showInsurance" #el class="accordion"
+                                    (click)="toggleHelper(1); showccy = true;">
+                                    <!-- <slot name="header">{{item[0]}}</slot> -->
+                                    <slot name="header">Private List</slot>
+                                </button>
+
+                                <div class="panel">
+                                    <div class="details">
+                                        <input class="" placeholder="Search" [(ngModel)]="searchStringPrivate">
+                                        <!--(keyup)="filterSearch($event, 'Private List')"-->
+                                        <label class="container disabled"
+                                            *ngFor="let listItem of privateList | filter: searchStringPrivate"
+                                            [ngClass]="{'disabled':disabled}"> {{listItem.PF_Folder_Name}}
+                                            <input #checkboxes type="radio" name="privateItem" id="privateItem"
+                                                (change)="changePrivateItem(listItem.PF_Folder_Name)"
+                                                [checked]="listItem.selected" [disabled]="disabled">
+                                            <span class="checkmark1" value="listItem.PF_Folder_Name"></span>
+                                        </label>
+                                        <!-- <select [(ngModel)]="publicItem" name="publicItem" id="publicItem" (change)="changePublicItem(publicItem);">
+                                                    <option *ngFor="let listItem of publicList">
+                                                        {{listItem.PF_Folder_Name}}
+                                                    </option>
+                                                </select> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <div *ngFor='let item of filterArray; let l=index' (click)="closeRating()"> -->
+                        <div (click)="closeRating()">
+                            <div class="filergrid3">
+                                <!-- <div *ngIf="item[0] === 'Ccy'" class="filtergrid3" > -->
+                                <button *ngIf="!showInsurance && !showNifty" #el class="accordion"
+                                    (click)="toggleHelper(3); showccy = true;">
+                                    <!-- <slot name="header">{{item[0]}}</slot> -->
+                                    <slot name="header">Ccy</slot>
+                                </button>
+                                <button *ngIf="showInsurance" #el class="accordion"
+                                    (click)="toggleHelper(2); showccy = true;">
+                                    <!-- <slot name="header">{{item[0]}}</slot> -->
+                                    <slot name="header">Ccy</slot>
+                                </button>
+                                <button *ngIf="showNifty" #el class="accordion"
+                                    (click)="toggleHelper(0); showccy = true;">
+                                    <!-- <slot name="header">{{item[0]}}</slot> -->
+                                    <slot name="header">Ccy</slot>
+                                </button>
+
+                                <div class="panel">
+                                    <div class="details">
+                                        <input class="" placeholder="Search" [(ngModel)]="searchStringCcy">
+                                        <!--(keyup)="filterSearch($event, 'Ccy')"-->
+                                        <label class="container"
+                                            *ngFor="let listItem of currencyList | filter: searchStringCcy; let j=index">{{listItem.Code}}
+                                            <input #checkboxes type="checkbox" [(ngModel)]="listItem.selected"
+                                                id="moodyrateid{{i}}" name="moodyrate{{i}}"
+                                                [checked]="listItem.isChecked"
+                                                (change)="selectccy(listItem.Code,listItem.selected,j)"
+                                                value="listItem.Code">
+                                            <span class="checkmark"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div *ngIf="showbonds" (click)="closeRating()">
+                            <div class="filergrid3">
+                                <!-- <div *ngIf="item[0] === 'Ccy'" class="filtergrid3" > -->
+                                <button *ngIf="!showInsurance" #el class="accordion"
+                                    (click)="toggleHelper(4); showccy = true;">
+                                    <!-- <slot name="header">{{item[0]}}</slot> -->
+                                    <slot name="header">Exchange</slot>
+                                </button>
+                                <button *ngIf="showInsurance" #el class="accordion"
+                                    (click)="toggleHelper(3); showccy = true;">
+                                    <!-- <slot name="header">{{item[0]}}</slot> -->
+                                    <slot name="header">Exchange</slot>
+                                </button>
+                                <div class="panel">
+                                    <div class="details">
+                                        <input class="" placeholder="Search" [(ngModel)]="searchStringExchange">
+                                        <label class="container"
+                                            *ngFor="let obj of fillExchangeDdl | filter: searchStringExchange">{{obj.Long_Name}}
+                                            <input #checkboxes type="radio" id="Exchange" name="Exchange"
+                                                [checked]="obj.isChecked" (change)="selectExchange(obj.Long_Name)">
+                                            <span class="checkmark1"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div *ngIf="showbonds || selectedProduct === 'ALL'" (click)="closeRating()" class="filergrid3">
+                            <div>
+                                <!-- <div *ngIf="item[0] === 'Ccy'" class="filtergrid3" > -->
+                                <button *ngIf="showbonds" #el class="accordion"
+                                    (click)="toggleHelper(5); showccy = true;">
+                                    <!-- <slot name="header">{{ item[0] }}</slot> -->
+                                    <slot name="header">Ratings</slot>
+                                </button>
+                                <button *ngIf="selectedProduct === 'ALL'" #el class="accordion"
+                                    (click)="toggleHelper(4); showccy = true;">
+                                    <!-- <slot name="header">{{ item[0] }}</slot> -->
+                                    <slot name="header">Ratings</slot>
+                                </button>
+                                <div class="panel">
+                                    <div class="details">
+
+                                        <div>
+                                            <div class="filter-tabs">
+                                                <ul>
+                                                    <li>
+                                                        <a [ngClass]="(accord1===1) ? 'active1' : 'disabledtabs'"
+                                                            (click)="changeRating(1);">S&P</a>
+                                                    </li>
+                                                    <li>
+                                                        <a [ngClass]="(accord1===2) ? 'active1' : 'disabledtabs'"
+                                                            (click)="changeRating(2);">Moody's</a>
+                                                    </li>
+                                                    <li>
+                                                        <a [ngClass]="(accord1===3) ? 'active1' : 'disabledtabs'"
+                                                            (click)="changeRating(3);">Fitch</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+
+                                            <div *ngIf="accord1===1">
+                                                <input class="" placeholder="Search" [(ngModel)]="searchStringSnP">
+                                                <!--(keyup)="filterSearch($event, 'S&P')"-->
+                                                <div class="check-list2">
+                                                    <label class="container"
+                                                        *ngFor="let listItem of snpRatingList | filter: searchStringSnP; let i=index;">{{listItem.snpRate}}
+                                                        <input #checkboxes type="checkbox"
+                                                            [(ngModel)]="listItem.selected" id="snprateid{{i}}"
+                                                            name="snprate{{i}}"
+                                                            (change)="selectsnp(listItem.snpRate, listItem.selected, i)"
+                                                            [checked]="listItem.isChecked" value="listItem.snpRate">
+                                                        <span class="checkmark"></span>
+                                                    </label>
+                                                </div>
+                                            </div>
+
+                                            <div *ngIf="accord1===2">
+                                                <input class="" placeholder="Search" [(ngModel)]="searchStringMoody">
+                                                <!--(keyup)="filterSearch($event, 'Moody')"-->
+                                                <div class="check-list2">
+                                                    <label class="container"
+                                                        *ngFor="let listItem of moodyRatingList | filter: searchStringMoody; let i=index;">{{listItem.moodyrate}}
+                                                        <input #checkboxes type="checkbox"
+                                                            [(ngModel)]="listItem.selected" id="moodyrateid{{i}}"
+                                                            name="moodyrate{{i}}"
+                                                            (change)="selectMoody(listItem.moodyrate, listItem.selected, i)"
+                                                            [checked]="listItem.isChecked" value="listItem.moodyrate">
+                                                        <span class="checkmark"></span>
+                                                    </label>
+                                                </div>
+                                            </div>
+
+                                            <div *ngIf="accord1===3">
+                                                <input class="" placeholder="Search" [(ngModel)]="searchStringFitch">
+                                                <!--(keyup)="filterSearch($event, 'Fitch')"-->
+                                                <div class="check-list2">
+                                                    <label class="container"
+                                                        *ngFor="let listItem of fitchRatingList | filter: searchStringFitch; let i=index;">{{listItem.fitchrate}}
+                                                        <input #checkboxes type="checkbox"
+                                                            [(ngModel)]="listItem.selected" id="fitchrateid{{i}}"
+                                                            name="fitchrate{{i}}"
+                                                            (change)="selectfitch(listItem.fitchrate, listItem.selected, i)"
+                                                            [checked]="listItem.isChecked" value="listItem.fitchrate">
+                                                        <span class="checkmark"></span>
+                                                    </label>
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <!--Funds START-->
+
+                        <div *ngFor='let item of assetArr let i=index' (click)="closeRating()">
+                            <!-- <div> -->
+                            <div *ngIf="item[0] === 'Asset Class'" class="filtergrid1">
+                                <!-- <div  class = "filtergrid1"> -->
+                                <span> {{item[0]}}</span>
+                                <!-- <span>Search By Product</span> -->
+                                <!-- <input type="text"> -->
+                                <input #searchInput type="text" (change)='textChange($event, item[1], item[0])' />
+                            </div>
+                            <!-- </div> -->
+                        </div>
+
+
+                        <!--SEARCH BAR CHANGES-->
+                        <!-- <div *ngFor='let item of filterArray let i=index' (click)="closeRating()">
+                        
+                            <div *ngIf="item[0] === 'Search Fund' || item[0] === 'Search ISIN'" class="filtergrid1">
+                       
+                                <span> {{item[0]}}</span>
+
+                                <input #searchInput type="text" (change)='textChange($event, item[1], item[0])' />
+                            </div>
+                         
+                        </div> -->
+
+
+                        <!--Funds END-->
+
+                        <!--Nifty Participation-->
+                        <div *ngFor='let item of filterArray let i=index' (click)="closeRating()">
+                            <!-- <div> -->
+                            <div *ngIf="item[0] === 'Tenor'" class="filtergrid1">
+                                <!-- <div  class = "filtergrid1"> -->
+                                <span> {{item[0]}}</span>
+                                <!-- <span>Search By Product</span> -->
+                                <!-- <input type="text"> -->
+                                <input #searchInput type="text" (change)='textChange($event, item[1], item[0])' />
+                            </div>
+                            <!-- </div> -->
+                        </div>
+
+                        <!--Nifty Participation  END-->
+
+
+
+                        <!--Bonds START-->
+                        <div *ngFor='let item of filterArray; let j=index' (click)="closeRating()">
+                            <!-- <div (click)="closeRating()"> -->
+                            <div *ngIf="item[0] === 'Bond Type'" class="filtergrid3">
+                                <button #el class="accordion" (click)="toggleHelper(6); showccy = true;">
+                                    <slot name="header">{{item[0]}}</slot>
+                                    <!-- <slot name="header">Ccy</slot> -->
+                                </button>
+                                <div class="panel">
+                                    <div class="details">
+                                        <input class="" placeholder="Search" [(ngModel)]="searchStringBond">
+                                        <!--(keyup)="filterSearch($event, item[0])"-->
+                                        <label class="container"
+                                            *ngFor="let Bond of fillGenericSQLDdl | filter: searchStringBond">{{Bond.DisplayField}}
+                                            <input #checkboxes type="radio" id="Bond" name="Bond"
+                                                [checked]="Bond.isChecked" (change)="selectBondType(Bond.DisplayField)">
+                                            <span class="checkmark1"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div *ngFor='let item of filterArray' (click)="closeRating()">
+                            <!-- <div (click)="closeRating()"> -->
+                            <div *ngIf="item[0] === 'Asset Type'" class="filtergrid3">
+                                <button *ngIf="selectedProduct !== 'ALL'" #el class="accordion"
+                                    (click)="toggleHelper(7); showccy = true;">
+                                    <slot name="header">{{item[0]}}</slot>
+                                    <!-- <slot name="header">Ccy</slot> -->
+                                </button>
+                                <button *ngIf="selectedProduct === 'ALL'" #el class="accordion"
+                                    (click)="toggleHelper(5); showccy = true;">
+                                    <slot name="header">{{item[0]}}</slot>
+                                    <!-- <slot name="header">Ccy</slot> -->
+                                </button>
+                                <div class="panel">
+                                    <div class="details">
+                                        <input class="" placeholder="Search" [(ngModel)]="searchStringAsset">
+                                        <!-- (keyup)="filterSearch($event, item[0])"-->
+                                        <label class="container"
+                                            *ngFor="let listItem of assetItems | filter: searchStringAsset; let i = index">{{listItem.Name}}
+                                            <input #checkboxes type="radio" id="listItem" name="listItem"
+                                                (change)="changeAssetTypeItem(listItem.Name)"
+                                                [checked]="listItem.isChecked">
+                                            <span class="checkmark1"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div *ngFor='let item of filterArray; let j=index' (click)="closeRating()">
+                            <!-- <div (click)="closeRating()"> -->
+                            <div *ngIf="item[0] === 'Issuer'" class="filtergrid3">
+                                <button *ngIf="selectedProduct !== 'ALL'" #el class="accordion"
+                                    (click)="toggleHelper(8); showccy = true;">
+                                    <slot name="header">{{item[0]}}</slot>
+                                    <!-- <slot name="header">Ccy</slot> -->
+                                </button>
+                                <button *ngIf="selectedProduct === 'ALL'" #el class="accordion"
+                                    (click)="toggleHelper(6); showccy = true;">
+                                    <slot name="header">{{item[0]}}</slot>
+                                    <!-- <slot name="header">Ccy</slot> -->
+                                </button>
+                                <div class="panel">
+                                    <div class="details">
+                                        <input class="" placeholder="Search" [(ngModel)]="searchStringIssuer">
+                                        <!--(keyup)="filterSearch($event, item[0])"-->
+                                        <label class="container"
+                                            *ngFor="let issuer of fillIssuerDdl | filter: searchStringIssuer; let i=index;">{{issuer.Issuer_Name}}
+                                            <input #checkboxes type="checkbox" [(ngModel)]="issuer.selected"
+                                                id="fillIssuerDdl" name="fillIssuerDdl"
+                                                (change)="changeIssuerItem(issuer.Issuer_ID, issuer.selected, i, issuer.Issuer_Name)"
+                                                [checked]="issuer.isChecked" value="issuer.Issuer_Name">
+                                            <span class="checkmark"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div *ngFor='let item of filterArray; let j=index' (click)="closeRating()">
+                            <!-- <div (click)="closeRating()"> -->
+                            <div *ngIf="item[0] === 'Guarantor'" class="filtergrid1">
+                                <span> {{item[0]}}</span>
+                                <!-- <span>Search By Product</span> -->
+                                <!-- <input type="text"> -->
+                                <input #searchInput type="text" (change)='textChange($event, item[1], item[0])' />
+                            </div>
+                        </div>
+
+                        <!-- <div *ngFor='let item of searchBonds; let i=index' (click)="closeRating()">
+
+                            <div *ngIf="item[0] === 'Search By Product'" class="filtergrid1">
+
+                                <span> {{item[0]}}</span>
+
+                                <input #searchInput type="text" (change)='textChange($event, item[1], item[0])' />
+                            </div>
+
+                            <div *ngIf="item[0] === 'Search By ISIN'" class="filtergrid1">
+
+                                <span> {{item[0]}}</span>
+  
+                                <input #searchInput type="text" (change)='textChange($event, item[1], item[0])' />
+                            </div>
+                        </div> -->
+
+                        <!-- <div *ngFor='let item of filterArray; let j=index' (click)="closeRating()">
+                            <div *ngIf="item[2] === 'date'" class="datefilter">
+                                <span> {{item[0]}}</span>
+                                <span> From: </span>
+                                <input #searchInput type="date" class="input-dob" [attr.data-date]="fromDate"
+                                    style="margin-top: 0px;" placeholder="dd-mm-yyyy" data-date-format="DD-MMM-YYYY"
+                                    value="" min="1997-01-01" max="2030-12-31" [(ngModel)]="fromDate"
+                                    (change)="fromDate = selectDate(fromDate, 'from', item[0], item[1])">
+                                <span> To: </span>
+                                <input #searchInput type="date" class="input-dob" [attr.data-date]="toDate"
+                                    style="margin-top: 0px;" placeholder="dd-mm-yyyy" data-date-format="DD-MMM-YYYY"
+                                    value="" min="1997-01-01" max="2030-12-31" [(ngModel)]="toDate"
+                                    (change)="toDate = selectDate(toDate, 'to', item[0], item[1])">
+                            </div>
+                        </div> -->
+                        <div *ngFor='let item of filterArray; let j=index' (click)="closeRating()">
+                            <div *ngIf="item[2] === 'date'" class="datefilter">
+                                <span> {{item[0]}}</span>
+                                <span> From: </span>
+                                <input #searchInput type="date" class="input-dob" [attr.data-date]="fromDate"
+                                    style="margin-top: 0px;" placeholder="dd-mm-yyyy" data-date-format="DD-MMM-YYYY"
+                                    value="" min="1997-01-01" max="2030-12-31" [(ngModel)]="fromDate"
+                                    (change)="fromDate = selectDate(fromDate); selectDateEvent(item[1],fromDate,toDate,item[0])">
+                                <span> To: </span>
+                                <input #searchInput type="date" class="input-dob" [attr.data-date]="toDate"
+                                    style="margin-top: 0px;" placeholder="dd-mm-yyyy" data-date-format="DD-MMM-YYYY"
+                                    value="" min="1997-01-01" max="2030-12-31" [(ngModel)]="toDate"
+                                    (change)="toDate = selectDate(toDate);selectDateEvent(item[1],fromDate,toDate,item[0])">
+                            </div>
+                        </div>
+                        <div>
+                            <button #al class="accordion-single more-filters" (click)="moreFilters(0)">
+                                <span>{{moreFilter}}</span>
+                            </button>
+                        </div>
+
+                        <div *ngIf="moreLessFilters">
+
+                            <div class="datefilter" style="padding-bottom: 10px;" *ngIf="!isUserRM">
+                                <span> Risk Profile </span>
+                                <label class="container"
+                                    style="margin-bottom:0px !important; margin-top:0px !important">{{this.homeapi.RiskProfile}}
+                                    <input #checkboxes type="checkbox" [(ngModel)]="checkRiskProfile"
+                                        (change)="riskprofileChanged();" [checked]="checkRiskProfile">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </div>
+                            <div class="like" style="padding-bottom: 10px;">
+
+                                <label class="container" style="margin-bottom:0px !important">My Likes
+                                    <input #checkboxes type="checkbox" id="Likes" value="Likes" [(ngModel)]="checkLikes"
+                                        (change)="likeChanged(checkLikes)">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </div>
+
+                            <!-- <div *ngFor='let item of filterArray; let j=index' (click)="closeRating()">
+                                <div *ngIf="item[0] === 'Primary Mkt Issuance'" class="like" style="padding-bottom: 10px;">
+
+                                    <label class="container" style="margin-bottom:0px !important">{{item[0]}}
+                                        <input #checkboxes type="checkbox" id="PrimaryMkt" value="PrimaryMkt"
+                                            [(ngModel)]="checkPrimaryMkt" (change)="primaryMktChange(checkPrimaryMkt)">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                            </div> -->
+                            <!--Bonds START-->
+
+
+                            <div *ngFor='let item of bidAsk; let j=index' (click)="closeRating()">
+                                <div *ngIf="item[0] === 'Bid Price' || item[0] === 'Ask Price'" class="filtergrid">
+                                    <span> {{item[0]}}</span>
+                                    <input type="number" min="0" max="200" style="text-align: center;"
+                                        [(ngModel)]=item[3] (change)="sliderEvent(item[1],item[3],item[4],item[0])">
+                                    <span>to</span>
+                                    <input type="number" min="0" max="200" style="text-align: center;"
+                                        [(ngModel)]=item[4] (change)="sliderEvent(item[1],item[3],item[4],item[0])">
+                                    <span> </span>
+                                    <div class="custom-slider" style="width: 97%;">
+                                        <ngx-slider [(value)]="item[3]" [(highValue)]="item[4]" [options]="item[5]"
+                                            (mouseup)="sliderEvent(item[1],item[3],item[4],item[0])"></ngx-slider>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div *ngFor='let item of filterArray; let j=index' (click)="closeRating()">
+                                <div *ngIf="item[0] === 'Coupon'" class="filtergrid">
+                                    <span> {{item[0]}}</span>
+                                    <input type="number" min="0" max="200" style="text-align: center;"
+                                        [(ngModel)]=item[3] (change)="sliderEvent(item[1],item[3],item[4],item[0])">
+                                    <span>to</span>
+                                    <input type="number" min="0" max="200" style="text-align: center;"
+                                        [(ngModel)]=item[4] (change)="sliderEvent(item[1],item[3],item[4],item[0])">
+                                    <span>%</span>
+                                    <div class="custom-slider" style="width: 97%;">
+                                        <ngx-slider [(value)]="item[3]" [(highValue)]="item[4]" [options]="item[5]"
+                                            (mouseup)="sliderEvent(item[1],item[3],item[4],item[0])"></ngx-slider>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div *ngFor='let item of filterArray; let j=index' (click)="closeRating()">
+                                <div *ngIf="item[0] === 'Bond LTV'" class="filtergrid">
+                                    <span> {{item[0]}}</span>
+                                    <input type="number" min="0" max="20" style="text-align: center;"
+                                        [(ngModel)]=item[3] (change)="sliderEvent(item[1],item[3],item[4],item[0])">
+                                    <span>to</span>
+                                    <input type="number" min="0" max="20" style="text-align: center;"
+                                        [(ngModel)]=item[4] (change)="sliderEvent(item[1],item[3],item[4],item[0])">
+                                    <span>%</span>
+                                    <div class="custom-slider" style="width: 97%;">
+                                        <ngx-slider [(value)]="item[3]" [(highValue)]="item[4]" [options]="item[5]"
+                                            (mouseup)="sliderEvent(item[1],item[3],item[4],item[0])"></ngx-slider>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--Bonds END-->
+
+                            <!--Funds START-->
+
+                            <div *ngFor='let item of annualMgmt; let j=index' (click)="closeRating()">
+                                <div *ngIf="item[2] === 'slider' && item[0] === 'Annual Mgmt Fee'" class="filtergrid">
+                                    <span> {{item[0]}}</span>
+                                    <input type="number" min="0" max="200" style="text-align: center;"
+                                        [(ngModel)]=item[3] (change)="sliderEvent(item[1],item[3],item[4],item[0])">
+                                    <span>to</span>
+                                    <input type="number" min="0" max="200" style="text-align: center;"
+                                        [(ngModel)]=item[4] (change)="sliderEvent(item[1],item[3],item[4],item[0])">
+                                    <span>%</span>
+                                    <div class="custom-slider" style="width: 97%;">
+                                        <ngx-slider [(value)]="item[3]" [(highValue)]="item[4]" [options]="item[5]"
+                                            (mouseup)="sliderEvent(item[1],item[3],item[4],item[0])"></ngx-slider>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div *ngFor='let item of entryArr; let j=index' (click)="closeRating()">
+                                <div *ngIf="item[2] === 'slider' && item[0] === 'Entry Load'" class="filtergrid">
+                                    <span> {{item[0]}}</span>
+                                    <input type="number" min="0" max="100" style="text-align: center;"
+                                        [(ngModel)]=item[3] (change)="sliderEvent(item[1],item[3],item[4],item[0])">
+                                    <span>to</span>
+                                    <input type="number" min="0" max="100" style="text-align: center;"
+                                        [(ngModel)]=item[4] (change)="sliderEvent(item[1],item[3],item[4],item[0])">
+                                    <span>%</span>
+                                    <div class="custom-slider" style="width: 97%;">
+                                        <ngx-slider [(value)]="item[3]" [(highValue)]="item[4]" [options]="item[5]"
+                                            (mouseup)="sliderEvent(item[1],item[3],item[4],item[0])"></ngx-slider>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div *ngFor='let item of filterArray; let j=index' (click)="closeRating()">
+                                <div *ngIf="item[2] === 'slider' && item[0] === 'Min.Initial Inv.'"
+                                    class="filter-grid-new" style="margin-bottom: 5px; margin-top: 5px;">
+                                    <span> {{item[0]}}</span>
+                                    <input #searchInput type="number" style="text-align: center;" [(ngModel)]=item[3]
+                                        (change)="sliderEvent(item[1],item[3],item[4],item[0])">
+                                    <span>to</span>
+                                    <input #searchInput type="number" style="text-align: center;" [(ngModel)]=item[4]
+                                        (change)="sliderEvent(item[1],item[3],item[4],item[0])">
+                                    <span> </span>
+                                    <div class="custom-slider" style="width: 97%;">
+                                        <!-- <ngx-slider [(value)]="item[3]" [(highValue)]="item[4]" [options]="item[5]"
+                                                    (mouseup)="sliderEvent(item[1],item[3],item[4])"></ngx-slider> -->
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div *ngFor='let item of filterArray; let j=index' (click)="closeRating()">
+                                <div *ngIf="item[2] === 'slider' && item[0] === 'LTV '" class="filtergrid">
+                                    <span> {{item[0]}}</span>
+                                    <input type="number" min="0" max="100" style="text-align: center;"
+                                        [(ngModel)]=item[3] (change)="sliderEvent(item[1],item[3],item[4],item[0])">
+                                    <span>to</span>
+                                    <input type="number" min="0" max="100" style="text-align: center;"
+                                        [(ngModel)]=item[4] (change)="sliderEvent(item[1],item[3],item[4],item[0])">
+                                    <span>%</span>
+                                    <div class="custom-slider" style="width: 97%;">
+                                        <ngx-slider [(value)]="item[3]" [(highValue)]="item[4]" [options]="item[5]"
+                                            (mouseup)="sliderEvent(item[1],item[3],item[4],item[0])"></ngx-slider>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!--Nifty Participation-->
+                            <div *ngFor='let item of filterArray; let j=index' (click)="closeRating()">
+                                <div *ngIf="showNifty && item[2] === 'slider' && item[0] !== 'Coupon'"
+                                    class="filtergrid">
+                                    <span> {{item[0]}}</span>
+                                    <input type="number" min="0" max="100" style="text-align: center;"
+                                        [(ngModel)]=item[3] (change)="sliderEvent(item[1],item[3],item[4],item[0])">
+                                    <span>to</span>
+                                    <input type="number" min="0" max="100" style="text-align: center;"
+                                        [(ngModel)]=item[4] (change)="sliderEvent(item[1],item[3],item[4],item[0])">
+                                    <span *ngIf="item[0] !== 'Strike (%) '">%</span>
+                                    <span *ngIf="item[0] === 'Strike (%) '"> </span>
+                                    <div class="custom-slider" style="width: 97%;">
+                                        <ngx-slider [(value)]="item[3]" [(highValue)]="item[4]" [options]="item[5]"
+                                            (mouseup)="sliderEvent(item[1],item[3],item[4],item[0])"></ngx-slider>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--Nifty Participation End-->
+
+                        </div>
+                    </div>
+                    <div *ngIf="filterLoader" class="align-center">
+                        <img [src]="isProd ? 'assets/loading_dots.gif':'../../../../assets/loading_dots.gif'"
+                            height="100px" width="100px">
+                        <!-- <div style="text-align: center; margin-top: 15%;">
+                            <div class="loader-center">
+                                <div class="multi-ripple">
+                                    <div></div>
+                                    <div></div>
+                                </div>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="main-container" [ngClass]="{'filters-open':hideSidebar}">
+
+            <div class="tabs-pages" *ngIf="activeTab">
+                <div class="tabs" (click)="changeProduct('EquityAutocallableNote',tabs.length)"
+                    [ngClass]="{'tab-active': showNifty===true}">SP</div>
+                <!-- <div class="tabs" *ngFor="let tab of tabs; let i = index;" (click)="changeProduct(tab['DATA_VALUE'],i)"
+                    [ngClass]="{'tab-active': activeTab[i]===true}">
+                    <div *ngIf="tab['DATA_VALUE'] === 'EquityAutocallableNote'">{{tab['Misc1']}}</div>
+                </div> -->
+            </div>
+            <span style="text-align: center;font-size:20px;color: var(--disabled);">{{msg}}</span>
+
+            <div class="container-body">
+                <div *ngIf='loader' class="loader-center">
+                    <div class="multi-ripple">
+                        <div></div>
+                        <div></div>
+                    </div>
+                    <!-- <img [src]="isProd ? 'assets/loading_dots.gif':'../../../../assets/loading_dots.gif'" height="60px"
+                        width="60px"> -->
+                </div>
+                <div *ngIf="!loader">
+
+                    <div *ngFor="let item of rmwdata; let i = index"
+                        [ngStyle]="{'min-width':selectedProduct === 'Bonds' ? '1450px' : 'auto' }">
+                        <div class="content-container">
+                            <app-workbench [data]="item" [product]="item.Template_Code" [templateID]="item.Template_ID" [index] = "i"
+                            [dataLength] = "rmwdata?.length">
+                            </app-workbench>
+                        </div>
+                    </div>
+                    <div class="pagination">
+                        <mat-paginator [length]="length" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
+                            (page)="pageEvents($event)" showFirstLastButtons>
+                        </mat-paginator>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

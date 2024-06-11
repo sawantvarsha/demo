@@ -1,0 +1,71 @@
+<div class="limit-usage-container">
+    <div class="table-data">
+        <table class="limit-usage">
+            <thead>
+                <th>Limit Usage</th>
+                <th>Approved</th>
+                <th>Utilized</th>
+                <th>Available Limit</th>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="data">{{nonLiquidDetails.CreditLimit}}</td>
+                    <td class="data right">{{nonLiquidDetails.ApprovedLimit | number:'1.2-2'}}</td>
+                    <td class="data right">{{nonLiquidDetails.LimitUsed | number:'1.2-2'}}</td>
+                    <td class="data right">{{nonLiquidDetails.AvailableLimit | number:'1.2-2'}}</td>
+                </tr>
+                <tr>
+                    <td class="data">{{liquidDetails.CreditLimit}}</td>
+                    <td class="data right">{{liquidDetails.ApprovedLimit | number:'1.2-2'}}</td>
+                    <td class="data right">{{liquidDetails.LimitUsed | number:'1.2-2'}}</td>
+                    <td class="data right">{{liquidDetails.AvailableLimit | number:'1.2-2'}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="limit-usage">
+            <thead>
+                <th>Limit Usage</th>
+                <th>Collateral</th>
+                <th>Exposure</th>
+                <th>Loanable</th>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="title left">{{nonLiquidDetails.CreditLimit}}</td>
+                    <td class="data right">{{nonLiquidDetails.Collateral | number:'1.2-2'}}</td>
+                    <td class="data right">{{nonLiquidDetails.Exposure | number:'1.2-2'}}</td>
+                    <td class="data right">{{nonLiquidDetails.Loanable | number:'1.2-2'}}</td>
+                </tr>
+                <tr>
+                    <td class="title left">{{liquidDetails.CreditLimit}}</td>
+                    <td class="data right">{{liquidDetails.Collateral | number:'1.2-2'}}</td>
+                    <td class="data right">{{liquidDetails.Exposure | number:'1.2-2'}}</td>
+                    <td class="data right">{{liquidDetails.Loanable | number:'1.2-2'}}</td>
+                </tr>
+                <tr>
+                    <td class="title left">Total</td>
+                    <td class="data right">{{Total.Collateral | number:'1.2-2'}}</td>
+                    <td class="data right">{{Total.Exposure | number:'1.2-2'}}</td>
+                    <td class="data right">{{Total.Loanable | number:'1.2-2'}}</td>
+                </tr>
+                <tr>
+                    <td class="title left">Margin Status</td>
+                    <td class="data center">{{ShortfallStatus}}</td>
+                </tr>
+                <tr>
+                    <td class="title left">Shortfall Amount</td>
+                    <td class="data right">{{ShortfallAmount | number:'1.2-2'}}</td>
+                </tr>
+                <tr>
+                    <td class="title left">Shortfall Since</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="limit-usage-graph-container">
+        <span class="limit-usage-label">Limit Utilization:</span>
+        <!-- <google-chart *ngIf="chart.data.length" #limitUsageChart [id]="'chart-' + id" [title]="chart.title"
+            [type]="chart.type" [data]="chart.data" [options]="chart.options" [columnNames]="chart.columnNames">
+        </google-chart> -->
+    </div>
+</div>

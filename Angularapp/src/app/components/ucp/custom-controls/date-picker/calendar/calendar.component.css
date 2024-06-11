@@ -1,0 +1,130 @@
+.calendar-container {
+    display: grid;
+    grid-template-columns: 30px repeat(3, 1fr) 30px;
+    /* grid-template-rows: 15% 75% ; */
+    grid-gap: 5px;
+    background-color: #ffffff;
+    border-radius: 5px;
+    box-shadow: 0px 0px 4px #666;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    position: absolute;
+    top: 30px;
+    z-index: 20;
+    width: 150%;
+    /* left: -40px; */
+}
+
+.middle {
+    display: grid;
+    align-items: center;
+    justify-content: center;
+}
+
+.dates-container {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    grid-gap: 0px;
+    grid-column: 1 / -1;
+}
+
+.dropdown-container {
+    position: relative;
+    width: 100%;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.dropdown,
+.dropdown-options {
+    position: absolute;
+}
+
+.dropdown {
+    width: 60%;
+}
+
+.dropdown-options {
+    width: calc(100% + 10px);
+    border: 1px solid gray;
+}
+
+.dropdown-options {
+    top: 32px;
+    height: 200px;
+    overflow: auto;
+    background: white;
+}
+
+.dropdown-option {
+    padding: 3px;
+    cursor: pointer;
+}
+
+.dropdown-option:hover,
+.dropdown-option:focus {
+    background-color: lightgrey;
+}
+
+.dates-container {
+    border-bottom: 1px solid lightgrey;
+}
+
+.days {
+    background-color: lightgray;
+    width: 100%;
+}
+
+.dates {
+    cursor: pointer;
+    /* padding: 5px; */
+    width: 100%;
+    height: 30px;
+    /* border: 1px solid lightgray; */
+    border-bottom: none;
+}
+
+.dates:hover {
+    background-color: lightgrey;
+}
+
+.dates .date,
+.days .day,
+.selected-date .date {
+    text-align: right;
+    padding: 0px 5px;
+}
+
+.calendar-container .dropdown-container .dropdown {
+    width: 40px;
+    height: 25px;
+    padding: 0 3px;
+    border: 1px solid #ddd;
+    cursor: pointer;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 28px;
+}
+
+.selected-date {
+    background-color: lightgrey;
+}
+
+.btn {
+    height: 27px;
+    padding: 5px;
+    width: 100%;
+    cursor: pointer;
+    /* background-image: linear-gradient(to bottom, white, lightgrey); */
+    border: 1px solid #dddddd;
+    border-radius: 5px;
+}
+
+.btn:active {
+    background-image: linear-gradient(to top, white, lightgrey);
+}
+
+.link {
+    cursor: pointer;
+}

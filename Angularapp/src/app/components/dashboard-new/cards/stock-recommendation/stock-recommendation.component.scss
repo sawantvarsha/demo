@@ -1,0 +1,139 @@
+.fullName{
+    color: var(--gray) !important;
+}
+.stocks-list ul li {
+    width: 100%;
+    padding-bottom: 8px;
+    // border-bottom: 1px solid #EEE;
+}
+
+.stocks-list ul :last-child {
+    border-bottom: none;
+}
+.stocks-list ul li:last-child {
+    border-bottom: none;
+}
+.stocks-list ul li div {
+    // padding: 9px 1px;
+}
+
+.stocks-list ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    overflow: auto;
+}
+
+.item-prevr{
+    padding-bottom: 10px;
+    padding-right: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    border-left: 2px solid var(--red);
+    padding-left: 7px;
+    border-radius: 3px;
+    padding-top:10px;
+}
+.item-prevg{
+    padding-bottom: 10px;
+    padding-right: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    border-left: 2px solid var(--green-text);
+    padding-left: 7px;
+    border-radius: 3px;
+    padding-top:10px;
+}
+.stocks-list {
+    padding: 0px 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.underlyings-card {
+    background-color: var(--light-gray);
+    padding: 3px 7px;
+    border-radius: 4px;
+    font-size: var(--12);
+    font-weight: 500;
+}
+
+.Hlink a {
+    color: var(--blue-color);
+}
+
+label {
+    color: var(--text);
+}
+
+span {
+    color: var(--gray);
+}
+
+.Save-requests {
+    color: #39C0C3;
+    font-weight: var(--normal);
+    font-size: var(--14);
+}
+.details{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color:var(--light-gray);
+
+}
+.details label{
+    color: var(--gray);
+
+}
+.details span{
+    color: var(--text);
+    font-weight: var(--bold);
+    
+}
+.details-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+}
+.labels1 {
+    letter-spacing: 0px;
+    
+    font-weight: var(--normal);
+    font-size: var(--14);
+    color: var(--label) !important;
+  
+}
+.buyVol {
+    background-color: green;
+    width: 7em;
+}
+.sellVol {
+    background-color: red;
+    width: 7em;
+}
+.details-container-first-child {
+    min-width: 80px;
+}
+.sellvol{
+    cursor: pointer;
+    width: 100px;
+    height: 30px;
+    border-radius: 5px;
+    color: var(--red);
+    background: rgb(var(--rgbred), 0.15);
+    border: red;
+}
+.buyvol{
+    cursor: pointer;
+    width: 100px;
+    height: 30px;
+    border-radius: 5px;
+    color: var(--green-text);
+    background: rgb(var(--rgbgreen),0.15);
+    border: green;
+}

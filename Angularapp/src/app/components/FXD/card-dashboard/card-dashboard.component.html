@@ -1,0 +1,43 @@
+<div *ngFor="let item of ProductCards">
+    <ng-container [ngSwitch]='item.name'>
+      <ng-template [ngSwitchCase]="'Vanilla'" *ngIf="item.activeYN">
+        <app-vanilla [Product_ID]="item.Product_Id" [Product_Code]="item.Product_Code" [Product_Name]="item.Product_Name" 
+        [Mode]="Mode" [UserGroup]="UserGroup" [PricingMode]="PricingMode" [AppMode]="AppMode" [ViewMode]="ViewMode">
+        </app-vanilla>
+      </ng-template>
+      <ng-template [ngSwitchCase]="'Barrier'" *ngIf="item.activeYN">
+        <app-barrier [Product_ID]="item.Product_Id" [Product_Code]="item.Product_Code"
+          [Product_Name]="item.Product_Name" [Mode]="Mode" [UserGroup]="UserGroup" [PricingMode]="PricingMode"
+          [AppMode]="AppMode">
+        </app-barrier>
+      </ng-template>
+      <ng-template [ngSwitchCase]="'AQ/DQ'" *ngIf="item.activeYN">
+        <app-aqdq [Product_ID]="item.Product_Id" [Product_Code]="item.Product_Code" [Product_Name]="item.Product_Name"
+          [Mode]="Mode" [UserGroup]="UserGroup" [PricingMode]="PricingMode" [AppMode]="AppMode" [ViewMode]="ViewMode"></app-aqdq>
+      </ng-template>
+      <ng-template [ngSwitchCase]="'TRF'" *ngIf="item.activeYN">
+        <app-trf [Product_ID]="item.Product_Id" [Product_Code]="item.Product_Code" [Product_Name]="item.Product_Name"
+          [Mode]="Mode" [UserGroup]="UserGroup" [PricingMode]="PricingMode" [AppMode]="AppMode"></app-trf>
+      </ng-template>
+      <ng-template [ngSwitchCase]="'Pivot'" *ngIf="item.activeYN">
+        <app-pivot [Product_ID]="item.Product_Id" [Product_Code]="item.Product_Code"
+          [Product_Name]="item.Product_Name" [Mode]="Mode" [UserGroup]="UserGroup" [PricingMode]="PricingMode"
+          [AppMode]="AppMode">
+        </app-pivot>
+      </ng-template>
+      <ng-template [ngSwitchCase]="'Strategies'" *ngIf="item.activeYN">
+        <app-strategy [Product_ID]="item.Product_Id" [Product_Code]="item.Product_Code"
+          [Product_Name]="item.Product_Name" [Mode]="Mode" [UserGroup]="UserGroup" [PricingMode]="PricingMode"
+          [AppMode]="AppMode">
+        </app-strategy>
+      </ng-template>
+      <ng-template [ngSwitchCase]="'DCI'" *ngIf="item.activeYN">
+        <app-dci [Product_ID]="item.Product_Id" [Product_Code]="item.Product_Code" [Product_Name]="item.Product_Name"
+          [Mode]="Mode" [UserGroup]="UserGroup" [PricingMode]="PricingMode" [AppMode]="AppMode"></app-dci>
+      </ng-template>
+      <ng-template [ngSwitchCase]="'Digital'" *ngIf="item.activeYN">
+        <app-digital [Product_ID]="item.Product_Id" [Product_Code]="item.Product_Code" [Product_Name]="item.Product_Name"
+          [Mode]="Mode" [UserGroup]="UserGroup" [PricingMode]="PricingMode" [AppMode]="AppMode"></app-digital>
+      </ng-template>
+    </ng-container>
+  </div>

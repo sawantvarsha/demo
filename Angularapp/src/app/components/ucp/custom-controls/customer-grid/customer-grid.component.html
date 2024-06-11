@@ -1,0 +1,12 @@
+<td (click)="decTableRowCount_confirmpopup()" *ngIf="sUCPMode == 'UCPQEN' || sUCPMode == 'UCPWFL' || sUCPMode == 'DLSADD'">
+   <button  style="width: 30px; vertical-align: bottom;" class="custom-tabs-button UCPMatButton" [ngClass]="{disabled: disabled}" [disabled]="disabled">-</button>
+</td>
+<td (click)="btn_pool_add_remove()" *ngIf="sUCPMode != 'UCPQEN' && sUCPMode != 'UCPWFL' && sUCPMode != 'DLSADD'">
+  <button  style="width: 30px;" class="custom-tabs-button" [ngClass]="{disabled: btnPoolReadonly}" [disabled]="btnPoolReadonly">{{btnPooltext}}</button>
+</td>
+<td *ngFor="let control of data" class="customTabTdStyle" [ngStyle]="{'display': control.visible === 'Y' ? '' : 'none'}">
+  <ng-container>
+    <app-customer-grid-field-templates class="mandate-fix" [sUCPMode]="sUCPMode" (CustomerGridChangeChange)="CustomerGridValueChange(control)" (Row_type)="setrow_type($event)"[dropdowns]="dropdowns" [index]="index" [template]="template" [selectedBookingModel]="selectedBookingModel" [searchArrays]="searchArrays" [shareArray]="shareArray" [control]="control"></app-customer-grid-field-templates>
+  </ng-container>
+</td>
+

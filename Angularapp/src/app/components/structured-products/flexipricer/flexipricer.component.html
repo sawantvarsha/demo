@@ -1,0 +1,46 @@
+<div class="page-navigation" [ngClass]="">
+    <app-svg-icons
+      *ngIf="!IsLandingPage"
+      class="back-button"
+      [icon]="'back-button'"
+      [width]="'40'"
+      [height]="'40'"
+      [fill]="'var(--headers)'"
+      (click)="closeProduct()"
+    ></app-svg-icons>
+    <div class="page-title">{{ pageTitle }}</div>
+  </div>
+
+  <div class="tabs-container">
+    <div *ngIf="subpages.length > 0">
+      <div style="border-bottom: 1px solid var(--inactive-tab-border)" >
+        <div class="tabs-pages">
+          <ng-container *ngFor="let item of subpages">
+            <div class="tabs" *ngIf="item.displayYN" [ngClass]="{ 'tab-active': item.activeYN }" (click)="fnchangeProduct(item.name)">
+              {{ item.name }}
+            </div>
+          </ng-container>
+        </div>
+      </div>
+      
+      <div *ngFor="let item of subpages">
+        <ng-container [ngSwitch]="item.name">
+          <ng-template [ngSwitchCase]="'ELN'" *ngIf="item.activeYN">
+            <app-eln-flx [RequestMode]="'Simple'"></app-eln-flx>
+          </ng-template>
+        </ng-container>
+      </div>
+    </div>
+  
+    <div *ngIf="subpages.length === 0">
+      <div class="loaderdiv">
+        <div class="loader-center">
+          <div class="multi-ripple">
+            <div></div>
+            <div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

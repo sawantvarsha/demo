@@ -1,0 +1,61 @@
+.overlay_grey {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    height: 250%;
+    width: 250%;
+    z-index: 1;
+    background-color: #cececea2;
+  }
+
+  .loader{
+    position: absolute;
+    margin-left: 40%; 
+    z-index: 99;
+  }
+
+
+
+.tbl-container {
+  width: 80%;
+  /* min-width: 1300px;
+  overflow-x: auto; */
+  white-space: nowrap;
+  padding-left: 7px;
+}
+
+.tbl-container-filter{
+  width: 60%;
+}
+  
+tr{
+  height: 55px !important;
+}
+
+.middle {
+  display: block !important;
+}
+    
+.rowsperpage_padding {
+  padding-left: 11px;
+  padding-right: 8px;
+}
+
+.paginarorBG {
+  background-color: var(--ucp-input-bg);
+  height: 48px !important;
+}
+
+.mat-header-row{
+  height: 48px !important;
+}
+
+.sch_mat_underline {
+  display: block !important;
+}
+
+div.mat-form-field-underline{
+  display: block !important;
+}

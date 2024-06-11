@@ -1,0 +1,8 @@
+{
+    "production": false,
+    "interfaceURL": "",
+    "FXD_RM_VisibleButtons": ["Spread","Email the Quote", "View Schedule", "Reset","Route to dealer"],
+    "FXD_Dealer_VisibleButtons": ["Spread", "Email the Quote", "View Schedule", "Reset"],
+    "FXD_IA_VisibleButtons": ["Spread","Email the Quote", "View Schedule", "Reset","Save Trade Idea","Route to dealer"],
+    "FXD_FxAdvisory_VisibleButtons": ["Spread","Email the Quote", "View Schedule", "Reset","Save Trade Idea"]
+}

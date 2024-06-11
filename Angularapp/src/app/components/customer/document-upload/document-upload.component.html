@@ -1,0 +1,35 @@
+<div class="page-title module">Document Upload</div>
+
+<div class="filter-container">
+  <div class="filter-row" style="margin-bottom: 35px;">
+    <div class="middle" style="width: max-content;">Corporate Action</div>
+    <div class="middle">
+
+      <select name="docUploadDD" id="docUploadDD" [(ngModel)]="docUploadDD" (change)="selectFunctionDD();">
+        <option *ngFor="let docUpload of dropDownList" [value]="docUpload">
+          {{docUpload}}</option>
+      </select>
+
+    </div>
+  </div>
+  <div style="grid-column: 2;">
+    <button class="button btn" value="Buy" (click)="uploadDoc()">Load</button>
+  </div>
+  <div *ngFor="let file of fileChosen" style="grid-column: 1;">
+    <div *ngIf="!file">
+
+      <div class="form-group">
+
+        <input type="file" id="file" class="custom-file-input" (change)="fileSelectionFunction($event)">
+
+
+        <!-- (change)="handleFileInput($event.target.files)"> -->
+
+
+        <!-- <button class="button btn" value="Buy" (click)="dummyFunction()">Load</button> -->
+      </div>
+
+    </div>
+  </div>
+
+</div>

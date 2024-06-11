@@ -1,0 +1,640 @@
+<div class="component">
+  <div class="page-title">Mutual Fund Compare</div>
+  <div class="page-section">
+    <div class="comparison-grid-top">
+      <div class="expandall-control">
+        <button
+          class="button"
+          *ngIf="SelectedMFBucket.length > 0"
+          (click)="fnExpandAccordian()"
+        >
+          {{ this.ExpandOrCollapsebtn.value }}
+        </button>
+      </div>
+      <div class="top-section">
+        <div
+          class="add-fund"
+          (click)="addfund(1)"
+          (keydown.enter)="addfund(1)"
+          *ngIf="!addfundflag[1]"
+          tabindex="1"
+        >
+          <img
+            [src]="
+              isProd
+                ? 'assets/MFCompare/add-circle.png'
+                : './../../assets/MFCompare/add-circle.png'
+            "
+            alt="img"
+          />
+          <p>Add a fund</p>
+        </div>
+        <div class="search-fund" *ngIf="addfundflag[1]">
+          <div class="cancelbtn" *ngIf="this.SelectedMFBucket.length > 0">
+            <div class="flex-spacer"></div>
+            <img
+              [src]="
+                isProd
+                  ? 'assets/MFCompare/close.png'
+                  : './../../assets/MFCompare/close.png'
+              "
+              class="close"
+              (click)="DeleteMFFromBucket(0)"
+              tabindex="2"
+            />
+          </div>
+
+          <div
+            *ngIf="
+              this.SelectedMFBucket.length > 0;
+              then ShowFirstMF;
+              else SearchFirstMF
+            "
+          ></div>
+          <ng-template #ShowFirstMF>
+            <span class="boldtxt"> {{ this.SelectedMFBucket[0].Name }}</span>
+            <button
+              class="orderbtn button"
+              (click)="sendDataforBookOrder(this.SelectedMFBucket[0])"
+              tabindex="3"
+            >
+              Book Order
+            </button>
+          </ng-template>
+          <ng-template #SearchFirstMF>
+            <input
+              id="searchfundcontrol1"
+              class="search-box MFSearchInput"
+              type="text"
+              placeholder="Search funds by code or name"
+              [(ngModel)]="FundName"
+              (keydown.enter)="SelectMFOnEnter($event)"
+              (keydown.ArrowUp)="
+                selectedBIndex = cfs.moveUpSelection($event, selectedBIndex)
+              "
+              (keydown.ArrowDown)="
+                selectedBIndex = cfs.moveDownSelection($event, selectedBIndex)
+              "
+            />
+            <div class="SelectorBox" *ngIf="FundName">
+              <span class="search-Box-title">Search Result</span>
+              <a
+                *ngFor="
+                  let MF of MFList | filterFunds: FundName:undefined;
+                  let i = index
+                "
+              >
+                <div
+                  *ngIf="MF"
+                  [attr.data-MFData]="MF['Code']"
+                  [ngClass]="{ HoverSuggestion: i === selectedBIndex }"
+                  (keydown.enter)="SelectMFOnEnter($event)"
+                  (click)="InsertMFinBucket(MF)"
+                >
+                  <label>{{ MF["Name"] }}</label>
+                </div>
+              </a>
+            </div>
+          </ng-template>
+        </div>
+      </div>
+
+      <div class="top-section" *ngIf="this.SelectedMFBucket.length > 0">
+        <div
+          class="add-fund"
+          (click)="addfund(2)"
+          (keydown.enter)="addfund(2)"
+          *ngIf="!addfundflag[2]"
+          tabindex="4"
+        >
+          <img
+            [src]="
+              isProd
+                ? 'assets/MFCompare/add-circle.png'
+                : './../../assets/MFCompare/add-circle.png'
+            "
+            alt="img"
+          />
+          <p>Add a fund</p>
+        </div>
+        <div class="search-fund" *ngIf="addfundflag[2]">
+          <div class="cancelbtn" *ngIf="this.SelectedMFBucket.length > 1">
+            <div class="flex-spacer"></div>
+            <img
+              [src]="
+                isProd
+                  ? 'assets/MFCompare/close.png'
+                  : './../../assets/MFCompare/close.png'
+              "
+              class="close"
+              (click)="DeleteMFFromBucket(1)"
+              tabindex="5"
+            />
+          </div>
+
+          <div
+            *ngIf="
+              this.SelectedMFBucket.length > 1;
+              then ShowSecondMF;
+              else SearchSecondMF
+            "
+          ></div>
+          <ng-template #ShowSecondMF>
+            <span class="boldtxt"> {{ this.SelectedMFBucket[1].Name }}</span>
+            <button
+              class="orderbtn button"
+              (click)="sendDataforBookOrder(this.SelectedMFBucket[1])"
+              tabindex="6"
+            >
+              Book Order
+            </button>
+          </ng-template>
+          <ng-template #SearchSecondMF>
+            <input
+              id="searchfundcontrol2"
+              class="search-box MFSearchInput"
+              type="text"
+              placeholder="Search funds by code or name"
+              [(ngModel)]="FundName"
+              (keydown.enter)="SelectMFOnEnter($event)"
+              (keydown.ArrowUp)="
+                selectedBIndex = cfs.moveUpSelection($event, selectedBIndex)
+              "
+              (keydown.ArrowDown)="
+                selectedBIndex = cfs.moveDownSelection($event, selectedBIndex)
+              "
+            />
+            <div class="SelectorBox" *ngIf="FundName">
+              <span class="search-Box-title">Search Result</span>
+              <a
+                *ngFor="
+                  let MF of MFList | filterFunds: FundName:undefined;
+                  let i = index
+                "
+                (keydown)="ChangeIndex($event)"
+              >
+                <div
+                  *ngIf="MF"
+                  [attr.data-MFData]="MF['Code']"
+                  [ngClass]="{ HoverSuggestion: i === selectedBIndex }"
+                  (keydown.enter)="SelectMFOnEnter($event)"
+                  (click)="InsertMFinBucket(MF)"
+                >
+                  <label>{{ MF["Name"] }}</label>
+                </div>
+              </a>
+            </div>
+          </ng-template>
+        </div>
+      </div>
+      <div class="top-section" *ngIf="this.SelectedMFBucket.length > 1">
+        <div
+          class="add-fund"
+          (click)="addfund(3)"
+          (keydown.enter)="addfund(3)"
+          *ngIf="!addfundflag[3]"
+          tabindex="7"
+        >
+          <img
+            [src]="
+              isProd
+                ? 'assets/MFCompare/add-circle.png'
+                : './../../assets/MFCompare/add-circle.png'
+            "
+            alt="img"
+          />
+          <p>Add a fund</p>
+        </div>
+        <div class="search-fund" *ngIf="addfundflag[3]">
+          <div class="cancelbtn" *ngIf="this.SelectedMFBucket.length > 2">
+            <div class="flex-spacer"></div>
+            <img
+              [src]="
+                isProd
+                  ? 'assets/MFCompare/close.png'
+                  : './../../assets/MFCompare/close.png'
+              "
+              class="close"
+              (click)="DeleteMFFromBucket(2)"
+              tabindex="8"
+            />
+          </div>
+
+          <div
+            *ngIf="
+              this.SelectedMFBucket.length > 2;
+              then ShowThirdMF;
+              else SearchThirdMF
+            "
+          ></div>
+          <ng-template #ShowThirdMF>
+            <span class="boldtxt"> {{ this.SelectedMFBucket[2].Name }}</span>
+            <button
+              class="orderbtn button"
+              (click)="sendDataforBookOrder(this.SelectedMFBucket[2])"
+              tabindex="9"
+            >
+              Book Order
+            </button>
+          </ng-template>
+          <ng-template #SearchThirdMF>
+            <input
+              id="searchfundcontrol3"
+              class="search-box MFSearchInput"
+              type="text"
+              placeholder="Search funds by code or name"
+              [(ngModel)]="FundName"
+              (keydown.enter)="SelectMFOnEnter($event)"
+              (keydown.ArrowUp)="
+                selectedBIndex = cfs.moveUpSelection($event, selectedBIndex)
+              "
+              (keydown.ArrowDown)="
+                selectedBIndex = cfs.moveDownSelection($event, selectedBIndex)
+              "
+            />
+            <div class="SelectorBox" *ngIf="FundName">
+              <span class="search-Box-title">Search Result</span>
+              <a
+                *ngFor="
+                  let MF of MFList | filterFunds: FundName:undefined;
+                  let i = index
+                "
+                (keydown)="ChangeIndex($event)"
+              >
+                <div
+                  *ngIf="MF"
+                  [attr.data-MFData]="MF['Code']"
+                  [ngClass]="{ HoverSuggestion: i === selectedBIndex }"
+                  (keydown.enter)="SelectMFOnEnter($event)"
+                  (click)="InsertMFinBucket(MF)"
+                >
+                  <label>{{ MF["Name"] }}</label>
+                </div>
+              </a>
+            </div>
+          </ng-template>
+        </div>
+      </div>
+      <div class="top-section" *ngIf="this.SelectedMFBucket.length > 2">
+        <div
+          class="add-fund"
+          (click)="addfund(4)"
+          (keydown.enter)="addfund(4)"
+          *ngIf="!addfundflag[4]"
+          tabindex="10"
+        >
+          <img
+            [src]="
+              isProd
+                ? 'assets/MFCompare/add-circle.png'
+                : './../../assets/MFCompare/add-circle.png'
+            "
+            alt="img"
+          />
+          <p>Add a fund</p>
+        </div>
+        <div class="search-fund" *ngIf="addfundflag[4]">
+          <div class="cancelbtn" *ngIf="this.SelectedMFBucket.length > 3">
+            <div class="flex-spacer"></div>
+            <img
+              [src]="
+                isProd
+                  ? 'assets/MFCompare/close.png'
+                  : './../../assets/MFCompare/close.png'
+              "
+              class="close"
+              (click)="DeleteMFFromBucket(3)"
+              tabindex="11"
+            />
+          </div>
+
+          <div
+            *ngIf="
+              this.SelectedMFBucket.length > 3;
+              then ShowFourthMF;
+              else SearchFourthMF
+            "
+          ></div>
+          <ng-template #ShowFourthMF>
+            <span class="boldtxt"> {{ this.SelectedMFBucket[3].Name }}</span>
+            <button
+              class="orderbtn button"
+              (click)="sendDataforBookOrder(this.SelectedMFBucket[3])"
+              tabindex="12"
+            >
+              Book Order
+            </button>
+          </ng-template>
+          <ng-template #SearchFourthMF>
+            <input
+              id="searchfundcontrol4"
+              class="search-box MFSearchInput"
+              type="text"
+              placeholder="Search funds by code or name"
+              [(ngModel)]="FundName"
+              (keydown.enter)="SelectMFOnEnter($event)"
+              (keydown.ArrowUp)="
+                selectedBIndex = cfs.moveUpSelection($event, selectedBIndex)
+              "
+              (keydown.ArrowDown)="
+                selectedBIndex = cfs.moveDownSelection($event, selectedBIndex)
+              "
+            />
+            <div class="SelectorBox" *ngIf="FundName">
+              <span class="search-Box-title">Search Result</span>
+              <a
+                *ngFor="
+                  let MF of MFList | filterFunds: FundName:undefined;
+                  let i = index
+                "
+                (keydown)="ChangeIndex($event)"
+              >
+                <div
+                  *ngIf="MF"
+                  [attr.data-MFData]="MF['Code']"
+                  [ngClass]="{ HoverSuggestion: i === selectedBIndex }"
+                  (keydown.enter)="SelectMFOnEnter($event)"
+                  (click)="InsertMFinBucket(MF)"
+                >
+                  <label>{{ MF["Name"] }}</label>
+                </div>
+              </a>
+            </div>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+
+    <!-- Performave Overview -->
+    <div class="section">
+      <div class="accordion" (click)="fnToggleGraph(); toggleAccordian('1')">
+        <h3>Performance Overview</h3>
+        <div class="flex-spacer"></div>
+        <div
+          class="arrow"
+          [ngClass]="{
+            active: this.toggleSection.performanceOverview.showorhide
+          }"
+        ></div>
+      </div>
+      <div
+        class="comparison-grid"
+        *ngIf="this.toggleSection.performanceOverview.showorhide"
+      >
+        <div class="comapring-parameters"></div>
+        <div
+          class="compare-fund"
+          *ngFor="let item of this.SelectedMFBucket; index as i"
+        >
+          <div class="compare-fund-details">
+            <div class="graph-actions">
+              <div class="graph-actions-label">
+                <p style="color: var(--heading-label); font-size: 14px">NAV</p>
+                <p style="color: var(--inline-label); font-size: 20px">
+                  {{ item.AskNav[0] | number: "1.4-4" || "-" }}
+                </p>
+              </div>
+            </div>
+            <div class="graphSection" *ngIf="MFChartData.length > 0">
+              <!-- <canvas baseChart [id]="'chart'+i" height="300" width="200" [chartType]="'line'" [datasets]="MFChartData[i]"
+                [labels]="MFChartLabels[i]" [options]="chartOptions" [legend]="true" [colors]="Chartcolor"
+                *ngIf="MFChartData[i]">
+              </canvas> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Fund Overview -->
+    <div class="section">
+      <div class="accordion" (click)="toggleAccordian('2')">
+        <h3>Fund Overview</h3>
+        <div class="flex-spacer"></div>
+        <div
+          class="arrow"
+          [ngClass]="{ active: this.toggleSection.fundOverview.showorhide }"
+        ></div>
+      </div>
+      <div
+        class="comparison-grid"
+        *ngIf="this.toggleSection.fundOverview.showorhide"
+      >
+        <div class="comapring-parameters">
+          <div class="parameters">
+            <div>NAV</div>
+            <div>CCY</div>
+            <div>LTV</div>
+            <div>Asset Class</div>
+            <div>Category</div>
+            <div>Fund Size</div>
+          </div>
+        </div>
+
+        <div class="compare-fund" *ngFor="let item of this.SelectedMFBucket">
+          <div class="compare-fund-details">
+            <div class="darkgreytxt">
+              {{ item.AskNav[0] | number: "1.4-4" || "-" }}
+            </div>
+            <div class="Ccy">
+              <div class="Ccyimg">
+                <img style="width: 30px" [src]="item.CcyFlagPath" />
+              </div>
+              <div>
+                {{ item.Ccy || "-" }}
+              </div>
+            </div>
+            <div class="darkgreytxt">
+              {{ item.LTV[0] | number: "1.2-2" || "0"
+              }}<span class="percentageSign">%</span>
+            </div>
+            <div>
+              {{ item.AssetClass[0] || "-" }}
+            </div>
+            <div>
+              {{ item.Category || "-" }}
+            </div>
+            <div class="darkgreytxt">
+              {{ item.FundSize[0] | number: "1.2-2" || "-" }}
+            </div>
+          </div>
+          <!-- <div class="compare-fund">f</div>
+      <div class="compare-fund">d</div>
+      <div class="compare-fund">d</div> -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Key Metrics -->
+    <div class="section">
+      <div class="accordion" (click)="toggleAccordian('3')">
+        <h3>Key Metrics</h3>
+        <div class="flex-spacer"></div>
+        <div
+          class="arrow"
+          [ngClass]="{ active: this.toggleSection.keyMetrics.showorhide }"
+        ></div>
+      </div>
+      <div
+        class="comparison-grid"
+        *ngIf="this.toggleSection.keyMetrics.showorhide"
+      >
+        <div class="comapring-parameters">
+          <div class="parameters">
+            <div>Annual Management Fee</div>
+            <div>Entry Load</div>
+            <div>Exit Load</div>
+            <div>Switching Fees</div>
+            <div>Sales Charge</div>
+            <div>Date Of Inception</div>
+            <div class="min-initial-amount-label">
+              Min Initial Investment (Lumpsum)
+            </div>
+            <div>Min SIP Amount</div>
+            <div>Min SWP Amount</div>
+            <div>Risk Rating</div>
+          </div>
+        </div>
+        <div class="compare-fund" *ngFor="let item of this.SelectedMFBucket">
+          <div class="compare-fund-details">
+            <div>
+              {{ item.AnnualFees[0].split(" ")[0] | number: "1.2-2" || "-"
+              }}<span class="percentageSign">%</span>
+            </div>
+            <div>
+              {{ item.EntryLoad[0].split(" ")[0] | number: "1.2-2" || "-"
+              }}<span class="percentageSign">%</span>
+            </div>
+            <div>
+              {{ item.ExitLoad[0].split(" ")[0] | number: "1.2-2" || "-"
+              }}<span class="percentageSign">%</span>
+            </div>
+
+            <div>
+              {{ item.SwitchingFee[0].split(" ")[0] | number: "1.2-2" || "-"
+              }}<span class="percentageSign">%</span>
+            </div>
+            <div>
+              {{ item.TradeFee[0].split(" ")[0] | number: "1.2-2" || "-"
+              }}<span class="percentageSign">%</span>
+            </div>
+            <div>
+              {{ item.InceptionDate | date: "dd-MMM-yyyy" || "-" }}
+            </div>
+            <div class="min-inital-amount-value">
+              {{ item.Min_Inv_Amt[0] | number: "1.2-2" || "-" }}
+            </div>
+            <div>
+              {{ item.MinSIPAmount[0] | number: "1.2-2" || "-" }}
+            </div>
+            <div>
+              {{ item.MinSWPAmount[0] | number: "1.2-2" || "-" }}
+            </div>
+            <div class="risk-rating-chart">
+              <div
+                *ngFor="let rating of RiskRating; let i = index"
+                [ngClass]="{ ratingdark: rating === item.Rating }"
+              >
+                {{ rating }}
+              </div>
+            </div>
+            <div class="arrow-line">
+              <div class="arrow-img"></div>
+              <div class="risk-label">
+                <span style="text-align: start">Low Risk</span>
+                <span style="text-align: end">High Risk</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Asset Information -->
+    <div class="section">
+      <div class="accordion" (click)="toggleAccordian('4')">
+        <h3>Asset Information</h3>
+        <div class="flex-spacer"></div>
+        <div
+          class="arrow"
+          [ngClass]="{ active: this.toggleSection.assetInformation.showorhide }"
+        ></div>
+      </div>
+      <div
+        class="comparison-grid"
+        *ngIf="this.toggleSection.assetInformation.showorhide"
+      >
+        <div class="comapring-parameters">
+          <div class="parameters">
+            <div>Geographical Region</div>
+            <div>Specialist Sector</div>
+          </div>
+        </div>
+        <div class="compare-fund" *ngFor="let item of this.SelectedMFBucket">
+          <div class="compare-fund-details">
+            <div>
+              {{ item.GeoRegion[0] || "-" }}
+            </div>
+            <div>
+              {{ item.SpecialistSector[0] || "-" }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- About Fund -->
+    <div class="section">
+      <div class="accordion" (click)="toggleAccordian('5')">
+        <h3>About Fund</h3>
+        <div class="flex-spacer"></div>
+        <div
+          class="arrow"
+          [ngClass]="{ active: this.toggleSection.aboutFund.showorhide }"
+          (click)="toggleAccordian($event)"
+        ></div>
+      </div>
+      <div
+        class="comparison-grid"
+        *ngIf="this.toggleSection.aboutFund.showorhide"
+      >
+        <div class="comapring-parameters">
+          <div class="parameters">
+            <div>Fund Code</div>
+            <div>ISIN</div>
+            <div>Fund Umbrella</div>
+            <div>Fund Manager</div>
+            <div>Factsheet</div>
+          </div>
+        </div>
+        <div
+          class="compare-fund"
+          style="margin-bottom: 10px"
+          *ngFor="let item of this.SelectedMFBucket"
+        >
+          <!-- added by vedika -->
+          <div class="compare-fund-details parameters2">
+            <div>
+              {{ item.Code || "-" }}
+            </div>
+            <div>
+              {{ item.ISIN || "-" }}
+            </div>
+            <div>
+              {{ item.FundUmbrella[0] || "-" }}
+            </div>
+            <div>
+              {{ item.Manager[0] || "-" }}
+            </div>
+            <div class="bluetxt" (click)="viewFactSheet(item)">
+              View Factsheet
+            </div>
+          </div>
+          <!-- <div class="compare-fund">f</div>
+        <div class="compare-fund">d</div>
+        <div class="compare-fund">d</div> -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

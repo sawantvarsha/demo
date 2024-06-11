@@ -1,0 +1,291 @@
+.FullScreen-container{
+    // grid-template-columns: 60vw auto !important;
+    grid-template-columns: 57vw auto !important;
+   
+    
+    .FXD-sub-container{
+        
+        .FXD-row-PBOE{
+            .FXD-col-buttons{
+                .button{
+                    // width: 190px;
+                    width: 205px;
+                }
+                .buttonRM_IA{
+                    // width: 159px;
+                    width: 131px !important;
+                }
+            }
+        }
+    }
+}
+
+
+.sub-charts{
+    min-width:25em;
+}
+
+
+
+input[type="date"]{
+    width:100%;
+}
+
+// Added by Urmila A | LGTGTWINT-918 | 10-Jan-23 | start
+.loader-center{
+    top: 5.2% !important;
+    .multi-ripple{
+        position: absolute;
+        top: 34% !important;
+    }
+}
+// Added by Urmila A | LGTGTWINT-918 | 10-Jan-23 | start
+
+// UI Responsiveness CSS added by Urmila Ahire | 14-Nov-22 | Start
+
+@media screen and (min-width: 1600px) and (max-width: 1900px) {
+    .FullScreen-container .FXD-sub-container .FXD-ROWS-COL-4 {
+        grid-template-columns: 150px 1fr 150px 1fr;
+        grid-column-gap: 25px;
+        margin-right: 12px;
+    }
+    .FullScreen-container .FXD-row-PBOE .FXD-col-buttons .button{ //Urmila A | 12-Jan-23 | LGTGTWINT-893
+        width: 189px !important;
+    }
+    .FullScreen-container .FXD-row-PBOE .FXD-col-buttons .buttonRoutedDeal { // Added by Urmila A | 17-Jan-23  | LGTCLI-240
+        width: 173px !important;
+    } 
+    // .FullScreen-container .FXD-row-PBOE .FXD-col-buttons .buttonFXRoutedDeal { //Urmila A | 1-Feb-23 | LGTCLI-284
+    //     width: 152px !important; 
+    // }
+
+    //commented by UrmilaA | to avoid screen resie glitch | 27-Dec-23
+    // .FXD-sub-charts-section{ // Added by Urmila A | 17-Jan-23  | LGTCLI-240
+    //     grid-template-rows: 30px auto auto !important;
+    // }  
+}
+
+@media screen and (min-width: 1600px) and (max-width: 1700px) {//Urmila A | 2-Feb-23 | LGTCLI-284
+    .FullScreen-container .FXD-row-PBOE .FXD-col-buttons .buttonFXRoutedDeal { 
+        width: 142px !important; 
+    }
+    .FullScreen-container  .FXD-row-PBOE .FXD-col-buttons .buttonRM_IA { //Urmila A , LGTGTWINT-893 | 12-Jan-23
+        width: 173px !important;
+    }
+    .FXD-sub-charts-section .remarkfield textarea { //Urmila A | LGTGTWINT-1569 | 1-Mar-23
+        max-width: 280px !important;
+    }
+}
+@media screen and (min-width: 1700px) and (max-width: 1900px) {//Urmila A | 2-Feb-23 | LGTCLI-284
+    .FullScreen-container .FXD-row-PBOE .FXD-col-buttons .buttonFXRoutedDeal { 
+        width: 150px !important; 
+    }
+    .FullScreen-container  .FXD-row-PBOE .FXD-col-buttons .buttonRM_IA { //Urmila A , LGTGTWINT-893 | 12-Jan-23
+        width: 184px !important;
+    }
+    .FXD-sub-charts-section .remarkfield textarea { //Urmila A | LGTGTWINT-1569 | 1-Mar-23
+        max-width: 365px !important;
+    }
+}
+@media screen and (min-width: 1400px) and (max-width: 1600px) {
+    .FullScreen-container .FXD-sub-container .FXD-ROWS-COL-4 {
+        grid-template-columns: 150px 1fr 150px 1fr;
+        grid-column-gap: 25px;
+        margin-right: 12px;
+    }
+
+    .FullScreen-container {
+        grid-template-columns: 2fr 0.8fr !important;
+        grid-column-gap: var(--gap);
+    }
+
+    .FullScreen-container .FXD-row-PBOE .FXD-col-buttons .button{ //Urmila A | 12-Jan-23 | LGTGTWINT-893
+        width: 165px !important;
+    }
+    // .FullScreen-container .FXD-sub-container .FXD-row-PBOE .FXD-col-buttons .button {
+    //     width: 150px !important;
+    // }
+    // .FullScreen-container .FXD-row-PBOE .FXD-col-buttons .buttonRM_IA {
+    //     width: 131px !important;
+    // }
+    .FullScreen-container .FXD-row-PBOE .FXD-col-buttons .buttonRoutedDeal { // Added by Urmila A | 17-Jan-23  | LGTCLI-240
+        // width: 155px !important;
+        width: 147px !important; //Urmila A | 1-Feb-23 | LGTCLI-284
+    }
+    // .FullScreen-container .FXD-row-PBOE .FXD-col-buttons .buttonFXRoutedDeal { //Urmila A | 1-Feb-23 | LGTCLI-284
+    //     width: 122px !important; 
+    // } 
+
+    //commented by UrmilaA | to avoid screen resie glitch | 27-Dec-23
+    // .FXD-sub-charts-section{ // Added by Urmila A | 17-Jan-23  | LGTCLI-240
+    //     grid-template-rows: 30px auto auto !important;
+    // }  
+
+    .FXD-sub-charts-section .contractsummarytxt {
+        font-size: 13px;
+    }
+
+    .FullScreen-container .FXD-sub-container label {
+        font-size: 13px;
+    }
+    .FXD-sub-charts-section {
+        min-width: 17em;
+    }
+    .FXDorderPopup-overlay{ //Added by Urmila A  | 17-Jan-23 | LGTCLI-261
+        bottom: -206px !important;
+    }
+    .FXDorderPopup-overlay .OrderContainer{ //Added by Urmila A  | 17-Jan-23 | LGTCLI-261
+        top: 40% !important; 
+    }
+
+    .FXD-sub-charts-section .remarkfield textarea { //Urmila A | LGTGTWINT-1569 | 1-Mar-23
+        max-width: 250px !important;
+    }
+}
+
+@media screen and (min-width: 1400px) and (max-width: 1500px) {  //Urmila A | 2-Feb-23 | LGTCLI-284
+    .FullScreen-container .FXD-row-PBOE .FXD-col-buttons .buttonFXRoutedDeal {
+        width: 120px !important; 
+    } 
+    .FullScreen-container .FXD-row-PBOE .FXD-col-buttons .buttonRM_IA {
+        width: 144px  !important;
+    }
+    .FXD-sub-charts-section .remarkfield textarea { //Urmila A | LGTGTWINT-1569 | 2-Mar-23
+        max-width: 209px !important;
+    }
+}
+@media screen and (min-width: 1500px) and (max-width: 1600px) { //Urmila A | 2-Feb-23 | LGTCLI-284
+    .FullScreen-container .FXD-row-PBOE .FXD-col-buttons .buttonFXRoutedDeal { 
+        width: 131px !important; 
+    } 
+    .FullScreen-container .FXD-row-PBOE .FXD-col-buttons .buttonRM_IA {
+        width: 160px  !important;
+    }
+}
+
+//Urmila A | LGTCLI-261 | 30-Jan-23
+@media screen and (min-width: 900px) and (max-width: 1200px){
+    .FXDorderPopup-overlay{
+        bottom: -150px !important;
+    }
+} 
+
+//end  
+//Laptop screen
+@media screen and (min-width: 1200px) and (max-width: 1400px) {
+    .FullScreen-container {
+        // grid-template-columns: auto auto !important;
+        grid-template-columns: 55vw auto !important;
+        grid-column-gap: var(--gap);
+    }
+ 
+    //Added by Urmila A | 10-Jan-23 |  start | LGTGTWINT-897
+    .FullScreen-container  .FXD-row-PBOE .FXD-col-buttons .button{
+        width: 160px !important;
+    }
+    .FullScreen-container  .FXD-row-PBOE .FXD-col-buttons .buttonRM_IA{
+        width: 131px !important;
+    }
+    .FullScreen-container .FXD-row-PBOE .FXD-col-buttons .buttonRoutedDeal { //Urmila A | 1-Feb-23 | LGTCLI-284
+        width: 131px !important; 
+    }
+    .FullScreen-container .FXD-row-PBOE .FXD-col-buttons .buttonFXRoutedDeal { //Urmila A | 1-Feb-23 | LGTCLI-284
+         // width: 101px !important; 
+         width: 141px !important; 
+    }
+    //commented by UrmilaA | to avoid screen resie glitch | 27-Dec-23
+    // .FXD-sub-charts-section{
+    //     grid-template-rows: 30px 380px auto !important;
+    // }  
+    //Added by Urmila A | 10-Jan-23 | end |LGTGTWINT-897
+
+    // .FullScreen-container .FXD-sub-container .FXD-row-PBOE .FXD-col-buttons .button {
+    //     width: 150px !important;
+    // }
+    // .FullScreen-container .FXD-sub-container .FXD-row-PBOE .FXD-col-buttons .buttonRM_IA {
+    //     width: 131px !important;
+    // }
+
+    .FXD-sub-charts-section .contractsummarytxt {
+        font-size: 12px;
+    }
+
+    
+    .FullScreen-container .FXD-sub-container label {
+        font-size: 12px;
+    }
+    
+    .cards-section .card{
+        width: -webkit-fill-available;
+        min-width: auto;
+    }
+    .FullScreen-container .FXD-sub-container .FXD-ROWS-COL-4 {
+        grid-template-columns: 95px 1fr 95px 1fr;
+        grid-column-gap: 10px;
+        margin-right: 12px;
+    }
+    .FXD-sub-charts-section {
+        min-width: 15em;
+        .remarkfield textarea{  //Added by Urmila A | 9-Jan-23 | LGTGTWINT-890
+                height: 32px;
+                width: 121px;
+                max-width: 150px !important; //Urmila A | LGTGTWINT-1569 | 1-Mar-23            
+        }
+        .remarkfield .highlight{ //Added by Urmila A | 10-Jan-23 | LGTGTWINT-893
+            font-size: 13px !important;
+        }
+    }
+    .loader-center{ //Added by Urmila A | LGTGTWINT-918 | 10-Jan-23 
+        top: 8.9% !important;
+    }
+    .loader-center[name="globalLoader"]{ //Added by Urmila A | LGTGTWINT-918 | 10-Jan-23 
+        .multi-ripple{
+            top: 20% !important;
+        }
+    }
+    .FXDorderPopup-overlay{ //Added by Urmila A  | 10-Jan-23 
+        // bottom: -455px ;
+        bottom: -350px ;
+    }
+    .loader-center[name="priceloader"]{ //Added by Urmila A | LGTGTWINT-918 | 14-Feb-23 
+        .multi-ripple{
+            top: 24% !important;
+        }
+    }
+    .button[name="PriceCancel"]{ //Added by Urmila A | LGTGTWINT-918 | 14-Feb-23
+        margin-top: -335px !important;
+    }
+    .FullScreen-container .FXD-sub-container label[name="FXDIBPremComment"]{ //Urmila A | 20-feb-23
+        display: flex;
+        flex-direction: column !important;
+        align-items: baseline !important;
+    }
+   
+    // Start - HSBCFXEINT-38 | Chaitanya M | 14 Dec 2023
+    .ClntPremRecTxt {
+        color: var(--green) !important;
+        font-size: 12px; 
+        white-space: nowrap;
+    }
+    
+    .ClntPremPayTxt {
+        color: var(--red) !important;
+        font-size: 13px; 
+        white-space: nowrap;
+    }
+    // End - HSBCFXEINT-38 | Chaitanya M | 14 Dec 2023
+    .FullScreen-container .FXD-sub-container label[name="FXDClientPremComment"]{ // HSBCFXEINT-98 || Added by LalitG@16May24 
+        display: flex;
+        flex-direction: column !important;
+        align-items: baseline !important;
+    }
+
+}
+
+// UI Responsiveness CSS added by Urmila Ahire | 14-Nov-22 | End
+
+
+
+
+
+

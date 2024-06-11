@@ -1,0 +1,131 @@
+
+
+.documents-container {
+    display: grid;
+    width: 100%;
+    padding-left: 15px;
+    grid-template-columns: 250px auto 250px auto;
+}
+
+h3 {
+    margin-bottom: 1em;
+    grid-column: 1 / -1;
+}
+
+.lbl {
+    font-size: 15px;
+    line-height: 35px;
+}
+
+.txt,
+textarea {
+    width: 15em;
+    text-align: left;
+}
+
+.btn {
+    background: var(--button-color);
+    color: #ffffff;
+}
+
+.row-gap {
+    height: 52px;
+}
+
+textarea {
+    resize: none;
+    border: none !important;
+    background-color: rgb(238, 238, 238);
+    padding-top: 0.275em;
+    padding-bottom: 0.275em;
+    width: 15em;
+    margin-left: 0.4em;
+    color: #676765;
+    border-radius: 0.2em;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+    margin-bottom: 0.5rem;
+}
+
+.Message {
+    padding-top: 10px;
+    color: var(--product-header) !important;
+}
+.title{
+    color: var(--product-header); 
+    font-size: 20px; 
+}
+.product-underline{
+    background: var(--product-line);
+}
+
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+    .txt, textarea {
+        width: 10em;
+        text-align: left;
+    }
+    label{
+        width: 100% !important;
+        margin-top: 15px !important;
+    }
+    .textnewentry{
+        font-size: 20px !important;
+        /* padding-top: 47px; */
+    }
+    .textpaddingmobile{
+        padding-top: 47px;
+    }
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+    .txt, textarea {
+        width: 15em;
+        text-align: left;
+    }
+    .form-container {
+        display: grid;
+        width: 100%;
+        
+    }
+    label{
+        margin-top: 15px !important;
+    }
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) and (max-width:992px){
+    .txt, textarea {
+        width: 12em;
+        text-align: left;
+    }
+    .form-container {
+        display: grid;
+        width: 100%;
+        
+    }
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) and (max-width:1350px) {
+    .txt, textarea {
+    width: 12em;
+    text-align: left;
+}
+.form-container {
+    display: grid;
+    width: 100%;
+    grid-template-columns: 250px auto;
+}
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1350px){
+    .form-container {
+        display: grid;
+        width: 100%;
+        grid-template-columns: 250px auto;
+    }
+}

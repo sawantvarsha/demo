@@ -1,0 +1,134 @@
+
+<div class="FXDorderPopup-overlay" *ngIf="LoadSchedule" >
+        <div class="OrderContainer">
+            
+                <div class="OrderPopUpheader">
+                    <div class="headerRow">
+                        <div class="btnRow">
+                            <!-- <button class="button" (click)="fnReload()">Refresh</button> --> <!-- Urmila A | 25-Jan-23 | LGTCLI-275-->
+                            <button class="button" (click) = "exporttoExcel()">Export</button>
+                            <!-- <app-svg-icons [icon]="'xls'"></app-svg-icons>       -->
+                        </div>
+                        <div class="HeaderMsg">
+                            <svg name="closebtn" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 32.008 32" (click)="fnCloseSchedule()">
+                                <path fill="var(--headers)" id="cancel" d="M31.082,27.289,42.514,15.857a2.679,2.679,0,1,0-3.788-3.788L27.294,23.5,15.861,12.068a2.679,2.679,0,1,0-3.788,3.788L23.505,27.289,12.073,38.721a2.679,2.679,0,0,0,3.788,3.788L27.294,31.077,38.726,42.509a2.679,2.679,0,1,0,3.788-3.788Z" transform="translate(-11.285 -11.289)"/>
+                            </svg>
+                        </div> 
+                    </div>
+                    <div class="ScheduleMSGCls">
+                            <div>{{ ScheduleDescription }}</div>
+                    </div>
+                                                                                     
+                </div>
+          
+                <div class="OrderpopupBody">
+                    <!-- Flag changes added by Urmila A | 22-sep-23 -->
+                    <table *ngIf="Aqdqflag || vanillaFlag || barrierFlag || strategyFlag" >
+                        <thead>
+                            <tr>
+                                <th>Fixing Date</th>
+                                <th>Settlement Date</th>
+                                <th>Option Direction</th>
+                                <th>Product Type</th>
+                                <th>Option</th>
+                                <th>Underlying</th>
+                                <th>Strike</th>
+                                <th>Lower Barrier</th>
+                                <th>Upper Barrier</th>
+                                <th>Nominal</th>
+                                <th>Notional Ccy</th>
+                            </tr>
+                        </thead>
+                        <tbody *ngIf="!reload">
+                            <tr style="text-align: center;" *ngFor="let row of Values; let i = index">
+                                <td style="text-align: center;"> {{row.RS_Fixing_Date | date:'dd-MMM-yyyy' || '' }} </td>
+                                <td style="text-align: center;"> {{row.RS_Maturity_Date | date:'dd-MMM-yyyy' || '' }} </td>
+                                <td style="text-align: left;"> {{ row.Option_Direction === 'B' ? 'Buy' : 'Sell' || '' }} </td>
+                                <td style="text-align: left;"> {{ row.Product_Type }} </td>
+                                <td style="text-align: left;"> {{ row.Option }} </td>
+                                <td style="text-align: center;"> {{ row.Underlying || '' }} </td>
+                                <td style="text-align: right;"> {{row.Strike  }} </td> <!--| number:'1.4-4'|| '-' removed by UrmilaA | 28-Nov-23-->
+                                <td style="text-align: right;"> {{ row.Lower_Barrier }} </td> <!--  | number:'1.4-4'|| '-' removed by UrmilaA | 28-Nov-23-->
+                                <td style="text-align: right;"> {{row.Upper_Barrier  }} </td> <!--| number:'1.4-4'|| '-' removed by UrmilaA | 28-Nov-23-->
+                                <td style="text-align: right;"> {{this.FormatNumberwithoutevent(row.Notional | number:'1.2-2')|| '' }}
+                                </td>
+                                <td style="text-align: center;"> {{ row.Notional_Ccy || '' }} </td>
+                            </tr>
+                        </tbody>
+                        <tbody *ngIf="reload">                     
+                            <div class="loaderdiv">
+                                <div class="loader-center">
+                                <div class="multi-ripple">
+                                    <div></div>
+                                    <div></div>
+                                </div>
+                                </div>
+                            </div>                                          
+                        </tbody>
+                    </table>
+
+                    <table *ngIf="Trfflag || Pivotflag"> <!--Updated by Urmila A | 18-sep-23 | making common block for TRF , Pivot -->
+                        <thead>
+                            <tr>
+                                <th>Fixing Date</th>
+                                <th>Settlement Date</th>
+                                <th>Option Direction</th>
+                                <th>Product Type</th>
+                                <th>Option</th>
+                                <th>Underlying</th>
+                                <th>Strike</th>
+                                <th>Lower Barrier</th>
+                                <th>Upper Barrier</th>
+                                <th>Notional</th>
+                                <th>Notional Ccy</th>
+                          
+                            </tr>
+                        </thead>
+                        <tbody *ngIf="!reload">
+                            <tr style="text-align: center;" *ngFor="let row of Values; let i = index">                            
+                                <td style="text-align: center;"> {{row.RS_Fixing_Date | date:'dd-MMM-yyyy' || '' }} </td>
+                                <td style="text-align: center;"> {{row.RS_Maturity_Date | date:'dd-MMM-yyyy' || '' }} </td>
+                                <td style="text-align: left;"> {{  row.OptionType === 'B' ? 'Buy' : 'Sell' || '' }} </td>
+                                <td style="text-align: left;"> {{ row.Barrier }} </td>
+                                <td style="text-align: left;"> {{row.Option || '' }} </td>
+                                <td style="text-align: center;"> {{row.Underlying|| '' }} </td>
+                                <td style="text-align: right;"> {{row.Strike  }} </td> <!--| number:'1.4-4'|| '-' removed by UrmilaA | 28-Nov-23-->
+                                <td style="text-align: right;"> {{ row.Lower_Barrier  }} </td> <!--| number:'1.4-4'|| '-' removed by UrmilaA | 28-Nov-23-->
+                                <td style="text-align: right;"> {{row.Upper_Barrier }} </td> <!--| number:'1.4-4'|| '-' removed by UrmilaA | 28-Nov-23-->
+                                <td style="text-align: right;"> {{this.FormatNumberwithoutevent(row.Notional | number:'1.2-2')|| '' }}
+                                </td>
+                                <td style="text-align: center;"> {{row.Notional_Ccy|| '' }} </td>
+                             
+                            </tr>
+                        </tbody>
+                        <tbody *ngIf="reload">
+                            <div class="loaderdiv">
+                                <div class="loader-center">
+                                <div class="multi-ripple">
+                                    <div></div>
+                                    <div></div>
+                                </div>
+                                </div>
+                            </div>
+                        </tbody>
+                    </table>
+
+                   
+                </div>
+                
+          
+        </div>
+</div>
+
+
+<div class="FXDorderPopup-overlay" *ngIf="!LoadSchedule && ScheduleCallWithGuarenteeperiod !== undefined 
+|| !LoadSchedule && ViewSchedulePopup" id="schedule"> <!--Urmila A | 17-Jan-23 | LGTGTWINT-1163, modified on 28-Jan-23-->
+        <div class="loaderdiv">
+            <div class="loader-center">
+            <div class="multi-ripple">
+                <div></div>
+                <div></div>
+            </div>
+            </div>
+        </div>
+</div>

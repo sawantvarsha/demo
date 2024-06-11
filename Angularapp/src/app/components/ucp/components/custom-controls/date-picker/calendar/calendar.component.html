@@ -1,0 +1,31 @@
+<div class="calendar-container">
+    <div class="middle">
+        <div class="left link" (click)="previous()">&lt;&lt;</div>
+    </div>
+    <div class="dropdown-container">
+        <input class="dropdown" [(ngModel)]="_selectedMonth" (click)="showMonthDropdown = !showMonthDropdown">
+        <div class="dropdown-options" *ngIf="showMonthDropdown">
+            <div class="dropdown-option" *ngFor="let month of months" (click)="_selectedMonth = month; showMonthDropdown = false; generateCalendar(_selectedMonth, _selectedYear)">{{month}}</div>
+        </div>
+    </div>
+    <div class="middle">
+        <button class="btn" (click)="setToday()">Today</button>
+    </div>
+    <div class="dropdown-container">
+        <input class="dropdown" [(ngModel)]="_selectedYear" (click)="showYearDropdown = !showYearDropdown">
+        <div class="dropdown-options" *ngIf="showYearDropdown">
+            <div class="dropdown-option" *ngFor="let year of years" (click)="_selectedYear = year; showYearDropdown = false; generateCalendar(_selectedMonth, _selectedYear)">{{year}}</div>
+        </div>
+    </div>
+    <div class="middle">
+        <div class="right link" (click)="next()">&gt;&gt;</div>
+    </div>
+    <div class="dates-container">
+        <div class="days middle" *ngFor="let day of days">
+            <div class="day center">{{day}}</div>
+        </div>
+        <div class="dates middle" *ngFor="let date of _dates" [ngClass]="{'selected-date': (_currentYear === _selectedYear && _currentMonth === _selectedMonth && _currentDate === _selectedDate && _currentDate === date)}" (click)="date ? selectedDate(date) : ''">
+            <div class="date center">{{date}}</div>
+        </div>
+    </div>
+</div>

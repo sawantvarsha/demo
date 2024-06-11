@@ -1,0 +1,600 @@
+<div class="clientResponseComponent">
+    <div class="page-title module">Client Response</div>
+
+    <div class="filter-container">
+
+        <div class="filter-row">
+            <div class="middle">Corporate Action</div>
+            <div class="middle">
+                <select name="corpActionDD" id="corpActionDD" [(ngModel)]="corpActionDD"
+                    (change)="changeMetaDataVisibility(corpActionDD); ">
+                    <option *ngFor="let corpAction of allCorpActionList" [value]="corpAction">
+                        {{corpAction}}</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="filter-row">
+            <div class="label-class">Status</div>
+            <div class="middle">
+                <select name="Status" id="Status" [(ngModel)]="StatusDD">
+                    <option value="Processed" selected>Processed
+                    </option>
+                    <option value="Redemption">Unprocessed
+                    </option>
+                </select>
+            </div>
+        </div>
+
+        <div class="filter-row">
+            <div class="label-class">Security</div>
+            <div class="middle">
+                <div style="width: -webkit-fill-available;">
+                    <input type="text" placeholder="Search" [(ngModel)]="search"
+                        (keydown.enter)="selectShareOnEnter($event); showSuggestions = false; "
+                        (keydown.ArrowUp)="selectedBIndex = com.moveUpSelection($event, selectedBIndex)"
+                        (keydown.ArrowDown)="selectedBIndex = com.moveDownSelection($event, selectedBIndex)"
+                        (keypress)="searchShare(); showSuggestions = true">
+                    <div class="top UnderlyingSearch " *ngIf="search && showSuggestions">
+                        <div style="width: 13.5% !important;" class="SelectorBox">
+                            <a *ngFor="let b of shareList; let i = index" (keypress)="ChangeIndex($event)">
+                                <div *ngIf="b" [attr.data-ShareData]="b['Note_Master_Id']"
+                                    (click)="selectShareOnClick(b['Note_Master_Id'])"
+                                    (keydown.enter)="selectShareOnClick(b['Note_Master_Id'])"
+                                    [ngClass]="{'HoverSuggestion': (i === selectedBIndex)}">
+                                    <span>{{b['Product_Name']}} ({{b['Currency']}} | {{b['Exchange']}})</span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div style="width: -webkit-fill-available;"> <input type="text" placeholder="Search" [(ngModel)]="search"
+            (keydown.enter)="selectShareOnEnter($event); showSuggestions = false; "
+            (keydown.ArrowUp)="selectedBIndex = com.moveUpSelection($event, selectedBIndex)"
+            (keydown.ArrowDown)="selectedBIndex = com.moveDownSelection($event, selectedBIndex)"
+            (keypress)="searchShare(); showSuggestions = true">
+          <div class="top UnderlyingSearch " *ngIf="search && showSuggestions">
+            <div style="width: 13.5% !important;" class="SelectorBox">
+              <a *ngFor="let b of shareList; let i = index" (keypress)="ChangeIndex($event)">
+                <div *ngIf="b" [attr.data-ShareData]="b['Note_Master_Id']"
+                  (click)="selectShareOnClick(b['Note_Master_Id'])"
+                  (keydown.enter)="selectShareOnClick(b['Note_Master_Id'])"
+                  [ngClass]="{'HoverSuggestion': (i === selectedBIndex)}">
+                  <span>{{b['Product_Name']}} ({{b['Currency']}} | {{b['Exchange']}})</span>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div> -->
+
+            </div>
+        </div>
+        <!-- <div class="filter-row">
+          <div class="middle">Serach By</div>
+          <div class="middle">
+            <select  name="corpActionDatesDD" id="corpActionDatesDD" [(ngModel)]="corpActionDatesDD">
+              <option *ngFor="let corpActionDates of allCorpActionsDatesList" [value]="corpActionDates">
+                {{corpActionDates}}</option>
+            </select>
+        </div>
+      </div>
+      <div class="filter-row">
+
+          <div class="middle">From Date</div>
+          <div class="middle">
+            <input type="date" name="DOB" id="DOB" class="txt input-dob"
+            [attr.data-date]="fromDate" data-date-format="DD-MMM-YYYY"
+            tabindex="16" [(ngModel)]="fromDate"
+            (change)="selectFromDate(fromDate)"
+            min="1950-01-01" max="2022-01-01">
+          </div>
+      </div>
+      <div class="filter-row">
+          <div class="middle" for="DOB">To Date</div>
+          <div class="middle">
+            <input type="date" name="DOB" id="DOB" class="txt input-dob"
+            [attr.data-date]="toDate" data-date-format="DD-MMM-YYYY"
+            tabindex="16" [(ngModel)]="toDate"
+            (change)="selectToDate(toDate)"
+            min="1950-01-01" max="2022-01-01">
+
+      </div>
+      </div> -->
+        <div class="filter-row">
+            <div class="right" style="grid-column: 2;">
+                <button class="button btn" value="Buy" (click)="loadAllCorpActionData()">Load</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ************************************************************************************************************************* -->
+<div *ngIf="noDataFlag" class="content-container"> <span style="display: contents;">No data Found!</span> </div>
+<div *ngIf="allCorpData?.length" class="content-container">
+    <div class="content-row">
+
+        <!--Added by Alolika G | 16-02-2022-- START -->
+        <div *ngFor="let item of allCorpData; let i = index" class="filter-row1">
+            <div class="main-row">
+                <div class="expand">
+                    <!-- <span class="expand-icon" (click)="toggle(i); getDataOnExpand(item,i)" *ngIf="!hideRuleContent[i]">
+                    </span> -->
+                    <app-svg-icons [icon]="'add-icon'" [width]="'22'" [height]="'22'" [fill]="'var(--active)'"
+                        (click)="toggle(i); getDataOnExpand(item,i)" *ngIf="!hideRuleContent[i]">
+                    </app-svg-icons>
+                    <!-- <span class="collapse-icon" (click)="toggle(i); " *ngIf="hideRuleContent[i]"></span> -->
+                    <app-svg-icons [icon]="'subtract-icon'" [width]="'20'" [height]="'20'" [fill]="'var(--gray)'"
+                        (click)="toggle(i); " *ngIf="hideRuleContent[i]">
+                    </app-svg-icons>
+                    <div name="ProductName" [(ngModel)]="ProductName" ngDefaultControl class="fs17"
+                        [ngStyle]="{'color':item['Certificate_YN']==='N' ? 'red' : 'green' }">{{item['Product_Name']}}
+                    </div>
+                </div>
+
+
+                <div class="actions-class" *ngIf="hideRuleContent[i]"
+                    [ngStyle]="{'display': hideOnExpand === true ? 'none' : ''}">
+                    <!-- <hr> -->
+                    <div class="title">
+                        <div class="box-header"> Corporate Action Paramater </div>
+                    </div>
+                    <div class="details">
+                        <!-- <div class="column1"> -->
+                        <div class="details-col fs18">
+                            <div class="">
+                                <div class="">{{Exchange[i]}}</div>
+                                <div class="headers fs14">Exchange</div>
+                            </div>
+                            <div class="">
+                                <div class="">{{shareCode[i]}}</div>
+                                <div class="headers fs14">Share Code</div>
+                            </div>
+                            <div class="">
+                                <div *ngIf="dividendTrue" class="">{{dividendPerAnnum[i] | number:'1.2-2' }}</div>
+                                <div *ngIf="dividendTrue" class="headers fs14">Dividend per Share</div>
+                            </div>
+                            <div class="">
+                                <div class="" style="width: 90%;">{{Underlying[i]}}</div>
+                                <div class="headers fs14">Underlying</div>
+                            </div>
+                        </div>
+
+
+                        <div class="details-col">
+
+                            <div class="">
+                                <div class="">{{Currency[i]}}</div>
+                                <div class="headers fs14">Ccy</div>
+                            </div>
+
+                            <div class="">
+                                <div class="">{{announcementDate[i]}}</div>
+                                <div class="headers fs14">Announcement Date</div>
+
+                            </div>
+                            <div class="">
+                                <div class="">{{recordDate[i]}}</div>
+                                <div class="headers fs14">Record Date</div>
+
+                            </div>
+                            <div class="">
+                                <div class="">{{recordDate[i]}}</div>
+                                <div class="headers fs14">Response Date</div>
+
+                            </div>
+                        </div>
+                        <!-- </div> -->
+                    </div>
+
+                    <div class="title" style="display: flex;gap: var(--gap);align-items: center;">
+                        <div class="box-header" > Client Entitlements </div>
+                        <button style="margin-left: 25px;margin-right: 10px;" class="button btn" value="Buy"
+                            (click)="sendEmail(item,i)">Send Email</button>
+                        <span style="display: contents;" *ngIf="sendEmailFlag[i]">Email Notification sent!</span>
+                    </div>
+                    <!--Added by Alolika G | 16-02-2022-- START -->
+
+                    <div class="details">
+                        <div class="table-container">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th *ngIf="!this.editFlag[i]">
+                                            <a>Edit</a>
+                                        </th>
+                                        <th *ngIf="this.editFlag[i]">
+                                            <a>Save</a>
+                                        </th>
+                                        <th *ngIf="this.editFlag[i]">
+                                            <a>Cancel</a>
+                                        </th>
+                                        <th *ngFor="let item of gridHeaders; let i = index">
+                                            <a>{{item}}</a>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td *ngIf="!this.editFlag[i]">
+                                            <span class="edit-icon" (click)="editToggle(i, item)"></span>
+                                        </td>
+                                        <td *ngIf="this.editFlag[i]">
+                                            <span class="save-icon" (click)="UpdateClientResponse(item,i);"></span>
+                                        </td>
+                                        <td *ngIf="this.editFlag[i]">
+                                            <span class="cancel-icon" (click)="exitEdit(i)"></span>
+                                        </td>
+
+                                        <td class="align-right"
+                                            *ngIf="!this.editFlag[i] && this.gridHeadersJson[0].visibleYN === 'Y'">
+                                            <div id="CTM_ID" [(ngModel)]="CTM_ID" ngDefaultControl>{{CTM_ID[i] || '-'}}</div>
+                                        </td>
+                                        <td class="align-right"
+                                            *ngIf="this.editFlag[i] && this.gridHeadersJson[0].visibleYN === 'Y'">
+                                            <input type="text" [disabled]="this.gridHeadersJson[0].editableYN !=='Y'"
+                                                [(ngModel)]="CTM_ID">
+                                        </td>
+
+                                        <td class="align-right"
+                                            *ngIf="!this.editFlag[i] && this.gridHeadersJson[1].visibleYN === 'Y'">
+                                            <div id="CTMHoldingQty" [(ngModel)]="CTMHoldingQty" ngDefaultControl>
+                                                {{CTMHoldingQty[i] | number:'1.2-2' }}</div>
+                                        </td>
+                                        <td class="align-right"
+                                            *ngIf="this.editFlag[i] && this.gridHeadersJson[1].visibleYN === 'Y'">
+                                            <input type="text" [disabled]="this.gridHeadersJson[1].editableYN !=='Y'"
+                                                [ngModel]="CTMHoldingQty  | number:'1.2-2' ">
+                                        </td>
+
+                                        <td class="left"
+                                            *ngIf="!this.editFlag[i] && this.gridHeadersJson[2].visibleYN === 'Y'">
+                                            <div id="ID" [(ngModel)]="ID" ngDefaultControl>{{ID[i] || '-'}}</div>
+                                        </td>
+                                        <td class="center"
+                                            *ngIf="this.editFlag[i] && this.gridHeadersJson[1].visibleYN === 'Y'">
+                                            <input type="text" [disabled]="this.gridHeadersJson[0].editableYN !=='Y'"
+                                                [(ngModel)]="ID">
+                                        </td>
+
+                                        <td class="left"
+                                            *ngIf="!this.editFlag[i] && this.gridHeadersJson[3].visibleYN === 'Y'">
+                                            <div id="Customer" [(ngModel)]="Customer" ngDefaultControl>{{Customer[i] || '-'}}
+                                            </div>
+                                        </td>
+                                        <td class="center"
+                                            *ngIf="this.editFlag[i] && this.gridHeadersJson[3].visibleYN === 'Y'">
+                                            <input type="text" [disabled]="true" [(ngModel)]="Customer[i]">
+                                        </td>
+
+
+                                        <td class="left"
+                                            *ngIf="!this.editFlag[i] && this.gridHeadersJson[4].visibleYN === 'Y'">
+                                            <div id="Portfolio" [(ngModel)]="Portfolio" ngDefaultControl>
+                                                {{Portfolio[i].FacDesc || '-'}}</div>
+                                        </td>
+                                        <td class="center"
+                                            *ngIf="this.editFlag[i] && this.gridHeadersJson[4].visibleYN === 'Y'">
+                                            <input type="text" [disabled]="true" [(ngModel)]="Portfolio[i].FacDesc">
+                                        </td>
+
+                                        <td class="align-right"
+                                            *ngIf="!this.editFlag[i] && this.gridHeadersJson[5].visibleYN === 'Y'">
+                                            <div id="QualifyingQuantity" [(ngModel)]="QualifyingQuantity"
+                                                ngDefaultControl>
+                                                {{QualifyingQuantity | number:'1.2-2'}}</div>
+                                        </td>
+                                        <td class="align-right"
+                                            *ngIf="this.editFlag[i] && this.gridHeadersJson[5].visibleYN === 'Y'">
+                                            <input type="text" [disabled]="true"
+                                                [ngModel]="QualifyingQuantity |number:'1.2-2'">
+                                        </td>
+
+                                        <td class="center"
+                                            *ngIf="!this.editFlag[i] && this.gridHeadersJson[6].visibleYN === 'Y'">
+                                            <button class="button btn btn-view-document" value="Buy"
+                                                (click)="GetDocumentDetails(item, i)">View
+                                                Document</button>
+                                        </td>
+                                        <td class="center"
+                                            *ngIf="this.editFlag[i] && this.gridHeadersJson[6].visibleYN === 'Y'">
+                                            <button [disabled]="this.gridHeadersJson[6].editableYN !=='Y'"
+                                                style="width: 90%;" class="button btn" value="Buy">View
+                                                Document</button>
+                                        </td>
+
+                                        <td style="text-align: center;"
+                                            *ngIf="!this.editFlag[i] && this.gridHeadersJson[7].visibleYN === 'Y'">
+                                            <div id="DocmailedYN" [(ngModel)]="DocmailedYN" ngDefaultControl>
+                                                {{DocmailedYN[i] || '-'}}</div>
+                                        </td>
+                                        <td class="center"
+                                            *ngIf="this.editFlag[i] && this.gridHeadersJson[7].visibleYN === 'Y'">
+                                            <input type="text" [(ngModel)]="DocmailedYN[i]" [disabled]="true">
+                                        </td>
+
+                                        <td class="center"
+                                            *ngIf="!this.editFlag[i] && this.gridHeadersJson[8].visibleYN === 'Y'">
+                                            <div id="HoldingQty" [(ngModel)]="HoldingQty" ngDefaultControl>
+                                                {{HoldingQty[i] |
+                                                number:'1.2-2'}}
+                                            </div>
+                                        </td>
+                                        <td class="center"
+                                            *ngIf="this.editFlag[i] && this.gridHeadersJson[8].visibleYN === 'Y'">
+                                            <input type="text" [disabled]="this.gridHeadersJson[8].editableYN !=='Y'"
+                                                [(ngModel)]="HoldingQty">
+                                        </td>
+
+                                        <td class="center"
+                                            *ngIf="!this.editFlag[i] && this.gridHeadersJson[9].visibleYN === 'Y'">
+                                            <div id="UnitOfEntitlement" [(ngModel)]="UnitOfEntitlement"
+                                                ngDefaultControl>
+                                                {{UnitOfEntitlement[i] || '-'}}</div>
+                                        </td>
+                                        <td class="center"
+                                            *ngIf="this.editFlag[i] && this.gridHeadersJson[9].visibleYN === 'Y'">
+                                            <input type="text" [disabled]="this.gridHeadersJson[9].editableYN !=='Y'"
+                                                [(ngModel)]="UnitOfEntitlement">
+                                        </td>
+
+                                        <td class="center"
+                                            *ngIf="!this.editFlag[i] && this.gridHeadersJson[10].visibleYN === 'Y'">
+                                            <div id="EntitlementProposed" [(ngModel)]="EntitlementProposed"
+                                                ngDefaultControl>
+                                                {{EntitlementProposed[i] || '-'}}</div>
+                                        </td>
+                                        <td class="center"
+                                            *ngIf="this.editFlag[i] && this.gridHeadersJson[10].visibleYN === 'Y'">
+                                            <input type="text" [disabled]="this.gridHeadersJson[10].editableYN !=='Y'"
+                                                [(ngModel)]="EntitlementProposed">
+                                        </td>
+
+                                        <td class="center"
+                                            *ngIf="!this.editFlag[i] && this.gridHeadersJson[11].visibleYN === 'Y'">
+                                            <div id="EntitlementActual" [(ngModel)]="EntitlementActual"
+                                                ngDefaultControl>
+                                                {{EntitlementActual[i] || '-'}}</div>
+                                        </td>
+                                        <td class="center"
+                                            *ngIf="this.editFlag[i] && this.gridHeadersJson[11].visibleYN === 'Y'">
+                                            <input type="text" [disabled]="this.gridHeadersJson[11].editableYN !=='Y'"
+                                                [(ngModel)]="EntitlementActual">
+                                        </td>
+
+                                        <td class="center"
+                                            *ngIf="!this.editFlag[i] && this.gridHeadersJson[12].visibleYN === 'Y'">
+                                            <div id="TxnCode" [(ngModel)]="TxnCode" ngDefaultControl>{{TxnCode[i]}}
+                                            </div>
+                                        </td>
+                                        <td class="center"
+                                            *ngIf="this.editFlag[i] && this.gridHeadersJson[12].visibleYN === 'Y'">
+                                            <input type="text" [disabled]="this.gridHeadersJson[12].editableYN !=='Y'"
+                                                [(ngModel)]="TxnCode">
+                                        </td>
+
+                                        <td class="center"
+                                            *ngIf="!this.editFlag[i] && this.gridHeadersJson[13].visibleYN === 'Y'">
+                                            <div id="HoldQuanCAWC" [(ngModel)]="HoldQuanCAWC" ngDefaultControl>
+                                                {{HoldQuanCAWC[i] || '-'}}</div>
+                                        </td>
+                                        <td class="center"
+                                            *ngIf="this.editFlag[i] && this.gridHeadersJson[13].visibleYN === 'Y'">
+                                            <input type="text" [disabled]="this.gridHeadersJson[13].editableYN !=='Y'"
+                                                [(ngModel)]="HoldQuanCAWC">
+                                        </td>
+
+                                        <td class="center"
+                                            *ngIf="!this.editFlag[i] && this.gridHeadersJson[14].visibleYN === 'Y'">
+                                            <input type="text" placeholder="Search">
+                                        </td>
+                                        <td class="center"
+                                            *ngIf="this.editFlag[i] && this.gridHeadersJson[14].visibleYN === 'Y'">
+                                            <input type="text" [disabled]="this.gridHeadersJson[14].editableYN !=='Y'"
+                                                placeholder="Search">
+                                        </td>
+
+                                        <td class="center"
+                                            *ngIf="!this.editFlag[i] && this.gridHeadersJson[15].visibleYN === 'Y'">
+                                            <div id="CustID" [(ngModel)]="CustID" ngDefaultControl>{{CustID[i]}}</div>
+                                        </td>
+                                        <td class="center"
+                                            *ngIf="this.editFlag[i] && this.gridHeadersJson[15].visibleYN === 'Y'">
+                                            <input type="text" [disabled]="this.gridHeadersJson[15].editableYN !=='Y'"
+                                                [(ngModel)]="CustID">
+                                        </td>
+
+                                        <td class="center"
+                                            *ngIf="!this.editFlag[i] && this.gridHeadersJson[16].visibleYN === 'Y'">
+                                            <div id="ClientRes" [(ngModel)]="ClientRes" ngDefaultControl>
+                                                {{ClientRes[i] || '-'}}
+                                            </div>
+                                        </td>
+                                        <td class="center"
+                                            *ngIf="this.editFlag[i] && this.gridHeadersJson[16].visibleYN === 'Y'">
+                                            <select name="ClientYN" id="ClientYN" [(ngModel)]="ClientYN">
+                                                <option *ngFor="let ClientYN of ClientDD[i]" [value]="ClientYN">
+                                                    {{ClientYN || '-'}}</option>
+                                            </select>
+                                        </td>
+
+                                        <td class="align-right"
+                                            *ngIf="!this.editFlag[i] && this.gridHeadersJson[17].visibleYN === 'Y'">
+                                            <div id="PayIn" [(ngModel)]="PayIn" ngDefaultControl>{{PayIn[i]}}</div>
+                                        </td>
+                                        <td class="align-right"
+                                            *ngIf="this.editFlag[i] && this.gridHeadersJson[17].visibleYN === 'Y'">
+                                            <select name="PayInDD" id="PayInDD" [(ngModel)]="PayInDD"
+                                                (change)="changePayment(PayInDD)">
+                                                <option *ngFor="let PayInDD of paymentTypeDD[i]" [value]="PayInDD">
+                                                    {{PayInDD || '-'}}</option>
+                                            </select>
+                                        </td>
+
+                                        <td class="center"
+                                            *ngIf="!this.editFlag[i] && this.gridHeadersJson[18].visibleYN === 'Y'">
+                                            <div id="ShareCal" [(ngModel)]="ShareCal" ngDefaultControl>{{ShareCal[i] || '-'}}
+                                            </div>
+                                        </td>
+                                        <td class="center"
+                                            *ngIf="this.editFlag[i] && this.gridHeadersJson[18].visibleYN === 'Y'">
+                                            <input type="text" [disabled]="this.gridHeadersJson[18].editableYN !=='Y'"
+                                                [(ngModel)]="ShareCal">
+                                        </td>
+
+                                        <td class="align-right"
+                                            *ngIf="!this.editFlag[i] && this.gridHeadersJson[19].visibleYN === 'Y'">
+                                            <div id="CashQuantity" [(ngModel)]="CashQuantity" ngDefaultControl>
+                                                {{CashQuantity[i] | number:'1.2-2'}}</div>
+                                        </td>
+                                        <td class="center"
+                                            *ngIf="this.editFlag[i] && this.gridHeadersJson[19].visibleYN === 'Y'">
+                                            <input type="text"
+                                                [disabled]="this.gridHeadersJson[19].editableYN !=='Y' || this.selectedshare"
+                                                [(ngModel)]="CashQuantityedit"
+                                                (keyup)="changeQuantites(CashQuantityedit, 'cash')"
+                                                (change)="CashQuantityedit = this.com.NotionalChange($event);"
+                                                (focus)="this.com.UnformatNumber($event);"
+                                                (blur)="this.com.FormatNumber($event); changeQuantites(CashQuantityedit, 'cash')"
+                                                (keypress)="this.com.NotionalValidate($event);">
+                                        </td>
+
+                                        <td class="center"
+                                            *ngIf="!this.editFlag[i] && this.gridHeadersJson[20].visibleYN === 'Y'">
+                                            <div id="CashCcy" [(ngModel)]="CashCcy" ngDefaultControl>{{CashCcy[i] || '-'}}
+                                            </div>
+                                        </td>
+
+                                        <td class="align-right"
+                                            *ngIf="this.editFlag[i] && this.gridHeadersJson[20].visibleYN === 'Y'">
+                                            <input type="text" [disabled]="this.gridHeadersJson[20].editableYN !=='Y'"
+                                                [(ngModel)]="CashCcy">
+                                        </td>
+
+                                        <td class="align-right"
+                                            *ngIf="!this.editFlag[i] && this.gridHeadersJson[21].visibleYN === 'Y'">
+                                            <div id="ShareQuantity" [(ngModel)]="ShareQuantity" ngDefaultControl>
+                                                {{ShareQuantity[i] | number:'1.2-2'}}</div>
+                                        </td>
+                                        <td class="center"
+                                            *ngIf="this.editFlag[i] && this.gridHeadersJson[21].visibleYN === 'Y'">
+                                            <input type="text"
+                                                [disabled]="this.gridHeadersJson[21].editableYN !=='Y' || this.selectedcash"
+                                                [(ngModel)]="ShareQuantityedit"
+                                                (keyup)="changeQuantites(ShareQuantityedit, 'share')"
+                                                (change)="ShareQuantityedit = this.com.NotionalChange($event);"
+                                                (focus)="this.com.UnformatNumber($event);"
+                                                (blur)="this.com.FormatNumber($event); changeQuantites(ShareQuantityedit, 'share')"
+                                                (keypress)="this.com.NotionalValidate($event);">
+                                        </td>
+
+                                        <td class="center"
+                                            *ngIf="!this.editFlag[i] && this.gridHeadersJson[22].visibleYN === 'Y'">
+                                            <div id="RightsOpt" [(ngModel)]="RightsOpt" ngDefaultControl>
+                                                {{RightsOpt[i] || '-'}}
+                                            </div>
+                                        </td>
+                                        <td class="center"
+                                            *ngIf="this.editFlag[i] && this.gridHeadersJson[22].visibleYN === 'Y'"></td>
+
+                                        <td class="center"
+                                            *ngIf="!this.editFlag[i] && this.gridHeadersJson[23].visibleYN === 'Y'">
+                                            <div id="RightsApplied" [(ngModel)]="RightsApplied" ngDefaultControl>
+                                                {{RightsApplied[i] || '-'}}</div>
+                                        </td>
+                                        <td class="center"
+                                            *ngIf="this.editFlag[i] && this.gridHeadersJson[23].visibleYN === 'Y'">
+                                            <input type="text" [disabled]="this.gridHeadersJson[23].editableYN !=='Y'"
+                                                [(ngModel)]="RightsApplied">
+                                        </td>
+
+                                        <td class="center"
+                                            *ngIf="!this.editFlag[i] && this.gridHeadersJson[24].visibleYN === 'Y'">
+                                            <div id="RightsPrice" [(ngModel)]="RightsPrice" ngDefaultControl>
+                                                {{RightsPrice[i] | number:'1.2-2'}}
+                                            </div>
+                                        </td>
+                                        <td class="center"
+                                            *ngIf="this.editFlag[i] && this.gridHeadersJson[24].visibleYN === 'Y'">
+                                            <input type="text" [disabled]="this.gridHeadersJson[24].editableYN !=='Y'"
+                                                [(ngModel)]="RightsPrice">
+                                        </td>
+
+                                        <td class="center"
+                                            *ngIf="!this.editFlag[i] && this.gridHeadersJson[25].visibleYN === 'Y'">
+                                            <div id="RightsAllocated" [(ngModel)]="RightsAllocated" ngDefaultControl>
+                                                {{RightsAllocated[i] || '-'}}
+                                            </div>
+                                        </td>
+                                        <td class="center"
+                                            *ngIf="this.editFlag[i] && this.gridHeadersJson[25].visibleYN === 'Y'">
+                                            <input type="text" [disabled]="this.gridHeadersJson[25].editableYN !=='Y'"
+                                                [(ngModel)]="CTMHoldingQty">
+                                        </td>
+
+                                        <td class="center"
+                                            *ngIf="!this.editFlag[i] && this.gridHeadersJson[26].visibleYN === 'Y'">
+                                            <div id="RightsAllocated" [(ngModel)]="RightsAllocated" ngDefaultControl>
+                                                {{RightsAllocated[i] || '-'}}</div>
+                                        </td>
+                                        <td class="center"
+                                            *ngIf="this.editFlag[i] && this.gridHeadersJson[26].visibleYN === 'Y'">
+                                            <input type="text" [disabled]="this.gridHeadersJson[26].editableYN !=='Y'"
+                                                [(ngModel)]="RightsAllocated">
+                                        </td>
+
+                                        <td class="center"
+                                            *ngIf="!this.editFlag[i] && this.gridHeadersJson[27].visibleYN === 'Y'">
+                                            <div id="WarrantsOpt" [(ngModel)]="WarrantsOpt" ngDefaultControl>
+                                                {{WarrantsOpt[i] || '-'}}</div>
+                                        </td>
+                                        <td class="center"
+                                            *ngIf="this.editFlag[i] && this.gridHeadersJson[27].visibleYN === 'Y'">
+                                            <input type="text" [disabled]="this.gridHeadersJson[27].editableYN !=='Y'"
+                                                [(ngModel)]="WarrantsOpt">
+                                        </td>
+
+                                        <td class="center"
+                                            *ngIf="!this.editFlag[i] && this.gridHeadersJson[28].visibleYN === 'Y'">
+                                            <div id="WarrantsApplied" [(ngModel)]="WarrantsApplied" ngDefaultControl>
+                                                {{WarrantsApplied[i] || '-'}}</div>
+                                        </td>
+                                        <td class="center"
+                                            *ngIf="this.editFlag[i] && this.gridHeadersJson[28].visibleYN === 'Y'">
+                                            <input type="text" [disabled]="this.gridHeadersJson[28].editableYN !=='Y'"
+                                                [(ngModel)]="WarrantsApplied">
+                                        </td>
+
+                                        <td class="center"
+                                            *ngIf="!this.editFlag[i] && this.gridHeadersJson[29].visibleYN === 'Y'">
+                                            <div id="WarrantsPrice" [(ngModel)]="WarrantsPrice" ngDefaultControl>
+                                                {{WarrantsPrice[i] | number:'1.2-2'}}</div>
+                                        </td>
+                                        <td class="center"
+                                            *ngIf="this.editFlag[i] && this.gridHeadersJson[29].visibleYN === 'Y'">
+                                            <input type="text" [disabled]="this.gridHeadersJson[29].editableYN !=='Y'"
+                                                [(ngModel)]="WarrantsPrice">
+                                        </td>
+
+                                        <td class="center"
+                                            *ngIf="!this.editFlag[i] && this.gridHeadersJson[30].visibleYN === 'Y'">
+                                            <div id="TaxPerc" [(ngModel)]="CTM_ID" ngDefaultControl>{{TaxPerc[i] |
+                                                number:'1.2-2'}}</div>
+                                        </td>
+                                        <td class="center"
+                                            *ngIf="this.editFlag[i] && this.gridHeadersJson[30].visibleYN === 'Y'">
+                                            <input type="text" [disabled]="this.gridHeadersJson[30].editableYN !=='Y'"
+                                                [(ngModel)]="TaxPerc">
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <!-- <hr> -->
+            </div>
+
+
+        </div>
+
+    </div>

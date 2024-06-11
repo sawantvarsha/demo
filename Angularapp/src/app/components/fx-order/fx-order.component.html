@@ -1,0 +1,91 @@
+<div class="row col-12" style="padding: 0;margin: 0;background: var(--lightgrey);">
+  <div class="col-12 row header">
+    <div class="col-md-2 col-sm-1 col-xs-1 right">
+      <img src="{{assetURL}}/FinIQ_logo.png" class="logo">
+      <!-- <img src="{{assetURL}}/PiraeusBank.jpg" class="logo"> -->
+    </div>
+    <div class="col-7 center name verticalmiddlealign" style="font-size: 1.35em;"> </div>
+    <div class="col-3 right" style="margin-top: auto;margin-bottom: auto;padding-top: 0.3em;padding-bottom: 0.3em;">
+      <img src="{{assetURL}}/envelope.png" alt="" style="height: 1.3em;">
+      <img src="{{assetURL}}/favourite.png" alt="" style="height: 1.3em;margin-left: 2em;" (click)="getTemplates()">
+      <img src="{{assetURL}}/logout.png" alt="" style="height: 1.3em;margin-left: 2em;">
+    </div>
+    <div *ngIf="showTemplateDdl" class="favoritecss">
+      <select [(ngModel)]="selectedTemplate" style="width: 9em;" (change)="getFavoriteCcyFromSelectedTem()">
+        <option value="{{t.TemplateName}}" *ngFor="let t of templateNames" style="margin-top: 2px;">
+          {{t.TemplateName}}
+        </option>
+      </select>
+    </div>
+  </div>
+  <!-- <div class="loader" *ngIf="loadingFlag">
+    <div class="bar"></div>
+  </div> -->
+  <div class="subheader col-12 row" style="margin: 0;border-top: 2px solid var(--lightgrey);">
+    <div class="col-lg-2 col-md-2 col-sm-0">
+    </div>
+    <div class="col-lg-10 col-md-10 col-sm-11">
+      <span [ngClass]="tab === 'exchangerates' ? 'selectedtab col-2' : 'tab col-2'" (click)="tabclick('exchangerates')"
+        class="tab" routerLink="/exchangerates" routerLinkActive="active-link"> Dashboard
+      </span>
+      <span [ngClass]="tab === 'transaction' ? 'selectedtab col-2' : 'tab col-2'" class="tab" routerLink="/transaction"
+        (click)="transactionRoute()">
+        Transaction </span>
+      <span [ngClass]="tab === 'limitorder' ? 'selectedtab col-2' : 'tab col-2'" (click)="tabclick('limitorder')"
+        class="tab" routerLink="/limitorder"> Limit Order </span>
+     <span [ngClass]="tab === 'positionblotter' ? 'selectedtab col-2' : 'tab col-2'"
+        (click)="tabclick('positionblotter')" class="tab" routerLink="/positionblotter"> Position Blotter </span> 
+      <span [ngClass]="tab === 'insights' ? 'selectedtab col-2' : 'tab col-2'" (click)="tabclick('insights')"
+        class="tab" routerLink="/insights"> Trading insights by timeline </span>
+      <!-- <span [ngClass]="tab === 'spreadManagement' ? 'selectedtab col-2' : 'tab col-2'"
+        (click)="tabclick('spreadManagement')" class="tab" routerLink="/spreadManagement"> Spread Management </span> -->
+        <span [ngClass]="tab === 'transactionLimit' ? 'selectedtab col-2' : 'tab col-2'"
+        (click)="tabclick('transactionLimit')" class="tab" routerLink="/transactionLimit"> Limit Setup </span>
+        <div class="breathingspace" style="float: right;" *ngIf="tab === 'insights'">
+
+        <div class="switch" (click)="changeSpreadMultiplier()" style="float: right;margin: 0px 7px;">
+          <input type="checkbox" [(ngModel)]="SpreadMultiplier">
+          <span class="slider1 round"></span>
+        </div>
+
+        <div style="float: right;">
+          <label for="" style="color: var(--mustard-yellow);margin-left: 1em;"
+            (click)="this.commonfunction.showpopupspread.next(true)"> Spread multiplier</label>
+        </div>
+
+        <div class="switch" (click)="changeTradingOption()" style="float: right;margin: 0px 7px;">
+          <input type="checkbox" [(ngModel)]="checkTrading">
+          <span class="slider1 round"></span>
+        </div>
+
+        <div style="float: right;">
+          <label for="" style="color: var(--mustard-yellow);"> Trading </label>
+        </div>
+      </div>
+      <div class="breathingspace" style="padding: 0;float: right;" *ngIf="tab === 'transaction'">
+
+        <div style="float: right;">
+          <label for="" style="color: var(--mustard-yellow);"> gr </label>
+        </div>
+        <div class="switch" (click)="changeLanguage()" style="float: right;margin: 0px 7px;">
+          <input type="checkbox" [(ngModel)]="check">
+          <span class="slider round"></span>
+        </div>
+        <div style="float: right;">
+          <label for="" style="color: var(--mustard-yellow);"> en </label>
+        </div>
+      </div>
+
+    </div>
+    <!-- <div class="col-1"></div> -->
+
+    <!-- <div class="col-3" style="padding: 0;" *ngIf="tab === 'insights'">
+      
+    </div> -->
+  </div>
+  <!-- <app-exchange-rate-display class="col-12"></app-exchange-rate-display> -->
+  <div class="col-12" style="padding: 0;height: 90%;">
+    <router-outlet></router-outlet>
+  </div>
+
+</div>

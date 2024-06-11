@@ -1,0 +1,473 @@
+<div class="BlotterContainer">
+    <div class="wrapTitle">
+        <div class="page-title titlePadding">Product Watch Blotter</div>
+        <div class="headingIcons">
+            <div class="forTitleRow">
+                <div style="display:flex;">
+                    <span style="width: 55px; padding-top: 10px;">MPG</span>
+                    <div style="width: 240px;">
+                        <!-- <select  (change)="openMPGs($event)" >
+                            <option value="" disabled selected>Select Option</option>
+                            <option *ngFor="let item of MPGList; let i = index" value="1"  > 
+                                {{item.BCM_long_name}}
+                            </option>
+                        </select> -->
+
+                        <select  (change)="openMPGs($event)" ><!-- [(ngModel)]="MPGList[0]" ngDefaultControl [(ngModel)]="selectedMPG"-->
+                            <option value="" disabled selected>Select Option</option>
+                            <option *ngFor="let item of MPGList; let i = index" [ngValue]="i" (click)="selectedMPG=item" > 
+                                {{item.BCM_long_name}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="forTitleRow">
+                <app-svg-icons [icon]="'refresh'" [width]="'30'" [height]="'30'" (click)="refresh()" ></app-svg-icons>
+            </div>
+            <div class="forTitleRow">
+                <app-svg-icons [icon]="'xls-icon'" [width]="'28'" [height]="'28'" (click)="exportAsXLSX()"></app-svg-icons>
+            </div>
+        </div>
+        <!-- <div (click)="showAllFilters"> <button>All Filters</button> </div> -->
+    </div>
+    <div class="fixedHeight filterRow">
+        <!-- <div *ngIf="showISINFilter" [ngClass]="{ 'showFilter': showISINFilter,'hideFilter': (!showISINFilter) }"> <input type="text" placeholder="Search ISIN/Ref"></div> -->
+        <!-- <div *ngIf="showNameFilter"> <input type="text" placeholder="Search Product Name" [ngClass]="{ 'positionSearchName': (!showNameFilter)}"></div>
+        <div *ngIf="showPayOffFilter" class="payOffFilter shares-search-box" (clickOutside)="showDropdown=false" [ngClass]="{ 'positionSearchPayOff': (!showNameFilter || !showISINFilter),'': (showNameFilter && showISINFilter)}"> -->
+        <div [ngClass]="{ 'showFilter': showISINFilter,'hideFilter': (!showISINFilter) }" ><!--style="width:120px"-->
+            <input type="text" #ISINField id="ISIN" placeholder="Search ISIN/Ref" (keyup)="FilterForAll($event)"
+                [(ngModel)]="selectedISIN" (focus)="commonApi.SelectFullText($event)" class="filter_SearchBox">
+        </div>
+        <!--(keyup)="searchISINFilter($event)"-->
+        <div [ngClass]="{ 'showFilter': showNameFilter,'hideFilter': (!showNameFilter) }">
+            <input type="text" #NameField id="Name" placeholder="Search Product Name" (keyup)="FilterForAll($event)"
+                [(ngModel)]="selectedPName" (focus)="commonApi.SelectFullText($event)" class="filter_SearchBox">
+        </div>
+        <!--(keyup)="searchNameFilter($event)"-->
+        <div class="payOffFilter shares-search-box" (clickOutside)="showDropdown=false"
+            [ngClass]="{ 'showFilter': showPayOffFilter,'hideFilter': (!showPayOffFilter) }" ><!--style="width:110px"-->
+            <input #PayoffField id="Payoff" type="text" class="filter_SearchBox" placeholder="Search Payoff"
+                [(ngModel)]="payOff" (keyup)="FilterForAll($event);showDropdown=true;"
+                (keyup.arrowup)="changeSearchIndex('UP')" (keyup.enter)="payOff=selectedPayOff;showDropdown=false;"
+                (keyup.arrowdown)="changeSearchIndex('DOWN')" (focus)="commonApi.SelectFullText($event)">
+            <!--(keyup)="searchPayoff($event)"-->
+            <!--(keyup.enter)="payOff=selectedPayOff; selectPayOff(selectedPayOff);"-->
+            <div class="shares-list" *ngIf="showDropdown">
+                <ul>
+                    <li *ngFor="let share of searchPayOff" (click)="payOff=share[0]; FilterForAll($event)"
+                        [ngClass]="{ 'active-share': share[1]==='true' }">
+                        {{share[0]}}
+                    </li>
+                    <!--selectPayOff(share[0])-->
+                </ul>
+            </div>
+        </div>
+        <div [ngClass]="{ 'showFilter': showSDate,'hideFilter': (!showSDate) }" style="position: relative;">
+            <input type="date" class="input-dob filter_SearchBox" [(ngModel)]="StartDate" value="StartDate"
+                (change)="selectDate(StartDate); FilterForAll($event)" #SDateField id="SDate" (focus)="commonApi.SelectFullText($event)">
+            <span *ngIf="StartDate === '' || StartDate === undefined" class="sDatePlaceHolder">Start Date</span>
+            <span *ngIf="StartDate !== '' && StartDate !== undefined" class="sDate">{{StartDateDisplay}}</span>
+        </div>
+        <div [ngClass]="{ 'showFilter': showMaturityFilter,'hideFilter': (!showMaturityFilter) }" style="position: relative;">
+            <input type="date" class="input-dob filter_SearchBox"  [(ngModel)]="MaturityDate"
+                (change)="selectMaturityDate(MaturityDate);FilterForAll($event)" #MaturityField
+                id="Maturity" placeholder="Select Matuirity" (focus)="commonApi.SelectFullText($event)">
+            <span *ngIf="MaturityDate === '' || MaturityDate === undefined" class="sDatePlaceHolder">Maturity Date</span>
+            <span *ngIf="MaturityDate !== '' && MaturityDate !== undefined" class="sDate">{{MaturityDisplay}}</span>
+        </div>
+        <div [ngClass]="{ 'showFilter': showNextFixingFilter,'hideFilter': (!showNextFixingFilter) }" style="position: relative;">
+            <input type="date" class="input-dob filter_SearchBox"  [(ngModel)]="NextFixingDate"
+                (change)="selectNextFixingDate(NextFixingDate);FilterForAll($event)" #NextFixingField
+                id="NextFixing" placeholder="Select Next Fixing" (focus)="commonApi.SelectFullText($event)">
+            <span *ngIf="NextFixingDate === '' || NextFixingDate === undefined" class="sDatePlaceHolder">Next Fixing</span>
+            <span *ngIf="NextFixingDate !== '' && NextFixingDate !== undefined" class="sDate">{{NextFixingDisplay}}</span>
+        </div>
+        <!--(keyup)="FilterForAll($event)" [(ngModel)]="selectedISIN"-->
+        <div [ngClass]="{ 'showFilter': showCCYFilter,'hideFilter': (!showCCYFilter)  }" ><!--style="width: 100px;"-->
+            <input #CCYField id="CCY" type="text" placeholder="Search CCY" (keyup)="FilterForAll($event)"
+                [(ngModel)]="selectedCCY" (focus)="commonApi.SelectFullText($event)" class="filter_SearchBox">
+        </div>
+        <!--(keyup)="searchCCYFilter($event)"-->
+        <div style="visibility:hidden ;"></div>
+        <div style="visibility:hidden ;"></div>
+        <div style="visibility:hidden ;"></div>
+        <div style="visibility:hidden ;"></div>
+        <div [ngClass]="{ 'showFilter': showUnderlyingFilter,'hideFilter': (!showUnderlyingFilter) }"> <!--style="width:133px"-->
+            <input #UnderlyingField id="Underlying" type="text" placeholder="Search Underlying"
+                (keyup)="FilterForAll($event)" [(ngModel)]="selectedUnderlying"
+                (focus)="commonApi.SelectFullText($event)" class="filter_SearchBox"> 
+        </div>
+        <!--(keyup)="searchUnderlyingFilter($event)"-->
+        <div [ngClass]="{ 'showFilter': showIssuerFilter,'hideFilter': (!showIssuerFilter) }" ><!--style="width:105px"-->
+            <input #IssuerField id="Issuer" type="text" placeholder="Search Issuer" (keyup)="FilterForAll($event)"
+                [(ngModel)]="selectedIssuer" (focus)="commonApi.SelectFullText($event)" class="filter_SearchBox">
+        </div>
+        <!--(keyup)="searchIssuerFilter($event)"-->
+
+    </div>
+    <div class="DataTable">
+        <table id="DataTables">
+            <thead class="thead1">
+                <tr class="tdataWrap">
+                    <th scope="col" class="filterIconGrid">
+                        <span> ISIN/Ref</span>
+                        <div>
+                            <app-svg-icons class="back-button" [icon]="'filter-icon'" [width]="'12'" [height]="'12'"
+                                [fill]="'var(--table-header-text)'" (click)="focusOnISIN()"></app-svg-icons>
+                                <!-- <img style="width: 13px; height: 10px; cursor: pointer; margin: auto;"
+                                            src="{{asseturl}}filter-icon.png" (click)="focusOnISIN()"> -->
+                        </div>
+                        <!--this.showISINFilter=!this.showISINFilter;-->
+                    </th>
+                    <th class="wrapWord filterIconGrid specificPadding" scope="col">
+                        <span>Product Name</span>
+                        <div>
+                            <app-svg-icons class="back-button" [icon]="'filter-icon'" [width]="'12'" [height]="'12'"
+                                [fill]="'var(--table-header-text)'" (click)="focusOnPName()"></app-svg-icons>
+                        </div>
+                    </th>
+                    <th class="wrapWord filterIconGrid specificPadding" scope="col">
+                        <span>Payoff</span>
+                        <div>
+                            <app-svg-icons class="back-button" [icon]="'filter-icon'" [width]="'12'" [height]="'12'"
+                                [fill]="'var(--table-header-text)'" (click)="focusOnPayoff(); PayOffFilter();">
+                            </app-svg-icons>
+                        </div>
+                    </th>
+                    <th class="wrapWord filterIconGrid specificPadding" scope="col">
+                        <span>Start Date</span>
+                        <div>
+                            <app-svg-icons class="back-button" [icon]="'filter-icon'" [width]="'12'" [height]="'12'"
+                                [fill]="'var(--table-header-text)'" (click)="focusOnSDate();"></app-svg-icons>
+                        </div>
+                        <div>
+                            <app-svg-icons class="back-button" [icon]="'sort-icon'" [width]="'12'" [height]="'12'"
+                                [fill]="'var(--table-header-text)'" (click)="sort('Start_Date')"></app-svg-icons>
+                        </div>
+                    </th>
+                    <th scope="col" class="wrapWord filterIconGrid specificPadding">
+                        <span>Maturity</span>
+                        <div>
+                            <app-svg-icons class="back-button" [icon]="'filter-icon'" [width]="'12'" [height]="'12'"
+                                [fill]="'var(--table-header-text)'" (click)="focusOnMaturity();"></app-svg-icons>
+                        </div>
+                        <div>
+                            <app-svg-icons class="back-button" [icon]="'sort-icon'" [width]="'12'" [height]="'12'"
+                                [fill]="'var(--table-header-text)'" (click)="sort('Maturity_date')"></app-svg-icons>
+                        </div>
+                    </th>
+                    <th scope="col" class="wrapWord filterIconGrid specificPadding">
+                        <span>Next Fixing</span>
+                        <div>
+                            <app-svg-icons class="back-button" [icon]="'filter-icon'" [width]="'12'" [height]="'12'"
+                                [fill]="'var(--table-header-text)'" (click)="focusOnNextFixing();"></app-svg-icons>
+                        </div>
+                        <div>
+                            <app-svg-icons class="back-button" [icon]="'sort-icon'" [width]="'12'" [height]="'12'"
+                                [fill]="'var(--table-header-text)'" (click)="sort('Next_fixing_date')"></app-svg-icons>
+                        </div>
+                    </th>
+
+                    <th scope="col" class="filterIconGrid">
+                        <span>CCY</span>
+                        <div>
+                            <app-svg-icons class="back-button" [icon]="'filter-icon'" [width]="'12'" [height]="'12'"
+                                [fill]="'var(--table-header-text)'" (click)="focusOnCCY()"></app-svg-icons>
+                        </div>
+                    </th>
+                    <th scope="col" class="filterIconGrid contentRight">
+                        <span>Outstanding</span>
+                        <div>
+                            <app-svg-icons class="back-button" [icon]="'sort-icon'" [width]="'12'" [height]="'12'"
+                                [fill]="'var(--table-header-text)'" (click)="sort('Outstanding')"></app-svg-icons>
+                        </div>
+                    </th>
+                    <th scope="col" class="filterIconGrid contentRight">
+                        <span>Count</span>
+                        <div>
+                            <app-svg-icons class="back-button" [icon]="'sort-icon'" [width]="'12'" [height]="'12'"
+                                [fill]="'var(--table-header-text)'" (click)="sort('Deal_Count')"></app-svg-icons>
+                        </div>
+                    </th>
+                    <th scope="col" class="filterIconGrid contentRight">
+                        <span>Upfront (%)</span>
+                        <div>
+                            <app-svg-icons class="back-button" [icon]="'sort-icon'" [width]="'12'" [height]="'12'"
+                                [fill]="'var(--table-header-text)'" (click)="sort('Upfront')"></app-svg-icons>
+                        </div>
+                    </th>
+                    <th scope="col" class="filterIconGrid contentRight">
+                        <span>MTM (%)</span>
+                        <div>
+                            <app-svg-icons class="back-button" [icon]="'sort-icon'" [width]="'12'" [height]="'12'"
+                                [fill]="'var(--table-header-text)'" (click)="sort('MTM')"></app-svg-icons>
+                        </div>
+                    </th>
+                    <th scope="col" class="filterIconGrid">
+                        <span>Underlyings</span>
+                        <div>
+                            <app-svg-icons class="back-button" [icon]="'filter-icon'" [width]="'12'" [height]="'12'"
+                                [fill]="'var(--table-header-text)'" (click)="focusOnUnderlyings()"></app-svg-icons>
+                        </div>
+                    </th>
+                    <th scope="col" class="filterIconGrid">
+                        <span>Issuer</span>
+                        <div>
+                            <app-svg-icons class="back-button" [icon]="'filter-icon'" [width]="'12'" [height]="'12'"
+                                [fill]="'var(--table-header-text)'" (click)="focusOnIssuer()"></app-svg-icons>
+                        </div>
+                    </th>
+
+                </tr>
+            </thead>
+            <div *ngIf='loader' class="loader-center">
+                <div class="multi-ripple">
+                    <div></div>
+                    <div></div>
+                </div>
+                <!-- <img [src]="isProd ? 'assets/loading_dots.gif':'../../../../assets/loading_dots.gif'" height="60px"
+                        width="60px"> -->
+            </div>
+            <tbody *ngIf='!loader'>
+                <tr *ngFor="let data of blotterData; let i=index" class="eachRow">
+                    <div class="tableHeader tableRow check">
+                        <td class="filterIconGrid">
+                            <div style="margin-top:4px">
+                                <app-svg-icons class="back-button" [icon]="'down-arrow'" [width]="'10'" [height]="'10'"
+                                    [fill]="'var(--headers)'" (click)="expandProduct(data.Product_Ref,i)"
+                                    ngClass="'rotate-toggle-menu-icon':showOrderDetails[i]"></app-svg-icons>
+                            </div>
+                            <span #toggleButton (click)="OptionMenu(i, $event);viewWorkflows(data.Product_Ref,i);"
+                                class="link">{{data.Product_Ref}}</span>
+                            <div #menu *ngIf="showOptions[i]" class="options">
+                                <div class="block">
+                                    <!-- <div style="align-self: flex-end;">
+                                        <app-svg-icons (click)="showOptions[i]=false;showWorkflows[i]=false"
+                                            class="cancel-icon" [icon]="'close-icon'" [width]="'12'" [height]="'12'">
+                                        </app-svg-icons>
+                                    </div> -->
+                                    <div class="eachOption showIcon" (click)="showProductWatchPopUP=true;goToPage(data.Product_Ref,i)"><!--goToPage(data.Product_Ref,i)-->
+                                        <div>
+                                            <app-svg-icons class="cancel-icon" [icon]="'reports-icon'" [width]="'15'"
+                                                [height]="'15'">
+                                            </app-svg-icons>
+                                        </div>
+                                        <span>Product Watch</span>
+                                    </div>
+                                    <div class="eachOption showIcon"
+                                        (click)="goToUCP(data.Product_Ref,i,data.TokenId,data.Queue_Id)">
+                                        <div>
+                                            <app-svg-icons class="cancel-icon" [icon]="'catalog-icon'" [width]="'15'"
+                                                [height]="'15'">
+                                            </app-svg-icons>
+                                        </div>
+                                        <span>Product View</span>
+                                    </div>
+                                    <div class="eachOption showIcon"
+                                        (click)="showWorkflows[i]=!showWorkflows[i]; assignTarget($event)">
+                                        <div>
+                                            <app-svg-icons class="cancel-icon" [icon]="'workflow-icon'" [width]="'15'"
+                                                [height]="'15'">
+                                            </app-svg-icons>
+                                        </div>
+                                        <span>View Workflows</span>
+                                    </div>
+                                </div>
+                                <div *ngIf="showWorkflows[i]" class="options1">
+                                    <div class="block">
+                                        <!-- <div style="align-self: flex-end;">
+                                            <app-svg-icons (click)="showWorkflows[i]=false" class="cancel-icon"
+                                                [icon]="'close-icon'" [width]="'12'" [height]="'12'">
+                                            </app-svg-icons>
+                                        </div> -->
+                                        <div *ngFor="let worflow of workflowList">
+                                            <div (click)="goToViewWorkflow(data.Product_Ref,i,worflow)" class="eachOption">
+                                                {{worflow?.WTM_Title}}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- <div *ngFor="let worflow from workflowList"  >
+                                    <div  (click)="goToViewWorkflow(data.Product_Ref,i)">{{worflow.WTM_Title}}</div>
+                                </div> -->
+                        </td>
+
+                        <!-- <td class="filterIconGrid" >
+                                <div><app-svg-icons class="back-button" [icon]="'down-arrow'" [width]="'15'" [height]="'15'" [fill]="'var(--headers)'" (click)="expandProduct(data.Product_Ref)" ></app-svg-icons></div>
+                                <span (click)="goToPage(data.Product_Ref)" class="link">{{data.Product_Ref}}</span>
+                            </td> -->
+                        <!-- <td (click)="goToPage(data.Product_Ref)" class="link">{{data.Product_Ref}}
+                                <span></span>
+                                <div></div>
+                            </td> -->
+                        <td class="tdataWrap" *ngIf="data.Product_Name!=''&& data.Product_Name!=null">
+                            {{data.Product_Name}}</td>
+                        <td class="tdataWrap" *ngIf="data.Product_Name==''||data.Product_Name==null">-</td>
+                        <td class="tdataWrap" *ngIf="data.Payoff!=''">{{data.Payoff}}</td>
+                        <td class="tdataWrap" *ngIf="data.Payoff==''">-</td>
+                        <td class="tdataWrap" *ngIf="data.Start_Date!=''&& data.Start_Date!=null">{{data.Start_Date }}</td>
+                        <td class="tdataWrap" *ngIf="data.Start_Date==''||data.Start_Date==null">-</td>
+                        <td class="tdataWrap" *ngIf="data.Maturity_date!=''&& data.Maturity_date!=null">
+                            {{data.Maturity_date}}</td>
+                        <td class="tdataWrap" *ngIf="data.Maturity_date==''||data.Maturity_date==null">-</td>
+                        <td class="tdataWrap" *ngIf="data.Next_fixing!=''&& data.Next_fixing!=null">{{data.Next_fixing}}
+                        </td>
+                        <td class="tdataWrap" *ngIf="data.Next_fixing==''||data.Next_fixing==null">-</td>
+                        <td *ngIf="data.Currency!=''">{{data.Currency}}</td>
+                        <td class="tdataWrap" *ngIf="data.Currency==''">-</td>
+                        <td name="myDecimal " class="alignRight" *ngIf="data.Outstanding!='' && data.Outstanding!=null">
+                            {{data.Outstanding1}}</td>
+                        <td class="tdataWrap" *ngIf="data.Outstanding=='' || data.Outstanding==null">-</td>
+                        <td class="alignRight" *ngIf="data.Deal_Count!=''">{{data.Deal_Count}}</td>
+                        <td class="tdataWrap" *ngIf="data.Deal_Count==''">-</td>
+                        <td class="alignRight" *ngIf="data.Upfront!=''">{{data.Upfront1}}</td>
+                        <td class="tdataWrap" *ngIf="data.Upfront==''">-</td>
+                        <td class="alignRight" *ngIf="data.MTM!=''">{{data.MTM1}}</td>
+                        <td class="tdataWrap" *ngIf="data.MTM==''">-</td>
+                        <td class="tdataWrap" *ngIf="data.Underlyings!=''">{{data.Underlyings}}</td>
+                        <td class="tdataWrap" *ngIf="data.Underlyings==''">-</td>
+                        <td class="tdataWrap" *ngIf="data.Issuer!=''">{{data.Issuer}}</td>
+                        <td class="tdataWrap" *ngIf="data.Issuer==''">-</td>
+                    </div>
+
+
+                    <div *ngIf="showOrderDetails[i]" class="orderDetailDiv">
+                        <div class="box-container">
+                            <table *ngIf="this.OrderDetailsData[i]?.length>0">
+                                <thead class="thead1_sub">
+                                <tr class="orderDetailHeader">
+                                    <th class="alignLeft orderHead">Order No.</th>
+                                    <th class="alignLeft orderHead">Client</th>
+                                    <th class="alignLeft orderHead">Notional</th>
+                                    <th class="alignLeft orderHead">Client Price</th>
+                                    <th class="alignLeft orderHead">Order Date</th>
+                                    <th class="alignLeft orderHead">Remark</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- <div *ngIf="this.OrderDetailsData[i]?.length>0"> -->
+                                    <tr *ngFor="let item of this.OrderDetailsData[i]; let i1 = index" class="orderDetailHeader">
+                                        <td>{{item.RO_ID}}</td>
+                                        <td>{{item.Customer_Name}}</td>
+                                        <td>{{item.Currency}} {{FormatAmount(item.Nominal_Amount)}}</td>
+                                        <td>{{item.Client_Price}}</td>
+                                        <td>{{item.Trade_Date}}</td>
+                                        <td>{{item.BS_Direction}}</td>
+
+                                    </tr>
+                                    <!-- </div> -->
+                                    <!-- <div *ngIf="this.OrderDetailsData[i]?.length==0">No Records Found</div> -->
+                                </tbody>
+                            </table>
+                            <div *ngIf="this.OrderDetailsData[i]?.length==0">No Records Found</div>
+                            <!-- <div class="table-header-schedule">
+                                    <label>Order No.</label>
+                                    <label>Client</label>
+                                    <label >Notional</label>
+                                    <label >Client Price</label>
+                                    <label >Order Date</label>
+                                    <label >Remark</label>
+                                </div> -->
+                            <!-- <div class="schedule-height">
+                                    <div class="graph-div" style="height: 40px;" *ngFor="let item of this.OrderDetailsData; let i = index">
+                                        <div class="graph-item" >
+                                            <div class="graph-date"  >
+                                            <label >{{item.RO_ID}}</label>
+                                            </div>
+                                            <div class="graph-item-list">
+                                            <div class="graph-item-content">
+                                                <label >{{item.Customer_Name}}</label>
+                                                </div>
+                                                <div class="graph-item-content" >
+                                                <label>{{item.Currency}} {{FormatAmount(item.Nominal_Amount)}}</label>
+                                                </div>
+                                            <div class="graph-item-content" style="text-align: center;">
+                                                <label>{{item.Client_Price}}</label>
+                                            </div>
+                                            <div class="graph-item-content" >
+                                                <label>{{item.Trade_Date}}</label>
+                                            </div>
+                                            <div class="graph-item-content" >
+                                            <label>{{item.BS_Direction}}</label>
+                                        </div>
+                                                
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    <div *ngIf="errorHandleOrder" class="error">
+                                    No Records Found
+                                    </div>
+                                </div> -->
+                        </div>
+                    </div>
+
+
+                </tr>
+                <!-- <tr>
+                        <div *ngIf="showOrderDetails">
+                            <div class="box-container">
+                                <div class="table-header-schedule">
+                                    <label>Order No.</label>
+                                    <label>Client</label>
+                                    <label >Notional</label>
+                                    <label >Client Price</label>
+                                    <label >Order Date</label>
+                                    <label >Remark</label>
+                                </div>
+                                <div class="schedule-height">
+                                    <div class="graph-div" style="height: 40px;" *ngFor="let item of this.OrderDetailsData; let i = index">
+                                        <div class="graph-item" >
+                                            <div class="graph-date"  >
+                                            <label >{{item.RO_ID}}</label>
+                                            </div>
+                                            <div class="graph-item-list">
+                                            <div class="graph-item-content">
+                                                <label >{{item.Customer_Name}}</label>
+                                                </div>
+                                                <div class="graph-item-content" >
+                                                <label>{{item.Currency}} {{FormatAmount(item.Nominal_Amount)}}</label>
+                                                </div>
+                                            <div class="graph-item-content" style="text-align: center;">
+                                                <label>{{item.Client_Price}}</label>
+                                            </div>
+                                            <div class="graph-item-content" >
+                                                <label>{{item.Trade_Date}}</label>
+                                            </div>
+                                            <div class="graph-item-content" >
+                                            <label>{{item.BS_Direction}}</label>
+                                        </div>
+                                                
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    <div *ngIf="errorHandleOrder" class="error">
+                                    No Records Found
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
+                    </tr> -->
+            </tbody>
+        </table>
+        <div *ngIf="showProductWatchPopUP" class="overlay">
+            <div class="page-content-container-popup">
+
+                <div class="tabs tab-active">
+                    <!-- <div class="topBar">
+                        <div>Product Watch</div>
+                        <app-svg-icons class="closebtn" [icon]="'cancel-icon'" [width]="'15'" [height]="'15'"(click)="showProductWatchPopUP= false"></app-svg-icons>
+                    </div> -->
+                    <app-svg-icons style="place-content: flex-end;
+                    padding-right: 15px;" class="closebtn" [icon]="'cancel-icon'" [width]="'15'" [height]="'15'"(click)="showProductWatchPopUP= false"></app-svg-icons>
+                    <div>
+                        <app-product-watch-mini></app-product-watch-mini>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,287 @@
+<ng-container [ngSwitch]="control.dataType">
+    <ng-template [ngSwitchCase]="'TEXT'">
+      <div>
+        <mat-form-field [style.--width]="width"  *ngIf="control.visibility == 'Y' || control.visibility == ''">
+          <input matInput class="UCPMatInput" [name]="control.fieldName"  [id]="control.fieldName" [(ngModel)]="control.value "
+          [disabled]="control.readOnly === 'Y' ? true : false" [ngClass]="{'readonly': control.readOnly === 'Y'}"
+          [defaultValue]="control.currentValue" (change)="customTabFieldValueChange(control)" autocomplete="off" />
+        </mat-form-field>
+  
+      </div>
+    </ng-template> 
+  
+    <ng-template [ngSwitchCase]="'AMOUNT'" >
+      <div>
+        <mat-form-field [style.--width]="width"  *ngIf="control.visibility == 'Y' || control.visibility == ''">
+          <input matInput class="UCPMatInput"  [name]="control.fieldName" [id]="control.fieldName" [(ngModel)]="control.value"
+          [ngClass]="{'readonly': control.readOnly === 'Y'}" [disabled]="control.readOnly === 'Y' ? true : false"
+          [defaultValue]="control.currentValue" (blur)="formatNumber(control)" (focus)="unformatNumber(control)"
+          (change)="customTabFieldValueChange(control)" style="text-align: right;" autocomplete="off" />
+        </mat-form-field>
+      </div>
+    </ng-template>
+  
+    <ng-template [ngSwitchCase]="'NUMBER'">
+      <div *ngIf="control.visibility == 'Y' || control.visibility == ''">
+        <mat-form-field [style.--width]="width"  >
+          <input matInput class="UCPMatInput"  [name]="control.fieldName" [id]="control.fieldName" [(ngModel)]="control.value"
+          [ngClass]="{'readonly': control.readOnly === 'Y'}" [disabled]="control.readOnly === 'Y' ? true : false"
+          [defaultValue]="control.currentValue" (blur)="formatNumber(control)" (focus)="unformatNumber(control)"
+          (change)="customTabFieldValueChange(control)" style="text-align: right;" autocomplete="off" />
+        </mat-form-field>
+      </div>
+    </ng-template>
+  
+    <ng-template [ngSwitchCase]="'INTEGER'">
+      <div>
+        <mat-form-field [style.--width]="width"  *ngIf="control.visibility == 'Y' || control.visibility == ''">
+          <input matInput class="UCPMatInput"  [name]="control.fieldName" [id]="control.fieldName" [(ngModel)]="control.value"
+          [ngClass]="{'readonly': control.readOnly === 'Y'}" [disabled]="control.readOnly === 'Y' ? true : false"
+          [defaultValue]="control.currentValue" (change)="customTabFieldValueChange(control)" style="text-align: right;" autocomplete="off" />
+        </mat-form-field>
+      </div>
+    </ng-template>
+  
+    <ng-template [ngSwitchCase]="'COMMON DATA'" *ngIf="control.visibility == 'Y' || control.visibility == ''"> 
+      <mat-form-field [style.--width]="width"  *ngIf="control.udF_Feature1 === '' " >
+         <!-- Added control.fieldName instead of control.sourcingLink - by OnkarE on 28-Mar-2023 -->
+        <mat-select  class="UCPMatSelect" [name]="control.fieldName" [id]="control.fieldName" [disabled]="control.readOnly === 'Y' ? true : false"
+          [(ngModel)]="control.value" (selectionChange)="customTabFieldValueChange(control)" >
+          <mat-option [value]="d.code" *ngFor="let d of dropdowns[control.fieldName]">
+            {{d.code}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div *ngIf="control.udF_Feature1.includes('Radio Button')">
+        <table>
+          <tr>
+            <td>
+            <mat-label>{{control.displayName}}</mat-label>
+            </td>
+            <td>
+              <mat-radio-group style="margin-left: 16px" *ngFor="let d of dropdowns[control.sourcingLink]" [name]="control.fieldName"   
+              [id]="control.fieldName" [(ngModel)]="control.value" (change)="customTabFieldValueChange(control)" for="control.fieldName">
+                <mat-radio-button  [value]="d.code" >{{d.code}}</mat-radio-button>
+              </mat-radio-group>
+          </td>
+          </tr>
+        </table>
+      </div> 
+      <mat-form-field  [style.--width]="width"  *ngIf="control.udF_Feature1.includes('Allow Blank Row')"> 
+        <!-- Added control.fieldName instead of control.sourcingLink - by OnkarE on 28-Mar-2023 -->
+        <mat-select  class="UCPMatSelect" [disabled]="control.readOnly === 'Y' ? true : false" [name]="control.fieldName" [id]="control.fieldName" [(ngModel)]="control.value"
+        (selectionChange)="customTabFieldValueChange(control)" *ngIf="control.fieldName">
+          <mat-option value=""></mat-option>
+          <mat-option [value]="d.code" *ngFor="let d of dropdowns[control.fieldName]"> {{d.code}} </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field  *ngIf="control.udF_Feature1.toUpperCase().includes('WIDTH')" [ngStyle]="{'width':control.udF_Feature2+'px'}">
+         <!-- Added control.fieldName instead of control.sourcingLink - by OnkarE on 28-Mar-2023 -->
+        <mat-select  class="UCPMatSelect" [disabled]="control.readOnly === 'Y' ? true : false" [name]="control.fieldName" [id]="control.fieldName" [(ngModel)]="control.value"
+        (selectionChange)="customTabFieldValueChange(control)" *ngIf="control.fieldName">
+          <mat-option value=""></mat-option>
+          <mat-option [value]="d.code" *ngFor="let d of dropdowns[control.fieldName]"> {{d.code}} </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </ng-template>
+  
+    <ng-template [ngSwitchCase]="null">
+    </ng-template>
+  
+    <ng-template [ngSwitchCase]="'CUSTOMER'">
+      <div *ngIf="control.visibility == 'Y' || control.visibility == ''">
+      <app-search *ngIf="control.udF_Feature1 ==='Show Picker'" [TabFlag]="customTabFlag" [input]="control" [searchArr]="searchArrays[control.fieldName]" [disabled]="control.readonly" (selectedSearchVal)="customTabFieldValueChange(control)"></app-search>
+      <mat-form-field *ngIf="control.udF_Feature1 != 'Show Picker' " [style.--width]="width" >
+        <mat-select  class="UCPMatSelect"  [name]="control.fieldName" [id]="control.fieldName" (selectionChange)="customTabFieldValueChange(control)"
+        [(ngModel)]="control.value" [disabled]="control.readOnly === 'Y' ? true : false">
+          <mat-option [value]="d.code" *ngFor="let d of dropdowns[control.fieldName]">
+            {{d.code}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      </div>
+    </ng-template>
+  
+    <ng-template [ngSwitchCase]="'CURRENCY'">
+      <div *ngIf="control.visibility == 'Y' || control.visibility == ''">
+      <app-search *ngIf="control.udF_Feature1 ==='Show Picker'" [TabFlag]="customTabFlag" [input]="control" [searchArr]="searchArrays[control.fieldName]" [disabled]="control.readonly" (selectedSearchVal)="selectSearchVal(control.fieldName, control.value)"></app-search>
+      <mat-form-field *ngIf="control.udF_Feature1 != 'Show Picker' " [style.--width]="width" >
+        <mat-select  class="UCPMatSelect"  [name]="control.fieldName" [id]="control.fieldName" (selectionChange)="customTabFieldValueChange(control)"
+        [(ngModel)]="control.value" [disabled]="control.readOnly === 'Y' ? true : false">
+          <mat-option [value]="d.code" *ngFor="let d of dropdowns[control.fieldName]">
+            {{d.code}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    </ng-template>
+  
+    <ng-template [ngSwitchCase]="'COUNTERPARTY'">
+      <div *ngIf="control.visibility == 'Y' || control.visibility == ''">
+      <app-search *ngIf="control.udF_Feature1 ==='Show Picker'"  [TabFlag]="customTabFlag" [input]="control" [searchArr]="searchArrays[control.fieldName]" [disabled]="control.readonly" (selectedSearchVal)="selectSearchVal(control.fieldName, control.value)"></app-search>
+      <mat-form-field *ngIf="control.udF_Feature1 != 'Show Picker' " [style.--width]="width" >
+        <mat-select  class="UCPMatSelect"   [name]="control.fieldName" [id]="control.fieldName" (selectionChange)="customTabFieldValueChange(control)"
+        [(ngModel)]="control.value" [disabled]="control.readOnly === 'Y' ? true : false">
+          <mat-option [value]="d.code" *ngFor="let d of dropdowns[control.fieldName]">
+            {{d.code}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      </div>
+    </ng-template>
+  
+    <ng-template [ngSwitchCase]="'CURRENCY PAIR'">
+      <div *ngIf="control.visibility == 'Y' || control.visibility == ''">
+      <app-search *ngIf="control.udF_Feature1 ==='Show Picker'" [TabFlag]="customTabFlag" [input]="control" [searchArr]="searchArrays[control.fieldName]" [disabled]="control.readonly" (selectedSearchVal)="selectSearchVal(control.fieldName, control.value)"></app-search>
+      <mat-form-field *ngIf="control.udF_Feature1 != 'Show Picker' " [style.--width]="width" >
+        <mat-select  class="UCPMatSelect"  [name]="control.fieldName" [id]="control.fieldName" (selectionChange)="customTabFieldValueChange(control)"
+        [(ngModel)]="control.value" [disabled]="control.readOnly === 'Y' ? true : false">
+          <mat-option [value]="d.code" *ngFor="let d of dropdowns[control.fieldName]">
+            {{d.code}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    </ng-template>
+  
+    <ng-template [ngSwitchCase]="'EXCHANGE'">
+      <div *ngIf="control.visibility == 'Y' || control.visibility == ''">
+      <app-search *ngIf="control.udF_Feature1 ==='Show Picker'" [TabFlag]="customTabFlag" [input]="control" [searchArr]="searchArrays[control.fieldName]" [disabled]="control.readonly" (selectedSearchVal)="selectSearchVal(control.fieldName, control.value)"></app-search>
+      <mat-form-field *ngIf="control.udF_Feature1 != 'Show Picker' " [style.--width]="width" >
+        <mat-select  class="UCPMatSelect"   [name]="control.fieldName" [id]="control.fieldName" (selectionChange)="customTabFieldValueChange(control)"
+        [(ngModel)]="control.value" [disabled]="control.readOnly === 'Y' ? true : false">
+          <mat-option [value]="d.code" *ngFor="let d of dropdowns[control.fieldName]">
+            {{d.code}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    </ng-template>
+  
+    <ng-template [ngSwitchCase]="'FREQUENCY'">
+      <div *ngIf="control.visibility == 'Y' || control.visibility == ''">
+      <mat-form-field [style.--width]="width" >
+        <mat-select  class="UCPMatSelect"  [name]="control.fieldName" [id]="control.fieldName" (selectionChange)="customTabFieldValueChange(control)"
+        [(ngModel)]="control.value"  [disabled]="control.readOnly === 'Y' ? true : false">
+          <mat-option [value]="d.code" *ngFor="let d of dropdowns[control.fieldName]">
+            {{d.code}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      </div>
+    </ng-template>
+  
+    <ng-template [ngSwitchCase]="'SHARE'">
+      <div *ngIf="control.visibility == 'Y' || control.visibility == ''">
+        <!-- changes by OnkarE on 09-Oct-2023 -->
+        <app-search *ngIf="control.udF_Feature1.includes('Show Picker')" [input]="control" [TabFlag]="customTabFlag" [searchArr]="searchArrays[control.fieldName]" [disabled]="control.readonly" (selectedSearchVal)="customTabFieldValueChange(control)"></app-search>
+        <mat-form-field *ngIf="!control.udF_Feature1.includes('Show Picker')" [style.--width]="width" >
+          <mat-select  class="UCPMatSelect" [name]="control.fieldName" [id]="control.fieldName" (selectionChange)="customTabFieldValueChange(control)" [disabled]="control.readOnly === 'Y' ? true : false"
+          [(ngModel)]="control.value" >
+            <mat-option [value]="d.code" *ngFor="let d of dropdowns[control.fieldName]">
+              {{d.code}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </ng-template>
+  
+    <ng-template [ngSwitchCase]="'YES/NO'">
+      <div *ngIf="control.visibility == 'Y' || control.visibility == ''">
+      <div >
+        <mat-form-field  [style.--width]="width"  >
+          <mat-label>{{control.displayName}}</mat-label>
+          <mat-select  class="UCPMatSelect" [name]="control.fieldName" [id]="control.fieldName" (selectionChange)="customTabFieldValueChange(control)"
+          [(ngModel)]="control.value" [disabled]="control.readOnly === 'Y' ? true : false">
+            <mat-option  [value]="d.code" *ngFor="let d of dropdowns[control.fieldName]">
+              {{d.code}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      </div>
+    </ng-template>
+  
+    <ng-template [ngSwitchCase]="'Y/N'">
+      <div *ngIf="control.visibility == 'Y' || control.visibility == ''">
+      <div >
+        <mat-form-field [style.--width]="width" >
+          <mat-label>{{control.displayName}}</mat-label>
+          <mat-select  class="UCPMatSelect" [name]="control.fieldName" [id]="control.fieldName" (selectionChange)="customTabFieldValueChange(control)"
+          [(ngModel)]="control.value" [disabled]="control.readOnly === 'Y' ? true : false">
+            <mat-option [value]="d.code" *ngFor="let d of dropdowns[control.fieldName]" >
+              {{d.code}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      </div>
+    </ng-template>
+  
+    <ng-template [ngSwitchCase]="'ISSUER'">
+      <div *ngIf="control.visibility == 'Y' || control.visibility == ''">
+      <app-search *ngIf="control.udF_Feature1 ==='Show Picker'" [TabFlag]="customTabFlag" [input]="control" [searchArr]="searchArrays[control.fieldName]" [disabled]="control.readonly" (selectedSearchVal)="selectSearchVal(control.fieldName, control.value)"></app-search>
+      <mat-form-field *ngIf="control.udF_Feature1 != 'Show Picker' " [style.--width]="width" >
+        <mat-select  class="UCPMatSelect" [name]="control.fieldName" [id]="control.fieldName" (selectionChange)="customTabFieldValueChange(control)"
+        [(ngModel)]="control.value" [disabled]="control.readOnly === 'Y' ? true : false">
+          <mat-option [value]="d.code" *ngFor="let d of dropdowns[control.fieldName]">
+            {{d.code}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    </ng-template>
+  
+    <ng-template [ngSwitchCase]="'INDEX'">
+      <div *ngIf="control.visibility == 'Y' || control.visibility == ''">
+      <app-search *ngIf="control.udF_Feature1 ==='Show Picker'" [TabFlag]="customTabFlag" [input]="control" [searchArr]="searchArrays[control.fieldName]" [disabled]="control.readonly" (selectedSearchVal)="selectSearchVal(control.fieldName, control.value)"></app-search>
+      <mat-form-field *ngIf="control.udF_Feature1 != 'Show Picker' " [style.--width]="width" >
+        <mat-select  class="UCPMatSelect"   [name]="control.fieldName" [id]="control.fieldName" (selectionChange)="customTabFieldValueChange(control)"
+        [(ngModel)]="control.value" [disabled]="control.readOnly === 'Y' ? true : false">
+          <mat-option [value]="d.code" *ngFor="let d of dropdowns[control.fieldName]">
+            {{d.code}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    </ng-template>
+  
+    <ng-template [ngSwitchCase]="'RM'">
+      <div *ngIf="control.visibility == 'Y' || control.visibility == ''">
+      <app-search *ngIf="control.udF_Feature1 ==='Show Picker'" [TabFlag]="customTabFlag" [input]="control" [searchArr]="searchArrays[control.fieldName]" [disabled]="control.readonly" (selectedSearchVal)="selectSearchVal(control.fieldName, control.value)"></app-search>
+      <mat-form-field *ngIf="control.udF_Feature1 != 'Show Picker' " [style.--width]="width" >
+        <mat-select  class="UCPMatSelect"  [name]="control.fieldName" [id]="control.fieldName" (selectionChange)="customTabFieldValueChange(control)"
+        [(ngModel)]="control.value" [disabled]="control.readOnly === 'Y' ? true : false">
+          <mat-option [value]="d.code" *ngFor="let d of dropdowns[control.fieldName]">
+            {{d.code}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      </div>
+    </ng-template>
+  
+    <ng-template [ngSwitchCase]="'DATE'">
+      <div *ngIf="control.visibility == 'Y' || control.visibility == ''"><app-date-picker [input]="control" [disabled]="control.readonly" [value]="control.value" (selectedDate)="selectDate(control,$event)">
+      </app-date-picker>
+      </div>
+    </ng-template>
+  
+    <ng-template [ngSwitchCase]="'LABEL'">
+      <div class="label-group">
+        <label [for]="control.fieldname" 
+          [ngClass]="{'labelAlignment': control.mandatory === 'N'}" class="ucplabel"
+          style="color: red;">{{control.displayName}}</label>
+      </div>
+    </ng-template>
+  
+    <ng-template [ngSwitchCase]="'TENOR'">
+      <div *ngIf="control.visibility == 'Y' || control.visibility == ''"> 
+        <mat-form-field [style.--width]="width"  >
+          <input matInput class="UCPMatInput"  [name]="control.fieldName" [id]="control.fieldName" (change)="customTabFieldValueChange(control)"
+          [(ngModel)]="control.value" [disabled]="control.readOnly === 'Y' ? true : false"
+          [ngClass]="{'readonly': control.readOnly === 'Y'}" [defaultValue]="control.currentValue" autocomplete="off" />
+        </mat-form-field>
+      </div>
+    </ng-template>
+  </ng-container>
+  

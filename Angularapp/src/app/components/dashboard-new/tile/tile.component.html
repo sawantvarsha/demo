@@ -1,0 +1,60 @@
+<div class="card" [ngStyle]="{'width':card.width, 'min-height':'250px'}" *ngIf="card.tileCode !== 'EmptyCard' ">
+    <!-- <div class="card" [ngStyle]="{'width':card.width, 'min-height':'350px'}" *ngIf="card.tileCode !== 'EmptyCard' && !card.Status"> -->
+
+    <!-- BBVAEPCLI-300 Pranav D 2-Jan-2023 Add Card title shown on screen so removed ngif condition *ngIf="card.tileCode !== 'Addcard'" -->
+    <div class="card-header">
+        <div style="display:flex;gap:10px;align-items:self-end">
+            <app-svg-icons [icon]="svg" [width]="'27'" [height]="'27'"    style="display: flex; align-items:center;">
+            </app-svg-icons>
+        <label> {{card.value | translate}}</label>
+        </div>
+        <app-svg-icons [icon]="'close-icon1'" [width]="'15'" [height]="'15'" *ngIf="card.tileCode !== 'Addcard'" (click)="closeCard(card)" style="display: flex; align-items:center;">
+        </app-svg-icons>
+    </div>
+<div >
+    <ng-container [ngSwitch]="card.tileCode">
+        <div class="card-content" *ngSwitchCase="'MarketIntelligence'">
+            <app-order-summary-card [selectedSegment] = "selectedSegment" [productsChartData]="productsChartData" [underlyingsChartData]="underlyingsChartData" [tenorsChartData]="tenorsChartData"></app-order-summary-card>
+        </div>
+        <div class="card-content" *ngSwitchCase="'PreviousQuotes'">
+            <app-previous-quotes-card></app-previous-quotes-card>
+        </div>
+        <div class="card-content" *ngSwitchCase="'AccessVideos'">
+            <app-access-videos-card></app-access-videos-card>
+        </div>
+         <div class="card-content" *ngSwitchCase="'Content'">
+            <app-content-card></app-content-card>
+        </div>
+        <div class="card-content" *ngSwitchCase="'MultiRequestLaunch'">
+            <app-multi-request-launch-card></app-multi-request-launch-card>
+        </div>
+        <div class="card-content" *ngSwitchCase="'MarketingMaterial'">
+            <app-marketing-material-card></app-marketing-material-card>
+        </div>    
+        <div class="card-content" *ngSwitchCase="'MarketWatch'">
+            <app-market-watch></app-market-watch>
+        </div>
+        <div class="card-content" *ngSwitchCase="'SavedRequests'">
+            <app-saved-requests-card></app-saved-requests-card>
+        </div>
+        <div class="card-content" *ngSwitchCase="'ScheduledRequests'">
+            <app-scheduled-requests></app-scheduled-requests>
+        </div>
+        <div class="card-content" *ngSwitchCase="'AppStockRecommendation'">
+            <app-stock-recommendation></app-stock-recommendation>
+        </div>
+        <div class="card-content" *ngSwitchCase="'ProductWatchlist'">
+            <app-product-watchlist></app-product-watchlist>
+        </div>
+         <div class="card-content" *ngSwitchCase="'Addcard'">
+            <app-add-card [hiddenCards]="hiddenCards" (hiddenCardsChanged) = "updateHiddenCard($event)" (showCard) = "showCard($event)" [CardList]="CardList"></app-add-card>
+        </div>
+    </ng-container>
+</div>
+</div>
+
+<div class="emptyCard" *ngIf="card.tileCode === 'EmptyCard'">
+    <div class="card-content">
+        <app-empty-card></app-empty-card>
+    </div>
+</div>

@@ -1,0 +1,156 @@
+.loanComponent {
+  display: grid;
+  grid-template-rows: auto 50px;
+  padding: 10px;
+  .loandetails {
+    color: var(--fund-details);
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    .loantitlerow {
+      font-size: 22px;
+      margin-bottom: 10px;
+    }
+  }
+  .param-cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 50px;
+    margin-top: 10px;
+  }
+  .loanname-row {
+    display: grid;
+    grid-template-columns: 20% 80%;
+  }
+  .loan-details {
+    display: grid;
+    grid-template-columns: 1fr;
+    font-size: 18px;
+    gap: 10%;
+    height: 45px;
+  }
+  .loanparams-row {
+    display: grid;
+    grid-template-columns: 40% 60%;
+    height: 45px;
+  }
+  .loan-button-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 2fr;
+    gap: 10px;
+    align-items: center;
+    margin-top: 15px;
+    .btn-submit {
+      display: flex;
+      justify-content: flex-end;
+      margin-right: 25px;
+    }
+  }
+  .details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    align-items: center;
+    text-align: right;
+    cursor: pointer;
+  }
+  .loan-message-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 30px;
+  }
+}
+
+.loanComponentrmw {
+  display: grid;
+  grid-template-rows: 50px auto 50px;
+  padding: 10px;
+  .loandetails {
+    color: var(--fund-details);
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    .loantitlerow {
+      font-size: 22px;
+      margin-bottom: 10px;
+    }
+  }
+  .param-cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 50px;
+    margin-top: 10px;
+  }
+  .loanname-row {
+    display: grid;
+    grid-template-columns: 19% 81%;
+  }
+  .loan-details {
+    display: grid;
+    grid-template-columns: 1fr;
+    font-size: 18px;
+    gap: 10%;
+    height: 45px;
+  }
+  .loanparams-row {
+    display: grid;
+    grid-template-columns: 40% 60%;
+    height: 45px;
+  }
+  .loan-button-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 2fr;
+    gap: 10px;
+    align-items: center;
+    margin-top: 15px;
+    .btn-submit {
+      display: flex;
+      justify-content: flex-end;
+      margin-right: 25px;
+    }
+  }
+  .details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    align-items: center;
+    text-align: right;
+    cursor: pointer;
+  }
+  .loan-message-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 30px;
+  }
+}
+
+.FreqLabel {
+  color: #b6b6b6;
+}
+
+input[type="date"] {
+  width: 100%;
+}
+
+input[type="date"]:before {
+  content: attr(data-date);
+  display: flex;
+  color: var(--text);
+  justify-content: center;
+  align-items: center;
+  width: 98%;
+}
+
+
+
+
+@media only screen and (max-width: 600px) {
+  .param-cols {
+    display: flex !important;
+    flex-direction: column !important;
+  }
+}
+
+

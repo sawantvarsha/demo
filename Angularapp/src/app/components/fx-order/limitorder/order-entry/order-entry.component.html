@@ -1,0 +1,425 @@
+<div class="mainDiv">
+  <div class="row info one-column">
+    <div class="col-lg-4 col-md-4 col-sm-col-sm-6" style="text-align: left">
+      <label>Customer:</label>
+    </div>
+    <div class="col-lg-4 col-md-7">
+      <div class="customer-container inputfield">
+        <!-- <input type="text" class="select" [(ngModel)]="Customer" style="margin-left:0.1em;width: 100%;" placeholder="Enter customer" tabindex="5" (keypress)="ChangeIndex($event); showCustomerList = true" (keydown.enter)="selectCustomer($event); flag=false;" (keydown.backspace)="backKeyPress($event)"
+                    (keydown.ArrowUp)="moveUpSelection($event, selectedCustomerIndex)" (keydown.ArrowDown)="moveDownSelection($event, selectedCustomerIndex)" (keydown.tab)="selectCustomer($event)" (click)="$event.target.select()">
+
+                <div class="customer-suggesstion-container" *ngIf="flag && showCustomerList">
+                    <div class="customer-list" [attr.data-customer]="item.customer" *ngFor="let item of (customerList | search: Customer:'customer'); let i = index" [ngClass]="{'customer-list-hover': i === selectedCustomerIndex}" (click)="setCustomer(item.customer,item)">
+                        <span class="customer-list-item">{{item.customer}}</span>
+                    </div>
+                </div> -->
+        <input
+          *ngIf="this.authApi.UserType === 'CLIENT'"
+          type="text"
+          class="select equalisewidth"
+          [(ngModel)]="Customer"
+          style="margin-left: 0.1em; width: 100%"
+          disabled
+        />
+        <app-common-customer-search
+          *ngIf="this.authApi.UserType === 'RM'"
+          (sendCustomerDetails)="getCustomerDetails($event)"
+          (selectedCustomerValue)="getSelectedCustomer($event)"
+        ></app-common-customer-search>
+      </div>
+    </div>
+  </div>
+
+  <div class="row info two-column">
+    <!-- <div class="col-lg-4" style="text-align: right;">
+      <label>Currency Pair:</label>
+    </div>
+    <div class="col-lg-2 row">
+      <div class="col-lg-12">
+        <select class="select" style="width: 100%;" type="text" placeholder="Currency" [(ngModel)]="selectedCCY"
+          (change)="SelectCCY()" [disabled]="AmendScreen"
+          [ngStyle]="{'background-color': AmendScreen?'var(--disabled)':''}">
+          <option *ngFor="let ccypair of ccyPairs" [value]="ccypair.PairCode">{{ccypair.PairCode}}</option>
+        </select>
+      </div>
+    </div> -->
+    <div class="col-lg-4" style="text-align: left">
+      <label>Buy Ccy:</label>
+    </div>
+    <div class="col-lg-6 row">
+      <div class="col-lg-3" *ngIf="ParentMsg != 'From FX-LIMIT-ORDER'">
+        <select
+          class="select"
+          style="width: 100%"
+          type="text"
+          placeholder="Currency"
+          [(ngModel)]="buyCcy"
+          (change)="getAsset2(); selectAccount(buyCcy, 'Buy')"
+          [ngStyle]="{
+            'background-color': AmendScreen ? 'var(--disabled)' : ''
+          }"
+        >
+          <option *ngFor="let ccypair of asset1list" [value]="ccypair.Asset1">
+            {{ ccypair.Asset1 }}
+          </option>
+        </select>
+      </div>
+      <!--Added by Uddesh on Feb 22, 2022-->
+      <div *ngIf="ParentMsg == 'From FX-LIMIT-ORDER'" class="bg">
+        {{ buyCcy }}
+      </div>
+    </div>
+    <div class="col-lg-9" style="display: flex">
+      <label>Buy Amount:</label>
+    </div>
+    <div>
+      <input
+        class="select"
+        type="text"
+        [(ngModel)]="billingAmt"
+        (blur)="billingAmt = formatKLMB(billingAmt)"
+        (focus)="billingAmt = unformatNumber_EN(billingAmt)"
+        (change)="billingAmt = formatKLMB(billingAmt); amountCalculation('Buy')"
+        placeholder="Amount"
+        maxlength="10"
+        (keypress)="NotionalValidate($event)"
+        style="text-align: right"
+      />
+    </div>
+    <!-- <div class="col-lg-1" style="text-align: right; flex: 1 0 5%;padding: 0 0.5em 0 0;margin: auto 0 auto 0;">
+        <label>Rate:</label>
+      </div>
+      <div class="col-lg-2" style="padding:0;">
+        <input class="select" disabled style=" width: 100%;" type="text" placeholder="Rate" [(ngModel)]="rate">
+      </div>
+      <div class="col-lg-2" style="text-align: right;flex: 1 0 11%;margin: auto 0 auto -1%;">
+        <label style="margin-left: -20px;">Direction:</label>
+      </div>
+      <div class="col-lg-2" style="padding:0;">
+        <select class="select" style="width: 100%;" type="text" placeholder="Direction" [(ngModel)]="direction"
+          (change)="onDirectionChanged(direction)" [disabled]="AmendScreen"
+          [ngStyle]="{'background-color': AmendScreen?'var(--disabled)':''}">
+          <option>Buy</option>
+          <option>Sell</option>
+        </select>
+      </div> -->
+  </div>
+  <div class="row info two-column">
+    <div class="col-lg-4" style="text-align: left">
+      <label>Sell Ccy:</label>
+    </div>
+    <div class="col-lg-6 row">
+      <div class="col-lg-3" *ngIf="ParentMsg != 'From FX-LIMIT-ORDER'">
+        <select
+          class="select"
+          style="width: 100%"
+          type="text"
+          placeholder="Currency"
+          [(ngModel)]="sellCcy"
+          (change)="selectAccount(sellCcy, 'Sell')"
+          [ngStyle]="{
+            'background-color': AmendScreen ? 'var(--disabled)' : ''
+          }"
+        >
+          <option *ngFor="let ccypair of asset2list" [value]="ccypair.Asset2">
+            {{ ccypair.Asset2 }}
+          </option>
+        </select>
+      </div>
+      <!--Added by Uddesh on Feb 22, 2022-->
+      <div *ngIf="ParentMsg == 'From FX-LIMIT-ORDER'" class="bg">
+        {{ sellCcy }}
+      </div>
+    </div>
+
+    <div class="col-lg-9" style="display: flex">
+      <label>Sell Amount:</label>
+    </div>
+    <div>
+      <input
+        class="select"
+        type="text"
+        [(ngModel)]="creditAmt"
+        (blur)="creditAmt = formatKLMB(creditAmt)"
+        (focus)="creditAmt = unformatNumber_EN(creditAmt)"
+        (change)="creditAmt = formatKLMB(creditAmt); amountCalculation('Sell')"
+        placeholder="Amount"
+        maxlength="10"
+        (keypress)="NotionalValidate($event)"
+        style="text-align: right"
+      />
+    </div>
+  </div>
+  <div class="row info two-column">
+    <div class="col-4" style="text-align: left">
+      <label style="margin-top: 0.2em">Rate:</label>
+    </div>
+    <div class="col-3">
+      <input
+        *ngIf="ParentMsg != 'From FX-LIMIT-ORDER'"
+        class="select"
+        disabled
+        style="width: 100%; text-align: right"
+        type="text"
+        placeholder="Rate"
+        [(ngModel)]="rate"
+      />
+      <!--Added by Uddesh on Feb 22, 2022-->
+      <div *ngIf="ParentMsg == 'From FX-LIMIT-ORDER'" class="bg">
+        {{ rate }}
+      </div>
+    </div>
+    <div class="col-4" style="text-align: left" *ngIf="orderType === 'Limit'">
+      <label>Target Rate:</label>
+    </div>
+    <div class="col-3" *ngIf="orderType === 'Limit'">
+      <input
+        class="select"
+        style="margin-right: 0px; width: 100%; text-align: right"
+        type="text"
+        [(ngModel)]="targetRate"
+        placeholder="Rate"
+        (focus)="targetRate = unformatNumber_EN(targetRate)"
+        (keypress)="NotionalValidate($event)"
+        (blur)="targetRate = formatKLMB(targetRate, precision); validateRate()"
+        (change)="onTargetChange(); amountCalculation('Target')"
+      />
+    </div>
+  </div>
+  <div class="row info two-column">
+    <div class="col-4" style="text-align: left">
+      <label style="margin-top: 0.2em">Order Type:</label>
+    </div>
+    <div class="col-3" *ngIf="ParentMsg != 'From FX-LIMIT-ORDER'">
+      <select
+        class="select"
+        style="width: 100%"
+        type="text"
+        [(ngModel)]="orderType"
+        (change)="changeOrderType()"
+      >
+        <option selected>Limit</option>
+        <option>Market</option>
+      </select>
+    </div>
+    <!--Added by Uddesh on Feb 22, 2022-->
+    <div *ngIf="ParentMsg == 'From FX-LIMIT-ORDER'" class="bg">
+      {{ orderType }}
+    </div>
+  </div>
+  <div class="row info two-column">
+    <div class="col-4" style="text-align: left">
+      <label>Buy Account ({{ buyCcy }}): </label>
+    </div>
+    <div class="col-3">
+      <select
+        class="select"
+        style="width: 100%"
+        type="text"
+        [(ngModel)]="billingAcc"
+        placeholder="Buy Account"
+        [disabled]="AmendScreen"
+      >
+        <option *ngFor="let i of billingAccountList">{{ i.Param1 }}</option>
+      </select>
+    </div>
+    <div class="col-4" style="text-align: left">
+      <label class="col-4" style="text-align: left"
+        >Sell Account ({{ sellCcy }}):</label
+      >
+    </div>
+    <div class="col-3">
+      <select
+        class="select"
+        style="margin-right: 0px; width: 100%"
+        type="text"
+        [(ngModel)]="creditAcc"
+        placeholder="Sell Account"
+        [disabled]="AmendScreen"
+      >
+        <option *ngFor="let i of creditAccountList">{{ i.Param1 }}</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="row info two-column" *ngIf="orderType === 'Limit'">
+    <div class="col-4" style="display: flex">
+      <!-- <div class="col-3" style="float: left;"> -->
+      <label>Expiry Type:</label>
+      <!-- </div>
+      <div class="col-5 expirytype"> -->
+
+      <!-- </div> -->
+    </div>
+    <div>
+      <select
+        class="select"
+        type="text"
+        placeholder="Good till time (GTT)"
+        [(ngModel)]="orderExpType"
+        (change)="onOrderExpTypeChanged(orderExpType)"
+      >
+        <option value="GTT">Good till Time (GTT)</option>
+        <option value="GTD">Good till Date (GTD)</option>
+        <!-- <option value="GTC">Good till cancellation (GTC)</option> -->
+        <option value="GTF">Good till Filled (GTF)</option>
+        <option value="EOD">End of Day (EOD)</option>
+      </select>
+    </div>
+    <!-- Changed by Ruchira M || 16-02-2022 -->
+    <div class="col-4" style="display: flex">
+      <label>Balance:</label>
+    </div>
+    <div class="col-6">
+      <input type="text" value="{{ cashBalanceInsellCcy }}" disabled />
+    </div>
+  </div>
+  <div class="row info two-column" *ngIf="orderType === 'Limit'">
+    <label class="col-4" style="text-align: left">How to execute:</label>
+    <div class="col-3">
+      <input
+        class="select"
+        style="margin-right: 0px; width: 100%"
+        type="text"
+        placeholder="How to execute"
+        [disabled]="AmendScreen"
+      />
+    </div>
+    <div
+      style="grid-column: 3 / 5"
+      class="col-lg-5 col-xs-3 expDateTime"
+      *ngIf="this.orderExpType !== 'GTF'"
+    >
+      <app-calender-control
+        [defaultDate]="ExpiryToDate"
+        [label]="'Expiry Date:'"
+        [disabled]="dateDisabled"
+        (selectedDate)="changeExpiryDate($event)"
+        style="
+          display: inline-grid;
+          grid-template-columns: 220px auto auto auto;
+        "
+      >
+      </app-calender-control>
+    </div>
+    <!-- <div class="col-4" style="text-align: right; ">
+      <label>Buy Amount:</label>
+    </div>
+    <div class="col-3">
+      <input class="select" style="margin-right: 0px;width: 100%;" type="text" [(ngModel)]="billingAmt"
+        (blur)="billingAmt = formatKLMB(billingAmt) ; checkEmptyNotional(billingAmt)"
+        (focus)="billingAmt= unformatNumber_EN(billingAmt)" placeholder="Amount" maxlength="10"
+        (keypress)="NotionalValidate($event)">
+    </div> -->
+
+    <!-- <div class="calendar-container col-2" style="text-align: right;" *ngIf="this.orderExpType !== 'GTC'">
+      <label style="margin-left: -30px;" *ngIf="this.orderExpType === 'EOD'">Expiry Date :</label>
+      <label style="margin-left: -30px;" *ngIf="this.orderExpType !== 'EOD'">Expiry Date and Time :</label>
+    </div> -->
+
+    <!-- <select class="select" style="margin-right: 0px;width: 100%;" type="text">
+        <option [value]="50">50</option>
+      </select> -->
+
+    <!-- <app-calender-control [defaultDate]="ExpiryToDate"
+        [label]="this.orderExpType === 'EOD' ? 'Expiry Date:' : 'Expiry Date and Time:'"
+        [ShowTime]="this.orderExpType !== 'EOD'" (selectedDate)="ExpiryToDate = $event" >
+      </app-calender-control> -->
+  </div>
+  <div class="row info two-column">
+    <label class="col-4" style="text-align: left">Reason:</label>
+    <div class="col-3">
+      <input
+        class="select"
+        style="width: 100%"
+        type="text"
+        placeholder="Reason"
+      />
+    </div>
+    <div
+      class="col-4 customTime"
+      style="display: flex"
+      *ngIf="this.orderExpType !== 'GTF' && orderType === 'Limit'"
+    >
+      <!-- <div class="col-3" style="padding:5px 6px;"> -->
+      <label style="padding: 5px 0px">Expiry Time:</label>
+      <!-- </div> -->
+    </div>
+    <div
+      style="display: flex"
+      *ngIf="this.orderExpType !== 'GTF' && orderType === 'Limit'"
+    >
+      <div class="expiry-time">
+        <select
+          [(ngModel)]="selectedHour"
+          (change)="selectHour(selectedHour)"
+          [disabled]="timeDisabled"
+          style="max-width: 91px; width: 108%"
+          [ngStyle]="{
+            'background-color': timeDisabled ? 'var(--disabled)' : ''
+          }"
+        >
+          <option *ngFor="let hour of hours" [value]="hour">{{ hour }}</option>
+        </select>
+      </div>
+      <div class="expiry-time">
+        <select
+          [(ngModel)]="selectedMin"
+          (change)="selectMin(selectedMin)"
+          [disabled]="timeDisabled"
+          style="max-width: 91px; margin-left: 0.3em; width: 103%"
+          [ngStyle]="{
+            'background-color': timeDisabled ? 'var(--disabled)' : ''
+          }"
+        >
+          <option *ngFor="let min of mins" [value]="min">{{ min }}</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <div
+    class="row info"
+    style="
+      display: grid;
+      grid-template-rows: 1fr 1fr;
+      gap: 20px;
+      text-align: center;
+    "
+  >
+    <div class="col-1">
+      <button
+        class="Submitbtn btnimg button"
+        style="text-align: center; width: 7em"
+        (click)="TransactionShow = false; blockTradeValidate()"
+        *ngIf="!AmendScreen"
+      >
+        Submit
+      </button>
+      <button
+        class="Submitbtn btnimg button"
+        style="text-align: center; width: 7em"
+        (click)="amendOrder()"
+        *ngIf="AmendScreen"
+      >
+        Amend
+      </button>
+    </div>
+    <div class="col-6">
+      <label
+        style="justify-content: end; align-items: center"
+        *ngIf="orderBookedMessage"
+      >
+        {{ orderBookedMessage }}
+        <div
+          _ngcontent-pnd-c2=""
+          (click)="routeTab('blotter')"
+          class="externalLinkIcon"
+        ></div>
+      </label>
+      <label style="align-items: center"> {{ errormsg }}</label>
+      <label style="align-items: center; color: red" *ngIf="tradingmsg">
+        {{ tradingmsg }}</label
+      >
+    </div>
+  </div>
+</div>

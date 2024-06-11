@@ -1,0 +1,50 @@
+<div class = "container">
+  <div class = "page-title"> Asset Allocation </div>
+
+  <div >
+  <google-chart  [type]="type" [data]="chartData" [options]="options">
+
+  </google-chart>
+  </div>
+
+  <div class = "part" > 
+    <div>
+      <label> Portfolio: </label>
+      <label class = "yellow"> {{nameproposal}} </label>
+    </div>
+    <div class = subpart>
+      <label> Capital Posted: </label>
+      <label class = "yellow"> {{baseCCY}} {{this.cfs.FormatNumberr(AUM)}} </label>
+    </div>
+  </div>
+
+
+  <div class = "tableClass">
+    <table>
+      <tr>
+        <th> ISIN </th>
+        <th> Asset Code </th>
+        <th> Asset Class </th>
+        <!-- <th> Sub Template </th>
+        <th> Category </th> -->
+        <th> Asset Long Name </th>
+        <th> Nominal </th>
+        <th> Price </th>
+        <th> Quantity </th>
+      </tr>
+
+      <tr *ngFor = "let item of PreviewDataResult ">
+        <td> {{ item.ISIN }} </td>
+        <td> {{ item.code }} </td>
+        <td> {{ item.TypeAsset }} </td>
+        <!-- <td> {{item.SubTemplate}} </td>
+        <td> {{item.Category}} </td> -->
+        <td> {{ item.LongName }} </td>
+        <td style="text-align: end;"> {{ this.cfs.FormatNumberr(item.Nominal) }} </td>
+        <td style="text-align: end;"> {{ item.Price }} </td>
+        <td style="text-align: center;"> {{ this.cfs.FormatNumberr(item.Qty) }} </td>
+      </tr>
+    </table>
+  </div>
+
+</div>

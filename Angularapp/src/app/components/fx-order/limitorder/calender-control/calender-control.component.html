@@ -1,0 +1,26 @@
+<label for="txt-calendar" class="lbl-calendar" *ngIf="label">{{ label }}</label>
+<input
+  type="text"
+  id="txt-calendar"
+  class="txt-calendar"
+  readonly
+  [(ngModel)]="finalDate"
+  (click)="picker.open()"
+  [disabled]="disabled"
+/>
+
+<mat-form-field class="mat-calendar">
+  <input
+    matInput
+    [matDatepicker]="picker"
+    class="picker"
+    (dateChange)="getDate($event)"
+  />
+  <mat-datepicker #picker></mat-datepicker>
+</mat-form-field>
+
+<img
+  src="{{ assetURL }}/calendar-grey.png"
+  (click)="!disabled ? picker.open() : ''"
+  class="icon-calendar"
+/>

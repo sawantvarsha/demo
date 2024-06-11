@@ -1,0 +1,43 @@
+<!-- <div class="middle"> -->
+<input
+  type="text"
+  [tabindex]="1"
+  placeholder="Search Customer"
+  [(ngModel)]="selectedCustomer"
+  (keydown.enter)="selectCustomer1($event)"
+  (keydown.ArrowUp)="
+    selectedCustomerIndex = cfs.moveUpSelection($event, selectedCustomerIndex)
+  "
+  (keydown.ArrowDown)="
+    selectedCustomerIndex = cfs.moveDownSelection($event, selectedCustomerIndex)
+  "
+  (keypress)="showSuggestions = true"
+/>
+<div class="UnderlyingSearch" *ngIf="selectedCustomer && showSuggestions">
+  <div
+    id="CustomerNameList"
+    class="SelectorBox"
+    (clickOutside)="onClickedOutside($event)"
+  >
+    <a
+      #CustomerNamesList
+      *ngFor="
+        let customer of customersOfRMArray
+          | search: selectedCustomer:'CustomerName';
+        let i = index
+      "
+      (keypress)="ChangeIndex($event)"
+    >
+      <div
+        *ngIf="customer"
+        [attr.data-mf]="customer['CustomerName']"
+        (click)="selectCustomer(customer)"
+        (keydown.enter)="selectCustomer(customer)"
+        [ngClass]="{ HoverSuggestion: i === selectedCustomerIndex }"
+      >
+        <span>{{ customer.CustomerName }}</span>
+      </div>
+    </a>
+  </div>
+</div>
+<!-- </div> -->

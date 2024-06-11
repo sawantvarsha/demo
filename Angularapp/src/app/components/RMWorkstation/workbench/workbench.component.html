@@ -1,0 +1,880 @@
+<!-- <div class="gridss" [style.grid-template-columns]="setGrid()" [ngStyle]="{'width':selectedProduct === 'Bonds' ? '1800px' : '1200px' }"> -->
+<div>
+  <div class="gridss" [style.grid-template-columns]="setGrid()">
+    <div class="first-row" style="display: flex; grid-column: 1/-1">
+      <div *ngFor="let d of getFirstRowData(); let i = index" style="height: 50px">
+        <!-- [ngStyle]="{'grid-row': d.gridRow, 'grid-column': d.gridColumn}"-->
+        <span *ngIf="d.FieldType !== 'ImageLabel'">
+          <div *ngIf="d.ImageDataField !== ''" class="merge" style="
+              flex-direction: row;
+              align-items: center;
+              color: rgb(189, 91, 12) !important;
+            ">
+            <div *ngIf="addImage(d, 'textImage')">
+              <img width="30" height="30" src="{{ d.image }}" />
+            </div>
+            <div *ngIf="!addImage(d, 'textImage')">
+              <span style="color: rgb(189, 91, 12) !important"></span>
+            </div>
+            <div *ngIf="addData(d, i)">
+              <p class="name-width" [ngStyle]="createStyle(d.FieldStyle)" style="color: rgb(189, 91, 12) !important">
+                {{ d.FieldDisplayName }}
+              </p>
+            </div>
+          </div>
+          <div *ngIf="d.DesignLabelID === 'Label0002'" style="position: relative; bottom: 10%; right: 10%">
+            <div *ngIf="d.ImageDataField === ''" class="merge">
+              <div *ngIf="addData(d, i)">
+                <p class="name-width" [ngStyle]="createStyle(d.FieldStyle)" style="margin-top: 6px">
+                  ({{ d.FieldDisplayName }})
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="d.DesignLabelID !== 'Label0002'">
+            <div *ngIf="d.ImageDataField === ''" class="merge">
+              <div *ngIf="addData(d, i)">
+                <p class="name-width" [ngStyle]="createStyle(d.FieldStyle)" style="margin-top: 6px">
+                  {{ d.FieldDisplayName }}
+                </p>
+              </div>
+            </div>
+          </div>
+        </span>
+        <span *ngIf="d.FieldType === 'ImageLabel'">
+          <div *ngIf="addImage(d, 'Imagepath')">
+            <img width="30" height="30" src="{{ d.image }}" (click)="imageClick(d)" style="cursor: pointer" />
+          </div>
+          <div *ngIf="!addImage(d, 'Imagepath')">
+            <span></span>
+          </div>
+        </span>
+      </div>
+    </div>
+
+    <div *ngFor="let d of getSecondRowDataArray; let i = index" style="height: 40px" class="headers">
+      <div *ngIf="addData(d, i)">
+        <p [ngStyle]="createStyle(d.FieldStyle)" style="margin-top: 3px">
+          {{ d.FieldDisplayName }}
+        </p>
+      </div>
+    </div>
+
+    <div *ngFor="let d of getThirdRowDataArray; let i = index" style="height: 20px">
+      <span *ngIf="d.FieldType !== 'ImageLabel'">
+        <div *ngIf="d.ImageDataField !== ''" class="merge">
+          <div *ngIf="addImage(d, 'textImage')">
+            <img width="30" height="20" src="{{ d.image }}" />
+          </div>
+          <div *ngIf="!addImage(d, 'textImage')">
+            <span></span>
+          </div>
+          <div *ngIf="addData(d, i)">
+            <div class="merge" *ngIf="d.mergeData !== ''">
+              <p [ngStyle]="createStyle(d.FieldStyle)">
+                <span *ngIf="d.FieldDataType === 'Number'">{{
+                  this.cfs.FormatNumbernull(d.FieldDisplayName)
+                  }} {{d.TextAfterData}}</span>
+                <span *ngIf="d.FieldDataType === 'Text'">
+                  {{ d.FieldDisplayName }}</span>
+                <span *ngIf="d.FieldDataType === 'Date'">
+                  {{ d.FieldDisplayName }}</span>
+              </p>
+              <p [ngStyle]="createStyle(d.mergeStyle)">
+                {{ d.mergeData }}
+              </p>
+            </div>
+
+            <p [ngStyle]="createStyle(d.FieldStyle)" *ngIf="d.mergeData === '' && d.column !== '99'">
+              <span *ngIf="d.FieldDataType === 'Number'">{{
+                this.cfs.FormatNumbernull(d.FieldDisplayName)
+                }} {{d.TextAfterData}}</span>
+              <span *ngIf="d.FieldDataType === 'Text'">
+                {{ d.FieldDisplayName }}</span>
+              <span *ngIf="d.FieldDataType === 'Date'">
+                {{ d.FieldDisplayName }}</span>
+            </p>
+          </div>
+        </div>
+        <div *ngIf="d.ImageDataField === ''" class="merge">
+          <div *ngIf="addData(d, i)">
+            <div class="merge" *ngIf="d.mergeData !== ''">
+              <p [ngStyle]="createStyle(d.FieldStyle)">
+                <span *ngIf="d.FieldDataType === 'Number'">{{
+                  this.cfs.FormatNumbernull(d.FieldDisplayName)
+                  }}{{d.TextAfterData}}</span>
+                <span *ngIf="d.FieldDataType === 'Text'">
+                  {{ d.FieldDisplayName }}</span>
+                <span *ngIf="d.FieldDataType === 'Date'">
+                  {{ d.FieldDisplayName }}</span>
+              </p>
+              <p [ngStyle]="createStyle(d.mergeStyle)">
+                {{ d.mergeData }}
+              </p>
+            </div>
+
+            <p [ngStyle]="createStyle(d.FieldStyle)" *ngIf="d.mergeData === '' && d.column !== '99'">
+              <span *ngIf="d.FieldDataType === 'Number'">{{
+                this.cfs.FormatNumbernull(d.FieldDisplayName)
+                }}{{d.TextAfterData}}</span>
+              <span *ngIf="d.FieldDataType === 'Text'">
+                {{ d.FieldDisplayName }}</span>
+              <span *ngIf="
+                  d.FieldDataType === 'Date' &&
+                  product !== 'NiftyParticipation' &&
+                  product !== 'EquityAutocallableNote'
+                ">
+                {{ d.FieldDisplayName }}</span>
+              <span *ngIf="
+                  d.FieldDataType === 'Date' &&
+                  product === 'NiftyParticipation' &&
+                  d.TargetField !== 'NM.Debit_CutOff_Date'
+                ">
+                {{ d.FieldDisplayName }}</span>
+              <span *ngIf="
+                  d.FieldDataType === 'Date' &&
+                  product === 'NiftyParticipation' &&
+                  d.TargetField === 'NM.Debit_CutOff_Date'
+                ">
+                {{ convertdate(d.FieldDisplayName) }}</span>
+
+              <span *ngIf="
+                  d.FieldDataType === 'Date' &&
+                  product === 'EquityAutocallableNote' &&
+                  d.TargetField !== 'NM.Debit_CutOff_Date'
+                ">
+                {{ d.FieldDisplayName }}</span>
+              <span *ngIf="
+                  d.FieldDataType === 'Date' &&
+                  product === 'EquityAutocallableNote' &&
+                  d.TargetField === 'NM.Debit_CutOff_Date'
+                ">
+                {{ convertdate(d.FieldDisplayName) | date:'dd-MMM-yyyy' }}</span>
+            </p>
+          </div>
+        </div>
+      </span>
+      <span *ngIf="d.FieldType === 'ImageLabel'">
+        <div *ngIf="addImage(d, 'Imagepath')">
+          <img width="30" height="20" src="{{ d.image }}" />
+        </div>
+        <div *ngIf="!addImage(d, 'Imagepath')">
+          <span></span>
+        </div>
+      </span>
+    </div>
+    <div *ngFor="let d of getFourthRowDataArray; let i = index" style="height: 20px">
+      <span *ngIf="d.FieldType !== 'ImageLabel'">
+        <div *ngIf="d.ImageDataField !== ''" class="merge">
+          <div *ngIf="addImage(d, 'textImage')">
+            <img width="30" height="20" src="{{ d.image }}" />
+          </div>
+          <div *ngIf="!addImage(d, 'textImage')">
+            <span></span>
+          </div>
+          <div *ngIf="addData(d, i)">
+            <div class="merge" *ngIf="d.mergeData !== ''">
+              <p [ngStyle]="createStyle(d.FieldStyle)">
+                <span *ngIf="d.FieldDataType === 'Number'">{{
+                  this.cfs.FormatNumbernull(d.FieldDisplayName)
+                  }}</span>
+                <span *ngIf="d.FieldDataType === 'Text'">
+                  {{ d.FieldDisplayName }}</span>
+                <span *ngIf="d.FieldDataType === 'Date'">
+                  {{ d.FieldDisplayName }}</span>
+              </p>
+              <p [ngStyle]="createStyle(d.mergeStyle)">
+                {{ d.mergeData }}
+              </p>
+            </div>
+
+            <p [ngStyle]="createStyle(d.FieldStyle)" *ngIf="d.mergeData === '' && d.column !== '99'">
+              <span *ngIf="d.FieldDataType === 'Number'">{{
+                this.cfs.FormatNumbernull(d.FieldDisplayName)
+                }}</span>
+              <span *ngIf="d.FieldDataType === 'Text'">
+                {{ d.FieldDisplayName }}</span>
+              <span *ngIf="d.FieldDataType === 'Date'">
+                {{ d.FieldDisplayName }}</span>
+            </p>
+          </div>
+        </div>
+        <div *ngIf="d.ImageDataField === ''" class="merge">
+          <div *ngIf="addData(d, i)">
+            <div class="merge" *ngIf="d.mergeData !== ''">
+              <p [ngStyle]="createStyle(d.FieldStyle)">
+                <span *ngIf="d.FieldDataType === 'Number'">{{
+                  this.cfs.FormatNumbernull(d.FieldDisplayName)
+                  }}</span>
+                <span *ngIf="d.FieldDataType === 'Text'">
+                  {{ d.FieldDisplayName }}</span>
+                <span *ngIf="d.FieldDataType === 'Date'">
+                  {{ d.FieldDisplayName }}</span>
+              </p>
+              <p [ngStyle]="createStyle(d.mergeStyle)">
+                {{ d.mergeData }}
+              </p>
+            </div>
+
+            <p [ngStyle]="createStyle(d.FieldStyle)" *ngIf="d.mergeData === '' && d.column !== '99'">
+              <span *ngIf="d.FieldDataType === 'Number'">{{
+                this.cfs.FormatNumbernull(d.FieldDisplayName)
+                }}</span>
+              <span *ngIf="d.FieldDataType === 'Text'">
+                {{ d.FieldDisplayName }}</span>
+              <span *ngIf="d.FieldDataType === 'Date'">
+                {{ d.FieldDisplayName }}</span>
+            </p>
+          </div>
+        </div>
+      </span>
+      <span *ngIf="d.FieldType === 'ImageLabel'">
+        <div *ngIf="addImage(d, 'Imagepath')">
+          <img width="30" height="20" src="{{ d.image }}" />
+        </div>
+        <div *ngIf="!addImage(d, 'Imagepath')">
+          <span></span>
+        </div>
+      </span>
+    </div>
+    <div *ngFor="let d of getFifthRowDataArray; let i = index" style="height: 20px">
+      <span *ngIf="d.FieldType !== 'ImageLabel'">
+        <div *ngIf="d.ImageDataField !== ''" class="merge">
+          <div *ngIf="addImage(d, 'textImage')">
+            <img width="30" height="20" src="{{ d.image }}" />
+          </div>
+          <div *ngIf="!addImage(d, 'textImage')">
+            <span></span>
+          </div>
+          <div *ngIf="addData(d, i)">
+            <div class="merge" *ngIf="d.mergeData !== ''">
+              <p [ngStyle]="createStyle(d.FieldStyle)">
+                <span *ngIf="d.FieldDataType === 'Number'">{{
+                  this.cfs.FormatNumbernull(d.FieldDisplayName)
+                  }}</span>
+                <span *ngIf="d.FieldDataType === 'Text'">
+                  {{ d.FieldDisplayName }}</span>
+                <span *ngIf="d.FieldDataType === 'Date'">
+                  {{ d.FieldDisplayName }}</span>
+              </p>
+              <p [ngStyle]="createStyle(d.mergeStyle)">
+                {{ d.mergeData }}
+              </p>
+            </div>
+
+            <p [ngStyle]="createStyle(d.FieldStyle)" *ngIf="d.mergeData === '' && d.column !== '99'">
+              <span *ngIf="d.FieldDataType === 'Number'">{{
+                this.cfs.FormatNumbernull(d.FieldDisplayName)
+                }}</span>
+              <span *ngIf="d.FieldDataType === 'Text'">
+                {{ d.FieldDisplayName }}</span>
+              <span *ngIf="d.FieldDataType === 'Date'">
+                {{ d.FieldDisplayName }}</span>
+            </p>
+          </div>
+        </div>
+        <div *ngIf="d.ImageDataField === ''" class="merge">
+          <div *ngIf="addData(d, i)">
+            <div class="merge" *ngIf="d.mergeData !== ''">
+              <p [ngStyle]="createStyle(d.FieldStyle)">
+                <span *ngIf="d.FieldDataType === 'Number'">{{
+                  this.cfs.FormatNumbernull(d.FieldDisplayName)
+                  }}</span>
+                <span *ngIf="d.FieldDataType === 'Text'">
+                  {{ d.FieldDisplayName }}</span>
+                <span *ngIf="d.FieldDataType === 'Date'">
+                  {{ d.FieldDisplayName }}</span>
+              </p>
+              <p [ngStyle]="createStyle(d.mergeStyle)">
+                {{ d.mergeData }}
+              </p>
+            </div>
+
+            <p [ngStyle]="createStyle(d.FieldStyle)" *ngIf="d.mergeData === '' && d.column !== '99'">
+              <span *ngIf="d.FieldDataType === 'Number'">{{
+                this.cfs.FormatNumbernull(d.FieldDisplayName)
+                }}</span>
+              <span *ngIf="d.FieldDataType === 'Text'">
+                {{ d.FieldDisplayName }}</span>
+              <span *ngIf="d.FieldDataType === 'Date'">
+                {{ d.FieldDisplayName }}</span>
+            </p>
+          </div>
+        </div>
+      </span>
+      <span *ngIf="d.FieldType === 'ImageLabel'">
+        <div *ngIf="addImage(d, 'Imagepath')">
+          <img width="30" height="20" src="{{ d.image }}" />
+        </div>
+        <div *ngIf="!addImage(d, 'Imagepath')">
+          <span></span>
+        </div>
+      </span>
+    </div>
+    <div *ngFor="let d of getSixthRowDataArray; let i = index" style="height: 20px">
+      <span *ngIf="d.FieldType !== 'ImageLabel'">
+        <div *ngIf="d.ImageDataField !== ''" class="merge">
+          <div *ngIf="addImage(d, 'textImage')">
+            <img width="30" height="20" src="{{ d.image }}" />
+          </div>
+          <div *ngIf="!addImage(d, 'textImage')">
+            <span></span>
+          </div>
+          <div *ngIf="addData(d, i)">
+            <div class="merge" *ngIf="d.mergeData !== ''">
+              <p [ngStyle]="createStyle(d.FieldStyle)">
+                <span *ngIf="d.FieldDataType === 'Number'">{{
+                  this.cfs.FormatNumbernull(d.FieldDisplayName)
+                  }}</span>
+                <span *ngIf="d.FieldDataType === 'Text'">
+                  {{ d.FieldDisplayName }}</span>
+                <span *ngIf="d.FieldDataType === 'Date'">
+                  {{ d.FieldDisplayName }}</span>
+              </p>
+              <p [ngStyle]="createStyle(d.mergeStyle)">
+                {{ d.mergeData }}
+              </p>
+            </div>
+            <p [ngStyle]="createStyle(d.FieldStyle)" *ngIf="d.mergeData === '' && d.column !== '99'">
+              <span *ngIf="d.FieldDataType === 'Number'">{{
+                this.cfs.FormatNumbernull(d.FieldDisplayName)
+                }}</span>
+              <span *ngIf="d.FieldDataType === 'Text'">
+                {{ d.FieldDisplayName }}</span>
+              <span *ngIf="d.FieldDataType === 'Date'">
+                {{ d.FieldDisplayName }}</span>
+            </p>
+          </div>
+        </div>
+        <div *ngIf="d.ImageDataField === ''" class="merge">
+          <div *ngIf="addData(d, i)">
+            <div class="merge" *ngIf="d.mergeData !== ''">
+              <p [ngStyle]="createStyle(d.FieldStyle)">
+                <span *ngIf="d.FieldDataType === 'Number'">{{
+                  this.cfs.FormatNumbernull(d.FieldDisplayName)
+                  }}</span>
+                <span *ngIf="d.FieldDataType === 'Text'">
+                  {{ d.FieldDisplayName }}</span>
+                <span *ngIf="d.FieldDataType === 'Date'">
+                  {{ d.FieldDisplayName }}</span>
+              </p>
+              <p [ngStyle]="createStyle(d.mergeStyle)">
+                {{ d.mergeData }}
+              </p>
+            </div>
+            <p [ngStyle]="createStyle(d.FieldStyle)" *ngIf="d.mergeData === '' && d.column !== '99'">
+              <span *ngIf="d.FieldDataType === 'Number'">{{
+                this.cfs.FormatNumbernull(d.FieldDisplayName)
+                }}</span>
+              <span *ngIf="d.FieldDataType === 'Text'">
+                {{ d.FieldDisplayName }}</span>
+              <span *ngIf="d.FieldDataType === 'Date'">
+                {{ d.FieldDisplayName }}</span>
+            </p>
+          </div>
+        </div>
+      </span>
+      <span *ngIf="d.FieldType === 'ImageLabel'">
+        <div *ngIf="addImage(d, 'Imagepath')">
+          <img width="30" height="20" src="{{ d.image }}" />
+        </div>
+        <div *ngIf="!addImage(d, 'Imagepath')">
+          <span></span>
+        </div>
+      </span>
+    </div>
+  </div>
+  <div class="links" style="height: 50px; align-items: center">
+    <div>
+      <img [src]="
+          isProd
+            ? 'assets/App_Resources/App_Resources/Thumb_up_golden.png'
+            : '../../../../assets/App_Resources/App_Resources/Thumb_up_golden.png'
+        " width="20" height="20" *ngIf="!like" (click)="likeUnlikeProduct()" />
+      <img [src]="
+          isProd
+            ? 'assets/App_Resources/App_Resources/thumb_up.png'
+            : '../../../../assets/App_Resources/App_Resources/thumb_up.png'
+        " width="20" height="20" *ngIf="like" (click)="likeUnlikeProduct()" />
+    </div>
+    <div [ngStyle]="{'display': linkFlag ? 'none': ''}" class="linkstyle" *ngFor="let item of links;">
+      <span style="cursor: pointer;" (click)="clickActionLink(item.RAM_DisplayName, index)">
+        <u>{{ item.RAM_DisplayName }}</u>
+      </span>
+    </div>
+    <div [ngStyle]="{'display': !linkFlag ? 'none': ''}">
+      <img [src]="isProd ? 'assets/loading_dots.gif':'../../../../assets/loading_dots.gif'" height="100px"
+        width="100px">
+    </div>
+  </div>
+
+  <div *ngIf="this.showFactsheet">
+    <!--<div *ngIf="this.homeapi.showFactsheet[index]">-->
+    <div class="factsheet">Following documents are attached:</div>
+
+    <div class="doc">
+      <div class="" *ngIf="factsheetdata.length">
+        Uploaded/Generated Documents
+      </div>
+
+      <table *ngIf="factsheetdata.length && !docListFlag" style="margin: 10px">
+        <thead>
+          <th>Show File</th>
+          <th>File Name</th>
+        </thead>
+        <tbody *ngFor="let data of factsheetdata">
+          <td (click)="showFile(data.DGT_ID, data.Note_Ref_ID)" style="cursor: pointer;"><u>Show</u></td>
+          <td>{{ data.Document_Output_Path }}</td>
+        </tbody>
+      </table>
+      <div *ngIf="docListFlag">
+        <img [src]="isProd ? 'assets/loading_dots.gif':'../../../../assets/loading_dots.gif'" height="100px"
+          width="100px">
+      </div>
+      <div *ngIf="factsheetdata.length === 0 && !docListFlag ">No documents attached.</div>
+    </div>
+  </div>
+  <div *ngIf="showRecommendations">
+    <div class="recommended-products-container">
+      <div class="recommended-products">Recommended Products:</div>
+      <div class="recommended-products-list-wrapper">
+        <div class="recommended-products-list-container" *ngIf="recommendedProductsList.length > 0">
+          <!-- <swiper [slidesPerView]="3" [spaceBetween]="10" (swiper)="setControlledSwiper($event)" [navigation]="{}" [pagination]="{ clickable: true }" [scrollbar]="{ draggable: true }" [watchSlidesVisibility]="true" [watchSlidesProgress]="false">
+                          <div class="recommended-products-list" *ngFor="let recprod of recommendedProductsList">
+                              <ng-template swiperSlide class="recommended-products-list-box">
+                                  <div class="recommended-products-header">
+                                      <div for="" class="label" [title]="recprod.Product_Name">
+                                          {{recprod.Product_Name}}</div>
+                                      <span>({{recprod.ISIN}})</span>
+                                  </div>
+                                  <div class="recommended-products-body">
+                                      <div class="recommended-products-values">
+                                          <label for="">Issuer</label>
+                                          <span [title]="recprod.Issuer">{{recprod.Issuer}}</span>
+                                      </div>
+                                      <div class="recommended-products-values">
+                                          <label for="">Ccy</label>
+                                          <span>{{recprod.currency}}</span>
+                                      </div>
+                                      <div class="recommended-products-values">
+                                          <label for="">Tenor Left</label>
+                                          <span>{{recprod.tenor}}D</span>
+                                      </div>
+                                      <div class="recommended-products-values">
+                                          <label for="">Coupon</label>
+                                          <span>{{recprod.coupon}}% p.a.
+                                                                  {{recprod.Coupon_Frequency}}</span>
+                                      </div>
+                                      <div class="recommended-products-values">
+                                          <label for="">LTV (%)</label>
+                                          <span>{{recprod.LTV | number:'1.2-2'}}</span>
+                                      </div>
+                                      <div class="recommended-products-values">
+                                          <label for="">PRR</label>
+                                          <span>{{recprod.PRR}}</span>
+                                      </div>
+                                  </div>
+                              </ng-template>
+      
+                          </div>
+      
+                      </swiper> -->
+          <!-- <div class="swiper-pagination"></div>
+                      <div class="swiper-button-next"></div>
+                      <div class="swiper-button-prev"></div> -->
+        </div>
+        <div class="recommended-products-list-message" *ngIf="recommendedProductsList.length === 0">
+          {{ recommendatioMsg }}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="showOrderEntry" class="overlay">
+    <div class="page-content-container-popup">
+      <div class="recommended-products">
+        <div *ngIf="this.product === 'Bonds'">
+          <div class="tabs tab-active">
+            <div>Bonds</div>
+
+            <!-- <div class="closebtn" (click)="showOrderEntry = false">X</div> -->
+            <app-svg-icons class="closebtn" [icon]="'cancel-icon'" [width]="'15'" [height]="'15'"
+              (click)="showOrderEntry = false">
+            </app-svg-icons>
+          </div>
+          <app-bonds [displaySearch]="true" [noteMasterId]="data.Note_Master_ID"></app-bonds>
+        </div>
+        <div *ngIf="this.product === 'Fund_Setup' && !showSIP">
+          <div class="tabs tab-active">
+            <div>Funds</div>
+            <!-- <div class="closebtn" (click)="showOrderEntry = false">X</div> -->
+            <app-svg-icons class="closebtn" [icon]="'cancel-icon'" [width]="'15'" [height]="'15'"
+              (click)="showOrderEntry = false">
+            </app-svg-icons>
+          </div>
+          <app-mutualfunds [displaySearch]="true" [noteMasterId]="data.Note_Master_ID"></app-mutualfunds>
+        </div>
+
+        <!--Added by AlolikaG on 16-02-2022. Assigned by ParikshitK --START-->
+        <div *ngIf="this.product === 'FundsBundle' && !showSIP">
+          <div class="tabs tab-active">
+            <div>Signature Funds</div>
+            <!-- <div class="closebtn" (click)="showOrderEntry = false">X</div> -->
+            <app-svg-icons class="closebtn" [icon]="'cancel-icon'" [width]="'15'" [height]="'15'"
+              (click)="showOrderEntry = false; showbundle = false">
+            </app-svg-icons>
+          </div>
+          <app-signature-funds [displaySearch]="true" [Ccy]="this.data['Currency']"></app-signature-funds>
+        </div>
+        <!--Added by AlolikaG on 16-02-2022. Assigned by ParikshitK --END-->
+
+        <!--Added by AlolikaG on 31st Jan 2022. Assigned by ParikshitK --START-->
+        <div *ngIf="this.product === 'Fund_Setup' && showSIP">
+          <div class="tabs tab-active">
+            <div>SIP</div>
+            <!-- <div class="closebtn" (click)="showOrderEntry = false">X</div> -->
+            <app-svg-icons class="closebtn" [icon]="'cancel-icon'" [width]="'15'" [height]="'15'"
+              (click)="showOrderEntry = false; showSIP = false">
+            </app-svg-icons>
+          </div>
+          <app-sip [displaySearch]="true" [Ccy]="this.data['Currency']"></app-sip>
+        </div>
+        <!--Added by AlolikaG on 31st Jan 2022. Assigned by ParikshitK --END-->
+
+        <!--Added by AlolikaG on 17-02-2022. Assigned by ParikshitK --START-->
+        <div *ngIf="this.product === 'FundsBundle' && showSIP">
+          <div class="tabs tab-active">
+            <div>SIP</div>
+            <!-- <div class="closebtn" (click)="showOrderEntry = false">X</div> -->
+            <app-svg-icons class="closebtn" [icon]="'cancel-icon'" [width]="'15'" [height]="'15'"
+              (click)="showOrderEntry = false; showSIP = false">
+            </app-svg-icons>
+          </div>
+          <app-sip [displaySearch]="true" [Ccy]="this.data['Currency']"></app-sip>
+        </div>
+        <!--Added by AlolikaG on 17-02-2022. Assigned by ParikshitK --END-->
+
+        <div *ngIf="this.product === 'Product_Maintenance'">
+          <div class="tabs tab-active">
+            <div>Insurance</div>
+            <!-- <div class="closebtn" (click)="showOrderEntry = false">X</div> -->
+            <app-svg-icons class="closebtn" [icon]="'cancel-icon'" [width]="'15'" [height]="'15'"
+              (click)="showOrderEntry = false">
+            </app-svg-icons>
+          </div>
+          <app-insurance [displaySearch]="true"></app-insurance>
+        </div>
+        <div *ngIf="this.product === 'EquityAutocallableNote'">
+          <div class="tabs tab-active">
+            <div>Structured Notes</div>
+            <app-svg-icons class="closebtn" [icon]="'cancel-icon'" [width]="'15'" [height]="'15'"
+              (click)="showOrderEntry = false">
+            </app-svg-icons>
+          </div>
+          <app-structurednotes [displaySearch]="true" [templateCode]="this.product"></app-structurednotes>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="showPopUp" class="overlay">
+    <div class="page-content-container-popup">
+      <div class="recommended-products">
+        <div *ngIf="this.popUpSelected === 'LIFECYCLE ANALYTICS'">
+          <div class="tabs tab-active">
+            <div>LifeCycle Analytics</div>
+            <!-- <div class="closebtn" (click)="showOrderEntry = false">X</div> -->
+            <app-svg-icons class="closebtn" [icon]="'cancel-icon'" [width]="'15'" [height]="'15'"
+              (click)="showPopUp = false">
+            </app-svg-icons>
+          </div>
+          <div class="lifecycle-popup-wrapper">
+            <div>
+              <div class="product-title">{{ data.Product_Name }}</div>
+              <div class="product-tab-details">
+                <div class="heading">Currency</div>
+                <div>{{ data.Currency }}</div>
+                <div>|</div>
+                <div class="heading">ISIN</div>
+                <div>{{ data.ISIN }}</div>
+
+                <!-- <span class="product-issuername">{{data.Issuer_Name}} | </span> -->
+                <!-- <span class="heading">Currency</span> 
+            <span class="heading">ISIN</span> {{data.ISIN}} -->
+              </div>
+            </div>
+            <!-- <app-custom-tabs [tabHeaders]="lifecycle_tab" [tabCase]="tabCase" [ngModel]="selectedTab"
+                (ngModelChange)="getActiveTab($event)"></app-custom-tabs> -->
+            <div class="lifecycle-btn-wrapper">
+              <button class="button" (click)="displayGreeks()"
+                [ngClass]="{ active: Format === 'Greeks' }">Greeks</button>
+              <!-- <button class="button">What-If</button> -->
+              <button class="button" (click)="displayBacktest()"
+                [ngClass]="{ active: Format === 'Backtest' }">Backtest</button>
+              <!-- <button class="button">Underlying Prices</button> -->
+              <button class="button" (click)="displayStressTest()" [ngClass]="{ active: Format === 'Stress' }">Stress
+                Test</button>
+              <!-- <button class="button">Volsurf</button> -->
+            </div>
+            <div *ngIf="showStressTest">
+              <app-stress-test [productDetails]="data"></app-stress-test>
+            </div>
+            <div *ngIf="showGreeks">
+              <app-greeks [productDetails]="data"></app-greeks>
+            </div>
+            <div *ngIf="showBacktest">
+              <app-backtest [data]="data"></app-backtest>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="this.popUpSelected === 'BACKTEST'">
+          <div class="tabs tab-active">
+            <div>BackTest</div>
+            <app-svg-icons class="closebtn" [icon]="'cancel-icon'" [width]="'15'" [height]="'15'"
+              (click)="showPopUp = false">
+            </app-svg-icons>
+          </div>
+          <app-backtest [data]="data" [templateID]="templateID" [product]="product"></app-backtest>
+          <!-- <div class="backtest-popup-inner">
+            <div class="backTestParamDiv">
+              <div>
+                <label>Note Master Id</label>
+              </div>
+              <div>
+                <input
+                  type="text"
+                  style="text-align: right"
+                  [(ngModel)]="backtestNMID"
+                />
+              </div>
+              <div>
+                <label>Start Date</label>
+              </div>
+              <div>
+                <input
+                  type="date"
+                  [attr.data-date]="StartDate"
+                  [(ngModel)]="StartDate"
+                  value="StartDate"
+                  (change)="StartDate = selectDate(StartDate)"
+                />
+              </div>
+
+              <div>
+                <label>Test Cases</label>
+              </div>
+              <div>
+                <input
+                  type="text"
+                  style="text-align: right"
+                  [(ngModel)]="TestCases"
+                  (blur)="getStartDateNoofTestCase(TestCases)"
+                />
+              </div>
+              <div>
+                <input
+                  type="button"
+                  class="button button-margin"
+                  value="Load"
+                />
+              </div>
+              <div id="dwnldIcon">
+                <div class="download">
+                  <app-svg-icons
+                    icon="{{ 'xls' }}"
+                    width="{{ '26px' }}"
+                    height="{{ '26px' }}"
+                    (click)="exportexcel()"
+                  >
+                  </app-svg-icons>
+                </div>
+              </div>
+            </div>
+
+            <div class="backtestNMIDdetails">
+              <div class="bacltestProdInfo" style="border-right: 1px solid">
+                <div
+                  style="
+                    grid-column: 1 / span 2;
+                    margin-left: 10px;
+                    text-decoration: underline;
+                  "
+                >
+                  <label class="">Product information</label>
+                </div>
+                <div class="backtestInnerDiv">
+                  <label class="heading">Template </label>
+                  <label class="value">Equity Autocallable (Specific) </label>
+                  <label class="heading">Trade Date </label>
+                  <label class="value"> </label>
+                  <label class="heading">KnockIn (%)</label>
+                  <label class="value">70.00 </label>
+                  <label class="heading">KnockIn Frequency </label>
+                  <label class="value"> </label>
+                  <label class="heading">Strike (%) </label>
+                  <label class="value">95.00 </label>
+                  <label class="heading">Coupon Frequency </label>
+                  <label class="value"> Monthly</label>
+                </div>
+                <div class="backtestInnerDiv">
+                  <label class="heading">Underlyings </label>
+                  <label class="value">Equity Autocallable (Specific) </label>
+                  <label class="heading">Tenor (Days)</label>
+                  <label class="value"> </label>
+                  <label class="heading">KnockOut (%) </label>
+                  <label class="value">70.00 </label>
+                  <label class="heading">KnockOut Frequency </label>
+                  <label class="value"> </label>
+                  <label class="heading">Coupon (%) </label>
+                  <label class="value">0.00 </label>
+                </div>
+              </div>
+              <div>
+                <div class="summaryGrid">
+                  <div>
+                    <label style="text-decoration: underline; margin-left: 10px"
+                      >Summary</label
+                    >
+                    <label></label>
+                  </div>
+                  <div class="backtestInnerDiv">
+                    <label class="heading">Total Cases KnockIn </label>
+                    <label class="value">0 </label>
+                    <label class="heading">Total Cases KnockIn (%)</label>
+                    <label class="value">0.00 </label>
+                    <label class="heading">Total Cases KnockOut </label>
+                    <label class="value">25 </label>
+                    <label class="heading">Total Cases KnockOut (%) </label>
+                    <label class="value">100.00 </label>
+                    <label class="heading">Average TWRR (%) </label>
+                    <label class="value">0 </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div id="graphSection" *ngIf="this.whatIfBackTestArr?.length > 0">
+              <div class="line-chart" *ngIf="chartData.length > 0">
+                <app-lcm-line-chart
+                  [graphdata]="chartData"
+                ></app-lcm-line-chart>
+              </div>
+
+              <div
+                id="whatifbacktestTable"
+                style="
+                  min-height: 100px !important;
+                  height: 365px;
+                  overflow: auto;
+                "
+              >
+                <table>
+                  <tr>
+                    <th>Test Case No.</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>ROI (%)</th>
+                    <th>TWRR (%)</th>
+                    <th>Redemption Day</th>
+                    <th>Knock In</th>
+                  </tr>
+                  <tr *ngFor="let data of whatIfBackTestArr; let i = index">
+                    <td>{{ i }}</td>
+                    <td>{{ data.StartDate }}</td>
+                    <td>{{ data.EndDate }}</td>
+                    <td>{{ data.ROIPercentage }}</td>
+                    <td>{{ data.ROIPercentage }}</td>
+                    <td>{{ data.AutocallDay }}</td>
+                    <td>{{ data.KnockIn }}</td>
+                  </tr>
+                </table>
+              </div>
+
+              <div
+                class="line-chart"
+                *ngIf="barChartY.length > 0 && barChartX.length > 0"
+              >
+                <app-lcm-bar-chart
+                  [graphdatay]="barChartY"
+                  [graphdatax]="barChartX"
+                  [xlabel]="'Rdemption Days'"
+                  [noOfCol]="barChartX.length"
+                ></app-lcm-bar-chart>
+              </div>
+              <div
+                class="line-chart"
+                *ngIf="twrrChartY.length > 0 && twrrChartX.length > 0"
+              >
+                <app-lcm-bar-chart
+                  [graphdatay]="twrrChartY"
+                  [graphdatax]="twrrChartX"
+                  [xlabel]="'TWRR'"
+                  [noOfCol]="twrrChartX.length"
+                ></app-lcm-bar-chart>
+              </div>
+            </div>
+          </div> -->
+        </div>
+
+        <!--  Added by AnjaliT on 09/12/2022 told by PranavD --START -->
+        <div *ngIf="this.popUpSelected === 'VIEW ORDERS'">
+          <div class="tabs tab-active">
+            <div>View Orders</div>
+            <app-svg-icons class="closebtn" [icon]="'cancel-icon'" [width]="'15'" [height]="'15'"(click)="showPopUp = false"></app-svg-icons>
+          </div>
+          <app-view-orders  [data]="data"></app-view-orders>
+        </div>
+        <!--  Added by AnjaliT on 09/12/2022 told by PranavD --END -->
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="showFolder">
+    <div class="folder">
+      <div class="heading">Proposal Maintenance:</div>
+
+      <div class="listGrid">
+        <span>List Type </span>
+        <select [(ngModel)]="listType">
+          <!-- <option selected>All</option> -->
+          <option selected>Private</option>
+          <option>Public</option>
+        </select>
+      </div>
+      <div class="listGrid">
+        <span>Existing Proposal </span>
+        <select *ngIf="listType === 'All'" [(ngModel)]="all">
+          <option *ngFor="let item of allList">
+            {{ item.PF_Folder_Name }}
+          </option>
+        </select>
+        <select *ngIf="listType === 'Private'" [(ngModel)]="private">
+          <option *ngFor="let item of privateList">
+            {{ item.PF_Folder_Name }}
+          </option>
+        </select>
+
+        <select *ngIf="listType === 'Public'" [(ngModel)]="public">
+          <option *ngFor="let item of publicList">
+            {{ item.PF_Folder_Name }}
+          </option>
+        </select>
+      </div>
+      <div class="listGrid">
+        <span>Create New Proposal </span>
+        <input type="text" [(ngModel)]="folderName" />
+      </div>
+      <div class="listGridMessage">
+        <span> </span>
+        <button class="button" (click)="saveFolder()">Save</button>
+        <span>{{ message }}</span>
+      </div>
+    </div>
+  </div>
+  <!-- <app-sub-layout [data]="data" [product]="product" [templateID]="templateID" [layoutTypes] = "layoutTypes">
+      </app-sub-layout> -->
+  <div *ngFor="let item of layoutTypes" style="margin: 0px 10px; border-top: solid 1px #ffffff26">
+    <app-sub-layout [data]="data" [product]="product" [templateID]="templateID" [layoutType]="item">
+    </app-sub-layout>
+  </div>
+</div>

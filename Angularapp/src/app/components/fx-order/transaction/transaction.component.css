@@ -1,0 +1,69 @@
+.marginforsubtabs {
+    margin-left: 12%;
+}
+
+@media screen and (max-width: 568px) {
+    .marginforsubtabs {
+        margin-left: 0%;
+    }
+}
+
+.neworderentryComponent {
+    display: flex;
+    height: 100vh;
+    width: 85vw;
+    flex-direction: column;
+    font-size: 15px;
+}
+
+.main-container {
+    display: flex;
+    margin-left: 40px; /*16-Mar-2021 || Viplav T. || change 20px to 40px*/
+    flex-direction: column;
+    background-color: var(--containers);
+    letter-spacing: 0.72px;
+    border-radius: 4px;
+    width: 90%;
+    box-shadow: var(--box-shadow-thin);
+    /* // height: 80vh;
+      // padding: 20px; */
+}
+
+.tabs-pages {
+    display: flex;
+    justify-content: space-around;
+    font-size: 14px;
+    margin-bottom: 10px;
+    height: 50px;
+}
+
+.tabs {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    cursor: pointer;
+    border-bottom: 1px solid var(--border);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    font-weight: 400;
+}
+
+.tabs:hover {
+    border-bottom: 2px solid var(--border);
+}
+
+.tab-active {
+    font-weight: 500;
+    border-bottom: 2px solid var(--active) !important;
+}
+
+.main-container:hover {
+    box-shadow: var(--box-shadow-hovered) !important;
+}
+.transaction-header{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 2em;
+}

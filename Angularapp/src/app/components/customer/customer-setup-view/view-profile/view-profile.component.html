@@ -1,0 +1,390 @@
+<div class="overflow">
+  <div class="toppart">
+    <app-svg-icons
+      class="back-button"
+      [icon]="'back-button'"
+      [width]="'40'"
+      [height]="'40'"
+      [fill]="'var(--white)'"
+      [routerLink]="['/welcome']"
+    ></app-svg-icons>
+
+    <div>
+      <div class="text-setting">{{ clientDetails["LongName"] }}</div>
+      <div class="font-color">
+        {{ clientDetails["EmailId"] }} | {{ clientDetails["Contact1"] }}
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="part">
+        <div class="number-format">
+          {{ this.cfs.NotionalConvert(unformattedInv, currency) }}
+        </div>
+        <div class="display">
+          <span class="font-color margin-top2">Invested ({{ currency }})</span>
+          <span class="margin-top1">{{ investedAmt }}</span>
+        </div>
+      </div>
+      <div class="part">
+        <div class="number-format">
+          {{ this.cfs.NotionalConvert(unformattedAUM, currency) }}
+        </div>
+        <div class="display">
+          <span class="font-color margin-top2">Current ({{ currency }})</span>
+          <span class="margin-top1">{{ AUM }}</span>
+        </div>
+      </div>
+      <div class="part">
+        <div class="number-format">
+          {{
+            this.cfs.NotionalConvert(
+              this.cfs.UnformatNumberwithoutevent(clientDetails["PnL"]),
+              currency
+            )
+          }}
+        </div>
+        <div class="display">
+          <span class="font-color margin-top2"
+            >Total Returns ({{ currency }})</span
+          >
+          <div
+            class="statistic-value1"
+            *ngIf="totalreturns > 0 || clientDetails['PnL'] === 0"
+          >
+            {{ clientDetails["PnL"] }}
+          </div>
+          <div class="statistic-value2" *ngIf="totalreturns < 0">
+            {{ clientDetails["PnL"] }}
+          </div>
+        </div>
+      </div>
+      <!-- <div class="margin-top2 postion-bottom"> 
+        <div class="font-color">{{ clientDetails["EmailId"] }} | {{ clientDetails["Contact1"]}}</div>
+      </div> -->
+    </div>
+  </div>
+
+  <!-- <div class="grid">
+        <div class="display" > 
+            <span class="font-color margin-top2">Invested ({{currency}})</span>
+            <span class="margin-top1">{{ investedAmt }}</span>
+        </div>
+        <div class="display" > 
+            <span class="font-color margin-top2">Current ({{currency}})</span>
+            <span class="margin-top1">{{ AUM }}</span>
+        </div>
+        <div class="display"> 
+            <span class="font-color margin-top2">Total Returns ({{currency}})</span>
+            <div class="statistic-value1" *ngIf="totalreturns > 0 || clientDetails['PnL'] === 0">
+                {{ clientDetails["PnL"] }}
+            </div>
+            <div class="statistic-value2" *ngIf="totalreturns < 0">
+            {{ clientDetails["PnL"] }}
+            </div>
+
+
+        </div>
+        <div class="margin-top2 postion-bottom"> 
+            <span class="font-color">{{ clientDetails["EmailId"] }} | {{ clientDetails["Contact1"]}}</span>
+        </div>
+    </div> -->
+
+  <div class="section-container">
+    <div class="header">
+      <span style="font-size: 25px !important">Overview</span>
+    </div>
+    <div class="partition">
+      <div>
+        <div class="graph-title">Asset Allocation</div>
+        <div
+          id="AssetAlloc"
+          *ngIf="assetAllocDataC2.length"
+          style="padding: 0% 0% 0% 10%"
+        >
+          <app-pie-chart
+            [graphdata]="assetAllocDataC2"
+            [legendHeight]="400"
+            [legendWidth]="400"
+            [width]="550"
+            [legendVisible]=true
+            [labelsVisible]=false
+          >
+          </app-pie-chart>
+        </div>
+      </div>
+      <div class="vertical"></div>
+      <div>
+        <div class="graph-title">Best 5 & Worst 5</div>
+        <div *ngIf="assetPnLDataC2.length">
+          <app-column-chart
+            [_graphdata]="assetPnLDataC2"
+            [height]="300"
+            [title]="pnl_data"
+            [name]="pnl"
+          >
+          </app-column-chart>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="partition2">
+    <div class="div-columns">
+      <div class="card1">
+        <div class="graph-title1">Asset Level Allocation</div>
+        <div *ngIf="assetAllocDataC1.length" style="padding: 0% 0% 0% 12%">
+          <app-pie-chart
+            [_graphdata]="assetAllocDataC1"
+            [legendHeight]="200"
+            [legendWidth]="125"
+            [width]="375"
+            [legendVisible]=true
+            [labelsVisible]=false
+          >
+          </app-pie-chart>
+        </div>
+      </div>
+      <div div class="card1">
+        <div class="graph-title1">PnL Asset Wise</div>
+        <div *ngIf="assetPnLDataC1.length" style="padding: 0% 0% 0% 4%">
+          <app-column-chart [_graphdata]="assetPnLDataC1" [height]="300">
+          </app-column-chart>
+        </div>
+      </div>
+    </div>
+
+    <div class="card2">
+      <div>
+        <div class="tabs-pages">
+          <div
+            class="tabs tab-left"
+            [ngClass]="{ 'tab-active tab-active-left': mainTab === 'equity' }"
+            (click)="toggleTab('equity')"
+          >
+            Equity
+          </div>
+          <div
+            class="tabs"
+            [ngClass]="{ 'tab-active': mainTab === 'mutualfunds' }"
+            (click)="toggleTab('mutualfunds')"
+          >
+            Mutual Funds
+          </div>
+          <div
+            class="tabs"
+            [ngClass]="{ 'tab-active': mainTab === 'bonds' }"
+            (click)="toggleTab('bonds')"
+          >
+            Bonds
+          </div>
+          <div
+            class="tabs"
+            [ngClass]="{ 'tab-active': mainTab === 'pms' }"
+            (click)="toggleTab('pms')"
+          >
+            PMS
+          </div>
+          <div
+            class="tabs"
+            [ngClass]="{ 'tab-active': mainTab === 'aif' }"
+            (click)="toggleTab('aif')"
+          >
+            AIF/Others
+          </div>
+        </div>
+        <div class="tabcharts">
+          <div>
+            <div class="graph-title">Asset Allocation</div>
+            <div *ngIf="assetAllocDataC3.length" style="padding: 0% 0% 0% 5%">
+              <app-pie-chart
+                [graphdata]="assetAllocDataC3"
+                [legendHeight]="200"
+                [legendWidth]="225"
+                [width]="400"
+                [legendVisible]=true
+                [labelsVisible]=false
+              >
+              </app-pie-chart>
+            </div>
+          </div>
+          <div>
+            <div class="graph-title">Security Wise PnL</div>
+            <div
+              *ngIf="assetPnLDataC3.length"
+              style="padding-top: 1em; padding-bottom: 3em"
+            >
+              <app-column-chart [_graphdata]="assetPnLDataC3" [height]="270">
+              </app-column-chart>
+            </div>
+          </div>
+        </div>
+        <div style="height: 20em; overflow-y: scroll; scroll-behavior: smooth">
+          <table>
+            <tr>
+              <th *ngFor="let header of headers">
+                {{ header }}
+              </th>
+            </tr>
+            <tr *ngFor="let row of data; index as i">
+              <td
+                class="tdclass"
+                *ngFor="let ele of row"
+                style="white-space: normal"
+              >
+                {{ ele }}
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 
+ <div style="padding-left: 2em; padding-bottom: 3em;">
+    <div class="main-container" style="box-shadow: var(--box-shadow-thin); border-radius: 4px;">
+      <div class="card">
+        <div class="basic-details-section">
+          <div class="basic-details">
+            <div class="name">
+              {{ clientDetails["LongName"] }}
+            </div>
+            <div class="contact-details">
+              {{ clientDetails["EmailId"] }} | {{ clientDetails["Contact1"]}}
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="statistics">
+            <div>
+              <div class="header">
+                Invested ({{currency}})
+              </div>
+              <div class="statistic-value">
+                {{ investedAmt }}
+              </div>
+            </div>
+            <div>
+              <div class="header">
+                Current ({{currency}})
+              </div>
+              <div class="statistic-value">
+                {{ AUM }}
+              </div>
+            </div>
+            <div>
+              <div class="header">
+                Total Returns ({{currency}})
+              </div>
+              <div class="statistic-value1" *ngIf="totalreturns > 0 || clientDetails['PnL'] === 0">
+                {{ clientDetails["PnL"] }}
+              </div>
+              <div class="statistic-value2" *ngIf="totalreturns < 0">
+                {{ clientDetails["PnL"] }}
+              </div>
+            </div>
+          </div>
+          <div class="name basic-details-section" style="font-size: medium !important; padding-top: 2em;">
+            Overview
+          </div>
+          <div>
+            <div class="overview">
+              <div>
+                <div class="name" style="font-size: medium !important; padding-top: 2em;">
+                  Asset Allocation
+                </div>
+                <div *ngIf="assetAllocDataC2.length" style="padding-top: 1em; padding-bottom: 3em;">
+                  <app-pie-chart [graphdata]="assetAllocDataC2" [legendHeight]="565" [legendWidth]="600"  [width]=750>
+                  </app-pie-chart>
+                </div>
+              </div>
+              <div>
+                <div class="name" style="font-size: medium !important; padding-top: 2em;">
+                  Best and Worst 5
+                </div>
+                <div *ngIf="assetPnLDataC2.length" style="padding-top: 1em; padding-bottom: 3em;">
+                  <app-column-chart [_graphdata]="assetPnLData1" [height]="300" [title]="pnl_data" [name]="pnl">
+                  </app-column-chart>
+                  <google-chart [type]="'BarChart'" [data]="assetPnLData1" [options]="option" [height]="300" [width]="300">
+                  </google-chart>
+                  <google-chart pnl [type]="pnlbestType" [data]="assetPnLDataC2"
+                      [options]="pnlbestoptions">
+                  </google-chart>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="overiview2">
+            <div>
+              <div class="name" style="font-size: medium !important; padding-top: 2em;">
+                Asset Level Allocation
+              </div>
+              <div *ngIf="assetAllocDataC1.length" style="padding-top: 1em; padding-bottom: 3em;">
+                <app-pie-chart [graphdata]="assetAllocDataC1" [legendHeight]="200" [legendWidth]="125" [width]="375">
+                </app-pie-chart>
+              </div>
+              <div class="name" style="font-size: medium !important; padding-top: 2em;">
+                PnL Asset Wise
+              </div>
+              <div *ngIf="assetPnLDataC1.length" style="padding-top: 1em; padding-bottom: 3em;">
+                <google-chart pnl [type]="pnlbestType" [data]="assetPnLDataC1"
+                    [options]="pnlbestoptions">
+                </google-chart>
+              </div>
+            </div>
+            <div>
+              <div class="tabs-pages">
+                <div class="tabs tab-left" [ngClass]="{'tab-active tab-active-left': mainTab === 'equity'}"
+                  (click)="toggleTab('equity')">
+                  Equity
+                </div>
+                <div class="tabs" [ngClass]="{'tab-active': mainTab === 'mutualfunds'}" (click)="toggleTab('mutualfunds')">
+                  Mutual Funds
+                </div>
+                <div class="tabs" [ngClass]="{'tab-active': mainTab === 'bonds'}" (click)="toggleTab('bonds')">
+                  Bonds
+                </div>
+                <div class="tabs" [ngClass]="{'tab-active': mainTab === 'pms'}" (click)="toggleTab('pms')">
+                  PMS
+                </div>
+                <div class="tabs" [ngClass]="{'tab-active': mainTab === 'aif'}" (click)="toggleTab('aif')">
+                  AIF/Others
+                </div>
+              </div>
+              <div class="tabcharts">
+                <div>
+                  <div *ngIf="assetAllocDataC3.length" style="padding-top: 1em; padding-bottom: 3em;">
+                    <app-pie-chart [graphdata]="assetAllocDataC3" [legendHeight]="200" [legendWidth]="225"  [width]=450>
+                    </app-pie-chart>
+                  </div>
+                </div>
+                <div>
+                  <div *ngIf="assetPnLDataC3.length" style="padding-top: 1em; padding-bottom: 3em;">
+                    <google-chart pnl [type]="pnlbestType" [data]="assetPnLDataC3"
+                        [options]="pnlbestoptions">
+                    </google-chart>
+                  </div>
+                </div>
+              </div>
+              <div style="height: 20em; overflow-y: scroll; scroll-behavior: smooth;">
+                <table>
+                  <tr>
+                    <th *ngFor="let header of headers">
+                      {{ header }}
+                    </th>
+                  </tr>
+                  <tr *ngFor="let row of data; index as i">
+                    <td class="tdclass" *ngFor="let ele of row" style="white-space: normal;">
+                      {{ ele }}
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>  -->

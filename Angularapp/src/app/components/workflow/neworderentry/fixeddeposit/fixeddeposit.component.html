@@ -1,0 +1,215 @@
+<div
+  [ngClass]="{'page-content-popup page-content-container-popup' : pageMode === 1 ,'fixeddepositComponentrmw': isUserRM === true, 'fixeddepositComponent': isUserRM === false}">
+  <div class="tabs tab-active" *ngIf="pageMode === 1 ">
+    <div class="right">Fixed Deposit</div>
+    <div class="closebtn" (click)="fnClosePopUp()">X</div>
+  </div>
+  <div class="fundname-row" *ngIf="isUserRM">
+    <div class="middle">Customer</div>
+    <div class="middle">
+      <app-common-customer-search (sendCustomerDetails)="getCustomerDetails($event)"
+        (selectedCustomerValue)="selectedCustomerValue1($event)"></app-common-customer-search>
+
+      <!-- <input type="text" [tabindex]=1 placeholder="Search" [(ngModel)]="selectedCustomer"
+        (keydown.enter)="selectCustomer1($event); showSuggestions = false ;"
+        (keydown.ArrowUp)="selectedCustomerIndex = cfs.moveUpSelection($event, selectedCustomerIndex)"
+        (keydown.ArrowDown)="selectedCustomerIndex = cfs.moveDownSelection($event, selectedCustomerIndex)"
+        (keypress)="showSuggestions = true ; " (keyup)="filterFun($event)">
+      <div class="UnderlyingSearch " *ngIf="selectedCustomer && showSuggestions">
+        <div id="CustomerNameList" class="SelectorBox" (clickOutside)="onClickedOutside($event)">
+          <a #CustomerNamesList
+            *ngFor="let customer of (customersOfRMArray | search: selectedCustomer: 'CustomerName'); let i = index"
+            (keypress)="ChangeIndex($event)">
+            <div *ngIf="customer" [attr.data-mf]="customer" (click)="selectCustomer(customer) ; "
+              (keydown.enter)="selectCustomer(customer)" [ngClass]="{'HoverSuggestion': (i === selectedCustomerIndex)}">
+              <span>{{ customer }}</span>
+            </div>
+          </a>
+        </div>
+      </div> -->
+    </div>
+  </div>
+  <div class="param-cols">
+    <div class="column1">
+      <div class="fundparams-row">
+        <div class="middle">Deposit Type</div>
+        <div class="middle">
+          <select [(ngModel)]="dealSave.depositType">
+            <option> Short term</option>
+          </select>
+        </div>
+      </div>
+      <div class="fundparams-row">
+        <div class="middle">Maturity Instructions</div>
+        <div class="middle">
+          <select (change)="selectedMaturityInstruction($event)" [(ngModel)]="dealSave.maturityInstructions">
+            <option *ngFor="let maturity of maturityInstructionList">
+              {{maturity}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="fundparams-row">
+        <div class="middle">Deposit Amount</div>
+        <div class="middle">
+          <input type="text" class="right" [(ngModel)]="dealSave.depositAmountDisplay"
+            (change)="dealSave.depositAmountDisplay = this.cfs.NotionalChange($event); getMaturityInfo();"
+            (focus)="this.cfs.UnformatNumber($event);this.cfs.SelectFullText($event);" (blur)="this.cfs.FormatNumber($event);"
+            (keypress)="this.cfs.NotionalValidate($event); getMaturityInfo();">
+        </div>
+      </div>
+      <div class="fundparams-row">
+        <div class="middle">Time Period</div>
+        <div class="middle">
+          <input class="right" type="text" [(ngModel)]="dealSave.tenor" maxlength="3" (change)="tenorChanged($event);"
+            pattern="^[0-9]*$">
+
+          <select name="TenorUnit" (change)="selectedTenorUnit($event)" [(ngModel)]="dealSave.tenorUnit"
+            style="margin-left: 10px;">
+            <option *ngFor="let tenorUnit of tenorUnitList">
+              {{tenorUnit}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="fundparams-row" *ngIf="this.moredetails !== 'More Details'">
+        <div class="middle">Customer</div>
+        <div class="middle">
+          <input type="text" disabled value="{{Customer}}" [(ngModel)]="Customer">
+        </div>
+      </div>
+      <div class="fundparams-row" *ngIf="this.moredetails !== 'More Details'">
+        <div class="middle">Account type</div>
+        <div class="middle">
+          <input type="text" disabled value="{{dealSave.accountType}}" [(ngModel)]="dealSave.accountType">
+
+          <!-- <select name="TenorUnit" [(ngModel)]="dealSave.accountType" (change)="filterCcy()">
+            <option *ngFor="let account of AccountType">
+              {{account.Type}}</option>
+          </select> -->
+        </div>
+      </div>
+      <div class="fundparams-row" *ngIf="this.moredetails !== 'More Details'">
+        <div class="middle">Portfolio</div>
+        <div class="middle">
+          <input type="text" disabled value="{{dealSave.PortfolioID}}" [(ngModel)]="dealSave.PortfolioID">
+          <!-- <select name="portfolio" [(ngModel)]="dealSave.PortfolioID" (change)="FilterAccountNumbers();updateCustomerPortfolioDetails()"> -->
+          <!-- <select name="portfolio" [(ngModel)]="dealSave.PortfolioID" (change)="updatePortfolio()">
+            <option *ngFor="let account of PortfolioTypes">
+              {{account.Type}}</option>
+          </select> -->
+        </div>
+      </div>
+    </div>
+    <div class="column2">
+
+      <div class="fundparams-row">
+        <div class="middle">Interest Type</div>
+        <div class="middle">
+          <select [(ngModel)]="dealSave.interestType" (change)="selectedInterestType();">
+            <option value="Compound Interest">
+              Compound Interest</option>
+            <option value="Simple Interest">
+              Simple Interest</option>
+          </select>
+        </div>
+      </div>
+      <div class="fundparams-row">
+        <div class="middle" *ngIf="!this.IntFreqdisable">Int. Payment Freq.</div>
+        <div class="middle" *ngIf="this.IntFreqdisable"><span class="FreqLabel">Int. Payment Freq.</span></div>
+
+        <div class="middle">
+          <!-- <select [disabled]="dealSave.interestType === 'Simple Interest'" (change)="selectedIntPayment($event)" [(ngModel)]="dealSave.intPaymentFreq"> -->
+           <select (change)="selectedIntPayment($event)" [(ngModel)]="dealSave.intPaymentFreq"> <!-- Commented by Ketan S asked by Udit T on 24-AUG-2021 -->
+            <option *ngFor="let intPayment of intPaymentList">
+              {{intPayment}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="fundparams-row">
+        <div class="middle">Interest Rate (%)</div>
+        <div class="middle">
+          <input type="text" class="right" disabled [(ngModel)]="dealSave.interestRate">
+
+        </div>
+      </div>
+      <div class="fundparams-row">
+        <div class="middle">Maturity Amount</div>
+        <div class="middle">
+          <input type="text" class="right" [(ngModel)]="dealSave.maturityAmountDisplay" disabled>
+        </div>
+      </div>
+
+
+      <!-- <div class="fundparams-row">
+                <div class="middle">Repayment A/C No</div>
+                <div class="middle">
+                    <select name="Repaymentaccount" [(ngModel)]="dealSave.rePaymentAcNo">
+                        <option *ngFor="let account of RePayaccounts">
+                            {{account.accountnumber}}
+                        </option>
+                    </select>
+                </div>
+            </div> -->
+      <!-- <div class="fundparams-row">
+                <div class="middle">Account no</div>
+                <div class="middle">
+
+                    <select name="TenorUnit" [(ngModel)]="dealSave.sourceAcNo" (change)="SetRepayAcountNumber()">
+                        <option *ngFor="let account of RePayaccounts">
+                            {{account.accountnumber}}</option>
+                    </select>
+                </div>
+            </div> -->
+
+      <div class="fundparams-row" *ngIf="this.moredetails !== 'More Details'">
+        <div class="middle">Currency</div>
+        <div class="middle">
+          <select class="center" disabled [(ngModel)]="dealSave.currency">
+            <option *ngFor="let currency of currencyList">
+              {{currency}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="fundparams-row" *ngIf="this.moredetails !== 'More Details'">
+        <div class="middle">Account No</div>
+        <div class="middle">
+          <input type="text" class="right" disabled value="{{dealSave.sourceAcNo}}" [(ngModel)]="dealSave.sourceAcNo">
+
+          <!-- <select name="TenorUnit" [(ngModel)]="dealSave.sourceAcNo" (change)="filterCcy()">
+            <option *ngFor="let account of RePayaccounts">
+              {{account.accountnumber}}</option>
+          </select> -->
+        </div>
+      </div>
+      <!-- <div class="fundparams-row" *ngIf="this.moredetails !== 'More Details'">
+                <div class="middle">CIF</div>
+                <div class="middle">
+                    <input type="text" disabled [(ngModel)]="dealSave.cif">
+                </div>
+            </div> -->
+
+    </div>
+  </div>
+  <div class="fund-button-row">
+    <div></div>
+    <div class="details right">
+      <div class="link" (click)="moredetailsCheck()"> <u>
+          {{moredetails}}</u></div>
+      <div>
+        <button class="button  btn" (click)="saveDetails()" [disabled]="!isValidated">Submit</button>
+      </div>
+    </div>
+    <div>
+      <button class="button  btn" (click)="clearMessages();">Clear</button>
+      <button class="button  btn" style="margin-left: 10px;" *ngIf="this.pageMode === 1"
+        (click)="fnClosePopUp();">Cancel</button>
+    </div>
+  </div>
+  <div class="fund-message-row">
+    <div *ngIf="BookingOrderloadflag">
+      <img [src]="isProd?'assets/loading_dots.gif':'../../assets/loading_dots.gif'" height="100px" width="100px">
+    </div>
+    <div *ngIf="!BookingOrderloadflag && Message !== ''">
+      {{Message}}
+    </div>
+  </div>
+</div>

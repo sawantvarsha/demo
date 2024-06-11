@@ -1,0 +1,330 @@
+<div [ngClass]="{ overlay: portfoliopopflag }">
+  <div class="popuptab1" *ngIf="portfoliopopflag && userType !== 'RM'">
+    <div class="content-header">
+      <div class="content-header-name">
+        <span>Portfolio Details - {{ Selectedportfolio }}</span>
+      </div>
+      <!-- <div class="closebtn" (click)="showdetailsPopUp(false,0,'')">X</div> -->
+      <app-svg-icons
+        [icon]="'cancel-icon'"
+        [width]="'20'"
+        [height]="'20'"
+        class="close"
+        (click)="showdetailsPopUp(false, '')"
+      ></app-svg-icons>
+    </div>
+    <app-portfolio-details
+      [ngClass]="{ 'maincontainer-opacity': !portfoliopopflag }"
+      [selectedfacilityCode]="selectedfacilityCode"
+      [Selectedportfolio]="Selectedportfolio"
+      [baseCCY]="baseCCY"
+    >
+    </app-portfolio-details>
+  </div>
+  <div
+    class="popuptab2"
+    *ngIf="portfoliopopflag && userType === 'RM'"
+    [ngClass]="{ popuptab1: userType !== 'RM' }"
+  >
+    <div class="content-header">
+      <div class="content-header-name">
+        <span>Portfolio Details - {{ Selectedportfolio }}</span>
+      </div>
+      <!-- <div class="closebtn" (click)="showdetailsPopUp(false,0,'')">X</div> -->
+      <app-svg-icons
+        [icon]="'cancel-icon'"
+        [width]="'20'"
+        [height]="'20'"
+        class="close"
+        (click)="showdetailsPopUp(false, '')"
+      ></app-svg-icons>
+    </div>
+    <app-portfolio-details
+      [ngClass]="{ 'maincontainer-opacity': !portfoliopopflag }"
+      [selectedfacilityCode]="selectedfacilityCode"
+      [Selectedportfolio]="Selectedportfolio"
+      [baseCCY]="baseCCY"
+    >
+    </app-portfolio-details>
+  </div>
+</div>
+<div class="allocation-component" id="portfolioInfo">
+  <div class="verticle-tabcontent">
+    <div
+      class="page-title"
+      style="display: flex; gap: 16px; align-items: center"
+    >
+      <label for="">Portfolio Summary</label>
+      <app-svg-icons
+        (click)="getPortfolioReport()"
+        [icon]="'pdf'"
+        [width]="'26'"
+        [height]="'26'"
+      >
+      </app-svg-icons>
+
+      <div class="refresh-portfolio">
+        <app-svg-icons
+          (click)="refresh()"
+          [icon]="'refresh'"
+          [width]="'26'"
+          [height]="'26'"
+        >
+        </app-svg-icons>
+      </div>
+      <label *ngIf="isDownloading" style="font-size: 12px">
+        {{ message }}</label
+      >
+    </div>
+
+    <div class="CI-card">
+      <div class="CI-card-content totalCardContent" name="portfoliocard">
+        <div class="CI-rowcontent totalCard">
+          <h3 class="cusHeader">Customer : &nbsp; {{ cusotmerName }}</h3>
+
+          <div class="center" class="labelHeader">
+            <label for="Name"> Total AUM: </label>
+          </div>
+          <div class="labelContent" style="grid-template-rows: 1fr 1fr">
+            <div class="amount">
+              <label for="Name" class="right ccy">
+                {{ baseCCY }}
+              </label>
+              <label for="Name" class="right AUM">
+                {{ this.cfs.NotionalConvert(AUM, baseCCY) }}
+              </label>
+            </div>
+            <div>
+              <label for="Name" class="right ccy">
+                {{ this.cfs.FormatNumberr(AUM) }}
+              </label>
+            </div>
+          </div>
+
+          <div class="center" class="labelHeader">
+            <label for="Name"> Total PnL : </label>
+          </div>
+          <div class="labelContent" style="grid-template-rows: 1fr 1fr">
+            <div class="amount">
+              <label for="Name" class="right ccy">
+                {{ baseCCY }}
+              </label>
+              <label for="Name" class="right AUM">
+                {{ this.cfs.NotionalConvert(pnl, baseCCY) }}
+              </label>
+            </div>
+            <!-- <br> -->
+            <div>
+              <label for="Name" class="right ccy">
+                {{ this.cfs.FormatNumberr(pnl) }}
+              </label>
+            </div>
+          </div>
+          <div class="center" class="labelHeader">
+            <label for="Name"> Free Cash : </label>
+          </div>
+          <div class="labelContent" style="grid-template-rows: 1fr 1fr">
+            <div class="amount">
+              <label for="Name" class="right ccy">
+                {{ baseCCY }}
+              </label>
+              <label for="Name" class="right AUM">
+                {{ this.cfs.NotionalConvert(homeapi.freecash, baseCCY) }}
+              </label>
+            </div>
+            <div>
+              <label for="Name" class="right ccy">
+                {{ this.cfs.FormatNumberr(homeapi.freecash) }}
+              </label>
+            </div>
+          </div>
+          <div class="center" class="labelHeader">
+            <label for="Name" style="margin-right: 20px"> CRR : </label>
+          </div>
+          <div class="crr" style="align-items: baseline">
+            {{ profile }} &nbsp; ({{ crr }})
+          </div>
+          <!-- <div class="AUM" style="float:right;">
+
+                  </div> -->
+        </div>
+      </div>
+    </div>
+    <div class="page-title">Portfolio Distribution</div>
+    <div
+      class="CI-card"
+      style="
+           display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 15px;
+    gap: var(--gap);
+      "
+      *ngIf="!loader"
+    >
+      <div class="CI-card-content totalCardContent">
+        <!-- <span style="font-size: 20px;"> Portfolio Distribution</span> -->
+        <div class="portfolio portfolioheader">
+          <div></div>
+          <div style="text-align: left;">Portfolio</div>
+          <div style="text-align: right;">Portfolio Value</div>
+          <div style="text-align: right;">P&L</div>
+        </div>
+        <div
+          class="portfolio"
+          *ngFor="let portfolio of portfolioDetails; let i = index"
+        >
+          <!-- <div *ngIf="i === 0" style="background-color: rgb(27, 150, 198); height: 20px; width: 20px;"></div>
+                    <div *ngIf="i === 1" style="background-color: rgb(239, 118, 122); height: 20px; width: 20px;"></div> -->
+          <div
+            [ngStyle]="{ 'background-color': portfolio.box }"
+            style="height: 20px; width: 20px"
+          ></div>
+          <div
+            style="cursor: pointer"
+            (click)="
+              portfoliopopflag = true;
+              selectedfacilityCode = portfolio.FacilityCode;
+              showdetailsPopUp(true, portfolio.PortfolioName)
+            "
+          >
+            {{ portfolio.PortfolioName }} ({{ portfolio.FacilityCode }})
+          </div>
+          <!-- <div class="right">{{this.cfs.FormatNumberr(portfolio.TotalAUM) }}</div> -->
+          <div style="grid-template-rows: 1fr 1fr;display: grid;
+          gap: 10px;">
+            <div class="amount">
+              <label for="Name" class="right ccy">
+                {{ currency }}
+              </label>
+              <label for="Name" class="right AUM">
+                {{ this.cfs.NotionalConvert(portfolio.TotalAUM, baseCCY) }}
+              </label>
+            </div>
+            <div class="amount">
+              <label></label>
+              <label for="Name" class="right ccy">
+                {{ this.cfs.FormatNumberr(portfolio.TotalAUM) }}
+              </label>
+            </div>
+          </div>
+          <!-- <div class="right">{{this.cfs.FormatNumberr(portfolio.TotalPnL)}}</div> -->
+          <div style="grid-template-rows: 1fr 1fr;display: grid;
+          gap: 10px;">
+            <div class="amount">
+              <label for="Name" class="right ccy">
+                {{ currency }}
+              </label>
+              <label for="Name" class="right AUM">
+                {{ this.cfs.NotionalConvert(portfolio.TotalPnL, baseCCY) }}
+              </label>
+            </div>
+            <div class="amount">
+              <label></label>
+              <label for="Name" class="right ccy">
+                {{ this.cfs.FormatNumberr(portfolio.TotalPnL) }}
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="CI-card-content totalCardContent"
+        *ngIf="totalPortfolioData.length !== 0"
+        style="display: flex; align-items: start"
+      >
+        <!-- <google-chart #mainPortfolioChart type="PieChart" [data]="totalPortfolioData" [options]="totalPortfolioOptions" [columns]="portfolioColumnNames" [dynamicResize]="true">
+                </google-chart> -->
+        <!-- <google-chart
+          #chart
+          [type]="type"
+          [data]="totalPortfolioData"
+          [options]="options"
+        >
+        </google-chart> -->
+        <app-pie-chart [legendHeight]="200" [width]="380" [graphdata]="totalPortfolioData" [legendVisible]=true [labelsVisible]=false>
+        </app-pie-chart>
+      </div>
+    </div>
+    <div *ngIf="loader" style="text-align: center; margin-top: 15%">
+      <div class="loader-center">
+        <div class="multi-ripple">
+          <div></div>
+          <div></div>
+        </div>
+      </div>
+    </div>
+    <div class="portfolioAllocationHeader page-title">
+      <span> Portfolio Allocation</span>
+      <div class="togglebtn">
+        <app-svg-icons
+          [icon]="'2dPieChart'"
+          [width]="'25'"
+          [height]="'25'"
+        ></app-svg-icons>
+        <label class="switch">
+          <input
+            type="checkbox"
+            [(ngModel)]="SwitchTo3DCharts"
+            class="switch"
+          />
+          <span class="slider round"></span>
+        </label>
+        <app-svg-icons
+          [icon]="'3dPieChart'"
+          [width]="'25'"
+          [height]="'25'"
+        ></app-svg-icons>
+      </div>
+    </div>
+    <div class="CI-card" *ngIf="!loader">
+      <!-- <div class="CI-card-content" style="margin-bottom: 10px; box-shadow: 0 0px 0px 0;" name="portfoliocard">
+                <div class="CI-rowcontent viewRowContent"> -->
+
+      <div class="tabs-pages">
+        <div
+          class="tabs"
+          [ngClass]="{ 'tab-active': this.mode === 'TARGET' }"
+          (click)="setGraphMode('TARGET')"
+        >
+          Target
+        </div>
+        <div
+          class="tabs"
+          [ngClass]="{ 'tab-active': this.mode === 'ASSET' }"
+          (click)="setGraphMode('ASSET')"
+        >
+          Asset
+        </div>
+        <div
+          class="tabs"
+          [ngClass]="{ 'tab-active': this.mode === 'ASSETCLASS' }"
+          (click)="setGraphMode('ASSETCLASS')"
+        >
+          Asset Class
+        </div>
+        <div
+          class="tabs"
+          [ngClass]="{ 'tab-active': this.mode === 'CURRENCY' }"
+          (click)="setGraphMode('CURRENCY')"
+        >
+          Currency
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="noDataFlag" class="content-container" style="margin-left: 20px">
+      <span style="display: contents; margin-left: 5px">No record Found</span>
+    </div>
+    <div *ngFor="let ele of portfolioDetails; let i = index">
+      <app-portfolio-charts
+        [selectedportfolioData]="ele"
+        [allocationtype]="mode"
+        [baseCCY]="baseCCY"
+        [CustomerDetails]="selectedRMCustomerDetails"
+        [Mode]="mode"
+        [SwitchTo3DChart]="SwitchTo3DCharts"
+      >
+      </app-portfolio-charts>
+    </div>
+  </div>
+</div>

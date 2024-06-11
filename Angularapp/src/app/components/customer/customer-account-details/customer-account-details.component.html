@@ -1,0 +1,578 @@
+<div *ngIf="IsBackButtonEnabled" class="page-navigation" [ngClass]="">
+  <app-svg-icons
+    class="back-button"
+    [icon]="'back-button'"
+    [width]="'40'"
+    [height]="'40'"
+    [fill]="'var(--headers)'"
+    (click)="fnRedirectToHomePage()"
+  ></app-svg-icons>
+  <div class="page-title">Account Details</div>
+  <div class="refresh-btn-section" *ngIf="totalaccounts.length > 0">
+    <app-svg-icons
+      title="Refresh"
+      (click)="fnGetCustomerAccounts()"
+      [icon]="'refresh'"
+      [width]="'30'"
+      [height]="'30'"
+    ></app-svg-icons>
+    <div>
+      <label class="switch">
+        <input type="checkbox" checked>
+        <span class="slider round"></span>
+      </label>
+    </div>
+  </div>
+</div>
+
+<div class="customer-account-details">
+  <!-- Accounts header text -->
+  <div *ngIf="!IsBackButtonEnabled" class="header-section">
+    <div class="page-title">Account Details</div>
+    <div class="refresh-btn-section" *ngIf="totalaccounts.length > 0">
+      <app-svg-icons
+        title="Refresh"
+        (click)="fnGetCustomerAccounts()"
+        [icon]="'refresh'"
+        [width]="'30'"
+        [height]="'30'"
+      ></app-svg-icons>
+    </div>
+    <div  class="refresh-btn-section" *ngIf="totalaccounts.length > 0">
+      <label class="switch">
+        <input type="checkbox" class="checkbox" [checked]="CardOrGridView" (change)="this.CardOrGridView = !this.CardOrGridView">
+        <span class="slider round" style="width: 50px;height: 27px;"></span>
+      </label>
+    </div>
+  </div>
+
+  <div *ngIf="LoadingFlagPortfolioCreated">
+    <div class="loader-container">
+      <div class="loader-center">
+        <div class="multi-ripple">
+          <div></div>
+          <div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!LoadingFlagPortfolioCreated">
+    <div *ngIf="IsPortfolioCreated">
+      <div class="account-container" *ngIf="!IsLoading">
+
+        <div *ngIf="!CardOrGridView && totalaccounts.length > 0" >
+          <table>
+            <thead>
+              <tr [ngClass]="{
+                'account-deatails-grid': HideShowBSBBankName,
+                'account-deatails-grid-hidebsbankname': !HideShowBSBBankName
+              }">
+                <th></th>
+                <th style="text-align: left;">Account No</th>
+                <th style="text-align: left;">Account Name</th>
+                <th style="text-align: center;">Currency</th>
+                <th style="text-align: right;">Account Balance</th>
+                <th style="text-align: left;" *ngIf="!HideControls">Portfolio</th>
+                <th *ngIf="!HideControls && HideShowBSBBankName">BSB/Branch Code</th>
+                <th *ngIf="!HideControls && HideShowBSBBankName">Bank Name</th>
+              </tr>
+
+            </thead>
+            <tbody>
+              <tr [ngClass]="{
+                'account-deatails-grid': HideShowBSBBankName,
+                'account-deatails-grid-hidebsbankname': !HideShowBSBBankName
+              }" *ngFor="let account of totalaccounts; let i = index">
+                <td>
+                  <div *ngIf="account.createdSuccessfully !== ''" (click)="showCashHoldings(account)">
+                    <app-svg-icons [icon]="'cash-holdings'" [width]="'25'" [height]="'25'"
+                      [active]="account.showCashHoldings" style="margin: -5px auto" *ngIf="account.showCashHoldings">
+                    </app-svg-icons>
+                    <app-svg-icons [icon]="'cash-holdings-disabled'" [width]="'25'" [height]="'25'"
+                      [active]="account.showCashHoldings" style="margin: -5px auto" *ngIf="!account.showCashHoldings">
+                    </app-svg-icons>
+                  </div>
+                </td>
+                <td>
+                  <label>{{account.Account_Number.value}}</label>
+                  <!-- <input type="text" name="Account_Number" class="txt"
+                    style="padding-left: 10px; padding-right: 0; height: 100%"
+                    [(ngModel)]="account.Account_Number.value" (keypress)="cfs.isNumber($event)"
+                    placeholder="Account number" [disabled]="
+                      !account.Account_Number.visibility ||
+                      account.createdSuccessfully === 'true' ||
+                      account.bankName === ''
+                    " /> -->
+                </td>
+                <td>
+                  <label *ngIf="
+                  !account.AccountName.visibility ||
+                  account.createdSuccessfully === 'true' ||
+                  account.bankName === ''
+                ">{{account.AccountName.value}}</label>
+                  <input type="text" name="Account_Name" class="txt"
+                    style="padding-left: 10px; padding-right: 0; height: 100%" [(ngModel)]="account.AccountName.value"
+                    (keypress)="cfs.isAlphaNumeric($event)" placeholder="Account name" *ngIf="account.AccountName.visibility" [disabled]="
+                      !account.AccountName.visibility ||
+                      account.createdSuccessfully === 'true' ||
+                      account.bankName === ''
+                    " />
+
+                </td>
+                <td style="text-align: center;">
+                  <label *ngIf="
+                  !account.AccountName.visibility ||
+                  account.createdSuccessfully === 'true' ||
+                  account.bankName === ''
+                ">{{account.Currency.value}}</label>
+                  <select name="Deposite_currency" class="txt" style="
+                      padding-left: 10px;
+                      padding-right: 0;
+                      height: 100%;
+                      margin-left: 5px;
+                      margin-right: 5px;
+                    " [(ngModel)]="account.Currency.value" [disabled]="
+                      !account.Currency.visibility ||
+                      account.createdSuccessfully === 'true' ||
+                      account.bankName === ''
+                    " *ngIf="account.AccountName.visibility">
+                    <option *ngFor="let item of CurrencyList" [value]="item">
+                      {{ item }}
+                    </option>
+                  </select>
+                </td>
+                <td style="text-align: right;">
+                  <label *ngIf="
+                  !account.AccountName.visibility ||
+                  account.createdSuccessfully === 'true' ||
+                  account.bankName === ''
+                ">{{account.Account_Balance.value}}</label>
+                  <input type="text" name="Account_Balance" class="txt account-balance"
+                    style="padding-right: 10px; height: 100%; text-align: right"
+                    [(ngModel)]="account.Account_Balance.value" (keypress)="cfs.isAlphaNumeric($event)"
+                    placeholder="Account Balance" [disabled]="
+                      !account.Account_Balance.visibility ||
+                      account.createdSuccessfully === 'true' ||
+                      account.Account_Balance === ''
+                    " *ngIf="account.AccountName.visibility"/>
+
+                </td>
+                <td *ngIf="!HideControls">
+                  <label *ngIf="
+                  !account.AccountName.visibility ||
+                  account.createdSuccessfully === 'true' ||
+                  account.bankName === ''
+                ">{{account.PortfolioName.value}}</label>
+                  <select name="Portfolio" class="txt" style="
+                      padding-left: 10px;
+                      padding-right: 0;
+                      height: 100%;
+                      margin-left: 5px;
+                      margin-right: 5px;
+                    " [(ngModel)]="account.PortfolioName.value" *ngIf="account.AccountName.visibility" [disabled]="
+                      !account.PortfolioName.visibility ||
+                      account.createdSuccessfully === 'true' ||
+                      account.bankName === ''
+                    ">
+                  
+                    <option *ngFor="let item of portfolio" [value]="item.FacDesc">
+                      {{ item.PortfolioName }}
+                    </option>
+                  </select>
+
+                </td>
+                <td *ngIf="!HideControls && HideShowBSBBankName">
+                  <input type="text" name="BSB" class="txt" value="BSB" maxlength="6" [(ngModel)]="account.BSB.value"
+                    (keypress)="cfs.isNumber($event)" placeholder="Enter 6 digit code" [disabled]="
+                      !account.BSB.visibility ||
+                      account.createdSuccessfully === 'true'
+                    " (change)="getValueInput($event, i)" style="padding-left: 10px; padding-right: 0; height: 100%" />
+
+                </td>
+                <td *ngIf="!HideControls && HideShowBSBBankName">
+                  <input type="text" name="BSB" class="txt" style="padding-left: 10px; padding-right: 0; height: 100%"
+                    [(ngModel)]="account.bankName.value" placeholder="Bank name" [disabled]="
+                      !account.bankName.visibility ||
+                      account.createdSuccessfully === 'true' ||
+                      account.bankName === ''
+                    " />
+
+                </td>
+                <td>
+                  <input class="button" style="
+                    margin: 0;
+                    margin-right: 5px;
+                    margin-left: 5px;
+                    width: 100%;
+                    min-width: 100%;
+                    margin-top: -10px;
+                  " type="button" value="Submit" (click)="createAccount(account)"
+                    *ngIf="account.createdSuccessfully !== 'true'" [disabled]="account.bankName === ''" />
+                  <input class="button" style="
+                    margin: 0;
+                    margin-right: 5px;
+                    margin-left: 5px;
+                    width: 100%;
+                    min-width: 100%;
+                    margin-top: -10px;
+                  " type="button" value="Remove" (click)="removeAccount(i)"
+                    *ngIf="account.createdSuccessfully !== 'true'" />
+                  <input class="button" style="
+                    margin: 0;
+                    margin-right: 5px;
+                    margin-left: 5px;
+                    min-width: 100%;
+                    width: 100%;
+                    margin-top: -10px;
+                  " type="button" value="Transfer Funds" (click)="TransferAmount(i); CashDepositOverlayflag = true"
+                    [disable]="enableOrDisableCashTransfer" *ngIf="
+                    account.createdSuccessfully !== '' && DisplayYNTransferFunds
+                  " />
+                  <input class="button" style="
+                    margin: 0;
+                    margin-right: 5px;
+                    margin-left: 5px;
+                    min-width: 100%;
+                    width: 100%;
+                    margin-top: -10px;
+                  " type="button" value="Fixed Deposit" (click)="TransferAmount(i); FixedDepositOverlayflag = true"
+                    *ngIf="
+                    account.createdSuccessfully !== '' && DisplayYNFixedDeposit
+                  " />
+
+                  <!-- <input class="button" style="margin: 0;margin-right: 5px;margin-left: 5px;min-width: 100%;width: 100%;"
+                  type="button" value="Holdings Details" (click)="showCashHoldings(account);"
+                  *ngIf="account.createdSuccessfully !== '' && DisplayYNHoldingDetails" /> -->
+
+                </td>
+
+              </tr>
+            </tbody>
+          </table>
+          <!-- <div class="AI-rowcontent">
+            <div class="lbl" style="text-align: left; padding-left: 5px">
+              <label for="Account_Number" class="lbl"></label>
+            </div>
+          </div>
+          <div class="AI-rowcontent">
+            <div class="lbl" style="text-align: left; padding-left: 5px">
+              <label for="Account_Number" class="lbl">Account No</label>
+            </div>
+          </div>
+          <div class="AI-rowcontent">
+            <div class="lbl" style="text-align: left; padding-left: 5px">
+              <label for="Account_Name" class="lbl">Account Name</label>
+            </div>
+          </div>
+          <div class="AI-rowcontent">
+            <div class="lbl" style="text-align: left; padding-left: 5px">
+              <label for="Deposite_currency" class="lbl">Currency</label>
+            </div>
+          </div>
+          <div class="AI-rowcontent">
+            <div class="lbl" style="text-align: left; padding-left: 5px">
+              <label for="Account_Balance" class="lbl">Account Balance</label>
+            </div>
+          </div>
+          <div class="AI-rowcontent" *ngIf="!HideControls">
+            <div class="lbl" style="text-align: left; padding-left: 5px">
+              <label for="Portfolio" class="lbl">Portfolio</label>
+            </div>
+          </div>
+
+          <div class="AI-rowcontent" *ngIf="!HideControls && HideShowBSBBankName">
+            <div class="lbl" style="text-align: left; padding-left: 5px">
+              <label for="BSB" class="lbl">BSB/Branch Code</label>
+            </div>
+          </div>
+          <div class="AI-rowcontent" *ngIf="!HideControls && HideShowBSBBankName">
+            <div class="lbl" style="text-align: left; padding-left: 5px">
+              <label for="Account_Number" class="lbl">Bank Name</label>
+            </div>
+          </div> -->
+        </div>
+        <!-- Accounts list -->
+
+        <div *ngIf="CardOrGridView && cardViewAccounts.length > 0">
+          <div class="accounts-cards-view">
+              <div class="card"  *ngFor="let account of cardViewAccounts; let i = index" >
+                <div class="card-header">
+                    <select *ngIf="account.AddAccount" name="Portfolio" class="txt" style="padding-left: 10px;padding-right: 0;height: 100%;" [(ngModel)]="account.Portfolio.value" [disabled]="!account.PortfolioName.visibility || account.createdSuccessfully === 'true' || account.bankName === ''">
+                      <option *ngFor="let item of portfolio" [value]="item.FacDesc">
+                        {{ item.PortfolioName }}
+                      </option>
+                    </select>
+                    <div style="display: flex;flex-direction: column;">
+                      <label *ngIf="!account.AddAccount">{{account.PortfolioName.value}}</label>
+                      <label style="font-style: italic; padding-top:3px;color: var(--heading-label);font-size: 13px;">Portfolio-{{i+1}}</label>
+                    </div>                   
+                </div>
+                
+                <div class="card-account-list" >
+                  <!-- [ngStyle]="{'background-image': isProd ? 'url('+'assets/acccardbg.jpg' +')' : 'url('+'../../assets/acccardbg.jpg' +')', 'background-position': 'bottom'}" -->
+                  <div class="card-account" *ngFor="let item of account.AccountList" >
+                    <div class="card-account-ccy-accno">
+                      <div class="card-element-ccyflag">
+                        <div>
+                          <img class="ccyFlag" [src]="'http://'+domainURL+'/assets/flags/'+item.Currency.value+'.png'">
+                        </div>
+                        
+                      </div> 
+                      
+                      <div class="card-element">
+                       
+                        <div class="card-element-value" style="font-size:18px;color: var(--off-color);">
+                        {{item.Account_Number.value}}
+                        </div>
+                        <div class="card-element-label">
+                            Account Number
+                        </div> 
+                        
+                      </div>
+                    </div>
+                    
+    
+                    <div class="card-element-balance">
+
+                      <div>
+                        <select *ngIf="account.AddAccount " class="txt" style="height: 100%;margin-top: 10px;" [(ngModel)]="item.Currency.value">
+                          <option *ngFor="let item of CurrencyList" [value]="item">
+                            {{ item }}
+                          </option>
+                        </select>
+                        <label style=" font-size: 13px;padding-right: 8px;" *ngIf="!account.AddAccount" >{{item.Currency.value}}</label>
+                      
+                      <!-- <div class="card-element-value"> -->
+                      <label class="balance" *ngIf="item.Account_Balance.value !== ''">{{item.Account_Balance.value}}</label>
+                      <label class="balance" *ngIf="item.Account_Balance.value === ''">0.00</label>
+                    </div>
+                      <!-- </div> -->
+                      <div class="card-element-label" style="padding-top: 5px;padding-left: 20px;">
+                          Account Balance
+                      </div> 
+                    </div>
+                    <div class="card-buttons" *ngIf="!account.AddAccount">
+                      <app-svg-icons title="Transfer Funds" *ngIf="item.createdSuccessfully !== '' && DisplayYNTransferFunds" (click)="TransferAmount(i); CashDepositOverlayflag = true" [icon]="'transfer-funds'" [width]="'22'" [height]="'22'">
+                      </app-svg-icons>
+                      <app-svg-icons title="Fixed Deposit" (click)="TransferAmount(i); FixedDepositOverlayflag = true" *ngIf="item.createdSuccessfully !== '' && DisplayYNFixedDeposit" [icon]="'fixed-deposit'" [width]="'30'" [height]="'30'" >
+                      </app-svg-icons>
+                      <div *ngIf="item.createdSuccessfully !== ''" (click)="showCashHoldings(item)">
+                        <app-svg-icons [icon]="'cash-holdings'" [width]="'25'" [height]="'25'"[active]="item.showCashHoldings" style="margin: -5px auto" *ngIf="item.showCashHoldings">
+                        </app-svg-icons>
+                        <app-svg-icons [icon]="'cash-holdings-disabled'" [width]="'25'" [height]="'25'" [active]="item.showCashHoldings" style="margin: -5px auto" *ngIf="!item.showCashHoldings">
+                        </app-svg-icons>
+                      </div>
+                    </div>
+                    <div class="card-buttons" *ngIf="account.AddAccount">
+                      <!-- <input class="button" style="margin-left: 5px;min-width: 9.5em;" type="button" value="Submit" (click)="createAccount(account)"/> -->
+                      <img class="ccyFlag" style="width: 25px;" [src]="'http://'+domainURL+'/assets/YES.png'" (click)="createAccount(account)">
+                      <img class="ccyFlag" style="width: 25px;" [src]="'http://'+domainURL+'/assets/NO.png'" (click)="removeAccount(i)">
+                      <!-- <input class="button" style="margin-left: 5px;;min-width: 9.5em;" type="button" value="Remove" /> -->
+                    </div>
+                  </div>
+                  
+                </div>
+              
+                
+              </div>
+
+              
+          </div>
+        </div>
+
+        <div *ngIf="totalaccounts.length > 0">
+
+          <div class="AI-rowButton" style="display: flex; justify-content: left">
+            <!-- <input class="button" style="margin-left: 20px; margin-top: 10px" type="button" value="Add" (click)="addAccount()" /> -->
+            <!-- <img style="max-height: 2em;cursor: pointer;" [src]="isProd ? 'assets/plus.png' : '../../assets/plus.png'" (click)="addAccount();"> -->
+
+            <div class="addAccountbtn add-account" *ngIf="DisplayYNAddAccount" (click)="addAccount()">
+              <div class="circle">
+                <span class="icon arrow"></span>
+              </div>
+              <p class="button-text">Add Account</p>
+            </div>
+          </div>
+          <div id="snackbar" style="line-height: 45px">
+            <div *ngIf="ErrorMsg">{{ this.ErrorMsg }}</div>
+          </div>
+          <div class="loader-container" *ngIf="IsLoading">
+            <div class="loader-center">
+              <div class="multi-ripple">
+                <div></div>
+                <div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="totalaccounts.length === 0" style="padding: 15px 10px">
+          <div class="textnewentry">No Account found.</div>
+          <div class="addAccountbtn add-account" *ngIf="DisplayYNAddAccount" (click)="addAccount()">
+            <div class="circle">
+              <span class="icon arrow"></span>
+            </div>
+            <p class="button-text">Add Account</p>
+          </div>
+          <div style="margin-left: 50%; transform: translate(-50%, -40%)">
+            <app-svg-icons [icon]="'no-data-found'" [width]="'300'" [height]="'300'" style="margin: auto">
+            </app-svg-icons>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="IsLoading">
+        <div class="loader-container">
+          <div class="loader-center">
+            <div class="multi-ripple">
+              <div></div>
+              <div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="!IsPortfolioCreated" class="no-portfolio-created">
+      <div style="padding: 20px 0px 0px 10px">
+        <span>Please create portfolio first.</span>
+      </div>
+      <div class="addAccountbtn add-account" style="width: 13rem; margin: 20px 10px !important"
+        (click)="fnGotoPortfolioPage()">
+        <div class="circle">
+          <span class="icon arrow"></span>
+        </div>
+        <p class="button-text">Go to Portfolio</p>
+      </div>
+      <div style="margin-left: 50%; transform: translate(-50%, -40%)">
+        <app-svg-icons [icon]="'no-data-found'" [width]="'300'" [height]="'300'" style="margin: auto">
+        </app-svg-icons>
+      </div>
+    </div>
+
+    <div class="page-title holdings-title" id="cash-holdings-title" *ngIf="selectedAccount.showCashHoldings">
+      <span>Cash Holding Details</span>
+      <span class="holdings-account-title">{{ selectedAccount.Currency.value }} |
+        {{ selectedAccount.Account_Number.value }}</span>
+      <span></span>
+    </div>
+
+    <div class="cash-holdings-container" *ngIf="selectedAccount.showCashHoldings">
+      <div class="cash-holdings-details">
+        <table>
+          <thead>
+            <tr>
+              <th><label class="lbl"> Product Name</label></th>
+              <th><label class="lbl"> Trade Ref</label></th>
+              <th><label class="lbl"> Account No</label></th>
+              <th><label class="lbl"> Currency</label></th>
+              <th><label class="lbl"> Event Notional</label></th>
+              <th><label class="lbl"> Direction</label></th>
+              <th><label class="lbl"> Holding Amt</label></th>
+              <th><label class="lbl"> Trade Date</label></th>
+              <th><label class="lbl"> Cash Settlement</label></th>
+              <th><label class="lbl"> Tansaction Type</label></th>
+              <th><label class="lbl"> Description</label></th>
+              <th><label class="lbl"> Updated By</label></th>
+              <th><label class="lbl"> Updated At</label></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let cashholdings of selectedAccount.cashHoldings">
+              <td>
+                <div class="align-left product-name">
+                  {{ cashholdings?.Product_Name || "-" }}
+                </div>
+              </td>
+              <td>
+                <div class="align-center">
+                  {{ cashholdings?.CEHDHC_Note_Deal_ID || "-" }}
+                </div>
+              </td>
+              <td>
+                <div class="align-center">
+                  {{ cashholdings?.CEHDHC_Account_No || "-" }}
+                </div>
+              </td>
+              <td>
+                <div class="align-center">
+                  {{ cashholdings?.CEHDHC_Currency || "-" }}
+                </div>
+              </td>
+              <td>
+                <div class="align-right">
+                  {{ cashholdings?.CEHDHC_Amt | number: "1.2-2" || "-" }}
+                </div>
+              </td>
+              <td>
+                <div class="align-right">
+                  {{ cashholdings?.Direction || "-" }}
+                </div>
+              </td>
+              <td>
+                <div class="align-right">
+                  {{
+                  cashholdings?.CEHDHC_Available_Amt | number: "1.2-2" || "-"
+                  }}
+                </div>
+              </td>
+              <td>
+                <div class="align-center">
+                  {{ cashholdings?.Trade_Date | date: "dd-MMM-yyyy" || "-" }}
+                </div>
+              </td>
+              <td>
+                <div class="align-center">
+                  {{
+                  cashholdings?.Settlement_Date | date: "dd-MMM-yyyy" || "-"
+                  }}
+                </div>
+              </td>
+              <td>
+                <div class="align-center transaction-type">
+                  {{ cashholdings?.CEHDS_Description1 || "-" }}
+                </div>
+              </td>
+              <td>
+                <div class="align-center">
+                  {{ cashholdings?.CEHDHC_Description || "-" }}
+                </div>
+              </td>
+              <td>
+                <div class="align-center">
+                  {{ cashholdings?.CEHDHC_LastUpdated_By || "-" }}
+                </div>
+              </td>
+              <td>
+                <div class="align-center">
+                  {{
+                  cashholdings?.CEHDHC_LastUpdated_At
+                  | date: "dd-MMM-yyyy HH:mm:ss a" || "-"
+                  }}
+                </div>
+              </td>
+            </tr>
+            <tr *ngIf="selectedAccount?.cashHoldings?.length === 0">
+              <td>
+                <div class="no-acount-holdings">
+                  No Cash Holdings for Account:
+                  {{ selectedAccount.Account_Number.value }}
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="overlay" *ngIf="FinancialPlanningOverlayflag">
+      <app-financial-planning [pageMode]="1" (GoalData)="fnSelectedPortfolioForFinancialPlanning($event)">
+      </app-financial-planning>
+    </div>
+    <div class="overlay" *ngIf="FixedDepositOverlayflag">
+      <app-fixeddeposit [pageMode]="1" (ClosePopUp)="fnFixedDeposit($event)">
+      </app-fixeddeposit>
+    </div>
+    <div class="overlay" *ngIf="CashDepositOverlayflag">
+      <app-cashdeposit [pageMode]="1" (ClosePopUp)="fnCashDeposit($event)">
+      </app-cashdeposit>
+    </div>
+  </div>
+</div>

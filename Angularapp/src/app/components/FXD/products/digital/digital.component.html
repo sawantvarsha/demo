@@ -1,0 +1,262 @@
+<div class="FullScreen-container">
+    <div class="FXD-sub-container">
+        <div class="FXD-row">
+            <label class="disabledlbl">Customer Id </label>
+            <!-- <div>
+                <input [value]='CustomerID' type="text" placeholder="" class="longText" style=" text-align: left;" disabled />
+            </div> -->
+            <app-customer-search (selectedCustomerValue)="fnCustomerSelection($event)"></app-customer-search>
+            <label class="disabledlbl"> Trade Date</label>
+            <div>
+                <input type="text" *ngIf="digitalModel.TradeDate" value="{{digitalModel.TradeDate || '-' }}" disabled
+                    class="dates" />
+                <app-loader *ngIf="!digitalModel.TradeDate"></app-loader>
+            </div>
+        </div>
+        <div class="FXD-row">
+            <label>Currency Pair&nbsp;<span class="impFields">*</span></label>
+            <div>
+                <!-- <select *ngIf="digitalModel.CCYOptions.length > 0" id="ddl_Curr" class="ddl ddlccy" class="longText" [(ngModel)]="digitalModel.CurrencyPair"
+                    (change)="FXD_cfs.setCCY(digitalModel);FXD_cfs.GetStrikeRate(digitalModel);">
+                    <option *ngFor="let c of digitalModel.CCYOptions"
+                        (selected)="c.Asset_Pair === digitalModel.CurrencyPair" [value]="c.Asset_Pair">
+                        {{ c.Asset_Pair }}
+                    </option>
+                </select> -->
+                <app-ccypairselector *ngIf="this.digitalModel.CCYOptions.length > 0" style="width: -webkit-fill-available;" [CurrencyPair]="digitalModel.CurrencyPair" [CCYList]="digitalModel.CCYOptions" (SelectedCcy)="SelectedCCy($event)"></app-ccypairselector>
+                <app-loader *ngIf="digitalModel.CCYOptions.length === 0"></app-loader>
+            </div>
+
+            <label class="disabledlbl"> Premium Date</label>
+            <div>
+                <input type="text" *ngIf="digitalModel.PremiumDate" value="{{digitalModel.PremiumDate || '-'}}" disabled class="dates" />
+                <app-loader *ngIf="!digitalModel.PremiumDate"></app-loader>
+            </div>
+        </div>
+        <div class="FXD-row">
+            <label>Customer Buy/Sell&nbsp;<span class="impFields">*</span></label>
+            <select [(ngModel)]="digitalModel.OrderDirection"
+                (change)="FXD_cfs.OrderDirectionChanged(digitalModel);FXD_cfs.GetStrikeRate(digitalModel);">
+                <option value="Buy">Buy</option>
+                <option value="Sell">Sell</option>
+            </select>
+            <label class="disabledlbl">Fixing Date</label>
+            <div>
+                <input type="text" *ngIf="digitalModel.FixingDate" class="dates"
+                    value="{{digitalModel.FixingDate || '-'}}" disabled />
+                <app-loader *ngIf="!digitalModel.FixingDate"></app-loader>
+            </div>
+        </div>
+        <div class="FXD-row">
+            <label>Notional&nbsp;<span class="impFields">*</span></label>
+            <div class="FXD-splited-column-2">
+                <select [disabled]="digitalModel.DisableCCYChangeControl" *ngIf="digitalModel.CCYOptions.length > 0" [(ngModel)]="digitalModel.NotionalCCY" (change)="FXD_cfs.fnChangeNotionalCCY(digitalModel);ResetAllFields();">
+                    <option value={{digitalModel.DepCcy}} selected>{{digitalModel.DepCcy}}</option>
+                    <option value={{digitalModel.AltCcy}}>{{digitalModel.AltCcy}}</option>
+                </select>
+                <app-loader *ngIf="digitalModel.CCYOptions.length === 0"></app-loader>
+                <input type="text" class="right" placeholder="Enter Notional" [(ngModel)]="digitalModel.Notional" (change)="digitalModel.Notional = FXD_cfs.NotionalChangewithDecimalFixes(digitalModel.Notional, digitalModel.NotionalDecimalPointShift); this.ResetAllFields();" (focus)="FXD_cfs.UnformatNumber($event)"
+                    (blur)="FXD_cfs.formatNumberwithEvengtKetan($event, digitalModel.NotionalDecimalPointShift);" (keypress)="this.FXD_cfs.NotionalValidate($event)" />
+            </div>
+
+            <label class="disabledlbl">Maturity Date</label>
+            <div>
+                <input type="text" *ngIf="digitalModel.MaturityDate" class="dates" value="{{digitalModel.MaturityDate || '-'}}" disabled />
+                <app-loader *ngIf="!digitalModel.MaturityDate"></app-loader>
+            </div>
+        </div>
+        <div class="FXD-row">
+            <label>Price Provider</label>
+            <div class="FXD-splited-column-2">
+                <select [(ngModel)]="digitalModel.PricingMode" (change)="FXD_cfs.fnChangeAppMode(digitalModel)">
+                    <option *ngFor="let item of digitalModel.AppModes" [value]="item.toUpperCase()">{{item}}</option>
+                </select>
+                <select *ngIf="digitalModel.LPList.length > 0" [(ngModel)]="digitalModel.SelectedLPForPrice">
+                    <option *ngFor="let item of digitalModel.LPList" [value]="item.PP_Name">{{item.PP_Name}}</option>
+                </select>
+                <app-loader *ngIf="digitalModel.LPList.length === 0"></app-loader>
+            </div>
+            <label>Option Cut</label>
+            <select [(ngModel)]="digitalModel.OptionCut">
+                <option *ngFor="let item of digitalModel.OptionCutOptions; let i = index" [value]="item">{{item}}
+                </option>
+            </select>
+        </div>
+        <div class="FXD-row">
+            <label>Tenor&nbsp;<span class="impFields">*</span></label>
+            <div class="FXD-splited-column-2">
+                <select [(ngModel)]="digitalModel.Tenor" (change)="FXD_cfs.fnTenorChanged(digitalModel)">
+                    <option *ngFor="let item of digitalModel.TenorOptions" [value]="item">{{item}}</option>
+                </select>
+                <input type="text" class="right" disabled [value]=[digitalModel.TenorDays] />
+            </div>
+            <label>Digital Type</label>
+            <select *ngIf="digitalModel.DigitalTypeOptions.length > 0" [(ngModel)]="digitalModel.SelectedDigitalType" (change)="fnChangeDigitalType();">
+                <option *ngFor="let item of digitalModel.DigitalTypeOptions; let i = index" [value]="item">{{item}}
+                </option>
+            </select>
+            <app-loader *ngIf="digitalModel.DigitalTypeOptions.length === 0"></app-loader>
+        </div>
+        <div class="FXD-row">
+            <label class="disabledlbl">Spot Rate</label>
+            <div class="FXD-splited-column-3">
+                <input type="text" class="right" id="idBidSpot" *ngIf="digitalModel.BidRate" disabled [value]=[digitalModel.BidRate] />
+                <app-loader *ngIf="!digitalModel.BidRate"></app-loader>
+                /
+                <input type="text" class="right" *ngIf="digitalModel.AskRate" id="idAskSpot" disabled [value]=[digitalModel.AskRate] />
+                <app-loader *ngIf="!digitalModel.AskRate"></app-loader>
+            </div>
+            <label *ngIf="!digitalModel.DisableTriggerCondition">Trigger Condition</label>
+
+            <select [disabled]="digitalModel.DisableTriggerCondition" *ngIf="!digitalModel.DisableTriggerCondition" [(ngModel)]="digitalModel.SelectedTriggerCondition" (change)="fnChangeDigitalType();">
+                <ng-container *ngFor="let item of digitalModel.TriggerConditionOptions; let i = index">
+                    <option *ngIf="item.Key === digitalModel.SelectedDigitalType" [value]="item.Value">{{item.Value}}
+                    </option>
+                </ng-container>
+            </select>
+            <app-loader *ngIf="digitalModel.TriggerConditionOptions.length === 0"></app-loader>
+        </div>
+        <div class="FXD-row">
+            <label>Strike Point/Rate</label>
+            <div class="FXD-splited-column-2">
+                <input type="number" max="9999999999" min="0" class="right" (keypress)="this.FXD_cfs.InputNunbersOnlyWithoutDec($event);this.TargetValueLimitor($event)"
+                    (change)="FXD_cfs.StrikePointChanged(digitalModel);FXD_cfs.GetStrikeRate(digitalModel);" [(ngModel)]="digitalModel.StrikePoint" />
+                <input type="number" class="right" (keypress)="this.FXD_cfs.NotionalValidate($event);this.TargetValueLimitor($event)"  (change)="FXD_cfs.StrikeValidation(digitalModel);FXD_cfs.StrikeChanged(digitalModel)" [(ngModel)]="digitalModel.Strike" />
+            </div>
+            <label>Upper Barrier Level</label>
+            <input type="text" [(ngModel)]="digitalModel.UpperBarrierLevel" class="right" (change)="fnChangeDigitalType();TargetValueLimitor($event);" (keypress)="this.FXD_cfs.InputNunbersOnly($event);TargetValueLimitor($event);" [disabled]="digitalModel.DisableUpperBarrier" />
+        </div>
+        <div class="FXD-row">
+            <label *ngIf="digitalModel.PricingMode === 'AUTO'">IB Prem</label>
+            <div class="FXD-splited-column-2" *ngIf="digitalModel.PricingMode !== 'AUTO'">
+                <label>IB Prem </label>
+                <select [(ngModel)]="digitalModel.IBPremType">
+                    <option value="IB Pays" selected>IB Pays</option>
+                    <option value="IB Receives">IB Receives</option>
+                </select>
+            </div>
+            <div class="FXD-splited-column-2">
+                <select [disabled]="digitalModel.DisableCCYChangeControl" *ngIf="digitalModel.CCYOptions.length > 0"
+                    [(ngModel)]="digitalModel.IBPremCCY" (change)="ResetAllFields();">
+                    <option value={{digitalModel.DepCcy}} selected>{{digitalModel.DepCcy}}</option>
+                    <option value={{digitalModel.AltCcy}}>{{digitalModel.AltCcy}}</option>
+                </select>
+                <app-loader *ngIf="digitalModel.CCYOptions.length === 0"></app-loader>
+                    <input type="text" class="right" [(ngModel)]="digitalModel.IBPremium" (focus)="FXD_cfs.UnformatNumber($event)" (blur)="FXD_cfs.FormatNumber($event)" (change)="digitalModel.IBPremium = FXD_cfs.NotionalChange($event,'');ResetAllFields();" (keypress)="FXD_cfs.NotionalValidate($event)" [disabled]="digitalModel.PricingMode === 'AUTO'"/>
+            </div>
+            <label>Lower Barrier Level</label>
+            <input type="text" [(ngModel)]="digitalModel.LowerBarrierLevel" class="right" (change)="fnChangeDigitalType();TargetValueLimitor($event);" (keypress)="this.FXD_cfs.InputNunbersOnly($event);TargetValueLimitor($event);" [disabled]="digitalModel.DisableLowerBarrier" />
+        </div>
+        <div class="FXD-row">
+            <label *ngIf="digitalModel.PricingMode === 'AUTO'">Client Prem</label> 
+            <div class="FXD-splited-column-2" *ngIf="digitalModel.PricingMode !== 'AUTO'">
+                <label>Client Prem </label>
+                <select [(ngModel)]="digitalModel.ClientPremType">
+                    <option value="Client Pays" selected>Client Pays</option>
+                    <option value="Client Receives">Client Receives</option>
+                </select>
+            </div>
+            <div>
+                <input type="text" class="longText right" [disabled]="digitalModel.PricingMode === 'AUTO'" [(ngModel)]="digitalModel.ClientPremium" (focus)="FXD_cfs.UnformatNumber($event)" (blur)="FXD_cfs.FormatNumber($event)" (change)="digitalModel.ClientPremium = FXD_cfs.NotionalChange($event,'');" (keypress)="FXD_cfs.NotionalValidate($event)"/>
+            </div>
+        </div>
+        <div class="FXD-row">
+            <label>Upfront (%)</label>
+            <div>
+                <input type="text" class="longText right" [(ngModel)]="digitalModel.UpfrontPer" (change)="FXD_cfs.UpfrontChanged(digitalModel);" (keypress)="FXD_cfs.InputNunbersOnly($event)" (blur)="FXD_cfs.UpfrontValidation($event)" />
+            </div>
+            
+        </div>
+        <div class="FXD-row-PBOE">
+            <div class="FXD-col-buttons">
+                <button class="button" (click)="FXBestPrice();"
+                    [disabled]="digitalModel.disabledPrembtn || digitalModel.PricingLoading && !digitalModel.BestPrice">
+                    <div title="Prem (F8)">Prem</div>
+                </button>
+                <button class="button" (click)="ResetAllFields();">
+                    <div title="Clear (F7)">Clear</div>
+                </button>
+                <button class="button" (click)="FXD_cfs.BookDeal(digitalModel)"
+                    [disabled]="digitalModel.OrderPlaceFlag || !digitalModel.BestPrice">
+                    <div title="Route to Dealer">Route to Dealer</div>  <!-- Added By Urmila A | 6-Sep-22 -->
+                </button>
+            </div>
+            <div class="FXD-col-errorMsg" *ngIf="Errormsg!==''">
+                <label class="successMsg">{{Errormsg}}</label>
+            </div>
+            <div class="FXD-Pricing-loader" *ngIf="digitalModel.PricingLoading">
+                <app-loader></app-loader>
+            </div>
+            <div>
+                <div class="FXD-col-pricing" *ngIf="digitalModel.BestPrice">
+                    <div>
+                        <h5>Best Reply &nbsp;: : </h5>
+                    </div>
+                    <div class="FXD-row">
+                        <div>
+                            <span class="bestreply"
+                                style="color:var(--heading-label);text-align:left;">{{this.BestPriceProvider}}</span>
+                        </div>
+                        <div style="text-align: left;">
+                            <span class="bestreply"> <span
+                                    style="color:#9b7a79;text-align: left; padding-left: 2.65em;">
+                                    {{BestPrice | number:'1.2-4' }}</span></span>
+                        </div>
+                        <div>
+                            <span style="color:var(--heading-label);text-align:left;font-size: 15px;">RFQ NO ::</span>
+                        </div>
+                        <div>
+                            <span style="color:var(--active); text-align: right;font-size: 15px;">{{DCDRfqId}}</span>
+                        </div>
+                    </div>
+                    <div class="FXD-row">
+                        <div>
+                            <span style="color:var(--heading-label);text-align:left;font-size: 15px">Delta (%)</span>
+                        </div>
+                        <div>
+                            <span
+                                style="color:var(--active); text-align: right;font-size: 15px;padding-left: 50px;">{{Delta
+                                | number:'1.2-2'}}</span>
+                        </div>
+                        <div>
+                            <span style="color:var(--heading-label);text-align:left;font-size: 15px; ">Delta Amt.</span>
+                        </div>
+                        <div>
+                            <span style="color:var(--active); text-align: right;font-size: 15px;">{{DeltaCcy}}
+                                {{DeltaAmt |
+                                number:'1.2-2'}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="FXD-col-orderplacement" *ngIf="digitalModel.Orderplace">
+                <h4>Order Details</h4>
+                <div class="order-details">
+                    <h5 class="stickyNoteText">Order placed successfully.</h5>
+                    <div class="start-notes"><span class="dot"></span>
+                        <h5>Order ID: {{digitalModel.Orderplace}} </h5>
+                    </div>
+                    <div class="start-notes"><span class="dot"></span>
+                        <h5>Deal No: {{digitalModel.DealNo}} </h5>
+                    </div>
+                    <h6 class="stickyNoteText">Order saved at {{digitalModel.orderTime}}</h6>
+                </div>
+            </div>
+
+        </div>
+        <div>
+            <app-pricing [ViewMode]="'FullPage'" [startLoading]='digitalModel.PricingLoading' [ClearFlag]='digitalModel.ClearPricingFlag'
+                [data]='digitalModel.PricingServiceResponse' [Product_code]='this.Product_Code'
+                [Product_ID]='this.Product_ID' [Mode]="Mode" [UserGroup]="UserGroup"
+                [PricingMode]="digitalModel.PricingMode" [LP]="digitalModel.SelectedLPForPrice"
+                (TradedLPDetails)="TradeSelectedLP($event)" (DisableTradeButton)="fnDisableTradebtn($event)"
+                (EnablePrembtn)="fnDisablePrembtn($event)">
+            </app-pricing>
+        </div>
+    </div>
+
+    <div class="sub-charts" *ngIf="digitalModel.CurrencyPair !== ''">
+        <app-siv-charts [ccyPair]="digitalModel.CurrencyPair"></app-siv-charts>
+    </div>
+</div>

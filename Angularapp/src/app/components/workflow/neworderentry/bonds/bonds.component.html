@@ -1,0 +1,464 @@
+<div [ngClass]="{'bondsComponentrmw': isUserRM === true, 'bondsComponent': isUserRM === false}">
+    <div class="fundname-row" *ngIf="isUserRM">
+        <div class="middle">Customer</div>
+        <div class="middle" *ngIf="isUserRM && !productCatCheck">
+            <app-customer-search (selectedCustomerValue)="selectedCustomerValue1($event)"></app-customer-search>
+        </div>
+
+        <!-- Changes by Ashwini H on 07 Feb 2022 -->
+        <div *ngIf="isUserRM && productCatCheck">
+            <input type="text" [(ngModel)]="selectedCustomerName" disabled />
+        </div>
+
+    </div>
+
+    <!-- Changes by Ashwini H on 07 Feb 2022 -->
+
+    <!-- <div class="fundname-row" *ngIf="!displaySearch">
+        <div class="middle">Bond</div>
+        <div class="middle">
+            <input type="text" placeholder="Search" [(ngModel)]="search"
+                (keydown.enter)="selectbondOnEnter($event); showSuggestions = false"
+                (keydown.ArrowUp)="selectedBIndex = com.moveUpSelection($event, selectedBIndex)"
+                (keydown.ArrowDown)="selectedBIndex = com.moveDownSelection($event, selectedBIndex)"
+                (keypress)="delaySmartSearch($event); showSuggestions = true" (change)="showSuggestions = true;">
+            <div class="top UnderlyingSearch " *ngIf="search.length > 1 && showSuggestions">
+                <div class="SelectorBox">
+                    <a *ngFor="let b of bondsList; let i = index" (keypress)="ChangeIndex($event)">
+                        <div *ngIf="b" [attr.data-BondData]="b['Note_Master_id']"
+                            (click)="selectbondOnClick(b['Note_Master_id'])" (keydown.enter)="selectbondOnEnter($event)"
+                            [ngClass]="{'HoverSuggestion': (i === selectedBIndex)}">
+                            <label>{{b['Product_Name']}}</label>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div> -->
+
+
+    <div class="gridInfo">
+        <div class="funddetails" *ngIf="details['ProductName']">
+            <div class="fundtitlerow">{{details['ProductName']}}</div>
+            <div class="shareinfo">
+                <span class="medium value-top">{{details.Issuer}}</span>
+                <span class="medium value-top">|</span>
+                <span class="fs12 heading">Currency </span>
+                <span class="medium value-top"> {{details.Currency}}</span>
+                <span class="medium value-top">|</span>
+                <span class="fs12 heading"> ISIN/BBGID </span>
+                <span class="medium value-top"> {{details['ISIN'] || 'NA'}} / {{details.BBGID || 'NA'}}</span>
+                <span class="medium value-top">|</span>
+                <span class="fs12 heading">Rating </span>
+                <span class="medium value-top"> {{PRR}}</span>
+            </div>
+        </div>
+        <div class="funddetails " style="color: red;" *ngIf="details['ProductName']">{{msg}}
+        </div>
+    </div>
+    <div class="param-cols">
+        <div class="column1">
+            <div class="fundparams-row">
+                <div class="middle">Customer Buy/Sell</div>
+                <div class="middle">
+                    <select class=" " [(ngModel)]="side" [disabled]="!isEditable">
+                        <option value="Buy" selected="selected">Buy</option>
+                        <option value="Sell">Sell</option>
+                    </select>
+                </div>
+            </div>
+            <div class="fundparams-row">
+                <div class="middle">Order Type</div>
+                <div class="middle">
+                    <select class=" " [(ngModel)]="OrderType" [disabled]="!isEditable" (change)="ResetAllFields()">
+                        <option value="Market">Market
+                        </option>
+                        <option value="Limit">Limit
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="fundparams-row">
+                <div class="middle">Notional ({{selectedBond.Currency}})</div>
+                <div class="middle">
+                    <input type="text" class="right" [(ngModel)]="nominal" placeholder="Enter Notional"
+                        (focus)="com.UnformatNumber($event);com.SelectFullText($event);"
+                        (blur)="com.FormatNumber($event)" maxlength="12"
+                        (change)="nominal = com.NotionalChange($event);ResetCalculatebtn();"
+                        (keypress)=" com.NotionalValidate($event)" />
+                    <!--enterNotional(nominal);-->
+                </div>
+            </div>
+
+
+            <div class="fundparams-row">
+                <div class="middle">Settlement Type </div>
+                <div class="middle">
+                    <select class="  " disabled [(ngModel)]="settlementType" (change)="GetSettlementDate()">
+                        <option value="0">Broken Date
+                        </option>
+                        <option value="1">T+1</option>
+                        <option value="2">T+2
+                        </option>
+                        <option value="3">T+3</option>
+                        <option value="4">T+4</option>
+                    </select>
+                </div>
+            </div>
+            <div class="fundparams-row">
+                <div class="middle">Settlement Date </div>
+                <div class="middle">
+                    <input type="text" class=" center" disabled="disabled" value="{{settlementDate }}" />
+                </div>
+            </div>
+            <div class="fundparams-row" *ngIf="!isEditable">
+                <div class="middle">{{btnname}} Remark</div>
+                <div class="middle">
+
+                    <input type="text" [(ngModel)]="Remark" placeholder="Remark" />
+                </div>
+            </div>
+
+            <!--Added by AlolikaG on 4th Feb 2022. Assigned by Parikshit K--START-->
+            <!-- <div class="fundparams-row" *ngIf="side === 'Buy'">
+                <div class="middle">Funding Mode</div>
+                <div class="middle">
+                    <select [(ngModel)]="FundMode" (change)="FundingModeChange(FundMode)">
+                        <option *ngFor="let item of FundingModeData" (selected)="item.DATA_VALUE === FundMode" [value]="item.DATA_VALUE">{{item.DATA_VALUE}}
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div *ngIf="side === 'Buy'">
+                <div class="fundparams-row" *ngIf="FundVal === 'PL' || FundVal === 'TL'">
+                <div class="middle">Loan Amount</div>
+                <div class="middle">
+                    <input type="text" class="right" [(ngModel)]="LoanAmt" maxlength="12" tabindex="2"
+                        (blur)="cfs.FormatNumber($event)" (change)="LoanAmt = cfs.NotionalChange($event);"
+                        (focus)="cfs.UnformatNumber($event);cfs.SelectFullText($event);"
+                        (keypress)=" cfs.NotionalValidate($event)" [disabled] = "FundVal === 'TL'">
+                    </div>
+                </div>
+            </div> -->
+            <!--Added by AlolikaG on 4th Feb 2022. Assigned by Parikshit K--END-->
+        </div>
+        <div class="column2">
+            <div class="fundparams-row">
+                <div class="middle">Client Price</div>
+                <div class="middle" *ngIf="OrderType==='Market'">
+                    <input type="text" class=" right floatRight placeholder-right"
+                        [(ngModel)]="ClientPrice" value="{{ClientPrice}}" [disabled]=false (keypress)=" com.NotionalValidate($event)"/>
+                </div>
+                <div class="middle" *ngIf="OrderType==='Limit'">
+                    <input type="text" class=" right floatRight placeholder-right" placeholder="Enter Client Price"
+                        [(ngModel)]="ClientPrice" value="{{ClientPrice}}" (keypress)="com.NotionalValidate($event)"
+                        [disabled]="!isEditable" />
+                </div>
+            </div>
+            <div class="fundparams-row">
+                <div class="middle">Accrued Int. ({{selectedBond.Currency }})</div>
+                <div class="middle">
+                    <input type="text" class="right" disabled="disabled" [(ngModel)]="AccVal" [value]="AccVal" />
+                </div>
+            </div>
+            <div class="fundparams-row">
+                <div class="middle">Settlement Amount ({{selectedBond.Currency}})</div>
+                <div class="middle">
+                    <input type="text" class="right" disabled="disabled" [(ngModel)]="settval" [value]="settval" />
+                </div>
+            </div>
+
+
+
+            <div class="fundparams-row">
+                <div class="middle">Yield To Maturity (%)</div>
+                <div class="middle">
+                    <input type="text" class="right" disabled="disabled" [(ngModel)]="YTM" [value]="YTM" />
+                </div>
+            </div>
+            <div class="fundparams-row">
+                <div class="middle">Yield To Convention (%)</div>
+                <div class="middle">
+                    <input type="text" class="right" disabled="disabled" [(ngModel)]="YTConv" [value]="YTConv" />
+                </div>
+            </div>
+
+            <!--Added by AlolikaG on 4th Feb 2022. Assigned by Parikshit K--START-->
+            <div class="fundparams-row" *ngIf="side === 'Buy'">
+                <!--*ngIf="FundMode === 'Fully Funded' && side === 'Buy'"-->
+                <div class="middle"> Available Cash </div>
+                <div class="middle">
+                    <input type="text" class="right" [(ngModel)]="CashBalance" maxlength="3" tabindex="2"
+                        [disabled]="true" (blur)="com.FormatNumber(CashBalance)"
+                        (focus)="com.UnformatNumber(CashBalance);com.SelectFullText(CashBalance);">
+                </div>
+            </div>
+            <!-- <div *ngIf="side === 'Buy'">
+                <div class="fundparams-row" *ngIf="FundVal === 'PL' || FundVal === 'TL' ">
+                <div class="middle"> Available for Drawdown </div>
+                <div class="middle">
+                    <input type="text" class="right" [(ngModel)]="Drawdown"
+                        maxlength="3" tabindex="2" [disabled] = "true" (blur)="cfs.FormatNumber($event)"
+                        (focus)="cfs.UnformatNumber($event);cfs.SelectFullText($event);">
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="side === 'Buy'">
+            <div class="fundparams-row" *ngIf="FundVal === 'PL' || FundVal === 'TL'">
+                <div class="middle"> Loan Tenor </div>
+                <div class="middle">
+                    <select [(ngModel)]="LoanTenor">
+                        <option *ngFor="let item of TenorData" (selected)="item.DATA_VALUE === LoanTenor" [value]="item.DATA_VALUE">{{item.DATA_VALUE}}
+                        </option>
+                    </select>
+                </div>
+                </div>
+            </div> -->
+            <!--Added by AlolikaG on 4th Feb 2022. Assigned by Parikshit K--END-->
+
+        </div>
+    </div>
+    <div class="param-cols" *ngIf="this.moredetails !== 'More Details'">
+        <div class="column1">
+            <div class="fundparams-row">
+                <div class="middle">Time in Force </div>
+                <div class="middle">
+                    <select class="" [(ngModel)]="TimeInForce" [disabled]='OrderType==="Market"'
+                        (change)="changeTimeinForce(TimeInForce)">
+                        <option value="DAY">DAY
+                        </option>
+                        <option value="GTF">GTF
+                        </option>
+                        <option value="GTD">GTD
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="fundparams-row">
+                <div class="middle">Order Expiry Date </div>
+                <!-- <div class="middle">
+                    <input type="text" class=" center"
+                        [disabled]="OrderType==='Market'||TimeInForce==='GTF'||TimeInForce==='DAY'"
+                        value="{{tradeDate}}" />
+                </div> -->
+                <div class="middle FromDateLabel">
+                    <input type="date" name="expiryDate" id="expiryDate" class="input-dob" tabindex="16"
+                        min="1997-01-01" style="margin-top: 0px;  width: 100% !important;" max="2030-12-31"
+                        [(ngModel)]="expiryDate" (change)="selectDate(expiryDate)" data-date-format="DD-MMM-YYYY"
+                        [disabled]="OrderType==='Market'||TimeInForce==='GTF'||TimeInForce==='DAY'">
+                    <span id="FromDateLabel">{{expiryDate| date:'dd-MMM-yyyy'}}</span>
+                </div>
+            </div>
+            <div class="fundparams-row">
+                <div class="middle">Customer</div>
+                <!-- <div class="middle" *ngIf="!isUserRM">
+                    <input type="text" [(ngModel)]="CustomerName" disabled placeholder="Customer" />
+                </div>
+                <div class="middle" *ngIf="isUserRM">
+                    <input type="text" [(ngModel)]="CustName" disabled placeholder="Customer" />
+                </div> -->
+                <div class="middle">
+                    <input type="text" [(ngModel)]="CustomerName" disabled placeholder="Customer" />
+                </div>
+            </div>
+            <div class="fundparams-row">
+                <div class="middle">Portfolio</div>
+                <div class="middle">
+                    <select [(ngModel)]="portfolio" (change)="updatePortfolio()" *ngIf="isEditable"
+                        [disabled]="!enablePortfolio">
+                        <option *ngFor="let arr of portfolioList;" [value]="arr.FacDesc">{{arr.PortfolioName}}
+                        </option>
+                    </select>
+                    <input type="text" [(ngModel)]="portfolio" disabled placeholder="Portfolio" *ngIf="!isEditable" />
+                </div>
+            </div>
+
+        </div>
+        <div class="column2">
+            <div class="fundparams-row">
+                <div class="middle">Interbank Price (%)</div>
+                <div class="middle">
+                    <input type="text" class="right" disabled="disabled"
+                        [value]="side === 'Buy' ? InterbankaskPrice :InterbankbidPrice" />
+                </div>
+            </div>
+
+            <div *ngIf="OrderType==='Limit'" class="fundparams-row">
+                <div class="middle">Target Interbank Price (%)</div>
+                <div class="middle">
+                    <input type="text" class="right" disabled="disabled" [value]="TargetInterbankPrice" />
+                </div>
+            </div>
+
+            <div class="fundparams-row">
+                <div class="middle">Spread <span *ngIf="configValue === 'Y'">(BPS)</span>
+                    <span *ngIf="configValue === 'N'">(%)</span>
+                </div>
+                <div class="middle">
+                    <input type="text" class="right" placeholder="Enter Spread" [(ngModel)]="spread"
+                        (keypress)=" com.NotionalValidate($event)" (blur)="com.FormatNumber($event)"
+                        [disabled]="!isEditable" />
+                </div>
+            </div>
+            <div class="fundparams-row">
+                <div class="middle">Currency</div>
+                <div class="middle">
+                    <!-- <input type="text" class="left" [disabled]="isUserRM === true" value="{{details.Currency}}" [disabled]="!isEditable"> -->
+                    <input type="text" class="left" value="{{details.Currency}}" disabled>
+                    <!-- Changed by Ketan S on 28-Mar-2022 asked by Gaurav Jain Issue 4 in sheet NextGenApp gateway markets -->
+                </div>
+            </div>
+            <div class="fundparams-row">
+                <div class="middle">Account Number</div>
+                <div class="middle">
+                    <select class="right paddingR_30px" [(ngModel)]="Account_Number" (change)="cashBalance()">
+                        <!--cashBalance() Added by AlolikaG on 2nd Feb 2022-->
+                        <option *ngFor="let arr of accountList;">{{arr.Param1}}
+                        </option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="param-cols" style="margin-top: 0px !important;">
+        <div class="column1">
+
+        </div>
+        <div class="column2">
+            <!--Added by AlolikaG on 7th Feb 2022. Assigned by Parikshit K--START-->
+            <div class="fundparams-row">
+                <div class="middle"> Check Suitability </div>
+                <div class="middle">
+                    <label class="switch" style="margin-top: 5px;">
+                        <input type="checkbox" [(ngModel)]="checkSuitability">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+            <!--Added by AlolikaG on 7th Feb 2022. Assigned by Parikshit K--END-->
+        </div>
+
+    </div>
+
+    <div class="fund-button-row">
+
+
+
+        <div class="link moredetails " (click)="moredetailsCheck()"><u>{{moredetails}}</u></div>
+        <div class="btndiv">
+            <button class="button" (click)="Calculate();">Calculate</button>
+        </div>
+
+
+
+        <div class="btndiv">
+            <button class="button" (click)="loadflag=true;Subscribe();">{{btnname}}</button>
+        </div>
+        <div class="btndiv">
+            <button class="button" (click)="ResetAllFields()">Clear</button>
+        </div>
+        <div [ngStyle]="{'color':note_Master_Id===''?'var(--disabled-text)':'var(--links)', 'pointer-event': note_Master_Id===''?'none':'initial'}"
+            class="link" (click)="openSuitablityPopup()"> <u>
+                View Suitability Check</u></div>
+
+        <div *ngIf="loadflag">
+            <img [src]="isProd?'assets/loading_dots.gif':'../../../../../assets/loading_dots.gif'" height="100px"
+                width="100px">
+        </div>
+
+    </div>
+    <div class="fund-message-row">
+
+        <div *ngIf="!loadflag">
+            {{successMsg}}
+        </div>
+    </div>
+</div>
+<div [ngClass]="{'overlay':popUpflag}">
+    <div class="popuptab1 " *ngIf="popUpflag">
+        <div class="content-header" *ngIf="popUpflag" [ngClass]="{'maincontainer-opacity':!popUpflag}">
+            <div class="content-header-name">
+                <span>Customer {{CustomerName}}|{{CustomerID}}</span>
+            </div>
+            <div class="closebtn" (click)="showdetailsPopUp()">X</div>
+        </div>
+        <div class="content">
+            <div class="gridclass">
+                <span class="link">Target Asset Allocation</span>
+                <button class="button  btn">Apply</button>
+            </div>
+
+            <div class="content-container">
+                <table style="width: 100%;">
+                    <thead>
+                        <tr class="tableheadGrid">
+                            <th class="minwidth600">Parameters</th>
+                            <th class="maxwidth150 display" style="padding-left: 40px;">
+                                <input type="checkbox" value="CIF A" />
+                                <span style="    padding-left: 10px;">CIF A</span>
+                            </th>
+                            <th class="maxwidth120">Eligible Y/N</th>
+                            <th class="minwidth450">Failed Reason</th>
+                            <th class="maxwidth100">Ref.</th>
+                            <th class="maxwidth100 display">
+                                <input type="checkbox" value="CIF A" />
+                                <span style="    padding-left: 10px;">Override</span>
+                            </th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+                        <tr class="tableGrid" *ngFor="let item of finalSuitabilityData">
+                            <td class="minwidth600">{{item.Parameter}}</td>
+                            <td class="maxwidth160"> <input type="text" disabled value={{item.CIF}}></td>
+                            <td class="maxwidth120">{{item.EligibleYN}}</td>
+                            <td class="minwidth450">{{item.Reason}}</td>
+                            <td class="maxwidth100">{{item.Ref}}</td>
+                            <td class="maxwidth120" style="    padding-left: 40px;"><input type="checkbox"
+                                    [disabled]="item.Override" value="" /></td>
+                        </tr>
+                        <!-- <tr class="tableGrid">
+              <td class="minwidth600">Account Currency</td>
+              <td class="maxwidth160"><input type="text" disabled value="USD"/></td>
+              <td class="maxwidth120"><input type="text" disabled value="Y"/></td>
+              <td class="minwidth450"></td>
+              <td class="maxwidth100">Ref:USD</td>
+              <td class="maxwidth120"><input type="checkbox" disabled value=""/></td>
+            </tr>
+            <tr class="tableGrid">
+              <td class="minwidth600">Customer Age Cap</td>
+              <td class="maxwidth160"><input type="text" disabled value="60"/></td>
+              <td class="maxwidth120"><input type="text" disabled value="N"/></td>
+              <td class="minwidth450">Customer Age is greater than 55</td>
+              <td class="maxwidth100">Ref:55</td>
+              <td class="maxwidth120"><input type="checkbox"  value=""/></td>
+            </tr> -->
+                    </tbody>
+
+                </table>
+
+
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<!-- Added by Rohit T. | 03-Feb-2021 -->
+<div [ngClass]="{'overlay':showSuitabilityPopup}">
+    <div class="popuptab1 suitability-overlay" *ngIf="showSuitabilityPopup">
+        <div class="content-header" *ngIf="showSuitabilityPopup"
+            [ngClass]="{'maincontainer-opacity':!showSuitabilityPopup}">
+            <div class="content-header-name">
+                <span>Suitability Check</span>
+            </div>
+            <app-svg-icons [icon]="'cancel-icon'" class="closebtn" [width]="'32'" [height]="'32'"
+                (click)="closeSuitablityPopup()"></app-svg-icons>
+        </div>
+        <app-suitability [NoteMasterId]="note_Master_Id"></app-suitability>
+    </div>
+</div>
+<!-- Ended by Rohit T. | 03-Feb-2021 -->

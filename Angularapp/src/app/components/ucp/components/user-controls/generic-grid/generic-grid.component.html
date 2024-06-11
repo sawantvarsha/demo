@@ -1,0 +1,16 @@
+<div [ngStyle]="{'height':height, 'width':width, 'overflow':'auto'}">
+    <mat-table #table [dataSource]="dataSource">
+
+        <ng-container *ngFor="let disCol of keys; let colIndex = index" matColumnDef="{{disCol}}">
+            <mat-header-cell class="matHeaderClass width_30px" *matHeaderCellDef>{{disCol}}</mat-header-cell>
+            <mat-cell class="matHeaderClass" *matCellDef="let element "> 
+                <mat-form-field floatLabel="auto" style="font-size: 11px !important; width: 90% !important;">
+                    <input matInput placeholder="Name" [value]="element[disCol]" [(ngModel)]="element[disCol]" (change)="HandleGridData()" />
+                </mat-form-field>
+            </mat-cell>
+        </ng-container>
+
+        <mat-header-row class="lessWidth" *matHeaderRowDef="keys"></mat-header-row>
+        <mat-row class="lessWidth" *matRowDef="let row; columns: keys;"></mat-row>
+    </mat-table>
+</div>

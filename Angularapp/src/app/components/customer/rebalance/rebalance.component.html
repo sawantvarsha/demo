@@ -1,0 +1,1295 @@
+<div class="rebalance-component">
+    <!--Back button added by Alolika G on 10-02-2022.-->
+    <div class="page-navigation" [ngClass]=''>
+        <app-svg-icons class="back-button" [icon]="'back-button'" [width]="'40'" [height]="'40'"
+            [fill]="'var(--headers)'" (click)="fnRedirectToHomePage();"></app-svg-icons>
+        <div class="page-title">Portfolio Rebalancing</div>
+
+    </div>
+    <div style="margin-left: 50px;">{{error}} </div>
+    <div class="component" *ngIf="!loader && error === ''">
+        <!--&& !showOrderEntry -->
+
+        <div class="main-container">
+            <div class="inputrow">
+                <!-- <div> -->
+                <div style="padding: 45px 0px 0px 20px;">
+                    <div class="gridTable">
+                        <span class="heading-label">Customer</span>
+                        <span class="customer" style="font-size: 18px;">{{this.Customer}}</span>
+                        <span class="heading-label">Portfolio Description</span>
+                        <span class="">{{this.Portfolio}}</span>
+                        <!-- <span class="AUM ">{{AUM | number:'1.2-2'}}</span> -->
+                    </div>
+                    <div class="gridTable">
+                        <span class="heading-label">Portfolio Name</span>
+                        <span class="">{{this.PortfolioName}}</span>
+                        <span class="heading-label">Investment Objective</span>
+                        <span class="">{{this.InvestmentObj}}</span>
+                    </div>
+                    <div class="gridTable">
+                        <span class="heading-label">Net Worth Declared</span>
+                        <span class="">{{this.cfs.FormatNumberr(this.NetWorth)}}</span>
+                        <span class="heading-label">Risk Profile</span>
+                        <span class="">{{this.Risk}}</span>
+                        <!-- <span class="AUM ">{{AUM | number:'1.2-2'}}</span> -->
+                    </div>
+                    <div class="gridTable">
+                        <span class="heading-label">Target AUM</span>
+                        <span class="">{{this.cfs.FormatNumberr(this.AUM)}}</span>
+                        <span class="heading-label">Strategy</span>
+                        <span class="">
+                            <select name="Strategy" class="txt" [(ngModel)]="Strategy"
+                                (change)="getAllocationDetails()">
+                                <option value="Calendar"> Calendar </option>
+                                <option value="Proportionate"> Proportionate </option>
+                                <option value="Threshold"> Threshold </option>
+                            </select>
+                        </span>
+                        <!-- <span class="">{{this.Strategy}}</span> -->
+                        <!-- <span class="AUM ">{{AUM | number:'1.2-2'}}</span> -->
+                    </div>
+                    <div class="gridTable" *ngIf="Strategy !== 'Proportionate'">
+                        <span class="heading-label">Frequency</span>
+                        <span class="">
+                            <select name="Frequency" class="txt" [(ngModel)]="Frequency"
+                                (change)="onChangeFreq($event)">
+                                <option [value]="item.Param2" *ngFor="let item of FrequencyArr; let i = index">
+                                    {{item.Param1}}</option>
+                            </select>
+                        </span>
+                        <span class="heading-label">Ref. Date</span>
+                        <span class="">
+                            <input style="width: 164px;" type="date" name="RefDate" id="FromDate" class="input-dob"
+                                [attr.data-date]="RefDate" data-date-format="dd-MMM-YYYY" tabindex="16" min="2000-01-01"
+                                [(ngModel)]="RefDate" (change)="selectFromDate(RefDate);">
+                        </span>
+                        <!-- <span class="AUM ">{{AUM | number:'1.2-2'}}</span> -->
+                    </div>
+                    <div class="gridTable" *ngIf="Strategy === 'Threshold'">
+                        <span class="heading-label">Threshold</span>
+                        <span class="">
+                            <input style="width: 164px;" name="ThresholdVal" class="txt" [(ngModel)]="ThresholdVal"
+                                (change)="changeThreshold($event)" />
+                        </span>
+                        <!-- <span class="AUM ">{{AUM | number:'1.2-2'}}</span> -->
+                    </div>
+                    <div class="button-grid">
+                        <button class="button" (click)="showRebalancePopup = true; clickRebalance()">Rebalance</button>
+
+                        <!-- Arsh || start -->
+
+                        <!-- <window *ngIf="showPropGenPopup">
+                                <app-proposal-generation [portfolioFacilityCode]="this.Portfolio" [investmentObj]=" this.InvestmentObj" ></app-proposal-generation>
+                            </window>   -->
+
+                        <!-- <a onclick="window.open('http://localhost:4500/proposal_generation', '', 'location=yes,height=1000,width=2000,scrollbars=yes,status=yes');">
+                                <button class="button btnsize" [portfolioFacilityCode]="this.Portfolio" (click)="showPropGenPopup = true;">Proposal Generation</button>
+                            </a> -->
+
+                        <button class="button btnsize" [routerLink]="['/proposalGeneration']"> Generate Proposal
+                        </button>
+
+
+                        <!-- Arsh || End -->
+
+
+                        <app-svg-icons class="svgAlign" style="padding-top: 4px;" icon="{{'expand-table'}}"
+                            title="Expand / Collapse" [width]="'30'" [height]="'30'" (click)="collpase = !collpase"
+                            title="Expand / Collapse">
+                        </app-svg-icons>
+                        <app-svg-icons *ngIf="tierFlag === 'Y'" class="svgAlign" icon="{{'filter-search'}}"
+                            [fill]="'var(--disabled-text)'" [width]="'28'" [height]="'28'" title="Filter Settings"
+                            (click)="openFilterPopup()"></app-svg-icons>
+                        <span></span>
+                        <!-- <span></span> -->
+                        <!-- <span class="">{{this.Strategy}}</span> -->
+                        <!-- <span class="AUM ">{{AUM | number:'1.2-2'}}</span> -->
+                    </div>
+                </div>
+
+
+
+                <div class="chart">
+                    <!-- <div class="center text">Actions</div> -->
+                    <div class="CI-card-header" style="box-shadow: 0 0px 0px 0;    display: flex;
+                        gap: 1%;
+                        align-items: baseline;padding: 0px 0px 0px 5px;">
+                        Gap Analysis
+                        <!-- <div style="cursor: pointer;    font-size: 15px;" class="links" (click)="portfoliopopflag = true; selectedfacilityCode = ele.FacilityCode.value;showdetailsPopUp(true,i,ele.PortfolioName.value)">( <u>View</u> )</div> -->
+                    </div>
+                    <div style="padding-left: 10px;">
+                        <!--"height: 320px;-->
+                        <!-- <google-chart #chartactions [type]="actionstype" [data]="actionsdata" [options]="actionsoptions"
+                            [columns]="actionscolumnNames">
+                        </google-chart> -->
+                        <app-bar-chart [height]="330" [width] = "680" [name]="'Gap Analysis'" [title]="''" [graphdata]="actionsdata" [legend] = "legends" [legendFlag] = "legendFlag"></app-bar-chart>
+                    </div>
+                </div>
+                <!-- </div> -->
+
+            </div>
+
+            <div>
+                <table [ngClass]="{'table-class': collpase}" *ngIf="tierFlag !== 'Y'">
+                    <thead>
+                        <tr *ngIf="!collpase">
+                            <th class="headers" *ngFor="let tag of ColumnNames">{{ tag }}</th>
+                        </tr>
+                        <tr *ngIf="collpase">
+                            <th class="headers" *ngFor="let tag of ColumnNames1">{{ tag }}</th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-body" *ngIf="collpase">
+                        <tr *ngFor="let obj of allocDetails; let i = index" class="border">
+                            <td>
+                                <div class="asset-grid">
+                                    <div class="customer">
+                                        {{ obj.SchemeName }}
+                                    </div>
+                                    <div>
+                                        <!-- <span style="color:#fbe19f">10.00</span> / <span style="color:#dfc2e4">96.89</span> -->
+                                        <span style="color:#fbe19f">{{obj.AssetGroupTarget === 'NaN' ? 'NaN':
+                                            obj.AssetGroupTarget | number:'1.2-2'}}</span> / <span
+                                            style="color:#dfc2e4">{{obj.AssetGroupCurrent === 'NaN' ? 'NaN':
+                                            obj.AssetGroupCurrent | number:'1.2-2'}}</span>
+                                        <!-- 10.00 / 96.89 -->
+                                    </div>
+                                </div>
+                            </td>
+
+                            <td style="text-align: right;">{{
+                                obj.GroupTarget === 'NaN' ? 'NaN': obj.GroupTarget |
+                                number:'1.2-2'}}
+                            </td>
+
+                            <td style="text-align: right;">{{
+                                obj.GroupAmount === 'NaN' ? 'NaN':
+                                obj.GroupAmount
+                                | number:'1.2-2'}}</td>
+
+                            <td style="text-align: right;">
+                                <!--[ngClass]="{'red': obj.AssetGroupAllocationGapPercent < 0}"-->
+                                <div class="">
+                                    <div>
+                                        {{obj.GroupGap === 'NaN' ? 'NaN':
+                                        obj.GroupGap | number:'1.2-2' }}
+                                    </div>
+                                    <!-- <div
+                                    [ngClass]="{'triangle-down': obj.AssetGroupAllocationGapPercent < 0, 'triangle-up': obj.AssetGroupAllocationGapPercent > 0}">
+                                </div> -->
+                                </div>
+                            </td>
+
+                            <td style="text-align: right;">
+                                <div class="percent">
+                                    <div
+                                        [ngClass]="{'triangle-down': obj.ArrowDirection === 'DOWN', 'triangle-up': obj.ArrowDirection === 'UP'}">
+                                    </div>
+                                    <div>
+                                        {{ obj.GroupRebalancing === 'NaN' ? 'NaN':
+                                        obj.GroupRebalancing | number:'1.2-2'}}
+                                    </div>
+                                </div>
+                            </td>
+
+                            <td *ngIf="obj.Action === 'Buy'" class="link"
+                                (click)="callOrderEntry('Buy', this.AllocationDetails[i].TEMPLATE_NAME, i)">
+                                Buy
+                            </td>
+                            <td *ngIf="obj.Action === 'Sell'" class="link"
+                                (click)="callOrderEntry('Sell', this.AllocationDetails[i].TEMPLATE_NAME, i)">
+                                Sell
+                            </td>
+
+                            <!--Changes done by Alolika G on 28-02-2022 --START-->
+                            <td *ngIf="obj.Action === ''">
+                                <div class="td-expand" *ngFor="let item of obj.AssetClass">
+                                    <div *ngIf="item.AssetClassRebalancingRequiredAmount === 0" class="link">
+                                        Reshuffle
+                                    </div>
+                                </div>
+                            </td>
+                            <!--Changes done by Alolika G on 28-02-2022 --END-->
+
+                        </tr>
+
+                    </tbody>
+
+
+                    <tbody class="table-body" *ngIf="!collpase">
+                        <tr *ngFor="let obj of allocDetails; let i = index" class="border">
+                            <td>
+                                <div class="asset-grid">
+                                    <div class="customer">
+                                        {{ obj.SchemeName }}
+                                    </div>
+                                    <div>
+                                        <!-- <span style="color:#fbe19f">10.00</span> / <span style="color:#dfc2e4">96.89</span> -->
+                                        <span style="color:#fbe19f">{{obj.AssetGroupTarget === 'NaN' ? 'NaN':
+                                            obj.AssetGroupTarget | number:'1.2-2'}}</span> / <span
+                                            style="color:#dfc2e4">{{obj.AssetGroupCurrent === 'NaN' ? 'NaN':
+                                            obj.AssetGroupCurrent | number:'1.2-2'}}</span>
+                                        <!-- 10.00 / 96.89 -->
+                                    </div>
+                                </div>
+                            </td>
+
+                            <td class="">
+                                <div class="td-expand2">
+                                    <div *ngFor="let item of obj.AssetClass">
+                                        <div class="asset-grid">
+                                            <div class="customer">
+                                                {{ item.SubAssetClass }}
+                                            </div>
+                                            <div>
+
+                                                <span style="color:#fbe19f">{{item.AssetClassTarget === 'NaN' ? 'NaN':
+                                                    item.AssetClassTarget | number:'1.2-2'}}</span> / <span
+                                                    style="color:#dfc2e4">{{item.AssetClassCurrent === 'NaN' ? 'NaN':
+                                                    item.AssetClassCurrent | number:'1.2-2'}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
+                            </td>
+
+                            <td style="text-align: right;">{{
+                                obj.GroupTarget === 'NaN' ? 'NaN': obj.GroupTarget |
+                                number:'1.2-2'}}
+                            </td>
+
+                            <td class="td-expand">
+                                <div class="tr-expand border-bottom" *ngFor="let item of obj.AssetClass">
+                                    <div style="text-align: right;">{{item.AssetClassTargetAmount |
+                                        number:'1.2-2'}}</div>
+                                </div>
+                            </td>
+
+
+                            <td style="text-align: right;">{{
+                                obj.GroupAmount === 'NaN' ? 'NaN':
+                                obj.GroupAmount
+                                | number:'1.2-2'}}
+                            </td>
+
+                            <td class="td-expand">
+                                <div class="tr-expand" *ngFor="let item of obj.AssetClass">
+                                    <div style="text-align: right;">{{item.AssetClassActualAllocationAmount ===
+                                        'NaN' ? 'NaN': item.AssetClassActualAllocationAmount |
+                                        number:'1.2-2'}}
+                                    </div>
+                                </div>
+                            </td>
+
+                            <td style="text-align: right;">
+                                <div class="">
+                                    <div>
+                                        {{obj.GroupGap === 'NaN' ? 'NaN':
+                                        obj.GroupGap | number:'1.2-2' }}
+                                    </div>
+
+                                </div>
+                            </td>
+
+                            <td class="td-expand">
+                                <div class="tr-expand" *ngFor="let item of obj.AssetClass">
+                                    <div style="text-align: right;">
+                                        <div class="">
+                                            <div>
+                                                {{item.AssetClassAllocationGapPercent === 'NaN' ? 'NaN':
+                                                item.AssetClassAllocationGapPercent | number:'1.2-2' }}
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+
+
+                            <td style="text-align: right;">
+                                <div class="percent">
+                                    <div
+                                        [ngClass]="{'triangle-down': obj.ArrowDirection === 'DOWN', 'triangle-up': obj.ArrowDirection === 'UP'}">
+                                    </div>
+                                    <div>
+                                        {{ obj.GroupRebalancing === 'NaN' ? 'NaN':
+                                        obj.GroupRebalancing | number:'1.2-2'}}
+                                    </div>
+                                </div>
+                            </td>
+
+                            <td class="td-expand">
+                                <div class="tr-expand" *ngFor="let item of obj.AssetClass">
+                                    <div style="text-align: right;">
+                                        <div class="percent">
+
+                                            <div
+                                                [ngClass]="{'triangle-down': obj.ArrowDirection === 'DOWN', 'triangle-up': obj.ArrowDirection === 'UP'}">
+                                            </div>
+                                            <div>
+                                                {{item.AssetClassRebalancingRequiredAmount === 'NaN' ? 'NaN':
+                                                item.AssetClassRebalancingRequiredAmount | number:'1.2-2'}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+
+
+                            <td *ngIf="obj.Action === 'Buy'" class="link"
+                                (click)="callOrderEntry('Buy', this.AllocationDetails[i].TEMPLATE_NAME, i)">
+                                Buy
+                            </td>
+                            <td *ngIf="obj.Action === 'Sell'" class="link"
+                                (click)="callOrderEntry('Sell', this.AllocationDetails[i].TEMPLATE_NAME, i)">
+                                Sell
+                            </td>
+                            <td *ngIf="obj.Action === ''">
+                                <div class="td-expand" *ngFor="let item of obj.AssetClass">
+                                    <div *ngIf="item.AssetClassRebalancingRequiredAmount === 0" class="link">
+                                        Reshuffle
+                                    </div>
+                                </div>
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+                </table>
+
+                <table [ngClass]="{'table-class': collpase}" *ngIf="tierFlag === 'Y'">
+                    <thead>
+                        <tr *ngIf="!collpase">
+                            <th class="headers">
+                                Asset Group (Target/ Current)
+                            </th>
+                            <th class="headers">
+                                Asset Class (Target/ Current)
+                            </th>
+                            <th class="headers">
+                                Sub Template (Target / Current)
+                            </th>
+                            <th class="headers">
+                                Category (Target / Current)
+                            </th>
+                            <th class="headers" *ngFor="let tag of ColumnTierCollapsedCopy">{{ tag }}</th>
+                            <th class="headers">
+                                Trading Action
+                            </th>
+                        </tr>
+                        <tr *ngIf="collpase">
+                            <th class="headers">
+                                Asset Group (Target/ Current)
+                            </th>
+                            <th class="headers">
+                                Asset Class (Target/ Current)
+                            </th>
+                            <th class="headers">
+                                Sub Template (Target / Current)
+                            </th>
+                            <th class="headers">
+                                Category (Target / Current)
+                            </th>
+                        
+                            <th class="headers" *ngFor="let tag of ColumnTierCollapsedCopy">{{ tag }}</th>
+                            <th class="headers">
+                                Trading Action
+                            </th>
+                        </tr>
+                    </thead>
+
+                    <tbody class="table-body">
+                        <tr *ngFor="let obj of allocDetails; let i = index" class="border">
+                            <td>
+                                <div class="asset-grid">
+                                    <div class="customer">
+                                        {{ obj.SchemeName }}
+                                    </div>
+                                    <div>
+                                        <!-- <span style="color:#fbe19f">10.00</span> / <span style="color:#dfc2e4">96.89</span> -->
+                                        <span style="color:#fbe19f">{{obj.AssetGroupTarget === 'NaN' ? 'NaN':
+                                            obj.AssetGroupTarget | number:'1.2-2'}}</span> / <span
+                                            style="color:#dfc2e4">{{obj.AssetGroupCurrent === 'NaN' ? 'NaN':
+                                            obj.AssetGroupCurrent | number:'1.2-2'}}</span>
+                                        <!-- 10.00 / 96.89 -->
+                                    </div>
+                                </div>
+                            </td>
+
+                            <td class="">
+                                <div class="td-expand2">
+                                    <div *ngFor="let item of obj.AssetClass">
+                                        <div class="asset-grid">
+                                            <div class="customer">
+                                                {{ item.SubAssetClass }}
+                                            </div>
+                                            <div>
+
+                                                <span style="color:#fbe19f">{{item.AssetClassTarget === 'NaN' ? 'NaN':
+                                                    item.AssetClassTarget | number:'1.2-2'}}</span> / <span
+                                                    style="color:#dfc2e4">{{item.AssetClassCurrent === 'NaN' ? 'NaN':
+                                                    item.AssetClassCurrent | number:'1.2-2'}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </td>
+
+                            <td class="">
+                                <div class="td-expand2">
+                                    <div *ngFor="let item of obj.AssetClass">
+
+                                        <div class="asset-grid">
+                                            <div class="customer">
+                                                {{ item.SUBTEMPLATE }}
+                                            </div>
+                                            <div>
+
+                                                <span style="color:#fbe19f">{{item.SubTemplateTarget === 'NaN' ? 'NaN':
+                                                    item.SubTemplateTarget | number:'1.2-2'}}</span> / <span
+                                                    style="color:#dfc2e4">{{item.SubTemplateCurrent === 'NaN' ? 'NaN':
+                                                    item.SubTemplateCurrent | number:'1.2-2'}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </td>
+
+                            <td class="">
+                                <div>
+                                    <div *ngFor="let item of obj.AssetClass" class="td-expand2">
+                                        <div *ngFor="let data of item.AssetClassArray">
+                                            <div class="asset-grid">
+                                                <div class="customer">
+                                                    {{ data.CATEGORY }}
+                                                </div>
+                                                <div>
+
+                                                    <span style="color:#fbe19f">{{data.CategoryTarget === 'NaN' ? 'NaN':
+                                                        data.CategoryTarget | number:'1.2-2'}}</span> / <span
+                                                        style="color:#dfc2e4">{{data.CategoryCurrent === 'NaN' ? 'NaN':
+                                                        data.CategoryCurrent | number:'1.2-2'}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </td>
+
+
+
+                            <td style="text-align: right;" *ngIf="this.AssetGroupFlag">{{
+                                obj.GroupTarget === 'NaN' ? 'NaN': obj.GroupTarget |
+                                number:'1.2-2'}}
+                            </td>
+
+                            <td class="" *ngIf="this.AssetClassFlag">
+                                <div class="tr-expand border-bottom" *ngFor="let item of obj.AssetClass">
+                                    <div style="text-align: right;">{{item.AssetClassTargetAmount |
+                                        number:'1.2-2'}}</div>
+                                </div>
+                            </td>
+
+                            <td style="text-align: right;" *ngIf="SubTemplateFlag">{{
+                                obj.SubTemplateTargetAmount === 'NaN' ? 'NaN': obj.SubTemplateTargetAmount |
+                                number:'1.2-2'}}
+                            </td>
+
+                            <td class="" *ngIf="this.CategoryFlag">
+                                <div class="td-expand" *ngFor="let item of obj.AssetClass">
+                                    <div class="tr-expand border-bottom" *ngFor="let data of item.AssetClassArray">
+                                        <div style="text-align: right;">{{data.CategoryTargetAmount |
+                                            number:'1.2-2'}}</div>
+                                    </div>
+
+                                </div>
+                            </td>
+
+
+                            <td style="text-align: right;" *ngIf="this.AssetGroupFlag">{{
+                                obj.GroupAmount === 'NaN' ? 'NaN':
+                                obj.GroupAmount
+                                | number:'1.2-2'}}
+                            </td>
+
+                            <td class="" *ngIf="this.AssetClassFlag">
+                                <div class="tr-expand border-bottom" *ngFor="let item of obj.AssetClass">
+                                    <div style="text-align: right;">{{item.AssetClassActualAllocationAmount ===
+                                        'NaN' ? 'NaN': item.AssetClassActualAllocationAmount |
+                                        number:'1.2-2'}}</div>
+                                </div>
+                            </td>
+
+                            <td *ngIf="SubTemplateFlag">
+                                <div class="td-expand">
+                                    <div class="tr-expand border-bottom" *ngFor="let item of obj.AssetClass">
+                                        <div style="text-align: right;">{{item.SubTemplateActualAllocationAmount ===
+                                            'NaN' ? 'NaN': item.SubTemplateActualAllocationAmount |
+                                            number:'1.2-2'}}</div>
+                                    </div>
+                                </div>
+
+                            </td>
+
+                            <td *ngIf="this.CategoryFlag">
+                                <div class="">
+                                    <div class="td-expand" *ngFor="let item of obj.AssetClass">
+                                        <div class="tr-expand border-bottom" *ngFor="let data of item.AssetClassArray">
+                                            <div style="text-align: right;">{{data.CategoryActualAllocationAmount ===
+                                                'NaN' ? 'NaN': data.CategoryActualAllocationAmount |
+                                                number:'1.2-2'}}</div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </td>
+
+                            <td style="text-align: right;" *ngIf="this.AssetGroupFlag">
+                                <div class="">
+                                    <div>
+                                        {{obj.GroupGap === 'NaN' ? 'NaN':
+                                        obj.GroupGap | number:'1.2-2' }}
+                                    </div>
+
+                                </div>
+                            </td>
+
+                            <td class="" *ngIf="this.AssetClassFlag">
+                                <div class="tr-expand" *ngFor="let item of obj.AssetClass">
+                                    <div style="text-align: right;">
+                                        <div class="">
+                                            <div>
+                                                {{item.AssetClassAllocationGapPercent === 'NaN' ? 'NaN':
+                                                item.AssetClassAllocationGapPercent | number:'1.2-2' }}
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+
+                            <td *ngIf="SubTemplateFlag">
+                                <div class="td-expand">
+                                    <div class="tr-expand" *ngFor="let item of obj.AssetClass">
+                                        <div style="text-align: right;">
+                                            <div class="">
+                                                <div>
+                                                    {{item.SubTemplateAllocationGapPercent === 'NaN' ? 'NaN':
+                                                    item.SubTemplateAllocationGapPercent | number:'1.2-2' }}
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </td>
+
+                            <td *ngIf="this.CategoryFlag">
+                                <div class="td-expand" *ngFor="let item of obj.AssetClass">
+                                    <div class="tr-expand border-bottom" *ngFor="let data of item.AssetClassArray">
+                                        <div style="text-align: right;">
+                                            <div class="">
+                                                <div>
+                                                    {{data.CategoryAllocationGapPercent === 'NaN' ? 'NaN':
+                                                    data.CategoryAllocationGapPercent | number:'1.2-2' }}
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </td>
+
+
+
+                            <td style="text-align: right;" *ngIf="this.AssetGroupFlag">
+                                <div class="percent">
+                                    <div
+                                        [ngClass]="{'triangle-down': obj.ArrowDirection === 'DOWN', 'triangle-up': obj.ArrowDirection === 'UP'}">
+                                    </div>
+                                    <div>
+                                        {{ obj.GroupRebalancing === 'NaN' ? 'NaN':
+                                        obj.GroupRebalancing | number:'1.2-2'}}
+                                    </div>
+                                </div>
+                            </td>
+
+                            <td class="" *ngIf="this.AssetClassFlag">
+                                <div class="tr-expand" *ngFor="let item of obj.AssetClass">
+                                    <div style="text-align: right;">
+                                        <div class="percent">
+
+                                            <div
+                                                [ngClass]="{'triangle-down': this.cfs.UnformatNumberwithoutevent(item.AssetGroupTargetAmount - item.AssetGroupActualAllocationAmount) < 0, 'triangle-up': this.cfs.UnformatNumberwithoutevent(item.AssetGroupTargetAmount - item.AssetGroupActualAllocationAmount) > 0}">
+                                            </div>
+                                            <div>
+                                                {{item.AssetClassRebalancingRequiredAmount === 'NaN' ? 'NaN':
+                                                item.AssetClassRebalancingRequiredAmount | number:'1.2-2'}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+
+                            <td *ngIf="SubTemplateFlag">
+                                <div class="td-expand">
+                                    <div class="tr-expand" *ngFor="let item of obj.AssetClass">
+
+                                        <div style="text-align: right;">
+                                            <div class="percent">
+
+                                                <!-- <div
+                                                    [ngClass]="{'triangle-down': this.cfs.UnformatNumberwithoutevent(item.SubTemplateTargetAmount - item.SubTemplateActualAllocationAmount) < 0, 'triangle-up': this.cfs.UnformatNumberwithoutevent(item.SubTemplateTargetAmount - item.SubTemplateActualAllocationAmount) > 0}">
+                                                </div> -->
+                                                <div></div>
+                                                <div>
+                                                    {{item.SubTemplateRebalancingRequiredAmount === 'NaN' ? 'NaN':
+                                                    item.SubTemplateRebalancingRequiredAmount | number:'1.2-2'}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </td>
+
+                            <td *ngIf="this.CategoryFlag">
+                                <div class="td-expand" *ngFor="let item of obj.AssetClass">
+                                    <div class="tr-expand" *ngFor="let data of item.AssetClassArray">
+                                        <div style="text-align: right;">
+                                            <div class="percent">
+                                                <div
+                                                    [ngClass]="{'triangle-down': this.cfs.UnformatNumberwithoutevent(data.CategoryTargetAmount - data.CategoryActualAllocationAmount) < 0, 'triangle-up': this.cfs.UnformatNumberwithoutevent(data.CategoryTargetAmount - data.CategoryActualAllocationAmount) > 0}">
+                                                </div>
+                                                <div>
+                                                    {{data.CategoryRebalancingRequiredAmount === 'NaN' ? 'NaN':
+                                                    data.CategoryRebalancingRequiredAmount | number:'1.2-2'}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </td>
+
+                            <td *ngIf="obj.Action === 'Buy'">
+                                <div class="td-expand" *ngFor="let item of obj.AssetClass">
+                                    <div *ngIf="obj.Action === 'Buy'" class="link"
+                                        (click)="callOrderEntry('Buy', this.AllocationDetails[i].TEMPLATE_NAME, i)">
+                                        Buy
+                                    </div>
+
+                                </div>
+                            </td>
+                            <td *ngIf="obj.Action === 'Sell'">
+                                <div class="td-expand" *ngFor="let item of obj.AssetClass">
+                                    <div *ngIf="obj.Action === 'Sell'" class="link"
+                                        (click)="callOrderEntry('Sell', this.AllocationDetails[i].TEMPLATE_NAME, i)">
+                                        Sell
+                                    </div>
+                                </div>
+                            </td>
+                            <td *ngIf="obj.Action === ''">
+                                <div class="td-expand" *ngFor="let item of obj.AssetClass">
+                                    <div *ngIf="item.AssetClassRebalancingRequiredAmount === 0" class="link">
+                                        Reshuffle
+                                    </div>
+                                </div>
+                            </td>
+                            <!-- <td *ngIf="obj.Action === 'Buy'" class="link"
+                                (click)="showOrderEntry = !showOrderEntry;callOrderEntry('Buy', this.AllocationDetails[i].TEMPLATE_NAME)">
+                                Buy</td>
+                            <td *ngIf="obj.Action === 'Sell'" class="link"
+                                (click)="showOrderEntry = !showOrderEntry;callOrderEntry('Sell', this.AllocationDetails[i].TEMPLATE_NAME)">
+                                Sell</td> -->
+
+                            <!-- <td *ngIf="obj.Action === 'Reshuffle'" class="link"
+                                (click)="showOrderEntry = !showOrderEntry;">
+                                Reshuffle</td> -->
+
+
+                        </tr>
+
+                    </tbody>
+                </table>
+
+            </div>
+
+            <!-- <div>
+                <table [ngClass]="{'table-class': collpase}">
+                    <thead>
+                        <tr *ngIf="!collpase">
+                            <th class="headers" *ngFor="let tag of ColumnNames">{{ tag }}</th>
+                        </tr>
+                        <tr *ngIf="collpase">
+                            <th class="headers" *ngFor="let tag of ColumnNames1">{{ tag }}</th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-body">
+                        <tr *ngFor="let obj of AllocationDetails; let i = index" class="border">
+                            <td *ngIf="AllocationDetails[i].occurrence === 1">
+                                <div class="asset-grid">
+                                    <div class="customer">
+                                        {{ obj.SCHEME_NAME }}
+                                    </div>
+                                    <div>
+                                        <span style="color:#fbe19f">{{obj.AssetGroupTarget === 'NaN' ? 'NaN':
+                                            obj.AssetGroupTarget.replaceAll(",", "") | number:'1.2-2'}}</span> / <span
+                                            style="color:#dfc2e4">{{obj.AssetGroupCurrent === 'NaN' ? 'NaN':
+                                            obj.AssetGroupCurrent.replaceAll(",", "") | number:'1.2-2'}}</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td [attr.rowspan]="AllocationDetails[i].occurrence"
+                                *ngIf="AllocationDetails[i].occurrence > 1 && AllocationDetails[i].SCHEME_NAME !== AllocationDetails[i-1].SCHEME_NAME">
+                                <div class="asset-grid">
+                                    <div class="customer">
+                                        {{ obj.SCHEME_NAME }}
+                                    </div>
+                                    <div>
+                                        <span style="color:#fbe19f">{{obj.AssetGroupTarget === 'NaN' ? 'NaN':
+                                            obj.AssetGroupTarget | number:'1.2-2'}}</span> / <span
+                                            style="color:#dfc2e4">{{obj.AssetGroupCurrent === 'NaN' ? 'NaN':
+                                            obj.AssetGroupCurrent | number:'1.2-2'}}</span>
+                                    </div>
+                                </div>
+                            </td>
+
+                            <td *ngIf="!collpase">
+                                <div class="asset-grid">
+                                    <div class="customer">
+                                        {{ obj.TEMPLATE_NAME }}
+                                    </div>
+                                    <div>
+                                        
+                                        <span style="color:#fbe19f">{{obj.AssetClassTarget === 'NaN' ? 'NaN':
+                                            obj.AssetClassTarget.replaceAll(",", "") | number:'1.2-2'}}</span> / <span
+                                            style="color:#dfc2e4">{{obj.AssetClassCurrent === 'NaN' ? 'NaN':
+                                            obj.AssetClassCurrent.replaceAll(",", "") | number:'1.2-2'}}</span>
+                                    </div>
+                                </div>
+                            </td>
+
+                            <td *ngIf="AllocationDetails[i].occurrence === 1" style="text-align: right;">{{
+                                obj.AssetGroupTargetAmount === 'NaN' ? 'NaN': obj.AssetGroupTargetAmount.replaceAll(",",
+                                "") |
+                                number:'1.2-2'}}
+                            </td>
+                            <td style="text-align: right;" [attr.rowspan]="AllocationDetails[i].occurrence"
+                                *ngIf="AllocationDetails[i].occurrence > 1 && AllocationDetails[i].SCHEME_NAME !== AllocationDetails[i-1].SCHEME_NAME">
+                                {{obj.AssetGroupTargetAmount === 'NaN' ? 'NaN': obj.AssetGroupTargetAmount |
+                                number:'1.2-2'}}</td>
+
+                            <td *ngIf="!collpase" style="text-align: right;">{{ obj.AssetClassTargetAmount |
+                                number:'1.2-2'}}</td>
+
+                            <td *ngIf="AllocationDetails[i].occurrence === 1" style="text-align: right;">{{
+                                obj.AssetGroupActualAllocationAmount === 'NaN' ? 'NaN':
+                                obj.AssetGroupActualAllocationAmount.replaceAll(",", "")
+                                | number:'1.2-2'}}</td>
+                            <td style="text-align: right;" [attr.rowspan]="AllocationDetails[i].occurrence"
+                                *ngIf="AllocationDetails[i].occurrence > 1 && AllocationDetails[i].SCHEME_NAME !== AllocationDetails[i-1].SCHEME_NAME">
+                                {{ obj.AssetGroupActualAllocationAmount === 'NaN' ? 'NaN':
+                                obj.AssetGroupActualAllocationAmount | number:'1.2-2'}}</td>
+
+                            <td *ngIf="!collpase" style="text-align: right;">{{obj.AssetClassActualAllocationAmount ===
+                                'NaN' ? 'NaN': obj.AssetClassActualAllocationAmount |
+                                number:'1.2-2'}}</td>
+
+                            <td *ngIf="AllocationDetails[i].occurrence === 1" style="text-align: right;">
+                                <div class="">
+                                    <div>
+                                        {{obj.AssetGroupAllocationGapPercent === 'NaN' ? 'NaN':
+                                        obj.AssetGroupAllocationGapPercent.replaceAll(",", "") | number:'1.2-2' }}
+                                    </div>
+                                    
+                                </div>
+                            </td>
+                            <td [attr.rowspan]="AllocationDetails[i].occurrence"
+                                *ngIf="AllocationDetails[i].occurrence > 1 && AllocationDetails[i].SCHEME_NAME !== AllocationDetails[i-1].SCHEME_NAME"
+                                style="text-align: right;">
+                                <div class="">
+                                    <div>
+                                        {{obj.AssetGroupAllocationGapPercent === 'NaN' ? 'NaN':
+                                        obj.AssetGroupAllocationGapPercent | number:'1.2-2' }}
+                                    </div>
+                                   
+                                </div>
+                            </td>
+
+
+                            <td *ngIf="!collpase" style="text-align: right;">
+                                <div class="">
+                                    <div>
+                                        {{obj.AssetClassAllocationGapPercent === 'NaN' ? 'NaN':
+                                        obj.AssetClassAllocationGapPercent | number:'1.2-2' }}
+                                    </div>
+                                    
+                                </div>
+                            </td>
+
+                            <td *ngIf="AllocationDetails[i].occurrence === 1" style="text-align: right;">
+                                <div class="percent">
+                                    <div
+                                        [ngClass]="{'triangle-down': obj.AssetClassAllocationGapPercent > 0, 'triangle-up': obj.AssetClassAllocationGapPercent < 0}">
+                                    </div>
+                                    <div>
+                                        {{ obj.AssetGroupRebalancingRequiredAmount === 'NaN' ? 'NaN':
+                                        obj.AssetGroupRebalancingRequiredAmount.replaceAll(",", "") | number:'1.2-2'}}
+                                    </div>
+                                </div>
+                            </td>
+                            <td [attr.rowspan]="AllocationDetails[i].occurrence"
+                                *ngIf="AllocationDetails[i].occurrence > 1 && AllocationDetails[i].SCHEME_NAME !== AllocationDetails[i-1].SCHEME_NAME"
+                                style="text-align: right;" style="text-align: right;">
+                                <div class="percent">
+
+                                    <div
+                                        [ngClass]="{'triangle-down': this.cfs.UnformatNumberwithoutevent(obj.AssetGroupTargetAmount - obj.AssetGroupActualAllocationAmount) < 0, 'triangle-up': this.cfs.UnformatNumberwithoutevent(obj.AssetGroupTargetAmount - obj.AssetGroupActualAllocationAmount) > 0}">
+                                    </div>
+                                    <div>
+                                        {{obj.AssetGroupRebalancingRequiredAmount === 'NaN' ? 'NaN':
+                                        obj.AssetGroupRebalancingRequiredAmount | number:'1.2-2'}}
+                                    </div>
+                                </div>
+                            </td>
+
+                            <td *ngIf="!collpase" style="text-align: right;">
+                                <div class="percent">
+
+                                    <div
+                                        [ngClass]="{'triangle-down': this.cfs.UnformatNumberwithoutevent(obj.AssetGroupTargetAmount - obj.AssetGroupActualAllocationAmount) < 0, 'triangle-up': this.cfs.UnformatNumberwithoutevent(obj.AssetGroupTargetAmount - obj.AssetGroupActualAllocationAmount) > 0}">
+                                    </div>
+                                    <div>
+                                        {{obj.AssetClassRebalancingRequiredAmount === 'NaN' ? 'NaN':
+                                        obj.AssetClassRebalancingRequiredAmount | number:'1.2-2'}}
+                                    </div>
+                                </div>
+                            </td>
+
+                            <td *ngIf="this.cfs.UnformatNumberwithoutevent(obj.AssetGroupTargetAmount - obj.AssetGroupActualAllocationAmount) > 0"
+                                class="link"
+                                (click)="showOrderEntry = !showOrderEntry;callOrderEntry('Buy', this.AllocationDetails[i].TEMPLATE_NAME)">
+                                Buy</td>
+                            <td *ngIf="this.cfs.UnformatNumberwithoutevent(obj.AssetGroupTargetAmount - obj.AssetGroupActualAllocationAmount) < 0"
+                                class="link"
+                                (click)="showOrderEntry = !showOrderEntry;callOrderEntry('Sell', this.AllocationDetails[i].TEMPLATE_NAME)">
+                                Sell</td>
+
+                        </tr>
+
+                    </tbody>
+                </table>
+
+            </div> -->
+
+        </div>
+    </div>
+
+    <div *ngIf="showOrderEntry" class="overlay overlay-order">
+        <div class="order-entry-container page-content-container-popup">
+
+            <div class="recommended-products">
+                <div *ngIf="this.Product === 'Bonds'">
+                    <div class="tabs tab-active">
+                        <div class="right">Bonds</div>
+                        <!-- <div class="closebtn" >X</div> -->
+                        <app-svg-icons class="closebtn" [icon]="'cancel-icon'" [width]="'15'" [height]="'15'"
+                            (click)="showOrderEntry = false">
+                        </app-svg-icons>
+                    </div>
+                    <app-bonds [displaySearch]=false [Customer]="Customer"></app-bonds>
+                    <!-- Changes done by Alolika G | 15-02-2022 -->
+
+                </div>
+                <div *ngIf="this.Product === 'Fund_Setup'">
+                    <div class="tabs tab-active">
+                        <div class="right">Funds</div>
+                        <!-- <div class="closebtn" (click)="showOrderEntry = false">X</div> -->
+                        <app-svg-icons class="closebtn" [icon]="'cancel-icon'" [width]="'15'" [height]="'15'"
+                            (click)="showOrderEntry = false">
+                        </app-svg-icons>
+                    </div>
+                    <app-mutualfunds [displaySearch]=false [Customer]="Customer"></app-mutualfunds>
+                    <!-- [Customer] -Changes done by Alolika G | 15-02-2022 -->
+                </div>
+                <div *ngIf="this.Product === 'Equity_Setup'">
+                    <div class="tabs tab-active">
+                        <div class="right">Shares</div>
+                        <!-- <div class="closebtn" (click)="showOrderEntry = false">X</div> -->
+                        <app-svg-icons class="closebtn" [icon]="'cancel-icon'" [width]="'15'" [height]="'15'"
+                            (click)="showOrderEntry = false">
+                        </app-svg-icons>
+                    </div>
+                    <app-shares [displaySearch]=false [Customer]="Customer"></app-shares>
+                    <!-- Changes done by Alolika G | 15-02-2022 -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="showRebalancePopup" style="cursor: move;" class="overlay" cdkDrag>
+        <div class="order-entry-container1 page-content-container-popup1">
+            <app-svg-icons [icon]="'cancel-icon'" [width]="'20'" [height]="'20'" (click)="showRebalancePopup = false"
+                class="closebtn"></app-svg-icons>
+            <div class="recommended-products1">
+                <!-- <div class="closebtn" >X</div> -->
+                <div class="main-container" style="gap: 30px !important; padding-top: 0px !important;">
+                    <div class="flex-grid">
+                        <div class="flex-grid1">
+                            <span class="heading-label">Portfolio Description</span>
+                            <span class="">{{this.Portfolio}}</span>
+                        </div>
+                        <div class="flex-grid1">
+                            <span class="heading-label">Investment Objective</span>
+                            <span class="">{{this.InvestmentObj}}</span>
+                        </div>
+                        <div class="flex-grid1">
+                            <span class="heading-label">Model Portfolio</span>
+                            <span class="">{{this.Risk}}</span>
+                        </div>
+
+                    </div>
+                    <div class="button-grid">
+                        <button class="button" style="width: 100px !important;"
+                            (click)="showRebalancePopup = true;clickRebalance()">Refresh</button>
+                        <button class="button" style="width: 150px !important;"
+                            (click)="showRebalancePopup = true;placeBulkOrder()">Place All Order(s)</button>
+
+                        <!-- <button class="button" (click) = "showRebalancePopup = true">Place All Orders</button> -->
+                        <app-svg-icons class="svgAlign" style="padding-top: 4px;" icon="{{'expand-table'}}"
+                            title="Expand / Collapse" [width]="'30'" [height]="'30'"
+                            (click)="collapseTable = !collapseTable"></app-svg-icons>
+
+                        <!-- <label>{{successMsg}}</label> -->
+                        <div class="flex-grid1 grid-align-center">
+                            <span class="heading-label ">Overall Imbalance</span>
+                            <div>
+                                <span class="small " style="padding-right: 5px">{{imbalanceCcy}}</span>
+                                <span></span>
+                                <span class="">{{
+                                    this.cfs.FormatNumberr(Equities_Imbalance +
+                                    MF_Imbalance + Bonds_Imbalance)}}</span>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="flex-grid new-grid" style="width: 1150px !important;">
+                        <div class="inputrow1" *ngFor="let e of EquitiesData">
+                            <div class="">
+                                <span class="heading-label customer">Equities Transactions</span>
+                                <!-- <span class="customer"></span> -->
+                            </div>
+                            <div class="gridTable1">
+                                <span class="heading-label">Rebalancing Amount</span>
+                                <span class="align-right">{{e.Equities_RebalancingAmount}}</span>
+                            </div>
+                            <div class="gridTable1">
+                                <span class="heading-label">Currency</span>
+                                <span class="align-right">{{e.Equities_Currency}}</span>
+                            </div>
+                            <div class="gridTable1">
+                                <span class="heading-label">Total Investment</span>
+                                <span class="align-right">{{e.Equities_TotalInvestment}}</span>
+                            </div>
+                            <div class="gridTable1">
+                                <span class="heading-label">Imbalance</span>
+                                <span class="align-right">{{e.Equities_Imbalance}}</span>
+                            </div>
+                        </div>
+                        <div class="inputrow1" *ngFor="let mf of MFData">
+                            <div class="">
+                                <span class="heading-label customer">Mutual Fund Transactions</span>
+                                <!-- <span class="customer"></span> -->
+                            </div>
+                            <div class="gridTable1">
+                                <span class="heading-label">Rebalancing Amount</span>
+                                <span class="align-right">{{mf.MF_RebalancingAmount}}</span>
+                            </div>
+                            <div class="gridTable1">
+                                <span class="heading-label">Currency</span>
+                                <span class="align-right">{{mf.MF_Currency}}</span>
+                            </div>
+                            <div class="gridTable1">
+                                <span class="heading-label">Total Investment</span>
+                                <span class="align-right">{{mf.MF_TotalInvestment}}</span>
+                            </div>
+                            <div class="gridTable1">
+                                <span class="heading-label">Imbalance</span>
+                                <span class="align-right">{{mf.MF_Imbalance}}</span>
+                            </div>
+                        </div>
+                        <div class="inputrow1" *ngFor="let b of BondsData">
+                            <div class="">
+                                <span class="heading-label customer">Bond Transactions</span>
+                                <!-- <span class="customer"></span> -->
+                            </div>
+                            <div class="gridTable1">
+                                <span class="heading-label">Rebalancing Amount</span>
+                                <span class="align-right">{{b.Bonds_RebalancingAmount}}</span>
+                            </div>
+                            <div class="gridTable1">
+                                <span class="heading-label">Currency</span>
+                                <span class="align-right">{{b.Bonds_Currency}}</span>
+                            </div>
+                            <div class="gridTable1">
+                                <span class="heading-label">Total Investment</span>
+                                <span class="align-right">{{b.Bonds_TotalInvestment}}</span>
+                            </div>
+                            <div class="gridTable1">
+                                <span class="heading-label">Imbalance</span>
+                                <span class="align-right">{{b.Bonds_Imbalance}}</span>
+                            </div>
+
+                        </div>
+                        <!-- <div class="inputrow1">
+                            <div class="gridTable1">
+                                <span class="heading-label customer">Overall Imbalance</span>
+
+                            </div>
+                            <div class="gridTable1">
+                                <span class="heading-label ">USD</span>
+                                <span class="align-right" style="padding-left: 25px">{{
+                                    this.cfs.FormatNumberr(Equities_Imbalance +
+                                    MF_Imbalance + Bonds_Imbalance)}}</span>
+                            </div>
+
+                        </div> -->
+                    </div>
+                    <div class="table-grid table-width" style="padding: 0px 10px 0px 10px;">
+                        <div>
+                            <div class="header-text">Equities Transactions
+
+                            </div>
+                            <div class="">
+                                <table [ngClass]="{'table-class1': collapseTable, 'table-size': !collapseTable}">
+                                    <thead>
+                                        <tr *ngIf="!collapseTable">
+                                            <th> </th>
+                                            <th class="headers" *ngFor="let tag of ColumnsEQ">{{ tag }}</th>
+                                        </tr>
+                                        <tr *ngIf="collapseTable">
+                                            <th> </th>
+                                            <th class="headers" *ngFor="let tag of ColumnsEQ1">{{ tag }}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="table-body">
+                                        <tr *ngFor="let item of EquitiesTransactionDetails;let i = index;">
+                                            <td class="link" *ngIf="item.orderFlag"
+                                                (click)="callOrderEntry(item.dir, 'Shares', item)">Place
+                                                Order
+                                            </td>
+                                            <td *ngIf="!item.orderFlag"></td>
+                                            <td>
+                                                <select [(ngModel)]="item.dir" class="select-ddl">
+                                                    <option value="BUY">
+                                                        Buy
+                                                    </option>
+                                                    <option value = "SELL">
+                                                        Sell
+                                                    </option>
+                                                </select>
+                                            </td>
+
+                                            <td class="customer">{{item.Underlying}}</td>
+                                            <td>{{item.Sector}}</td>
+                                            <td style="text-align: right;">{{item.Lotsize}}</td>
+                                            <td style="text-align: right;">{{item.CurrentAllocation}}</td>
+                                            <td style="text-align: right;">{{item.Holdings}}</td>
+                                            <td style="text-align: right;">{{item.TargetAllocation}}</td>
+                                            <td style="text-align: right;">{{item.InvestmentAmount}}</td>
+                                            <td style="text-align: right;">{{item.Price}}</td>
+                                            <td style="text-align: right;">{{item.Quantity}}</td>
+                                            <td style="min-width: 215px !important; white-space: normal !important;">{{item.Remark}}</td>
+                                            <td *ngIf="!collapseTable">{{item.Exchange}}</td>
+                                            <td *ngIf="!collapseTable">{{item.FlowType}}</td>
+                                            <td style="text-align: right;" *ngIf="!collapseTable">{{item.LimitPrice}}
+                                            </td>
+                                            <td *ngIf="!collapseTable">{{item.OrderType}}</td>
+                                            <td style="text-align: center;" *ngIf="!collapseTable">{{item.TradeDate}}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="header-text">Mutual Fund Transactions
+
+                            </div>
+                            <div class="table-width">
+                                <table [ngClass]="{'table-class1': collapseTable, 'table-size': !collapseTable}">
+                                    <thead>
+                                        <tr *ngIf="!collapseTable">
+                                            <th> </th>
+                                            <th class="headers" *ngFor="let tag of ColumnsMF">{{ tag }}</th>
+                                        </tr>
+                                        <tr *ngIf="collapseTable">
+                                            <th> </th>
+                                            <th class="headers" *ngFor="let tag of ColumnsMF1">{{ tag }}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="table-body">
+                                        <tr *ngFor="let item of MFTransactionDetails;let i = index;">
+                                            <td class="link" *ngIf="item.orderFlag"
+                                                (click)="callOrderEntry(item.dir, 'Mutual Funds', item)">
+                                                Place Order</td>
+                                                <td *ngIf="!item.orderFlag"></td>
+
+                                            <td>
+                                                <select [(ngModel)]="item.dir" class="select-ddlMF">
+                                                    <option value="BUY">
+                                                        Subscribe
+                                                    </option>
+                                                    <option value = "SELL">
+                                                        Redeem
+                                                    </option>
+                                                </select>
+                                            </td>
+                                            <td class="customer">{{item.FundCode}}</td>
+                                            <td>{{item.Sector}}</td>
+                                            <td style="text-align: right;">{{item.ExistingAllocation}}</td>
+                                            <td style="text-align: right;">{{item.UnitsAllocated}}</td>
+                                            <td style="text-align: right;">{{item.TargetAllocation}}</td>
+                                            <td style="text-align: right;">{{item.InvestmentAmount}}</td>
+                                            <td style="text-align: right;">{{item.NAV | number:'1.2-2'}}</td>
+                                            <td style="text-align: right;">{{item.Units}}</td>
+                                            <td style="min-width: 215px !important; white-space: normal !important;">{{item.Remark}}</td>
+                                            <td *ngIf="!collapseTable">{{item.Exchange}}</td>
+                                            <td *ngIf="!collapseTable">{{item.FlowType}}</td>
+                                            <td style="text-align: right;" *ngIf="!collapseTable">{{item.LimitPrice}}
+                                            </td>
+                                            <td *ngIf="!collapseTable">{{item.OrderType}}</td>
+                                            <td style="text-align: center;" *ngIf="!collapseTable">{{item.TradeDate}}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="header-text">Bond Transactions
+
+                            </div>
+                            <div class="table-width">
+                                <table [ngClass]="{'table-class1': collapseTable, 'table-size': !collapseTable}">
+                                    <thead>
+                                        <tr *ngIf="!collapseTable">
+                                            <th> </th>
+                                            <th class="headers" *ngFor="let tag of ColumnsBonds">{{ tag }}</th>
+                                        </tr>
+                                        <tr *ngIf="collapseTable">
+                                            <th> </th>
+                                            <th class="headers" *ngFor="let tag of ColumnsBonds1">{{ tag }}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="table-body">
+                                        <tr *ngFor="let item of BondsTransactionDetails; let i = index;">
+                                            <td class="link" *ngIf="item.orderFlag"
+                                                (click)="callOrderEntry(item.dir, 'Bonds Investment', item)">Place Order
+                                            </td>
+                                            <td *ngIf="!item.orderFlag"></td>
+                                            <td>
+                                                <select [(ngModel)]="item.dir" class="select-ddl">
+                                                    <option value="BUY">
+                                                        Buy
+                                                    </option>
+                                                    <option value = "SELL">
+                                                        Sell
+                                                    </option>
+                                                </select>
+                                            </td>
+                                            <td class="customer">{{item.ISIN}}</td>
+                                            <td style="min-width: 215px !important;white-space: normal !important;">
+                                                {{item.ProductName}}</td>
+                                            <td style="text-align: right;">{{item.ExistingAllocation}}</td>
+                                            <td style="text-align: right;">{{item.Holdings}}</td>
+                                            <td style="text-align: right;">{{item.TargetAllocation}}</td>
+                                            <td style="text-align: right;">{{item.InvestmentAmount}}</td>
+                                            <td style="text-align: right;">{{item.Price | number:'1.2-2'}}</td>
+                                            <td style="text-align: right;">{{item.Nominal}}</td>
+                                            <!-- <td style="text-align: right;">{{item.Quantity}}</td> -->
+                                            <td style="min-width: 215px !important; white-space: normal !important;">{{item.Remark}}</td>
+                                            <td *ngIf="!collapseTable">{{item.Currency}}</td>
+                                            <td style="text-align: right;" *ngIf="!collapseTable">{{item.LimitPrice}}
+                                            </td>
+                                            <td *ngIf="!collapseTable">{{item.OrderType}}</td>
+                                            <td style="text-align: center;" *ngIf="!collapseTable">{{item.TradeDate}}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="showFilter" class="overlay overlay-popup">
+        <div class="order-entry-container page-content-container-popupfilter">
+            <div class="filter-class">
+                <label class="header-text">Show</label>
+                <app-svg-icons class="closebtn" [icon]="'cancel-icon'" [width]="'15'" [height]="'15'"
+                    (click)="showFilter = false">
+                </app-svg-icons>
+                <div class="recommended-products">
+                    <div>
+                        <div class="row">
+                            <input style="width: 17px !important;" [(ngModel)]="masterSelected" type="checkbox" value=""
+                                (input)="checkboxAction('All', checkboxAction)" (change)="checkUncheckAll()">
+                            <label>All</label>
+                        </div>
+                    </div>
+                    <div *ngFor="let item of filterArray">
+                        <div class="row">
+                            <input style="width: 17px !important;" [(ngModel)]="item.isSelected" type="checkbox"
+                                value="" (input)="checkboxAction(item.value, checkboxAction)"
+                                (change)="isAllSelected()">
+                            <label>{{item.value}}</label>
+                        </div>
+
+                    </div>
+                    <div>
+                        <button class="button" (click)="applyFilter(data)">
+                            Apply
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+
+    <div *ngIf="loader" style="text-align: center; margin-top: 15%;">
+        <div style="text-align: -webkit-center;">
+            <div class="multi-ripple">
+                <div></div>
+                <div></div>
+            </div>
+        </div>
+    </div>
+</div>

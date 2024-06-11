@@ -1,0 +1,68 @@
+<div class="authorize-component">
+  <div class="page-title module">Authorize User</div>
+  <div class="container">
+    <!-- <div class="filters">
+      <div class="filter-element">
+        <div style="padding-left: 10px">Username:</div>
+        <input type="text" [(ngModel)]="username" placeholder="Enter username" />
+        <input type="button" class="btn button" (click)="authorizeUser()" value="Authorize" />
+        <label>{{ message }}</label>
+      </div>
+    </div> -->
+    <div class="sub-div">
+      <span style="width: 120px;"> Username : </span>
+      <input type="text" [(ngModel)]="username" placeholder="Enter username" (keyup)="filterUsers()" />
+      <div class="right">
+        <input type="button" class="btn button" (click)="authorizeUser()" value="Authorize" />
+      </div>
+      <div>
+        <label>{{ message }}</label>
+      </div>
+    </div>
+    <div class="sub-div" style="grid-template-columns: 13em 1fr;">
+      <span style="width: 20em;"> Marked for Authorization : </span>
+      <div style="display: flex; flex-flow: wrap;">
+        <span *ngFor="let user of markedForAuth">
+          {{user}},&nbsp;
+        </span>
+      </div>
+    </div>
+    <div class="table-div">
+      <div class="fixed-table">
+        <table class="authorize-user-table">
+          <thead>
+            <tr>
+              <th class="center">
+                <div>
+                  <input class="checkbox" type="checkbox" [checked]="false" />
+                </div>
+              </th>
+              <th class="left">
+                <div>User Name</div>
+              </th>
+              <th class="left">
+                <div>User Type</div>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of unAuthorizedUserList; let i = index">
+              <td class="center">
+                <div class="widthauto">
+                  <input type="checkbox" name="enabledMenu" id="enabledMenu" [checked]="item.Checked"
+                    [(ngModel)]="item.Checked" (change)="markForAuthorization(item.UserName,item.Checked)">
+                </div>
+              </td>
+              <td>
+                <div>{{ item.UserName }}</div>
+              </td>
+              <td>
+                <div>{{ item.UserType }}</div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

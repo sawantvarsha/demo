@@ -1,0 +1,1875 @@
+<div>
+<div *ngIf="loader" class="pageOverlay">
+    <div class="loader-center">
+      <div class="multi-ripple">
+        <div></div>
+        <div></div>
+      </div>
+    </div>
+</div>
+<div id="PortfolioData" class="BlotterContainer">
+    <div class="showTitle"> <!--class="showTitle"-->
+    <div class="pageHeader">{{"SP Portfolio Snapshot" | translate}}</div>
+        <!-- <hr width="100%" class="productHeaderhr"> -->
+        <div  style="align-self: center;">
+            <div class="serchbarDiv">
+
+                <!-- <div style="align-self: center;">
+                    <label style="line-height: 17px; margin-right: 0.5em !important; font-size: 13px; font-family: var(--font-family) !important;align-self: center;">View</label>
+                </div> -->
+                <!-- <app-custom-dropdown-multi-select [options]="viewList" [displayText2]="'View'"  [pricerType] = "'dropdownSearchSingle'" [(ngModel)]="selectedView" (selectOptionsEmitter)="FilterForAll($event)" *ngIf="viewList?.length > 0 && viewList != undefined"  >
+                </app-custom-dropdown-multi-select> -->
+
+                <!-- <app-custom-dropdown-multi-select [options]="formatData" [displayText2]="'View1'"  [pricerType] = "'dropdownSearch'" [(ngModel)]="selectedFormat" (selectOptionsEmitter)="FilterForAll($event)" *ngIf="formatData?.length > 0 && formatData != undefined"  >
+                </app-custom-dropdown-multi-select> -->
+                <div style="line-height: 17px; margin-right: 0.5em !important; font-size: 13px; font-family: var(--font-family) !important;align-self: center;">
+                    {{"View" | translate}} 
+                </div>
+                <div class="shares-search-box" (clickOutside)="showDropdown=false" >
+                    <div class="input-field">
+
+                        <input  type="text" placeholder="{{'View' | translate}}" [(ngModel)]="viewName" (focus)="selectView()"
+                        (keyup)="showDropdown=true;filterViews()" (keyup.arrowup)="changeSearchIndex('UP')" (keyup.enter)="showDropdown=false;"
+                        (keyup.arrowdown)="changeSearchIndex('DOWN')" (keyup.backspace)="onBackspaceKeyUp()"style="min-width:100px" >
+                        <app-svg-icons class="drop-icon" [icon]="'arrow-drop-down'" style="justify-content: center;" [width]="'8'" [height]="'8'" (click)="showDropdown=!showDropdown;filterViews()">
+                        </app-svg-icons>
+                        
+                    </div>
+                        <div class="shares-list" *ngIf="showDropdown">
+                            <ul >
+                                <li *ngFor="let view of backUpList"  style="display: flex; justify-content: space-between; align-items: center;" >
+                                    <span (click)="viewName=view;GetPortfolio_View_Details();showDropdown=false;" style="width:-webkit-fill-available ;">{{view | translate}}</span>
+                                    <span><app-svg-icons class="deleteIcon" [icon]="'delete'"  [width]="'13'" [height]="'13'"  (click)="DeletePortfolio_View_Details(view);showDropdown=false"></app-svg-icons>
+                                    <!-- <span><app-svg-icons class="deleteIcon" [icon]="'delete'"  [width]="'13'" [height]="'13'"  ></app-svg-icons> -->
+                                    </span>
+                                    </li>
+                                
+                            </ul>
+                        </div>
+                </div>
+                <!-- <div>
+                    <div>
+                        <input type="text" placeholder="View">
+                    </div>
+                    <div class="ddl-item ddlSearch-item" *ngFor="let item of formatData;" (click)="setValue2(item,true)">
+                        <input type="checkbox" [name]="item" [id]="item" [value]="item" [checked]="isSelected(item)" (click)="setValue2(item, true);postbackMethod();" [disabled]="disabled">
+                        <label [for]="item  ">{{ item }}</label>
+                    </div>
+                </div> -->
+                
+                <!-- <div>
+                    <input style="min-width: 100px;" type="text" placeholder="View" [(ngModel)]="viewName" class="txtalignLeft">
+                </div> -->
+
+                <div class="btn-group btnSaveMargin dropdown" (clickOutside)="saveoptionflag = false"> <!--(clickOutside)="saveoptionflag = false"-->
+                    <button type="button" class="btn btn_Save"  tabindex="50" (click)="SavePortfolio_View_Details()" >{{ "Save" | translate }}</button> <!-- (click)="Save()" [disabled]="priceBtnActive === 'N'"-->
+                    <!-- (click)="Price()" -->
+                    <button type="button"  class="sidebutton btnSaveNShare save-view-btn" (click)="saveoptionflag=!saveoptionflag"> <!-- (click)="saveOptions()" [disabled]="(priceBtnActive === 'N')"-->
+                        <app-svg-icons class="arrow-drop-icon" [icon]="'arrow-drop-down'" style="justify-content: center; fill: var(--btn-txt);" [width]="'8'" [height]="'8'" >
+                        </app-svg-icons>
+                    </button>
+                    <div *ngIf="(saveoptionflag)" class="dropdown-content" >
+                        <button type="button" class="btn btn_Save update"  tabindex="50" (click)="UpdatePortfolio_View_Details() ;saveoptionflag = false" >
+                            <span><app-svg-icons [icon]="'update-icon'" [width]="'15'" [height]="'15'" class="update-icon"></app-svg-icons></span>
+                            <span>{{ "Update" | translate }}</span>
+                        </button>
+                    </div>
+                    <!-- <div class="ddl SaveNShare" *ngIf="(saveoptionflag) ">
+                        <div class="flexDisplay">
+                            <div class="updateIcon" *ngIf="portfolio!=='' && accessRight !== 'VIEW'">
+                                    <app-svg-icons [icon]="'update-icon'" [width]="'15'" [height]="'15'">
+                                    </app-svg-icons>
+                            </div>
+                            <div class="ddlitem" role="menuitem" (click)="updateVariant();saveoptionflag=false" *ngIf="portfolio!=='' && accessRight !== 'VIEW'">Update Variant
+                            </div>
+                        </div>
+                        <div class="flexDisplay">
+
+                            <div class="SaveNShareIcon">
+                                    <app-svg-icons [icon]="'share-icon'" [width]="'15'" [height]="'15'">
+                                    </app-svg-icons>
+                            </div>
+                            <div class="ddlitem" role="menuitem" (click)="showsaveSharePopup()">Save and Share
+                            </div>
+                        </div>
+                    </div> -->
+                </div>
+
+                <div style="display:flex">
+                    <div style="width: max-content; line-height: 17px; margin-right: 0.5em !important; font-size: 13px; font-family: var(--font-family) !important;align-self: center;">
+                        {{'Sort By' | translate}} 
+                    </div>
+                    <div style="display: flex; gap:1em " >
+                        
+
+                        <!--//Portfolio sort: changes by Prateek & Akash on 29 Aug 2023-->
+                        <select  placeholder='Product Type' [(ngModel)]="selectedSorting"  class="filterSelect" (change)="portfolioSort()"> <!--[(ngModel)]="selectedSorting"-->
+                            
+                            <!-- <option value="" [ngValue]="'SelectOption'" disabled selected hidden >Select Option</option> -->
+                            <option  >{{'Format' | translate}}</option>                            
+                            <option [ngValue]="'Issue Date'" selected>{{'Issue Date' | translate}}</option>
+                            <option  >{{'Notional' | translate}}</option>
+                            <option  >{{'Product Situation' | translate}}</option>
+                            <!-- <option  >KI near to far</option> -->
+                        <!--END-->
+                        </select>
+
+                        <select [(ngModel)]="direction" class="filterSelect" (change)="portfolioSort()" style="width:110px !important" [disabled]="disableDirection" > <!--[(ngModel)]="selectedSorting"-->
+                            
+                            <option >{{'Ascending' | translate}}</option>                            
+                            <option [ngValue]="'Descending'" selected >{{'Descending'| translate}}</option>
+
+                        </select>
+
+                    </div>
+                </div>
+                <div class="searchInnerDiv">
+                    <!-- <img style="width:15px;height:15px;margin-left:5px; margin-top:10px;" src="{{asseturl}}search.png"> -->
+                    <input type="text" placeholder="{{'External1, External2, ...' | translate}}" [(ngModel)]="selectedExternal" name="search" class="txtSearch" (keyup)="FilterForAll($event)"><!-- [(ngModel)]="search"-->
+
+                    <app-svg-icons class="filterIcon" (click)="showFilterDropdown=!showFilterDropdown" [icon]="'filter-icon'" [width]="'18'" [height]="'20'"
+                                [fill]="'var(--input-icon)'" ></app-svg-icons>
+                </div>
+                <div class="forTitleRow">
+                    <app-svg-icons [ngClass]="{ 'rotateCircle': loader }" [icon]="'refresh'" [width]="'30'" [height]="'30'" (click)="refresh()" ></app-svg-icons>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- <div *ngIf="loader" class="pageOverlay">
+        <div class="loader-center">
+          <div class="multi-ripple">
+            <div></div>
+            <div></div>
+          </div>
+        </div>
+    </div> -->
+
+    <div *ngIf="showFilterDropdown==true" class="filterDiv"> <!--tyle="border: 1px solid #696969 !important;align-self: center;"-->
+        <div class="filterMainDiv">
+            <div class="labelRowContainer" >
+                <div  class="filterTH alignLeft labelDivWidth labelFilerBlock">
+                    <span>{{'Client Filters:' | translate}}</span>
+                    <span class="link eachRowFilter " (click)="clearClient()" >{{'Clear Filters' | translate}}</span>
+                </div>
+                <div class="clientFilterDiv">
+
+                    <!-- <div><input type="text" placeholder="Group" [(ngModel)]="selectedGroup" (keyup)="FilterForAll($event)" class="filterIputs"></div> -->
+                    <app-custom-dropdown-multi-select [options]="groupArr" [backupOptions]="groupArr" [(ngModel)]="selectedGroup" [displayText2]=" groupArr?.length === 1 ? groupArr[0]['value'] : 'Group'" [pricerType]="'dropdownSearch'" [isRefreshed]="clearClientFilter" (selectOptionsEmitter)="clientFilterData($event)" [ngClass]="{ 'disabled': groupArr.length <= 1 }" >
+                    </app-custom-dropdown-multi-select>
+
+                    <!-- <div><input type="text" placeholder="Client" [(ngModel)]="selectedClient" (keyup)="FilterForAll($event)" class="filterIputs"></div> -->
+                    <app-custom-dropdown-multi-select [options]="clientArr" [backupOptions]="clientArr" [(ngModel)]="selectedClient" [displayText2]="'Client'"  [pricerType]="'dropdownSearch'" [isRefreshed]="clearClientFilter" (selectOptionsEmitter)="clientFilterData($event)" >
+                    </app-custom-dropdown-multi-select>
+
+                    <!-- <div><input type="text" placeholder="Internal Ref./J" [(ngModel)]="selectedIntRef" (keyup)="FilterForAll($event)" class="filterIputs"></div> -->
+                    <app-custom-dropdown-multi-select [options]="intRefArr" [backupOptions]="intRefArr" [(ngModel)]="selectedIntRef" [displayText2]="'Internal Ref./J'"  [pricerType]="'dropdownSearch'" [isRefreshed]="clearClientFilter" (selectOptionsEmitter)="clientFilterData($event)" >
+                    </app-custom-dropdown-multi-select>
+
+                    <!-- <div><input type="text" placeholder="Type" [(ngModel)]="selectedType" (keyup)="FilterForAll($event)" class="filterIputs"></div> -->
+                    <app-custom-dropdown-multi-select [options]="typeArr" [backupOptions]="typeArr" [(ngModel)]="selectedType" [displayText2]="'Type'"  [pricerType]="'dropdownSearch'" [isRefreshed]="clearClientFilter" (selectOptionsEmitter)="clientFilterData($event)" >
+                    </app-custom-dropdown-multi-select>
+
+
+                    <!-- <div><input type="text" placeholder="Tutela" [(ngModel)]="selectedTutela" (keyup)="FilterForAll($event)"  class="filterIputs"></div> -->
+                    <app-custom-dropdown-multi-select [options]="tutelaArr" [backupOptions]="tutelaArr" [(ngModel)]=" tutelaArr?.length === 1 ? tutelaArr[0]['value'] : selectedTutela" [displayText2]=" tutelaArr?.length === 1 ? tutelaArr[0]['value'] : 'Tutela'"  [pricerType]="'dropdownSearch'" [isRefreshed]="clearClientFilter" (selectOptionsEmitter)="clientFilterData($event)" [ngClass]="{ 'disabled': tutelaArr.length <= 1 }" >
+                    </app-custom-dropdown-multi-select>
+
+                    <!-- <div><input type="text" placeholder="Subtutela" [(ngModel)]="selectedSubtutela" (keyup)="FilterForAll($event)" class="filterIputs"></div> -->
+                    <app-custom-dropdown-multi-select [options]="subtutelaArr" [backupOptions]="subtutelaArr" [(ngModel)]="selectedSubtutela" [displayText2]="'Subtutela'"  [pricerType]="'dropdownSearch'" [isRefreshed]="clearClientFilter" (selectOptionsEmitter)="clientFilterData($event)" >
+                    </app-custom-dropdown-multi-select>
+
+                    <!-- <div><input type="text" placeholder="Branch" [(ngModel)]="selectedBranch" (keyup)="FilterForAll($event)" class="filterIputs"></div> -->
+                    <app-custom-dropdown-multi-select [options]="branchArr" [backupOptions]="branchArr" [(ngModel)]="selectedBranch" [displayText2]="'Branch'"  [pricerType]="'dropdownSearch'" [isRefreshed]="clearClientFilter" (selectOptionsEmitter)="clientFilterData($event)" >
+                    </app-custom-dropdown-multi-select>
+
+                    <!-- <div><input type="text" placeholder="Territory" [(ngModel)]="selectedTerritory" (keyup)="FilterForAll($event)" class="filterIputs"></div> -->
+                    <app-custom-dropdown-multi-select [options]="territoryArr" [backupOptions]="territoryArr" [(ngModel)]="selectedTerritory" [displayText2]="'Territory'"  [pricerType]="'dropdownSearch'" [isRefreshed]="clearClientFilter" (selectOptionsEmitter)="clientFilterData($event)" >
+                    </app-custom-dropdown-multi-select>
+
+                    <!-- <div><input type="text" placeholder="Zone" [(ngModel)]="selectedZone" (keyup)="FilterForAll($event)" class="filterIputs"></div> -->
+                    <app-custom-dropdown-multi-select [options]="zoneArr" [backupOptions]="zoneArr" [(ngModel)]="selectedZone" [displayText2]="'Zone'"  [pricerType]="'dropdownSearch'" [isRefreshed]="clearClientFilter" (selectOptionsEmitter)="clientFilterData($event)" >
+                    </app-custom-dropdown-multi-select>
+                    
+                </div>
+                <!-- <div class="clearFilter">
+                    <span class="link " (click)="refresh()" >Clear All Filters</span>
+                </div> -->
+            </div>
+            <div class="labelRowContainer">
+                <div style="" class="filterTH labelDivWidth labelFilerBlock">
+                    <span>{{'Product Filters:' | translate}}</span> 
+                    <span class="link eachRowFilter " (click)="clearProduct()" >{{'Clear Filters' | translate}}</span>    
+                </div>
+                <div class="productFilterDiv">
+                
+                    <div class="columnContainer"> 
+                        <!-- <input type="text" placeholder="Format" (keyup)="FilterForAll($event)"
+                        [(ngModel)]="selectedFormat" name="Group" class="filterIputs"> -->
+                        <!-- <select [(ngModel)]="selectedFormat"  placeholder="Format"  (change)="FilterForAll($event)"  class="filterSelect" >
+                            <option value="" disabled hidden>Format</option>
+                            <option [ngValue]="'all'">All</option>
+                            <option *ngFor="let item of formatData;" [ngValue]="item" (click)="selectedMPG=item">{{item}}</option>
+                        </select> -->
+
+                        <!-- Added by MuditB || 27-Sep-23 || Start || MultiSelect Dropdown Filter -->
+
+                        <app-custom-dropdown-multi-select [options]="formatData" 
+                            [displayText2]="'Format'" [pricerType] = "'dropdown'" [isRefreshed]="refreshed || clearProductFilter" 
+                            [(ngModel)]="selectedFormat" 
+                            *ngIf="formatData?.length <= 0 || formatData=='' || formatData==undefined" disabled
+                            (selectOptionsEmitter)="FilterForAll($event)">
+                        </app-custom-dropdown-multi-select>
+                        
+                        <app-custom-dropdown-multi-select [options]="formatData"  
+                            [displayText2]="'Format'"  [pricerType] = "'dropdown'" [isRefreshed]="refreshed || clearProductFilter"
+                            [(ngModel)]="selectedFormat" *ngIf="formatData?.length > 0 && formatData!='' && formatData!=undefined" 
+                            (selectOptionsEmitter)="FilterForAll($event)">
+                        </app-custom-dropdown-multi-select>
+
+                       <!-- Added by MuditB || 27-Sep-23 || End || MultiSelect Dropdown Filter -->
+                    </div>
+                    <div class="columnContainer">
+                         <!-- <input type="text" placeholder="Currency" (keyup)="FilterForAll($event)"
+                        [(ngModel)]="selectedCurrency" name="Group" class="filterIputs"> -->
+                        <!-- <select [(ngModel)]="selectedCurrency"  placeholder="Currency"  (change)="FilterForAll($event)"  class="filterSelect">
+                            <option value="" disabled hidden>Currency</option>
+                            <option [ngValue]="'all'">All</option>
+                            <option *ngFor="let item of currencyData;" [ngValue]="item" (click)="selectedMPG=item">{{item}}</option>
+                        </select> -->
+
+                        <!-- Added by MuditB || 27-Sep-23 || Start || MultiSelect Dropdown Filter -->
+
+                        <app-custom-dropdown-multi-select [options]="currencyData" 
+                            [displayText2]="'Currency'"    [pricerType] = "'dropdown'" [isRefreshed]="refreshed || clearProductFilter"
+                            [(ngModel)]="selectedCurrency" 
+                            *ngIf="currencyData?.length <= 0 || currencyData=='' || currencyData==undefined" disabled
+                            (selectOptionsEmitter)="FilterForAll($event)">
+                        </app-custom-dropdown-multi-select>
+                        
+                        <app-custom-dropdown-multi-select [options]="currencyData" 
+                            [displayText2]="'Currency'"   [pricerType] = "'dropdown'" [isRefreshed]="refreshed || clearProductFilter"
+                            [(ngModel)]="selectedCurrency" *ngIf="currencyData?.length > 0 && currencyData!='' && currencyData!=undefined" 
+                            (selectOptionsEmitter)="FilterForAll($event)">
+                        </app-custom-dropdown-multi-select>
+
+                        <!-- Added by MuditB || 27-Sep-23 || End || MultiSelect Dropdown Filter -->
+                    </div>
+                    <div class="columnContainer"> <!-- <input type="text" placeholder="Product Type" name="Group" class="filterIputs"> -->
+                        <!-- <select  placeholder="Product Type" (change)="openMPGs($event)"  class="filterSelect">
+                            <option value="" disabled selected>Product Type</option>
+                            <option [ngValue]="i" (click)="selectedMPG=item" >Autocallable </option>
+                            <option [ngValue]="i" (click)="selectedMPG=item" >Digital </option>
+                            <option [ngValue]="i" (click)="selectedMPG=item" >European Digital </option>
+                            <option [ngValue]="i" (click)="selectedMPG=item" >Reverse Convertible </option>
+                            <option [ngValue]="i" (click)="selectedMPG=item" >Vanilla Option </option>
+                            <option [ngValue]="i" (click)="selectedMPG=item" >Issuer Callable </option>
+                            <option [ngValue]="i" (click)="selectedMPG=item" >Double Tranche(*)</option>
+    
+                        </select> -->
+    
+                        <!-- <select [(ngModel)]="selectedPType"  placeholder="Product Type"  (change)="FilterForAll($event)"  class="filterSelect">
+                            <option value="" disabled hidden>Product Type</option>
+                            <option [ngValue]="'all'">All</option>
+                            <option *ngFor="let item of productTypeData;" [ngValue]="item" (click)="selectedMPG=item">{{item}}</option>
+                        </select> -->
+                        
+                        <!-- Added by MuditB || 27-Sep-23 || Start || MultiSelect Dropdown Filter -->
+
+                        <app-custom-dropdown-multi-select [options]="productTypeData" 
+                            [displayText2]="'Product Type'"  [pricerType] = "'dropdown'" [isRefreshed]="refreshed || clearProductFilter"
+                            [(ngModel)]="selectedPType" 
+                            *ngIf="productTypeData?.length <= 0 || productTypeData=='' || productTypeData==undefined" disabled
+                            (selectOptionsEmitter)="FilterForAll($event)">
+                        </app-custom-dropdown-multi-select>
+                        
+                        <app-custom-dropdown-multi-select [options]="productTypeData" 
+                            [displayText2]="'Product Type'"   [pricerType] = "'dropdown'" [isRefreshed]="refreshed || clearProductFilter"
+                            [(ngModel)]="selectedPType" *ngIf="productTypeData?.length > 0 && productTypeData!='' && productTypeData!=undefined" 
+                            (selectOptionsEmitter)="FilterForAll($event)">
+                        </app-custom-dropdown-multi-select>
+
+                        <!-- Added by MuditB || 27-Sep-23 || End || MultiSelect Dropdown Filter -->
+                    </div>
+                    <!-- <div> <input type="text" placeholder="Cap. At Risk"  [(ngModel)]="selectedCapAtRisk" name="Group" class="filterIputs" (keyup)="FilterForAll($event)"></div> -->
+                    <div class="columnContainer">
+                         <input type="text" placeholder="{{'Underlying' | translate}}" name="Group" class="filterIputs" style="width:195px !important" [(ngModel)]="selectedUnderlying" (keyup)="FilterForAll($event); disableULType()" >
+                    </div>
+    
+                    <div class="toggleDiv"> 
+                        <div class="toggleLabels ">{{'Incl. Basket:' | translate}}</div>
+                        <div class="togglePos">
+                            <mat-slide-toggle (change)="checkInBasketToggle($event);FilterForAll($event)" class="slide-toggle"
+                            [checked]="inBasketCheck"></mat-slide-toggle> <!--[checked]="inBasketCheck"-->
+                        </div>
+                    </div>
+    
+                    <div class="columnContainer"> <!-- <input type="text" placeholder="U/L Type" name="Group" class="filterIputs"> -->
+                        <!-- <select [(ngModel)]="selectedULType"  placeholder="U/L Type"  (change)="FilterForAll($event)"  class="filterSelect">
+                            <option value="" disabled hidden>U/L Type</option>
+                            <option [ngValue]="'all'">All</option>
+                            <option *ngFor="let item of ulTypeData;" [ngValue]="item" (click)="selectedMPG=item">{{item}}</option>
+                        </select> -->
+                        
+                        <!-- Added by MuditB || 27-Sep-23 || Start || MultiSelect Dropdown Filter -->
+
+                        <app-custom-dropdown-multi-select [options]="ulTypeData" 
+                            [displayText2]="'U/L Type'"   [pricerType] = "'dropdown'" [isRefreshed]="refreshed || clearProductFilter"
+                            [(ngModel)]="selectedULType" 
+                            *ngIf="ulTypeData?.length <= 0 || ulTypeData=='' || ulTypeData==undefined" disabled
+                            (selectOptionsEmitter)="FilterForAll($event)">
+                        </app-custom-dropdown-multi-select>
+                        
+                        <app-custom-dropdown-multi-select [options]="ulTypeData" 
+                            [displayText2]="'U/L Type'"  [pricerType] = "'dropdown'" [isRefreshed]="refreshed || clearProductFilter"
+                            [(ngModel)]="selectedULType" *ngIf="ulTypeData?.length > 0 && ulTypeData!='' && ulTypeData!=undefined" 
+                            (selectOptionsEmitter)="FilterForAll($event)" [disabled]="checkULType"> 
+                        </app-custom-dropdown-multi-select>
+
+                        <!-- Added by MuditB || 27-Sep-23 || End || MultiSelect Dropdown Filter -->
+                    </div>
+                    <div class="toggleDiv" style="width: unset;">
+                        <div class="toggleLabels">{{'Live' | translate}}</div>
+                        <div class="togglePos">
+                            <mat-slide-toggle (change)="checkLiveToggle($event);FilterForAll($event)" [checked]="LiveCheck"  class="slide-toggle"
+                            ></mat-slide-toggle>
+                        </div>
+                    </div>
+                  
+                    <div class="toggleDiv" style="width: unset;">
+                        <div class="toggleLabels">{{'Dead' | translate}}</div>
+                        <div class="togglePos">
+                            <mat-slide-toggle (change)="checkDeadToggle($event);FilterForAll($event)" [checked]="DeadCheck"  class="slide-toggle"
+                            ></mat-slide-toggle>
+                        </div>
+                    </div>
+    
+                    
+                    <!-- <div class="columnContainer">
+                        <div class="clearFilter">
+                            <span class="link " (click)="refresh()" >Clear all Filters</span>
+                        </div>
+                    </div> -->
+                    <!-- <div class="toggleDiv">
+                        <div class="toggleLabels">Live</div>
+                        <div class="togglePos"><mat-slide-toggle (change)="commonfunctions.changeLayout(); getToggleData($event)" [checked]="toggleCheck"  class="slide-toggle"
+                            [disabled]="toggleDisabledFlag"></mat-slide-toggle></div>
+                    </div> -->
+                </div>
+            </div>
+            
+            <div class="labelRowContainer" >
+                <div style="    margin-top: 25px;" class="filterTH labelDivWidth labelFilerBlock">
+                    <span> {{'Product Specs:' | translate}}</span> 
+                    <span class="link eachRowFilter " (click)="clearProductSpecs()" >{{'Clear Filters' | translate}}</span>
+                </div>
+
+                <div class="productSpecsDiv">
+                
+                    <div class="columnContainer"> 
+                        <div class="filterLabels">
+                            {{'Issue Date' | translate}} 
+                        </div>
+                        <div [ngClass]="{ 'showFilter': showSDate,'hideFilter': (!showSDate) }" style="position: relative;">
+                            <input type="date" [ngClass]="{'highlight-border': StartDate!=''}" class="input-dob filterIputs" [(ngModel)]="StartDate" value="StartDate"
+                                (change)="selectDate(StartDate); FilterForAll($event)" #SDateField id="SDate" >
+                            <span *ngIf="StartDate === '' || StartDate === undefined" class="sDatePlaceHolder">{{'From Date' | translate}}</span>
+                            <span *ngIf="StartDate !== '' && StartDate !== undefined" class="sDate">{{StartDateDisplay}}</span>
+                        </div>
+                        <div [ngClass]="{ 'showFilter': showSDate,'hideFilter': (!showSDate) }" style="position: relative;">
+                            <input type="date" [ngClass]="{'highlight-border': EndDate!=''}" class="input-dob filterIputs" [(ngModel)]="EndDate" value="EndDate"
+                                (change)="selectEndDate(EndDate); FilterForAll($event)" #SDateField id="SDate" >
+                            <span *ngIf="EndDate === '' || EndDate === undefined" class="sDatePlaceHolder">{{'To Date' | translate}}</span>
+                            <span *ngIf="EndDate !== '' && EndDate !== undefined" class="sDate">{{EndDateDisplay}}</span>
+                        </div>
+                    </div>
+                    <div class="alignBottom columnContainer"> 
+                        <div class="filterLabels">
+                            {{'Maturity in' | translate}} 
+                        </div>
+                        <div class="daysLabel">
+                            <input type="text" [ngClass]="{'highlight-border': selectedMaturityIn!=''}" placeholder="{{'x' | translate}}" name="Group" class="daysInput right1" [(ngModel)]="selectedMaturityIn" (keyup)="FilterForAll($event)">
+                        </div>
+                        <div>
+                            <span class="daysSuffix">&nbsp;{{'days' | translate}}</span>
+                        </div> 
+                        
+                    </div>
+                    <div class="alignBottom columnContainer"> 
+                        <div class="filterLabels">
+                            {{'Observation in' | translate}} 
+                        </div>
+                        <div class="daysLabel">
+                            <input type="text" [ngClass]="{'highlight-border': selectedObservationIn!=''}" placeholder="{{'x' | translate}}" name="Group" class="daysInput right1" [(ngModel)]="selectedObservationIn" (keyup)="FilterForAll($event)">
+                        </div>
+                        <div>
+                            <span class="daysSuffix">&nbsp;{{'days' | translate}}</span>
+                        </div>
+     
+                        
+                    </div>
+                    <!-- <div class="alignBottom"> 
+                        <div class="filterLabels">
+                            AC in 
+                        </div>
+                        <div class="daysLabel">
+                            <input type="text" placeholder="x" name="Group" class="filterIputs" [(ngModel)]="selectedACIn" (keyup)="FilterForAll($event)">
+                            <span style="margin-right: 0.5em !important; font-size: 13px; font-family: var(--font-family) !important; text-align: end;">&nbsp;days</span>
+                        </div>
+                    </div> -->
+    
+                    <!-- Added by MuditB || 30-Aug-23 || Start -->
+                    <div class="alignBottom columnContainer"> 
+                        <div class="filterLabels">
+                            {{'Cancel Date in' | translate}} 
+                        </div>
+                        <div class="daysLabel">
+                            <input type="text" [ngClass]="{'highlight-border': selectedCancelDateIn!=''}" placeholder="{{'x' | translate}}" name="Group" class="daysInput" [(ngModel)]="selectedCancelDateIn" (keyup)="FilterForAll($event)">
+                        </div>
+                        <div>
+                            <span class="daysSuffix">&nbsp;{{'days' | translate}}</span>
+                        </div>
+                    </div>
+                    <div class="alignBottom sliderPosition columnContainer">
+                        <div class="filterLabels">
+                            {{'Capital At Risk:' | translate}}
+                        </div>
+                        <div style="display:flex; gap:1em;">
+                            <div  class="ki-number">
+                                <input [ngClass]="{'highlight-border': startCapAtRiskValue!=current_CapAtRisk_StartValue}" type="number" class="knumber"  placeholder="{{startCapAtRiskValue}} %" 
+                                    [min]="startCapAtRiskValue"
+                                    [max]="endCapAtRiskValue" 
+                                    (change)="binder($event);selectedCapAtRisk=true; FilterForAll($event)"class="inputBox"  step="0.01" name="CapAtRisk-input1" 
+                                    [(value)]="current_CapAtRisk_StartValue"><!--[value]="current_CancelProb_StartValue"-->
+                            </div>
+                            <div  class="ki-number second">
+                                <input [ngClass]="{'highlight-border': endCapAtRiskValue!=current_CapAtRisk_LastValue}" type="number" class="knumber"  placeholder="{{endCapAtRiskValue}} %"
+                                    [min]="startCapAtRiskValue" 
+                                    [max]="endCapAtRiskValue" 
+                                    (change)="binder($event);selectedCapAtRisk=true; FilterForAll($event)"class="inputBox" step="0.01"  name="CapAtRisk-input2" 
+                                    [(value)]="current_CapAtRisk_LastValue"> <!--[value]="current_CancelProb_LastValue"-->
+                            </div>
+                        </div>
+                        <ng-container  [ngSwitch]="display">
+                            <ng-template [ngSwitchCase]="1"><ngx-slider class="ngx-mtm-slider cancelProbSlider" [(value)]="current_CapAtRisk_StartValue" [(highValue)]="current_CapAtRisk_LastValue" 
+                                [options]="options1"  
+                                (userChangeEnd)="selectedCapAtRisk=true; FilterForAll($event)" ></ngx-slider ></ng-template>
+                            <ng-template [ngSwitchCase]="2"><ngx-slider class="ngx-mtm-slider cancelProbSlider" [(value)]="current_CapAtRisk_StartValue" [(highValue)]="current_CapAtRisk_LastValue" 
+                                [options]="options1"  
+                                (userChangeEnd)="selectedCapAtRisk=true; FilterForAll($event)" ></ngx-slider ></ng-template>
+                        </ng-container>
+                    </div>
+                    <div class="alignBottom sliderPosition columnContainer">
+                        <div class="filterLabels">
+                            {{'Cancel Probability in:' | translate}}
+                        </div>
+                        <div style="display:flex; gap:1em;">
+                            <div  class="ki-number">
+                                <input [ngClass]="{'highlight-border': startCancelProbValue!=current_CancelProb_StartValue}" type="number" class="knumber"  placeholder="{{startCancelProbValue}} %" 
+                                    [min]="startCancelProbValue"
+                                    [max]="endCancelProbValue" 
+                                    (change)="binder($event);selectedCancelProb=true; FilterForAll($event)" class="inputBox" step="0.01" name="CancelProb-input1"
+                                    [(value)]="current_CancelProb_StartValue" ><!--[value]="current_CancelProb_StartValue"-->
+                            </div>
+                            <div  class="ki-number second">
+                                <input [ngClass]="{'highlight-border': endCancelProbValue!=current_CancelProb_LastValue}" type="number" class="knumber"  placeholder="{{endCancelProbValue}}%"
+                                    [min]="startCancelProbValue" 
+                                    [max]="endCancelProbValue" 
+                                    (change)="binder($event);selectedCancelProb=true; FilterForAll($event)" class="inputBox" step="0.01"  name="CancelProb-input2"
+                                    [(value)]="current_CancelProb_LastValue"> <!--[value]="current_CancelProb_LastValue"-->
+                            </div>
+                        </div>
+                        <ng-container  [ngSwitch]="display">
+                            <ng-template [ngSwitchCase]="1"><ngx-slider class="ngx-mtm-slider cancelProbSlider" [(value)]="current_CancelProb_StartValue" [(highValue)]="current_CancelProb_LastValue" 
+                                [options]="options2" 
+                                (userChangeEnd)="selectedCancelProb=true; FilterForAll($event)"></ngx-slider ></ng-template>
+                            <ng-template [ngSwitchCase]="2"><ngx-slider class="ngx-mtm-slider cancelProbSlider" [(value)]="current_CancelProb_StartValue" [(highValue)]="current_CancelProb_LastValue" 
+                                [options]="options2" 
+                                (userChangeEnd)="selectedCancelProb=true; FilterForAll($event)"></ngx-slider ></ng-template>
+                        </ng-container>
+                    </div>
+                    <div class="alignBottom sliderPosition columnContainer">
+                        <div class="filterLabels">
+                            {{'Protection Distance:' | translate}}
+                        </div>
+                        <div style="display:flex; gap:1em;">
+                            <div  class="ki-number">
+                                <input [ngClass]="{'highlight-border': startBarrierDValue!=current_BarrierD_StartValue}" type="number" class="knumber"  placeholder="{{startBarrierDValue}} %" 
+                                    [min]="startBarrierDValue"
+                                    [max]="endBarrierDValue" class="inputBox"  
+                                    (change)="binder($event);selectedBarDist=true; FilterForAll($event)" step="0.01" name="BarrierD-input1" 
+                                    [(value)]="current_BarrierD_StartValue" 
+                                    
+                                    ><!--[value]="current_BarrierD_StartValue"-->
+                                    <!-- <span>%</span> -->
+                            </div>
+                            <div  class="ki-number second">
+                                <input [ngClass]="{'highlight-border': endBarrierDValue!=current_BarrierD_LastValue}" type="number" class="knumber"  placeholder="{{endBarrierDValue}} %"
+                                    [min]="startBarrierDValue" 
+                                    [max]="endBarrierDValue" class="inputBox"  
+                                    (change)="binder($event); selectedBarDist=true;FilterForAll($event)" step="0.01" name="BarrierD-input2" 
+                                    [(value)]="current_BarrierD_LastValue" 
+                                    
+                                    > <!--[value]="current_BarrierD_LastValue"-->
+                            </div>
+                        </div>
+                        <ng-container  [ngSwitch]="display">
+                            <ng-template [ngSwitchCase]="1"><ngx-slider class="ngx-mtm-slider cancelProbSlider" [(value)]="current_BarrierD_StartValue" [(highValue)]="current_BarrierD_LastValue" 
+                                [options]="options3" 
+                                (userChangeEnd)="selectedBarDist=true; FilterForAll($event)"  
+                                ></ngx-slider ></ng-template>
+                            <ng-template [ngSwitchCase]="2"><ngx-slider class="ngx-mtm-slider cancelProbSlider" [(value)]="current_BarrierD_StartValue" [(highValue)]="current_BarrierD_LastValue" 
+                                [options]="options3" (userChangeEnd)="selectedBarDist=true; FilterForAll($event)"
+                                ></ngx-slider ></ng-template>
+                        </ng-container>
+                    </div>
+                    <div class="alignBottom sliderPosition columnContainer">
+                        <div class="filterLabels">
+                            {{'Indicative Valuation:' | translate}}
+                        </div>
+                        <div style="display:flex; gap:1em;">
+                            <div  class="ki-number">
+                                <input [ngClass]="{'highlight-border': startIndValValue!=current_IndVal_StartValue}" type="number" class="knumber"  placeholder="{{startIndValValue}} %"
+                                    [min]="startIndValValue"
+                                    [max]="endIndValValue" class="inputBox" 
+                                    (change)="binder($event) ;selectedIndVal=true; FilterForAll($event)" step="0.01" name="IndVal-input1"  
+                                    [(value)]="current_IndVal_StartValue"><!--[value]="current_IndVal_StartValue"-->
+                            </div>
+                            <div  class="ki-number second">
+                                <input [ngClass]="{'highlight-border': endIndValValue!=current_IndVal_LastValue}" type="number" class="knumber" placeholder="{{endIndValValue}} %"
+                                    [min]="startIndValValue" 
+                                    [max]="endIndValValue" class="inputBox"  
+                                    (change)="binder($event) ;selectedIndVal=true; FilterForAll($event)" step="0.01" name="IndVal-input2"  
+                                    [(value)]="current_IndVal_LastValue"><!--[value]="current_IndVal_LastValue"-->
+                            </div>
+                        </div>
+                        <ng-container  [ngSwitch]="display">
+                            <ng-template [ngSwitchCase]="1"><ngx-slider class="ngx-mtm-slider cancelProbSlider" [(value)]="current_IndVal_StartValue" [(highValue)]="current_IndVal_LastValue" 
+                                [options]="options4"  
+                                (userChangeEnd)="selectedIndVal=true; FilterForAll($event)"></ngx-slider ></ng-template>
+                            <ng-template [ngSwitchCase]="2"><ngx-slider class="ngx-mtm-slider cancelProbSlider" [(value)]="current_IndVal_StartValue" [(highValue)]="current_IndVal_LastValue" 
+                                [options]="options4" 
+                                (userChangeEnd)="selectedIndVal=true; FilterForAll($event)"></ngx-slider ></ng-template>
+                        </ng-container>
+                    </div>
+                    <!-- Added by MuditB || 30-Aug-23 || End -->
+    
+                    <!-- <div> 
+                        <div style="line-height: 17px; margin-right: 0.5em !important; font-size: 13px; font-family: var(--font-family) !important;margin-left: 14px;">
+                            AC prob > 
+                        </div>
+                        <div>
+                            <span style="margin-right: 0.5em !important; font-size: 13px; font-family: var(--font-family) !important;">±</span>
+                            <input type="text" placeholder="xx.xx %" name="Group" class="filterIputs">
+                        </div>
+                    </div>
+                    <div> 
+                        <div class="filterLabels">
+                            KI in Range 
+                        </div>
+                        <div>
+                            <input type="text" placeholder="xx.xx %" name="Group" class="filterIputs">
+                        </div>
+                    </div> -->
+                    <!-- <div> 
+                        <div class="filterLabels">
+                            Sort By 
+                        </div>
+                        <div>
+                            
+    
+                            <select  placeholder="Product Type" (change)="openMPGs($event)"  class="filterSelect">
+                                
+                                <option [ngValue]="i" (click)="selectedMPG=item" >Start Date </option>
+                                <option [ngValue]="i" (click)="selectedMPG=item" >AC Prob </option>
+                                <option [ngValue]="i" (click)="selectedMPG=item" >Obs near to far</option>
+                                <option [ngValue]="i" (click)="selectedMPG=item" >Maturity near to far </option>
+                                <option [ngValue]="i" (click)="selectedMPG=item" >KI near to far</option>
+        
+                            </select>
+                        </div>
+                    </div> -->
+                    <!-- <td> <input type="text" placeholder="Subtutela" name="Group" class="filterIputs"></td> -->
+                </div>
+            </div>
+            
+            <div class="labelRowContainer" >
+                <div  class="filterTH labelDivWidth labelFilerBlock" style="margin-top:10px" >
+                    <span>{{'What-If Scenarios:' | translate}}</span>
+                    <span class="link eachRowFilter " (click)="clearWhatIf()" >{{'Clear Filters' | translate}}</span>
+                </div>
+
+                <div class="whatIfScenarioDiv">
+                
+                    <div class="columnContainer">
+
+                        <div class="radioDiv" >
+                            <input id="noneid" class="btnsize" type="radio"  name="oneByOne"  (click)="oneByOne='one';" checked="oneByOne=='one'"/>
+                            <span>{{'Equity Spot Ladder Scenario (One-by-One)' | translate}}</span> 
+                        </div>
+                        
+                        <div class="radioDiv" >
+                            <input id="noneid" class="btnsize" type="radio"    name="oneByOne" (click)=" oneByOne='market';" />
+                            <span>{{'Equity Spot Ladder Scenarios' | translate}}</span> 
+                        </div>
+
+                        <!-- <input type="text" placeholder="Equity Spot Ladder Scenario (One-by-One)" name="Group" class="filterIputs" style="width:277px !important">
+                        <input type="text" placeholder="Equity Spot Ladder Scenarios" name="Group" class="filterIputs" style="width:277px !important"> -->
+                   </div>
+    
+                    <div class="columnContainer">
+                        <!-- <input type="text" placeholder="Underlying" name="Group" class="filterIputs" style="width:277px !important"> -->
+                        <!-- <input type="text" placeholder="Market Spot % Variation" name="Group" class="filterIputs" style="width:277px !important"> -->
+
+                        <select   placeholder="{{'Underlying' | translate}}" [(ngModel)]="selectedScenarioUnderlying"  style="width:185px !important" [disabled]="oneByOne!='one'">
+                            <option value="" [ngValue]="'Underlying'" disabled selected hidden>{{'Underlying' | translate}}</option>
+                            <!-- <option [ngValue]="'all'">All</option> -->
+                            <option *ngFor="let item of scenariouUnderlying;" [ngValue]="item.distinctBBG" >{{item.distinctBBG}}</option>
+                        </select>
+
+                        <div style="width:fit-content !important; min-width: 198px; ">
+                            <select   placeholder="{{'Market Spot % Variation' | translate}}" [(ngModel)]="selectedMarketSpotVar"  style="width:185px !important"  [disabled]="oneByOne!='market'" (change)="checkMarketSpot()">
+                                <option value=""  [ngValue]="'Market Spot % Variation'" disabled selected hidden>{{'Market Spot % Variation' | translate}}</option>
+                                <!-- <option [ngValue]="'all'">All</option> -->
+                                <option *ngFor="let item of bottomWhatIf;" [ngValue]="item" >{{item}}</option>
+                            </select>
+                            <span *ngIf="selectedMSpot" >%</span>
+                        </div>
+                    </div>
+                    <div class="columnContainer">
+                        <!-- <input type="text" placeholder="Spot % Variation" name="Group" class="filterIputs" style="width:277px !important"> -->
+                        <div style="width:fit-content !important; min-width: 161px; display:flex " >
+                            <select   placeholder="{{'Spot % Variation' | translate}}" [(ngModel)]="selectedSpotVar"  [disabled]="oneByOne!='one'" (change)="checkSpot()" >
+                                <option value="" [ngValue]="'Spot % Variation'"  disabled selected hidden>{{'Spot % Variation' | translate}}</option>
+                                <!-- <option [ngValue]="'all'">All</option> -->
+                                <option *ngFor="let item of topWhatIf;" [ngValue]="item" >{{item}}</option>
+                            </select>
+                            <span *ngIf="selectedSpot" style="align-self:center" >%</span>
+                        </div>
+                        <!-- <select   placeholder="Spot % Variation" [(ngModel)]="selectedSpotVar" class="filterIputs" style="width:142px !important" [disabled]="oneByOne!='one'">
+                            <option value="" [ngValue]="'Spot % Variation'"  disabled selected hidden>Spot % Variation</option>
+                            
+                            <option *ngFor="let item of topWhatIf;" [ngValue]="item" >{{item}}</option>
+                        </select>
+                        <span  >%</span> -->
+
+                        <!-- <div class="pageCount">
+                        
+                            <span class="paginationtext">Trade Count: {{totalCount}} </span>
+                        
+                            <app-svg-icons style="margin-top: -4px;" [icon]="'xls-icon'" [width]="'25'" [height]="'25'" [fill]="'var(--active)'" (click)="exportAsXLSX()"></app-svg-icons>
+                            
+                        </div> -->
+                        <!-- <div>
+                            <div class="pagination-class">
+
+                                <div class="pagination">
+                                    <span class="common-font rows-per-page" style="align-self: center; color: var(--text);" >Record(s) Per Page:</span>
+                                    <input class="common-font rows-per-page-input" [(ngModel)]="pageSize" type="text"
+                                    (keyup.enter)="onKeydownRowsPerPage(pageSize,this.filteredBackData)" (blur)="onKeydownRowsPerPage(pageSize,this.filteredBackData)"
+                                    />
+                                </div>
+                    
+                                <div class="pagination" >
+                                    
+                                    <app-svg-icons class="arrow-img left-arrow" style="rotate: 180deg;" (click)="prevBtnClicked(this.blotterData)"
+                                    [icon]="'arrow'" [width]="'15'" [height]="'15'" [fill]="'var(--btn-border)'"></app-svg-icons>
+
+                                    <input class="common-font rows-per-page-input" [(ngModel)]="pageNo" type="text"
+                                    (keyup.enter)="onKeydownPageNo(pageNo)" (blur)="onKeydownPageNo(pageNo)"
+                                    />
+
+                                    <app-svg-icons class="arrow-img left-arrow"  (click)="nextBtnClicked(this.blotterData)"
+                                    [icon]="'arrow'" [width]="'15'" [height]="'15'" [fill]="'var(--btn-border)'"></app-svg-icons>
+                                </div>   
+                            </div>
+                        </div> -->
+                        <!-- <div class="clearFilter">
+                            <span class="link " (click)="refresh()" >Clear All Filters</span>
+                        </div> -->
+                    </div>
+                    <div class="columnContainer">
+
+                        <div>
+                            <button style="width:120px" (click)="checkWhatIfData=true;whatIfDataIconFlag=true;getScenarioAnalysis()" class="button">{{'Scenario Analysis' | translate}}</button>
+                        </div>
+                        <!-- <div>
+                            <div class="pagination-class">
+
+                                <span class="common-font rows-per-page">Record(s) Per Page</span>
+                                <input class="common-font rows-per-page-input" [(ngModel)]="pageSize" type="text"
+                                (keyup.enter)="onKeydownRowsPerPage(pageSize)" (blur)="onKeydownRowsPerPage(pageSize)"
+                                />
+                    
+                                <button  class="button arrowButton" (click)="prevBtnClicked()" >
+                                <
+                                </button>
+                                <input class="common-font rows-per-page-input" [(ngModel)]="pageNo" type="text"
+                                (keyup.enter)="onKeydownPageNo(pageNo)" (blur)="onKeydownPageNo(pageNo)"
+                                />
+                                <button class="button arrowButton" (click)="nextBtnClicked()">
+                                >
+                                </button>    
+                            </div>
+                            
+                        </div> -->
+                        
+                        <!-- <div class="pageCount">
+                        
+                            <span class="paginationtext">Trade Count: {{totalCount}} </span>
+
+                            <app-svg-icons style="margin-top: -4px;" [icon]="'xls-icon'" [width]="'25'" [height]="'25'" [fill]="'var(--active)'" (click)="exportAsXLSX()"></app-svg-icons>
+
+                        </div> -->
+                        
+                        <!-- <div class="clearFilter">
+                            <span class="link " (click)="refresh()" >Clear All Filters</span>
+                        </div>
+                        <div></div> -->
+                    </div>
+                    <!-- <div class="columnContainer pageRight">
+                        
+                        <div class="pageRow" >
+                            <div class="pagination-class">
+
+                                <div class="pagination">
+                                    <span class="common-font rows-per-page" style="align-self: center; color: var(--text);" >Record(s) Per Page:</span>
+                                    <input class="common-font rows-per-page-input" [(ngModel)]="pageSize" type="text"
+                                    (keyup.enter)="onKeydownRowsPerPage(pageSize,this.filteredBackData,1)" (blur)="onKeydownRowsPerPage(pageSize,this.filteredBackData,1)"
+                                    />
+                                </div>
+                    
+                                <div class="pagination" >
+                                    
+                                    <app-svg-icons class="arrow-img left-arrow" style="rotate: 180deg;" (click)="prevBtnClicked(this.blotterData)"
+                                    [icon]="'arrow'" [width]="'15'" [height]="'15'" [fill]="'var(--btn-border)'"></app-svg-icons>
+    
+                                    <input class="common-font rows-per-page-input" [(ngModel)]="pageNo" type="text"
+                                    (keyup.enter)="onKeydownPageNo(pageNo)" (blur)="onKeydownPageNo(pageNo)"
+                                    />
+    
+                                    <app-svg-icons class="arrow-img left-arrow"  (click)="nextBtnClicked(this.blotterData)"
+                                    [icon]="'arrow'" [width]="'15'" [height]="'15'" [fill]="'var(--btn-border)'"></app-svg-icons>
+                                </div>   
+                            </div>
+
+                            <div class="pageCount">
+                        
+                                <span class="paginationtext">Trade Count: {{totalCount}} </span>
+    
+                                <app-svg-icons style="margin-top: -2px;" [icon]="'xls-icon'" [width]="'25'" [height]="'25'" [fill]="'var(--active)'" (click)="exportAsXLSX_2()"></app-svg-icons>
+    
+                            </div>
+                        </div>
+                    </div> -->
+                    <!-- <div  class="columnContainer">
+
+                        <app-svg-icons style="margin-top: -4px;" [icon]="'xls-icon'" [width]="'25'" [height]="'25'" [fill]="'var(--active)'" (click)="exportAsXLSX()"></app-svg-icons>
+                        <div></div>
+
+                    </div> -->
+                    <!-- <div class="columnContainer">
+                        <input type="text" placeholder="Equity Spot Ladder Scenarios" name="Group" class="filterIputs" style="width:277px !important">
+                    </div>
+                    <div class="columnContainer">
+                        <input type="text" placeholder="Market Spot % Variation" name="Group" class="filterIputs" style="width:277px !important">
+                    </div> -->
+    
+                </div>
+            </div>
+
+            <div class="lastRowFilter" >
+                <div class="clearFilter">
+                    <span class="link " (click)="clearAllFilters()" >{{'Clear All Filters' | translate}}</span>
+                </div>
+
+                <div class="columnContainer">
+                        
+                    <div class="pageRow" >
+                        <div class="pagination-class">
+
+                            <div class="pagination">
+                                <span class="common-font rows-per-page" style="align-self: center; color: var(--text);" >{{'Record(s) Per Page:' | translate}}</span>
+                                <input class="common-font rows-per-page-input" [(ngModel)]="pageSize" type="text"
+                                (keyup.enter)="onKeydownRowsPerPage(pageSize,this.filteredBackData,1)" (blur)="onKeydownRowsPerPage(pageSize,this.filteredBackData,1)"
+                                />
+                            </div>
+                
+                            <div class="pagination" >
+                                <!-- <button  class="button arrowButton"  (click)="prevBtnClicked(this.blotterData)" >
+                                    <
+                                </button>
+                                <input class="common-font rows-per-page-input" [(ngModel)]="pageNo" type="text"
+                                (keyup.enter)="onKeydownPageNo(pageNo)" (blur)="onKeydownPageNo(pageNo)"
+                                />
+                                <button class="button arrowButton"  (click)="nextBtnClicked(this.blotterData)">
+                                >
+                                </button>  -->
+                                <app-svg-icons class="arrow-img left-arrow" style="rotate: 180deg;" (click)="prevBtnClicked(this.blotterData)"
+                                [icon]="'arrow'" [width]="'15'" [height]="'15'" [fill]="'var(--btn-border)'"></app-svg-icons>
+
+                                <input class="common-font rows-per-page-input" [(ngModel)]="pageNo" type="text"
+                                (keyup.enter)="onKeydownPageNo(pageNo)" (blur)="onKeydownPageNo(pageNo)"
+                                />
+
+                                <app-svg-icons class="arrow-img left-arrow"  (click)="nextBtnClicked(this.blotterData)"
+                                [icon]="'arrow'" [width]="'15'" [height]="'15'" [fill]="'var(--btn-border)'"></app-svg-icons>
+                            </div>   
+                        </div>
+
+                        <div class="pageCount">
+                    
+                            <span class="paginationtext">Trade Count: {{totalCount}} </span>
+
+                            <app-svg-icons style="margin-top: -2px;" [icon]="'xls-icon'" [width]="'25'" [height]="'25'" [fill]="'var(--active)'" (click)="exportAsXLSX_2()"></app-svg-icons>
+                            <app-svg-icons style="margin-top: -2px;" [icon]="'pdf-export'" [width]="'10'" [height]="'10'"  [fill]="'var(--active)'" class="exportToPdf" (click)="SaveMainPDF()"></app-svg-icons>
+                        </div>
+                    </div>
+
+                    <!-- <div class="pageCount">
+                    
+                        <span class="paginationtext">Trade Count: {{totalCount}} </span>
+
+                        <app-svg-icons style="margin-top: -4px;" [icon]="'xls-icon'" [width]="'25'" [height]="'25'" [fill]="'var(--active)'" (click)="exportAsXLSX()"></app-svg-icons>
+
+                    </div> -->
+                </div>
+            </div>
+            
+        </div>
+    </div>
+    
+    <div> <!--class="DataTable"-->
+        <!-- <cdk-virtual-scroll-viewport itemSize="50" class="box"> -->
+        <table id="DataTables" >
+            <thead class="thead1">
+                <tr class="headerFix">
+ 
+                        <th>{{'Product Reference/Notional Size' | translate}}</th>
+                        <th class="sortIcon alignLeft ">
+                            <span>{{'Decisive Underlying' | translate}}</span>
+                            <div class="sort-svg-icon">
+                                <app-svg-icons class="back-button" [icon]="'sort'" id="WOPerf"  [width]="'15'" [height]="'15'"
+                                    [fill]="'var(--table-header-text)'" (click)="sort('WOPerf',true)"></app-svg-icons> <!--[ngClass]="{'rotate-toggle-menu-icon': DecisiveULAscend}"-->
+                                    <!-- <img style="width: 13px; height: 10px; cursor: pointer; margin: auto;"
+                                                src="{{asseturl}}filter-icon.png" (click)="focusOnISIN()"> -->
+                            </div>
+                        </th>
+                        <th class="flex-center sortIcon" >
+                            <span>{{'To Autocall' | translate}}</span>
+                            <div class="sort-svg-icon">
+                                <app-svg-icons class="back-button" [icon]="'sort'" id="KO_Distance"  [width]="'15'" [height]="'15'"
+                                    [fill]="'var(--table-header-text)'" (click)="sort('KO_Distance',true)"></app-svg-icons> <!--[ngClass]="[ ToAutoCallAscend==true? 'rotate-toggle-menu-icon': 'rotate-toggle-menu-icon-reverse']"-->
+                                    <!-- <img style="width: 13px; height: 10px; cursor: pointer; margin: auto;"
+                                                src="{{asseturl}}filter-icon.png" (click)="focusOnISIN()"> -->
+                            </div>
+                            <div>
+                                <!-- <img src="{{asseturl}}information.png" class="info"> -->
+                                <app-svg-icons  [icon]="'info-icon'" [width]="'20'" [height]="'20'"
+                                    [fill]="'var(--table-header-text)'" class="info"></app-svg-icons>
+                                <div class="infodiv" >
+                                    <span class="infoNote" 
+                                    style="white-space: initial;width:550px">
+                                    <div style="text-align:left">
+                                        <span class="note1">{{'Spot WO is above the Autocall Level by'| translate}}</span>
+                                        <span class="note2">{{'Autocall Level' | translate}}</span>
+                                    </div>  
+                                    </span>
+                                </div>
+                            </div>
+                        </th>
+                        <th class="flex-center sortIcon" >
+                            <span>{{'To Protection' | translate}}</span>
+                            <div class="sort-svg-icon">
+                                <app-svg-icons class="back-button" [icon]="'sort'" id="KI_Distance"  [width]="'15'" [height]="'15'"
+                                    [fill]="'var(--table-header-text)'" (click)="sort('KI_Distance',true)"></app-svg-icons>
+                                    <!-- <img style="width: 13px; height: 10px; cursor: pointer; margin: auto;"
+                                                src="{{asseturl}}filter-icon.png" (click)="focusOnISIN()"> -->
+                            </div>
+                            <div>
+                                <!-- <img src="{{asseturl}}information.png" class="info"> -->
+                                <app-svg-icons  [icon]="'info-icon'" [width]="'20'" [height]="'20'"
+                                    [fill]="'var(--table-header-text)'" class="info"></app-svg-icons>
+                                <div class="infodiv" >
+                                    <span class="infoNote" 
+                                    style="white-space: initial;width:550px">
+                                    <div style="text-align:left">
+                                        <span class="note1" >{{'Spot WO is above the Protection Level/Strike by' | translate}}</span>
+                                        <span class="note2">{{'Protection Level/Strike' | translate}}</span>
+                                    </div>  
+                                    </span>
+                                </div>
+                            </div>
+                        </th>
+                        <th class="flex-center sortIcon">
+                            <span>{{'Next Obs.' | translate}}</span>
+                            <div class="sort-svg-icon">
+                                <app-svg-icons class="back-button" [icon]="'sort'" id="NextObsDate" [width]="'15'" [height]="'15'"
+                                    [fill]="'var(--table-header-text)'" (click)="sort('NextObsDate',true)"></app-svg-icons>
+                                    <!-- <img style="width: 13px; height: 10px; cursor: pointer; margin: auto;"
+                                                src="{{asseturl}}filter-icon.png" (click)="focusOnISIN()"> -->
+                            </div>
+                        </th>
+                        <th class="flex-center sortIcon">
+                            <span>{{'Maturity'| translate}}</span>
+                            <div class="sort-svg-icon">
+                                <app-svg-icons class="back-button" [icon]="'sort'" id="Maturity_date" [width]="'15'" [height]="'15'"
+                                    [fill]="'var(--table-header-text)'" (click)="sort('Maturity_date',true)"></app-svg-icons>
+                                    <!-- <img style="width: 13px; height: 10px; cursor: pointer; margin: auto;"
+                                                src="{{asseturl}}filter-icon.png" (click)="focusOnISIN()"> -->
+                            </div>
+                        </th>
+                        <th class="flex-center sortIcon" >
+                            <span>{{'Indic. Valuation' | translate}}</span>
+                            <div class="sort-svg-icon">
+                                <app-svg-icons class="back-button" [icon]="'sort'" id="MTM" [width]="'15'" [height]="'15'"
+                                    [fill]="'var(--table-header-text)'" (click)="sort('MTM',true)"></app-svg-icons>
+                                    <!-- <img style="width: 13px; height: 10px; cursor: pointer; margin: auto;"
+                                                src="{{asseturl}}filter-icon.png" (click)="focusOnISIN()"> -->
+                            </div>
+                        </th><!--Mid MX price-->
+                        <th class="flex-center sortIcon" >
+                            <span>{{'Hist. Cashflows' | translate}}</span>
+                            <div class="sort-svg-icon">
+                                <app-svg-icons class="back-button" [icon]="'sort'" id="HistCFL" [width]="'15'" [height]="'15'"
+                                    [fill]="'var(--table-header-text)'" (click)="sort('HistCFL',true)"></app-svg-icons>
+                                    <!-- <img style="width: 13px; height: 10px; cursor: pointer; margin: auto;"
+                                                src="{{asseturl}}filter-icon.png" (click)="focusOnISIN()"> -->
+                            </div>
+                        </th>
+                        <th class="flex-center" >{{'Timeline' | translate}}</th>
+                        <th class="flex-center" >{{'What If' | translate}}</th>
+                        <!-- <th>Doc</th> -->
+
+                </tr> 
+            </thead>
+            <cdk-virtual-scroll-viewport [ngStyle]="{ 'height': showFilterDropdown ? 'calc(100vh - 620px)' : 'calc(100vh - 255px)' }" itemSize="50" class="box">
+            <tbody class="overflow-tbody">
+                <!-- <cdk-virtual-scroll-viewport itemSize="50" class="box"> -->
+                <tr  class="row" *cdkVirtualFor="let item of blotterData; let entry = index;"> <!--*ngFor="let item of blotterData; let entry = index;"-->
+                    <div class="tRows">
+                        <td class="firstDiv">
+                            <div  class="edgeDiv" [ngClass]="[item.EdgeColor=='Red' ? 'redEdge' : '',  item.EdgeColor=='Yellow' ? 'yellowEdge' : '',item.EdgeColor=='Orange' ? 'orangeEdge' : '',item.EdgeColor=='Green' ? 'greenEdge' : '',item.EdgeColor=='White' ? 'whiteEdge' : '',item.EdgeColor=='Black' ? 'blackEdge' : '']" ></div>
+                            <div class="firstDivnext" >
+                                <div class="scrip-name clickable" title={{item.Product_Name}} (click)="goToUCP(item.Product_Ref,entry,'','')">{{item.Product_Name}}</div>
+                                 <div class="scrip-name  nextRow" title="{{item.External}}&nbsp;{{item.ISIN!='NA'? '| '+item.ISIN:''}}&nbsp;{{item.Strategy!='NA'? '| '+item.Strategy:''}}&nbsp;|&nbsp;{{item.Start_Date |date: 'dd-MMM-yyyy'}}&nbsp;|&nbsp;{{item.Notional_Amt | number}}&nbsp;{{item.Currency}}" >{{item.External}}&nbsp;{{item.ISIN!='NA'? '| '+item.ISIN:""}}&nbsp;{{item.Strategy!='NA'? '| '+item.Strategy:""}}&nbsp;|&nbsp;{{item.Start_Date |date: "dd-MMM-yyyy"}}&nbsp;|&nbsp;{{item.Notional_Amt | number}}&nbsp;{{item.Currency}}</div>
+                            </div>
+                            
+                        </td><!---{{item.isin}}-->
+                        <td class="eachCell">
+                            <ng-container *ngIf="item.Worst === 'Fixing Pending' || item.Worst === 'Fixing Unavailable'; then pending; else wop">
+                            </ng-container>
+                            <ng-template #pending>
+                                <div>{{item.Worst}}</div>
+                            </ng-template>
+                            <ng-template #wop>
+                                <div *ngIf="item.Worst!=null && item.Worst!='N.A.'">{{item.Worst}} ({{item.WOPerf}} %)</div>
+                                <div *ngIf="(item.Worst==null && item.WOPerf=='0')|| (item.Worst=='N.A.'&& item.WOPerf=='0')||(item.Worst==''&& item.WOPerf=='0')" class="">-</div>
+                            </ng-template>
+                            <div *ngIf="item.BasketType!=null && item.BasketType!='N.A.'" class="nextRow">{{item.BasketType}}</div>
+                            <div *ngIf="item.BasketType==null || item.BasketType=='N.A.' || item.BasketType==''"class="nextRow ">-</div>
+                        </td>
+                        <td class="eachCell">
+                            <ng-container *ngIf="item.Worst === 'Fixing Pending' || item.Worst === 'Fixing Unavailable'; then konull; else kodist">
+                            </ng-container>
+                            <ng-template #konull>
+                                <div class="center">-</div>
+                            </ng-template>
+                            <ng-template #kodist>
+                                <div *ngIf="item.KO_Distance!=null && item.KO_Distance!='N.A.' && item.KOApplicable=='Y' && item.AliveYN=='Alive'" class="center" >{{item.KO_Distance | number:'1.2-2'}} %</div>
+                                <div *ngIf="item.KOApplicable=='N' || item.AliveYN!='Alive'" class="center" >-</div>
+                            </ng-template>
+                            <!-- <div *ngIf="item.KO_Distance==null || item.KO_Distance=='N.A.' || item.KO_Distance==''" class="">-</div> -->
+                            <div *ngIf="item.KO_Level!=null && item.KO_Level!='N.A.'" class="nextRow center">{{item.KO_Level}}</div>
+                            <div *ngIf="item.KO_Level==null || item.KO_Level=='N.A.' || item.KO_Level==''"class="nextRow center">-</div>
+                        </td>
+                        <td class="eachCell">
+                            <ng-container *ngIf="item.Worst === 'Fixing Pending' || item.Worst === 'Fixing Unavailable'; then kinull; else kidist">
+                            </ng-container>
+                            <ng-template #kinull>
+                                <div class="center">-</div>
+                            </ng-template>
+                            <ng-template #kidist>
+                                <div *ngIf="item.KI_Distance!=null && item.KI_Distance!='N.A.' && (item.KIApplicable=='Y' || item.StrikeYN
+                            =='Y' ) && item.AliveYN=='Alive'" class="center">{{item.KI_Distance | number:'1.2-2'}} %</div>
+                                <div *ngIf="(item.KIApplicable=='N' && item.StrikeYN=='N') || item.AliveYN!='Alive'" class="center" >-</div>
+                            </ng-template>
+                            <!-- <div *ngIf="item.KI_Distance==null || item.KI_Distance=='N.A.' || item.KI_Distance==''" class="">-</div> -->
+                            <div *ngIf="item.KI_Level!=null && item.KI_Level!='N.A.'" class="nextRow center">{{item.KI_Level}}</div>
+                            <div *ngIf="item.KI_Level==null || item.KI_Level=='N.A.' || item.KI_Level==''"class="nextRow center">-</div>
+                        </td>
+                        <td class="eachCell">
+                            <div *ngIf="item.M2NextObs!=null && item.M2NextObs!='N.A.'" class="center" >{{item.M2NextObs}}</div>
+                            <div *ngIf="item.M2NextObs==null || item.M2NextObs=='N.A.' || item.M2NextObs==''" class="center">-</div>
+                            <div *ngIf="item.NextObsDate!=null && item.NextObsDate!='N.A.' && item.NextObsDate!='Expired'" class="nextRow center">{{item.NextObsDate |date: "dd-MMM-yyyy"}}</div>
+                            <div *ngIf="item.NextObsDate!=null && item.NextObsDate!='N.A.' && item.NextObsDate=='Expired'" class="nextRow center">{{item.NextObsDate}}</div>
+                            <div *ngIf="item.NextObsDate==null || item.NextObsDate=='N.A.' || item.NextObsDate==''"class="nextRow center ">-</div>
+                        </td>
+                        <td class="eachCell">
+                            <div *ngIf="item.M2Maturity!=null && item.M2Maturity!='N.A.'" class="center">{{item.M2Maturity}}</div>
+                            <div *ngIf="item.M2Maturity==null || item.M2Maturity=='N.A.' || item.M2Maturity==''" class="center">-</div>
+                            <div *ngIf="item.Maturity_date!=null && item.Maturity_date!='N.A.' && item.Maturity_date!='Expired'" class="nextRow center">{{item.Maturity_date | date: "dd-MMM-yyyy"}}</div>
+                            <div *ngIf="item.Maturity_date!=null && item.Maturity_date!='N.A.' && item.Maturity_date=='Expired'" class="nextRow center">{{item.Maturity_date}}</div>
+                            <div *ngIf="item.Maturity_date==null || item.Maturity_date=='N.A.'||item.Maturity_date==''"class="nextRow center ">-</div>
+                        </td>
+                        <td class="eachCell">
+                            <div *ngIf="item.MTM!=null && item.MTM!='N.A.' && item.MTM!='-'" class="center">{{item.MTM | number:'1.2-2'}} %</div>
+                            <div *ngIf="item.MTM==null || item.MTM=='N.A.'|| item.MTM=='-'" class="center">-</div>
+                        </td>
+                        <td class="eachCell">
+                            <div *ngIf="item.HistCFL!=null && item.HistCFL!='N.A.' && item.HistCFL!='-'" class="center">{{item.HistCFL | number:'1.2-2' }} %</div>
+                            <div *ngIf="item.HistCFL==null || item.HistCFL=='N.A.' ||item.HistCFL=='' ||item.HistCFL=='-'" class="center">-</div>
+                            <div *ngIf="item.TAE" class="nextRow center">{{item.TAE}}</div>
+                        </td>
+                        <td class="eachCell">
+                            <div class="link center" (click)="TimelinePopup(item)" [class.disabled]="checkWhatIfData">View Timeline</div>
+                            <!-- <div class="center timeline-name" title={{item.Client}}-{{item.Format}} *ngIf="item.Client!=null && item.Client!='N.A.'">
+                                {{item.Client}}&nbsp;&nbsp;-&nbsp;&nbsp;{{item.Format}}
+                            </div> -->
+                            <div class="center" style="display: flex;" title={{item.Client}}-{{item.Format}} *ngIf="item.Client!=null && item.Client!='N.A.'">
+                                <span class="timeline-name" >{{item.Client}}</span>
+                                <span>-{{item.Format}}</span>
+                            
+                            </div>
+                            <div class="center" *ngIf="item.Client==null || item.Client=='N.A.'" class="">-</div>
+                        </td>
+                        <td class="eachCell alignWhat-If">
+                            <!-- <div class="alignCenter">  -->
+                                <!-- <input type="radio" style="height: 13px;" [(ngModel)]="item.answer" /> -->
+                                <!-- <app-svg-icons class="back-button" [icon]="'down-arrow'" [width]="'10'" [height]="'10'"
+                                [fill]="'var(--headers)'" (click)="this.getWhatIfDataEntry(item, entry)"
+                                [ngClass]="{'rotate-toggle-menu-icon': this.showWhatIFFlags[entry]}"></app-svg-icons> -->
+
+                                <app-svg-icons class="back-button" [icon]="'whatIf-icon'" [width]="'20'" [height]="'20'"
+                                [fill]="'var(--headers)'" (click)="this.getWhatIfDataEntry(item, entry)"
+                                [ngClass]="{'rotate-toggle-menu-icon': this.showWhatIFFlags[entry]}" [class.disabled]="whatIfDataIconFlag" ></app-svg-icons>
+    
+                            <!-- </div> -->
+                        </td>
+                        <!-- <td>Doc</td> -->
+                    </div>
+                    <div *ngIf="this.showWhatIFFlags[entry]" class="whatIfDiv">
+
+                        <div class="box-container">
+      
+                              <table *ngIf="this.whatIfData[entry]?.length>0">
+                                <thead class="thead1_sub">
+                                      <tr class="whatIfHeader">
+                                          <th class="whatIfHead">{{'Underlying' | translate}}</th>
+                                          <th class="flex-center whatIfHead">{{'Currency' | translate}}</th>
+                                          <th class="flex-center whatIfHead">{{'Closing Price' | translate}} </th>
+                                          <th class="flex-center whatIfHead">{{'Delta' | translate}}</th>
+                                          <th class="flex-center whatIfHead">{{'Gamma' | translate}}</th>
+                                          <th class="flex-center whatIfHead">{{'Vega' | translate}}</th>
+                                          <!-- <th>Doc</th> -->
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <tr *ngFor="let item of this.whatIfData[entry]; let i = index;" class="whatIfHeader">
+                                        <td class="eachCell">
+                                          <div *ngIf="item.underlying==null || item.underlying=='N.A.' || item.underlying==''" class="alignCenter">-</div>
+                                          <div *ngIf="item.underlying!=null && item.underlying!='N.A.'">{{item.underlying}}</div>
+                                        </td><!---{{item.isin}}-->
+                                        <td class="center eachCell">
+                                            <div *ngIf="item.deltaCcy==null || item.deltaCcy=='N.A.' || item.deltaCcy==''" class="alignCenter">-</div>
+                                            <div *ngIf="item.deltaCcy!=null && item.deltaCcy!='N.A.'">{{item.deltaCcy}}</div>
+                                          </td>
+                                        <td class="center eachCell">
+                                            <div *ngIf="item.lastFixing==null || item.lastFixing=='N.A.' || item.lastFixing==''" class="alignCenter">-</div>
+                                            <div *ngIf="item.lastFixing!=null && item.lastFixing!='N.A.'">{{item.lastFixing | number:'1.2-2'}}</div>
+                                        </td>
+                                        <td class="center eachCell">
+                                            <div *ngIf="item.delta==null || item.delta=='N.A.' || item.delta==''" class="alignCenter">-</div>
+                                            <div *ngIf="item.delta!=null && item.delta!='N.A.'">{{item.delta | number:'1.2-2'}} ({{item?.deltaPer | number:'1.2-2'}} %)</div>
+                                        </td>
+                                        <td class="center eachCell">
+                                          <div *ngIf="item.gamma==null || item.gamma=='N.A.' || item.gamma==''" class="alignCenter">-</div>
+                                            <div *ngIf="item.gamma!=null && item.gamma!='N.A.'">{{item.gamma| number:'1.2-2'}} ({{item?.gammaPer | number:'1.2-2'}} %)</div>
+                                        </td>
+                                        <td class="center eachCell">
+                                          <div *ngIf="item.vega==null || item.vega=='N.A.' || item.vega==''" class="alignCenter">-</div>
+                                            <div *ngIf="item.vega!=null && item.vega!='N.A.'">{{item.vega| number:'1.2-2'}} ({{item?.vegaPer | number:'1.2-2'}} %)</div>
+                                        </td>
+                                          <!-- <td>Doc</td> -->
+                                        </tr>
+                                  </tbody>
+                              </table>
+                              <div *ngIf="(this.whatIfData[entry]?.length === 0) || (this.whatIfData[entry] == null)">{{'No Records Found' | translate}}</div>
+                        </div>
+                    </div>
+                </tr>
+                <!-- </cdk-virtual-scroll-viewport> -->
+                <tr *ngIf="blotterData?.length == 0 && !loader" class="noRec">
+                   {{' No Record Found' | translate}}
+                  </tr>
+                <!-- <div *ngIf="loader" style="text-align: center; margin-top: 15%">
+                    <div class="loader-center">
+                      <div class="multi-ripple">
+                        <div></div>
+                        <div></div>
+                      </div>
+                    </div>
+                </div> -->
+            </tbody>
+            </cdk-virtual-scroll-viewport>
+            <!-- <div class="pagination-class">
+
+                <div class="pagination">
+                    <span class="common-font rows-per-page" style="align-self: center; color: var(--text);" >Record(s) Per Page:</span>
+                    <input class="common-font rows-per-page-input" [(ngModel)]="pageSize" type="text"
+                    (keyup.enter)="onKeydownRowsPerPage(pageSize)" (blur)="onKeydownRowsPerPage(pageSize)"
+                    />
+                </div>
+    
+                <div class="pagination" >
+
+                    <app-svg-icons class="arrow-img left-arrow" style="rotate: 180deg;" (click)="prevBtnClicked(this.blotterData)"
+                    [icon]="'arrow'" [width]="'15'" [height]="'15'" [fill]="'var(--btn-border)'"></app-svg-icons>
+
+                    <input class="common-font rows-per-page-input" [(ngModel)]="pageNo" type="text"
+                    (keyup.enter)="onKeydownPageNo(pageNo)" (blur)="onKeydownPageNo(pageNo)"
+                    />
+
+                    <app-svg-icons class="arrow-img left-arrow"  (click)="nextBtnClicked(this.blotterData)"
+                    [icon]="'arrow'" [width]="'15'" [height]="'15'" [fill]="'var(--btn-border)'"></app-svg-icons>
+                </div>   
+            </div> -->
+        </table>
+        <!-- </cdk-virtual-scroll-viewport> -->
+    </div>
+
+    <div class="pagination-class">
+
+        <!-- <div class="pagination">
+            <span class="common-font rows-per-page" style="align-self: center; color: var(--text);" >Record(s) Per Page:</span>
+            <input class="common-font rows-per-page-input" [(ngModel)]="pageSize" type="text"
+            (keyup.enter)="onKeydownRowsPerPage(pageSize)" (blur)="onKeydownRowsPerPage(pageSize)"
+            />
+        </div> -->
+        <!-- <div> -->
+            <span style="width: fit-content;" >{{pageStart}} - {{pageEnd}} of {{totalCount}}</span>
+            <div class="pagination" >
+
+                <app-svg-icons class="arrow-img left-arrow" style="rotate: 180deg;" (click)="prevBtnClicked(this.blotterData)"
+                [icon]="'arrow'" [width]="'15'" [height]="'15'" [fill]="'var(--btn-border)'"></app-svg-icons>
+
+                <input class="common-font rows-per-page-input" [(ngModel)]="pageNo" type="text"
+                (keyup.enter)="onKeydownPageNo(pageNo)" (blur)="onKeydownPageNo(pageNo)"/>
+    
+                <app-svg-icons class="arrow-img left-arrow" style="margin-top: -1px;"  (click)="nextBtnClicked(this.blotterData)"
+                [icon]="'arrow'" [width]="'15'" [height]="'15'" [fill]="'var(--btn-border)'"></app-svg-icons>
+
+                <!-- <app-svg-icons class="arrow-img left-arrow" style="rotate: 180deg;" (click)="handlePage({'pageNo':pageNo-1,'pageSize':pageSize, 'reload':false,'length':noOfRecords})"
+                [icon]="'arrow'" [width]="'15'" [height]="'15'" [fill]="'var(--btn-border)'"></app-svg-icons>
+    
+                <app-svg-icons class="arrow-img left-arrow" style="margin-top: -1px;"  (click)="handlePage({'pageNo':pageNo+1,'pageSize':pageSize, 'reload':false,'length':noOfRecords})"
+                [icon]="'arrow'" [width]="'15'" [height]="'15'" [fill]="'var(--btn-border)'"  [disabled]="disableNext"></app-svg-icons>
+                 -->
+            </div>  
+        <!-- </div> -->
+
+        <!-- <div class="pagination" >
+
+            <app-svg-icons class="arrow-img left-arrow" style="rotate: 180deg;" (click)="prevBtnClicked(this.blotterData)"
+            [icon]="'arrow'" [width]="'15'" [height]="'15'" [fill]="'var(--btn-border)'"></app-svg-icons>
+
+            <app-svg-icons class="arrow-img left-arrow" style="margin-top: -1px;"  (click)="nextBtnClicked(this.blotterData)"
+            [icon]="'arrow'" [width]="'15'" [height]="'15'" [fill]="'var(--btn-border)'"></app-svg-icons>
+        </div>    -->
+    </div>
+</div>
+
+<!-- View Timeline / Underlying Prices pop-up || Kaustubh S || 29-Aug-2023 || START  -->
+
+<div *ngIf="showPopup" class="overlay">
+
+    <div class="page-content-container-popup scroll">
+
+        <div id="timelinePopupPDF">
+
+            <div class="header-row d-flex j-c-space-betwn a-i-center">
+                <div class="logo opaque"><img src="{{asseturl}}FA_SANTANDER_PV_POS_RGB.png" alt=""></div>
+                <div class="title">{{popupTitle}}</div>
+                <div class="icons d-flex j-c-center a-i-center">
+                    <div class="popupSticker">{{this.selectedItem['Format']}}</div>
+                    <app-svg-icons [icon]="'xls'" [width]="'10'" [height]="'10'" class="exportToExcel" (click)="ExportTables()"></app-svg-icons>
+                    <app-svg-icons [icon]="'pdf-export'" [width]="'10'" [height]="'10'" class="exportToPdf" (click)="SavePDF()"></app-svg-icons>
+                    <app-svg-icons
+                    class="refresh-btn"
+                    [icon]="'refresh'"
+                    [width]="'25'"
+                    [height]="'25'"
+                    [ngClass]="{ 'rotateCircle': popupLoader }"
+                    (click)="ReloadTimeline()"
+                    ></app-svg-icons>
+                    <app-svg-icons class="closebtn" [icon]="'cancel-icon'" [width]="'20'" [height]="'20'" (click)="showPopup = false">
+                    </app-svg-icons>
+                    <div class="pdfOpaque opaque d-none">As of Date: {{histTableData?.[histTableData.length - 1]?.['date'] || ''}}</div>
+                </div>
+            </div>
+            <div class="productDetails">
+                <div><label class="txtBold">{{'Client:' | translate}}</label> {{selectedItem['Client']}}</div>
+                <div><label class="txtBold">{{'Capital Protection:' | translate}}</label> {{100 - selectedItem['CapAtRisk']}}%</div>
+                <div><label class="txtBold">{{'Notional:' | translate}}</label> {{selectedItem.Notional_Amt | number}}&nbsp;{{selectedItem.Currency}}</div>
+            </div>
+            <!-- <div class="Status pdfOpaque opaque d-none"><label class="txtBold">{{'Status:' | translate}}</label>&nbsp;{{selectedItem['AliveYN']}}</div> -->
+
+            <div class="graph-div">
+                <ng-container *ngIf="isVisible | async">
+                    <app-underlying-prices 
+                        [NMID]="this.selectedItem['Product_Ref']" 
+                        [underlying1]="this.selectedItem['UL1']" 
+                        [underlying2]="this.selectedItem['UL2']" 
+                        [underlying3]="this.selectedItem['UL3']" 
+                        [underlying4]="this.selectedItem['UL4']" 
+                        [koYN]="this.selectedItem['KOApplicable']"
+                        [kiYN]="this.selectedItem['KIApplicable']"
+                        [strikeYN]="this.selectedItem['StrikeYN']"
+                        [couponBarrierYN]="this.selectedItem['CouponBarrierYN']"
+                        [obsTableData]="this.obsTableData"
+                        [payoff]="this.selectedItem['PayOff']"
+                        [histTableData]="this.histTableData"
+                        [cancellationData]="this.cancellationData"
+                    ></app-underlying-prices>
+                </ng-container>
+            </div>
+
+            <div class="obs-table" *ngIf="obsTableData?.length > 0">
+                <div class="title">
+                    <label for="">{{'Observation Table' | translate}}</label>
+                    <ng-template [ngIf]="this.obsTableData[this.obsTableData.length - 1]['autocalledYN'] === 'Y'" [ngIfElse]="cancelledStatus">
+                        <label class="productStatus">{{ '* Autocalled on ' +  this.obsTableData[this.obsTableData.length - 1]['observation_Date'] + ' | ' + this.selectedItem['TAE'] | translate }}</label>
+                    </ng-template>
+                    <ng-template #cancelledStatus>
+                        <ng-template [ngIf]="this.obsTableData[0]['cancelledYN'] === 'Y'" [ngIfElse]="maturedStatus">
+                            <label class="productStatus">{{ '* Cancelled on ' +  this.obsTableData[0]['cancelledOn'] + ' | ' + this.selectedItem['TAE'] | translate }}</label>
+                        </ng-template>
+                    </ng-template>
+                    <ng-template #maturedStatus>
+                        <ng-template [ngIf]="this.selectedItem['AliveYN'] === 'Dead'" [ngIfElse]="aliveStatus">
+                            <span class="productStatus"> <!-- To show TAE if present || Kaustubh S || 22-Nov-2023 || START -->
+                                <label>{{ '* Matured' | translate }}</label>
+                                <label *ngIf="this.selectedItem['TAE']">{{ ' | ' + this.selectedItem['TAE'] | translate }}</label>
+                            </span> <!-- To show TAE if present || Kaustubh S || 22-Nov-2023 || END -->
+                        </ng-template>
+                    </ng-template>
+                    <ng-template #aliveStatus>
+                        <ng-template [ngIf]="true">
+                            <span class="productStatus"> <!-- To show TAE if present || Kaustubh S || 22-Nov-2023 || START -->
+                                <label>{{ '* Alive' | translate }}</label>
+                                <label *ngIf="this.selectedItem['TAE']">{{ ' | ' + this.selectedItem['TAE'] | translate }}</label>
+                            </span> <!-- To show TAE if present || Kaustubh S || 22-Nov-2023 || END -->
+                        </ng-template>
+                    </ng-template>
+                </div>
+                <!-- FSLINT-56 | Double Tranche : Show Additional Observation table on Performance Timeline | 20-Mar-2024 -->
+                <div class="add-obs-table"
+                    *ngIf="this.selectedItem['PayOff'] === 'DT Autocall' && obsTableDataDT?.length > 0">
+                    <table>
+                        <thead>
+                            <tr class="add-obs-table-tr">
+                                <th>
+                                    <div class="title">
+                                        <label>{{ this.obsTableDataDT[0]['notional_Perc'] + '% Notional' |
+                                            translate}}</label>
+                                    </div>
+                                </th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                            <tr>
+                                <th>{{'Issue Date' | translate}}</th>
+                                <th>{{'Payment Date' | translate}}</th>
+                                <th>{{'Fixed Coupon' | translate}}</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div>
+                                        <span>{{ this.obsTableDataDT[0]['issue_Date'] }}</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        <span>{{ this.obsTableDataDT[0]['payment_Date'] }}</span>
+                                    </div>
+                                </td>
+                                <td
+                                    [ngClass]="{'opacity-50': setStatusCssDt(this.obsTableDataDT[0]['issue_Date'], this.obsTableDataDT[0]['payout']) === 'question'}">
+                                    {{ this.obsTableDataDT[0]['fixed_Coupon'] + ' %' }}</td>
+                                <td class="d-flex a-i-center j-c-center">
+                                    <span
+                                        [ngClass]="setStatusCssDt(this.obsTableDataDT[0]['issue_Date'], this.obsTableDataDT[0]['payout'])"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div>
+                                        <span>{{ '' }}</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        <span>{{ '' }}</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        <span>{{ '' }}</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        <span>{{ '' }}</span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- FSLINT-56 | Double Tranche : Show Additional Observation table on Performance Timeline | 20-Mar-2024 -->
+                <div class="">
+                    <ng-container [ngSwitch]="this.selectedItem['PayOff']">
+                        <table *ngSwitchCase="'Autocall'">
+                            <thead>
+                                <tr>
+                                    <th>{{'Observation Date' | translate}}</th>
+                                    <th>{{'Payment Date' | translate}}</th>
+                                    <th colspan="2">{{'Autocall trigger/coupon' | translate}}</th>
+                                    <th colspan="3">{{'Coupon trigger/coupon' | translate}}</th>
+                                    <th>{{'Guaranteed Coupon' | translate}}</th>
+                                    <th>{{obsTableData?.[0]?.['optionType'] || 'Barrier (100%)'}}</th>
+                                    <th>{{'Payout' | translate}}</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let row of obsTableData; let i = index">
+                                    <td>
+                                        <div>
+                                            <span>{{row['observation_Date']}}</span>
+                                            <div *ngIf="i === (obsTableData.length-1)" class="infoImgDiv">
+                                                <img src="{{asseturl}}information.png" class="info" >
+                                                <div class="infodiv" >
+                                                <span class="infoNote infoSpan">
+                                                    <span class="low-fade">{{'Final Fixing'}}</span>
+                                                </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div>
+                                            <span>{{row['payment_Date']}}</span>
+                                            <div *ngIf="i === (obsTableData.length-1)" class="infoImgDiv">
+                                                <img src="{{asseturl}}information.png" class="info" >
+                                                <div class="infodiv" >
+                                                <span class="infoNote infoSpan">
+                                                    <span class="low-fade">{{'Maturity'}}</span>
+                                                </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>{{ (row['autocall_Trigger'] === '-') ? row['autocall_Trigger'] : _str(row['autocall_Trigger']).concat(' %') }}</td>
+                                    <td>{{ (row['autocall_Coupon'] === '-') ? row['autocall_Coupon'] : _str(_num(row['autocall_Coupon']).toFixed(2)).concat(' %') }}</td>
+                                    <td>{{ (row['coupon_Trigger'] === '-') ? row['coupon_Trigger'] : _str(row['coupon_Trigger']).concat(' %') }}</td>
+                                    <td>{{ (row['coupon'] === '-') ? row['coupon'] : _str(row['coupon']).concat(' %') }}</td>
+                                    <td>{{row['memory']}}</td>
+                                    <td>{{ (row['guaranteed'] === '-') ? row['guaranteed'] : _str(row['guaranteed']).concat(' %') }}</td>
+                                    <td>{{ (row['barrier'] === '-') ? row['barrier'] : _str(row['barrier']).concat(' %') }}</td>
+                                    <td [ngClass]="SetPayoutOpacity(row['status'])">{{ (row['payout'] === '-') ? row['payout'] : _str(row['payout']).concat(' %') }}</td>
+                                    <td class="d-flex a-i-center j-c-center">
+                                        <span [ngClass]="SetStatusCss(row['status'], row['payout'], _num(row['autocall_Coupon']).toFixed(2), row['coupon'], row['guaranteed'])"></span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <!-- FSLINT-56 | Double Tranche : Show Additional Observation table on Performance Timeline | 20-Mar-2024 -->
+						<table *ngSwitchCase="'DT Autocall'">
+                            <thead>
+                                <tr class="add-obs-table-tr">
+                                    <th>
+                                        <div class="title">
+                                            <label>{{ 100 - _num(this.obsTableDataDT[0]['notional_Perc']) + '%
+                                                Notional' | translate}}</label>
+                                        </div>
+                                    </th>
+                                    <th></th>
+                                    <th colspan="2"></th>
+                                    <th colspan="3"></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                                <tr>
+                                    <th>{{'Observation Date' | translate}}</th>
+                                    <th>{{'Payment Date' | translate}}</th>
+                                    <th colspan="2">{{'Autocall trigger/coupon' | translate}}</th>
+                                    <th colspan="3">{{'Coupon trigger/coupon' | translate}}</th>
+                                    <th>{{'Guaranteed Coupon' | translate}}</th>
+                                    <th>{{obsTableData?.[0]?.['optionType'] || 'Barrier (100%)'}}</th>
+                                    <th>{{'Payout' | translate}}</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let row of obsTableData; let i = index">
+                                    <td>
+                                        <div>
+                                            <span>{{row['observation_Date']}}</span>
+                                            <div *ngIf="i === (obsTableData.length-1)" class="infoImgDiv">
+                                                <img src="{{asseturl}}information.png" class="info">
+                                                <div class="infodiv">
+                                                    <span class="infoNote infoSpan">
+                                                        <span class="low-fade">{{'Final Fixing'}}</span>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div>
+                                            <span>{{row['payment_Date']}}</span>
+                                            <div *ngIf="i === (obsTableData.length-1)" class="infoImgDiv">
+                                                <img src="{{asseturl}}information.png" class="info">
+                                                <div class="infodiv">
+                                                    <span class="infoNote infoSpan">
+                                                        <span class="low-fade">{{'Maturity'}}</span>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>{{ (row['autocall_Trigger'] === '-') ? row['autocall_Trigger'] :
+                                        _str(row['autocall_Trigger']).concat(' %') }}</td>
+                                    <td>{{ (row['autocall_Coupon'] === '-') ? row['autocall_Coupon'] :
+                                        _str(_num(row['autocall_Coupon']).toFixed(2)).concat(' %') }}</td>
+                                    <td>{{ (row['coupon_Trigger'] === '-') ? row['coupon_Trigger'] :
+                                        _str(row['coupon_Trigger']).concat(' %') }}</td>
+                                    <td>{{ (row['coupon'] === '-') ? row['coupon'] : _str(row['coupon']).concat('
+                                        %') }}</td>
+                                    <td>{{row['memory']}}</td>
+                                    <td>{{ (row['guaranteed'] === '-') ? row['guaranteed'] :
+                                        _str(row['guaranteed']).concat(' %') }}</td>
+                                    <td>{{ (row['barrier'] === '-') ? row['barrier'] : _str(row['barrier']).concat('
+                                        %') }}</td>
+                                    <td [ngClass]="SetPayoutOpacity(row['status'])">{{ (row['payout'] === '-') ?
+                                        row['payout'] : _str(row['payout']).concat(' %') }}</td>
+                                    <td class="d-flex a-i-center j-c-center">
+                                        <span
+                                            [ngClass]="SetStatusCss(row['status'], row['payout'], _num(row['autocall_Coupon']).toFixed(2), row['coupon'], row['guaranteed'])"></span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <!-- FSLINT-56 | Double Tranche : Show Additional Observation table on Performance Timeline | 20-Mar-2024 -->
+                        <table *ngSwitchCase="'Digital'">
+                            <thead>
+                                <tr>
+                                    <th>{{'Observation Date' | translate}}</th>
+                                    <th>{{'Payment Date' | translate}}</th>
+                                    <th colspan="3">{{'Coupon trigger/coupon' | translate}}</th>
+                                    <th>{{'Guaranteed Coupon' | translate}}</th>
+                                    <th>{{obsTableData?.[0]?.['optionType'] || 'Barrier (100%)'}}</th>
+                                    <th>{{'Payout' | translate}}</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let row of obsTableData; let i = index">
+                                    <td>
+                                        <div>
+                                            <span>{{row['observation_Date']}}</span>
+                                            <div *ngIf="i === (obsTableData.length-1)" class="infoImgDiv">
+                                                <img src="{{asseturl}}information.png" class="info" >
+                                                <div class="infodiv" >
+                                                <span class="infoNote infoSpan">
+                                                    <span class="low-fade">{{'Final Fixing'}}</span>
+                                                </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div>
+                                            <span>{{row['payment_Date']}}</span>
+                                            <div *ngIf="i === (obsTableData.length-1)" class="infoImgDiv">
+                                                <img src="{{asseturl}}information.png" class="info" >
+                                                <div class="infodiv" >
+                                                <span class="infoNote infoSpan">
+                                                    <span class="low-fade">{{'Maturity'}}</span>
+                                                </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>{{ (row['coupon_Trigger'] === '-') ? row['coupon_Trigger'] : _str(row['coupon_Trigger']).concat(' %') }}</td>
+                                    <td>{{ (row['coupon'] === '-') ? row['coupon'] : _str(row['coupon']).concat(' %') }}</td>
+                                    <td>{{row['memory']}}</td>
+                                    <td>{{ (row['guaranteed'] === '-') ? row['guaranteed'] : _str(row['guaranteed']).concat(' %') }}</td>
+                                    <td>{{ (row['barrier'] === '-') ? row['barrier'] : _str(row['barrier']).concat(' %') }}</td>
+                                    <td [ngClass]="SetPayoutOpacity(row['status'])">{{ (row['payout'] === '-') ? row['payout'] : _str(row['payout']).concat(' %') }}</td>
+                                    <td class="d-flex a-i-center j-c-center">
+                                        <span [ngClass]="SetStatusCss(row['status'], row['payout'], row['coupon'], row['guaranteed'])"></span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table *ngSwitchCase="'European Digital'">
+                            <thead>
+                                <tr>
+                                    <th>{{'Observation Date' | translate}}</th>
+                                    <th>{{'Payment Date' | translate}}</th>
+                                    <th colspan="2">{{'Coupon trigger/coupon' | translate}}</th>
+                                    <th>{{'Guaranteed Coupon' | translate}}</th>
+                                    <th>{{'Put' | translate}}</th>
+                                    <th>{{'Payout' | translate}}</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let row of obsTableData; let i = index">
+                                    <td>
+                                        <div>
+                                            <span>{{row['observation_Date']}}</span>
+                                            <div *ngIf="i === (obsTableData.length-1)" class="infoImgDiv">
+                                                <img src="{{asseturl}}information.png" class="info" >
+                                                <div class="infodiv" >
+                                                <span class="infoNote infoSpan">
+                                                    <span class="low-fade">{{'Final Fixing'}}</span>
+                                                </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div>
+                                            <span>{{row['payment_Date']}}</span>
+                                            <div *ngIf="i === (obsTableData.length-1)" class="infoImgDiv">
+                                                <img src="{{asseturl}}information.png" class="info" >
+                                                <div class="infodiv" >
+                                                <span class="infoNote infoSpan">
+                                                    <span class="low-fade">{{'Maturity'}}</span>
+                                                </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>{{ (row['coupon_Trigger'] === '-') ? row['coupon_Trigger'] : _str(row['coupon_Trigger']).concat(' %') }}</td>
+                                    <td>{{ (row['coupon'] === '-') ? row['coupon'] : _str(row['coupon']).concat(' %') }}</td>
+                                    <td>{{ (row['guaranteed'] === '-') ? row['guaranteed'] : _str(row['guaranteed']).concat(' %') }}</td>
+                                    <td>{{ (row['put'] === '-') ? row['put'] : _str(row['put']).concat(' %') }}</td>
+                                    <td [ngClass]="SetPayoutOpacity(row['status'])">{{ (row['payout'] === '-') ? row['payout'] : _str(row['payout']).concat(' %') }}</td>
+                                    <td class="d-flex a-i-center j-c-center">
+                                        <span [ngClass]="SetStatusCss(row['status'], row['payout'], row['coupon'], row['guaranteed'])"></span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table *ngSwitchCase="'Issuer Callable'">
+                            <thead>
+                                <tr>
+                                    <th>{{'Observation Date' | translate}}</th>
+                                    <th>{{'Payment Date'| translate}}</th>
+                                    <th>{{'HasCall/coupon'  | translate}}</th>
+                                    <th>{{'Coupon trigger/coupon' | translate}}</th>
+                                    <th>{{'Guaranteed Coupon' | translate}}</th>
+                                    <th>{{obsTableData?.[0]?.['optionType'] || 'Barrier (100%)'}}</th>
+                                    <th>{{'Payout' | translate}}</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let row of obsTableData; let i = index">
+                                    <td>
+                                        <div>
+                                            <span>{{row['observation_Date']}}</span>
+                                            <div *ngIf="i === (obsTableData.length-1)" class="infoImgDiv">
+                                                <img src="{{asseturl}}information.png" class="info" >
+                                                <div class="infodiv" >
+                                                <span class="infoNote infoSpan">
+                                                    <span class="low-fade">{{'Final Fixing'}}</span>
+                                                </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div>
+                                            <span>{{row['payment_Date']}}</span>
+                                            <div *ngIf="i === (obsTableData.length-1)" class="infoImgDiv">
+                                                <img src="{{asseturl}}information.png" class="info" >
+                                                <div class="infodiv" >
+                                                <span class="infoNote infoSpan">
+                                                    <span class="low-fade">{{'Maturity'}}</span>
+                                                </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="d-flex a-i-center j-c-space-betwn">
+                                            <label class="flex-basis-0 flex-grow-1 capitalize">{{row['hasCall']}}</label>
+                                            <label class="flex-basis-0 flex-grow-1">{{ (row['call_Coupon'] === '-') ? row['call_Coupon'] : _str(_num(row['call_Coupon']).toFixed(2)).concat(' %') }}</label>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="d-flex a-i-center j-c-space-betwn">
+                                            <label class="flex-basis-0 flex-grow-1">{{ (row['coupon_Trigger'] === '-') ? row['coupon_Trigger'] : _str(row['coupon_Trigger']).concat(' %') }}</label>
+                                            <label class="flex-basis-0 flex-grow-1">{{ (row['coupon'] === '-') ? row['coupon'] : _str(row['coupon']).concat(' %') }}</label>
+                                            <label class="flex-basis-0 flex-grow-1">{{row['memory']}}</label>
+                                        </span>
+                                    </td>
+                                    <td>{{ (row['guaranteed'] === '-') ? row['guaranteed'] : _str(row['guaranteed']).concat(' %') }}</td>
+                                    <td>{{ (row['barrier'] === '-') ? row['barrier'] : _str(row['barrier']).concat(' %') }}</td>
+                                    <td [ngClass]="SetPayoutOpacity(row['status'])">{{ (row['payout'] === '-') ? row['payout'] : _str(row['payout']).concat(' %') }}</td>
+                                    <td class="d-flex a-i-center j-c-center">
+                                        <span [ngClass]="SetStatusCss(row['status'], row['payout'], _num(row['call_Coupon']).toFixed(2), row['coupon'], row['guaranteed'])"></span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table *ngSwitchCase="'Reverse'">
+                            <thead>
+                                <tr>
+                                    <th>{{'Observation Date' | translate}}</th>
+                                    <th>{{'Payment Date' | translate}}</th>
+                                    <th>{{'Guaranteed Coupon' | translate}}</th>
+                                    <th>{{obsTableData?.[0]?.['optionType'] || 'Barrier (100%)'}}</th>
+                                    <th>{{'Payout' | translate}}</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let row of obsTableData; let i = index">
+                                    <td>
+                                        <div>
+                                            <span>{{row['observation_Date']}}</span>
+                                            <div *ngIf="i === (obsTableData.length-1)" class="infoImgDiv">
+                                                <img src="{{asseturl}}information.png" class="info" >
+                                                <div class="infodiv" >
+                                                <span class="infoNote infoSpan">
+                                                    <span class="low-fade">{{'Final Fixing'}}</span>
+                                                </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div>
+                                            <span>{{row['payment_Date']}}</span>
+                                            <div *ngIf="i === (obsTableData.length-1)" class="infoImgDiv">
+                                                <img src="{{asseturl}}information.png" class="info" >
+                                                <div class="infodiv" >
+                                                <span class="infoNote infoSpan">
+                                                    <span class="low-fade">{{'Maturity'}}</span>
+                                                </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>{{ (row['guaranteed'] === '-') ? row['guaranteed'] : _str(row['guaranteed']).concat(' %') }}</td>
+                                    <td>{{ (row['barrier'] === '-') ? row['barrier'] : _str(row['barrier']).concat(' %') }}</td>
+                                    <td [ngClass]="SetPayoutOpacity(row['status'])">{{ (row['payout'] === '-') ? row['payout'] : _str(row['payout']).concat(' %') }}</td>
+                                    <td class="d-flex a-i-center j-c-center">
+                                        <span [ngClass]="SetStatusCss(row['status'], row['payout'], row['guaranteed'])"></span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table *ngSwitchCase="'Vanilla'">
+                            <thead>
+                                <tr>
+                                    <th>{{'Observation Date' | translate}}</th>
+                                    <th>{{'Payment Date' | translate}}</th>
+                                    <th *ngIf="obsTableData?.[0]?.['participation'] !== ''">
+                                        {{obsTableData?.[0]?.['participation']}}
+                                    </th>
+                                    <th *ngIf="obsTableData?.[0]?.['rebate'] !== ''">{{'Rebate'}}</th>
+                                    <th *ngIf="obsTableData?.[0]?.['optionType'] !== ''">{{obsTableData?.[0]?.['optionType']}}</th>
+                                    <th>{{'Payout' | translate}}</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let row of obsTableData; let i = index">
+                                    <td>
+                                        <div>
+                                            <span>{{row['observation_Date']}}</span>
+                                            <div *ngIf="i === (obsTableData.length-1)" class="infoImgDiv">
+                                                <img src="{{asseturl}}information.png" class="info" >
+                                                <div class="infodiv" >
+                                                <span class="infoNote infoSpan">
+                                                    <span class="low-fade">{{'Final Fixing'}}</span>
+                                                </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div>
+                                            <span>{{row['payment_Date']}}</span>
+                                            <div *ngIf="i === (obsTableData.length-1)" class="infoImgDiv">
+                                                <img src="{{asseturl}}information.png" class="info" >
+                                                <div class="infodiv" >
+                                                <span class="infoNote infoSpan">
+                                                    <span class="low-fade">{{'Maturity'}}</span>
+                                                </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td *ngIf="row['participation'] !== ''">{{ (row['call'] === '-') ? row['call'] : _str(row['call']).concat(' %') }}</td>
+                                    <td *ngIf="row['rebate'] !== ''">{{ (_str(row['rebate']).trim() === '-') ? row['rebate'] : _str(row['rebate']).concat(' %') }}</td>
+                                    <td *ngIf="row['optionType'] !== ''">{{ (_str(row['barrier']).trim() === '-') ? row['barrier'] : _str(row['barrier']).concat(' %') }}</td>
+                                    <td [ngClass]="SetPayoutOpacity(row['status'])">{{ checkNaN(row['payout']) ? row['payout'] : _str(row['payout']).concat(' %') }}</td>
+                                    <td class="d-flex a-i-center j-c-center">
+                                        <span [ngClass]="SetStatusCss(row['status'], row['payout'], row['guaranteed'])"></span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </ng-container>
+                </div>
+            </div>
+
+            <div class="obs-table cancel-status" *ngIf="obsTableData?.length <= 0 && cancellationData?.length > 0 && cancellationData[0]['cancelledYN'] === 'Y'">
+                <div class="title">
+                    <label class="productStatus">{{ '* Cancelled on ' +  this.cancellationData[0]['cancelledOn'] + ' | ' + this.selectedItem['TAE'] | translate }}</label>
+                </div>
+            </div>
+
+            <div class="hist-table" *ngIf="histTableData?.length">
+                <div class="title">
+                    <label for="">{{'Historical Performance' | translate}}</label>
+                </div>
+                <div class="">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th colspan="2" class="shareRow" *ngIf="histTableData[0]['share1']">{{histTableData[0]['share1']}}</th>
+                                <th colspan="2" class="shareRow" *ngIf="histTableData[0]['share2']">{{histTableData[0]['share2']}}</th>
+                                <th colspan="2" class="shareRow" *ngIf="histTableData[0]['share3']">{{histTableData[0]['share3']}}</th>
+                                <th colspan="2" class="shareRow" *ngIf="histTableData[0]['share4']">{{histTableData[0]['share4']}}</th>
+                            </tr>
+                            <tr>
+                                <th>{{'Observation Date' | translate}}</th>
+                                <th *ngIf="histTableData[0]['share1']">{{'Level' | translate}}</th>
+                                <th *ngIf="histTableData[0]['share1']">{{'Performance' | translate}}</th>
+                                <th *ngIf="histTableData[0]['share2']">{{'Level' | translate}}</th>
+                                <th *ngIf="histTableData[0]['share2']">{{'Performance' | translate}}</th>
+                                <th *ngIf="histTableData[0]['share3']">{{'Level' | translate}}</th>
+                                <th *ngIf="histTableData[0]['share3']">{{'Performance' | translate}}</th>
+                                <th *ngIf="histTableData[0]['share4']">{{'Level' | translate}}</th>
+                                <th *ngIf="histTableData[0]['share4']">{{'Performance' | translate}}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let row of histTableData; let i = index">
+                                <td>
+                                    <div class="d-flex">
+                                        <span>{{ i === (histTableData.length-1) ? 'Spot ref.' : row['date']}}</span>
+                                        <div *ngIf="i === 0 && histTableData.length > 2" class="infoImgDiv">
+                                            <img src="{{asseturl}}information.png" class="info" >
+                                            <div class="infodiv" >
+                                            <span class="infoNote infoSpan hover-span">
+                                                <span class="low-fade">{{'Strike'}}</span>
+                                            </span>
+                                            </div>
+                                        </div>
+                                        <div *ngIf="i === (histTableData.length-2)" class="infoImgDiv">
+                                            <img src="{{asseturl}}information.png" class="info" >
+                                            <div class="infodiv" >
+                                            <span class="infoNote infoSpan">
+                                                <span class="low-fade">{{'Final Fixing'}}</span>
+                                            </span>
+                                            </div>
+                                        </div>
+                                    </div> 
+                                </td>
+                                <td *ngIf="histTableData[0]['share1']">{{row['fP1']}}</td>
+                                <td *ngIf="histTableData[0]['share1']">{{row['performance1'] === '-' || row['performance1'] === '' ? row['performance1'] : _str(row['performance1']).concat(' %')}}</td>
+                                <td *ngIf="histTableData[0]['share2']">{{row['fP2']}}</td>
+                                <td *ngIf="histTableData[0]['share2']">{{row['performance2'] === '-' || row['performance2'] === '' ? row['performance2'] : _str(row['performance2']).concat(' %')}}</td>
+                                <td *ngIf="histTableData[0]['share3']">{{row['fP3']}}</td>
+                                <td *ngIf="histTableData[0]['share3']">{{row['performance3'] === '-' || row['performance3'] === '' ? row['performance3'] : _str(row['performance3']).concat(' %')}}</td>
+                                <td *ngIf="histTableData[0]['share4']">{{row['fP4']}}</td>
+                                <td *ngIf="histTableData[0]['share4']">{{row['performance4'] === '-' || row['performance4'] === '' ? row['performance4'] : _str(row['performance4']).concat(' %')}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- FSLINT-51 || Kaustubh S || 06-Feb-2024 || START -->
+            <div class="payments-table" *ngIf="paymentsTblData?.Headers?.length">
+                <div class="title">
+                    <label for="">{{'Payments Table' | translate}}</label>
+                </div>
+                <div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th *ngFor="let hdr of paymentsTblData?.Headers">{{_str(hdr).replaceAll('_', ' ') | translate}}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let row of paymentsTblData?.RowData">
+                                <td *ngFor="let hdr of paymentsTblData?.Headers">
+                                    {{row[hdr] | translate}}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- FSLINT-51 || Kaustubh S || 06-Feb-2024 || END -->
+
+            <div class="liquidation opaque d-none">{{'Liquidation' | translate}}&nbsp;: &nbsp;&nbsp;<label *ngIf="selectedItem['SettlementType'] == 'Cash'">{{'By Differences'}}</label><label *ngIf="selectedItem['SettlementType'] == 'Delivery'">{{'By Delivery'}}</label></div>
+
+        </div>
+
+    </div>
+
+</div>
+</div>
+
+<!-- View Timeline / Underlying Prices pop-up || Kaustubh S || 29-Aug-2023 || END  -->
+
+<!-- Saving View pop-up || Mudit B || 17-Oct-2023 || START  -->
+<div *ngIf="showViewStatusPopUp" class="view-status-overlay">
+    <div class="view-status-content-container-popup">
+        <div>
+
+            <div>
+    
+                <app-svg-icons *ngIf="!ViewFlag" [icon]="'checked-icon'" style="justify-content: center;margin-top: 30px; " [width]="'40'" [height]="'40'" [fill]="'var(--green-bg-lg)'"></app-svg-icons>
+                <app-svg-icons *ngIf="ViewFlag && ViewStatusMsg.includes('delete')" [icon]="'delete'" style="justify-content: center;margin-top: 30px;" [width]="'35'" [height]="'35'" [fill]="'var(--red)'"></app-svg-icons>
+                <app-svg-icons *ngIf="ViewStatusMsg.includes('Please')" [icon]="'warning'" style="justify-content: center;margin-top: 30px;" [width]="'35'" [height]="'35'" [fill]="'#ff6262'"></app-svg-icons>
+                
+            </div>
+            <div class="view-status-msg">
+                <!-- <span [style.color]="!ViewFlag? 'var(--green-bg-lg)' : 'var(--red)'" style="font-size: 1.6rem;">{{ViewStatusMsg | translate}}</span> -->
+                <span style="font-size: 1.6rem;">{{ViewStatusMsg | translate}}</span>
+            </div>
+        </div>
+        <div>
+
+            <button type="button" class="btn btn_Save update"  tabindex="50" (click)="showViewStatusPopUp=false" >
+                <span>{{ "OK" | translate }}</span>
+            </button>
+        </div>
+    </div>
+</div>
+<!-- Saving View pop-up || Mudit B || 17-Oct-2023 || END  -->
+
+<!-- <svg style="margin-top:3px"  focusable="false" height="24px" viewBox="0 0 24 24" width="24px">
+    <path d="M7 10l5 5 5-5z" fill="var(--text)"></path>
+    <path d="M0 0h24v24H0z" fill="none"></path>
+</svg> -->

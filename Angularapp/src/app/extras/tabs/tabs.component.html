@@ -1,0 +1,9 @@
+<div #wrapper class="wrapper" (mouseout)="positionIndicator()">
+  <div class="tabHeaders" [ngClass]="header_case" *ngFor="let item of tabHeaders; let i = index"
+    (click)="changeTab($event, i)" (mousemove)="moveIndicator(i)">
+    <span [ngClass]="i == Visited ? 'Visited_tab' : ''" (mousemove)="moveIndicator(i)">
+      {{ item | translate}}
+    </span>
+  </div>
+  <div #marker class="marker"></div>
+</div>

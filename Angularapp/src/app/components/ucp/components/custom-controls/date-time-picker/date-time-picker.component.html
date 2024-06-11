@@ -1,0 +1,32 @@
+<div class="form-group middle date-group">
+
+  <div [formGroup]="form" class="date-picker-container middle">
+    <!-- <input type="text" class="date-input txt" [formControlName]="input.fieldName"
+      [attr.disabled]="disabled ? 'disabled' : null" (click)="showCalendar = disabled ? false : !showCalendar"
+      [value]="parsedDate" readonly> -->
+
+    <div [formGroup]="form" class="date-picker-container middle">
+
+        <mat-form-field  [style.--width]="width" >
+          <input matInput class="UCPMatDate" tabIndex={{input.tabIndex}} placeholder={{displayName}} [min]="minDate" [max]="maxDate" [matDatepicker]="picker" [formControl]="matSelectedDate"  [formControlName]="input.fieldName"
+           [disabled]="input.readOnly === 'Y' ? true : false" (dateChange)="udfFieldValueChange('change', input, matSelectedDate)" />
+          <!-- <app-calendar *ngIf="showCalendar" class="calendar-control" [minYear]="minYear" [maxYear]="maxYear"
+        [dateFormat]="dateFormat" [calendarData]="parsedDate" (setDate)="setDate($event)"></app-calendar> -->
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker ></mat-datepicker>
+        </mat-form-field>
+
+      <!-- <input type="text" class="date-input txt" [formControlName]="input.fieldName"
+        [attr.disabled]="disabled ? 'disabled' : null" (click)="showCalendar = disabled ? false : !showCalendar"
+        [value]="parsedDate" [(ngModel)]="parsedDate">
+
+
+      <app-calendar *ngIf="showCalendar" class="calendar-control" [minYear]="minYear" [maxYear]="maxYear"
+        [dateFormat]="dateFormat" [calendarData]="parsedDate" (setDate)="setDate($event)"></app-calendar> -->
+    </div>
+    <!-- <div class="error" *ngIf="form.get(input.fieldName).invalid &&
+                                    (form.get(input.fieldName).dirty || form.get(input.fieldName).touched)">
+      <div *ngIf="!!form.get(input.fieldName).errors.required">{{input.displayName}} is required</div>
+    </div> commented by devesh as of 8 dec-2020 because getting error on console-->
+  </div>
+  </div>

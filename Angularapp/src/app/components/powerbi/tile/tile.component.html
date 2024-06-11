@@ -1,0 +1,46 @@
+<div class="card Blank" [ngStyle]="{'width':card.width, 'min-height':'fit-content'}" *ngIf="card.tileCode !== 'EmptyCard'">
+
+    <div class="card-header">
+        <!-- <label> {{card.value | translate}}</label> -->
+    </div>
+
+    <ng-container [ngSwitch]="card.tileCode">
+        <div class="card-content" *ngSwitchCase="'PerformanceHistorical'">
+            <label class="card-title">Portfolio Performance (Historical)</label>
+            <hr class="header-line">
+            <iframe title="Client holdings view" width="355" height="373.5"
+                src="https://app.powerbi.com/view?r=eyJrIjoiZDBkZWQ3NjgtN2FkNi00OGRhLWFkYzQtNTFhNTQyMmZkOGVhIiwidCI6Ijk0MTRkMGE0LTQzNGUtNGQyZi04ZjM4LTcxNmYzY2ZkNzllNSIsImMiOjEwfQ%3D%3D&pageName=ReportSection"
+                frameborder="0" allowFullScreen="true"></iframe>
+        </div>
+        <div class="card-content" *ngSwitchCase="'MarketWatch'">
+            <label class="card-title">Market Watch</label>
+            <hr class="header-line">
+            <iframe title="Client holdings view" width="355" height="373.5"
+                src="https://app.powerbi.com/view?r=eyJrIjoiZDBkZWQ3NjgtN2FkNi00OGRhLWFkYzQtNTFhNTQyMmZkOGVhIiwidCI6Ijk0MTRkMGE0LTQzNGUtNGQyZi04ZjM4LTcxNmYzY2ZkNzllNSIsImMiOjEwfQ%3D%3D&pageName=ReportSectiona75cfdf0ddeaade0b0a9"
+                frameborder="0" allowFullScreen="true"></iframe>
+        </div>
+        <div class="card-content" *ngSwitchCase="'CashBalance'" style="height: 260px;">
+            <label class="card-title">Cash Balance</label>
+            <hr class="header-line">
+            <iframe style="clip-path: inset(0px 0px 174px 0px);" title="Client holdings view" width="355" height="373.5" src="https://app.powerbi.com/view?r=eyJrIjoiZDBkZWQ3NjgtN2FkNi00OGRhLWFkYzQtNTFhNTQyMmZkOGVhIiwidCI6Ijk0MTRkMGE0LTQzNGUtNGQyZi04ZjM4LTcxNmYzY2ZkNzllNSIsImMiOjEwfQ%3D%3D&pageName=ReportSection9510047d0d1c04c44031" frameborder="0" allowFullScreen="true"></iframe>
+        </div>
+        <div class="card-content" *ngSwitchCase="'TopPerformingAssets'">
+            <label class="card-title">Top Perfroming Assets</label>
+            <hr class="header-line">
+            <iframe title="Client holdings view" width="355" height="373.5"
+                src="https://app.powerbi.com/view?r=eyJrIjoiZDBkZWQ3NjgtN2FkNi00OGRhLWFkYzQtNTFhNTQyMmZkOGVhIiwidCI6Ijk0MTRkMGE0LTQzNGUtNGQyZi04ZjM4LTcxNmYzY2ZkNzllNSIsImMiOjEwfQ%3D%3D&pageName=ReportSectione4f6b410e1e611065dbb"
+                frameborder="0" allowFullScreen="true"></iframe>
+        </div>
+        <div class="card-content" *ngSwitchCase="'PortfolioAllocation'">
+            <label class="card-title">Portfolio Allocation</label>
+            <hr class="header-line">
+            <iframe title="Client holdings view" width="355" height="373.5" src="https://app.powerbi.com/view?r=eyJrIjoiZDBkZWQ3NjgtN2FkNi00OGRhLWFkYzQtNTFhNTQyMmZkOGVhIiwidCI6Ijk0MTRkMGE0LTQzNGUtNGQyZi04ZjM4LTcxNmYzY2ZkNzllNSIsImMiOjEwfQ%3D%3D&pageName=ReportSection39c51e6ea41edb10b1e7" frameborder="0" allowFullScreen="true"></iframe>
+        </div>
+    </ng-container>
+</div>
+
+<div class="emptyCard" *ngIf="card.tileCode === 'EmptyCard'">
+    <div class="card-content">
+        <app-empty-card></app-empty-card>
+    </div>
+</div>

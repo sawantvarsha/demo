@@ -1,0 +1,72 @@
+<div class="mtm-and-ko-filter-container">
+    <div style="display: flex;justify-content: center;align-items: center;">
+        <div style="width:100%">
+
+            <div style="color: white; font-family: 'Roboto';  font-size: 20px; padding-top: 20px;font-family: 'Roboto'; color: rgb(180, 180, 180);" class="filterTitle">
+                KO Distance (%)</div>
+                <div style="margin-top: 12px;" class="ko-number">
+                    <input type="number" class="knumber" [value]="current_KO_StartValue" [min]="startKOValue" 
+                        [max]="endKOValue" class="inputBox" (change)="binder($event)" step="0.01" name="ko-input1">
+                </div>
+                <div style="margin-top: 12px;" class="ko-number second">
+                    <input type="number" class="knumber" [value]="current_KO_LastValue" 
+                        [min]="startKOValue" [max]="endKOValue" class="inputBox" step="0.01" (change)="binder($event)" name="ko-input2">
+                </div>
+                <!-- <mat-slider [min]="startKOValue" [max]="endKOValue" class="slider" step="0.01">
+                    <input [(ngModel)]="current_KO_StartValue" matSliderStartThumb (valueChange)="binder()">
+                    <input [(ngModel)]="current_KO_LastValue" matSliderEndThumb (valueChange)="binder()">
+                </mat-slider> -->
+                    <ng-container [ngSwitch]="display">
+                        <ng-template [ngSwitchCase]="1"><ngx-slider class="ngx-mtm-slider" [(value)]="current_KO_StartValue" [(highValue)]="current_KO_LastValue" [options]="options1"  (userChange)="sliderToInputBinder()"></ngx-slider ></ng-template>
+                        <ng-template [ngSwitchCase]="2"><ngx-slider class="ngx-mtm-slider" [(value)]="current_KO_StartValue" [(highValue)]="current_KO_LastValue" [options]="options1"  (userChange)="sliderToInputBinder()"></ngx-slider ></ng-template>
+                    </ng-container>
+
+            
+            <div style="color: white; font-family: 'Roboto';  font-size: 20px;font-family: 'Roboto'; color: rgb(180, 180, 180);" class="filterTitle">MTM (%)</div>
+            <div style="margin-top: 12px;" class="ko-number">
+                <input type="number" class="knumber" (change)="binder($event)" [value]="current_MTM_StartValue"
+                    [min]="startMTMValue" [max]="endMTMValue" class="inputBox" step="0.01" name="mtm-input1">
+            </div>
+            <div style="margin-top: 12px;" class="ko-number second">
+                <input type="number" class="knumber" (change)="binder($event)" [value]="current_MTM_LastValue" 
+                    [min]="startMTMValue" [max]="endMTMValue" class="inputBox" step="0.01" name="mtm-input2">
+            </div>
+            <!-- <mat-slider [min]="startMTMValue" [max]="endMTMValue" class="slider" color="primary" step="0.01">
+                <input matSliderStartThumb [(ngModel)]="current_MTM_StartValue" (valueChange)="binder()">
+                <input matSliderEndThumb [(ngModel)]="current_MTM_LastValue" (valueChange)="binder()">
+            </mat-slider> -->
+            <ng-container [ngSwitch]="display">
+                <ng-template [ngSwitchCase]="1"><ngx-slider class="ngx-mtm-slider" [(value)]="current_MTM_StartValue" [(highValue)]="current_MTM_LastValue"
+                    [options]="options2" (userChange)="sliderToInputBinder()"></ngx-slider></ng-template>
+                <ng-template [ngSwitchCase]="2"><ngx-slider class="ngx-mtm-slider" [(value)]="current_MTM_StartValue" [(highValue)]="current_MTM_LastValue"
+                    [options]="options2" (userChange)="sliderToInputBinder()"></ngx-slider></ng-template>
+            </ng-container>
+
+
+            <div class="filterTitle" style="font-family: 'Roboto'; font-size: 20px;font-family: 'Roboto'; color: rgb(180, 180, 180);">Worst Of Underlying</div>
+            <select [(ngModel)]="selectedUnderlying" (change)="sendSelectedUnderlying(selector1.value)" #selector1>
+                <option value="All">All</option>
+                <option *ngFor="let wol of worOfUnderlingList;" [value]="wol">
+                    {{wol}}
+                </option>
+            </select>
+
+
+            <div class="filterTitle" style="font-family: 'Roboto';  font-size: 20px;font-family: 'Roboto'; color: rgb(180, 180, 180);">Currency</div>
+            <select [(ngModel)]="selectedCurrency" (change)="sendSelectedCurrency(selector2.value)" #selector2>
+                <option value="All">All</option>
+                <option *ngFor="let currency of currencies;" [value]="currency">
+                    {{currency}}
+                </option>
+            </select>
+
+            <div class="filterTitle" style="font-family: 'Roboto';  font-size: 20px;font-family: 'Roboto'; color: rgb(180, 180, 180);">PayOff</div>
+            <select [(ngModel)]="selectedPayOff" (change)="sendSelectedPayOff(selector3.value)" #selector3>
+                <option value="All">All</option>
+                <option *ngFor="let pay of payOff;" [value]="pay">
+                    {{pay}}
+                </option>
+            </select>
+        </div>
+    </div>
+</div>

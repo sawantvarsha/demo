@@ -1,0 +1,152 @@
+<div class="page-navigation" [ngClass]="">
+  <app-svg-icons
+    class="back-button"
+    [icon]="'back-button'"
+    [width]="'40'"
+    [height]="'40'"
+    [fill]="'var(--headers)'"
+    (click)="fnRedirectToHomePage()"
+  ></app-svg-icons>
+  <div class="page-title">Order Entry</div>
+</div>
+
+<div class="neworderentryComponent">
+  <!-- <app-svg-icons *ngIf="IsBackButtonEnabled" class="back-button" [icon]="'back-button'" [width]="'40'" [height]="'40'"
+    (click)="fnRedirectToHomePage();"></app-svg-icons>
+  <div class="page-title">Order Entry</div> -->
+  <div class="main-container">
+    <div class="content-container">
+      <div class="tabs-pages">
+        <div
+          class="tabs"
+          *ngIf="subpages[0].displayYN === 'true'"
+          [ngClass]="{ 'tab-active': this.showamf }"
+          (click)="changeProduct('amf')"
+        >
+          AM Funds
+        </div>
+        <div
+          class="tabs"
+          *ngIf="subpages[1].displayYN === 'true'"
+          [ngClass]="{ 'tab-active': this.showmf }"
+          (click)="changeProduct('mf')"
+        >
+          Funds
+        </div>
+        <div
+          class="tabs"
+          *ngIf="subpages[2].displayYN === 'true'"
+          [ngClass]="{ 'tab-active': this.showbonds }"
+          (click)="changeProduct('bonds')"
+        >
+          Bonds
+        </div>
+        <div
+          class="tabs"
+          *ngIf="subpages[3].displayYN === 'true'"
+          [ngClass]="{ 'tab-active': this.showshares }"
+          (click)="changeProduct('shares')"
+        >
+          Shares
+        </div>
+        <div
+          class="tabs"
+          *ngIf="subpages[4].displayYN === 'true'"
+          [ngClass]="{ 'tab-active': this.showfd }"
+          (click)="changeProduct('fd')"
+        >
+          Fixed Deposit
+        </div>
+        <div
+          class="tabs"
+          *ngIf="subpages[5].displayYN === 'true'"
+          [ngClass]="{ 'tab-active': this.showinsurance }"
+          (click)="changeProduct('insurance')"
+        >
+          Insurance
+        </div>
+        <div
+          class="tabs"
+          *ngIf="subpages[6].displayYN === 'true'"
+          [ngClass]="{ 'tab-active': this.showfxspot }"
+          (click)="changeProduct('fxspot')"
+        >
+          FX Spot
+        </div>
+        <div
+          class="tabs"
+          *ngIf="subpages[7].displayYN === 'true'"
+          [ngClass]="{ 'tab-active': this.showpledge }"
+          (click)="changeProduct('pledge')"
+        >
+          Pledge
+        </div>
+        <div
+          class="tabs"
+          *ngIf="subpages[8].displayYN === 'true'"
+          [ngClass]="{ 'tab-active': this.showfundtransfer }"
+          (click)="changeProduct('fundtransfer')"
+        >
+          Fund Transfer
+        </div>
+        <div
+          class="tabs"
+          *ngIf="subpages[9].displayYN === 'true'"
+          [ngClass]="{ 'tab-active': this.showStructuredNotes }"
+          (click)="changeProduct('structurednotes')"
+        >
+          Structured Notes
+        </div>
+        <div
+          class="tabs"
+          *ngIf="subpages[10].displayYN === 'true'"
+          [ngClass]="{ 'tab-active': this.showFundSwitch }"
+          (click)="changeProduct('switchfund')"
+        >
+          Fund Switch
+        </div>
+
+        <!-- <div class="tabs" [ngClass]="{'tab-active': this.showamf}" (click)="changeProduct('amf')">AM Funds</div> -->
+
+        <!-- <div class="tabs"   [ngClass]="{'tab-active': this.showshares}" (click)="changeProduct('shares')">Shares</div>
+        <div class="tabs"  [ngClass]="{'tab-active': this.showfd}" (click)="changeProduct('fd')">Fixed Deposit</div>
+        <div class="tabs"  [ngClass]="{'tab-active': this.showinsurance}" (click)="changeProduct('insurance')">Insurance</div>
+        <div class="tabs"  [ngClass]="{'tab-active': this.showfxspot}" (click)="changeProduct('fxspot')">FX Spot</div> -->
+
+        <!-- <div class="tabs" [ngClass]="{'tab-active': this.showmf}" (click)="changeProduct('mf')">Funds</div>
+        <div class="tabs" [ngClass]="{'tab-active': this.showbonds}" (click)="changeProduct('bonds')">Bonds</div>
+        <div class="tabs" [ngClass]="{'tab-active': this.showpledge}" (click)="changeProduct('pledge')">Pledge</div> -->
+      </div>
+      <div *ngIf="this.showamf">
+        <app-amfunds></app-amfunds>
+      </div>
+      <div *ngIf="this.showmf">
+        <app-mutualfunds></app-mutualfunds>
+      </div>
+      <div *ngIf="this.showbonds">
+        <app-bonds></app-bonds>
+      </div>
+      <div *ngIf="this.showshares">
+        <app-shares></app-shares>
+      </div>
+      <div *ngIf="this.showfd">
+        <app-fixeddeposit></app-fixeddeposit>
+      </div>
+      <div *ngIf="this.showinsurance">
+        <app-insurance></app-insurance>
+      </div>
+      <div *ngIf="this.showfxspot">
+        <app-fxspot></app-fxspot>
+      </div>
+      <div *ngIf="this.showpledge">
+        <app-pledge></app-pledge>
+      </div>
+      <div *ngIf="this.showfundtransfer">
+        <app-cashdeposit></app-cashdeposit>
+      </div>
+      <div *ngIf="this.showFundSwitch">
+        <app-switchfund></app-switchfund>
+      </div>
+    </div>
+  </div>
+</div>

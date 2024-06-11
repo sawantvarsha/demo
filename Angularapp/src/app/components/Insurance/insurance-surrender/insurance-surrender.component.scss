@@ -1,0 +1,145 @@
+.main-container {
+    //dummy change for commit
+    display: grid;
+    grid-template-rows: auto auto;
+    margin: 15px;
+    // border-radius: 7px;
+    gap: 15px;
+    position: absolute;
+    left: 31%;
+    top: 15%;
+    background: var(--containers);
+    padding: 25px;
+    // box-shadow: var(--box-shadow-thin);
+    box-shadow: 0 0 10px 1px var(--gray);
+    border: 1px solid var(--active-sidebar);
+    width: 40%;
+
+    .box-header {
+        margin: 0px 0px 10px 0px;
+        color: var(--off-color);
+        font-size: 18px;
+        font-weight: 500;
+        line-height: 24px;
+        border-bottom: 2px solid var(--icon-active);
+        padding-bottom: 5px;
+        width: -webkit-fit-content;
+        width: -moz-fit-content;
+        width: fit-content;
+        margin-bottom: 8px;
+      }
+    .header {
+        // background-color: var(--btn-bg);
+        border-bottom: 1px solid var(--active);
+        color: var(--off-color);
+        font-size: 20px;
+        // font-size: 25px;
+        padding-left: 15px;
+        // width: 50%;
+        display: flex;
+        justify-content: space-between;
+        padding-bottom: 10px;
+    }
+    .main-body {
+        display: flex;
+        flex-direction: column;
+        overflow-y: auto;
+        gap: var(--gap);
+        // width: 50%;
+        .section {
+            // border: 1px solid var(--active-light);
+            // border: 1px solid var(--checkbox);
+            background-color: var(--containers);
+            border-radius: 10px;
+            padding: 10px 15px 20px 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            box-shadow: var(--box-shadow-thin);
+            margin: 5px;
+            .section-header {
+                color: var(--active);
+                // font-size: 22px;
+                font-size: 20px;
+                display: flex;
+                gap: 10px;
+            }
+
+            .label-grid {
+                display: flex;
+                gap: var(--gap);
+              
+              } 
+            
+            .section-body {
+                color: white;
+                margin-left: 40px;
+                .sub-section {
+                    display: grid;
+                    grid-template-columns: 1fr 1fr 1fr;
+                    grid-column-gap: 10px;
+                    column-gap: 10px;
+                    grid-row-gap: 15px;
+                    // width: 93%;
+                    align-items: center;
+                    button {
+                        width: 150px !important;
+                        font-size: 14px !important;
+                    }
+                    .sub-section-btn-container {
+                        // grid-column: span 3;
+                        // display: flex;
+                        // justify-content: space-around;
+                        // margin-top: 15px;
+                        // gap: 10px;
+
+                    }
+                    span {
+                        text-align: right;
+                        background-color: var(--dark-gray);
+                        padding: 5px 15px;
+                    }
+                    .header-title{
+                        color: darkgray;
+                    }
+                }
+            }
+            .section-pdf {
+                display: grid;
+                grid-template-columns: 30px auto;
+                gap: 10px;
+                align-items: center;
+                // padding-top: 10px;
+                // margin-left: 35px;
+                button {
+                    width: 150px !important;
+                    font-size: 14px !important;
+                }
+            }
+        }
+    }
+}
+@media screen and (max-width: 1600px) {
+    .main-container {
+        top: 15%;
+        left: 30%;
+        padding: 10px;
+        width: 50%;
+    }
+}
+@media screen and (max-width: 1440px) {
+    .main-container {
+        top: 15%;
+        left: 30%;
+        padding: 10px;
+        width: 50%;
+    }
+}
+@media screen and (max-width: 1280px) {
+    .main-container {
+        top: 11%;
+        left: 27%;
+        padding: 10px;
+        width: 60%;
+    }
+}

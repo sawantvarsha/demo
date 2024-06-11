@@ -1,0 +1,38 @@
+<div class="component">
+    <div class="page-title module">
+        Payment History
+    </div>
+    <div class="main-container" *ngFor="let item of paymentHistory">
+        <div class="content-container">
+            <div class="mainGrid">
+                <div class="sub-content fs20">
+                <div class="">
+                        <div class="">{{item[7].Value | date:'dd-MMM-yyyy'}}</div>
+                        <div class="headers fs14">Transaction Date</div>
+                    </div>
+                    <div class="">
+                    <div class="">{{item[2].Value}}</div>
+                    <div class="headers fs14">Policy No</div>
+                </div>
+                <div class="">
+                    <div class="">{{item[5].Value}}</div>
+                    <div class="headers fs14">Policy Name</div>
+                </div>
+
+                <div class="">
+                        <div class=""><span class="fs12">{{item[4].Value}}</span> <span
+                                class="ccy">{{this.cfs.FormatNumberr(item[8].Value)}}</span> </div>
+                    <div class="headers fs14">Premium</div>
+                </div>
+                <div class="">
+                        <div class=""><span class="fs12">{{baseCCY}}</span> <span
+                                class="ccy">{{this.cfs.FormatNumberr(item[15].Value)}}</span> </div>
+                    <div class="headers fs14">Premium (Base)</div>
+                </div>
+             </div>
+            </div>
+
+        </div>
+    </div>
+  
+</div>

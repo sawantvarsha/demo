@@ -1,0 +1,269 @@
+<div class="mainDiv">
+  <div class="blotterName">
+    <div>Limit Order Blotter</div>
+    <!-- <div class="appearance">
+      <div class="lbl-appearance">Appearance</div>
+      <div class="rows-count">
+        <div [class.Submitbtn]="Appearance=='10'" (click)="Appearance = '10';ApplyFilters();">10</div>
+        <div [class.Submitbtn]="Appearance=='20'" (click)="Appearance = '20';ApplyFilters();">20</div>
+        <div [class.Submitbtn]="Appearance=='30'" (click)="Appearance = '30';ApplyFilters();">30</div>
+      </div>
+    </div> -->
+  </div>
+
+  <div class="orderstatus">
+    <div>Order Status</div>
+    <select
+      class="selectImage"
+      [(ngModel)]="orderStatus"
+      (change)="filterDataForOrderStatus()"
+    >
+      <option
+        *ngFor="let ostatus of orderStatuslist"
+        (selected)="(ostatus === orderStatus)"
+        [value]="ostatus"
+      >
+        {{ ostatus }}
+      </option>
+    </select>
+    <div>Order Type</div>
+    <select class="selectImage" [(ngModel)]="orderType">
+      <option
+        *ngFor="let otype of orderTypelist"
+        (selected)="(otype === orderType)"
+        [value]="otype"
+      >
+        {{ otype }}
+      </option>
+    </select>
+
+    <div>Currency Pair</div>
+    <select
+      class="selectImage"
+      [(ngModel)]="CcyPair"
+      (change)="filterDataForOrderStatus()"
+    >
+      <option value="All">All</option>
+      <option *ngFor="let ccy of ccyList" value="{{ ccy.PairCode }}">
+        {{ ccy.PairCode }}
+      </option>
+    </select>
+  </div>
+
+  <div class="dateRow">
+    <div>Transaction Date</div>
+    <div>Expiry Date</div>
+    <div class="transactionDate">
+      <label>From:</label>
+      <!-- <app-calender-control [defaultDate]="TransFromDate" (selectedDate)="callLimitBlotter_TFD($event)">
+            </app-calender-control> -->
+      <input
+        type="date"
+        class="input-dob"
+        [attr.data-date]="TransFromDate"
+        style="margin-top: 0px"
+        placeholder="dd-mm-yyyy"
+        data-date-format="DD-MMM-YYYY"
+        value=""
+        min="1997-01-01"
+        max="2030-12-31"
+        [(ngModel)]="TransFromDate"
+        tabindex="6"
+        (change)="
+          TransFromDate = selectDate(TransFromDate);
+          callLimitBlotter_TFD($event)
+        "
+      />
+      <label> To:</label>
+      <!-- <app-calender-control [defaultDate]="TransToDate" (selectedDate)="callLimitBlotter_TTD($event)">
+            </app-calender-control> -->
+      <input
+        type="date"
+        class="input-dob"
+        [attr.data-date]="TransToDate"
+        style="margin-top: 0px"
+        placeholder="dd-mm-yyyy"
+        data-date-format="DD-MMM-YYYY"
+        value=""
+        min="1997-01-01"
+        max="2030-12-31"
+        [(ngModel)]="TransToDate"
+        tabindex="6"
+        (change)="
+          TransToDate = selectDate(TransToDate); callLimitBlotter_TTD($event)
+        "
+      />
+    </div>
+
+    <div class="transactionDate">
+      <label>From:</label>
+      <!-- <app-calender-control [defaultDate]="ExpiryFromDate" (selectedDate)="callLimitBlotter_EFD($event)">
+            </app-calender-control> -->
+      <input
+        type="date"
+        class="input-dob"
+        [attr.data-date]="ExpiryFromDate"
+        style="margin-top: 0px"
+        placeholder="dd-mm-yyyy"
+        data-date-format="DD-MMM-YYYY"
+        value=""
+        min="1997-01-01"
+        max="2030-12-31"
+        [(ngModel)]="ExpiryFromDate"
+        tabindex="6"
+        (change)="
+          ExpiryFromDate = selectDate(ExpiryFromDate);
+          callLimitBlotter_EFD($event)
+        "
+      />
+      <label> To:</label>
+      <!-- <app-calender-control [defaultDate]="ExpiryToDate" (selectedDate)="callLimitBlotter_ETD($event)">
+            </app-calender-control> -->
+      <input
+        type="date"
+        class="input-dob"
+        [attr.data-date]="ExpiryToDate"
+        style="margin-top: 0px"
+        placeholder="dd-mm-yyyy"
+        data-date-format="DD-MMM-YYYY"
+        value=""
+        min="1997-01-01"
+        max="2030-12-31"
+        [(ngModel)]="ExpiryToDate"
+        tabindex="6"
+        (change)="
+          ExpiryToDate = selectDate(ExpiryToDate); callLimitBlotter_ETD($event)
+        "
+      />
+    </div>
+  </div>
+  <div class="errorDiv" *ngIf="errorMsg">
+    {{ errorMsg }}
+  </div>
+
+  <div class="selectallrow">
+    <div
+      style="display: flex; align-items: center"
+      (click)="TellBlotterRowToCheckBox()"
+    >
+      <input
+        type="checkbox"
+        style="
+          cursor: pointer;
+          display: flex;
+          justify-content: flex-start;
+          width: 50px;
+        "
+        name="DeleteCheck"
+        [(ngModel)]="ToggleCancelCheckBoxSelectAll"
+        (change)="SelectAllToggled()"
+      />
+      <label>Select All</label>
+    </div>
+
+    <div style="display: flex; justify-content: flex-end">
+      <button
+        class="Submitbtn btnimg button"
+        style="
+          display: flex;
+          align-items: center;
+          padding: 20px;
+          width: 11em;
+          line-height: 1px;
+        "
+      >
+        Apply filters &nbsp;
+        <img src="{{ assetURL }}/arrow-right.png " width="20" height="20" />
+      </button>
+    </div>
+  </div>
+
+  <div style="margin-top: 10px">
+    <app-blotter-row
+      *ngFor="let item of workflowRecords; let i = index"
+      [blotterData]="item"
+      [Index]="i"
+      [precision]="item.Precision"
+      [Asset1Decimal]="item.Asset1Decimal"
+      [Asset2Decimal]="item.Asset2Decimal"
+      (setOrderIdCancelAction)="getCheckedOrderforCancelAction($event)"
+      (removeOrderIdCancelAction)="removeCheckedOrderforCancelAction($event)"
+      [ChangingCancelOrderCheckBox]="SelectCheckBox"
+      (cancelPopup)="GetCancelPopupConfirmation($event)"
+      [CancelResObserver]="gotCancelResponse"
+    >
+    </app-blotter-row>
+  </div>
+  <div class="nodatafound" *ngIf="!workflowRecords.length && initialLoadDone">
+    <label class="message">No Data Found</label>
+  </div>
+  <div
+    class="row col-12 info"
+    style="background-color: whitesmoke; display: flex; justify-content: center"
+  >
+    <div class="button-container" style="position: relative">
+      <button
+        class="Submitbtn btnimg"
+        (click)="TransactionShow = false"
+        (click)="showPopupForSelectedCacelOrder()"
+        [disabled]="checkedCancelOrders.length === 0"
+        style="
+          display: flex;
+          align-items: center;
+          padding-left: 20px;
+          width: 100%;
+        "
+      >
+        Cancel Selected Orders &nbsp;
+        <img src="{{ assetURL }}/arrow-right.png " width="20" height="20" />
+      </button>
+    </div>
+  </div>
+  <div id="" *ngIf="cancelrequestpopup">
+    <div id="lightbox_area" class="col-12">
+      <span class="row header">Cancel Trade</span>
+      <div
+        style="color: white; margin-top: -2.1em; float: right"
+        (click)="HidePopup()"
+      >
+        X
+      </div>
+      <div class="line"></div>
+      <div class="row" style="padding-top: 3%">
+        <div class="col-12" style="text-align: center">
+          <span>Do you want to cancel order?</span>
+        </div>
+      </div>
+      <div class="row" style="margin: 5%; padding-bottom: 2%">
+        <button
+          class="col-3 select"
+          style="margin-left: 20%; background-color: white"
+          (click)="approveCancel()"
+        >
+          Yes
+        </button>
+        <div class="col-1"></div>
+        <button
+          class="col-3 select"
+          style="background-color: white"
+          (click)="HidePopup()"
+        >
+          No
+        </button>
+      </div>
+      <!-- <p class="close" (click)= "CancelRequest=false"><b>X</b></p> -->
+      <div
+        style="text-align: center; margin-top: -1.5em; padding-bottom: 0.5em"
+      >
+        {{ cancelPopupMsg }}
+        <img
+          *ngIf="cancelPopupMsg === 'Cancelling the Trade'"
+          src="{{ assetURL }}/loading_dots.gif "
+          width="35px"
+          height="35px "
+        />
+      </div>
+    </div>
+  </div>
+</div>
+<div id="overlay"></div>

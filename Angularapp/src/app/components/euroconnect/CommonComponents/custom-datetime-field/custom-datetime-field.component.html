@@ -1,0 +1,20 @@
+<!-- Changed by Amogh K | 4/4/2022 | UI modifications -->
+<div class="datetime-container">
+    <!-- changed by Amogh K | 10May2022 | UI modifications  --> <!-- changed by KaustubhS | 21Mar2023 | for editable datetime field  --> 
+    <input id='displayDate' size={{width}} class="display-date" type="text" [(ngModel)]="dateTimeDisplayString" (change)="userInputDate($event)">
+    <div style="display: flex">
+        <input *ngIf="format.toLocaleLowerCase() === 'date'" class="hidden-datetime" [disabled]=isdisabled (ngModelChange)="dateChanged($event)" [max]="maxDate" [ngModel] = "hiddenDate" type="date">
+        <input *ngIf="format.toLocaleLowerCase() === 'datetime'" class="hidden-datetime" [disabled]=isdisabled (ngModelChange)="dateChanged($event)" [max]="maxDate" [ngModel] = "hiddenDate" type="datetime-local">
+    </div>
+    <!-- <div>
+        <input id='displayDate' size={{width}} class="display-date" type="text" [(ngModel)] = "dateTimeDisplayString"  >    
+    </div>
+    <div>
+        <div class="hidden-date-container">
+            <input *ngIf="format.toLocaleLowerCase() === 'date'"   class="hidden-datetime" [disabled]=isdisabled (ngModelChange)="dateChanged($event)" [max]="maxDate" [ngModel] = "hiddenDate" type="date">
+            <input *ngIf="format.toLocaleLowerCase() === 'datetime'"  class="hidden-datetime" [disabled]=isdisabled (ngModelChange)="dateChanged($event)" [max]="maxDate" [ngModel] = "hiddenDate" type="datetime-local">
+        </div>
+    </div>    -->
+</div>
+    
+

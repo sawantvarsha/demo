@@ -1,0 +1,23 @@
+<!-- <label class="card-header">Multi Pricer Launch</label> -->
+<div class="select-portfolio">
+    <div class="select-container" style="float: right;display:flex;flex-direction:column">
+        <label class="labels" style="margin-bottom:13px;    text-align: start;">{{SelectProduct | translate}} </label>
+        <select [(ngModel)]="selectedProd" (change)="getPortfolioData();" style="width:100% !important"> 
+            <option *ngFor="let prod of PopularProdList"  value="{{prod.value}}" style="font-size: 14px !important;"><div>{{prod.value}}</div></option>
+        </select>
+    </div>
+    <div class="select-container" style="float: right;display:flex;flex-direction:column" >
+        <label class="labels" style="margin-bottom:13px;    text-align: start;">{{SelectPortfolio | translate}} </label>
+        <select [(ngModel)]="selectedPortfolio" style="width:100% !important">
+            <option ></option>
+            <option *ngFor="let portfolio of receivedPortFolios" value="{{portfolio.P_ID}}" class="option" style="font-size: 14px !important;">{{portfolio.P_Name}}</option>
+        </select>
+    </div>
+
+</div>
+<div class="svg-container">
+    <app-svg-icons [icon]="'MultiPricer-Vector'" [width]="'250'" [height]="'250'"></app-svg-icons>
+</div>
+<div class="launch">
+    <input type="button" class="button launch-button" [disabled] = "selectedPortfolio === ''" value="LAUNCH" (click)="launchToMultipricer()" />
+</div>

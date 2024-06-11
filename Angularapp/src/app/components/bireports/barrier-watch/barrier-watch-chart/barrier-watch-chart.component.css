@@ -1,0 +1,9 @@
+.grad {
+    background-image: linear-gradient(to right, rgba(154,185,211,1), rgba(14,56,86,1));
+  }
+  
+  .gradtext {
+    color: rgb(245, 245, 245);
+    font-weight: 400;
+  
+  }

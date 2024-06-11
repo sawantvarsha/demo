@@ -1,0 +1,89 @@
+.tradesContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    height: 40vh;
+    .header {
+        font-size: 28px;
+        display: grid;
+        grid-template-columns: 5fr 0.62fr 1fr 0.45fr 1fr 0.2fr;
+        gap: 10px;
+        align-items: center;
+        .errmsg {
+            color: var(--red-bg-lg);
+            font-size: 15px;
+            position: absolute;
+            right: 43%;
+        }
+        label {
+            font-size: 20px;
+        }
+    }
+    .Label {
+        position: relative;
+        span {
+            position: absolute;
+            left: 8px;
+            top: 14px;
+            font-size: 13px;
+        }
+    }
+    .tradesTable {
+        height: 33vh;
+        overflow: scroll;
+        table {
+            thead {
+                position: sticky;
+                top: 0;
+                background: var(--containers);
+                tr {
+                    display: grid;
+                    grid-template-columns: 1.3fr 1.3fr 0.9fr 0.5fr 0.7fr 1.2fr 0.7fr 1.2fr 1fr 1fr 0.8fr 0.3fr;
+                }
+            }
+            tbody {
+                tr {
+                    display: grid;
+                    grid-template-columns: 1.2fr 1.2fr 0.9fr 0.5fr 0.7fr 1.2fr 0.7fr 1.2fr 1fr 1fr 0.8fr 0.3fr;
+                    .red {
+                        color: var(--red-bg-lg);
+                    }
+                    .green {
+                        color: var(--green);
+                    }
+                }
+            }
+        }
+        .dotloader {
+            position: absolute;
+            width: 100%;
+            // margin-top: 10vh;
+            text-align: center;
+            display: flex;
+            flex-direction: column-reverse;
+            justify-content: center;
+            .msg {
+                margin-top: 200px;
+            }
+        }
+    }
+}
+
+.btn {
+    background: var(--red-bg-sg);
+    border-radius: 25px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.alignleft {
+    text-align: left;
+}
+
+.aligncenter {
+    text-align: center;
+}
+
+.alignright {
+    text-align: right;
+}

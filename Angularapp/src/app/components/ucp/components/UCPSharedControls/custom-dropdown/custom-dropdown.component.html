@@ -1,0 +1,51 @@
+<!-- 
+  <div>
+    <mat-form-field class="comp-max-width width_200px" >
+      <mat-label class="common-font dd-font-size">{{label}}</mat-label>
+      <mat-select class="common-font dd-font-size" [(ngModel)]="selectedValue" name="selectedValue" 
+      (ngModelChange)="action($event, label)" [required] = "requiredCheck" [disabled]="disableFlag">
+       <mat-option [hidden]="flag">
+        <ngx-mat-select-search [(ngModel)]="searchCtrl" [placeholderLabel]="'Search Item'" ngDefaultControl (ngModelChange)="DataFilter($event)" name="search">
+        </ngx-mat-select-search>
+       </mat-option>
+        <mat-option class="common-font" *ngFor="let option of options" [value]="option[drpId]">
+          {{option[drpName]}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div> 
+  -->
+  
+    <div *ngIf= "width !== undefined ; else elseIf" >
+      <mat-form-field class="comp-max-width" [ngStyle]="{'width': width+'px'}">
+        <mat-label [hidden]="true" class="common-font dd-font-size">{{label}}</mat-label>
+        <mat-select class="common-font dd-font-size" [(ngModel)]="selectedValue" name="selectedValue" 
+        (ngModelChange)="action($event, label)" [required] = "requiredCheck" [disabled]="disableFlag">
+         <mat-option [hidden]="flag">
+          <ngx-mat-select-search [(ngModel)]="searchCtrl" [placeholderLabel]="'Search Item'" ngDefaultControl (ngModelChange)="DataFilter($event)" name="search">
+          </ngx-mat-select-search>
+         </mat-option>
+          <mat-option class="common-font" *ngFor="let option of options" [value]="option[drpId]">
+            {{option[drpName]}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div> 
+  
+  <ng-template #elseIf>
+    <div >
+      <mat-form-field class="comp-max-width width_200px" >
+        <mat-label  class="common-font dd-font-size">{{label}}</mat-label>
+        <mat-select class="common-font dd-font-size" [(ngModel)]="selectedValue" name="selectedValue" 
+        (ngModelChange)="action($event, label)" [required] = "requiredCheck" [disabled]="disableFlag">
+         <mat-option [hidden]="flag">
+          <ngx-mat-select-search [(ngModel)]="searchCtrl" [placeholderLabel]="'Search Item'" ngDefaultControl (ngModelChange)="DataFilter($event)" name="search">
+          </ngx-mat-select-search>
+         </mat-option>
+          <mat-option class="common-font" *ngFor="let option of options" [value]="option[drpId]">
+            {{option[drpName]}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </ng-template>

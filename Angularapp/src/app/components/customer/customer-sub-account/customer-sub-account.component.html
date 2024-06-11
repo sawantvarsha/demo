@@ -1,0 +1,40 @@
+<div class="view-sub-account" *ngIf="Mode === 1 && SubAccounts.length > 0">
+    <table class="document-information-table">
+        <thead class="sub-account-row">
+            <th><span></span></th>
+            <th><span>Login ID</span></th>
+            <th><span>Email ID</span></th>
+        </thead>
+        <tbody>
+            <tr class="sub-account-row" *ngFor="let item of SubAccounts">
+                <td><span class="dot"></span></td>
+                <td><label>{{item.LoginId}}</label></td>
+                <td><label>{{item.CSS_Email_ID}}</label></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div *ngIf="Mode === 2">
+    <div class="SubAccount-Main">
+        <div class="row" *ngFor="let item of SubAccountForm">
+            <label class="lbl"><span class="impFields" *ngIf="item.isRequired">*</span>{{item.controlName}}</label>
+            <input [type]="item.controlType" [(ngModel)]="item.selectedValue" placeholder="Enter {{item.controlName}}">
+            <app-password-strength-bar *ngIf="item.controlName === 'Password' && item.selectedValue !== ''"
+                [passwordToCheck]="item.selectedValue" [barLabel]="barLabel">
+            </app-password-strength-bar>
+            <div>
+                <small
+                    *ngIf="item.controlName === 'Confirm Password' && item.selectedValue === SubAccountForm[2].selectedValue && item.selectedValue.length > 0"
+                    style="margin: 11px;margin-top: 0px;">Password Matched</small>
+            </div>
+        </div>
+
+    </div>
+    <!-- <div class="btn-row">
+        <button class="button" (click)="fnCreateAccount();">Submit</button>
+        <button class="button" (click)="fnCancelCreateSubAccount();">Cancel</button>
+    </div> -->
+    <div class="btn-row" *ngIf="NotificationMsg.length > 0">
+        <label class="lbl"> {{NotificationMsg}}</label>
+    </div>
+</div>

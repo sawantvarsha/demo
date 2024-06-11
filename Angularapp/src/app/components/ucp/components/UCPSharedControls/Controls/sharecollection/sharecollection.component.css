@@ -1,0 +1,47 @@
+.example-chip-list {
+    width: 100%;
+  }
+div.mat-chip-list-wrapper {
+  display: flex;
+  /* flex-direction: row;
+  flex-wrap: nowrap;  */
+  align-items: center;
+  margin: -4px;
+  overflow-x: hidden;
+}
+div.mat-chip-list-wrapper mat-chip.mat-standard-chip {
+  transition: box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1);
+  display: inline-flex;
+  padding: 7px 10px;
+  border-radius: 16px;
+  align-items: center;
+  cursor: default;
+  min-height: 20px;
+  height: 1px;
+}
+mat-chip.mat-standard-chip .mat-chip-remove.mat-icon {
+  width: 12px;
+  height: 18px;
+}
+mat-chip.mat-standard-chip .mat-chip-remove, .mat-standard-chip .mat-chip-trailing-icon {
+  margin-left: 1px;
+  margin-right: 0;
+}
+.chip-class:hover{background: transparent !important;}
+
+.mat-chip.mat-standard-chip {
+  background-color: white;
+  color: rgba(0,0,0,.87);
+}
+
+.mat-option-text {
+  display: inline-block;
+  flex-grow: 1;
+  overflow: hidden !important;
+  text-overflow: ellipsis;
+}
+
+.mat-option{
+  font-size: 12px;
+}
+

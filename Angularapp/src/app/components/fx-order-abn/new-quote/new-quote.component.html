@@ -1,0 +1,17 @@
+<div>
+    <h1>Quote Transaction</h1>
+    <div>
+        <h2>New Transaction Details</h2>
+        <div *ngIf="!message">
+            <pre>{{direction}}&nbsp;{{baseCcy}} &nbsp; {{baseNotional}}&nbsp; to {{altDirection}} &nbsp; {{altCcy}}&nbsp;{{altnotional}}</pre>
+            <p>Customer Rate : {{rate}}</p>
+            <p>Quote Valid Till : {{quoteTimer}}</p>
+        </div>
+        <div *ngIf="message">
+            {{message}}
+        </div>
+
+
+        <button class="button" (click)="placeOrder()">Confirm</button>
+    </div>
+</div>

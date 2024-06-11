@@ -1,0 +1,273 @@
+<div class="orderentry-component">
+  <div class="page-title module">New order</div>
+  <div class="content-container">
+    <div class="tabs-pages">
+      <div class="tabs tab-active">AM Funds</div>
+      <div class="tabs">Funds</div>
+      <div class="tabs">Bonds</div>
+      <div class="tabs">Shares</div>
+      <div class="tabs">Fixed Deposit</div>
+    </div>
+    <div class="fundname-row">
+      <div class="middle">Fund Name</div>
+      <div class="middle">
+        <input type="text" [tabindex]=1 placeholder="Search" [(ngModel)]="mutualFund"
+          (keydown.enter)="selectShare1($event); showSuggestions = false ;"
+          (keydown.ArrowUp)="selectedMFIndex = cfs.moveUpSelection($event, selectedMFIndex)"
+          (keydown.ArrowDown)="selectedMFIndex = cfs.moveDownSelection($event, selectedMFIndex)"
+          (keypress)="showSuggestions = true ; " (keyup)="filterFun($event)">
+        <div class="UnderlyingSearch " *ngIf="mutualFund && showSuggestions">
+          <div id="FundNameList" class="SelectorBox" (clickOutside)="onClickedOutside($event)">
+            <a #FundNameList *ngFor="let mf of (mfList | search: mutualFund:'FundDetails'); let i = index"
+              (keypress)="ChangeIndex($event)">
+              <div *ngIf="mf" [attr.data-mf]="mf" (click)="selectShare(mf) ; " (keydown.enter)="selectShare(mf)"
+                [ngClass]="{'HoverSuggestion': (i === selectedMFIndex)}">
+                <span>{{ mf }}</span>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="funddetails">
+      <div *ngIf="data['Name']" class="fundtitlerow">
+        <span id="fundname" class="bondName">{{data['Name']}}</span>
+      </div>
+      <div *ngIf="data['Fund']">
+        <span id="fundname" class="bondName">{{data['Fund']}}</span>
+      </div>
+      <div class="fundinfo">
+        <span id="fundManager" class="medium">{{data['Manager']}}</span>
+        <span class="medium value-top">|</span>
+        <span class="medium value-top"> {{data['Ccy']}} </span>
+        <span class="medium value-top">|</span>
+        <span class="fs12 heading"> Min. Investment </span>
+        <span class="medium" >{{data['Min_Inv_Amt']  | number}}</span>
+        <span class="medium value-top">|</span>
+        <span class="fs12 heading"> Fund Code </span>
+        <span class="medium" >{{data['Code']}}</span>
+      </div>
+    </div>
+
+    <div class="param-cols">
+      <div class="column1">
+        <div class="fund-details">
+          <div> Trade Parameters &nbsp;: :</div>
+        </div>
+        <div class="fundparams-row">
+          <div class="middle">Application Type</div>
+          <div class="middle">
+            <select [(ngModel)]="ApplicationType" (click)="ApplicationTypeChange($event)">
+              <option selected>Subscription
+              </option>
+              <option>Redemption
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="fundparams-row">
+          <div class="middle">NAV </div>
+          <div class="middle">
+            <input type="text " class="right" disabled="disabled" (focus)="cfs.UnformatNumber($event)"
+              (blur)="cfs.FormatNumber($event)" value="{{data['BidNAV']| number:'1.6-6'}}"
+              (change)="nominal = cfs.NotionalChange($event);" (keypress)=" cfs.NotionalValidate($event)" />
+
+          </div>
+        </div>
+        <div class="fundparams-row">
+          <div class="middle">Notional</div>
+          <div class="middle">
+            <input type="text" class="right" [disabled]="ApplicationType === 'Redemption'" [(ngModel)]="notional"
+              placeholder="Notional" maxlength="12" tabindex="2" (onload)="unitCalculations(notional , data['BidNAV'])"
+              (blur)="cfs.FormatNumber($event)"
+              (change)="notional = cfs.NotionalChange($event); unitCalculations(notional , data['BidNAV'])"
+              (focus)="cfs.UnformatNumber($event)" (keypress)=" cfs.NotionalValidate($event)">
+
+          </div>
+        </div>
+        <div class="fundparams-row">
+          <div class="middle">Units</div>
+          <div class="middle">
+            <input type="text" class="right" [(ngModel)]="Units" [disabled]="ApplicationType === 'Subscription'"
+              (blur)="cfs.FormatNumber($event)" (focus)="cfs.UnformatNumber($event)"
+              (keypress)=" cfs.NotionalValidate($event)"
+              (change)="Units = cfs.NotionalChange($event); calculateNotional(data['BidNAV']);" />
+
+          </div>
+        </div>
+        <div class="fundparams-row">
+          <div class="middle link"><u>More Details</u></div>
+        </div>
+        <div class="fundparams-row">
+          <div class="middle">Customer</div>
+          <div class="middle">
+            <input type="text" [(ngModel)]="CustomerName" disabled placeholder="Customer"/>
+          </div>
+        </div>
+        <div class="fundparams-row">
+          <div class="middle">Portfolio</div>
+          <div class="middle">
+            <select [(ngModel)]="portfolio" (change)="PortfolioChange()">
+              <option *ngFor="let arr of portfolioList;">{{arr}}
+              </option>
+
+            </select>
+          </div>
+        </div>
+
+      </div>
+      <div class="column2">
+        <div class="fund-details">
+          <div> Product Information &nbsp;: :</div>
+        </div>
+        <div class="fundparams-row">
+          <div class="middle">Rating</div>
+          <div class="middle">
+            <input class="input-txt right" type="text" disabled="disabled" (focus)="cfs.UnformatNumber($event)"
+              (blur)="cfs.FormatNumber($event)" value="{{data['Rating']}}"
+              (change)="nominal = cfs.NotionalChange($event);" (keypress)=" cfs.NotionalValidate($event)" />
+
+          </div>
+        </div>
+        <div class="fundparams-row">
+          <div class="middle">Sector</div>
+          <div class="middle">
+            <input type="text" disabled="disabled" (focus)="cfs.UnformatNumber($event)"
+              (blur)="cfs.FormatNumber($event)" value="{{data['Sector']}}"
+              (change)="nominal = cfs.NotionalChange($event);" (keypress)=" cfs.NotionalValidate($event)" />
+          </div>
+        </div>
+        <div class="fundparams-row">
+          <div class="middle">Annual Fees (%)</div>
+          <div class="middle">
+            <input type="text" class="  right" disabled="disabled" (focus)="cfs.UnformatNumber($event)"
+              (blur)="cfs.FormatNumber($event)" value="{{data['AnnualFees']  | number:'1.2-2'}}"
+              (change)="nominal = cfs.NotionalChange($event);" (keypress)=" cfs.NotionalValidate($event)" />
+          </div>
+        </div>
+        <div class="fundparams-row">
+          <div class="middle"> {{FrontExitLoad}} (%) </div>
+          <div class="middle">
+            <input type="text" class="right" (focus)="cfs.UnformatNumber($event)" (blur)="cfs.FormatNumber($event)"
+              value="{{data['TrailerFees'] | number:'1.2-2'}}" disabled="disabled"
+              (change)="nominal = cfs.NotionalChange($event);" (keypress)=" cfs.NotionalValidate($event)" />
+          </div>
+        </div>
+        <div class="fundparams-row">
+          <div class="middle">Currency</div>
+          <div class="middle">
+            <select [(ngModel)]="currency" >
+              <option *ngFor="let arr of CurrencyList;">{{arr}}
+              </option>
+
+            </select>
+          </div>
+        </div>
+        <div class="fundparams-row">
+          <div class="middle">Accont Number</div>
+          <div class="middle">
+            <select  [(ngModel)]="Account_Number">
+              <option *ngFor="let arr of accountList;">{{arr}}
+              </option>
+
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--
+    <div class="fund-details">
+      <div> Trade Parameters &nbsp;: :</div>
+      <div> Product Information &nbsp;: :</div>
+    </div>
+    <div class="fundparams-row">
+      <div>Application Type</div>
+      <div>
+        <select [(ngModel)]="ApplicationType" (click)="ApplicationTypeChange($event)">
+          <option selected>Subscription
+          </option>
+          <option>Redemption
+          </option>
+        </select>
+      </div>
+      <div>Rating</div>
+      <div>
+        <input class="input-txt right" type="text" disabled="disabled" (focus)="cfs.UnformatNumber($event)"
+          (blur)="cfs.FormatNumber($event)" value="{{data['Rating']}}" (change)="nominal = cfs.NotionalChange($event);"
+          (keypress)=" cfs.NotionalValidate($event)" />
+
+      </div>
+    </div>
+    <div class="fundparams-row">
+      <div>NAV </div>
+      <div>
+        <input type="text " class="right" disabled="disabled" (focus)="cfs.UnformatNumber($event)"
+          (blur)="cfs.FormatNumber($event)" value="{{data['BidNAV']| number:'1.6-6'}}"
+          (change)="nominal = cfs.NotionalChange($event);" (keypress)=" cfs.NotionalValidate($event)" />
+
+      </div>
+      <div>Sector</div>
+      <div>
+        <input type="text" disabled="disabled" (focus)="cfs.UnformatNumber($event)" (blur)="cfs.FormatNumber($event)"
+          value="{{data['Sector']}}" (change)="nominal = cfs.NotionalChange($event);"
+          (keypress)=" cfs.NotionalValidate($event)" />
+      </div>
+    </div>
+    <div class="fundparams-row">
+      <div>Notional</div>
+      <div>
+        <input type="text" class="right" [disabled]="ApplicationType === 'Redemption'" [(ngModel)]="notional"
+          placeholder="Notional" maxlength="12" tabindex="2" (onload)="unitCalculations(notional , data['BidNAV'])"
+          (blur)="cfs.FormatNumber($event)"
+          (change)="notional = cfs.NotionalChange($event); unitCalculations(notional , data['BidNAV'])"
+          (focus)="cfs.UnformatNumber($event)" (keypress)=" cfs.NotionalValidate($event)">
+
+      </div>
+      <div>Annual Fees (%)</div>
+      <div>
+        <input type="text" class="  right" disabled="disabled" (focus)="cfs.UnformatNumber($event)"
+          (blur)="cfs.FormatNumber($event)" value="{{data['AnnualFees']  | number:'1.2-2'}}"
+          (change)="nominal = cfs.NotionalChange($event);" (keypress)=" cfs.NotionalValidate($event)" />
+      </div>
+    </div>
+    <div class="fundparams-row">
+      <div>Units</div>
+      <div>
+        <input type="text" class="right" [(ngModel)]="Units" [disabled]="ApplicationType === 'Subscription'"
+          (blur)="cfs.FormatNumber($event)" (focus)="cfs.UnformatNumber($event)"
+          (keypress)=" cfs.NotionalValidate($event)"
+          (change)="Units = cfs.NotionalChange($event); calculateNotional(data['BidNAV']);" />
+
+      </div>
+      <div> {{FrontExitLoad}} (%) </div>
+      <div>
+        <input type="text" class="right" (focus)="cfs.UnformatNumber($event)" (blur)="cfs.FormatNumber($event)"
+          value="{{data['TrailerFees'] | number:'1.2-2'}}" disabled="disabled"
+          (change)="nominal = cfs.NotionalChange($event);" (keypress)=" cfs.NotionalValidate($event)" />
+      </div>
+    </div> -->
+
+    <div class="fund-button-row">
+      <div class="right">
+        <button class="button  btn" value="Buy" (click)="this.loadflag = true;subscribed(notional);"
+          tabindex="3">Submit</button>
+
+
+      </div>
+      <div>
+        <button class="button  btn" (click)=" clearBtn('subscribe');" tabindex="4">Clear</button>
+
+      </div>
+    </div>
+    <div class="fund-message-row">
+      <div *ngIf="loadflag">
+        <img [src]="isProd?'assets/loading_dots.gif':'../../assets/loading_dots.gif'" height="100px" width="100px">
+      </div>
+      <div *ngIf="!loadflag">
+        {{successMsg}}
+      </div>
+    </div>
+    <!-- </div> -->
+  </div>
+</div>

@@ -1,0 +1,191 @@
+
+<div [ngClass]="{'overlay' : showOverlay}" style="display: flex; justify-content: center; align-items: center;">
+    <div class="tblWidgetWrapper">
+        <section class="widgetHeader">
+            <label *ngIf="!(displayMode == 'ATTACH')" class="widgetTitle">
+                {{title}}
+            </label>
+            <label *ngIf="(displayMode == 'ATTACH')" class="widgetTitle">
+                ATTACH DOCUMENTS
+            </label>
+            <div class="modal-close" (click)="closeModal()"></div>
+        </section>
+
+        <section class="widgetLabels" *ngIf="labelsData.length">
+            <div *ngFor="let label of labelsData" class="labelRow">
+                
+                    <label *ngIf="label.title !== 'ISIN'" class="col1" for="" >{{label.title}}:</label>
+                    <label *ngIf="label.title !== 'ISIN'" class="col2" for="" >{{label.value}}</label>
+                
+            </div>
+        </section>
+        <section class="attachModal" style="padding-bottom: 10px;" *ngIf="displayMode === 'ATTACH'">
+            <div class="attachRow">
+                <div class="">
+                    <label class="col1" for="attachDDL">Attach document for</label>
+                    <!-- <select class="col2 ip-border ScrollCss" id="docType" [(ngModel)]="attachmentType"
+                        (change)="setAttachmentType($event)"> -->
+                    <select class="col2 ip-border ScrollCss" id="docType" [(ngModel)]="attachmentType">
+                        <option *ngFor="let option of attachmentOptions" [value]="option.key">{{option.value}}
+                        </option>
+                    </select>
+                </div>
+                <div class="">
+                    <label class="col3" for="attachDDL">{{miscDDL1.Label}}</label>
+                    <!-- <select class="col4 ip-border ScrollCss " id="docLanguage" [disabled]="!miscDDL1.Active"
+                        [(ngModel)]="languageCode"> -->
+                    <select class="col4 ip-border ScrollCss " id="docLanguage" [(ngModel)]="languageCode">
+                        <option *ngFor="let option of miscDDL1.Options" [value]="option.Key"
+                            [selected]="option.Value == 'English'">{{option.Value}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="attachRow">
+                <div class="">
+                    <label class="col1" for="attachDDL">Select document</label>
+                    <input class="col2 ip-border" id="docFile" type="file" multiple="multiple"
+                        accept=".xlsx,.xls,.doc,.docx,.txt,.pdf" (change)="SaveFiles($event)" />
+                </div>
+                <div class="">
+                    <label class="col3" for="attachDDL">{{miscDDL2.Label}}</label>
+                    <!-- <select class="col4 ip-border" id="docCountry" [disabled]="!miscDDL2.Active"
+                        [(ngModel)]="countryCode"> -->
+                    <select class="col4 ip-border" id="docCountry" [(ngModel)]="countryCode">
+                        <option *ngFor="let option of miscDDL2.Options" [value]="option.Key"
+                            [selected]="option.Value == 'Germany'">{{option.Value}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="attachRow">
+                <div class="">
+                    <div class="col1"></div>
+                    <div class="col1">
+                        <button class="button" style="width: 80%;" (click)="UploadDocs($event)"
+                            [disabled]='attachBtn'>Attach
+                            Document</button>
+                    </div>
+                    <!-- <div class="col2">
+                        <button class="button" style="width: 100%;" (click)="ReloadTable()">Refresh</button>
+                    </div> -->
+                </div>
+            </div>
+        </section>
+        <section [ngStyle]="{'max-height': setTableWidgetHeight()}" class="tableWidget" *ngIf="displayMode === 'VIEW'">
+            <div class="">
+                <table *ngIf="tableData.length">
+                    <thead>
+                        <tr>
+                            <th *ngFor="let header of _object.keys(tableData[0]); let i = index">
+                                <label for="">{{header}}</label>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let row of tableData; let i = index">
+                            <td *ngFor="let key of _object.keys(row); let j = index">
+                                <ng-template [ngIf]="checkIfCallable(row[key])" [ngIfElse]="nonClickable">
+                                    <span class="clickable" (click)="row[key]()">{{key || "Click here"}}</span>
+                                </ng-template>
+                                <ng-template #nonClickable>
+                                    <span>{{row[key]}}</span>
+                                </ng-template>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        <section [ngStyle]="{'max-height': setTableWidgetHeight()}" class="tableWidget"
+            *ngIf="displayMode === 'ATTACH' || displayMode === 'BOTH' ">
+            <div *ngIf="!pageloadflag" style="overflow: scroll;">
+                <table>
+                    <span *ngIf="(!fileArray1 || fileArray1.length == 0) && (!fileArray || fileArray.length == 0)">
+                        No file attached</span>
+                    <thead>
+                        <!-- <tr *ngIf="(fileArray1 && fileArray1.length > 0) || (fileArray && fileArray.length > 0)"> -->
+                        <tr *ngIf="(fileArray1 && fileArray1.length > 0)">
+
+                            <th>FileName</th>
+                            <th>Document Type</th>
+                            <th>Language</th>
+                            <th>Country</th>
+                            <th></th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- <ng-template ngFor let-i="index" let-fileName [ngForOf]="fileArray"> -->
+                        <tr *ngFor="let fileName of fileArray1; let i = index">
+                            <td>{{fileName.FileName}}</td>
+                            <td class="centerAlign">{{fileName.EventCode}}</td>
+                            <td class="centerAlign">{{fileName.DocumentLanguage}}</td>
+                            <td class="centerAlign">{{fileName.DocumentCountry}}</td>
+                            <td class="centerAlign"
+                                style="cursor: pointer;text-decoration: underline !important;color: var(--links);"><span
+                                    (click)="downloadAttachment(i, 'DB')">View</span>
+                                <!-- <img src="{{asseturl}}delete.png" width="30px"
+                                        style="filter: invert(50%);cursor: pointer;float: right;width: 20px;" title="Delete"
+                                        (click)="removeAttachment(i)"> -->
+                            </td>
+                        </tr>
+                        <!-- <tr *ngFor="let fileName of fileArray; let i = index">
+                            <td>{{fileName.FileName}}</td>
+                            <td class="centerAlign">{{fileName.EventCode}}</td>
+                            <td class="centerAlign">{{fileName.DocumentLanguage}}</td>
+                            <td class="centerAlign">{{fileName.DocumentCountry}}</td>
+                            <td class="centerAlign"
+                                style="cursor: pointer;text-decoration: underline !important;color: var(--links);"><span
+                                    (click)="downloadAttachment(i)">View</span>
+                            </td>
+                        </tr> -->
+                        <!-- </ng-template> -->
+                    </tbody>
+                </table>
+               
+                
+            </div>
+ <!-- Page loader added by AdilP @01-06-2023 || FIN1EURINT-242 -->
+            <div class="pageload-overlay" *ngIf="pageloadflag">
+                <div>
+                    <svg version="1.1" id="L4" xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                        [ngStyle]="{ width:  + '25px', height:  + '25px' }" style="margin-left: 30px"
+                        viewBox="0 0 100 100" enable-background="new 0 0 0 0" xml:space="preserve">
+                        <circle stroke="#a1a1a1" cx="47" cy="10" r="1.4" stroke-width="0.1">
+                            <animate attributeName="opacity" dur="2s" values="0;1;0" repeatCount="indefinite"
+                                begin="0.1" />
+                        </circle>
+                        <circle stroke="#a1a1a1" cx="47" cy="10" r="1.5" stroke-width="0.1">
+                            <animate attributeName="opacity" dur="2s" values="0;1;0" repeatCount="indefinite"
+                                begin="0.1" />
+                        </circle>
+                    </svg>
+                </div>
+            </div>
+        </section>
+		
+		 <!-- Added sucess message popup by AdilP @01-06-2023 || FIN1EURINT-242 -->
+        <div class="success-overlay" *ngIf="successMsg">
+            <div class="success-grid">
+                <div class="close-success-modal">
+                    <div (click)="toggleSuccessMessage()" class="modal-close success-close"></div>
+                </div>
+                <div class="success-div">
+                    <div class="success-icon" *ngIf="errorMsg == '' "></div>                        
+                    <div *ngIf="errorMsg != '' ">
+                        <app-svg-icons [icon]="'warning-icon'" [width]="'15'" [height]="'15'">
+                        </app-svg-icons>
+                    </div>
+                </div>
+                <div class="success-div">
+                    <label class="success-message-bold" style="white-space: pre-line;">{{resMsg}}</label>
+                </div>   
+                <div class="success-div">
+                    <button (click)="toggleSuccessMessage()" class="button warning-button" >Continue</button>
+                    <!-- <button (click)="toggleSuccessMessage()" class="button success-button">Ok</button> -->
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

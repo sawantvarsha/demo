@@ -1,0 +1,125 @@
+/* .customer-margin-details {
+} */
+.wrap {
+    width: 100%;
+}
+
+.wrap table {
+    width: 300px;
+    table-layout: fixed;
+}
+
+table tr td {
+    padding: 5px;
+    border: 1px solid #eee;
+    width: 120px;
+    word-wrap: break-word;
+}
+
+table.head tr td {
+    background: #eee;
+}
+
+.inner_table {
+    // height: 600px;
+    overflow-y: auto;
+}
+
+.customerreporttable {
+    // table {
+    //     width: 100%;
+
+    //     thead,
+    //     tbody {
+    //         width: 100%;
+
+    //         display: block;
+    //     }
+
+    //     tbody {
+    //         height: 600px; /* Just for the demo          */
+    //         overflow-y: auto; /* Trigger vertical scroll    */
+    //         overflow-x: hidden; /* Hide the horizontal scroll */
+    //     }
+    // }
+
+    table {
+        cursor: default;
+    }
+
+    th,
+    td {
+        padding: 5px;
+        font-size: 0.9em;
+        font-weight: 400;
+    }
+
+    th {
+        line-height: 20px;
+        background: var(--beige-2);
+        color: var(--white);
+    }
+
+    td {
+        line-height: 25px;
+        background: var(--very-light-grey);
+    }
+}
+
+.filter-container {
+    display: grid;
+    grid-template-columns: 5% 10% 10% 10% 5% auto;
+    grid-gap: 10px;
+    justify-content: left;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.customer-margin-details {
+    margin: 10px;
+    table {
+        width: 100%;
+    }
+}
+
+.expandable-row td {
+    padding-left: 25px;
+    background: linear-gradient(var(--light-grey), var(--white));
+    border-bottom: 1px solid var(--light-grey);
+    box-shadow: inset 0px 3px 5px -2px var(--medium-grey);
+    transition: all 0.5s ease-in-out;
+}
+
+.collapsed {
+    display: none;
+}
+
+.expanded {
+    display: table-row;
+}
+
+// chitra start on 29-Apr-2020
+@media screen and (max-width: 600px) and (min-width: 300px) {
+    .filter-container {
+        display: grid;
+        grid-template-columns: auto;
+        grid-gap: 10px;
+        justify-content: left;
+        align-items: center;
+        margin-bottom: 15px;
+    }
+}
+// chitra end on 29-Apr-2020
+
+select {
+    outline: none;
+    background-color: var(--light-grey);
+    padding: 5px;
+    height: 35px;
+    border-radius: 2px;
+    font-size: 15px;
+    letter-spacing: 1px;
+    -moz-appearance: none;
+    background-repeat: no-repeat;
+    cursor: pointer;
+  }

@@ -1,0 +1,356 @@
+<div class="">
+    <div class="page-navigation page-border">
+        <app-svg-icons class="back-button" [icon]="'back-button'" [width]="'40'" [height]="'40'" [fill]="'var(--headers)'"
+        (click)="back()"></app-svg-icons>
+        <div class="page-title pge-margin">Insights (Concentration By Underlying)</div>
+    </div>
+    <div class="main-container">
+        <div class="card-top">
+            <div class="card-flex">
+                <!-- <label>Blotter Code</label>
+                <select class="select-blotter">
+                    <option>Concentration By Underlying</option>
+                </select>
+                <button class="button btn-cls">Display Results</button> -->
+                <!-- <select class="export-select">
+                    <option>Export Current Page(Excel)</option>
+                    <option>Export All(Excel)</option>
+                    <option>Export Current Page(CSV)</option>
+                    <option>Export All(CSV)</option>
+                </select> -->
+                <!-- <label>Record(s) Per Page:</label>
+                <input type="text"class="records-input"[(ngModel)]="RowsPerPage" (keydown.enter)="changeRows(RowsPerPage)" (keydown.tab)="changeRows(RowsPerPage)" />
+                <label>Total Record(s):</label>
+                <label>{{totalRecords}}</label> -->
+                <div>
+                    <span class="common-font rows-per-page" style="font-size: 12px">Record(s) Per Page</span>
+                    <input class="common-font rows-per-page-input" [(ngModel)]="RowsPerPage" type="text"  style="margin-right: 20px !important;"
+                    (keydown.enter)="changeRows(RowsPerPage)" (keydown.tab)="changeRows(RowsPerPage)">
+                    <button mat-raised-button (click)="prevBtnClicked()" style="font-size: 12px" class="prevbtn">
+                        Prev
+                    </button>
+                    <input class="common-font rows-per-page-input" [(ngModel)]="PageNo" type="text" style="margin-right: 20px !important;margin-left: 20px !important;"
+                    (keydown.enter)="pageNoChange()">
+                    <button mat-raised-button (click)="nextBtnClicked()" style="font-size: 12px" class="prevbtn">
+                        Next
+                    </button>
+                </div>
+                
+            </div>
+            <div class="card-flex">
+                <app-svg-icons [icon]="'refresh'" [width]="'30'" [height]="'30'" (click)="refreshData()"></app-svg-icons>
+                <app-svg-icons [icon]="'xls'" (click)="exportAsXLSX()"></app-svg-icons>
+                <app-svg-icons (click)="GeneratePDF()" [icon]="'pdf'" [width]="'26'" [height]="'26'" [fill]="'var(--red)'">
+                </app-svg-icons>
+                <div >
+                    <button class="button button-margin svgFilter" (click)="filterFlag = true">
+                        <app-svg-icons style="padding-right: 8px;display: contents !important;" icon="{{'filter'}}"></app-svg-icons>
+                        <label>Filter</label>
+                    </button>
+                </div>
+            </div>
+                        <!-- <button class="button btn-cls">Export</button>
+            <label class="settings">Extended View</label>
+            <label class="settings" (click) = "settingsFlag = true">Personal Settings</label> -->
+        </div>
+       
+        <div class="content-container" id="content" #content>
+            <table>
+                <div class="loader-container" *ngIf="dataFlag == false">
+                    <div class="">
+                        <div class="multi-ripple">
+                          <div></div>
+                          <div></div>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="dataEmpty" style="padding: 20px">
+                    No Records Found
+                </div>
+                <ng-container *ngIf="dataFlag == true">
+                <thead  *ngIf="dataEmpty == false">
+                    <tr>
+                        <!-- <th class = "tableheaders" *ngFor="let details of columnTable" 
+                        [ngClass]="{thwidth0: details.width == 0,thwidth: details.width == 7,thwidth10 : details.width == 10,thwidth6 : details.width==6}" >
+                                {{details.filterBy}}
+                        </th> -->
+                        <ng-container  *ngFor="let details of columnTable">
+                            <th class = "tableheaders thReport" *ngIf="details.Header == 'Underlying' || details.Header == 'Exchange' || details.Header == 'Sector' ||
+                            details.Header == '# of ISINs' || details.Header == '# of ISINs Alive' || details.Header == '# of ISINs Autocalled'
+                            ||  details.Header == '# of ISINs Matured' || details.Header == '# of ISINs Matured with Knocked-In'  || details.Header == 'Total Product Exposure USD'
+                            || details.Header == 'Avg MTM 1 Day Change' || details.Header == 'Next Redemption Exposure' || details.Header == 'Next Redemption Exposure USD'
+                            || details.Header == 'Next Redemption Avg Probability' ">
+                                <!-- <span > -->
+                                    {{details.Header}}
+                                <!-- </span>s -->
+                        </th>
+                        </ng-container>
+                      
+                    </tr>
+                    <!-- <th>Underlying</th>
+                    <th># of ISINs</th>
+                    <th># of ISINs Alive</th>
+                    <th># of ISINs Autocalled</th>
+                    <th># of ISINs Matured</th>
+                    <th># of ISINs Matured with Knocked-In</th>
+                    <th>Total Product Exposure USD</th>
+                    <th>Avg MTM 1 Day Change</th>
+                    <th>Next Redemption Exposure</th>
+                    <th>Next Redemption Exposure USD</th>
+                    <th>Next Redemption Avg Probability</th>
+                    <th>Exchange</th>
+                    <th>Sector</th> -->
+                </thead> 
+                <tbody  *ngIf="dataEmpty == false">                                   
+                        <tr *ngFor="let details of concentrationReports">
+                            <td class="align-left">{{details.underlying}}</td>
+                            <td class="align-right">{{details.isins}}</td>
+                            <td class="align-right">{{details.isinsAlive}}</td>
+                            <td class="align-right">{{details.isinsAutocalled}}</td>
+                            <td class="align-right">{{details.isinsMatured}}</td>
+                            <td class="align-right">{{details.knockin}}</td>
+                            <!-- <td class="align-right">-</td> -->
+                            <td class="align-right">{{details.totalProductExpo}}</td>
+                            <td class="align-right">{{details.AvgMTM | number:'1.1-2'}}</td>
+                            <td class="align-center">
+                                <span *ngIf="details.nextkoRedem">
+                                    {{details.nextkoRedem}}
+                                </span>
+                                <span *ngIf="!details.nextkoRedem">
+                                    -
+                                </span>
+                            </td>
+                           <!--  <td class="align-right">{{details.redemExposureUSD}}</td> -->
+                           <td class="align-right">
+                                {{details.nextkoRedemUSD}}
+                           </td>
+                            <td class="align-right">
+                                <span *ngIf="details.nextAvyProb">
+                                    {{details.nextAvyProb}}
+                                </span>
+                                <span *ngIf="!details.nextAvyProb">
+                                   -
+                                </span>
+                            </td>
+                            <!-- <td class="align-center">
+                                <span *ngIf="details.Last_Calc_Date">
+                                    {{details.Last_Calc_Date}}
+                                </span>
+                                <span *ngIf="!details.Last_Calc_Date">
+                                    -
+                                </span>
+                            </td> -->
+                            <td class="align-left">
+                                <span *ngIf="details.exch == 'n.a.'">
+                                    -
+                                </span>
+                                <span *ngIf="details.exch != 'n.a.'">
+                                    {{details.exch}}
+                                </span>
+                            </td>
+                            <td class="align-left">
+                                <span *ngIf="details.sector == 'n.a.'">
+                                    -
+                                </span>
+                                <span *ngIf="details.sector != 'n.a.'">
+                                    {{details.sector}}
+                                </span>
+                            </td>
+                            <!-- <td class="align-right">
+                                {{details.KnockedOut_Products20Days1Sigma}}
+                            </td> -->
+                        </tr>                                  
+                </tbody>
+             </ng-container>
+            </table>
+            <!-- <div class="pagination">
+                <pagination-controls (pageChange)="q = $event" class="pageFont">
+                </pagination-controls>
+            </div> -->
+            <!-- <div class="overlay" *ngIf="settingsFlag == true">
+                <div class="page-content-container-popup">
+                    <div class="tab-active tabs">
+                        <div class="">Personalised Settings</div>
+                        <app-svg-icons class="closebtn" [icon]="'cancel-icon'" [width]="'15'" [height]="'15'" [fill]="'var(--icons)'"
+                        (click)="settingsFlag = false"></app-svg-icons>
+                    </div>
+                    <div class="popupGrid">
+                        <div>Record(s) Per Page</div>
+                        <div class="">
+                            <input type="text"/>
+                        </div>
+                    </div>
+                    <div class="popupBtn">
+                        <button class="button">Save</button>
+                        <button class="button">Close</button>
+                    </div>
+                </div>
+            </div> -->
+
+            <div class="overlay" *ngIf="filterFlag == true">
+                <div class="page-content-container-popup">
+                    <div class="tab-active">
+                        <div class="">
+                            <label>Filters</label>
+                            <app-svg-icons class="filter-icon" icon="{{'filter'}}"></app-svg-icons>
+                        </div>
+                        <app-svg-icons class="closebtn" [icon]="'cancel-icon'" [width]="'15'" [height]="'15'" [fill]="'var(--icons)'"
+                        (click)="closeFilter()"></app-svg-icons>
+                    </div>
+                    <div class="popup-Subheading">
+                        Sorting
+                    </div>
+                    <div class="sorting-grid">
+                        <div class="sorting-inner-grid">
+                            <label>Sort by #1</label>
+                            <select (change)="sort1($event)">
+                                <option *ngFor="let details of columnTable">
+                                    {{details.Header}}
+                                </option>
+                            </select>
+                        </div>
+                        
+                        <div class="sorting-inner-grid">
+                            <label>Sort by #2</label>
+                            <select (change)="sort1($event)">
+                                <!-- <option>Product ID</option> -->
+                                <option *ngFor="let details of columnTable">{{details.Header}}</option>
+                            </select>
+                        </div>
+                        <div class="sorting-inner-grid">
+                            <label>Sort by #3</label>
+                            <select (change)="sort1($event)">
+                                <!-- <option></option> -->
+                                <option *ngFor="let details of columnTable">{{details.Header}}</option>
+                            </select>
+                        </div>
+                       
+                        <div class="sorting-inner-grid">
+                            <label (change)="sort1($event)">Sort by #4</label>
+                            <select>
+                                <!-- <option></option> -->
+                                <option *ngFor="let details of columnTable">{{details.Header}}</option>
+                            </select>
+                        </div>
+                        <div class="sorting-inner-grid">
+                            <label>Sort by #5</label>
+                            <select (change)="sort1($event)">
+                                <option *ngFor="let details of columnTable">{{details.Header}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="popup-Subheading">
+                        Date Filters
+                    </div>
+                    <div class="date-grid">
+                        <div class="sorting-inner-grid">
+                            <label>Filter by</label>
+                                <!-- <select>
+                                    <option *ngFor="let details of columnTable">
+                                        <ng-container *ngIf="details.DataType == 'DATE'">
+                                            {{details.Header}}
+                                        </ng-container>                                        
+                                    </option>
+                                </select>                                -->
+                                <select [(ngModel)] = "filter_field" (change)="changeDateField($event)" >
+                                    <option>Next Redemption Exposure</option>
+                                    <option>Last Calculated At</option>
+                                </select>
+                            <!-- <input type="text"/> -->
+                        </div>
+                        <div class="sorting-inner-grid">
+                            <label>From</label>
+                            <div class="date-container">
+                                <input type="date" class="date-input" [(ngModel)] = "fromDate" (change)="changeFromDate($event)"/>
+                                <span class="date-label">{{ fromDate | date: "dd-MMM-yyyy" }}</span>
+                            </div>
+                        </div>
+                        <div class="sorting-inner-grid">
+                            <button class="button" (click)="applyFilters()">Apply Filter</button>
+                            <label class="align-right reset-btn" (click)="resetFilters()">Reset Filter</label>
+                        </div>
+                        <div class="sorting-inner-grid">
+                            <label>To</label>
+                            <div class="date-container">
+                                <input type="date" class="date-input" [(ngModel)]="toDate" (change)="changeToDate($event)"/>
+                                <span class="date-label">{{ toDate | date: "dd-MMM-yyyy" }}</span>
+                            </div>
+                        </div>
+                    </div>  
+                    <div class="popup-Subheading">
+                        Column Filters
+                    </div> 
+                    <div class="column-filter">
+                        <table class="column-table">
+                            <thead class="popupTable">
+                                <th>
+                                    <input type="checkbox" class="checkbox-cls" [(ngModel)]="checkbox[i]"/>
+                                </th>
+                                <th>Filter By</th>
+                                <th>Type</th>
+                                <th>Value</th>
+                            </thead>
+                            <tbody class="popup-tableHeight">
+                                <ng-container  *ngFor="let details of columnTable; let i = index">
+                                    <tr  class="popupTable" *ngIf="details.DataType != 'DATE'">
+                                        
+                                            <td>
+                                                <input type="checkbox" class="checkbox-cls"/>
+                                            </td>
+                                            <!-- <td>{{details.DataType}}</td> -->                                    
+                                            <td>{{details.Header}}</td>                                    
+                                            <td *ngIf="details.Header == 'Underlying' || details.Header == 'Exchange' || details.Header == 'Sector'">
+                                                <select [(ngModel)]="typeVal[i]" (change)="changeType($event,i)" (click)="checkbox[i]=true">
+                                                    <option>LIKE</option>
+                                                    <option>=</option>
+                                                    <option>!=</option>
+                                                    <option>IN</option>
+                                                    <option>IS NULL</option>
+                                                    <option>IS NOT NULL</option>
+                                                    <option>NOT LIKE</option>
+                                                </select>
+                                            </td>
+                                            <td *ngIf="details.Header == '# of ISINs' || details.Header == '# of ISINs Alive' || details.Header == '# of ISINs Autocalled'
+                                            ||  details.Header == '# of ISINs Matured' || details.Header == '# of ISINs Matured with Knocked-In'  || details.Header == 'Total Product Exposure USD'
+                                            || details.Header == 'Avg MTM 1 Day Change' || details.Header == 'Next Redemption Exposure' || details.Header == 'Next Redemption Exposure USD'
+                                            || details.Header == 'Next Redemption Avg Probability' || details.Header == 'Last Calculated At' || details.Header == 'Anticipated Autocalls     (20 days 1 sigma)'">
+                                                <select [(ngModel)]="typeVal[i]" (change)="changeType($event,i)">
+                                                    <option>=</option>
+                                                    <option>!=</option>
+                                                    <option><</option>
+                                                    <option>></option>
+                                                    <option><=</option>
+                                                    <option>>=</option>
+                                                    <option>BETWEEN</option>
+                                                </select>
+                                            </td>
+                                            <td *ngIf="(details.Header == '# of ISINs' || details.Header == '# of ISINs Alive' || details.Header == '# of ISINs Autocalled'
+                                            ||  details.Header == '# of ISINs Matured' || details.Header == '# of ISINs Matured with Knocked-In'  || details.Header == 'Total Product Exposure USD'
+                                            || details.Header == 'Avg MTM 1 Day Change' || details.Header == 'Next Redemption Exposure' || details.Header == 'Next Redemption Exposure USD'
+                                            || details.Header == 'Next Redemption Avg Probability' || details.Header == 'Last Calculated At' || details.Header == 'Anticipated Autocalls     (20 days 1 sigma)')
+                                            && (typeVal[i] == '=' || typeVal[i] == '!=' || typeVal[i] == '<' || typeVal[i] == '<=' || typeVal[i] == '>' || typeVal[i] == '>=')">
+                                                <input type="text" [(ngModel)]="colValue[i]" (keydown.enter)="valueFilter(i)" />                                        
+                                            </td>
+                                            <td *ngIf="details.Header == 'Underlying' || details.Header == 'Exchange' || details.Header == 'Sector'">
+                                                <input type="text" [(ngModel)]="colValue[i]" (keydown.enter)="valueFilter(i)" (keydown.backspace) ="clearFilters(i)"/>                                        
+                                            </td>
+                                            <td *ngIf="(details.Header == '# of ISINs' || details.Header == '# of ISINs Alive' || details.Header == '# of ISINs Autocalled'
+                                            ||  details.Header == '# of ISINs Matured' || details.Header == '# of ISINs Matured with Knocked-In'  || details.Header == 'Total Product Exposure USD'
+                                            || details.Header == 'Avg MTM 1 Day Change' || details.Header == 'Next Redemption Exposure' || details.Header == 'Next Redemption Exposure USD'
+                                            || details.Header == 'Next Redemption Avg Probability' || details.Header == 'Last Calculated At' || details.Header == 'Anticipated Autocalls     (20 days 1 sigma)') 
+                                            && typeVal[i] == 'BETWEEN'">
+                                                <div class="grid-popup">
+                                                    <input type="text" [(ngModel)]="betweenVal1"  /> 
+                                                    <input type="text" [(ngModel)]="betweenVal2" (keydown.enter)="valueFilter(i)" /> 
+                                                </div>                                    
+                                            </td>                                                                        
+                                    </tr>
+                                </ng-container>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

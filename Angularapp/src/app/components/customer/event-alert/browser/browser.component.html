@@ -1,0 +1,225 @@
+<div class="mainContainer">
+
+
+    <!-- <div class="viewAlloc">
+        <div></div>
+        <label class="container">Grid View
+            <input type="radio" checked="checked" name="radio" (click)= "showSchedule = false">
+            <span class="checkmark"></span>
+        </label>
+        <label class="container">Scheduler
+            <input type="radio" name="radio" (click)= "showSchedule = true" >
+            <span class="checkmark"></span>
+        </label>
+
+
+    </div> -->
+    <!---------------------DROPDOWN-------------------------------->
+    <div class="periodAndParentDiv" *ngIf="!showSchedule">
+        <!-- <mat-form-field class="dropdown">
+
+            <mat-label class="matLabelText">Select Period</mat-label>
+            <mat-select [(ngModel)]="this.period" (selectionChange)="setParent(this.period); fillDataOnPeriodChange()" [disabled]='!loadingComplete'>
+                <mat-option id='dropDownDiv' *ngFor="let period of periods" [value]="period.value">
+                    {{period.viewValue}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field> -->
+        <div style="display: grid;
+        grid-template-columns: 1fr 1fr;
+        align-items: baseline;">
+            <label class="matLabelText">Select Period</label>
+            <!-- <label class="matLabelText" *ngIf="showSchedule">Select Month</label> -->
+            <select [(ngModel)]="period" (change)="fillDataOnPeriodChange(event1)" [disabled]='!loadingComplete'>
+          <option id='dropDownDiv' *ngFor="let period of periods" [value]="period.value">
+            {{period.viewValue}}
+        </option>
+          </select>
+            <!-- <select [(ngModel)]="month" *ngIf="showSchedule" [disabled]='!loadingComplete'>
+            <option id='dropDownDiv' *ngFor="let month of months" [value]="month.value">
+              {{month.value}}
+          </option>
+            </select> -->
+        </div>
+        <!-- <div style="white-space: nowrap;">
+            <img src="http://finiqmbappnsk2683.cloudapp.net/BondsCouponSlider/assets/left.png" class="imgbtn" (click)="down(this.period);" *ngIf="this.currentTheme === 'light' || this.currentTheme === 'blue'">
+            <img src="http://finiqmbappnsk2683.cloudapp.net/BondsCouponSlider/assets/left_gold.png" style="padding-left: 55px; cursor: pointer;" (click)="down(this.period);" *ngIf="this.currentTheme === 'dark'">
+
+            <button id="tabbtn" class="btn parent" style="text-transform: uppercase;" (click)="on(); onClickShowDiv($event)">{{this.parent}}</button>
+
+            <img src="http://finiqmbappnsk2683.cloudapp.net/BondsCouponSlider/assets/right.png" style=" opacity: 0.5; cursor: pointer;" (click)="up(this.period);" *ngIf="this.currentTheme === 'light' || this.currentTheme === 'blue'">
+            <img src="http://finiqmbappnsk2683.cloudapp.net/BondsCouponSlider/assets/right_gold.png" style="cursor: pointer;" (click)="up(this.period);" *ngIf="this.currentTheme === 'dark'">
+        </div> -->
+        <div style="text-align: center;" *ngIf="this.showGraph === false ">
+            <div *ngIf="(this.loadingComplete && !this.errorFlag) || (this.loadingComplete && !this.errorFlagCount)" class="inputDiv">
+                <!-- <span style="white-space: nowrap;"> -->
+                <!-- <input placeholder="Search Product" id='searchProduct' class="inputText inputText_Search"
+      [(ngModel)]="searchText" type="text" onkeyup="this.value= this.value.toLowerCase();"> -->
+                <!-- <img src="http://finiqmbappnsk2683.cloudapp.net/BondsCouponSlider/assets/export_2.png" class="exportImage"
+      (click)='exportToExcel()' title="Export to Excel" *ngIf="this.currentTheme === 'light'"> -->
+
+                <!-- <img src="http://finiqmbappnsk2683.cloudapp.net/BondsCouponSlider/assets/export_black3.png" class="exportImage"
+      (click)='exportToExcel()' title="Export to Excel" *ngIf="this.currentTheme === 'dark'">
+    <img src="http://finiqmbappnsk2683.cloudapp.net/BondsCouponSlider/assets/export_blue.png" class="exportImage"
+      (click)='exportToExcel()' title="Export to Excel" *ngIf="this.currentTheme === 'blue'"> -->
+                <!-- </span> -->
+                <div class="pageCount">
+                    Records per page &nbsp;&nbsp;
+                    <input value="10" id="records" class="inputText inputText_pageCount" [(ngModel)]="recordsPerPage" type="number" (ngModelChange)='validatePageCount()' (blur)='validateNull()' onkeypress="return (event.charCode === 8 || event.charCode === 0 || event.charCode === 13) ? null : event.charCode >= 47 && event.charCode <= 57"
+                        min="0" required>
+                    <img src="http://finiqmbappnsk2683.cloudapp.net/BondsCouponSlider/assets/export_2.png" class="exportImage" (click)='exportToExcel()' title="Export to Excel" *ngIf="this.currentTheme === 'light'">
+                </div>
+            </div>
+        </div>
+
+
+
+
+    </div>
+
+
+    <!-- <hr /> -->
+
+    <!-- <p> {{this.weeklyCounts[0]}} {{this.weeklyCounts[1]}} {{this.weeklyCounts[2]}} {{this.weeklyCounts[3]}} </p> -->
+
+    <!-- *ngIf="this.showGraph === false " -->
+    <!-- <div style="text-align: center;">
+   
+        <mat-tab-group [selectedIndex]="this.yearIndex" (selectedTabChange)=" fillData('Yearly', $event.index);" class="slider" animationDuration="10ms" *ngIf="this.period==='Yearly'">
+            <mat-tab *ngFor="let i of ten" label="{{this.base+i}} ({{this.yearlyCounts[i]}})" [disabled]='!loadingComplete'>
+            </mat-tab>
+        </mat-tab-group>
+
+      
+        <mat-tab-group [selectedIndex]="this.monthIndex" (selectedTabChange)=" fillData('Monthly', $event.index);" class="slider" animationDuration="10ms" *ngIf="this.period==='Monthly'">
+            <mat-tab *ngFor="let month of months; let i=index" label="{{month.value.toUpperCase()}} {{selectedYear}} ({{this.monthlyCounts[i]}})" [disabled]='!loadingComplete'></mat-tab>
+        </mat-tab-group>
+
+    
+        <mat-tab-group [selectedIndex]="this.weekIndex" (selectedTabChange)="fillData('Weekly', $event.index);" class="sliderWeekly" animationDuration="10ms" *ngIf="this.period==='Weekly'" ngDefaultControl [(ngModel)]="selectedWeek">
+            <mat-tab label="01-{{this.selectedMonth}} to 08-{{this.selectedMonth}} ({{this.weeklyCounts[0]}})" [disabled]='!loadingComplete'></mat-tab>
+            <mat-tab label="09-{{this.selectedMonth}} to 16-{{this.selectedMonth}} ({{this.weeklyCounts[1]}})" [disabled]='!loadingComplete'></mat-tab>
+            <mat-tab label="17-{{this.selectedMonth}} to 24-{{this.selectedMonth}} ({{this.weeklyCounts[2]}})" [disabled]='!loadingComplete'></mat-tab>
+            <mat-tab label="25-{{this.selectedMonth}} to {{this.currentMonthLastDay}}-{{this.selectedMonth}} ({{this.weeklyCounts[3]}})" [disabled]='!loadingComplete'>
+            </mat-tab>
+        </mat-tab-group>
+
+
+      
+
+        <mat-tab-group [selectedIndex]="this.dayIndex" (selectedTabChange)="fillData('Daily', $event.index);" [ngClass]="{'sliderDaily': this.weekNo<=3,'sliderLastWeekFeb': this.weekNo===4  && this.selectedMonth==='Feb' , 'sliderLastWeek': this.weekNo===4}" animationDuration="10ms"
+            *ngIf="this.period==='Daily'">
+      
+            <ng-container *ngIf="this.weekNo<=3">
+                <mat-tab *ngFor="let day of weekDays" label="{{day+(8*(this.weekNo-1))}} ({{this.dailyCounts[((day+(8*(this.weekNo-1)))%8)-1] }})" [disabled]='!loadingComplete'></mat-tab>
+            </ng-container>
+
+
+            <ng-container *ngIf="this.weekNo===4">
+                <mat-tab *ngFor="let day of lastWeekDays" label="{{day}} ({{this.dailyCounts[(day%8)-1]}})" [disabled]='!loadingComplete'></mat-tab>
+            </ng-container>
+
+        </mat-tab-group>
+    </div> -->
+
+
+    <div class="contentcontainer" *ngIf="!showSchedule">
+
+        <!-- <p>{{this.errorFlag}} {{this.errorFlagCount}} {{this.currentTabIndex}}</p> -->
+        <img *ngIf="!this.loadingComplete" src="http://finiqmbappnsk2683.cloudapp.net/BondsCouponSlider/assets/loading_dots.gif" class="loadingIcon">
+        <div *ngIf="this.errorFlag ">
+            <h3 class="errorMessage">No Records Found</h3>
+        </div>
+        <div *ngIf="this.loadingComplete && !this.errorFlag ">
+            <!-- Normal Table -->
+            <table #TABLE #table id="BondsTable" class="recordsTable">
+                <thead>
+                    <tr>
+                        <!-- <th *ngFor="let header of tabHeader">{{header}}</th> -->
+                        <th>NM ID</th>
+                        <th>ISIN</th>
+                        <th>Product Name</th>
+                        <th>Event Date</th>
+                        <th>Event Name</th>
+                        <th>Issuer</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr *ngFor="let i=index; let data of eventData | eventSearchPipe:searchText | paginate: {itemsPerPage: recordsPerPage, currentPage: p}">
+
+                        <td style="text-align: right;">
+                            {{data.PrdID}}
+                        </td>
+                        <td class="dateTD">
+                            {{data.strategy_code}}
+                        </td>
+
+                        <td>
+                            {{data.Product_Name}}
+                        </td>
+
+                        <td class="dateTD" style="text-align: center;">
+                            {{data.RS_Schedule_Date | date:'dd-MMM-yyyy'}}
+                        </td>
+                        <td class="dateTD">
+                            {{data.Event_Name}}
+                        </td>
+                        <td class="dateTD">
+                            {{data.Issuer}}
+                        </td>
+                        <td class="dateTD" *ngIf="data.RS_Status !== ''">
+                            {{data.RS_Status}}
+                        </td>
+                        <td class="dateTD" *ngIf="data.RS_Status === ''">
+                            Pending
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- Inverted Table -->
+            <table class="recordsTable_horizontal" *ngIf="this.loadingComplete && this.isMobile && !this.errorFlag && !this.errorFlagCount">
+                <tr *ngFor="let header of tabHeader; let i = index">
+                    <th>{{header}}</th>
+                    <td *ngFor="let data of apiData | paginate: {itemsPerPage: recordsPerPage, currentPage: p} | eventSearchPipe:searchText">
+                        {{ data[headerFields[i]] }}
+                    </td>
+                </tr>
+            </table>
+
+            <pagination-controls *ngIf="this.loadingComplete && !this.errorFlag &&!this.errorFlagCount" (pageChange)="p = $event" class="pageFont">
+            </pagination-controls>
+
+        </div>
+    </div>
+
+
+    <!-- Graph generation -->
+    <div class="graphContainer container" *ngIf="this.showGraph === true && !this.errorFlag && this.loadingComplete">
+        <!-- {{this.events.length}} {{this.assetsData.length}} -->
+        <div class="row">
+            <div class="col-lg-6 col-md-12 col-sm-12">
+                <google-chart #chart [title]="'Event Names'" [type]="type" [data]="events" [columns]="columnNames" *ngIf="this.events.length" [options]="options" [width]="width" [height]="height">
+                </google-chart>
+            </div>
+            <div class="col-lg-6 col-md-12 col-sm-12">
+                <google-chart #chart [title]="'Assets'" [type]="type" [data]="assetsData" *ngIf="this.assetsData.length" [columns]="columnNames" [options]="options" [width]="width" [height]="height">
+                </google-chart>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6 col-md-12 col-sm-12">
+                <google-chart #chart [title]="'Record Date'" [type]="type" [data]="recordDate" [columns]="columnNames" [options]="options" [width]="width" [height]="height">
+                </google-chart>
+            </div>
+            <div class="col-lg-6 col-md-12 col-sm-12">
+            </div>
+        </div>
+    </div>
+
+    <div class="contentcontainer" *ngIf="showSchedule">
+        <app-scheduler></app-scheduler>
+    </div>
+</div>

@@ -1,0 +1,145 @@
+<div class="multi-request-grid" [ngStyle]="{'grid-auto-flow': direction == 'horizontal' ? 'row' : 'column'}">
+    <div class="headers" [ngStyle]="{'grid-auto-flow': direction == 'horizontal' ? 'column' : 'row' }">
+        <div class="header-block">
+            <div class="column-name">Result</div>
+        </div>
+        <div class="header-block">
+            <div class="column-name" [ngStyle]="{'height': direction == 'horizontal' ? '25px' : '60px'}">Price</div>
+        </div>
+        <div class="header-block">
+            <div class="column-name">Product Type</div>
+            <div class="column-name">Direction</div>
+            <div class="column-name">Currency Pair</div>
+            <div class="column-name">Spot Rate</div>
+        </div>
+        <div class="header-block">
+            <div class="column-name">Strike Rate</div>
+            <div class="column-name">Tenor</div>
+            <div class="column-name">Notional</div>
+        </div>
+        <div class="header-block">
+            <div class="column-name">IB Prem. Ccy</div>
+            <div class="column-name">IB Prem.</div>
+            <div class="column-name">Upfront (%)</div>
+            <div class="column-name">Client Prem.</div>
+        </div>
+        <div class="header-block">
+            <div class="column-name">Upfront</div>
+            <div class="column-name">Option Type</div>
+            <div class="column-name">Upper Barrier</div>
+            <div class="column-name">Lower Barrier</div>
+        </div>
+        <div class="header-block">
+            <div class="column-name">Trade Date</div>
+            <div class="column-name">Premium Date</div>
+            <div class="column-name">Final Fixing Date</div>
+            <div class="column-name">Final Sett. Date</div>
+        </div>
+        <div class="header-block">
+            <div class="column-name">Option Cut</div>
+        </div>
+    </div>
+
+
+    <div *ngFor="let row of arr; let i = index;" class="headers" 
+        [ngStyle]="{'grid-auto-flow': direction == 'horizontal' ? 'column' : 'row'}">
+        <div class="row-block">
+            <div class="row-content">{{PPName}} {{BestPrice}}</div>
+        </div>
+        <div class="row-block">
+            <div class="row-content">
+                <button>Price</button>
+            </div>
+            <div class="row-content">
+                <select>
+                    <option>Best Price</option>
+                </select>
+            </div>
+        </div>
+        <div class="row-block">
+            <div class="row-content">
+                <select>
+                    <option>Knock In</option>
+                </select>
+            </div>
+            <div class="row-content">
+                <select>
+                    <option>Buy</option>
+                    <option>Sell</option>
+                </select>
+            </div>
+            <div class="row-content">
+                <select>
+                    <option>AED</option>
+                </select>
+            </div>
+            <div class="row-content">
+                <span>1.2</span>
+                /
+                <span>1.3</span>
+            </div>
+        </div>
+        <div class="row-block">
+            <div class="row-content">
+                <input type="text" />
+            </div>
+            <div class="row-content">
+                <div class="split">
+                    <select>
+                        <option>1W</option>
+                    </select>
+                    <input type="text" />
+                </div>
+            </div>
+            <div class="row-content">
+                <input type="text" name="" id="">
+            </div>
+        </div>
+        <div class="row-block">
+            <div class="row-content">
+                <select>
+                    <option>depoCcy</option>
+                    <option>altCcy</option>
+                </select>
+            </div>
+            <div class="row-content">
+                <input type="text" name="" id="">
+            </div>
+            <div class="row-content">
+                <input type="text" name="" id="">
+            </div>
+            <div class="row-content">
+                <input type="text" name="" id="">
+            </div>
+        </div>
+        <div class="row-block">
+            <div class="row-content">
+                <span>10</span>
+                /
+                <span>20</span>
+            </div>
+            <div class="row-content">
+                <select>
+                    <option>Call</option>
+                    <option>Put</option>
+                </select>
+            </div>
+            <div class="row-content"><input type="text" name="" id=""></div>
+            <div class="row-content"><input type="text" name="" id=""></div>
+        </div>
+        <div class="row-block">
+            <div class="row-content"><span></span></div>
+            <div class="row-content"><span></span></div>
+            <div class="row-content"><span></span></div>
+            <div class="row-content"><span></span></div>
+        </div>
+        <div class="row-block">
+            <div class="row-content">
+                <select>
+                    <option>TOK</option>
+                    <option>IBFIXTOK</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</div>

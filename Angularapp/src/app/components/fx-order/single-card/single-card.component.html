@@ -1,0 +1,256 @@
+<div class="card">
+  <div class="ccy card-header row" style="margin: 0">
+    <div class="top-icon">
+      <img src="{{ assetURL }}/favourite_silver.png" alt="" style="
+          height: 1em;
+          margin: auto;
+          cursor: pointer;
+          margin-left: 5px;
+          filter: grayscale(0.3);
+        " *ngIf="!favorite" (click)="addtoFavorite()" />
+      <img src="{{ assetURL }}/favourite_gold.png" alt="" style="
+          height: 1em;
+          margin: auto;
+          cursor: pointer;
+          margin-left: 5px;
+          filter: grayscale(0.3);
+        " *ngIf="favorite" (click)="deleteFromFavorites()" />
+    </div>
+    <div>
+      <span style="color: var(--fx-text)"> {{ selectedCcy }} </span>
+    </div>
+    <div class="top-icon">
+      <!-- <span (click)="removeCard()"> X </span> -->
+      <img src="{{ assetURL }}/cancel_icon.png" alt=""
+        style="height: 1em; margin: auto; cursor: pointer; margin-right: 5px" (click)="removeCard(selectedCcy)" />
+    </div>
+  </div>
+  <div class="row fx-input-grid" style="height: 2.3em">
+    <div class="singccybox row" style="padding-right: 5px; border-right: 1px solid var(--fx-line)">
+      <div class="verticalmiddlealign" style="padding: 0 0 0 5px">
+        <span class="greylabel"> {{ investCcy }} </span>
+      </div>
+      <div class="verticalmiddlealign" style="text-align: right; padding: 0">
+        <!-- <span class="bluelabel"> 160,000 </span> -->
+        <input type="text" [ngStyle]="{ 'font-weight': highlightinput === 'invest' ? 600 : 500 }"
+          [(ngModel)]="invNotional" (focus)="
+            commonfunction.UnformatNumber($event);
+            commonfunction.focusNumber($event)
+          " (blur)="commonfunction.FormatNumber($event)" (change)="
+            invNotional = commonfunction.NotionalChange($event);
+            changeNotionalfunction('invest')
+          " (click)="
+            highlightinput === 'alter'
+              ? (Stopstreamingforbooktrade = true)
+              : false
+          " (keypress)="
+            commonfunction.NotionalValidate($event)
+              ? (Stopstreamingforbooktrade = true)
+              : false
+          " id="invnotional{{ index }}" />
+      </div>
+    </div>
+    <div class="singccybox row">
+      <div class="verticalmiddlealign" style="padding: 0 0 0 5px">
+        <span class="greylabel"> {{ altCcy }} </span>
+      </div>
+      <div class="verticalmiddlealign" style="text-align: right; padding: 0">
+        <!-- <span class="bluelabel"> 181,276 </span> -->
+        <input type="text" [ngStyle]="{ 'font-weight': highlightinput === 'alter' ? 600 : 500 }"
+          [(ngModel)]="altNotional" (focus)="
+            commonfunction.UnformatNumber($event);
+            commonfunction.focusNumber($event)
+          " (blur)="commonfunction.FormatNumber($event)" (change)="
+            altNotional = commonfunction.NotionalChange($event);
+            changeNotionalfunction('alter')
+          " (keypress)="
+            commonfunction.NotionalValidate($event)
+              ? (Stopstreamingforbooktrade = true)
+              : false
+          " id="altnotional{{ index }}" (click)="
+            highlightinput === 'invest'
+              ? (Stopstreamingforbooktrade = true)
+              : false
+          " />
+      </div>
+    </div>
+  </div>
+  <div class="row fx-input-grid" style="height: 42px">
+    <div class="" style="padding-left: 5px; line-height: 42px">
+      <span [ngClass]="optionType === 'Spot' ? 'bluelabel' : 'greylabel'" (click)="
+          optionType = 'Spot';
+          tenorCode = 'SPOT';
+          productID = 3;
+          switchToSPOT();
+          showTenorBox = false
+        ">
+        {{ "Spot" | translate }}
+      </span>
+      <span> / </span>
+      <span [ngClass]="optionType === 'Forward' ? 'bluelabel' : 'greylabel'" (click)="
+          optionType = 'Forward';
+          clear();
+          showSettlementBox = false;
+          productID = 9
+        ">
+        {{ "Forward" | translate }}
+      </span>
+    </div>
+    <div class="" style="
+        padding: 2px 5px 0 0em;
+        line-height: 40px;
+        display: flex;
+        justify-content: flex-end;
+      ">
+      <div class="datebox divleft" (click)="showhideTenorandsettlement(); picker.close()">
+        <div *ngIf="optionType === 'Forward'" style="display: flex">
+          <div class="datebottom divleft" style="margin-left: 1.1em">
+            {{ valuedateday }}
+          </div>
+          <div class="divleft" style="margin-left: 1px"><span> / </span></div>
+          <div class="datebottom divleft" style="margin-left: 2px">
+            {{ valuedatemonth }}
+          </div>
+          <div class="divleft" style="margin-left: 1px"><span> / </span></div>
+          <div class="datebottom divleft" style="width: 2.5em">
+            {{ valuedateyear }}
+          </div>
+        </div>
+        <div *ngIf="optionType !== 'Forward'" style="text-align: center">
+          <span> {{ settlement }} </span>
+        </div>
+      </div>
+      <!-- <img class="divleft" src="../../assets/calendar.png" alt="" style="height: 1.5em;margin-left: 0.9em;"> -->
+      <mat-form-field style="position: absolute; z-index: -1; right: 1em">
+        <input matInput [matDatepicker]="picker" class="picker" (click)="
+            optionType === 'Forward' ? (showTenorBox = !showTenorBox) : false
+          " (dateChange)="getDate($event)" [min]="minDate" />
+        <!-- <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle> -->
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+      <div class="tooltiptext" *ngIf="datevalidation">
+        {{ validtionmsg }}
+      </div>
+      <div class="tenorBox" *ngIf="showTenorBox">
+        <div *ngFor="let t of tenor" (click)="ChangeTenor(t.t)">
+          {{ t.t }}
+        </div>
+      </div>
+      <div class="tenorBox" *ngIf="showSettlementBox">
+        <div *ngFor="let t of settlementList" (click)="changeSettlement(t.s)">
+          {{ t.s }}
+        </div>
+      </div>
+      <!-- <button mat-raised-button (click)="picker.open()">Open</button> -->
+      <img src="{{ assetURL }}/calendar.png" alt="" (click)="
+          showTenorBox = false;
+          optionType === 'Forward' ? picker.open() : false;
+          callCalender()
+        " style="
+          height: 22px;
+          margin-bottom: 0.6em;
+          margin-left: 10px;
+          cursor: pointer;
+          margin-top: 10px;
+        " />
+    </div>
+  </div>
+  <div class="blueline"></div>
+  <div class="ratesbox fx-input-grid row" style="margin: 0">
+    <div class="" style="border-right: 1px var(--fx-line) solid">
+      <div style="text-align: center; padding-top: 0.3em">
+        <span class="sellbuylabel"> {{ leftFlip }}</span>
+      </div>
+      <div style="
+          text-align: center;
+          padding-top: 1.8em;
+          padding-bottom: 1.6em;
+          height: 82px;
+        " class="blink_me" *ngIf="!Loadingsell">
+        <span [ngClass]="leftFlip === 'YOU SELL' ? 'rates' : 'ratesdim'" *ngIf="leftFlip === 'YOU SELL'">
+          {{ BidSmall }}</span>
+        <span [ngClass]="leftFlip === 'YOU SELL' ? 'rateslarge' : 'rateslargedim'" *ngIf="leftFlip === 'YOU SELL'">
+          {{ BidLarge }}</span>
+        <span [ngClass]="leftFlip === 'YOU BUY' ? 'rates' : 'ratesdim'" *ngIf="leftFlip === 'YOU BUY'">
+          {{ AskSmall }}</span>
+        <span [ngClass]="leftFlip === 'YOU BUY' ? 'rateslarge' : 'rateslargedim'" *ngIf="leftFlip === 'YOU BUY'">
+          {{ AskLarge }}</span>
+      </div>
+      <div style="
+          text-align: center;
+          padding-top: 1.3em;
+          padding-bottom: 1.3em;
+          height: 82px;
+        " *ngIf="Loadingsell">
+        <img src="{{ assetURL }}/loading_dots.gif" alt="" style="height: 35px" />
+      </div>
+    </div>
+    <div (click)="flipSellBuy()" style="
+        position: absolute;
+        margin-left: 50%;
+        transform: translate(-50%, 0);
+      ">
+      <img src="{{ assetURL }}/interchange.png" alt="" style="height: 2em; cursor: pointer" />
+    </div>
+    <div class="col-6">
+      <div style="text-align: center; padding-top: 0.3em">
+        <span class="sellbuylabel"> {{ rightFlip }}</span>
+      </div>
+      <div style="
+          text-align: center;
+          padding-top: 1.8em;
+          padding-bottom: 1.2em;
+          height: 82px;
+        " class="blink_me" *ngIf="!Loadingbuy">
+        <span [ngClass]="rightFlip === 'YOU BUY' ? 'ratesdim' : 'rates'" *ngIf="rightFlip === 'YOU BUY'">
+          {{ AskSmall }}</span>
+        <span [ngClass]="rightFlip === 'YOU BUY' ? 'rateslargedim' : 'rateslarge'" *ngIf="rightFlip === 'YOU BUY'">
+          {{ AskLarge }}</span>
+        <span [ngClass]="rightFlip === 'YOU SELL' ? 'ratesdim' : 'rates'" *ngIf="rightFlip === 'YOU SELL'">
+          {{ BidSmall }}</span>
+        <span [ngClass]="rightFlip === 'YOU SELL' ? 'rateslargedim' : 'rateslarge'" *ngIf="rightFlip === 'YOU SELL'">
+          {{ BidLarge }}</span>
+      </div>
+      <div style="
+          text-align: center;
+          padding-top: 1.3em;
+          padding-bottom: 1.3em;
+          height: 82px;
+        " *ngIf="Loadingbuy">
+        <img src="{{ assetURL }}/loading_dots.gif" alt="" style="height: 35px" />
+      </div>
+    </div>
+  </div>
+
+  <div class="ratesbox" style="
+      text-align: center;
+      padding: 0.4em;
+      display: grid;
+      grid-template-columns: 60% 40%;
+      text-align: right;
+    ">
+    <!-- *ngIf="isPricingTradingOn===1" -->
+    <!-- routerLink="/transaction/0" -->
+    <div>
+      <span *ngIf="calltonextpage() && this.optionType === 'Spot'" class="orderlabel"
+        (click)="changeRouteToTransaction()" style="cursor: pointer; display: flex; justify-content: flex-end">
+        <div class="triangle-right" style="margin-bottom: -1px"></div>
+        {{ "Trade" | translate }}
+      </span>
+      <span *ngIf="calltonextpage() && this.optionType === 'Forward'" class="orderlabel"
+        style="cursor: pointer; display: flex; justify-content: flex-end" (click)="changeRouteToTransaction()">
+        <!-- (click)="changeRouteToTrnasaction_Forward()" -->
+        <div class="triangle-right" style="margin-bottom: -1px"></div>
+        {{ "Trade" | translate }}
+      </span>
+      <span *ngIf="!calltonextpage()" class="orderlabel"
+        style="cursor: pointer; display: flex; justify-content: flex-end">
+        <div class="triangle-right" style="margin-bottom: -1px"></div>
+        {{ "Trade" | translate }}
+      </span>
+    </div>
+    <div [id]="'timer' + this.investCcy + this.altCcy" [ngStyle]="{ display: isTimerVisible ? '' : 'none' }">
+      {{ sec }}
+    </div>
+  </div>
+</div>

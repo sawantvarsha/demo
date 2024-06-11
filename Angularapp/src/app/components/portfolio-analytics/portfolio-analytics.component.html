@@ -1,0 +1,1514 @@
+<div class="page-title main-title-module">
+  <div class="title main-title">
+    <app-svg-icons class="back-button" [icon]="'back-button'" [width]="'40'" [height]="'40'" [fill]="'var(--headers)'"
+      (click)="clickBack()"></app-svg-icons>
+    Portfolio Analytics
+    <!-- <span
+      [routerLink]="['/amc-dashboard']"
+      style="font-size: 12px; color: blue"
+    >
+      AMC
+    </span> -->
+    <div class="refresh-portfolio">
+      <app-svg-icons (click)="refresh()" [icon]="'refresh'" [width]="'26'" [height]="'26'">
+      </app-svg-icons>
+    </div>
+  </div>
+  <div class="portfolio-selector">
+    <div>
+      <select (change)="changePortfolio()" [(ngModel)]="selectedPortfolio">
+        <option [selected]="this.selectedPortfolio === i" value="{{ i }}"
+          *ngFor="let item of portfolioDetails; let i = index">
+          {{ item.PortfolioName.length > 0 ? item.PortfolioName : "" }} ({{
+          item.FacilityCode.length > 0 ? item.FacilityCode : ""
+          }})
+        </option>
+      </select>
+    </div>
+  </div>
+  <div class="exchange-selector">
+    <div>
+      <select (change)="changeExchange()" [(ngModel)]="selectedExchange">
+        <option [value]="exchange.value" *ngFor="let exchange of exchangeDetails; let i = index">
+          {{ exchange.label }}
+        </option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="selectedPortfolio !== null" class="tabs-pages" style="margin: 20px 35px 0px 40px;">
+  <div class="tabs tab-left" [ngClass]="{
+      'tab-active tab-active-left': mainTab === 'current-portfolio'
+    }" (click)="toggleTab('current-portfolio')">
+    {{ (portfolioDisplayName.length > 0 ? portfolioDisplayName : "") | slice: 0:25 }}
+    <!--<span *ngIf="portfolioDisplayName.length > 25">...</span> =-->
+    <!--// Modified by Uddesh on 24 May 2022 asked by Rohit T-->
+  </div>
+  <div class="tabs" [ngClass]="{ 'tab-active': mainTab === 'simulation' }" (click)="toggleTab('simulation')">
+    Simulation
+  </div>
+  <div class="tabs" [ngClass]="{ 'tab-active': mainTab === 'rolling-analysis' }"
+    (click)="toggleTab('rolling-analysis')">
+    Rolling Analysis
+  </div>
+  <div class="tabs" [ngClass]="{ 'tab-active': mainTab === 'correlation' }" (click)="toggleTab('correlation')">
+    Correlations
+  </div>
+  <div class="tabs" [ngClass]="{ 'tab-active': mainTab === 'stress-testing' }" (click)="toggleTab('stress-testing')">
+    Stress Testing
+  </div>
+  <div class="tabs" [ngClass]="{ 'tab-active': mainTab === 'drawdowns' }" (click)="toggleTab('drawdowns')">
+    Drawdowns
+  </div>
+  <div class="tabs" [ngClass]="{ 'tab-active': mainTab === 'asset-allocation' }"
+    (click)="toggleTab('asset-allocation')">
+    Asset Allocation
+  </div>
+  <div class="tabs tab-right" [ngClass]="{ 'tab-active tab-active-right': mainTab === 'contributions' }"
+    (click)="toggleTab('contributions')">
+    Contributions
+  </div>
+</div>
+
+<div class="section-errors security-fetch-error" *ngIf="
+    mainTab === 'current-portfolio' &&
+    !isLoader &&
+    !isperfLoader &&
+    securityMisMatchFLag
+  ">
+  No Data Found.
+</div>
+
+<div class="content-container">
+  <div *ngIf="
+      mainTab === 'current-portfolio' &&
+      !isLoader &&
+      performanceStatisticsList.length > 0
+    " class="column1 field-sections">
+    <div class="main-card page1-height">
+      <div class="page-title module sub-title perf-statistics-title">
+        <div class="title field-and-title">Performance Statistics</div>
+        <div class="toggle-div">
+          <div class="toggler">
+            <button (click)="toggleFlag = false" class="toggle-button"
+              [ngClass]="{ 'toggle-button-selected': !toggleFlag }">
+              <img class="buttonIcon" [ngClass]="{ 'buttonIcon-selected': !toggleFlag }" [src]="
+                  isProd
+                    ? 'assets/list_view.svg'
+                    : '../../../assets/list_view.svg'
+                " alt="" />
+            </button>
+            <button (click)="toggleFlag = true" class="toggle-button"
+              [ngClass]="{ 'toggle-button-selected': toggleFlag }">
+              <img class="buttonIcon" [ngClass]="{ 'buttonIcon-selected': toggleFlag }" [src]="
+                  isProd
+                    ? 'assets/tile_view.svg'
+                    : '../../../assets/tile_view.svg'
+                " alt="" />
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="fieldDiv">
+        <div class="fields" *ngFor="let item of timeBasedStatisticsList">
+          <div class="fieldNames">
+            <span>{{
+              item.value !== "-"
+              ? roundTo(+item.value, 2)
+              ? roundTo(+item.value, 2)
+              : roundTo(+item.value, 4)
+              : "--"
+              }}</span>%
+          </div>
+
+          <div class="fieldValues">
+            {{ item.key ? item.key : "" }}
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="toggleFlag" class="fieldOptionsTable tileView">
+        <div [ngClass]="{ fieldRows: !toggleFlag, fieldTiles: toggleFlag }" *ngFor="
+            let item of performanceStatisticsList.slice(0, pSLstartIndex);
+            let i = index
+          ">
+          <div [ngClass]="{ tableViewRow: !toggleFlag, tileKey: toggleFlag }">
+            <div class="fieldkey" [ngClass]="{
+                positive: item.value >= 0 || item.value === '--',
+                negative: item.value < 0,
+                fieldKeyRows: !toggleFlag
+              }">
+              <span *ngIf="roundTo(+item.value, 2)">{{
+                roundTo(+item.value, 2)
+                }}</span>
+              <span *ngIf="!roundTo(+item.value, 2)">{{
+                roundTo(+item.value, 4)
+                }}</span>
+              <span *ngIf="
+                  item.value !== '--' && !notPercentageValues.includes(item.key)
+                ">%</span>
+            </div>
+
+            <div [ngClass]="{ fieldKeyRows: !toggleFlag }" class="fieldkey">
+              {{ item.key ? item.key : "" }}
+              <!-- <div *ngIf="i > 2 && i < 8" #tooltip (mouseover)="showTooltip(item.message, tooltip, 'tooltip')"
+                (mouseleave)="hideTooltip(tooltip)" class="fieldInfo"> <img class="fieldInfoImage"
+                  src="../../../assets/Exclamation.png" alt=""> </div> -->
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="performanceStatisticsList.length >= pSLstartIndex + 1" class="section-divider">
+          Performance vs. {{ selectedExchange }}
+        </div>
+
+        <div [ngClass]="{ fieldRows: !toggleFlag, fieldTiles: toggleFlag }" *ngFor="
+            let item of performanceStatisticsList.slice(pSLstartIndex);
+            let i = index
+          ">
+          <div [ngClass]="{ tableViewRow: !toggleFlag, tileKey: toggleFlag }">
+            <div class="fieldkey" [ngClass]="{
+                positive: item.value >= 0 || item.value === '--',
+                negative: item.value < 0,
+                fieldKeyRows: !toggleFlag
+              }">
+              <span *ngIf="roundTo(+item.value, 2)">{{
+                roundTo(+item.value, 2)
+                }}</span>
+              <span *ngIf="!roundTo(+item.value, 2)">{{
+                roundTo(+item.value, 4)
+                }}</span>
+              <span *ngIf="
+                  item.value !== '--' && !notPercentageValues.includes(item.key)
+                ">%</span>
+            </div>
+
+            <div [ngClass]="{ fieldKeyRows: !toggleFlag }" class="fieldkey">
+              {{ item.key ? item.key : "" }}
+              <!-- <div *ngIf="i > 2 && i < 8" #tooltip (mouseover)="showTooltip(item.message, tooltip, 'tooltip')" (mouseleave)="hideTooltip(tooltip)" class="fieldInfo" > <img class="fieldInfoImage" src="../../../assets/Exclamation.png" alt=""> </div> -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="!toggleFlag" class="fieldOptionsTable">
+        <div [ngClass]="{ fieldRows: !toggleFlag, fieldTiles: toggleFlag }" *ngFor="
+            let item of performanceStatisticsList.slice(0, pSLstartIndex);
+            let i = index
+          ">
+          <div [ngClass]="{ tableViewRow: !toggleFlag, tileKey: toggleFlag }">
+            <div #tooltip [ngClass]="{ fieldKeyRows: !toggleFlag }" class="fieldkey2">
+              {{ item.key ? item.key : "" }}
+              <!-- <div *ngIf="i > 2 && i < 8" (mouseover)="showTooltip(item.message, tooltip, 'tooltip')"
+                (mouseleave)="hideTooltip(tooltip)" class="fieldInfo"> <img class="fieldInfoImage"
+                  src="../../../assets/Exclamation.png" alt=""> </div> -->
+            </div>
+
+            <div class="fieldkey" [ngClass]="{
+                positive: item.value >= 0 || item.value === '--',
+                negative: item.value < 0,
+                fieldKeyRows: !toggleFlag
+              }">
+              <span *ngIf="roundTo(+item.value, 2)">{{
+                roundTo(+item.value, 2)
+                }}</span>
+              <span *ngIf="!roundTo(+item.value, 2)">{{
+                roundTo(+item.value, 4)
+                }}</span>
+              <span *ngIf="
+                  item.value !== '--' && !notPercentageValues.includes(item.key)
+                ">%</span>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="performanceStatisticsList.length >= pSLstartIndex + 1" class="section-divider">
+          Performance vs. {{ selectedExchange }}
+        </div>
+
+        <div [ngClass]="{ fieldRows: !toggleFlag, fieldTiles: toggleFlag }" *ngFor="
+            let item of performanceStatisticsList.slice(pSLstartIndex);
+            let i = index
+          ">
+          <div [ngClass]="{ tableViewRow: !toggleFlag, tileKey: toggleFlag }">
+            <div #tooltip [ngClass]="{ fieldKeyRows: !toggleFlag }" class="fieldkey2">
+              {{ item.key ? item.key : "" }}
+              <!-- <div *ngIf="i > 2 && i < 8" (mouseover)="showTooltip(item.message, tooltip, 'tooltip')" (mouseleave)="hideTooltip(tooltip)" class="fieldInfo" > <img class="fieldInfoImage" src="../../../assets/Exclamation.png" alt=""> </div> -->
+            </div>
+
+            <div class="fieldkey" [ngClass]="{
+                positive: item.value >= 0 || item.value === '--',
+                negative: item.value < 0,
+                fieldKeyRows: !toggleFlag
+              }">
+              <span *ngIf="roundTo(+item.value, 2)">{{
+                roundTo(+item.value, 2)
+                }}</span>
+              <span *ngIf="!roundTo(+item.value, 2)">{{
+                roundTo(+item.value, 4)
+                }}</span>
+              <span *ngIf="
+                  item.value !== '--' && !notPercentageValues.includes(item.key)
+                ">%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="isLoader && mainTab !== 'correlation'" style="text-align: center; margin-top: 15%">
+    <div class="loader-center">
+      <div class="multi-ripple">
+        <div></div>
+        <div></div>
+      </div>
+    </div>
+    <!-- <img [src]="isProd ? 'assets/loading_dots.gif':'../../../../assets/loading_dots.gif'" height="150px"
+        width="150px"> -->
+  </div>
+
+  <div *ngIf="
+      mainTab === 'current-portfolio' &&
+      !isLoader &&
+      performanceStatisticsList.length > 0
+    " class="column1 field-sections">
+    <div class="date-selector-container">
+      <div class="grid-filter-dates">
+        <div class="grid-filter-label">From</div>
+        <div class="grid-filter-dates-input">
+          <input type="date" name="FromDate" id="FromDate" class="input-dob" [attr.data-date]="FromDate"
+            data-date-format="DD-MMM-YYYY" tabindex="16" [(ngModel)]="FromDate" />
+        </div>
+        <div class="grid-filter-label">To</div>
+        <div class="grid-filter-dates-input">
+          <input type="date" name="ToDate" id="ToDate" class="input-dob" [attr.data-date]="ToDate"
+            data-date-format="DD-MMM-YYYY" tabindex="16" min="2000-01-01" [(ngModel)]="ToDate" />
+        </div>
+        <div class="submit-button">
+          <button (click)="datesChanged()" class="submit-dates">Submit</button>
+        </div>
+      </div>
+    </div>
+    <div class="main-card reference-card-style">
+      <div class="page-title module sub-title perf-statistics-title">
+        <div class="title field-and-title">References</div>
+      </div>
+
+      <div class="reference-table">
+        <div class="table-row">
+          <div class="header" style="
+              justify-content: left !important;
+              text-align: left !important;
+            ">
+            Names
+          </div>
+
+          <div class="header fieldkey2" style="justify-content: left; text-align: left !important">
+            Definition & Reference Ranges
+          </div>
+        </div>
+        <div class="table-values">
+          <div *ngFor="let item of references" class="tableViewRow table-row">
+            <div class="reference-name fieldkey2 fieldKeyRows">
+              {{ item.key }}
+            </div>
+            <div class="reference-meaning fieldkey2 fieldKeyRows">
+              {{ item.value }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="mainTab === 'simulation' && !isLoader" class="column1 simulation-section page2-height">
+    <div *ngIf="mainTab === 'simulation'" class="date-selector-container simulation-dates">
+      <div class="grid-filter-dates">
+        <div class="grid-filter-label">From</div>
+        <div class="grid-filter-dates-input">
+          <input type="date" name="FromDate" id="FromDate" class="input-dob" [attr.data-date]="FromDate"
+            data-date-format="DD-MMM-YYYY" tabindex="16" [(ngModel)]="FromDate" />
+        </div>
+        <div class="grid-filter-label">To</div>
+        <div class="grid-filter-dates-input">
+          <input type="date" name="ToDate" id="ToDate" class="input-dob" [attr.data-date]="ToDate"
+            data-date-format="DD-MMM-YYYY" tabindex="16" min="2000-01-01" [(ngModel)]="ToDate" />
+        </div>
+        <div class="submit-button">
+          <button (click)="datesChanged()" class="submit-dates">Submit</button>
+        </div>
+      </div>
+    </div>
+    <div class="main-card simulation-selection">
+      <div class="page-title module sub-title">
+        <div class="title field-and-title">Portfolio Comparison</div>
+      </div>
+
+      <div class="sub-tabs-section">
+        <!-- <div class="filler-tab tab-right-border"></div> -->
+        <div (click)="toggleSubTab('compare-portfolio')"
+          [ngClass]="{ 'active-subtab': currentTab === 'compare-portfolio' }" class="sub-tab button sub-tab-left">
+          <!-- Compare Portfolio -->
+          Security/Model Portfolio
+        </div>
+        <button (click)="toggleSubTab('compare-indices')"
+          [ngClass]="{ 'active-subtab': currentTab === 'compare-indices' }" class="sub-tab button sub-tab-right">
+          <!-- Compare Benchmark  -->
+          Index/Composite Index
+        </button>
+        <!-- <div (click)="toggleSubTab('model')" [ngClass]="{'active-subtab' : currentTab === 'model'}" class="sub-tab tab-left-border">
+          Model Portfolio
+        </div> -->
+        <!-- <div class="filler-tab tab-left-border"></div> -->
+      </div>
+
+      <div [ngClass]="{ 'security-selected': portfolioChecked }" (click)="checkUnCheckCurrentPortfolio()"
+        class="single-security mod">
+        <!--// Modified by Uddesh on 25 May 2022 asked by Rohit T-->
+        {{
+        (portfolioDisplayName.length > 0 ? portfolioDisplayName : "")
+        | slice: 0:50
+        }}
+        <!--<span *ngIf="portfolioDisplayName.length > 50">...</span> -->
+        <!--// Modified by Uddesh on 24 May 2022 asked by Rohit T-->
+      </div>
+
+      <div *ngIf="!isModelPortfolio && !isCompositeIndex" class="shares-search-box">
+        <input class="search-box" type="text" placeholder="Search Security" [(ngModel)]="securityName"
+          (keyup)="searchSecurities()" />
+      </div>
+
+      <div *ngIf="
+          currentTab === 'compare-portfolio' && portfolioDetails.length > 0
+        " class="current-portfolio-securities">
+        <div class="portfolio-controls">
+          <div class="add-model-portfolio">
+            <img *ngIf="
+                isModelPortfolio &&
+                !isAddNewMP &&
+                !isSelectedMPView &&
+                !isSelectedMPEdit
+              " (click)="addNewMP()" class="add-mp-icon" src="../../../assets/MFCompare/add-circle.png" alt="" />
+            <img *ngIf="
+                isModelPortfolio &&
+                (isAddNewMP || isSelectedMPView || isSelectedMPEdit)
+              " (click)="MPback()" class="add-mp-icon" src="../../../assets/arrow-left.png" alt="" />
+          </div>
+          <div class="custom-toggle-div">
+            <div (click)="toggleMP()" class="custom-toggle-link links">
+              <img class="custom-toggle-icon" src="../../../assets/list_view.svg" alt="" />
+              <u *ngIf="isModelPortfolio">Compare Securities</u>
+              <u *ngIf="!isModelPortfolio">Compare Model Portfolio</u>
+            </div>
+          </div>
+        </div>
+        <!-- <div class='view-instruction'>
+          Select securities from current portfolio that you want track against current portfolio.
+        </div> -->
+        <div *ngIf="!isModelPortfolio" class="security-container">
+          <!-- (click)="checkUncheckSecurity(i)" -->
+          <div class="section-errors" *ngIf="securityMisMatchFLag">
+            No Data Found.
+          </div>
+
+          <div (click)="checkUncheckSecurity(security)" class="single-security" *ngFor="
+              let security of selectedPortfolioDetails
+                | securitySearch: securityName:'portfolio';
+              let i = index
+            ">
+            <!--[ngClass]="{ 'security-selected': securityStatus[i] }"-->
+            <!--// Modified by Uddesh on 25 May 2022 asked by Rohit T-->
+            <div class="chkBox" [ngClass]="{ 'chkBox-Selected': securityStatus[i] }"></div>
+            <!-- {{ security.longName[0] }} -->
+            <span [ngClass]="{ 'span-selected': securityStatus[i] }">{{ (security.LongName ? security.LongName : "")
+              }}</span>
+            <!-- | slice: 0:50-->
+            <!--<span *ngIf="security.LongName.length > 50">...</span>-->
+            <!--// Modified by Uddesh on 24 May 2022 asked by Rohit T-->
+          </div>
+        </div>
+
+        <div *ngIf="isModelPortfolio" class="security-container" style="height: 34.5vh" [ngStyle]="{
+            height: !isModelPortfolio
+              ? '34.5vh'
+              : isAddNewMP || isSelectedMPView || isSelectedMPEdit
+              ? '40.5vh'
+              : '44.5vh'
+          }">
+          <div *ngIf="isAddNewMP || isSelectedMPView || isSelectedMPEdit" class="new-model-portfolio-inputs">
+            <div class="mp-name-section">
+              <span class="mp-name-label">Name</span>
+              <input placeholder="Enter Model Portfolio Name" type="text" class="mp-name-input" [(ngModel)]="newMPName"
+                [disabled]="isSelectedMPView" />
+            </div>
+            <div class="single-security-input header-row">
+              <div class="add-new-security-div header"></div>
+
+              <div class="shares-search-box header" style="font-size: 14px !important">
+                Securities
+              </div>
+
+              <div class="security-weight-div header" style="font-size: 14px !important">
+                Weights(%)
+              </div>
+
+              <div class="remove-security-div header" style="font-size: 14px !important"></div>
+            </div>
+            <div *ngFor="let item of modelPortfolioSecurities; let i = index" class="single-security-input">
+              <div class="add-new-security-div">
+                <img *ngIf="!isSelectedMPView" (click)="addModelPortfolioSecurity(i)" class="add-new-security-icon"
+                  src="../../../assets/plus.png" alt="" />
+              </div>
+
+              <div class="shares-search-box">
+                <input (focus)="textChangeSearch(i)" class="search-box" type="text" placeholder="Search Security"
+                  [(ngModel)]="modelPortfolioSecurities[i].securityName" (keyup)="textChangeSearch(i)"
+                  (keydown)="setFocusOnFirstMenuItem($event)" #searchInput [disabled]="isSelectedMPView" />
+              </div>
+
+              <div class="security-weight-div">
+                <input value="0" [(ngModel)]="modelPortfolioSecurities[i].weight" type="text"
+                  class="security-weight-input" [disabled]="isSelectedMPView" />
+              </div>
+
+              <div class="remove-security-div">
+                <img *ngIf="!isSelectedMPView" (click)="removeModelPortfolioSecurity(i)" class="add-new-security-icon"
+                  [src]="
+                    isProd ? 'assets/cancel.png' : '../../../assets/cancel.png'
+                  " alt="" />
+              </div>
+
+              <div class="searchSuggestions" *ngIf="
+                  modelPortfolioSecurities[i].securityName.length > 0 &&
+                  this.modelPortfolioSecurities[i].displaySearch
+                ">
+                <div (click)="selectMPSecurityOrIndex(security, i)" *ngFor="
+                    let security of benchmarkSecurities
+                      | securitySearch
+                        : modelPortfolioSecurities[i].securityName
+                        : 'portfolio';
+                    let j = index
+                  " class="single-security" (keyup.enter)="selectMPSecurityOrIndex(security, i)" #listTrigger
+                  tabindex="-1" (keydown)="onKeyDown($event, j)">
+
+                  <div class="security">
+                    {{ (security.LongName ? security.LongName : "") | slice: 0:45 }}
+                    <!--<span *ngIf="security.LongName.length > 45">...</span>-->
+                    <!--// Modified by Uddesh on 24 May 2022 asked by Rohit T-->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="!isAddNewMP && !isSelectedMPView && !isSelectedMPEdit">
+            <div class="model-portfolios-list" *ngFor="let portfolio of modelPortfolioList; let i = index">
+              <div class="single-security" (click)="checkUncheckModelPortfolio(i)">
+                <!-- [ngClass]="{ 'security-selected': portfolio['selected'] }"-->
+                <div class="chkBox" [ngClass]="{ 'chkBox-Selected': securityStatus[i] }"></div>
+                <span>{{ (portfolio.Portfolio_Name ? portfolio.Portfolio_Name : "")}}</span>
+                <!-- | slice: 0:35 -->
+                <!--<span *ngIf="portfolio && portfolio.Portfolio_Name.length > 35">...</span
+                > -->
+                <!--// Modified by Uddesh on 24 May 2022 asked by Rohit T-->
+              </div>
+
+              <div (click)="viewModelPortfolio(i)" class="model-portfolio-icon">
+                <img src="../../../assets/info.png" class="mp-img" />
+              </div>
+
+              <div (click)="deleteModelPortfolio(i)" class="model-portfolio-icon">
+                <img src="../../../assets/App_Resources/images/RemovePanel.png" class="mp-img" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="isModelPortfolio && (isAddNewMP || isSelectedMPEdit)" class="create-portfolio-div"
+          [ngClass]="{ 'create-port-div-con': error && error.flag }">
+          <div class="error-message" *ngIf="error && error.flag">
+            <p>{{ error.message }}</p>
+          </div>
+          <button (click)="saveMP()" class="create-portfolio-button button">
+            Save
+          </button>
+        </div>
+        <div *ngIf="isModelPortfolio && isSelectedMPView" class="create-portfolio-div">
+          <button (click)="isSelectedMPEdit = true; isSelectedMPView = false" class="create-portfolio-button button">
+            Edit
+          </button>
+        </div>
+      </div>
+
+      <div *ngIf="currentTab === 'compare-indices' && indicesList.length > 0" class="current-portfolio-securities">
+        <div class="portfolio-controls">
+          <div class="add-model-portfolio">
+            <img *ngIf="
+                isCompositeIndex &&
+                !isAddNewCI &&
+                !isSelectedCIView &&
+                !isSelectedCIEdit
+              " (click)="addNewCI()" class="add-mp-icon" src="../../../assets/MFCompare/add-circle.png" alt="" />
+            <img *ngIf="
+                isCompositeIndex &&
+                (isAddNewCI || isSelectedCIView || isSelectedCIEdit)
+              " (click)="CIback()" class="add-mp-icon" src="../../../assets/arrow-left.png" alt="" />
+          </div>
+          <div class="custom-toggle-div">
+            <div (click)="toggleCI()" class="custom-toggle-link links">
+              <img class="custom-toggle-icon" src="../../../assets/list_view.svg" alt="" />
+              <u *ngIf="isCompositeIndex">Compare Indices</u>
+              <u *ngIf="!isCompositeIndex">Compare Composite Index</u>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="!isCompositeIndex" class="security-container">
+          <div (click)="checkUncheckSecurity(ind)" class="single-security" *ngFor="
+              let ind of indicesList | securitySearch: securityName:'indices';
+              let i = index
+            ">
+            <!--[ngClass]="{
+              'security-selected': ind['status']
+            }"-->
+            <!--// Modified by Uddesh on 25 May 2022 asked by Rohit T-->
+            <div class="chkBox" [ngClass]="{ 'chkBox-Selected': ind['status'] }"></div>
+            <span>{{ (ind.SA_Long_Name ? ind.SA_Long_Name : "")}}</span>
+            <!-- | slice: 0:50 -->
+            <!--// Modified by Uddesh on 25 May 2022 asked by Rohit T-->
+            <!--<span *ngIf="ind.SA_Long_Name.length > 50">...</span> -->
+            <!--// Modified by Uddesh on 24 May 2022 asked by Rohit T-->
+          </div>
+        </div>
+
+        <div *ngIf="isCompositeIndex" class="security-container" style="height: 34.5vh" [ngStyle]="{
+            height: !isCompositeIndex
+              ? '34.5vh'
+              : isAddNewCI || isSelectedCIView || isSelectedCIEdit
+              ? '40.5vh'
+              : '44.5vh'
+          }">
+          <div *ngIf="isAddNewCI || isSelectedCIView || isSelectedCIEdit" class="new-model-portfolio-inputs">
+            <div class="mp-name-section">
+              <span class="mp-name-label">Name</span>
+              <input placeholder="Enter Composite Index Name" type="text" class="mp-name-input" [(ngModel)]="newCIName"
+                [disabled]="isSelectedCIView" />
+            </div>
+            <div class="single-security-input header-row">
+              <div class="add-new-security-div header"></div>
+
+              <div class="shares-search-box header" style="font-size: 14px !important">
+                Indices
+              </div>
+
+              <div class="security-weight-div header" style="font-size: 14px !important">
+                Weights(%)
+              </div>
+
+              <div class="remove-security-div header" style="font-size: 14px !important"></div>
+            </div>
+            <div *ngFor="let item of compositeIndexSecurities; let i = index" class="single-security-input">
+              <div class="add-new-security-div">
+                <img *ngIf="!isSelectedMPView" (click)="addModelPortfolioSecurity(i)" class="add-new-security-icon"
+                  src="../../../assets/plus.png" alt="" />
+              </div>
+
+              <div class="shares-search-box">
+                <input (focus)="textChangeSearch(i)" class="search-box" type="text" placeholder="Search Index"
+                  [(ngModel)]="compositeIndexSecurities[i].securityName" (keyup)="textChangeSearch(i)"
+                  (keydown)="setFocusOnFirstMenuItem($event)" #searchInput [disabled]="isSelectedCIView" />
+              </div>
+
+              <div class="security-weight-div">
+                <input value="0" [(ngModel)]="compositeIndexSecurities[i].weight" type="text"
+                  class="security-weight-input" [disabled]="isSelectedCIView" />
+              </div>
+
+              <div class="remove-security-div">
+                <img *ngIf="!isSelectedCIView" (click)="removeCISecurity(i)" class="add-new-security-icon" [src]="
+                    isProd ? 'assets/cancel.png' : '../../../assets/cancel.png'
+                  " alt="" />
+              </div>
+
+              <div class="searchSuggestions" *ngIf="
+                  compositeIndexSecurities[i] &&
+                  compositeIndexSecurities[i].securityName.length > 0 &&
+                  compositeIndexSecurities[i].displaySearch
+                ">
+                <div (click)="selectMPSecurityOrIndex(security, i)" *ngFor="
+                    let security of indicesList
+                      | securitySearch
+                        : compositeIndexSecurities[i].securityName
+                        : 'indices';
+                    let j = index
+                  " class="single-security" (keyup.enter)="selectMPSecurityOrIndex(security, i)" #listTrigger
+                  tabindex="-1" (keydown)="onKeyDown($event, j)">
+                  <div class="security">
+                    {{ (security.SA_Long_Name ? security.SA_Long_Name : "") | slice: 0:45 }}
+                    <!--<span *ngIf="security.SA_Long_Name.length > 45">...</span> -->
+                    <!--// Modified by Uddesh on 24 May 2022 asked by Rohit T-->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="!isAddNewCI && !isSelectedCIView && !isSelectedCIEdit">
+            <div class="model-portfolios-list" *ngFor="let compositeIndex of compositeIndexList; let i = index">
+              <div class="single-security" (click)="checkUncheckCompositeIndex(i)">
+                <!-- [ngClass]="{ 'security-selected': compositeIndex['selected'] }"-->
+                <div class="chkBox" [ngClass]="{ 'chkBox-Selected': securityStatus[i] }"></div>
+                <span>{{ (compositeIndex.Custom_Index_Name ? compositeIndex.Custom_Index_Name : "" )}}</span>
+                <!-- | slice: 0:35 -->
+                <!--<span *ngIf="
+                    compositeIndex &&
+                    compositeIndex.Custom_Index_Name.length > 35
+                  ">...</span
+                > -->
+                <!--// Modified by Uddesh on 24 May 2022 asked by Rohit T-->
+              </div>
+
+              <div (click)="viewCompositeIndex(i)" class="model-portfolio-icon">
+                <img src="../../../assets/info.png" class="mp-img" />
+              </div>
+
+              <div (click)="deleteCompositeIndex(i)" class="model-portfolio-icon">
+                <img src="../../../assets/App_Resources/images/RemovePanel.png" class="mp-img" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="isCompositeIndex && (isAddNewCI || isSelectedCIEdit)" class="create-portfolio-div"
+          [ngClass]="{ 'create-port-div-con': error && error.flag }">
+          <div class="error-message" *ngIf="error && error.flag">
+            <p>{{ error.message }}</p>
+          </div>
+          <button (click)="saveCI()" class="create-portfolio-button button">
+            Save
+          </button>
+        </div>
+        <div *ngIf="isCompositeIndex && isSelectedCIView" class="create-portfolio-div">
+          <button (click)="isSelectedCIEdit = true; isSelectedCIView = false" class="create-portfolio-button button">
+            Edit
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="mainTab === 'stress-testing' && !isLoader" class="column1 stress-testing">
+    <div class="main-card scenario-section">
+      <div class="page-title module sub-title">
+        <div class="title field-and-title">In-Built Scenarios</div>
+      </div>
+
+      <div class="scenario-container">
+        <div [ngClass]="{
+            'scenario-selected': selectedScenario === scenario.name
+          }" class="single-scenario" (click)="checkUncheckScenario(scenario, 'inbuilt', i)"
+          *ngFor="let scenario of inBuiltScenarios; let i = index">
+          {{ (scenario.name ? scenario.name : "") | slice: 0:13 }}
+          <!--<span *ngIf="scenario.name.length > 13">...</span> -->
+          <!--// Modified by Uddesh on 24 May 2022 asked by Rohit T-->
+        </div>
+      </div>
+    </div>
+
+    <div class="main-card scenario-section">
+      <div class="page-title module sub-title">
+        <div class="title field-and-title">Custom Scenarios</div>
+      </div>
+
+      <div class="custom-scenario-div">
+        <div (click)="isNewCustomScenario = true" class="single-scenario custom-scenario-btn">
+          Add Custom scenario
+        </div>
+      </div>
+
+      <div *ngIf="!isNewCustomScenario" class="scenario-container">
+        <div [ngClass]="{
+            'scenario-selected': selectedScenario === scenario.name
+          }" class="single-scenario" style="justify-content: left; width: 49% !important"
+          (click)="checkUncheckScenario(scenario, 'custom', i)" *ngFor="let scenario of customScenarios; let i = index">
+          <div class="custom-scenario">
+            {{ (scenario.name ? scenario.name : "") | slice: 0:20 }}
+            <!--<span *ngIf="scenario.name.length > 20">...</span> -->
+            <!--// Modified by Uddesh on 24 May 2022 asked by Rohit T-->
+          </div>
+          <!-- <img (click)="removeCustomScenario(i)" class="remove-scenario-icon" src="../../../assets/cancel_icon_disabled.png" alt=""> -->
+          <span (click)="removeCustomScenario(i)" class="cancel-icon"></span>
+        </div>
+      </div>
+
+      <div *ngIf="isNewCustomScenario" class="custom-scenario-form">
+        <label for="custom-scenario-name" class="custom-scenario-name-label">Name</label>
+        <input class="custom-scenario-name" placeholder="Enter Scenario name" type="text"
+          [(ngModel)]="customScenario.name" id="custom-scenario-name" />
+
+        <div class="scenario-dates grid-filter-dates">
+          <div class="grid-filter-label">From</div>
+
+          <div class="grid-filter-label">To</div>
+          <div class="grid-filter-dates-input">
+            <input type="date" name="FromDate" id="FromDate" class="input-dob"
+              [attr.data-date]="customScenario.fromDate" [data-date-format]="DD - MMM - YYYY" tabindex="16"
+              min="2000-01-01" [(ngModel)]="customScenario.fromDate"
+              (change)="selectFromDate(customScenario.fromDate)" />
+          </div>
+          <div class="grid-filter-dates-input">
+            <input type="date" name="ToDate" id="ToDate" class="input-dob" [attr.data-date]="customScenario.toDate"
+              [data-date-format]="DD - MMM - YYYY" tabindex="16" min="2000-01-01" [(ngModel)]="customScenario.toDate"
+              (change)="selectToDate(customScenario.toDate)" />
+          </div>
+        </div>
+
+        <div class="custom-scenario-save">
+          <button (click)="saveCustomScenario()" class="button save-button">
+            Save
+          </button>
+          <button (click)="cancelCustomScenario()" class="button cancel-button">
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="selectedScenario.length > 0" class="main-card statistics-section">
+      <div class="page-title module sub-title">
+        <div class="title field-and-title">
+          {{ selectedScenario ? selectedScenario : "" }}
+        </div>
+      </div>
+
+      <div class="scenario-tables-div">
+        <div class="fieldOptionsTable scenario-statistics-tables">
+          <div class="scenarioStatistics">
+            <div class="tableViewRow">
+              <div class="fieldKeyRows StatisticsItem header" style="text-align: left !important">
+                {{ "Statistics" }}
+              </div>
+              <div class="fieldKeyRows fieldkey2 StatisticsItem header"></div>
+            </div>
+          </div>
+
+          <div class="scenarioStatistics" *ngFor="let item of scenarioStatistics1; let i = index">
+            <div class="tableViewRow">
+              <div class="fieldKeyRows fieldkey2 StatisticsItem">
+                {{ (item.key ? item.key : "") | uppercase }}
+              </div>
+
+              <div *ngIf="!isNumber(item.value)" class="fieldKeyRows fieldkey">
+                {{ (item.value ? item.value : "") | uppercase }}
+              </div>
+
+              <div *ngIf="isNumber(item.value)" class="fieldKeyRows fieldkey" [ngClass]="{
+                  positive: item.value >= 0,
+                  negative: item.value < 0
+                }">
+                <span *ngIf="roundTo(+item.value, 2)">{{
+                  roundTo(+item.value, 2)
+                  }}</span>
+                <span *ngIf="!roundTo(+item.value, 2)">{{
+                  roundTo(+item.value, 4)
+                  }}</span>
+                <span *ngIf="i === 2">%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="fieldOptionsTable scenario-statistics-tables">
+          <div class="scenarioStatistics" *ngFor="let item of scenarioStatistics2; let i = index">
+            <div class="tableViewRow scenarioStats2Row">
+              <div *ngIf="item.key.length > 0" class="fieldKeyRows fieldkey2 StatisticsItem">
+                {{ (item.key ? item.key : "") | uppercase }}
+              </div>
+
+              <div *ngIf="item.key.length === 0" class="fieldKeyRows fieldkey2 StatisticsItem header"></div>
+
+              <div *ngIf="isNumber(+item.value1)" class="fieldKeyRows fieldkey" [ngClass]="{
+                  positive: item.value1 >= 0 || item.value1 === '--',
+                  negative: item.value1 < 0
+                }">
+                <span *ngIf="roundTo(+item.value1, 2)">{{
+                  roundTo(+item.value1, 2)
+                  }}</span>
+                <span *ngIf="!roundTo(+item.value1, 2)">{{
+                  roundTo(+item.value1, 4)
+                  }}</span>
+                <span *ngIf="
+                    item.value1 !== '--' &&
+                    !notPercentageValues.includes(item.key)
+                  ">%</span>
+              </div>
+
+              <div *ngIf="isNumber(+item.value2)" class="fieldKeyRows fieldkey" [ngClass]="{
+                  positive: item.value2 >= 0 || item.value2 === '--',
+                  negative: item.value2 < 0
+                }">
+                <span *ngIf="roundTo(+item.value2, 2)">{{
+                  roundTo(+item.value2, 2)
+                  }}</span>
+                <span *ngIf="!roundTo(+item.value2, 2)">{{
+                  roundTo(+item.value2, 4)
+                  }}</span>
+                <span *ngIf="
+                    item.value2 !== '--' &&
+                    !notPercentageValues.includes(item.key)
+                  ">%</span>
+              </div>
+
+              <div *ngIf="!isNumber(+item.value1)" class="fieldKeyRows header" [ngClass]="{
+                  positive: item.value1 >= 0 || item.value1 === '--',
+                  negative: item.value1 < 0,
+                  header: item.value1 === 'Portfolio'
+                }">
+                {{ item.value1 }}
+              </div>
+
+              <div *ngIf="!isNumber(+item.value2)" class="fieldKeyRows" [ngClass]="{
+                  positive: item.value2 >= 0 || item.value1 === '--',
+                  negative: item.value2 < 0,
+                  header: item.value2 === 'Benchmark'
+                }">
+                {{ item.value2 }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="
+      [
+        'simulation',
+        'rolling-analysis',
+        'stress-testing',
+        'drawdowns'
+      ].includes(mainTab) && !isLoader
+    " class="column1 graph-section" [ngClass]="{
+      'drawdown-graph-section': mainTab === 'drawdowns',
+      'simulation-graph-section': mainTab === 'simulation'
+    }">
+    <div class="main-card" [ngClass]="{
+        'page2-height': mainTab === 'simulation',
+        'page1-height':
+          mainTab === 'rolling-analysis' ||
+          mainTab === 'stress-testing' ||
+          mainTab === 'drawdowns'
+      }">
+      <div *ngIf="mainTab === 'rolling-analysis'" class="page-title module sub-title">
+        <div class="title field-and-title">Rolling Returns Analysis</div>
+      </div>
+      <div *ngIf="mainTab === 'stress-testing'" class="page-title module sub-title">
+        <div class="title field-and-title">Stress Test Analysis</div>
+      </div>
+
+      <div *ngIf="mainTab === 'drawdowns'" class="page-title module sub-title">
+        <div class="title field-and-title">Drawdowns</div>
+      </div>
+
+      <div *ngIf="mainTab === 'simulation'" class="page-title module sub-title">
+        <div class="title field-and-title">Performance Analysis</div>
+      </div>
+
+      <div *ngIf="mainTab === 'rolling-analysis'" class="rolling-control-panel">
+        <div class="rolling-options">
+          <div class="grid-filter-label">Rolling Periods</div>
+          <input type="text" class="rolling-text-box" [(ngModel)]="rollingOption1" />
+
+          <input type="text" class="rolling-text-box" [(ngModel)]="rollingOption2" />
+
+          <input type="text" class="rolling-text-box" [(ngModel)]="rollingOption3" />
+
+          <button class="button" (click)="rollingPeriodsChanged()">Plot</button>
+        </div>
+        <!--     
+        <div class="grid-filter-dates date-div-update">
+          <div class="grid-filter-label">
+            From
+          </div>
+    
+          <div class="grid-filter-label">
+            To
+          </div>
+          <div class="grid-filter-dates-input">
+            <input type="date" name="FromDate" id="FromDate" class="input-dob"
+              [attr.data-date]="FromDate" data-date-format="DD-MMM-YYYY" tabindex="16"
+              min="2000-01-01" [(ngModel)]="FromDate" (change)="datesChanged();">
+          </div>
+          <div class="grid-filter-dates-input">
+            <input type="date" name="ToDate" id="ToDate" class="input-dob" [attr.data-date]="ToDate"
+              data-date-format="DD-MMM-YYYY" tabindex="16" min="2000-01-01" [(ngModel)]="ToDate"
+              (change)="datesChanged();">
+          </div>
+        </div> 
+     -->
+      </div>
+
+      <div *ngIf="title.length > 0" class="graph-title">
+        {{ title }}
+      </div>
+
+      <div class="section-errors" *ngIf="
+          (isRollingStatisticsError || isCumulativeReturnsError) &&
+          this.data.length > 0
+        ">
+        No Data Found.
+      </div>
+
+      <div class="graph" *ngIf="this.columnNames.length > 0 && this.data.length > 0">
+        <google-chart #chart [title]="title" [type]="type" [data]="data" [columns]="columnNames" [options]="options"
+          [width]="width" [height]="height">
+        </google-chart>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="mainTab === 'drawdowns' && !isLoader" class="column1">
+    <div class="date-selector-container">
+      <div class="grid-filter-dates">
+        <div class="grid-filter-label">From</div>
+        <div class="grid-filter-dates-input">
+          <input type="date" name="FromDate" id="FromDate" class="input-dob" [attr.data-date]="FromDate"
+            data-date-format="DD-MMM-YYYY" tabindex="16" [(ngModel)]="FromDate" />
+        </div>
+        <div class="grid-filter-label">To</div>
+        <div class="grid-filter-dates-input">
+          <input type="date" name="ToDate" id="ToDate" class="input-dob" [attr.data-date]="ToDate"
+            data-date-format="DD-MMM-YYYY" tabindex="16" min="2000-01-01" [(ngModel)]="ToDate" />
+        </div>
+        <div class="submit-button">
+          <button (click)="datesChanged()" class="submit-dates">Submit</button>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="main-card drawdown-sizes-graph">
+      <div class="page-title module sub-title">
+        <div class="title field-and-title">
+          Drawdowns Sizes
+        </div>
+      </div>
+
+      <div class="graph">
+        <google-chart #chart [title]="title" [type]="secondGraphType" [data]="secondGraphData"
+          [columns]="secondGraphColumns" [options]="secondGraphOptions" [width]="secondGraphWidth"
+          [height]="secondGraphHeight">
+        </google-chart>
+      </div>
+    </div> -->
+
+    <div class="main-card drawdown-details-section height-adjuster page2-height">
+      <div class="page-title module sub-title">
+        <div class="title field-and-title">Details of Drawdowns</div>
+      </div>
+
+      <div class="section-errors" *ngIf="isDrawdownsError">No Data Found.</div>
+
+      <div *ngIf="drawdownDetails.length > 0" class="drawdown-details-table">
+        <div class="drawdown-details-row drawdown-details-header">
+          <div class="header">Loss</div>
+          <div class="header">Start Dates</div>
+          <div class="header">Start Price</div>
+          <div class="header">End Dates</div>
+          <div class="header">End Price</div>
+          <div class="header">Days to Recover</div>
+        </div>
+
+        <div class="drawdown-details-values">
+          <div *ngFor="let item of drawdownDetails; let i = index" class="drawdown-details-row">
+            <div class="drawdown-loss">
+              {{ roundTo(+item.Drawdowns, 2) }}
+            </div>
+            <div>
+              {{ item.Start_x0020_Dates | date: "dd-MMM-YYYY" }}
+            </div>
+            <div>
+              {{ roundTo(+item.Start_x0020_Price, 2) }}
+            </div>
+            <div>
+              {{ item.End_x0020_Dates | date: "dd-MMM-YYYY" }}
+            </div>
+            <div>
+              {{ roundTo(+item.End_x0020_Price, 2) }}
+            </div>
+            <div>
+              {{ roundTo(+item.Days_x0020_to_x0020_Recover, 2) }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="mainTab === 'rolling-analysis' && !isLoader" class="column1">
+    <div class="date-selector-container">
+      <div class="grid-filter-dates">
+        <div class="grid-filter-label">From</div>
+        <div class="grid-filter-dates-input">
+          <input type="date" name="FromDate" id="FromDate" class="input-dob" [attr.data-date]="FromDate"
+            data-date-format="DD-MMM-YYYY" tabindex="16" [(ngModel)]="FromDate" />
+        </div>
+        <div class="grid-filter-label">To</div>
+        <div class="grid-filter-dates-input">
+          <input type="date" name="ToDate" id="ToDate" class="input-dob" [attr.data-date]="ToDate"
+            data-date-format="DD-MMM-YYYY" tabindex="16" min="2000-01-01" [(ngModel)]="ToDate" />
+        </div>
+        <div class="submit-button">
+          <button (click)="datesChanged()" class="submit-dates">Submit</button>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="!isLoader" class="main-card height-adjuster page2-height">
+      <div class="page-title module sub-title">
+        <div class="title field-and-title">Rolling Returns Statistics</div>
+      </div>
+
+      <div *ngIf="isRollingStatisticsError" class="section-errors">
+        No Data Found.
+      </div>
+
+      <div *ngIf="!isRollingStatisticsError" class="fieldOptionsTable">
+        <div class="rollingStatistics">
+          <div class="tableViewRow rolling-returns-statistics-table-header">
+            <div class="header" style="text-align: left">Statistics</div>
+
+            <div class="header" style="text-align: right">Period 1</div>
+            <div class="header" style="text-align: right">Period 2</div>
+            <div class="header" style="text-align: right">Period 3</div>
+          </div>
+        </div>
+
+        <div class="rollingStatistics" *ngFor="let item of rollingReturnsStatistics; let i = index">
+          <div class="tableViewRow">
+            <div class="fieldKeyRows fieldkey2 rollingStatisticsItem">
+              {{ (item.key ? item.key : "") | uppercase }}
+              <!-- <button (mouseover)="showTooltip(item.message, tooltip, 'tooltip')" (mouseleave)="hideTooltip(tooltip)" *ngIf="i > 2" class="fieldInfo" > <img class="fieldInfoImage" src="../../../assets/Exclamation.png" alt=""> </button> -->
+            </div>
+
+            <div class="fieldKeyRows fieldkey" [ngClass]="{
+                positive: item.value1 >= 0,
+                negative: item.value1 < 0
+              }">
+              {{
+              roundTo(+item.value1, 2) !== NaN
+              ? roundTo(+item.value1, 2)
+              : "--"
+              }}
+            </div>
+
+            <div class="fieldKeyRows fieldkey" [ngClass]="{
+                positive: item.value2 >= 0,
+                negative: item.value2 < 0
+              }">
+              {{
+              roundTo(+item.value2, 2) !== NaN
+              ? roundTo(+item.value2, 2)
+              : "--"
+              }}
+            </div>
+
+            <div class="fieldKeyRows fieldkey" [ngClass]="{
+                positive: item.value3 >= 0,
+                negative: item.value3 < 0
+              }">
+              {{
+              roundTo(+item.value3, 2) !== NaN
+              ? roundTo(+item.value3, 2)
+              : "--"
+              }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- <div style="margin-top: 20px;" class="main-card">
+      <div class="page-title module sub-title">
+        <div class="title field-and-title">
+          Rolling Volatility Statistics
+        </div>
+      </div>
+  
+      <div class="fieldOptionsTable" >
+        <div class="rollingStatistics" *ngFor="let item of fourthFieldRows; let i = index">
+          <div class="tableViewRow">
+            <div #tooltip class="fieldKeyRows fieldkey2 rollingStatisticsItem">
+              {{ item.key | uppercase }} 
+              <button (mouseover)="showTooltip(item.message, tooltip, 'tooltip')" (mouseleave)="hideTooltip(tooltip)" *ngIf="i > 2" class="fieldInfo" > <img class="fieldInfoImage" src="../../../assets/Exclamation.png" alt=""> </button>
+            </div>
+      
+            <div class="fieldKeyRows fieldkey" [ngClass]="{ 'positive': item.value1 > 0, 'negative':  item.value1 < 0}">
+              {{ item.value1 }}
+            </div>
+  
+            <div class="fieldKeyRows fieldkey" [ngClass]="{ 'positive': item.value2 > 0, 'negative':  item.value2 < 0}">
+              {{ item.value2 }}
+            </div>
+  
+            <div class="fieldKeyRows fieldkey" [ngClass]="{ 'positive': item.value3 > 0, 'negative':  item.value3 < 0}">
+              {{ item.value3 }}
+            </div>
+  
+          </div>
+        </div>
+      </div>
+    </div> -->
+  </div>
+
+  <div *ngIf="mainTab === 'correlation'" class="column2" style="grid-column: span 2;">
+    <!--// Modified by Uddesh on 25 May 2022 asked by Rohit T-->>
+    <app-correlation-analytics></app-correlation-analytics>
+  </div>
+
+  <div *ngIf="mainTab === 'asset-allocation' && !isLoader" class="column1 asset-allocation-column">
+    <div *ngFor="let item of assetAllocationgraphs; let i = index" class="main-card asset-allocation-graphs"
+      [ngClass]="{ 'graph-w-dropdown': i === 2 }">
+      <!-- <div class="page-title module sub-title">
+        <div class="title field-and-title">
+          {{ item.sectionName }}
+        </div>
+      </div> -->
+
+      <div *ngIf="i === 2">
+        <select (change)="changeSelectedEqMCG()" [(ngModel)]="selectedEqMCG">
+          <option value="{{ it.value }}" *ngFor="let it of eqMarketCapGraphs">
+            {{ it.key ? it.key : "" }}
+          </option>
+        </select>
+      </div>
+
+      <div *ngIf="item.title.length > 0" class="graph-title">
+        {{ item.title }}
+      </div>
+
+      <div *ngIf="assetAllocFlags[i]" class="section-errors">
+        No Data Found.
+      </div>
+
+      <div *ngIf="item.data.length > 0" class="graph">
+        <google-chart #chart style="cursor: pointer" [id]="'aag_' + i" (select)="onGraphSelect($event, i, chart)"
+          [title]="item.title" [type]="item.type" [data]="item.data" [columns]="item.columnNames"
+          [options]="item.options" [width]="item.width" [height]="item.height">
+        </google-chart>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="mainTab === 'asset-allocation' && !isLoader" class="column1">
+    <div class="main-card page1-height">
+      <div class="page-title module sub-title asset-allocation-title">
+        <div class="title field-and-title">
+          Exposures <span style="font-size: 12px">(> 0.001%)</span>
+        </div>
+        <div *ngIf="assetAllocationFilter.filterType !== null" class="applied-filter">
+          <span style="font-size: 15px; margin-right: 10px; font-weight: 700">Filtered By
+          </span>
+          <div class="applied">
+            {{
+            assetAllocationFilter.filterType
+            ? assetAllocationFilter.filterType
+            : ""
+            }}:
+            {{
+            assetAllocationFilter.filter ? assetAllocationFilter.filter : ""
+            }}
+            <span (click)="removeAssetAllocationFilter()" class="filter-cancel-icon">
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="isSecuritiesExposureError" class="section-errors">
+        No Data Found.
+      </div>
+
+      <div *ngIf="securityExposureFilteredList.length > 0" class="exposure-table">
+        <div class="exposure-row" style="border-bottom: none !important">
+          <div class="header"></div>
+          <div class="header asset-name">Security Name</div>
+          <div class="header asset-class">Asset Class</div>
+          <div class="header asset-class">Market Cap</div>
+          <div class="header asset-allocation">Exposure</div>
+        </div>
+        <div *ngFor="let item of securityExposureFilteredList; let i = index">
+          <!-- <div class="asset-class">
+            {{ item.assetClass }}
+          </div> -->
+          <div class="exposure-row" (click)="displaySourceOfInvestment(i)" [ngClass]="{
+              'exposure-row-selected': displayedSourceOfInvestment === i
+            }">
+            <div class="arrow" [ngClass]="{ 'active-arrow': displayedSourceOfInvestment === i }"></div>
+            <div class="asset-name">
+              {{ (item.Security_Name ? item.Security_Name : "") | slice: 0:40 }}
+              <!--<span *ngIf="item.Security_Name.length > 60">...</span> -->
+              <!--// Modified by Uddesh on 24 May 2022 asked by Rohit T-->
+            </div>
+            <div class="asset-class">
+              {{ item.Security_Asset_Class ? item.Security_Asset_Class : "" }}
+            </div>
+            <div class="asset-class">
+              <span *ngIf="item.Equity_Market_Cap.length > 0">{{
+                item.Equity_Market_Cap ? item.Equity_Market_Cap : ""
+                }}</span>
+            </div>
+            <div *ngIf="roundTo(item.Exposure_x0020__x0028__x0025__x0029_, 2)" class="asset-allocation">
+              {{ roundTo(item.Exposure_x0020__x0028__x0025__x0029_, 2) }} %
+            </div>
+            <div *ngIf="!roundTo(item.Exposure_x0020__x0028__x0025__x0029_, 2)" class="asset-allocation">
+              {{ roundTo(item.Exposure_x0020__x0028__x0025__x0029_, 4) }} %
+            </div>
+          </div>
+
+          <div *ngIf="displayedSourceOfInvestment === i" class="constituent-table">
+            <div *ngIf="isSOIerror" class="section-errors">No Data Found.</div>
+
+            <div *ngIf="currentSOIlist.length === 0 && !isSOIerror">
+              No Data Found.
+            </div>
+            <div *ngFor="let subitem of currentSOIlist" class="exposure-row exposure-constituents">
+              <div class="asset-name">
+                {{
+                subitem.Source_of_Investment
+                ? subitem.Source_of_Investment
+                : ""
+                }}
+              </div>
+              <div *ngIf="roundTo(subitem.Exposure_x0020__x0028__x0025__x0029_, 2)" class="asset-allocation">
+                {{ roundTo(subitem.Exposure_x0020__x0028__x0025__x0029_, 2) }} %
+              </div>
+              <div *ngIf="
+                  !roundTo(subitem.Exposure_x0020__x0028__x0025__x0029_, 2)
+                " class="asset-allocation">
+                {{ roundTo(subitem.Exposure_x0020__x0028__x0025__x0029_, 4) }} %
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="mainTab === 'contributions' && !isLoader" class="column1 contributions-section">
+    <div class="main-card individual-contribution-part">
+      <div class="page-title module sub-title">
+        <div class="title field-and-title">
+          {{
+          graphSettings.contributions[0].sectionName
+          ? graphSettings.contributions[0].sectionName
+          : ""
+          }}
+        </div>
+      </div>
+
+      <div *ngIf="
+          (isContributionError && graphSettings.contributions[0].data === 0) ||
+          graphSettings.contributions[0].data[0].length !==
+            graphSettings.contributions[0].columnNames.length
+        " class="section-errors">
+        No Data Found.
+      </div>
+
+      <div *ngIf="
+          graphSettings.contributions[0].data &&
+          graphSettings.contributions[0].data.length > 0
+        " class="graph">
+        <google-chart #chart [title]="graphSettings.contributions[0].title" [type]="graphSettings.contributions[0].type"
+          [data]="graphSettings.contributions[0].data" [columns]="graphSettings.contributions[0].columnNames"
+          [options]="graphSettings.contributions[0].options" [width]="graphSettings.contributions[0].width"
+          [height]="graphSettings.contributions[0].height">
+        </google-chart>
+      </div>
+    </div>
+
+    <div class="main-card individual-contribution-part individual-contribution-part-sub">
+      <div class="page-title module sub-title" style="width: 100%; display: block">
+        <div class="title field-and-title">
+          {{
+          graphSettings.contributions[1].sectionName
+          ? graphSettings.contributions[1].sectionName
+          : ""
+          }}
+        </div>
+      </div>
+
+      <div *ngIf="
+          isContPerfError &&
+          (graphSettings.contributions[1].data === 0 ||
+            graphSettings.contributions[1].data[0].length !==
+              graphSettings.contributions[1].columnNames.length)
+        " class="section-errors">
+        No Data Found.
+      </div>
+
+      <div *ngIf="
+          graphSettings.contributions[1].data &&
+          graphSettings.contributions[1].data.length > 0
+        " class="graph" style="width: 70%">
+        <google-chart #chart [title]="graphSettings.contributions[1].title" [type]="graphSettings.contributions[1].type"
+          [data]="graphSettings.contributions[1].data" [columns]="graphSettings.contributions[1].columnNames"
+          [options]="graphSettings.contributions[1].options" [width]="graphSettings.contributions[1].width"
+          [height]="graphSettings.contributions[1].height">
+        </google-chart>
+      </div>
+
+      <div *ngIf="selectedSoC !== null" class="individual-contribution-info">
+        <div class="info-container">
+          <div class="soc-row selected-soc" [ngClass]="{ 'selected-soc-row': i === this.selectedSoC }">
+            <div>Total Portfolio Return</div>
+            <div class="soc-values">
+              {{
+              roundTo(
+              +sourceOfContributions[selectedSoC][
+              "Total_x0020_Portfolio_x0020_Return"
+              ],
+              2
+              )
+              }}%
+            </div>
+          </div>
+          <div class="soc-row selected-soc" [ngClass]="{ 'selected-soc-row': i === this.selectedSoC }">
+            <div>This Security</div>
+            <div class="soc-values">
+              {{
+              roundTo(
+              +sourceOfContributions[selectedSoC]["Total_x0020_Return"],
+              2
+              )
+              }}%
+            </div>
+          </div>
+          <div class="soc-row selected-soc" [ngClass]="{ 'selected-soc-row': i === this.selectedSoC }">
+            <div>Allocation in portfolio</div>
+            <div class="soc-values">
+              {{
+              roundTo(
+              +sourceOfContributions[selectedSoC][
+              "Allocation_x0020_in_x0020_Portfolio"
+              ],
+              2
+              )
+              }}%
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- <div *ngIf="selectedSoC !== null" class="overlay">
+      <div class="" [ngClass]="{'page-content-container-popup': !isUserRM, 'page-content-container-popupRM':isUserRM}">
+          <app-svg-icons [icon]="'cancel-icon'" [width]="'20'" [height]="'20'" (click)="selectDeselectSoC(selectedSoC)" class="closebtn"></app-svg-icons>
+          <div class="page-title module sub-title">
+            <div class="title field-and-title">
+              {{ graphSettings.contributions[1].sectionName }}
+            </div>
+          </div>
+          <div *ngIf="graphSettings.contributions[1].title.length > 0" class="graph-settings-title graph-title">
+            {{ graphSettings.contributions[1].title }}
+          </div>
+          <div class="contribution-popup-container">
+            <div *ngIf="graphSettings.contributions[1].data && graphSettings.contributions[1].data.length > 0" class="graph">
+              <google-chart #chart
+                [title]="graphSettings.contributions[1].title"
+                [type]="graphSettings.contributions[1].type"
+                [data]="graphSettings.contributions[1].data"
+                [columns]="graphSettings.contributions[1].columnNames"
+                [options]="graphSettings.contributions[1].options"
+                [width]="graphSettings.contributions[1].width"
+                [height]="graphSettings.contributions[1].height"
+                >
+              </google-chart>
+            </div>
+
+            <div class="individual-contribution-info">
+              <div class="info">
+                Total Portfolio Return: {{ roundTo(+sourceOfContributions[selectedSoC]["Total_x0020_Return"], 2) }}%
+              </div>
+              <div class="info">
+                This Fund: {{ roundTo(+sourceOfContributions[selectedSoC]["Total_x0020_Return"], 2) }}%
+              </div>
+              <div class="info">
+                Allocation in portfolio: {{ roundTo(+sourceOfContributions[selectedSoC]["Total_x0020_Return"], 2) }}%
+              </div>
+            </div>
+          </div>
+      </div>
+    </div> -->
+  </div>
+
+  <div *ngIf="mainTab === 'contributions' && !isLoader" class="column1 contributions-section">
+    <div class="date-selector-container">
+      <div class="grid-filter-dates">
+        <div class="grid-filter-label">From</div>
+        <div class="grid-filter-dates-input">
+          <input type="date" name="FromDate" id="FromDate" class="input-dob" [attr.data-date]="FromDate"
+            data-date-format="DD-MMM-YYYY" tabindex="16" [(ngModel)]="FromDate" />
+        </div>
+        <div class="grid-filter-label">To</div>
+        <div class="grid-filter-dates-input">
+          <input type="date" name="ToDate" id="ToDate" class="input-dob" [attr.data-date]="ToDate"
+            data-date-format="DD-MMM-YYYY" tabindex="16" min="2000-01-01" [(ngModel)]="ToDate" />
+        </div>
+        <div class="submit-button">
+          <button (click)="datesChanged()" class="submit-dates">Submit</button>
+        </div>
+      </div>
+    </div>
+    <div class="main-card individual-contribution-soc-part">
+      <div class="page-title module sub-title">
+        <div class="title field-and-title">Source of Contributions</div>
+      </div>
+
+      <div *ngIf="isContributionError && sourceOfContributions.length === 0" class="section-errors">
+        No Data Found.
+      </div>
+
+      <div *ngIf="sourceOfContributions.length > 0" class="soc-row" style="border-bottom: none !important">
+        <div class="header" style="text-align: left">Security Name</div>
+        <div class="header soc-values">Total Return</div>
+        <div class="header soc-values">Contr. to Returns</div>
+        <div class="header soc-values">Allocation</div>
+      </div>
+      <div *ngIf="sourceOfContributions.length > 0" class="source-of-contributions-section">
+        <div *ngFor="let item of sourceOfContributions; let i = index" class="soc-row"
+          [ngClass]="{ 'selected-soc-row': i === this.selectedSoC }" (click)="selectDeselectSoC(i)">
+          <div>
+            {{ (item.LongName ? item.LongName : "") | slice: 0:65 }}
+          </div>
+          <div class="soc-values">
+            {{ roundTo(+item["Total_x0020_Return"], 2) }}%
+          </div>
+          <div class="soc-values">
+            {{ roundTo(+item["Contribution_x0020_to_x0020_Return"], 2) }}%
+          </div>
+          <div class="soc-values">
+            {{ roundTo(+item["Allocation_x0020_in_x0020_Portfolio"], 2) }}%
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- <div *ngIf="selectedSoC !== null" class="main-card individual-contribution-part" style="width: 60%; margin-left: 40%;">
+      <div class="page-title module sub-title">
+        <div class="title field-and-title">
+          {{ graphSettings.contributions[1].sectionName }}
+        </div>
+      </div>
+
+      <div class="individual-contribution-info">
+        <div class="info">
+          Total Portfolio Return: {{ roundTo(+sourceOfContributions[selectedSoC]["Total_x0020_Return"], 2) }}%
+        </div>
+        <div class="info">
+          This Fund: {{ roundTo(+sourceOfContributions[selectedSoC]["Total_x0020_Return"], 2) }}%
+        </div>
+        <div class="info">
+          Allocation in portfolio: {{ roundTo(+sourceOfContributions[selectedSoC]["Total_x0020_Return"], 2) }}%
+        </div>
+      </div>
+    </div> -->
+  </div>
+</div>

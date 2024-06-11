@@ -1,0 +1,595 @@
+<div *ngIf="isLoading" style="text-align: center">
+  <div class="loader-center">
+    <div class="multi-ripple">
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+</div>
+<div class="portfolio-component">
+  <!--//Changes done by Alolika G on 10-02-2022 -->
+  <div class="page-navigation" [ngClass]="">
+    <app-svg-icons
+      class="back-button"
+      [icon]="'back-button'"
+      [width]="'40'"
+      [height]="'40'"
+      [fill]="'var(--headers)'"
+      (click)="fnRedirectToHomePage()"
+    ></app-svg-icons>
+    <div class="page-title">Portfolio Details - {{ Selectedportfolio }}</div>
+  </div>
+  <div class="content" *ngIf="!isLoading">
+    <div style="color: white; font-size: 16px">{{ popuperror }}</div>
+    <div class="chartlayout" *ngIf="!noDataFlag">
+      <div style="display: flex; align-items: center">
+        <!-- <img *ngIf="showChart === false" class="imgClass"
+                    [src]="isProd ? 'assets/App_Resources/images/icons/Pie.png':'../../../../assets/App_Resources/images/icons/Pie.png'"
+                    width="30" height="30" (click)="showChart = true" title="View Asset Allocation"> -->
+        <app-svg-icons
+          *ngIf="showChart === false"
+          [icon]="'pie-chart'"
+          [width]="'30'"
+          [height]="'30'"
+          (click)="showChart = true"
+          title="View Details"
+          style="cursor: pointer"
+        ></app-svg-icons>
+        <div
+          class="box-header FS16"
+          *ngIf="showChart === true"
+          style="font-size: 18px"
+        >
+          <label> Asset Allocation</label>
+        </div>
+        <div
+          style="padding-left: 15px; cursor: pointer"
+          class="fundname"
+          (click)="showChart = true"
+          *ngIf="showChart === false"
+        >
+          <u>View Asset Allocation</u>
+        </div>
+        <app-svg-icons
+          *ngIf="showChart"
+          [icon]="'arrow'"
+          [width]="'20'"
+          [height]="'20'"
+          (click)="showChart = false"
+          class="close"
+        ></app-svg-icons>
+      </div>
+      <div class="chart" *ngIf="showChart">
+        <div class="chartArea1">
+          <!-- <google-chart
+            *ngIf="assetAlloc.length > 0"
+            #chart
+            type="PieChart"
+            [data]="assetAlloc"
+            [options]="pieoptions"
+          >
+          </google-chart> -->
+          <div *ngIf="assetAlloc.length !== 0">
+            <app-pie-chart
+              [legendHeight]="330"
+              [width]="500"
+              [graphdata]="assetAlloc"
+              [legendVisible]=true
+              [labelsVisible]=false
+            >
+            </app-pie-chart>
+          </div>
+          <!-- <google-chart #chart [type]="type" [data]="assetAlloc" [options]="options">
+                            </google-chart> -->
+          <div *ngIf="assetAlloc.length === 0">
+            <!--//Changes done by Alolika G on 10-02-2022-->
+            No data found.
+          </div>
+        </div>
+        <div class="chartArea1">
+          <!-- <google-chart
+            #chartpnl
+            type="ColumnChart"
+            [data]="pnlAlloc"
+            [options]="pnlbestoptions"
+          >
+          </google-chart> -->
+          <app-column-chart
+            [name]="'PnL'"
+            [height]="400"
+            [title]="''"
+            [_graphdata]="pnlAlloc"
+          ></app-column-chart>
+          <div *ngIf="pnlAlloc.length === 0">No data found.</div>
+        </div>
+      </div>
+      <div class="chart" *ngIf="showChart">
+        <span *ngIf="assetAlloc.length > 0"> Asset Allocation</span>
+        <span *ngIf="pnlAlloc.length > 0"> P / L</span>
+      </div>
+    </div>
+    <div class="expand-icon">
+      <app-svg-icons
+        [icon]="'expand'"
+        [width]="'20'"
+        [height]="'20'"
+        (click)="expandPortfolio = !expandPortfolio"
+        title="View Details"
+        style="cursor: pointer"
+      ></app-svg-icons>
+    </div>
+    <div class="details-grid">
+      <div
+        class="subcontent"
+        *ngFor="let item of portfolioDetails; let i = index"
+      >
+        <div class="fundname">
+          <img [src]="image[i]" width="25px" height="25px" />
+          <span>{{ item?.longName[0] }}</span>
+
+          <!-- <div class="info-img" (click)="get_holding_history_details(item,i)"></div> -->
+        </div>
+        <div
+          [ngClass]="{
+            outerdiv: !expandPortfolio,
+            outerdivExpanded: expandPortfolio
+          }"
+        >
+          <div class="hoverAction">
+            <div
+              class="center"
+              [ngStyle]="{ 'font-size': userType === 'RM' ? '18px' : '18px' }"
+              [ngClass]="{
+                containerFundDetails: !expandPortfolio,
+                containerFundDetailsExpanded: expandPortfolio
+              }"
+            >
+              <div></div>
+              <div class="">
+                <span>{{
+                  this.commonApi.FormatNumberr(item?.Market_Value_LCYE[0])
+                }}</span>
+              </div>
+              <div class="">
+                <span>{{
+                  this.commonApi.FormatNumberr(item?.Capital_Invested[0])
+                }}</span>
+              </div>
+              <div class="" *ngIf="!expandPortfolio">
+                <!-- <span>{{
+                  this.commonApi.FormatNumberr(
+                    item?.CEHD_Available_Qty[0] +
+                      item?.CEHD_Pending_receive_Qty[0] +
+                      item?.CEHD_PledgedOut_Qty[0] -
+                
+                <!--JIRA ANAPPDEVIN-428-->
+                <!-- <span> 
+                  {{
+                    this.commonApi.FormatNumberr(
+                      item?.CEHD_Available_Qty[0] 
+                    )
+                  }}
+                </span> -->
+                <span>{{
+                  this.commonApi.FormatNumberr(item?.CEHD_Available_Qty[0])
+                }}</span>
+              </div>
+              <div class="" *ngIf="expandPortfolio">
+                <span
+                  >{{
+                  <!-- this.commonApi.FormatNumberr(item?.CEHD_Available_Qty[0]) -->
+                  item?.CEHD_BUY_Settled_Avg_Price[0] | number: "1.2-2" }}</span
+                >
+              </div>
+              <div class="" *ngIf="expandPortfolio">
+                <span
+                  >{{
+                    this.commonApi.FormatNumberr(item?.CEHD_Pending_pay_Qty[0])
+                  }}
+                </span>
+              </div>
+              <div class="" *ngIf="expandPortfolio">
+                <span
+                  >{{
+                    this.commonApi.FormatNumberr(
+                      item?.CEHD_Pending_receive_Qty[0]
+                    )
+                  }}
+                </span>
+              </div>
+              <div class="" *ngIf="expandPortfolio">
+                <span>{{
+                  this.commonApi.FormatNumberr(item?.CEHD_PledgedOut_Qty[0])
+                }}</span>
+              </div>
+              <div class="">
+                <span>{{
+                  item?.CEHD_BUY_Settled_Avg_Price[0] | number: "1.2-2"
+                }}</span>
+              </div>
+
+              <div class="">
+                <span>{{ item?.SpotBidQuote[0] | number: "1.2-2" }}</span>
+              </div>
+              <div class="">
+                <!-- <span>{{
+                  item?.CEHD_SELL_Settled_Avg_Price[0] | number: "1.2-2"
+                }}</span> -->
+                <span>
+                  {{
+                    this.commonApi.FormatNumberr(
+                      item?.Market_Value_LCYE[0] - item?.Capital_Invested[0]
+                    )
+                  }}</span
+                >
+              </div>
+            </div>
+
+            <div
+              class="center"
+              style="font-size: 15px; color: var(--heading-label)"
+              [ngClass]="{
+                containerFundDetails: !expandPortfolio,
+                containerFundDetailsExpanded: expandPortfolio
+              }"
+            >
+              <app-svg-icons
+                [icon]="'security-holdings-history'"
+                [width]="'20'"
+                [height]="'20'"
+                (click)="showholdinghistorydetailsPopUp(false, i, '')"
+                style="margin-top: -10px"
+                *ngIf="holdinghistorypopupflag[i]"
+              ></app-svg-icons>
+              <app-svg-icons
+                [icon]="'security-holdings-history-disabled'"
+                [width]="'20'"
+                [height]="'20'"
+                (click)="get_holding_history_details(item, i)"
+                style="margin-top: -10px"
+                *ngIf="!holdinghistorypopupflag[i]"
+              ></app-svg-icons>
+
+              <div class=""><span>Current Value</span></div>
+              <div class=""><span>Invested</span></div>
+
+              <div class="" *ngIf="!expandPortfolio">
+                <span>Balance Units</span>
+              </div>
+              <div class="" *ngIf="expandPortfolio">
+                <span>Available Units</span>
+              </div>
+              <div class="" *ngIf="expandPortfolio">
+                <span>Payable Units</span>
+              </div>
+              <div class="" *ngIf="expandPortfolio">
+                <span>Receivable Units</span>
+              </div>
+              <div class="" *ngIf="expandPortfolio">
+                <span>Pledge Units</span>
+              </div>
+              <div class=""><span>Avg. Cost</span></div>
+              <div class=""><span>Mkt. Price</span></div>
+              <div class="">
+                <span>PnL ({{ baseCCY }})</span>
+              </div>
+            </div>
+          </div>
+          <div class="btngrid">
+            <button
+              class="button btnBuy"
+              style="width: 75px !important"
+              (click)="callOrderEntry('BUY', item)"
+            >
+              Buy
+            </button>
+            <button
+              class="button btnSell"
+              style="width: 75px !important"
+              (click)="callOrderEntry('SELL', item)"
+            >
+              Sell
+            </button>
+            <button
+              class="button btnPledge"
+              style="width: 75px !important"
+              (click)="fnCallPledgeOrderEntry(item)"
+            >
+              Pledge
+            </button>
+            <button
+              *ngIf="item?.TypeAsset[0] === 'UT'"
+              class="button btnSwitchFund"
+              style="width: 75px !important"
+              (click)="fnCallSwitchFund(item)"
+            >
+              Switch
+            </button>
+            <div
+              style="width: 75px !important"
+              *ngIf="item?.TypeAsset[0] !== 'UT'"
+            ></div>
+          </div>
+          <div class="btngrid2">
+            <button
+              class="button btnBuy"
+              style="width: 30px !important"
+              (click)="callOrderEntry('BUY', item)"
+            >
+              B
+            </button>
+            <button
+              class="button btnSell"
+              style="width: 30px !important"
+              (click)="callOrderEntry('SELL', item)"
+            >
+              S
+            </button>
+            <button
+              class="button btnPledge"
+              style="width: 30px !important"
+              (click)="fnCallPledgeOrderEntry(item)"
+            >
+              P
+            </button>
+            <button
+              *ngIf="item?.TypeAsset[0] === 'UT'"
+              class="button btnSwitchFund"
+              style="width: 75px !important"
+              (click)="fnCallSwitchFund(item)"
+            >
+              S F
+            </button>
+
+            <div>
+              <app-svg-icons
+                [icon]="'security-holdings-history'"
+                [width]="'20'"
+                [height]="'20'"
+                (click)="get_holding_history_details(item, i)"
+                *ngIf="!holdinghistorypopupflag[i]"
+              >
+              </app-svg-icons>
+              <app-svg-icons
+                [icon]="'security-holdings-history-disabled'"
+                [width]="'20'"
+                [height]="'20'"
+                (click)="get_holding_history_details(item, i)"
+                *ngIf="holdinghistorypopupflag[i]"
+              >
+              </app-svg-icons>
+            </div>
+          </div>
+        </div>
+
+        <div class="historydiv" *ngIf="holdinghistorypopupflag[i]">
+          <div>
+            <!-- <div class="content-header-name">
+                                        <span>Portfolio Details - {{Selectedassetlongname}}</span>
+                                    </div> -->
+            <app-svg-icons
+              [icon]="'cancel-icon'"
+              [width]="'20'"
+              [height]="'20'"
+              (click)="showholdinghistorydetailsPopUp(false, i, '')"
+              class="close"
+            ></app-svg-icons>
+          </div>
+
+          <div class="content" *ngIf="!isLoading">
+            <div style="color: var(--off-color); font-size: 16px">
+              {{ popuperror }}
+            </div>
+            <div
+              class="subcontent"
+              *ngFor="let item of holdinghistorydetails; let i = index"
+            >
+              <div class="outerdiv">
+                <div class="hoverAction">
+                  <!-- <div class="containerholdinghistoryDetails center"
+                                                style="font-size: 15px; color: var(--heading-label); margin-left: 15px;">
+                                                <div class=""><span>Product Name</span></div>
+                                            </div>
+                                            <div class="containerholdinghistoryDetails center"
+                                                style="width: max-content; margin-left: 15px;">
+                                                <div class=""><span>{{item?.Product_Name}} ({{item?.CEHDH_Stock_Code}})</span>
+                                                </div>
+                                            </div> -->
+                  <table>
+                    <tr style="flex: auto">
+                      <td>
+                        <div
+                          class="containerholdinghistoryDetails center"
+                          style="font-size: 15px; color: var(--heading-label)"
+                        >
+                          <div class=""><span>Trade Ref</span></div>
+                        </div>
+                        <div class="containerholdinghistoryDetails center">
+                          <div class="">
+                            <span>{{ item?.CEHDH_Note_Deal_ID }}</span>
+                          </div>
+                        </div>
+                      </td>
+                      <td>
+                        <div
+                          class="containerholdinghistoryDetails center"
+                          style="font-size: 15px; color: var(--heading-label)"
+                        >
+                          <div class=""><span>ISIN</span></div>
+                        </div>
+                        <div class="containerholdinghistoryDetails center">
+                          <div class="">
+                            <span>{{ item?.ISIN }}</span>
+                          </div>
+                        </div>
+                      </td>
+                      <td>
+                        <div
+                          class="containerholdinghistoryDetails center"
+                          style="font-size: 15px; color: var(--heading-label)"
+                        >
+                          <div class=""><span>Holding Group</span></div>
+                        </div>
+                        <div class="containerholdinghistoryDetails center">
+                          <div class="">
+                            <span>{{ item?.CEHDH_Holding_Group_Name }}</span>
+                          </div>
+                        </div>
+                      </td>
+                      <td>
+                        <div
+                          class="containerholdinghistoryDetails center"
+                          style="font-size: 15px; color: var(--heading-label)"
+                        >
+                          <div class=""><span>Average Cost</span></div>
+                        </div>
+                        <div class="containerholdinghistoryDetails center">
+                          <div class="">
+                            <span>{{
+                              this.commonApi.FormatNumberr(
+                                item?.CEHDH_CEHD_Settled_Avg_Price
+                              )
+                            }}</span>
+                          </div>
+                        </div>
+                      </td>
+
+                      <td>
+                        <div
+                          class="containerholdinghistoryDetails center"
+                          style="font-size: 15px; color: var(--heading-label)"
+                        >
+                          <div class=""><span>Trade Date</span></div>
+                        </div>
+                        <div class="containerholdinghistoryDetails center">
+                          <div class="">
+                            <span>{{
+                              item?.trade_date | date: "dd-MMM-yyyy"
+                            }}</span>
+                          </div>
+                        </div>
+                      </td>
+                      <td>
+                        <div
+                          class="containerholdinghistoryDetails center"
+                          style="font-size: 15px; color: var(--heading-label)"
+                        >
+                          <div class=""><span>Description</span></div>
+                        </div>
+                        <div class="containerholdinghistoryDetails center">
+                          <div class="">
+                            <span>{{ item?.Cehdh_description }}</span>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr style="flex: auto">
+                      <td>
+                        <div
+                          class="containerholdinghistoryDetails center"
+                          style="font-size: 15px; color: var(--heading-label)"
+                        >
+                          <div class=""><span>Transaction Type</span></div>
+                        </div>
+                        <div class="containerholdinghistoryDetails center">
+                          <div class="">
+                            <span>{{ item?.Name }}</span>
+                          </div>
+                        </div>
+                      </td>
+                      <td>
+                        <div
+                          class="containerholdinghistoryDetails center"
+                          style="font-size: 15px; color: var(--heading-label)"
+                        >
+                          <div class=""><span>B/S</span></div>
+                        </div>
+                        <div class="containerholdinghistoryDetails center">
+                          <div class="">
+                            <span>{{ item?.CEHDH_BS_Direction }}</span>
+                          </div>
+                        </div>
+                      </td>
+
+                      <td>
+                        <div
+                          class="containerholdinghistoryDetails center"
+                          style="font-size: 15px; color: var(--heading-label)"
+                        >
+                          <div class=""><span>Holding</span></div>
+                        </div>
+                        <div class="containerholdinghistoryDetails center">
+                          <div class="">
+                            <span>{{
+                              this.commonApi.FormatNumberr(
+                                item?.CEHD_Available_Qty
+                              )
+                            }}</span>
+                          </div>
+                        </div>
+                      </td>
+                      <td>
+                        <div
+                          class="containerholdinghistoryDetails center"
+                          style="font-size: 15px; color: var(--heading-label)"
+                        >
+                          <div class=""><span>Quantity</span></div>
+                        </div>
+                        <div class="containerholdinghistoryDetails center">
+                          <div class="">
+                            <span>{{
+                              this.commonApi.FormatNumberr(item?.CEHDH_quantity)
+                            }}</span>
+                          </div>
+                        </div>
+                      </td>
+
+                      <td>
+                        <div
+                          class="containerholdinghistoryDetails center"
+                          style="font-size: 15px; color: var(--heading-label)"
+                        >
+                          <div class=""><span>Security Settlement</span></div>
+                        </div>
+                        <div class="containerholdinghistoryDetails center">
+                          <div class="">
+                            <span>{{
+                              item?.settlement_date | date: "dd-MMM-yyyy"
+                            }}</span>
+                          </div>
+                        </div>
+                      </td>
+                      <td>
+                        <div
+                          class="containerholdinghistoryDetails center"
+                          style="font-size: 15px; color: var(--heading-label)"
+                        >
+                          <div class=""><span>Updated At</span></div>
+                        </div>
+                        <div class="containerholdinghistoryDetails center">
+                          <div class="">
+                            <span
+                              >{{
+                                item?.CEHDH_LastUpdated_At
+                                  | date
+                                    : "dd-MMM-yyyy
+                                                            hh:mm:ss"
+                              }}
+                            </span>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+              <hr />
+            </div>
+          </div>
+        </div>
+
+        <!-- <hr *ngIf="!holdinghistorypopupflag[i]"> -->
+      </div>
+    </div>
+  </div>
+</div>

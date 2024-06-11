@@ -1,0 +1,746 @@
+// Changes added by Mayuri D. on 05-July-2022.
+$assetURL: "../../../../../../../";
+div,
+div::selection,
+img::selection {
+    outline: none;
+    background: none;
+}
+
+body,
+html {
+    height: 100%;
+    margin: 0 auto;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+body {
+    /* overflow-y: hidden; */
+    overflow-x: hidden;
+    background-color: var(--page-background);
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+
+.container-fluid
+{
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+}
+
+label {
+    margin-top: 0.5em;
+    margin-bottom: 0.1em;
+    font-family: var(--font-family) !important;
+    display: inline-block;
+}
+.outerGrid {
+    display: grid;
+    grid-template-columns: 40% 60%;
+    column-gap: 15px;
+    padding: 3px;
+}
+
+.outerGrid-expanded {
+    display: grid;
+    grid-template-columns: 100% !important;
+    padding: 3px;
+}
+
+.MainDiv {
+    font-weight: 500;
+    font-size: 13px !important;
+    border-radius: 5px;
+    box-shadow: var(--home-container-shadow);
+    background-color: var(--home-container);
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-family: var(--font-family) !important;
+
+}
+
+.btnDiv {
+    display: grid;
+    grid-template-columns: 5.5fr 4.5fr;
+    -moz-column-gap: 5px;
+    column-gap: 20px;
+    padding-top: 20px;
+    margin: 0px 15px;
+}
+
+select
+{
+    -webkit-appearance: auto !important;
+    background-image: none !important;
+}
+
+.btnPrice {
+    font-family: var(--font-family) !important;
+}
+
+.landingPage-Button{
+    font-size: 16px !important;
+    line-height: 16px;
+    max-height: 51px !important;
+    width: auto;
+    padding: 10px;
+}
+
+::ng-deep .mat-tab-label
+{
+    color: white;
+}
+
+::ng-deep .mat-tab-header {
+    border-bottom: 1px solid var(--section-bottom) !important;
+}
+
+::ng-deep .mat-tab-label {
+    color: #a7a1a1 !important;
+    font-size: 20px !important;
+    font-family: var(--font-family) !important;
+    opacity: 1 !important;
+    padding: 0 0px !important;
+    min-width: 120px !important;
+    margin-right: 10px !important;
+    margin-left: 10px !important;
+}
+
+::ng-deep .mat-tab-label-active {
+    color: var(--header) !important;
+}
+
+::ng-deep .mat-tab-group {
+    font-family: var(--font-family) !important;
+}
+
+::ng-deep .mat-tab-body-content {
+    overflow: hidden !important;
+}
+
+::ng-deep .mat-tab-group.mat-primary .mat-ink-bar,
+::ng-deep .mat-tab-nav-bar.mat-primary .mat-ink-bar {
+    background-color: var(--header) !important;
+}
+.contentdiv * {
+    font-family: var(--font-family) !important;
+}
+
+.innerGrid {
+    /* height: 70vw; */
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 00px;
+    padding-left: 15px;
+    padding-right: 15px;
+    /* overflow-x: scroll; */
+}
+
+.popular-tabs {
+    cursor: pointer;
+    border-radius: 5px 5px 0px 0px;
+    background-color: var(--tab-inactive);
+    border-right: 1px solid var(--border-right);
+    border-left: 1px solid var(--border-left);
+    border-top: 1px solid var(--border-top);
+}
+
+.popular-tabs:hover {
+    box-shadow: 0 0 0.1875rem 0.2px rgb(0 25 40 / 20%);
+}
+
+.popular-tabs.active {
+    /* border-bottom: 2px solid #1a3863; */
+    background-color: var(--tab-active);
+}
+
+.popular-grid {
+    border-top: 1px solid var(--border-right);
+    margin-left: 15px;
+    margin-right: 15px;
+    padding-left: 1px;
+    padding-right: 0px;
+    background-color: var(--tab-section);
+}
+
+
+
+.popular-tabs.active .labelHeader {
+    color: var(--text);
+}
+
+.labelHeader {
+    /* font-size: 16px; */
+    color: var(--header);
+    font-size: calc(13px + (15 - 13) * ((100vw - 1400px) / (1920 - 1400))) !important;
+    font-family: var(--font-family) !important;
+}
+
+.labelTextbox {
+    padding: 5px 10px 4px 10px;
+    /* border-bottom: 1px #00000085; */
+    /* border-style: solid; */
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    font-size: 18px;
+    font-size: calc(16px + (18 - 16) * ((100vw - 1400px) / (1920 - 1400))) !important;
+    font-family: var(--font-family) !important;
+    color: var(--Sub_TextColor) !important;
+    cursor: pointer;
+}
+
+.btnPrice {
+    background: var(--button-bg);
+    background-size: 100% 100%;
+    background-position-x: center;
+    background-position-y: center;
+    background-repeat: no-repeat;
+    height: 35px;
+    /* min-height: 2.5em; */
+    min-width: 8em;
+    vertical-align: middle;
+    text-align: center;
+    color: var(--button-text);
+    /* font-size: 1em;  */
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 0.5em;
+    border: none;
+    padding: 10px;
+    padding-left: 15px;
+    padding-right: 15px;
+    line-height: 16px;
+}
+
+.btnPrice:hover,
+.btnPrice:focus {
+    background: var(--button-bg);
+    /* box-shadow: 0 15px 20px rgba(136, 136, 136, 0.4) !important; */
+    box-shadow: var(--button-hover) !important;
+    color: var(--button-text);
+}
+
+.landingpage-contentdiv {
+    margin-left: 10% !important;
+    height: 100%;
+    /* overflow-y: auto; */
+    width: 90% !important;
+    padding-top: 10px !important;
+}
+
+.TradeIdeasDiv {
+    float: right !important;
+    /* padding: 5px; */
+    /* background-color: #fff; */
+    border-radius: 5px;
+    font-weight: 500;
+    /* box-shadow: 0px 1px 2px 2px #04172726; */
+    font-size: 12px !important;
+    /* padding-left: 15px; */
+    /* box-shadow: 0 0 2px 2px #00000008; */
+    box-shadow: var(--home-container-shadow);
+    background-color: var(--home-container);
+    padding-top: 12px;
+    padding-bottom: 10px;
+    font-family: var(--font-family) !important;
+}
+
+.TradeIdeasHeader {
+    color: #00325f !important;
+    font-size: 25px !important;
+    text-align: center !important;
+    font-weight: 500 !important;
+    font-family: var(--font-family) !important;
+}
+
+.MainDiv {
+    /* background-color: #fff; */
+    /* border-radius: 8px; */
+    font-weight: 500;
+    /* border-right: 1px solid #808080a8 !important; */
+    /* box-shadow: 0px 1px 2px 2px #04172726; */
+    font-size: 13px !important;
+    border-radius: 5px;
+    /* height: 83vw; */
+    /* margin-right: 10px !important; */
+    /* padding: 8px; */
+    /* padding-right: 15px; */
+    /* border: 0.5px solid #e0d6d6; */
+    box-shadow: var(--home-container-shadow);
+    background-color: var(--home-container);
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-family: var(--font-family) !important;
+}
+
+.chartDiv {
+    /* margin-top: 10px; */
+    grid-column: 1 / span 3;
+    border-right: 1px solid var(--border-right);
+    border-left: 1px solid var(--border-left);
+    border-bottom: 1px solid var(--border-top);
+    height: 60vh;
+    max-height: 500px;
+    min-height: 500px;
+}
+
+.chartHeader {
+    text-align: left;
+    padding-top: 15px !important;
+    color: var(--header) !important;
+    font-weight: 500 !important;
+    font-size: calc(14px + (16 - 14) * ((100vw - 1400px) / (1920 - 1400))) !important;
+    padding-left: 20px;
+    /* display: flex; */
+    /* justify-content: space-between; */
+}
+
+.quicklinks {
+    /* display: grid; commented by Amogh K on 2-Dec-2021 */
+    grid-template-columns: auto;
+}
+
+.innerGrid {
+    /* height: 70vw; */
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 00px;
+    padding-left: 15px;
+    padding-right: 15px;
+    /* overflow-x: scroll; */
+}
+
+.ProductChart {
+    display: grid;
+    grid-template-columns: 1fr 1.3fr;
+    margin-bottom: 15px;
+    padding: 2px;
+}
+
+.chkboxPadding {
+    margin-top: 10%;
+    margin-bottom: 10%;
+}
+
+.PopularProductChkboxes {
+    margin-top: 10%;
+    margin-bottom: 10%;
+}
+
+.pink {
+    background-color: pink !important;
+}
+
+.bottomDiv {
+    /* margin-left: 20px;*/
+    margin: 15px 0px 0px 0px;
+    text-align: center;
+    /* border-bottom: 1px solid #e6e6e6; */
+    padding-bottom: 10px;
+    padding-top: 10px;
+}
+
+.popular-tabs {
+    cursor: pointer;
+    border-radius: 5px 5px 0px 0px;
+    background-color: var(--tab-inactive);
+    border-right: 1px solid var(--border-right);
+    border-left: 1px solid var(--border-left);
+    border-top: 1px solid var(--border-top);
+}
+
+.popular-tabs:hover {
+    box-shadow: 0 0 0.1875rem 0.2px rgb(0 25 40 / 20%);
+}
+
+.popular-tabs.active {
+    /* border-bottom: 2px solid #1a3863; */
+    background-color: var(--tab-active);
+}
+
+.popular-grid {
+    border-top: 1px solid var(--border-right);
+    margin-left: 15px;
+    margin-right: 15px;
+    padding-left: 1px;
+    padding-right: 0px;
+    background-color: var(--tab-section);
+}
+
+.popular-tabs.active .labelHeader {
+    color: var(--text);
+}
+
+
+.btnePricer {
+    margin-top: 25px;
+    margin: 0;
+    vertical-align: unset;
+    min-width: 3em;
+    border-radius: 5px;
+}
+
+select
+{
+border: none !important;
+}
+
+.FilterPeriod {
+    width: max-content;
+    /* margin-top: 20%;
+    margin-bottom: 3%; */
+    font-size: 13px;
+    height: 35px !important;
+    margin-left: 0px !important;
+    margin: auto;
+    padding-right: 0.5rem;
+    font-family: var(--font-family) !important;
+    margin-right: 10px;
+    margin-top: 10px;
+}
+
+.quicklinkChartDiv {
+    margin: 0.5rem;
+    /* height: 59vw; */
+    border-radius: 10px;
+    border: 0.5px solid #e0d6d6;
+    box-shadow: 0px 1px 2px 2px #04172726;
+}
+
+.quicklinkchartTabs {
+    color: #00325f !important;
+    font-size: 15px !important;
+    font-family: var(--font-family) !important;
+}
+
+.quicklinkGridDiv {
+    margin: 0.5rem;
+    /* height: 80vw; */
+    /* border-radius: 10px;
+  border: 0.5px solid #e0d6d6;
+  box-shadow: 0px 1px 2px 2px #04172726; */
+}
+
+.teamStatsDiv {
+    color: #00325f !important;
+    font-size: 20px !important;
+    font-weight: 500;
+    font-family: var(--font-family) !important;
+    padding-left: 5%;
+    padding-top: 5%;
+}
+
+.recentRequestslabel {
+    font-size: 20px !important;
+    font-weight: 500;
+    font-family: var(--font-family) !important;
+    margin-left: 10px;
+    color: #00325f !important;
+}
+
+
+/* Quick Links table css */
+
+tr:nth-child(odd) {
+    background-color: var(--table-odd);
+}
+
+tr:nth-child(even) {
+    background-color: var(--table-even);
+}
+
+tr:nth-child(odd):hover {
+    background-color: var(--table-odd);
+}
+
+tr:nth-child(even):hover {
+    background-color: var(--table-even);
+}
+
+td,
+th {
+    width: auto;
+    padding-left: 5px;
+}
+
+th {
+    /* background-color: var(--table-header) !important; */
+    background-color:var(--table-header-2) !important;
+    color: var(--table-header-text);
+    font-weight: 500;
+    padding: 0px 0px;
+    border-radius: 2px;
+    text-align: center;
+    /* min-width: 7em; */
+    font-size: 14px;
+    width: fit-content;
+    height: 30%;
+    border-right: solid 1px;
+    padding-left: 5px;
+    font-family: var(--font-family) !important;
+}
+
+td {
+    /* background-color: rgba(243, 241, 241, 0.5); */
+    border-radius: 2px;
+    text-align: left;
+    width: fit-content;
+    color: var(--table-td);
+    border-right: solid 1px white;
+    height: fit-content;
+    font-family: var(--font-family) !important;
+}
+
+table {
+    width: 98%;
+    height: 80%;
+    font-size: 14px;
+    overflow-y: scroll;
+}
+
+table.mat-table {
+    width: 100% !important;
+}
+
+td.mat-cell,
+td.mat-footer-cell,
+th.mat-header-cell {
+    /* height: 4vw !important; */
+    padding: 8px 6px !important;
+}
+
+.chkBoxGrid {
+    display: grid;
+    grid-template-rows: repeat(auto-fit, minmax(36px, 1fr));
+    /* padding-left: 7%; */
+    margin-top: 40px;
+    overflow: auto;
+    /* margin-right: 10px;   commented by Apurva C || 18-Nov*/
+    padding-left: 15px;   /*added by Apurva C || 18-Nov*/
+    height: 360px
+}
+
+.chkboxdivPadding {
+    padding-left: 7%;
+}
+
+.linksPopUp {
+    background-color: var(--container);
+    box-shadow: var(--container-shadow) !important;
+    border: 1px solid #606060;
+    border-radius: 8px;
+    padding: 10px;
+    position: absolute;
+    z-index: 2;
+    width: 15% !important;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.grid-column {
+    grid-template-columns: auto auto;
+}
+
+.mat-tab-label {
+    color: #00325f !important;
+    font-size: 20px !important;
+    font-family: var(--font-family) !important;
+}
+
+.checkboxes {
+    margin: auto;
+    margin-left: 0px;
+    margin: 0px;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: self-end;
+}
+
+.flex-spacer {
+    flex-grow: 1;
+}
+
+.landingdiv {
+    /* padding-top: 56px; */
+    margin-left: 10% !important;
+    height: 100%;
+    overflow-y: auto;
+    width: 90% !important;
+}
+
+.btnDiv {
+    display: grid;
+    grid-template-columns: 5.5fr 4.5fr;
+    -moz-column-gap: 5px;
+    column-gap: 20px;
+    padding-top: 20px;
+    margin: 0px 15px;
+}
+
+.grid-column {
+    grid-template-columns: auto auto;
+}
+
+.newsmain-grid-container {
+    display: grid;
+    grid-template-columns: auto;
+    height: 100%;
+    width: 100%;
+    font-size: 14px !important;
+    /* background-color: #ffffff; */
+    font-family: var(--font-family) !important;
+}
+
+.contentLabel {
+    font-size: 20px !important;
+    color: var(--header);
+    font-family: var(--font-family) !important;
+    font-weight: 500;
+    padding-left: 15px;
+    margin-top: 8px;
+    /* padding-left: 2%; */
+    /* margin: 1% 1% 2% 1% !important */
+    font-family: var(--font-family) !important;
+}
+
+.expand-icon {
+    //background: #f9f9f9 url(/assets/expand.png) no-repeat scroll calc(50%) center/20px auto !important;
+    background: #f9f9f9 url($assetURL + "assets/expand.png") no-repeat scroll calc(50%) center/20px auto !important;
+}
+
+.expand-icon:hover {
+    box-shadow: 0 0 1px 1px rgba(0, 25, 40, 0.2);
+}
+
+.collapse-icon {
+    background: #f9f9f9 url($assetURL + 'assets/collapse.png') no-repeat scroll calc(50%) center/20px auto !important;
+}
+
+.collapse-icon:hover {
+    box-shadow: 0 0 1px 1px rgba(0, 25, 40, 0.2);
+}
+
+.expand-icon,
+.collapse-icon {
+    height: 38px !important;
+    width: 38px !important;
+    float: right;
+    padding: 0px !important;
+    min-width: 30px !important;
+    min-height: 30px !important;
+    margin: 4px !important;
+    margin-right: 10px !important;
+    border: none;
+    border-radius: 5px;
+}
+
+.google-visualization-tooltip-item>span {
+    white-space: nowrap;
+}
+
+.table-overflow {
+    overflow: auto;
+    margin-top: 15px;
+    height: 77vh;
+    /*width: 46.5vw;*/
+    /* width: 31vw; Changed by Amogh Kulkarni on 17-Nov-2021 */
+    max-width: 670px;
+}
+
+@media screen and (min-width: 1920px) {
+    .table-overflow {
+        overflow: auto;
+        margin-top: 15px;
+        height: 69vh;
+        width: auto;
+        max-width: auto;
+    }
+}
+
+.settings-icon {
+    cursor: pointer;
+    height: 34px !important;
+    width: 34px !important;
+    color: var(--grey);
+    font-size: 26px !important;
+}
+
+.bottomDiv label {
+    font-family: var(--font-family) !important;
+}
+
+.bottomDiv button {
+    font-family: var(--font-family) !important;
+}
+
+.btnPrice {
+    font-family: var(--font-family) !important;
+}
+
+
+::ng-deep .mat-checkbox-label {
+    color: white !important;
+}
+
+input[type=text], input[type=number], input[type=search], input[type=date], input[type=datetime-local] {
+    /* border: 1px solid var(--input-border) !important; */
+    // border: var(--input-border) !important;
+    background-color: var(--input-bg);
+    padding-top: 0.275em;
+    padding-bottom: 0.275em;
+    width: 11em;
+    /* min-width: 11em; */
+    /* margin-right: 0.5em; */
+    color: var(--input-text);
+    border-radius: 0.2em;
+    height: 35px;
+    /* padding-left: 0.5em; */
+    /* padding-right: 0.5em; */
+    padding-left: 5px;
+    padding-right: 5px;
+    text-align: right;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    font-size: 14px !important;
+    font-family: var(--font-family) !important;
+    outline: none;
+    border : none !important;
+}
+
+::ng-deep .mat-checkbox-checked.mat-accent .mat-checkbox-ripple .mat-ripple-element {
+    opacity: 0.03 !important;
+    background-color: #565858 !important;
+    border-color: red !important;
+  }
+
+::ng-deep .mat-checkbox-checked.mat-accent .mat-checkbox-background,.mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
+    background-color: #005691;
+    background-color: #565858 !important;
+    border-color: red !important;
+    accent-color: pink !important;
+  }
+
+::ng-deep  .mat-checkbox-frame::-ms-check { 
+    border-color: red !important 
+}
+
+.share_Checkbox
+{
+    height: 15px;
+    width: 15px;
+}
+
+// ::ng-deep .mat-checkbox:disabled
+// {
+//     border-color: red !important 
+// }

@@ -1,0 +1,215 @@
+<div class="container center">
+    <div class="content">
+        <div class="header">
+            <div class="heading"> Personalised Workflow Settings - {{uid}} </div>
+            <div>
+                <app-svg-icons (click)="saveCustomSettings()" [fill]="'var(--active)'" [icon]="'save-icon'" [width]="'23'" [height]="'23'">
+                </app-svg-icons>
+            </div>
+            <!-- <div>
+                <app-svg-icons [fill]="'var(--green)'" [icon]="'refresh'" [width]="'34'" [height]="'27'">
+                </app-svg-icons>
+            </div> -->
+            <!-- <div>
+            </div> -->
+            <div (click)="closepopup()">
+                <app-svg-icons  [fill]="'var(--green)'" [icon]="'close-icon'" [width]="'23'" [height]="'23'">
+                </app-svg-icons>
+            </div>
+
+        </div>
+
+        <span class="indicativeSuccessMsg left" *ngIf="successMsg.length" >{{successMsg}}</span>
+        <span class="error left" *ngIf="errorMsg.length">{{errorMsg}}</span>
+
+        <div class="settings-grid">
+            <div class="col">
+                <div class="form-grp">
+                    <label class="form-label">Launching Workflow</label>
+                    <div class="wfl-input" >
+                       <select [(ngModel)]="selectedWID" (change)="changeWfl()">
+                            <option *ngFor="let wfl of wflList" [ngValue]="wfl.WTM_Id">{{wfl.Value}}</option>
+                        </select>
+                        <app-svg-icons *ngIf="showAddFavButton()" (click)="addToFav()" [fill]="'var(--active)'" [icon]="'thumbs-up'" [width]="'23'" [height]="'23'">
+                        </app-svg-icons>
+
+                        <app-svg-icons *ngIf="!showAddFavButton()" (click)="removeFavWfl()" [fill]="'var(--active)'" [icon]="'thumbs-up-filled'" [width]="'23'" [height]="'23'">
+                        </app-svg-icons>
+                    </div>
+                  
+                </div>
+
+                <div class="form-grp">
+                    <label class="form-label">Launching Queue</label>
+                    <select [(ngModel)]="selectedQID">
+                        <option *ngFor="let q of queueList" [ngValue]="q.QUG_Queue_ID">{{q.QM_Name}}</option>
+                    </select>
+                </div>
+
+                <div class="form-grp">
+                    <label class="form-label">Default Template</label>
+                    <select [(ngModel)]="selectedTID" >
+                        <option *ngFor="let t of templateList" [ngValue]="t.Id">{{t.Template_Name}}</option>
+                    </select>
+                </div>
+
+                <div class="form-grp3">
+                    <div>
+                        <input type="radio" name="From_Range" [checked]="fromSelected" (change)="fromSelected = !fromSelected"/>
+
+                    </div>
+
+                    <div>
+                        <label class="form-label" for="">From</label>
+                    </div>
+
+                    <div class="FromDateLabel">
+                        <input type="date" name="FromDate" id="FromDate" class="input-dob" tabindex="16"
+                            min="2000-01-01" [(ngModel)]="FromDate" />
+                        <span id="FromDateLabel">{{ FromDate | date: "dd-MMM-yyyy" }}</span>
+                    </div>
+                </div>
+
+              
+
+                <div class="form-grp3">
+                    <div>
+                        <input type="radio" name="From_Range" [checked]="!fromSelected" (change)="fromSelected = !fromSelected" />
+
+                    </div>
+
+                    <div>
+                        <label class="form-label" for="">Range</label>
+                    </div>
+
+                    <select [(ngModel)]="selectedRange">
+                        <option *ngFor="let range of Rangeddl" [ngValue]="range">{{range}}</option>
+                    </select>
+                </div>
+
+                <!-- <div class="form-grp">
+                    <label class="form-label">Date</label>
+                    <div class="radio-grp">
+                        <input type="radio" name="WCS_Date_Filter" [checked]="isEvtFilter" (change)="isEvtFilter = !isEvtFilter"  />
+                        <label class="radio-label" for="">Event</label>
+                        <input type="radio" name="WCS_Date_Filter" [checked]="!isEvtFilter" (change)="isEvtFilter = !isEvtFilter"  />
+                        <label class="radio-label" for="">Last Modified</label>
+
+                    </div>
+                </div> -->
+
+                <!-- Changed by Mitali D - 31-03-2023 - LGTGTWINT-1494 - START -->
+                <div class="form-grp">
+                    <label class="form-label">WF Graph Zoom</label>
+                    <input type="range" name="" id="" [(ngModel)]="graphZoom" >
+                </div>
+                <!-- Changed by Mitali D - 31-03-2023 - LGTGTWINT-1494 - END -->
+
+                <div class="form-grp">
+                    <label class="form-label">Favourite Workflows</label>
+                    <div class="form-label">
+                      {{favWorkflows}}
+                    </div>
+                </div>
+            </div>
+
+            <div class="col">
+
+                <!-- <div class="form-grp">
+                    <label class="form-label">Status Alert</label>
+                    <label class="input-toggle" for="switch">
+                        <input type="checkbox"  [(ngModel)]="statusAlert" id="switch" name="switch" />
+                        <span class="switch"></span>
+                    </label>
+                </div> -->
+
+                <div class="auto-refresh-grid">
+                    <div>
+                        <label class="form-label" for="">Auto Refresh</label>
+
+                    </div>
+
+                    <div>
+                        <input [(ngModel)]="autoRefreshEnabled" (change)="toggleAutoRefresh($event)" type="checkbox" name="" id="">
+                    </div>
+
+                    <div class="inline-flex">
+
+                         <input [(ngModel)]="autoRefresh" (ngModelChange)="setAutoRefresh($event)" type="number" name="" id="" ><!-- Changed by Shraddha D || 3-Apr-23|| LGTGTWINT-1810-->
+                        <label for="">Sec</label>
+
+                    </div>
+                </div>
+
+                <div class="form-grp">
+                    <label class="form-label">Rows Per Page</label>
+                    <input class="small-input" [(ngModel)]="rowsPerPage" type="text" name="" id="">
+                </div>
+
+                <div class="form-grp">
+                    <label class="form-label">Actions</label>
+                    <div class="radio-grp">
+                        <input type="radio" name="Actions" [checked]="showActions"  (change)="showActions=!showActions" />
+                        <label class="radio-label" for="">Show</label>
+                        <input type="radio" name="Actions" [checked]="!showActions" (change)="showActions=!showActions" />
+                        <label class="radio-label" for="">Hide</label>
+
+                    </div>
+                </div>
+
+                <div class="form-grp" style="margin-top:10px" >
+                    <label class="form-label">To</label>
+                    <div class="FromDateLabel">
+                        <input type="date" name="ToDate" id="ToDate" class="input-dob" tabindex="16"
+                            min="2000-01-01" [(ngModel)]="ToDate"  />
+                        <span id="ToDateLabel">{{ ToDate | date: "dd-MMM-yyyy" }}</span>
+                    </div>
+                </div>
+
+                <div class="color-grp">
+                    <div class="align-left">
+                        <label class="form-label" for="">WF Graph Connector Line</label>
+
+                    </div>
+
+                    <div>
+                        <input [(ngModel)]="connectorLine" type="text" name="" id="">
+                    </div>
+
+                    <input  [(ngModel)]="connectorLine" type="color" name="" id="">
+                </div>
+
+                <div class="color-grp">
+                    <div class="align-left">
+                        <label class="form-label " for="">WF Graph Travelled Line</label>
+
+                    </div>
+
+                    <div>
+                        <input  [(ngModel)]="travelledLine" type="text" name="" id="">
+                    </div>
+
+                    <input  [(ngModel)]="travelledLine" type="color" name="" id="">
+                </div>
+
+                <div>
+                    <!-- Changed by Mitali D - 12-06-2023 - LGTGTWINT-2107 - START -->
+                    <!-- Added by Mitali D - 04-03-2023 - LGTGTWINT-1818 - START -->
+                    <!-- <span class="form-label link left" *ngIf="showDispPriorityBtn" (click)="showDP=true" >Display Priority</span> -->
+                    <span class="form-label link left"  (click)="showDP=true" >Display Priority</span>
+                    <!-- Added by Mitali D - 04-03-2023 - LGTGTWINT-1818 - END -->
+                    <!-- Changed by Mitali D - 12-06-2023 - LGTGTWINT-2107 - END -->
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+ <!-- Added by Mitali D - 04-03-2023 - LGTGTWINT-1818 - START -->
+<div class="journey-overlay" *ngIf="showDP">
+    <app-display-priority [wssWflNames]="wssWflNames" (closedp)="showDP=false" ></app-display-priority>
+</div>
+ <!-- Added by Mitali D - 04-03-2023 - LGTGTWINT-1818 - END -->

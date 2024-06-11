@@ -1,0 +1,12 @@
+<div>
+    <h1>Order Transaction</h1>
+    <div>
+        <h2>New Transaction Details</h2>
+        <div *ngIf="!message">
+            <pre>{{orderId}}</pre>
+        </div>
+        <div *ngIf="message">
+            {{message}}
+        </div>
+    </div>
+</div>

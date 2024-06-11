@@ -1,0 +1,79 @@
+<div class="container center">
+    <div class="content">
+        <div class="header">
+            <div class="inline-flex" >
+                Workflow
+                <select [(ngModel)]="selectedWfl" class="ddlw" (ngModelChange)="onChangeWfl()">
+                    <!-- Changed by Mitali D - 12-06-2023 - LGTGTWINT-2107 - START -->
+                    <option *ngFor="let ob of wssWflNames" [ngValue]="ob['WTM_Id']">{{ob.Value}}</option>
+                    <!-- Changed by Mitali D - 12-06-2023 - LGTGTWINT-2107 - END -->
+                </select>
+            </div>
+            <!-- <div>
+                <app-svg-icons  [fill]="'var(--active)'" [icon]="'save-icon'" [width]="'23'" [height]="'23'">
+                </app-svg-icons>
+            </div> -->
+            <div (click)="closepopup()">
+                <app-svg-icons  [fill]="'var(--green)'" [icon]="'close-icon'" [width]="'23'" [height]="'23'">
+                </app-svg-icons>
+            </div>
+        </div>
+
+        <div class="msg">
+            <span class="indicativeSuccessMsg left" *ngIf="successMsg.length" >{{successMsg}}</span>
+            <span class="error left" *ngIf="errorMsg.length">{{errorMsg}}</span>
+        </div>
+     
+
+        <table>
+            <thead>
+                <th  >
+                    <!-- <input class="commonchk" type="checkbox" name="" id=""> -->
+                   
+                </th>
+                <th>
+                    Column Name
+                </th>
+                <th>
+                    Display Priority
+                </th>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of tabledata| slice:startidx:endidx;let i = index" >
+                    <td> 
+                        <div class="actions" >
+                            <app-svg-icons (click)="edit(item,i)" *ngIf="editingidx !== i"  [fill]="'var(--active)'" [icon]="'edit-icon'" [width]="'15'" [height]="'15'">
+                            </app-svg-icons>
+                            <div class="inline-flex" *ngIf="editingidx === i" >
+                                <app-svg-icons (click)="save(item)"  [fill]="'var(--active)'" [icon]="'save-icon'" [width]="'15'" [height]="'15'">
+                                </app-svg-icons>
+
+                                <app-svg-icons (click)="cancel()" [fill]="'var(--green)'" [icon]="'close-icon'" [width]="'15'" [height]="'15'">
+                                </app-svg-icons>
+                            </div>
+                        </div>
+                    </td>
+                    <td> {{item.WBM_Blotter_Header}} </td>
+                    <td class="right" style="min-width:85px;min-height:50px" >
+                        <ng-container *ngIf="editingidx !== i" >{{item.WBM_Sequence}}</ng-container>  
+                        <ng-container *ngIf="editingidx === i" > <input type="text" class="right" (keypress)="allowThreeDigitPosInteger($event,false)" [(ngModel)]="editingDP" name="" id=""> </ng-container>
+                       
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="left pagination-container">
+            <div class="pagination">
+                <div class="link pagination-btn" (click)="prevPage()" >Prev</div>
+                <input type="text" [(ngModel)]="pageNo" (keypress)="allowThreeDigitPosInteger($event)" (blur)="changePage()" (keydown.enter)="changePage()" >
+                <div class="link pagination-btn" (click)="nextPage()" >Next</div>
+            </div>
+        </div>
+      
+    </div>
+
+    
+</div>
+
+

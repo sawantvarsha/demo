@@ -1,0 +1,17 @@
+<div class="underlying-main-container">
+    <input type="text" class="text" [(ngModel)]="ClassModel.Underlying" maxlength="10"
+        (keypress)="showUnderlyingList = true;ChangeIndex();"
+        (keydown.enter)="EnterUnderlying();this.EnteredUnderlying = false" (keydown.backspace)="backKeyPress()"
+        (keydown.delete)="backKeyPress()" (keydown.tab)="EnterUnderlying();this.EnteredUnderlying = false"
+        (keydown.ArrowUp)="selectedBIndex = moveUpSelection(selectedBIndex)"
+        (keydown.ArrowDown)="selectedBIndex = moveDownSelection(selectedBIndex)" />
+
+    <div class="SelectorBox" *ngIf="showUnderlyingList && EnteredUnderlying">
+        <a *ngFor="let share of (UnderlyingList | searchUnderlying: ClassModel.Underlying); let i = index"
+            (keypress)="ChangeIndex($event)" (keydown.enter)="EnterUnderlying()">
+            <div [attr.data-share]="share.Code" (click)="showUnderlying(share)" [ngClass]="{HoverSuggestion: i === selectedBIndex}">
+                <span>{{ share.LongName }}</span>
+            </div>
+        </a>
+    </div>
+</div>

@@ -1,0 +1,102 @@
+.Card-container {
+    display: flex;
+    flex-direction: column;
+    .Card-input-parameters {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1.2fr;
+        row-gap: 5px;
+        margin: 10px 0px;
+        column-gap: 10px;
+        .Card-buttons {
+            display: grid;
+            // grid-template-columns: 3fr 1fr;
+            grid-gap: 10px;
+            .clear-btn {
+                display: flex;
+                align-items: center;
+            }
+        }
+        label {
+            color: var(--heading-label); // label colors
+            display: flex;
+            align-items: center;
+            font-size: 12px;
+        }
+    }
+    .Card-pricing {
+        display: flex;
+    }
+}
+
+select {
+    /* for Firefox */
+    -moz-appearance: none;
+    /* for Chrome */
+    -webkit-appearance: none;
+}
+
+/* For IE10 */
+select::-ms-expand {
+    display: none;
+}
+// button:disabled{
+//     background-color: var(--active) !important;
+// }
+
+
+.disabledlbl{
+    font-size: 12px !important;
+}
+
+.toggle-switch{
+    display: grid;
+    padding: 4px;
+    grid-template-columns: 1fr 1fr;
+    background-color: var(--input-bg);
+    height: 35px;
+    border-radius: 4px;
+    div{
+        cursor: pointer;
+        label{
+            color: var(--heading-label);
+            font-size: 13px !important;
+            line-height: 24px;
+            text-align: center;
+            margin: auto;
+            width: fit-content;
+            cursor: pointer;
+        }
+    }
+    div.active{
+        cursor: pointer;
+        border-radius: 3px;
+        color: var(--btn-text);
+        background-color: var(--btn-bg);
+        cursor: pointer;
+        label{
+            color: var(--btn-text);
+            font-size: 13px !important;
+            line-height: 24px;
+            text-align: center;
+            margin: auto;
+            width: fit-content;
+        }
+    }
+}
+
+.column-2{
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    column-gap: 5px;
+}
+
+.toggle-input{
+    position: absolute;
+    right: 4px;
+    top: 4px;
+}
+
+input, select{
+    font-size: 13px !important;
+}
+

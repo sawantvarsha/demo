@@ -1,0 +1,37 @@
+<div  (clickoutside)="CloseTable($event)">
+    <div scroll="no">
+        <div>
+            <div [style.--width]="width" >
+                <mat-form-field  [style.--width]="width" >
+                  <input matInput class="UCPMatInput"  placeholder={{displayName}} tabIndex={{input.tabIndex}}  [value]="searchRes" [id]="input.fieldName ? input.fieldName : input.columnName" [(ngModel)]="input.value" 
+                  [defaultValue]="input.currentValue" (change)="testChange(input)" [ngClass]="{'readonly': input.readOnly === 'Y'}" [disabled]="input.readOnly === 'Y' ? true : false"
+                  (input)="onCustSearchChange($event.target.value, input, searchArr)" (keydown)="onCustChange($event)" autocomplete="off" />
+                </mat-form-field>
+            </div>
+            <!-- <input placeholder="Search" [value]="searchRes" type="text" [name]="input.fieldName" [id]="input.fieldName" [(ngModel)]="input.value" 
+            [defaultValue]="input.currentValue" (change)="udfFieldValueChange(input)" [ngClass]="{'readonly': input.readOnly === 'Y'}" [readOnly]="input.readOnly === 'Y' ? true : false"
+            (input)="onCustSearchChange($event.target.value, input, searchArr)" (keydown)="onCustChange($event)"> -->
+        </div>
+        <div *ngIf="custflag" [ngStyle]="{'position': (Multi_UCP === true) ? 'absolute' : 'relative' }"> <!----; position: relative-->
+            <div class="GridSearchComp" style="overflow-y:auto;height:auto;max-height:300px;position: absolute;z-index: 1;">
+                <table class="TableCustomerSearchResult_new" cellpadding="1" [ngStyle]="{'width': (input.dataType == 'CURRENCY' || input.dataType == 'CURRENCY PAIR') ? width : '395px' }" cellspacing="1" style="border-collapse:collapse; table-layout: auto !important;">
+                    <tbody>
+                        <tr *ngIf="input.dataType !== 'CURRENCY' && input.dataType !== 'CURRENCY PAIR'">
+                            <th style="width: 20%;" *ngIf="input.dataType !== 'CURRENCY' && input.dataType !== 'CURRENCY PAIR'"> 
+                                <div  style="width:90%; float:left; padding:3px;">Code</div>
+                            </th>
+                            <th *ngIf="input.dataType !== 'CURRENCY' && input.dataType !== 'CURRENCY PAIR'">
+                                <div style="width:80%; float:left; padding:3px;">Party Name</div>
+                                <div style="float: right; cursor: pointer; width: 10%; padding: 3px;" (click)="CloseTable()"> X </div>
+                            </th>
+                        </tr>
+                        <tr class="SearchResultRow1" (click)="onClickRow(search)" *ngFor="let search of searchArr | search:searchText">
+                            <td *ngIf="input.dataType !== 'CURRENCY' && input.dataType !== 'CURRENCY PAIR'" style="padding:4px; font-size: 12px;" >{{search.id}}</td> 
+                            <td style="padding:4px; font-size: 12px;" >{{search.code}}</td> 
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+  </div>

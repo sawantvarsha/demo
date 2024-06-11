@@ -1,0 +1,25 @@
+.timeline-container {
+    .accordion {
+        padding: 10px;
+        margin-bottom: 10px;
+        border-bottom: 1px solid var(--border);
+        position: relative;
+        .accordion-header {
+            font-size: 18px;
+            color: var(--active);
+        }
+        .accordion-arrow {
+            position: absolute;
+            right: 15px;
+            top: 15px;
+        }
+    }
+}
+
+.accordion-data {
+    padding: 15px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 10px;
+}

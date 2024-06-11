@@ -1,0 +1,541 @@
+<!-- <label class="card-header">Content</label> -->
+<div class="card-container">
+    <app-svg-icons [icon]="'search'" [width]="'15'" [height]="'15'" class="search-icon" style="margin: auto 0;">
+    </app-svg-icons>
+    <input type="text" class="left-align search-input" (keydown.enter)="getNewsSearch($event)"
+        (keydown.tab)="getNewsSearch($event)" />
+        <!--Added by Varsha G || FIN1EURINT-315 || 11-May-2023-->
+    <finiq-toggle class="filter-toggle" [values]="filter" [(ngModel)]="selectedFilter" ngDefaultControl 
+        (ngModelChange)="handleFilterChange(selectedFilter)">
+        <ng-container *ngFor="let value of filter; let i=index">
+            <span *toggleOption [ngClass]=" i == Visited ? 'toggle-option' : '' " (click)="ChangeFilter($event , i)">
+                {{ value }}
+            </span>
+        </ng-container>
+    </finiq-toggle>
+    <div class="news-list">
+        <div class="news-item" *ngFor="let item of news; let i = index">
+            <img src="{{item.ImageLink}}" width="76px" height="76px">
+            <div class="news-text" style="max-height: none;text-align: -webkit-left;">
+                <label class="label-class"
+                    (click)="clickNewsHeadline(item);fillStage2Popup(item.NewsID)">{{item.Headline}}</label>
+                <div class="news-options">
+                    <label class="news-time">{{item.RelativeTime}}</label>
+                    <div class="news-actions">
+                        <div class="news-actions-item" (click)="showPopup1(item.Headline, item.List_Name);">
+                            <app-svg-icons [icon]="'cart'" [width]="'12'" [height]="'12'" style="margin: auto 0;">
+                            </app-svg-icons>
+                            <a>Product Details</a>
+                        </div>
+                        <div class="news-actions-item"
+                            (click)="setNewsLike(item.NewsID, item.Like, item.List_Name , i)">
+                            <app-svg-icons [icon]="'liked'" [width]="'12'" [height]="'12'"
+                                [fill]="item.Like == 'Y' ? 'var(--blue-color)' : 'transparent'" style="margin: auto 0;">
+                            </app-svg-icons>
+                            <a>Like</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- <hr class="line"> -->
+        </div>
+
+        <div *ngIf="news.length <= 0">No Data Found</div>
+    </div>
+    <mat-paginator #paginator *ngIf="news.length > 0" [length]="totalcount" [pageSize]="pageSize"
+        [pageSizeOptions]="pageSizeOptions" (page)="pageEvent = $event;getPageInfo($event)">
+        <!-- BBVAEPCLI-188 | change on 14 Nov 2022 -->
+    </mat-paginator>
+
+</div>
+<!-- Anubhav Goyal | 19-01-2023 | BBVACLI-761 | Unable to click/redirect to different content -->
+<div class="overlay"  *ngIf="showStage2Popup">
+    <div class="popup">
+        <div class="title">
+           <label class="news-label">{{selectedNews?.Headline}}</label>
+            <app-svg-icons [icon]="'close'" [width]="'35'" [height]="'22'" (click)="clearStage2Popup()" style="cursor: pointer;"></app-svg-icons>
+        </div>
+        <div class="popup-content">
+            <div class="news-grid">
+                <div class="news-flex">
+                    <img src="{{selectedNews?.ImageLink}}" width="250px" height="250px" class="img-news">
+                    <div class="news-flexdiv">
+                        <div class="" *ngFor="let Tag of displayTags;">
+                            #{{Tag}}
+                        </div>
+                    </div>
+                    <!-- BBVACLI-752 Pranav D 18-Jan-2023  -->
+                    <div style="display: flex; flex-direction: column;  gap: 7px;">
+                        <div id="recommended-news" *ngFor="let data of relatedNewsArr" class="relatedNewsCard"  (click)="clickNewsHeadline(data);fillStage2RelatedPopup(data.NewsID,data.Headline,data.List_Name)">
+                            <img src="{{data?.ImageLink}}" width="60px" height="60px" class="img-news1">
+                            <div>{{data.Headline}}</div>
+                        </div>
+                    </div>
+                    <!-- <div class="recommended-news">
+                    </div>
+                    </div> -->
+                </div>
+                <div class="news-flex news-rightpanel" *ngIf="!showAttachments">
+
+                    <div class="news-text">
+                        <label class="labels" *ngIf="(attachmentFiles.length>0)" for="">Details</label>
+                        <p [innerHTML]="selectedNews?.NewsDescription" style="margin-top: 6px;letter-spacing: 0.7px;">
+                        </p>
+
+                    </div>
+
+                    <div class="Attachments" *ngIf="!showAttachmentsPopup">
+                        <label class="labels" *ngIf="(attachmentFiles.length>0)" for="">Attachments</label>
+                        <!-- {{selectedNews?.Documents}} -->
+                        <div style="display: grid;
+                        grid-template-columns: repeat(4,25%);"  >
+
+
+                            <div *ngFor="let item of attachmentFiles ">
+                                <!-- <a [href]="item.Link"
+                                    (click)="openfilePreviewDiv(item.Link, item.Type,item.Filename)"> -->
+                                <div style="text-align: center;margin-top: 8px;max-width: 100%;"
+                                    (click)="openfilePreviewDiv(item.Link, item.Type,item.Filename)">
+                                    <app-svg-icons [icon]="'paper-clip'" [width]="'18'" [height]="'18'"
+                                        [fill]="'var(--sidebar-li-active)'" style="margin: auto;"
+                                        class="attachment-svg"></app-svg-icons>
+
+                                    <div style="text-align: left;word-break: break-word;max-width: 100%;"><label
+                                            style="word-wrap:break-word ;">{{item.Filename}}</label></div>
+                                    <!-- </a> -->
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="InvestmentIdeas">
+                        <label class="labels" *ngIf="(selectedNews?.productList?.length>0)" for="">Related Investment
+                            Ideas</label>
+                        <!-- {{selectedNews?.Documents}} -->
+                        <div>
+                            <div *ngFor="let item of selectedNews?.productList; let i = index;" class="">
+                                <div *ngIf="item.TOM_Sub_Template_Code === 'AutocallablePhoenix'"
+                                    (click)="redirectOptions(i)" (clickOutside)="hideOptions(i)"
+                                    class="productlist-wrapper">
+                                    <div class="linksPopUp" id="{{'options' + i}}" *ngIf="productListFlag[i]">
+                                        <span>
+                                            <a [routerLink]="['/Autocall',{RFQ_ID:item.EP_ER_QuoteRequestId}]">Single
+                                                Pricer</a><br>
+                                            <a [routerLink]="['/multiautocall',{RFQ_ID:item.EP_ER_QuoteRequestId}]">Multi
+                                                Pricer</a>
+                                        </span>
+                                    </div>
+                                    <label style="border:none;font-weight: 500;">
+                                        Equity Autocall {{item.TenorAUP}} {{item.CurrencyAUP}} :
+                                        {{item.FirstUnderlyingCode1AUP}}{{(item.SecondUnderlyingCode1AUP !== undefined
+                                        &&
+                                        item.SecondUnderlyingCode1AUP !== null && item.SecondUnderlyingCode1AUP !== '')
+                                        ? ',' : ''}}
+                                        {{item.SecondUnderlyingCode1AUP}}{{(item.ThirdUnderlyingCode1AUP !== undefined
+                                        &&
+                                        item.ThirdUnderlyingCode1AUP !== null && item.ThirdUnderlyingCode1AUP !== '') ?
+                                        ',' : ''}}
+                                        {{item.ThirdUnderlyingCode1AUP}}{{(item.FourthUnderlyingCode1AUP !== undefined
+                                        &&
+                                        item.FourthUnderlyingCode1AUP !== null && item.FourthUnderlyingCode1AUP !== '')
+                                        ? ',' : ''}}
+                                        {{item.FourthUnderlyingCode1AUP}}{{(item.FifthUnderlyingCode1AUP !== undefined
+                                        &&
+                                        item.FifthUnderlyingCode1AUP !== null && item.FifthUnderlyingCode1AUP !== '') ?
+                                        ',' : ''}}
+                                        {{item.FifthUnderlyingCode1AUP}}{{(item.sixthUnderlyingCode1AUP !== undefined &&
+                                        item.sixthUnderlyingCode1AUP !== null && item.sixthUnderlyingCode1AUP !== '') ?
+                                        ',' : ''}}
+                                        {{item.sixthUnderlyingCode1AUP}}
+                                    </label>
+                                </div>
+
+
+                                <div *ngIf="item.TOM_Sub_Template_Code === 'ReverseConvertible'"
+                                    (click)="redirectOptions(i)" (clickOutside)="hideOptions(i)"
+                                    class="productlist-wrapper">
+                                    <div class="linksPopUp" id="{{'options' + i}}" *ngIf="productListFlag[i]">
+                                        <span>
+                                            <a
+                                                [routerLink]="['/ReverseConvertible',{RFQ_ID:item.EP_ER_QuoteRequestId}]">Single
+                                                Pricer</a><br>
+                                            <a
+                                                [routerLink]="['/multireverseconvertible',{RFQ_ID:item.EP_ER_QuoteRequestId}]">Multi
+                                                Pricer</a>
+                                        </span>
+                                    </div>
+                                    <label style="border:none;font-weight: 500; ">
+                                        Equity Reverse Convertible {{item.ComputedPayoffSoftTenorRC}}
+                                        {{item.InputSettlementCurrencyRC}} :
+                                        {{item.FirstUnderlyingCode1RC}}{{(item.SecondUnderlyingCode1RC !== undefined &&
+                                        item.SecondUnderlyingCode1RC !== null && item.SecondUnderlyingCode1RC !== '') ?
+                                        ',' : ''}}
+                                        {{item.SecondUnderlyingCode1RC}}{{(item.ThirdUnderlyingCode1RC !== undefined &&
+                                        item.ThirdUnderlyingCode1RC !== null && item.ThirdUnderlyingCode1RC !== '') ?
+                                        ',' : ''}}
+                                        {{item.ThirdUnderlyingCode1RC}}{{(item.FourthUnderlyingCode1RC !== undefined &&
+                                        item.FourthUnderlyingCode1RC !== null && item.FourthUnderlyingCode1RC !== '') ?
+                                        ',' : ''}}
+                                        {{item.FourthUnderlyingCode1RC}}{{(item.FifthUnderlyingCode1RC !== undefined &&
+                                        item.FifthUnderlyingCode1RC !== null && item.FifthUnderlyingCode1RC !== '') ?
+                                        ',' : ''}}
+                                        {{item.FifthUnderlyingCode1RC}}{{(item.sixthUnderlyingCode1RC !== undefined &&
+                                        item.sixthUnderlyingCode1RC !== null && item.sixthUnderlyingCode1RC !== '') ?
+                                        ',' : ''}}
+                                        {{item.sixthUnderlyingCode1RC}}
+                                    </label>
+                                </div>
+
+
+                                <div *ngIf="item.TOM_Sub_Template_Code === 'Participation'" (click)="redirectOptions(i)"
+                                    (clickOutside)="hideOptions(i)" class="productlist-wrapper">
+                                    <div class="linksPopUp" id="{{'options' + i}}" *ngIf="productListFlag[i]">
+                                        <span>
+                                            <a [routerLink]="['/Participation',{RFQ_ID:item.EP_ER_QuoteRequestId}]">Single
+                                                Pricer</a><br>
+                                            <a
+                                                [routerLink]="['/multiparticipation',{RFQ_ID:item.EP_ER_QuoteRequestId}]">Multi
+                                                Pricer</a>
+                                        </span>
+                                    </div>
+                                    <label style="border:none;font-weight: 500;">
+                                        Equity Participation {{item.ComputedPayoffSoftTenor}}
+                                        {{item.InputSettlementCurrency}} : {{item.InputUnderlyingCSV}}
+                                    </label>
+                                </div>
+
+
+                                <div *ngIf="item.Template_Code === 'CreditTranche'" (click)="redirectOptions(i)"
+                                    (clickOutside)="hideOptions(i)" class="productlist-wrapper">
+                                    <div class="linksPopUp" id="{{'options' + i}}" *ngIf="productListFlag[i]">
+                                        <span>
+                                            <a [routerLink]="['/credittranche',{RFQ_ID:item.EP_ER_QuoteRequestId}]">Single
+                                                Pricer</a><br>
+                                            <a [routerLink]="['/MultiCredit',{RFQ_ID:item.EP_ER_QuoteRequestId}]">Multi
+                                                Pricer</a>
+                                        </span>
+                                    </div>
+                                    <label style="border:none;font-weight: 500;">
+                                        Credit Tranche {{item.ComputedTenorValueCT}} {{item.InputSettlementCurrencyCT}}
+                                        :
+                                        {{item.InputCreditIndexTrancheCT}}
+                                    </label>
+                                </div>
+
+
+                                <div *ngIf="item.TOM_Sub_Template_Code === 'DailyRangeAccrual'"
+                                    (click)="redirectOptions(i)" (clickOutside)="hideOptions(i)"
+                                    class="productlist-wrapper">
+                                    <div class="linksPopUp" id="{{'options' + i}}" *ngIf="productListFlag[i]">
+                                        <span>
+                                            <a [routerLink]="['/DRAAutoCall',{RFQ_ID:item.EP_ER_QuoteRequestId}]">Single
+                                                Pricer</a><br>
+                                            <a [routerLink]="['/multidraautocall',{RFQ_ID:item.EP_ER_QuoteRequestId}]">Multi
+                                                Pricer</a>
+                                        </span>
+                                    </div>
+                                    <label style="border:none;font-weight: 500; ">
+                                        Equity DRA Autocall {{item.TenorDRA}} {{item.CurrencyDRA}} :
+                                        {{item.FirstUnderlyingCode1DRA}}{{(item.SecondUnderlyingCode1DRA !== undefined
+                                        &&
+                                        item.SecondUnderlyingCode1DRA !== null && item.SecondUnderlyingCode1DRA !== '')
+                                        ? ',' : ''}}
+                                        {{item.SecondUnderlyingCode1DRA}}{{(item.ThirdUnderlyingCode1DRA !== undefined
+                                        &&
+                                        item.ThirdUnderlyingCode1DRA !== null && item.ThirdUnderlyingCode1DRA !== '') ?
+                                        ',' : ''}}
+                                        {{item.ThirdUnderlyingCode1DRA}}{{(item.FourthUnderlyingCode1DRA !== undefined
+                                        &&
+                                        item.FourthUnderlyingCode1DRA !== null && item.FourthUnderlyingCode1DRA !== '')
+                                        ? ',' : ''}}
+                                        {{item.FourthUnderlyingCode1DRA}}{{(item.FifthUnderlyingCode1DRA !== undefined
+                                        &&
+                                        item.FifthUnderlyingCode1DRA !== null && item.FifthUnderlyingCode1DRA !== '') ?
+                                        ',' : ''}}
+                                        {{item.FifthUnderlyingCode1DRA}}{{(item.sixthUnderlyingCode1DRA !== undefined &&
+                                        item.sixthUnderlyingCode1DRA !== null && item.sixthUnderlyingCode1DRA !== '') ?
+                                        ',' : ''}}
+                                        {{item.sixthUnderlyingCode1DRA}}
+                                    </label>
+                                </div>
+
+
+                                <div *ngIf="item.TOM_Sub_Template_Code === 'DualFIAutocallablePhoenix'"
+                                    (click)="redirectOptions(i)" (clickOutside)="hideOptions(i)"
+                                    class="productlist-wrapper">
+                                    <div class="linksPopUp" id="{{'options' + i}}" *ngIf="productListFlag[i]">
+                                        <span>
+                                            <a [routerLink]="['/dualautocall',{RFQ_ID:item.EP_ER_QuoteRequestId}]">Single
+                                                Pricer</a><br>
+                                            <a [routerLink]="['/MultiDualAutocall',{RFQ_ID:item.EP_ER_QuoteRequestId}]">Multi
+                                                Pricer</a>
+                                        </span>
+                                    </div>
+                                    <label style="border:none;font-weight: 500;">
+                                        Equity Dual FI Autocall {{item.TenorAUP}} {{item.CurrencyAUP}} :
+                                        {{item.FirstUnderlyingCode1AUP}}{{(item.SecondUnderlyingCode1AUP !== undefined
+                                        &&
+                                        item.SecondUnderlyingCode1AUP !== null && item.SecondUnderlyingCode1AUP !== '')
+                                        ? ',' : ''}}
+                                        {{item.SecondUnderlyingCode1AUP}}{{(item.ThirdUnderlyingCode1AUP !== undefined
+                                        &&
+                                        item.ThirdUnderlyingCode1AUP !== null && item.ThirdUnderlyingCode1AUP !== '') ?
+                                        ',' : ''}}
+                                        {{item.ThirdUnderlyingCode1AUP}}{{(item.FourthUnderlyingCode1AUP !== undefined
+                                        &&
+                                        item.FourthUnderlyingCode1AUP !== null && item.FourthUnderlyingCode1AUP !== '')
+                                        ? ',' : ''}}
+                                        {{item.FourthUnderlyingCode1AUP}}{{(item.FifthUnderlyingCode1AUP !== undefined
+                                        &&
+                                        item.FifthUnderlyingCode1AUP !== null && item.FifthUnderlyingCode1AUP !== '') ?
+                                        ',' : ''}}
+                                        {{item.FifthUnderlyingCode1AUP}}{{(item.sixthUnderlyingCode1AUP !== undefined &&
+                                        item.sixthUnderlyingCode1AUP !== null && item.sixthUnderlyingCode1AUP !== '') ?
+                                        ',' : ''}}
+                                        {{item.sixthUnderlyingCode1AUP}}
+                                    </label>
+                                </div>
+
+
+                                <div *ngIf="item.TOM_Sub_Template_Code === 'DualFIReverseConvertible'"
+                                    (click)="redirectOptions(i)" (clickOutside)="hideOptions(i)"
+                                    class="productlist-wrapper">
+                                    <div class="linksPopUp" id="{{'options' + i}}" *ngIf="productListFlag[i]">
+                                        <span>
+                                            <a [routerLink]="['/dualRC',{RFQ_ID:item.EP_ER_QuoteRequestId}]">Single
+                                                Pricer</a><br>
+                                            <a [routerLink]="['/MultiDualRC',{RFQ_ID:item.EP_ER_QuoteRequestId}]">Multi
+                                                Pricer</a>
+                                        </span>
+                                    </div>
+                                    <label style="border:none;font-weight: 500; ">
+                                        Equity Dual FI Reverse Convertible {{item.ComputedPayoffSoftTenorRC}}
+                                        {{item.InputSettlementCurrencyRC}} :
+                                        {{item.FirstUnderlyingCode1RC}}{{(item.SecondUnderlyingCode1RC !== undefined &&
+                                        item.SecondUnderlyingCode1RC !== null && item.SecondUnderlyingCode1RC !== '') ?
+                                        ',' : ''}}
+                                        {{item.SecondUnderlyingCode1RC}}{{(item.ThirdUnderlyingCode1RC !== undefined &&
+                                        item.ThirdUnderlyingCode1RC !== null && item.ThirdUnderlyingCode1RC !== '') ?
+                                        ',' : ''}}
+                                        {{item.ThirdUnderlyingCode1RC}}{{(item.FourthUnderlyingCode1RC !== undefined &&
+                                        item.FourthUnderlyingCode1RC !== null && item.FourthUnderlyingCode1RC !== '') ?
+                                        ',' : ''}}
+                                        {{item.FourthUnderlyingCode1RC}}{{(item.FifthUnderlyingCode1RC !== undefined &&
+                                        item.FifthUnderlyingCode1RC !== null && item.FifthUnderlyingCode1RC !== '') ?
+                                        ',' : ''}}
+                                        {{item.FifthUnderlyingCode1RC}}{{(item.sixthUnderlyingCode1RC !== undefined &&
+                                        item.sixthUnderlyingCode1RC !== null && item.sixthUnderlyingCode1RC !== '') ?
+                                        ',' : ''}}
+                                        {{item.sixthUnderlyingCode1RC}}
+                                    </label>
+                                </div>
+
+
+                                <div *ngIf="item.TOM_Sub_Template_Code === 'DualFIDailyRangeAccrual'"
+                                    (click)="redirectOptions(i)" (clickOutside)="hideOptions(i)"
+                                    class="productlist-wrapper">
+                                    <div class="linksPopUp" id="{{'options' + i}}" *ngIf="productListFlag[i]">
+                                        <span>
+                                            <a [routerLink]="['/dualDRAAutoCall',{RFQ_ID:item.EP_ER_QuoteRequestId}]">Single
+                                                Pricer</a><br>
+                                            <a [routerLink]="['/MultiDualDRAAC',{RFQ_ID:item.EP_ER_QuoteRequestId}]">Multi
+                                                Pricer</a>
+                                        </span>
+                                    </div>
+                                    <label style="border:none;font-weight: 500;">
+                                        Equity Dual FI DRA Autocall {{item.TenorDRA}} {{item.CurrencyDRA}} :
+                                        {{item.FirstUnderlyingCode1DRA}}{{(item.SecondUnderlyingCode1DRA !== undefined
+                                        &&
+                                        item.SecondUnderlyingCode1DRA !== null && item.SecondUnderlyingCode1DRA !== '')
+                                        ? ',' : ''}}
+                                        {{item.SecondUnderlyingCode1DRA}}{{(item.ThirdUnderlyingCode1DRA !== undefined
+                                        &&
+                                        item.ThirdUnderlyingCode1DRA !== null && item.ThirdUnderlyingCode1DRA !== '') ?
+                                        ',' : ''}}
+                                        {{item.ThirdUnderlyingCode1DRA}}{{(item.FourthUnderlyingCode1DRA !== undefined
+                                        &&
+                                        item.FourthUnderlyingCode1DRA !== null && item.FourthUnderlyingCode1DRA !== '')
+                                        ? ',' : ''}}
+                                        {{item.FourthUnderlyingCode1DRA}}{{(item.FifthUnderlyingCode1DRA !== undefined
+                                        &&
+                                        item.FifthUnderlyingCode1DRA !== null && item.FifthUnderlyingCode1DRA !== '') ?
+                                        ',' : ''}}
+                                        {{item.FifthUnderlyingCode1DRA}}{{(item.sixthUnderlyingCode1DRA !== undefined &&
+                                        item.sixthUnderlyingCode1DRA !== null && item.sixthUnderlyingCode1DRA !== '') ?
+                                        ',' : ''}}
+                                        {{item.sixthUnderlyingCode1DRA}}
+                                    </label>
+                                </div>
+
+
+                                <div *ngIf="item.TOM_Sub_Template_Code === 'BonusEnhancedNote'"
+                                    (click)="redirectOptions(i)" (clickOutside)="hideOptions(i)"
+                                    class="productlist-wrapper">
+                                    <div class="linksPopUp" id="{{'options' + i}}" *ngIf="productListFlag[i]">
+                                        <span>
+                                            <a [routerLink]="['/Bonus',{RFQ_ID:item.EP_ER_QuoteRequestId}]">Single
+                                                Pricer</a><br>
+                                            <a [routerLink]="['/multibonus',{RFQ_ID:item.EP_ER_QuoteRequestId}]">Multi
+                                                Pricer</a>
+                                        </span>
+                                    </div>
+                                    <label style="border:none;font-weight: 500;">
+                                        Equity Bonus Enhanced Note {{item.TenorBEN}} {{item.CurrencyBEN}} :
+                                        {{item.FirstUnderlyingCode1BEN}}{{(item.SecondUnderlyingCode1BEN !== undefined
+                                        &&
+                                        item.SecondUnderlyingCode1BEN !== null && item.SecondUnderlyingCode1BEN !== '')
+                                        ? ',' : ''}}
+                                        {{item.SecondUnderlyingCode1BEN}}{{(item.ThirdUnderlyingCode1BEN !== undefined
+                                        &&
+                                        item.ThirdUnderlyingCode1BEN !== null && item.ThirdUnderlyingCode1BEN !== '') ?
+                                        ',' : ''}}
+                                        {{item.ThirdUnderlyingCode1BEN}}{{(item.FourthUnderlyingCode1BEN !== undefined
+                                        &&
+                                        item.FourthUnderlyingCode1BEN !== null && item.FourthUnderlyingCode1BEN !== '')
+                                        ? ',' : ''}}
+                                        {{item.FourthUnderlyingCode1BEN}}{{(item.FifthUnderlyingCode1BEN !== undefined
+                                        &&
+                                        item.FifthUnderlyingCode1BEN !== null && item.FifthUnderlyingCode1BEN !== '') ?
+                                        ',' : ''}}
+                                        {{item.FifthUnderlyingCode1BEN}}{{(item.sixthUnderlyingCode1BEN !== undefined &&
+                                        item.sixthUnderlyingCode1BEN !== null && item.sixthUnderlyingCode1BEN !== '') ?
+                                        ',' : ''}}
+                                        {{item.sixthUnderlyingCode1BEN}}
+                                    </label>
+                                </div>
+
+
+                                <div *ngIf="item.TOM_Sub_Template_Code === 'CreditLinkedNote'"
+                                    (click)="redirectOptions(i)" (clickOutside)="hideOptions(i)"
+                                    class="productlist-wrapper">
+                                    <div class="linksPopUp" id="{{'options' + i}}" *ngIf="productListFlag[i]">
+                                        <span>
+                                            <a [routerLink]="['/CreditLinkedNote',{RFQ_ID:item.EP_ER_QuoteRequestId}]">Single
+                                                Pricer</a><br>
+                                            <a
+                                                [routerLink]="['/MultiCreditLinkedNote',{RFQ_ID:item.EP_ER_QuoteRequestId}]">Multi
+                                                Pricer</a>
+                                        </span>
+                                    </div>
+                                    <label style="border:none;font-weight: 500;">
+                                        Credit Linked Note {{item.CLNTenor}} {{item.CLNCurrency}} :
+                                        {{item.CLNRefEntity}}{{(item.CLNRefEntity2 !== undefined &&
+                                        item.CLNRefEntity2 !== null && item.CLNRefEntity2 !== '') ? ',' : ''}}
+                                        {{item.CLNRefEntity2}}{{(item.CLNRefEntity3 !== undefined &&
+                                        item.CLNRefEntity3 !== null && item.CLNRefEntity3 !== '') ? ',' : ''}}
+                                        {{item.CLNRefEntity3}}{{(item.CLNRefEntity4 !== undefined &&
+                                        item.CLNRefEntity4 !== null && item.CLNRefEntity4 !== '') ? ',' : ''}}
+                                        {{item.CLNRefEntity4}}{{(item.CLNRefEntity5 !== undefined &&
+                                        item.CLNRefEntity5 !== null && item.CLNRefEntity5 !== '') ? ',' : ''}}
+                                        {{item.CLNRefEntity5}}
+                                    </label>
+                                </div>
+
+                                <div *ngIf="item.TOM_Sub_Template_Code === 'DualCurrencyNote'"
+                                    (click)="redirectOptions(i)" (clickOutside)="hideOptions(i)"
+                                    class="productlist-wrapper">
+                                    <div class="linksPopUp" id="{{'options' + i}}" *ngIf="productListFlag[i]">
+                                        <span>
+                                            <a [routerLink]="['/FX',{RFQ_ID:item.EP_ER_QuoteRequestId}]">Single
+                                                Pricer</a><br>
+                                            <a [routerLink]="['/Multidcn',{RFQ_ID:item.EP_ER_QuoteRequestId}]">Multi
+                                                Pricer</a>
+                                        </span>
+                                    </div>
+                                    <label style="border:none;font-weight: 500;">
+                                        Dual Currency Note {{item.DCNMaturityShifter}} {{item.DCNProductFormat}} :
+                                        {{item.DCNInputCurrencyPair}}
+                                    </label>
+                                </div>
+
+
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- <div class="">
+                        <a href={{selectedNews?.News_Link}}> click for more</a> 
+                    </div> -->
+                </div>
+                <div class="Attachmentsdiv" *ngIf="showAttachments" (click)="ToggleAttachments()">
+                    <div class="" style="height: 100%;width:100%;">
+                        <!-- <app-video-player></app-video-player> -->
+
+                        <div class="title1">
+                            <app-svg-icons (click)="toggleVideoPopup()" [icon]="'close'" [width]="'18'" [height]="'18'">
+                            </app-svg-icons>
+                        </div>
+                        <div class="popup-content">
+                            <img [src]="imgURL" style="width:100%;height:575px;" *ngIf="isImage">
+                            <iframe id="iframeDocViewer" *ngIf="!isImage" [src]="imgURL | safe"
+                                style="width:100%;height:100%;border:none;overflow:hidden" scrolling="no"
+                                frameBorder="0" (load)="iframeloadevent()" allowfullscreen></iframe>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="popup-bottom">
+            <div class="bottom-flex">
+                <div class="news-actions">
+                    <div class="news-actions-item"
+                        (click)="setNewsLike(selectedNews?.NewsID, selectedNews?.Like, selectedNews?.List_Name, -1)">
+                        <app-svg-icons [icon]="'liked'" [width]="'12'" [height]="'12'"
+                            [fill]="selectedNews?.Like == 'Y' ? 'var(--blue-color)' : 'transparent'"
+                            style="margin: auto 0;">
+                        </app-svg-icons>
+                        <a>Like</a>
+                    </div>
+                    <div class="news-actions-item" (click)="showPopup1(selectedNews.Headline, selectedNews.List_Name);">
+                        <app-svg-icons [icon]="'cart'" [width]="'12'" [height]="'12'" style="margin: auto 0;">
+                        </app-svg-icons>
+                        <a>Product Details</a>
+                    </div>
+                    <div class="news-actions-item" (clickOutside)="showContactInfoPopupFlag = false">
+                        <app-svg-icons [icon]="'contact'" [width]="'12'" [height]="'12'" style="margin: auto 0;">
+                        </app-svg-icons>
+                        <a (click)="showContactInfoPopupFlag = true">Contact</a>
+                        <div *ngIf="showContactInfoPopupFlag" class="infoNote infoNoteContact">
+                            <span>
+                                For further information, please contact<br>
+                                Email : econnectivity.group&#64;bbva.com
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bottom-flex">
+                <!-- <a>Tell me more</a>  *ngIf="stage2ExternalLink!== null && stage2ExternalLink!==''" -->
+                <a class="stage2-external-link" target="_blank" [href]="selectedNews?.NewsLink">
+                    Tell me more
+                </a>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="overlay" [ngStyle]="{'display': productDetailFlag ? '': 'none'}">
+    <div class="rmwFilterSection">
+
+        <div class="popupheader">
+            <div class="popuptd" style="width:100%;border-radius: 10px 10px 0px 0px; margin-top:10px;">
+                <p style="font-size: x-large;
+                            font-weight: 300;padding: 5px 10px;text-align: center;">{{this.headline}}</p>
+            </div>
+            <div class="btnClose" (click)="hidePopup()">
+                <app-svg-icons [icon]="'close'" [width]="'18'" [height]="'18'">
+                </app-svg-icons>
+            </div>
+        </div>
+        <div id="rmwbondDiv" class="rmwbondDiv" *ngIf="productDetailFlag">
+            <app-rmw [RMWBondProductDetailsArr]="RMWBondProductDetailsArr" [popupFlag]="popupFlag"
+                [ListName]="ListName">
+            </app-rmw>
+        </div>
+    </div>
+</div>

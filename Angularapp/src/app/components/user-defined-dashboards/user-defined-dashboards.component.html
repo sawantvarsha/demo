@@ -1,0 +1,76 @@
+<div class="client-summary-dashboard">
+    <div class="page-title">
+        Client Defined Dashboard
+    </div>
+    <div class="main-container">
+        <div class="options">
+            <app-svg-icons [icon]="'hamburger'" [width]="'25'" [height]="'22'" (click)="showMenu = !showMenu;"></app-svg-icons>
+            <select [(ngModel)]="dashboard" style="border: none; width: 150px;" (change)="layoutChanged()">
+            <option >All</option>
+            <option *ngFor="let i of dashboardList">{{i}}</option>
+          </select>
+          <input [(ngModel)]= "layoutname" style="width: 150px;" placeholder="Layout Name"/>
+            <button class="button " value="Save" (click)="saveLayout()">Save</button>
+          <span>{{lblError}}</span>
+        </div>
+        <div   [ngClass]="{'sub-container': showMenu,'sub-container1': !showMenu}">
+            <div cdkDropList #scenario="cdkDropList" [cdkDropListData]="scenarioList" [cdkDropListConnectedTo]="[scenarioData]" class="example-list">
+                <mat-sidenav-container class="sidebar" *ngIf="showMenu">
+                    <mat-sidenav mode="side" opened>
+                        <div class="col-12 ">
+
+                            <input type="text" [(ngModel)]="txtSearch" placeholder="Scenario Search..." class="search">
+
+                            <div class="product-list" style="height: calc(100vh - 275px);   overflow-y: auto;">
+                                <div *ngFor="let item of scenarioList | filter: txtSearch ; let i = index" cdkDrag>
+                                    <li class="list-item">
+                                        <span class="Link" (click)="showImg[i] = !showImg[i]">   <img src={{icons[i]}} > {{item.ScenarioHeader}}
+                               </span>
+                                        <img class="LiImage" src={{images[i]}} *ngIf="showImg[i]">
+                                    </li>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </mat-sidenav>
+                </mat-sidenav-container>
+            </div>
+
+            <div cdkDropList #scenarioData="cdkDropList" [cdkDropListData]="gridData" [cdkDropListConnectedTo]="[scenario]" class="example-list" (cdkDropListDropped)="drop($event)">
+
+                <div class="col-12 ">
+
+                    <div class="product-list">
+                        <div *ngFor="let item of gridData  ; let i = index" cdkDrag>
+                            <li class="list-item">
+
+                                <div class="grid">
+
+                                    <app-grid-view [scenarioDataValue]="item"></app-grid-view>
+                                </div>
+                                <!-- <div *ngIf="item.ControlType === 'Column'">Column</div>
+                                <app-grid-view [scenarioDataValue]="item"></app-grid-view>
+                                <div *ngIf="item.ControlType === 'Pie'">Pie</div>
+                                <div *ngIf="item.ControlType === 'Poster'">Poster</div>
+
+                                <div *ngIf="item.ControlType === 'Bar'">Bar</div> -->
+                            </li>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="loader-container" *ngIf="loaderFlag">
+        <div class="loader-center">
+          <div class="multi-ripple">
+            <div></div>
+            <div></div>
+          </div>
+        </div>
+      </div>
+</div>

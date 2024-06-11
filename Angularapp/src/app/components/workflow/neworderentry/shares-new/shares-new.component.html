@@ -1,0 +1,300 @@
+<div class="component">
+    <div class="fundname" *ngIf="details['Product_Name'] !== ''">
+        <div class="funddetails">
+            <div class="fund-name fs24">{{ details.Product_Name }}</div>
+            <div class="shareinfo">
+                <span class="fs12 heading"> Ticker </span>
+                <span class="medium value-top ">{{ details.Feedcode }} </span>
+                <span class="medium value-top">|</span>
+                <span class="fs12 heading"> Currency </span>
+                <span class="medium value-top "> {{ details.Currency }}</span>
+                <span class="medium value-top">|</span>
+                <span class="fs12 heading"> Exchange </span>
+                <span class="medium value-top "> {{ details.Exchange }}</span>
+            </div>
+        </div>
+        <div class="funddetails">
+            <div class="fund-name off-color fs24" *ngIf="side === 'Sell'">
+                {{ details.BidPx }}
+            </div>
+            <div class="shareinfo">
+                <span class="medium heading" *ngIf="side === 'Sell'"> Bid Rate </span>
+            </div>
+            <div class="fund-name off-color fs24" *ngIf="side === 'Buy'">
+                {{ details.AskPx }}
+            </div>
+            <div class="shareinfo">
+                <span class="medium heading" *ngIf="side === 'Buy'"> Ask Rate </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="field-grid">
+
+        <div class="flex-grid gap">
+            <div class="flex-grid">
+                <label class="heading">Direction</label>
+                <div class="toggle">
+                    <div (click)="sideChange('Buy')" class="toggle-item" [ngClass]="{'selectedBuy' : side === 'Buy'}">
+                        <label>Buy</label>
+                    </div>
+                    <div (click)="sideChange('Sell')" class="toggle-item"
+                        [ngClass]="{'selectedSell':  side === 'Sell'}">
+                        <label>Sell</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex-grid">
+                <label class="heading">Order Type</label>
+                <div class="toggle">
+                    <div (click)="ordertypechange('Market')" class="toggle-item"
+                        [ngClass]="{'selected' : optiontype === 'Market'}">
+                        <label>Market</label>
+                    </div>
+                    <div (click)="ordertypechange('Limit')" class="toggle-item"
+                        [ngClass]="{'selected':  optiontype === 'Limit'}">
+                        <label>Limit</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex-grid" *ngIf="side === 'Buy'">
+                <label class="heading">Funding Mode</label>
+                <select [(ngModel)]="FundMode" (change)="FundingModeChange(FundMode)" [disabled]="isEditable">
+                    <option *ngFor="let item of FundingModeData" (selected)="item.DATA_VALUE === FundMode"
+                        [value]="item.DATA_VALUE">{{item.DATA_VALUE}}
+                    </option>
+                </select>
+            </div>
+
+            <div *ngIf="side === 'Buy'" [ngStyle]="{'display': FundVal === 'FF' ? 'none' : ''}">
+                <div class="flex-grid" *ngIf="FundVal === 'PL' || FundVal === 'TL'">
+                    <label class="heading">Loan Amount</label>
+                    <input type="text" class="right" [(ngModel)]="LoanAmt" maxlength="12" tabindex="2"
+                        (blur)="commonApi.FormatNumber($event)" (change)="LoanAmt = commonApi.NotionalChange($event);"
+                        (focus)="commonApi.UnformatNumber($event);commonApi.SelectFullText($event);"
+                        (keypress)=" commonApi.NotionalValidate($event)"
+                        [disabled]="FundVal === 'TL' || isEditable === true">
+                </div>
+            </div>
+
+
+
+        </div>
+
+        <div class="flex-grid gap">
+            <div class="flex-grid">
+                <label class="heading">Quantity</label>
+                <input type="text" name="" id="" class="right" [(ngModel)]="OrderQty" placeholder="Order Quantity"
+                    maxlength="12" (blur)="commonApi.FormatNumber($event)" [disabled]="isEditable"
+                    (change)="OrderQty = commonApi.NotionalChange($event); setAmount($event); validateQuantity($event);"
+                    (focus)="commonApi.UnformatNumber($event)" (keypress)="commonApi.NotionalValidate($event)" />
+            </div>
+            <div class="flex-grid" [ngStyle]="{'display': optiontype === 'Market' ? 'none' : ''}">
+                <div class="flex-grid">
+                    <label class="heading">Limit Price</label>
+                    <input type="text" class="floatRight" [(ngModel)]="LimitPrice" (blur)="changeAmount($event)"
+                        (blur)="commonApi.FormatNumber($event)" maxlength="10"
+                        [disabled]="isEditable || optiontype === 'Market'" />
+                </div>
+            </div>
+
+
+            <div class="flex-grid">
+                <div class="flex-grid ">
+                    <label class="heading">Order Date</label>
+                    <div class="FromDateLabel">
+                        <input type="date" name="tradeDate" id="tradeDate" class="input-dob" tabindex="16"
+                            min="1997-01-01" style="margin-top: 0px;  width: 100% !important;" max="2030-12-31"
+                            [(ngModel)]="tradeDate" (change)="selectDate(tradeDate)" data-date-format="DD-MMM-YYYY"
+                            [disabled]="!backdated">
+                        <span id="FromDateLabel">{{tradeDate| date:'dd-MMM-yyyy'}}</span>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div *ngIf="side === 'Buy'" [ngStyle]="{'display': FundVal === 'FF' ? 'none' : ''}">
+                <div class="flex-grid" *ngIf="FundVal === 'PL' || FundVal === 'TL'">
+                    <label class="heading">Loan Tenor</label>
+                    <select [(ngModel)]="LoanTenor">
+                        <option *ngFor="let item of TenorData" (selected)="item.DATA_VALUE === LoanTenor"
+                            [value]="item.DATA_VALUE">{{item.DATA_VALUE}}
+                        </option>
+                    </select>
+                </div>
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+    <div class="field-grid">
+        <div class="flex-grid gap">
+            <div class="flex-grid">
+                <label class="heading">Settlement Date</label>
+                <!-- <label>{{ details.SettlementDate }}</label> -->
+                <label>{{ settlementDate }}</label>
+            </div>
+
+            <div class="flex-grid">
+                <label class="heading">Settlement Amount ({{ details.Currency }})</label>
+                <label>{{ SettAmt | number: '1.2-2' }}</label>
+            </div>
+        </div>
+
+        <div class="flex-grid gap">
+            <div class="flex-grid">
+                <label class="heading">Settlement Type</label>
+                <ng-container *ngIf="SettlementType === ''; then ShowEmptyinput else Showinput ">
+                </ng-container>
+                <ng-template #ShowEmptyinput>
+                    <label></label>
+                </ng-template>
+                <ng-template #Showinput>
+                    <label>{{'T + ' + SettlementType}}</label>
+                    <!-- <input type="text" class="center" [value]="'T + ' + SettlementType" disabled="disabled" /> -->
+                </ng-template>
+            </div>
+
+            <div class="flex-grid" *ngIf="FundMode === 'Fully Funded' && side === 'Buy'">
+                <label class="heading">Available Cash</label>
+                <label>{{ CashBalance | number: '1.2-2' }}</label>
+            </div>
+
+            <div *ngIf="side === 'Buy'" [ngStyle]="{'display': FundVal === 'FF' ? 'none' : ''}">
+                <div class="flex-grid" *ngIf="FundVal === 'PL' || FundVal === 'TL'">
+                    <label class="heading"> Available for Drawdown</label>
+                    <label>{{ Drawdown | number: '1.2-2' }}</label>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="field-grid" *ngIf="this.moredetails !== 'More Details'">
+        <div class="flex-grid gap">
+            <div class="flex-grid">
+                <label class="heading">Time in Force</label>
+                <label>{{ 'Day' }}</label>
+
+                <!-- <select [(ngModel)]="TimeInForce" disabled>
+                    <option value="DAY" selected="selected">Day</option>
+                     <option value="GTF">Good till Friday</option>
+                    <option value="GTD">Good till Date</option> 
+                </select> -->
+            </div>
+
+            <!-- <div class="flex-grid">
+                <label class="heading">Customer</label>
+                <label>{{ CustomerName }}</label>
+            </div> -->
+
+            <div class="flex-grid">
+                <label class="heading">Portfolio</label>
+                <select [(ngModel)]="portfolio" (change)="updatePortfolio()">
+                    <option *ngFor="let arr of portfolioList" [value]="arr.FacDesc">{{arr.PortfolioName}}</option>
+                    <!-- Added by Anjali T asked by Mohan P 07-Feb-2022 -->
+                </select>
+            </div>
+        </div>
+
+        <div class="flex-grid gap">
+            <div class="flex-grid">
+                <label class="heading">Expiry Date</label>
+                <!-- <label>{{ details.TradeDate }}</label> -->
+                <label class="">{{ expiryDate }}</label>
+            </div>
+
+            <!-- <div class="flex-grid">
+                <label class="heading">Currency</label>
+                <label>{{ details.Currency }}</label>
+            </div> -->
+
+            <div class="flex-grid">
+                <label class="heading">Account Number</label>
+                <select class="right paddingR_30px" [(ngModel)]="Account_Number" (change)="cashBalance()">
+                    <!--cashBalance() Added by AlolikaG on 25th Feb 2022-->
+                    <!--[disabled]="isUserRM === false"-->
+                    <option *ngFor="let arr of accountList">{{ arr.Param1 }}</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="field-grid">
+        <div class="link gap" *ngIf="btnname === 'Subscribe'" style="justify-content: space-between;">
+            <label class="heading">Check Suitability</label>
+            <label class="switch">
+                <input type="checkbox" [(ngModel)]="checkSuitability">
+                <span class="slider"></span>
+            </label>
+            <app-svg-icons
+                [ngStyle]="{'display':note_Master_Id===''?'none':'', 'pointer-event': note_Master_Id===''?'none':'initial'}"
+                [fill]="'white'" [icon]="'info-video'" [width]="'20'" (click)="openSuitablityPopup()" [height]="'20'"
+                title="View Suitability">
+            </app-svg-icons>
+        </div>
+        <div class="link gap" *ngIf="btnname === 'Subscribe'" style="justify-content: space-between;">
+            <label class="heading">Place backdated order</label>
+            <label class="switch">
+                <input type="checkbox" [(ngModel)]="backdated" (change)=placeBackdatedOrder()>
+                <span class="slider"></span>
+            </label>
+        </div>
+
+    </div>
+
+    <div class="field-grid">
+        <div class="link" (click)="moredetailsCheck()">
+            <label> {{ moredetails }} </label>
+            <app-svg-icons *ngIf="this.moredetails === 'More Details'" class="arrow-rotate" [icon]="'arrow'"
+                [width]="'10'" [height]="'10'" [fill]="'var(--links)'">
+            </app-svg-icons>
+            <app-svg-icons *ngIf="this.moredetails !== 'More Details'" class="arrow-rotate-up" [icon]="'arrow'"
+                [width]="'10'" [height]="'10'" [fill]="'var(--links)'">
+            </app-svg-icons>
+        </div>
+    </div>
+
+    <div class="button-row">
+        <button class="button" (click)="Subscribe()">
+            {{ btnname }}
+        </button>
+
+        <div>
+            <button class="button" (click)="reset()">Clear</button>
+        </div>
+    </div>
+
+    <div class="align-center">
+        <div *ngIf="loadflag">
+            <app-loader></app-loader>
+            <!-- <div *ngIf="loadflag"> -->
+            <!-- <img [src]="isProd? 'assets/loading_dots.gif': '../../../../../assets/loading_dots.gif'" width="100px" /> -->
+        </div>
+        <label class="">{{ successMsg }}</label>
+    </div>
+
+</div>
+
+<!-- Added by Rohit T. | 03-Feb-2021 -->
+<div [ngClass]="{'overlay':showSuitabilityPopup}">
+    <div [ngClass]="{'popuptab1':this.moredetails === 'More Details', 'popuptab2': this.moredetails !== 'More Details'}"
+        class=" suitability-overlay" *ngIf="showSuitabilityPopup">
+        <div class="content-header" *ngIf="showSuitabilityPopup"
+            [ngClass]="{'maincontainer-opacity':!showSuitabilityPopup}">
+            <div class="content-header-name">
+                <span>Suitability Check</span>
+            </div>
+            <app-svg-icons [icon]="'close-icon'" class="closebtn" [width]="'32'" [height]="'32'"
+                (click)="closeSuitablityPopup()"></app-svg-icons>
+        </div>
+        <app-suitability [NoteMasterId]="note_Master_Id"></app-suitability>
+    </div>
+</div>
+<!-- Ended by Rohit T. | 03-Feb-2021 -->

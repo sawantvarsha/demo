@@ -1,0 +1,366 @@
+<div class="page-title" style="display: flex; gap: 1% ;">
+    <app-svg-icons class="back-button" [icon]="'back-button'" [width]="'30'" [height]="'30'" [fill]="'var(--headers)'"
+        (click)="clickBack()"></app-svg-icons>
+    Bond Details
+</div>
+<div class="page-grid" *ngIf="AllMFData" [ngClass]="{'page-grid-schedule': showSchedule}">
+    <div class="box-container column-2">
+        <!--Funds Details-->
+        <div class = "buySellGrid">
+            <div>
+                <label class="fund-name">{{data?.ProductName || '-'}}</label>
+                <div class="details-list">
+                    <label class="heading">Issuer</label><label class="value-top">{{data?.Issuer || '-'}}</label>
+                    <div class="vh-line"></div>
+                    <label class="heading">Currency</label><label class="value-top">{{data?.Currency || '-'}}</label>
+                    <div class="vh-line"></div>
+                    <label class="heading">ISIN</label><label class="value-top">{{data?.ISIN || '-'}}</label>
+                    <div class="vh-line"></div>
+                    <label class="value-top">{{data?.BondSegment || '-'}}</label>
+                </div>
+            </div>
+            <div class="btnGrid">
+                <button class="button btnBuy" value="Buy" (click) = "callOrderEntry('BUY')">Buy</button>
+                <button class="button btnSell" value="Sell" (click) = "callOrderEntry('SELL')">Sell</button>
+            </div>
+            <div>
+
+            </div>
+        </div>
+        
+        <div class="details-row-2">
+            <div class="graphSection" style="gap: 0px;border-right: solid 1px var(--border);">
+                <!-- <canvas baseChart id="chart1" height="300" width="200" [chartType]="'line'" [datasets]="MFChartData[0]" [labels]="MFChartLabels[0]" [options]="chartOptions" [legend]="true" [colors]="Chartcolor">
+                </canvas> -->
+                <!-- <google-chart #baseChart [title]="Title" type="AreaChart" [data]="MFChartData" [options]="chartOptions" width="100%" height="100%">
+                </google-chart> -->
+                <div class = "chart-class">
+                    <div>
+                        <select class="selectDdl" [(ngModel)]="period" (change)="changePeriod()">
+                            <option value="Week">Week</option>
+                            <option value="Month">Month</option>
+                            <option value="Quarter">Quarter</option>
+                            <option value="Year">Year</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <input style="display:none;" type="checkbox" id="1" name="1" value="Ask Price"
+                            [(ngModel)]="askPrice" (change)="chkChange(0);">&nbsp;
+                        <label for="1" class="lbl" [ngClass]="askPrice ? 'active1':'disabledtabs1'">
+                            <span>Ask Price</span></label>&nbsp;
+                        <input style="display:none;" type="checkbox" id="2" name="2" value="Ask Yield"
+                            [(ngModel)]="askYield" (change)="chkChange(1);">&nbsp;
+                        <label for="2" class="lbl" [ngClass]="askYield ? 'active1':'disabledtabs1'">
+                            <span>Ask Yield</span></label>&nbsp;
+                        <input style="display:none;" type="checkbox" id="3" name="3" value="Bid Price"
+                            [(ngModel)]="bidPrice" (change)="chkChange(2);">&nbsp;
+                        <label for="3" class="lbl" [ngClass]="bidPrice ? 'active1':'disabledtabs1'">
+                            <span>Bid Price</span></label>&nbsp;
+                        <input style="display:none;" type="checkbox" id="4" name="4" value="Bid Yield"
+                            [(ngModel)]="bidYield" (change)="chkChange(3);">&nbsp;
+                        <label for="4" class="lbl" [ngClass]="bidYield ? 'active1':'disabledtabs1'">
+                            <span>Bid Yield</span></label>
+                    </div>
+                </div>
+
+                <div *ngIf="errorMsg">
+                    No data found.
+                </div>
+                <google-chart *ngIf="chartdata.length > 0" [type]="type" [data]="chartdata" [options]="options" [columns] = "columnNames"> <!--Added by Alolika G on 9th Feb 2022-->
+                </google-chart>
+            </div>
+            <div class="flex-down">
+                <div class="details">
+                    <label class="box-header">Bond Parameters</label>
+                    <div class="details-row-3">
+                        <div class="details">
+                            <label class="value">{{data?.PRR || '-'}}</label>
+                            <label class="heading">PRR</label>
+                        </div>
+                        <div class="details">
+                            <label class="value">{{data?.LTV || '-'}}</label>
+                            <label class="heading">LTV %</label>
+                        </div>
+                        <div class="details">
+                            <label class="value">{{data?.TenorLeft || '-'}}</label>
+                            <label class="heading">Tenor Left</label>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="details" style="gap: 0px;">
+                    <label class="box-header">Product Rating</label>
+                    <!--Risk Rating-->
+                    <!-- <google-chart #productRatingChart [title]="Title" type="BarChart" [data]="productRatingData" [options]="ratingChartOptions" [colors]="ratingChartOptions.colors" width="100%" height="100%" [columns]="columnNames">
+                </google-chart> -->
+                    <!-- <google-chart #issuerRatingChart [title]="Title" type="BarChart" [data]="issuerRatingData" [options]="ratingChartOptions" width="100%" height="100%">
+                </google-chart> -->
+                    <div class="details-row-3">
+                        <div class="details">
+                            <label class="value">{{data?.RatingsMoodys || '-' }}</label>
+                            <label class="heading">Moody's</label>
+                        </div>
+                        <div class="details">
+                            <label class="value">{{data?.RatingsSnP || '-' }}</label>
+                            <label class="heading">S&P</label>
+                        </div>
+                        <div class="details">
+                            <label class="value">{{data?.FitchRating || '-' }}</label>
+                            <label class="heading">Fitch</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+    <div class="box-container important-dates" >
+        <!--Fund Categorization-->
+        <label class="box-header">Important Dates</label>
+        <label *ngIf="couponDates.length === 0">No data found.</label>
+        <div *ngFor="let item of couponDates">
+            <div class="details-row-4">
+                <div class="details">
+                    <label class="value">{{this.epochtoFormatted(item.value_date.split('(')[1].split('+')[0].substring(0,
+                        10))}}</label>
+                    <label class="heading">Issue Date</label>
+                </div>
+                <div class="details">
+                    <label class="value" *ngIf="templateData?.length > 0">
+                         {{this.epochtoFormatted(templateData[0].FIRST_SETTLE_DT.split('(')[1].split('+')[0].substring(0,
+                        10))}}
+                        <!--*ngFor="let item of templateData" {{this.epochtoFormatted(Rule_Schedule_Details[0].Schedule_Date.split('(')[1].split('+')[0].substring(0,
+                    10))}} -->
+                    </label>
+                    <label class="heading">First Settl. Date</label>
+                </div>
+                <div class="details">
+                    <label class="value">
+                        {{this.epochtoFormatted(item.Maturity_Date.split('(')[1].split('+')[0].substring(0,
+                        10))}}
+                    </label>
+                    <label class="heading">Maturity Date</label>
+                </div>
+            </div>
+            <div class="flex-header">
+                <label class="box-header">Coupon Schedule</label>
+                <u class="link" *ngIf="!showSchedule" (click)="toggleSchedule()">View Complete Schedule</u>
+                <u class="link" *ngIf="showSchedule" (click)="toggleSchedule()">Hide Complete Schedule</u>
+            </div>
+    
+            <div class="main-milestone">
+                <div class="mile-flex">
+                    <span data-year="" data-info="First Coupon"></span>
+                    <label  *ngIf="templateData?.length > 0">{{this.epochtoFormatted(templateData[0].FIRST_CPN_DT.split('(')[1].split('+')[0].substring(0,
+                        10))}}</label>
+                    <!-- {{this.epochtoFormatted(item.Open_Date.split('(')[1].split('+')[0].substring(0, 10))}} -->
+                </div>
+                <div class="hl done"></div>
+                <div class="mile-flex">
+                    <span data-year="" data-info="Previous Coupon "></span>
+                    <label>{{this.epochtoFormatted(item.Last_Coupon_Date.split('(')[1].split('+')[0].substring(0,
+                        10))}}</label>
+                </div>
+                <div class="calculated-mile" id="calculated">
+                    <div class="hl upcoming" id="leftLine" [ngStyle]="{'width': leftLine+'px'}"></div>
+                    <div class="mile-flex ripple">
+                        <span data-year="" data-info="Today"></span>
+                        <!-- <label>{{today}}</label> -->
+                    </div>
+                    <div class="hl" id="rightLine" [ngStyle]="{'width': rightLine+'px'}"></div>
+                </div>
+                <div class="mile-flex">
+                    <span data-year="" data-info="Next Coupon"></span>
+                    <label>{{this.epochtoFormatted(item.Next_Coupon_Date.split('(')[1].split('+')[0].substring(0,
+                        10))}}</label>
+                </div>
+                <div class="hl"></div>
+                <div class="mile-flex">
+                    <span data-year="" data-info="Last Coupon"></span>
+                    <label>{{this.epochtoFormatted(item.Maturity_Date.split('(')[1].split('+')[0].substring(0,
+                        10))}}</label>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div *ngIf="!showSchedule" class="box-container yield">
+        <!--Fees & Charges-->
+        <label class="box-header">Yield</label>
+        <div class="details-row-2">
+            <div class="details">
+                <label class="value">{{data?.Coupon || '-'}}</label>
+                <label class="heading">Coupon (% p.a.)</label>
+            </div>
+            <div class="details">
+                <label class="value">{{data?.CouponFrequency || '-'}}</label>
+                <label class="heading">Coupon Frequency</label>
+            </div>
+            <div class="details">
+                <label class="value">{{data?.CouponType || '-'}}</label>
+                <label class="heading">Coupon Type</label>
+            </div>
+            <div class="details">
+                <label class="value">-</label>
+                <label class="heading">Par/Redemption Value</label>
+            </div>
+            <div class="details">
+                <label class="value">{{data.Currency}} {{data?.MinimumNominal | number:'1.2-2'|| '0.00'}}</label>
+                <label class="heading">Min. Notional</label>
+            </div>
+            <div class="details">
+                <label class="value">{{data?.DayCountConv || '-'}}</label>
+                <label class="heading">Day Count Conv.</label>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="box-container other-details">
+        <!--Other Details-->
+        <label class="box-header">Bond Categorization, Suitability, Compliance & other details</label>
+        <div class="details-row-5" style="margin-top: 10px;">
+            <div class="details">
+                <label class="value">-</label>
+                <label class="heading">Country of Risk</label>
+            </div>
+            <div class="details">
+                <label class="value">{{data?.ContingentConvertibleYN || '-'}}</label>
+                <label class="heading">Contingent Convertible</label>
+            </div>
+            <div class="details">
+                <label class="value">{{data?.DualCurrency || '-'}}</label>
+                <label class="heading">Dual Currency</label>
+            </div>
+            <div class="details">
+                <label class="value">{{data?.ExchangeableYN || '-'}}</label>
+                <label class="heading">Exchangable</label>
+            </div>
+            <div class="details">
+                <label class="value">{{data?.ExtendableYN || '-'}}</label>
+                <label class="heading">Extendable</label>
+            </div>
+            <div class="details">
+                <label class="value">{{data.Sharia_Compliance_Flag || '-'}}</label>
+                <label class="heading">Sharia Compliant</label>
+            </div>
+            <div class="details">
+                <label class="value">{{data?.ConvertibleYN || '-'}}</label>
+                <label class="heading">Convertible</label>
+            </div>
+            <div class="details">
+                <label class="value">{{data?.CallableYN || '-'}}</label>
+                <label class="heading">Callable</label>
+            </div>
+            <div class="details">
+                <label class="value">{{data?.PuttableYN || '-'}}</label>
+                <label class="heading">Putable</label>
+            </div>
+            <div class="details">
+                <label class="value">{{data?.PerpetualYN || '-'}}</label>
+                <label class="heading">Perpetual</label>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="!showSchedule" class="box-container documents">
+        <!--Factsheet-->
+        <label class="box-header">Documents</label>
+        <div class="grid-header">
+            <label></label>
+            <label>Document</label>
+            <label>View</label>
+        </div>
+        <div class="grid-data" *ngFor="let item of factsheetdata">
+            <span class="dot"></span>
+            <label>{{item.Document_Output_Path}}</label>
+            <div>
+                <app-svg-icons class="download" [icon]="'pdf'" [width]="'30'" [height]="'30'"
+                    (click)="showFile(item.DGT_ID, this.FactSheetNoteMasterID)"></app-svg-icons>
+            </div>
+        </div>
+        <div *ngIf="factsheetdata.length === 0"> <!--Added by Alolika G on 9th Feb 2022-->
+            No data found.
+        </div>
+        <!-- <div class="grid-data">
+            <span class="dot"></span>
+            <label>EURO STOXX 50 ETF.pdf</label>
+            <div>
+                <app-svg-icons class="download" [icon]="'pdf'" [width]="'15'" [height]="'15'"></app-svg-icons>
+            </div>
+        </div> -->
+    </div>
+
+    <div *ngIf="showSchedule" class="box-container coupon-schedule">
+        <label class="box-header">Complete Coupon Schedule</label>
+        <div class="timeline-row">
+            <div class="timestamp">
+                <label class="heading">1st Coupon</label>
+            </div>
+            <div class="milestone">
+            </div>
+            <div class="status-timeline">
+                <label class="value" *ngIf="templateData?.length > 0">{{this.epochtoFormatted(templateData[0].FIRST_CPN_DT.split('(')[1].split('+')[0].substring(0,
+                    10))}}</label><!--*ngFor="let item of templateData"-->
+            </div>
+            <div class="vl"></div>
+        </div>
+        <div class="timeline-row" *ngFor="let item of Rule_Schedule_Details; let i = index">
+            <div class="timestamp" *ngIf="i !== Rule_Schedule_Details.length-1 ">
+                <label class="heading">{{converter.toOrdinal(i+2)}} Coupon</label>
+            </div>
+            <div class="milestone" *ngIf="i !== Rule_Schedule_Details.length-1 ">
+            </div>
+            <div class="status-timeline" *ngIf="i !== Rule_Schedule_Details.length-1 ">
+                <label class="value">{{this.epochtoFormatted(Rule_Schedule_Details[i].Schedule_Date.split('(')[1].split('+')[0].substring(0,
+                    10))}}</label>
+            </div>
+            <div class="vl" *ngIf="i !== Rule_Schedule_Details.length-1 "></div>
+        </div>
+        <div class="timeline-row" *ngFor="let item of couponDates">
+            <div class="timestamp">
+                <label class="heading">Last Coupon</label>
+            </div>
+            <div class="milestone">
+            </div>
+            <div class="status-timeline">
+                <label class="value">{{this.epochtoFormatted(item.Maturity_Date.split('(')[1].split('+')[0].substring(0,
+                    10))}}</label>
+            </div>
+            <div class="vl"></div>
+        </div>
+        <!-- <div style="max-height: 510px; overflow-y: auto;">
+            <div class="main-milestone-vert" *ngFor="let item of Rule_Schedule_Details">
+                <div class="mile-flex-vert">
+
+                    <label>{{this.epochtoFormatted(item.Schedule_Date.split('(')[1].split('+')[0].substring(0,
+                        10))}}</label>
+                </div>
+                <div class="vlm done"></div>
+            
+            </div>
+        </div> -->
+
+    </div>
+</div>
+
+<div *ngIf="showOrderEntry" class="overlay">
+    <div class="order-entry-container page-content-container-popup">
+        <div class="recommended-products">
+            <div> <!--*ngIf="this.product === 'Fund_Setup'"-->
+                <div class="tabs tab-active">
+                    <div class="right">Bonds</div>
+                    <!-- <div class="closebtn" (click)="showOrderEntry = false">X</div> -->
+                    <app-svg-icons class="closebtn" [icon]="'cancel-icon'" [width]="'15'" [height]="'15'"
+                        (click)="showOrderEntry = false">
+                    </app-svg-icons>
+                </div>
+                <app-bonds [displaySearch]=true></app-bonds>
+            </div>
+        </div>
+    </div>
+</div>

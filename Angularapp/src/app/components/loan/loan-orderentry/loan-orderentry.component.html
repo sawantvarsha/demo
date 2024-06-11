@@ -1,0 +1,154 @@
+<div [ngClass]="{'loanComponentrmw': isUserRM === true, 'loanComponent': isUserRM === false}">
+  <div class="loanname-row" *ngIf="isUserRM===true">
+    <div class="middle">Customer</div>
+    <div class="middle">
+      <app-common-customer-search (sendCustomerDetails)="getCustomerDetails($event)"></app-common-customer-search>
+    </div>
+  </div>
+  <div class="param-cols">
+    <div class="column1">
+      <div class="loanparams-row">
+        <div class="middle">Currency</div>
+        <div class="middle">
+          <!-- <input type="text" [(ngModel)]="loanCurrency" disabled> -->
+          <select [(ngModel)]="loanCurrency" (change)="PortfolioChange()">
+            <option [value]="arr" *ngFor="let arr of currencyList;">{{arr}}
+            </option>
+          </select>
+
+        </div>
+      </div>
+
+      <div class="loanparams-row">
+        <div class="middle">Amount</div>
+        <div class="middle">
+          <input type="text" class="right" [(ngModel)]="loanAmount"
+            (change)="loanAmount = this.cfs.NotionalChange($event);" (focus)="this.cfs.UnformatNumber($event);"
+            (blur)="this.cfs.FormatNumber($event);" (keypress)="this.cfs.NotionalValidate($event);">
+        </div>
+      </div>
+
+      <div class="loanparams-row">
+        <div class="middle">Base Lending Rate</div>
+        <div class="middle">
+          <input class="right" type="text" [(ngModel)]="baseLendingRate">
+        </div>
+      </div>
+
+      <div class="loanparams-row">
+        <div class="middle">Payment Tenor</div>
+        <div class="middle">
+          <select [(ngModel)]="paymentTenor">
+            <option>Monthly</option>
+            <option>Quarterly</option>
+            <option>SemiAnnually</option>
+            <option>Annually</option>
+          </select>
+        </div>
+      </div>
+
+      <div *ngIf="this.moredetails !== 'More Details'">
+        <div class="loanparams-row">
+          <div class="middle">Account Type</div>
+          <div class="middle">
+            <!-- <input type="text" class="center" disabled="disabled" value="{{accountType}}" [(ngModel)]="accountType" /> -->
+            <select disabled [(ngModel)]="accountType" (change)="ChangeSelectedportfolio()">
+              <option *ngFor="let arr of AccountTypeList;">{{arr}}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <div class="loanparams-row">
+          <div class="middle">Portfolio</div>
+          <div class="middle">
+            <select [(ngModel)]="portfolioID" (change)="updateCustomerPortfolioDetails()">
+              <option *ngFor="let arr of portfolioList;">{{arr}}
+              </option>
+            </select>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class="column2">
+
+      <div class="loanparams-row">
+        <div class="middle">Agreement Date</div>
+        <div class="middle">
+          <input type="date" name="DOB" id="DOB" class="txt input-dob center" [attr.data-date]="agreementDate"
+            data-date-format="DD-MMM-YYYY" tabindex="16" [(ngModel)]="agreementDate" required="required"
+            (change)="selectDate(agreementDate);">
+        </div>
+      </div>
+
+      <div class="loanparams-row">
+        <div class="middle">Utilization Date</div>
+        <div class="middle">
+          <input type="text" disabled="disabled" class="center" value="{{utilizationDate}}"
+            [(ngModel)]="utilizationDate" />
+        </div>
+      </div>
+
+      <div class="loanparams-row">
+        <div class="middle">Drawdown Date</div>
+        <div class="middle">
+          <input type="text" disabled="disabled" class="center" value="{{firstDrawdownDate}}"
+            [(ngModel)]="firstDrawdownDate" />
+        </div>
+      </div>
+
+
+      <div class="loanparams-row">
+        <div class="middle">Limit</div>
+        <div class="middle">
+          <input type="text" class="right" [(ngModel)]="loanLimit"
+            (change)="loanLimit = this.cfs.NotionalChange($event);" (focus)="this.cfs.UnformatNumber($event);"
+            (blur)="this.cfs.FormatNumber($event);" (keypress)="this.cfs.NotionalValidate($event);">
+        </div>
+      </div>
+
+      <div *ngIf="this.moredetails !== 'More Details'">
+        <div class="loanparams-row">
+          <div class="middle">Account No</div>
+          <div class="middle">
+            <select [(ngModel)]="accountNumber" (change)="updateCcy()"  [disabled]="isUserRM === false">
+              <option *ngFor="let arr of accountList;">{{arr}}
+              </option>
+            </select>
+          </div>
+        </div>
+
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="loan-button-row">
+    <div></div>
+    <div class="details right">
+
+      <div class="link" (click)="moredetailsCheck()"> <u>
+          {{moredetails}}</u></div>
+      <div>
+        <button class="button  btn" [disabled]="showSubmit===false" value="Buy" tabindex="3" (click)="OrderSubmit()">Submit</button>
+      </div>
+
+    </div>
+    <div>
+      <button class="button  btn" (click)=" clearBtn('subscribe');" tabindex="4">Clear</button>
+
+    </div>
+  </div>
+
+  <div class="loan-message-row">
+    <div *ngIf="loadflag">
+      <img [src]="isProd?'assets/loading_dots.gif':'../../assets/loading_dots.gif'" height="100px" width="100px">
+    </div>
+    <div *ngIf="!loadflag">
+      {{successMsg}}
+    </div>
+  </div>
+</div>

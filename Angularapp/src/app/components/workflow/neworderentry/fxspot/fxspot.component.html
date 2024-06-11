@@ -1,0 +1,243 @@
+<!-- <p>fxspot works!</p> -->
+<!-- <div [ngClass]="{'amfComponentrmw': isUserRM === true, 'amfComponent': isUserRM === false}"> -->
+<!-- <div class="neworderentryComponent"> -->
+<div [ngClass]="{'amfComponentrmw': isUserRM === true, 'amfComponent': isUserRM === false}">
+  <!-- <div [ngClass]="{'amfComponentrmw': isUserRM === true, 'fxspotComponent': isUserRM === false}"> -->
+
+  <!-- <div class="page-title">FX Spot</div> -->
+  <!-- <div class="main-container"> -->
+  <!-- <div class="content-container"> -->
+
+  <!-- <div class="fxspotComponent"> -->
+  <div class="fundname-row" *ngIf="isUserRM">
+    <div class="middle">Customer</div>
+    <div class="middle">
+      <app-common-customer-search (sendCustomerDetails)="getCustomerDetails($event)"></app-common-customer-search>
+    </div>
+  </div>
+  <div class="fundname-row">
+  </div>
+  <!-- <div class="fundname-row" >
+        </div> -->
+  <div class="param-cols">
+    <div class="column1">
+
+      <div class="fundparams-row">
+        <div class="middle">Sell Currency</div>
+        <div class="middle">
+
+          <select [(ngModel)]="sellCurrency" (change)="setSellPortfolioAccDetails()">
+            <option *ngFor="let arr of currencyList;">{{arr}}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="fundparams-row">
+        <div class="middle">Notional</div>
+        <div class="middle">
+          <input type="text" class="right" [(ngModel)]="notional" (blur)="cfs.FormatNumber($event)"
+            (change)="notional = cfs.NotionalChange($event);" (focus)="cfs.UnformatNumber($event)"
+            (keypress)=" cfs.NotionalValidate($event)">
+
+        </div>
+      </div>
+      <div class="fundparams-row">
+        <div class="middle">Buy Currency</div>
+        <div class="middle">
+
+          <select [(ngModel)]="buyCurrency" (change)="setBuyPortfolioAccDetails()">
+            <option *ngFor="let arr of currencyList;">{{arr}}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div class="fundparams-row">
+        <div class="middle"> Trade Date </div>
+        <div class="middle">
+
+          <input type="date" name="DOB" id="DOB" class="txt input-dob center" data-date-format="DD-MMM-YYYY"
+            tabindex="16" required="required" [(ngModel)]="tradeDate" [attr.data-date]="tradeDate"
+            (change)="this.tradeDate = selectDate(tradeDate);">
+          <!-- [(ngModel)]="startDate" [attr.data-date]="startDate" (change)="selectDate(startDate);" -->
+        </div>
+      </div>
+
+      <div *ngIf="shwPortfolioDetailsFlg">
+        <div class="fund-details" style="margin-top: 20px;">
+          <div> Portfolio Details &nbsp;: :</div>
+        </div>
+        <div class="fundparams-row">
+          <div class="middle">CCY1 Portfolio</div>
+          <div class="middle">
+            <select [(ngModel)]="sellPortfolioName" (change)="fnSellPortfolioNameChange()">
+              <option *ngFor="let arr of sellPortfolioDetails;">{{arr.portfolio}}
+              </option>
+
+              <!-- <ng-template [ngIf]="!isUserRM">
+                      <option *ngFor="let arr of sellPortfolioDetails;">{{arr.portfolio}}
+                      </option>
+                    </ng-template>
+                    <ng-template [ngIf]="isUserRM">
+                      <option *ngFor="let arr of RMPortfolioDetails;">{{arr.PortfolioName}}
+                      </option>
+                    </ng-template> -->
+
+            </select>
+          </div>
+        </div>
+
+
+        <div class="fundparams-row">
+          <div class="middle">CCY1 Account Number</div>
+          <div class="middle">
+            <select [(ngModel)]="sellAccountNumber">
+              <option value={{sellAccountNumber}}>{{sellAccountNumber}}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="fundparams-row">
+          <div class="middle">CCY1 Account Type</div>
+          <div class="middle">
+            <select [(ngModel)]="sellAccountType">
+              <option value={{sellAccountType}}>{{sellAccountType}}
+              </option>
+            </select>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="column2">
+
+      <div class="fundparams-row">
+        <div class="middle">Cover Rate</div>
+        <div class="middle">
+          <input class="input-txt right" type="text" [(ngModel)]="coverRate" (change)="changeCoverRate()"
+            (focus)="cfs.UnformatNumber($event)" (blur)="cfs.FormatNumber($event)"
+            (keypress)="cfs.NotionalValidate($event)" />
+          <!-- value="{{coverRate  | number:'1.2-2'}}" -->
+          <!-- <input type="text" class="  right" disabled="disabled" (focus)="cfs.UnformatNumber($event)"
+                (blur)="cfs.FormatNumber($event)" value="{{data['AnnualFees']  | number:'1.2-2'}}"
+                (change)="nominal = cfs.NotionalChange($event);" (keypress)=" cfs.NotionalValidate($event)" /> -->
+
+        </div>
+      </div>
+      <div class="fundparams-row">
+        <div class="middle">Spread (bps)</div>
+        <div class="middle">
+          <!-- <input type="text " [(ngModel)]="spread" (change)="changeSpread()" /> -->
+          <input class="input-txt right" type="input-txt right" [(ngModel)]="spread" (change)="changeSpread()"
+            (focus)="cfs.UnformatNumber($event)" (blur)="cfs.FormatNumber($event)"
+            (keypress)="cfs.NotionalValidate($event)" />
+
+        </div>
+      </div>
+      <div class="fundparams-row">
+        <div class="middle">Spot Rate</div>
+        <div class="middle">
+          <input type="text" class="  right" [(ngModel)]="spotRate" (change)="changeSpotRate()" disabled />
+        </div>
+      </div>
+      <div class="fundparams-row">
+        <div class="middle"> Spot Date </div>
+        <div class="middle">
+          <input type="date" class="input-dob" placeholder="dd-mm-yyyy" value="" min="1997-01-01" max="2030-12-31"
+            required="required" [(ngModel)]="spotDate" data-date-format="DD-MMM-YYYY" [attr.data-date]="spotDate"
+            (change)="this.spotDate = selectDate(spotDate);">
+
+          <!-- data-date-format="DD-MMM-YYYY" -->
+          <!-- [attr.data-date]="spotDate"  -->
+          <!-- (change)="spotDate = selectDate($event,spotDate);"> -->
+          <!-- <input type="date" name="DOB" id="DOB" class="txt input-dob center" data-date-format="DD-MMM-YYYY"
+                  tabindex="16" required="required" [(ngModel)]="tradeDate" [attr.data-date]="tradeDate"> -->
+        </div>
+      </div>
+
+
+      <div *ngIf="shwPortfolioDetailsFlg">
+        <div class="fund-details" style="margin-top: 20px;">
+        </div>
+        <div class="fundparams-row">
+          <div class="middle">CCY2 Portfolio</div>
+          <div class="middle">
+            <select [(ngModel)]="buyPortfolioName" (change)="fnBuyPortfolioNameChange()">
+              <option *ngFor="let arr of buyPortfolioDetails;">{{arr.portfolio}}
+              </option>
+            </select>
+          </div>
+        </div>
+
+
+        <div class="fundparams-row">
+          <div class="middle">CCY2 Account Number</div>
+          <div class="middle">
+            <!-- <input type="text" class="right"  /> -->
+            <!-- <select [(ngModel)]="buyAccountNumber">
+                <option selected>6754295637
+                </option>
+               </select> -->
+            <select [(ngModel)]="buyAccountNumber">
+              <option value={{buyAccountNumber}}>{{buyAccountNumber}}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="fundparams-row">
+          <div class="middle">CCY2 Account Type</div>
+          <div class="middle">
+            <!-- <input type="text" class="right"  /> -->
+            <!-- <select>
+                    <option selected>Saving
+                    </option>
+                   </select> -->
+            <select [(ngModel)]="buyAccountType">
+              <option value={{buyAccountType}}>{{buyAccountType}}
+              </option>
+            </select>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+  <div class="fund-button-row">
+    <div></div>
+    <div class="details right">
+      <div class="link" (click)="setShwPortfolioDetailsFlg()">
+        <u>
+          {{"More Details"}}
+        </u>
+      </div>
+      <div>
+        <button class="button  btn" value="Buy" (click)="submitValidation()">Submit</button>
+      </div>
+    </div>
+    <div>
+      <button class="button  btn" (click)="clear()">Clear</button>
+    </div>
+  </div>
+  <div class="fund-message-row">
+    <div>
+    </div>
+    <div>
+      {{successMsg}}{{errorMsg}}
+    </div>
+  </div>
+
+  <!-- <div class="fund-message-row">
+    <div *ngIf="loadflag">
+      <img [src]="isProd?'assets/loading_dots.gif':'../../assets/loading_dots.gif'" height="100px" width="100px">
+    </div>
+    <div *ngIf="!loadflag">
+      {{successMsg}}
+    </div>
+  </div>
+-->
+  <!-- </div> -->
+  <!-- </div> -->
+  <!-- </div> -->
+</div>

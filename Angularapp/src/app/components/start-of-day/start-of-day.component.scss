@@ -1,0 +1,570 @@
+$assetURL :'../../../';
+* {
+    box-sizing: border-box;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    // grid-template-columns: 1fr;
+    // grid-template-rows: 0.5fr auto auto 8fr;
+    gap: 21px 0px;
+    // grid-auto-flow: row;
+    // grid-template-areas: "innergrid" "filterDiv" "tiles" "contentDiv";
+    height: Calc(100vh - 60px);
+    padding: var(--20);
+    max-width: 100%;
+    overflow: auto;
+}
+
+.pageHeader {
+    color: var(--headers);
+    font-size: 30px !important;
+    font-family: var(--font-family) !important;
+    margin-top: 0px;
+    font-weight: 500;
+}
+
+.tiles {
+    grid-area: tiles;
+    display: flex;
+    // flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 1.5%;
+    align-items: center;
+    height: auto;
+    // margin: 0px 80px;
+    max-width: 2000px;
+}
+.contentDiv {
+    grid-area: contentDiv;
+    display: flex;
+    justify-content:flex-start;
+    gap: 1.5%;
+    // flex-wrap: wrap;
+    height: min-content;
+    // margin: 0px 80px;
+    max-width: 2000px;
+}
+.hdrStartDay {
+    width: 18.75rem;
+    font-size: 2rem;
+    font-family: sans-serif;
+}
+
+.logindiv {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    gap: 10px;
+    width: 16rem;
+}
+
+.ddlLogin{
+    width: 13rem;
+}
+.tile {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 4fr 6fr;
+    gap: 0px 0px;
+    grid-auto-flow: row;
+    grid-template-areas:
+        "Card"
+        "briefInfo";
+    width: 32.33%;
+    height: 180px;
+    border-radius: 5px;
+    padding: 5px;
+    border-bottom: 4px solid transparent;
+    opacity: 0.8;
+}
+
+.tile.current{
+    border-bottom: 4px solid #ffffff73;
+    opacity: 1;
+}
+
+#tile-1{
+    background-image: url($assetURL +'assets/Red Background.png');
+    background-size: cover;
+}
+
+#tile-2{
+    background-image: url($assetURL +'assets/Green Background.png');
+    background-size: cover;
+}
+
+#tile-3{
+    background-image: url($assetURL +'assets/Blue Background.png');
+    background-size: cover;
+}
+
+.Card { 
+    grid-area: Card;
+    display: flex;
+    align-items: center;
+    margin: 5px 5px 0px 5px;
+}
+
+.CardIcon{
+    width: 20%;
+}
+
+// .imgCard{
+//     width: 50px;
+//     height: 50px;
+// }
+
+.CardTitle{
+    width: 80%;
+    font-size: 24px;
+    color: #f7f7f7;
+}
+
+.ipPercentage{
+    background: #ffffff26 !important;
+    border: 1px solid #ffffff6e !important;
+    width: 40px;
+    border-radius: 0px !important;
+    height: 25px;
+    color: white !important;
+    padding: 0 !important;
+    font-size: 24px;
+    text-align: center;
+}
+
+.briefInfo { 
+    grid-area: briefInfo;
+    display: flex;
+    align-items: end;
+    margin: 0px 15px 5px 15px;
+}
+.noOfProducts{
+    width: 40%;
+    font-size: 20px;
+    color: #f7f7f7;
+}
+
+.noOfProducts > p:first-child, .NotionalAmt > p:first-child {
+    font-size: 26px;
+}
+
+.NotionalAmt {
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    font-size: 20px;
+    color: #f7f7f7;
+}
+
+
+.Notionalpayoff {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--border);
+    width: 35%;
+    min-width: 27.5rem;
+    height: 570px;
+}
+
+.hdrNotionalPayoff{
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 10%;
+    padding-left: 10px;
+    font-size: 24px;
+    color: var(--btn-bg);
+}
+
+.pieChart{
+    width: 100%;
+    height: 90%;
+}
+
+.prodDetails {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1.5fr 13fr;
+    grid-auto-flow: row;
+    grid-template-areas:
+    "hdrProductDetails"
+    "tblProdDetails";
+    width: 63.5%;
+    // max-width: 70.93rem;
+    // min-width: 33.12rem;
+    height: 570px;
+    border: 1px solid var(--border);
+}
+
+.hdrProductDetails { 
+    grid-area: hdrProductDetails;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-left: 10px;
+    color: var(--btn-bg);
+    font-size: 24px;
+}
+
+.tblInfo {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+}
+
+.ProdDetailsTitle{
+    opacity: 0.65;
+}
+
+.exportToExcel{
+    margin: 0px 15px 0px 0px;
+}
+
+.tblhdrProdDetails { 
+    grid-area: tblhdrProdDetails;
+    display: flex;
+}
+
+.hdrProduct{
+    width: 40% !important;
+    border-left: 2px solid var(--main-bg-color);
+}
+
+.hdrExternalId{
+    width: 8%;
+}
+
+.hdrPayOff{
+    width: 8%;
+}
+
+.hdrCurrency{
+    width: 7%;
+}
+
+.hdrNotional{
+    width: 10%;
+}
+
+.spnNotional{
+    padding-left: 25px;
+}
+
+.sort-svg-icon{
+    float: right;
+    margin: 4px 0px 0px;
+}
+
+.tblProdDetails {
+    grid-area: tblProdDetails;
+    height: 100%;
+    overflow: auto;
+    // padding-right: 10px;
+}
+
+.tblProduct, .tblPayOff{
+    width: 95% !important;
+    padding-top: 6px !important;
+    text-overflow: ellipsis;
+    white-space: nowrap !important;
+    display: inline-block;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.tblProduct{
+    margin-left: 0px !important;
+}
+
+.tblExternalId{
+    text-align: right;
+}
+
+.tblCurrCode {
+    width: 8%;
+}
+
+.tblCurrFlag {
+    width: 5%;
+}
+
+.flagImg{
+    width: 25px;
+}
+
+table {
+    table-layout: fixed;
+}
+
+.tblProdDetails > table th, .tblProdDetails > table td {
+    padding: 0px 10px;
+    border-bottom: none !important;
+    white-space: break-spaces;
+}
+
+.tblProdDetails > table > thead > tr:first-child {
+    text-align: left;
+    position: sticky;
+    top: 0;
+    background-color: var(--main-bg-color);
+    border-bottom: none !important;
+}
+
+.tblProdDetails > table > tbody > tr td:last-child{
+    text-align: right !important;
+}
+
+
+th{
+    text-align: center;
+    border-right: 2px solid var(--main-bg-color);
+    padding: 0px 5px 0px 10px !important;
+}
+
+tr{
+    height: 32px !important;
+}
+
+td{
+    margin: 0px 10px !important;
+}
+
+
+.tblProdDetails::-webkit-scrollbar {
+    width: 10px;
+    border-radius: 50px;
+}
+
+.tblProdDetails::-webkit-scrollbar-track {
+    border-radius: 50px;
+}
+   
+
+.innergrid > div:first-child {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.productHeaderhr {
+    margin: 8px 0px 18px 0px;
+}
+
+.pageOverlay {
+    z-index: 75;
+    position: fixed;
+    background-color:rgb(149 149 149 / 35%);
+    backdrop-filter: opacity(0.5);
+    height: Calc(100vh - 60px);
+    width: Calc(100vw - 60px);
+    margin-left: -11px;
+}
+
+.loader-center { 
+    width: 100%;
+    height: 100%;
+    place-items: center;
+}
+
+.multi-ripple {
+    width: 5.6rem;
+    height: 5.6rem;
+    left: 50%;
+    top: 50%;
+    position: fixed;
+    transform: translate(-50%, -50%);
+    z-index: 100;
+}
+
+.filterDiv {
+    // margin-bottom: 5px;
+    margin-top: -18px;
+    // margin: -18px 80px 0px;
+    border: 1px solid var(--tbl-audtitrail-border);
+    padding: 18px;
+    border-radius: 5px;
+}
+
+.filterMainDiv {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
+.labelRowContainer{
+    display: flex;
+    gap: 1em;
+}
+
+.filterTH {
+    border-bottom: unset !important;
+}
+
+.alignLeft {
+    text-align: left;
+}
+
+.labelDivWidth {
+    width: 120px;
+}
+
+.labelFilerBlock {
+    display: flex;
+    flex-direction: column;
+}
+
+.link {
+    cursor: pointer;
+}
+
+.eachRowFilter {
+    line-height: 17px;
+    margin-right: 0.5em !important;
+    font-size: 13px;
+}
+
+.clientFilterDiv {
+    display: flex;
+    gap: 1em;
+    flex-wrap: wrap;
+}
+
+.filterIputs {
+    //width:100px !important;
+    width: 130px !important;
+}
+@media screen and (min-width: 800px) and (max-width: 1199px) {
+    .tiles, .contentDiv {
+        margin: 0;
+    }
+    .ipPercentage, .CardTitle {
+        font-size: 18px;
+    }
+    .noOfProducts, .NotionalAmt{
+        font-size: 14px;
+    }
+    .CardIcon > img {
+        width: 40px;
+        height: 40px;
+    }
+    .tile{
+        height: 150px;
+    }
+    .Notionalpayoff{
+        min-width: 16.5rem !important;
+    }
+    .hdrProduct{
+        width: 15% !important;
+    }
+    .hdrExternalId{
+        width: 12% !important;
+    }
+    .hdrPayOff{
+        width: 8% !important;
+    }
+    .hdrCurrency{
+        width: 10% !important;
+    }
+    .spnNotional{
+        padding-left: 0px !important;
+    }
+    .back-button{
+        width: 12px !important;
+        height: 12px !important;
+    }
+    th{
+        padding: 0px 5px !important;
+    }
+}
+
+@media screen and (min-width: 1200px) and (max-width: 1439px) {
+    .tiles, .contentDiv {
+        margin: 0;
+    }
+    .ipPercentage, .CardTitle {
+        font-size: 22px;
+    }
+    .noOfProducts, .NotionalAmt{
+        font-size: 16px;
+    }
+    .CardIcon > img {
+        width: 50px;
+        height: 50px;
+    }
+    .tile{
+        height: 150px;
+    }
+    .Notionalpayoff{
+        min-width: 25rem !important;
+        height: 500px !important;
+    }
+    .prodDetails{
+        height: 500px !important;
+    }
+    .hdrProduct{
+        width: 18% !important;
+    }
+    .hdrExternalId{
+        width: 11% !important;
+    }
+    .hdrPayOff{
+        width: 10% !important;
+    }
+    .hdrCurrency{
+        width: 10% !important;
+    }
+    .hdrNotional{
+        width: 13% !important;
+    }
+    .spnNotional{
+        padding-left: 10px !important;
+    }
+    .back-button{
+        width: 13px !important;
+        height: 13px !important;
+    }
+    th{
+        padding: 0px 5px !important;
+    }
+}
+
+@media screen and (min-width: 1440px) and (max-width: 1600px) {
+    .hdrProduct{
+        width: 45% !important;
+    }
+    .hdrExternalId{
+        width: 13% !important;
+        padding-left: 5px !important;
+    }
+    .hdrPayOff{
+        width: 12% !important;
+    }
+    .hdrCurrency{
+        width: 12% !important;
+    }
+    .hdrNotional{
+        width: 15% !important;
+    }
+    .spnNotional{
+        padding-left: 10px;
+    }
+}
+
+@media screen and (min-width: 1600px) and (max-width: 1777px) {
+    .hdrProduct{
+        width: 32% !important;
+    }
+    .hdrExternalId{
+        width: 9% !important;
+    }
+    .hdrNotional{
+        width: 8% !important;
+    }
+    .spnNotional{
+        padding-left: 10px;
+    }
+}

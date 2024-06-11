@@ -1,0 +1,157 @@
+<div class="row  info blotter-data" *ngIf="extraData" style="background-color: white;">
+    <div class="col-1" style="text-align: center ; flex: 0 0 3%">
+        <input style="height: 14px;width: 14px;" type="checkbox" name="DeleteCheck" [(ngModel)]="ToggleCancelCheckBox" (change)="toggleEditable($event)" [disabled]="IsValidToDelete">
+    </div>
+    <div class="col-2">
+        <div class="row">
+            <div class="col-12">
+                <label class=" greylabel" style="text-align: left;">FinIQ Ref No</label>
+            </div>
+            <div class="col-12">
+                <label class=" bluelabel" style="text-align: left;">{{this.orderid}}</label>
+            </div>
+        </div>
+        <div class="row" style="height: 70px;">
+
+        </div>
+    </div>
+    <div class="col-2">
+        <div class="row" style="height: 70px;">
+            <div class="col-12">
+                <label class=" greylabel" style="text-align: left;">Expiry Type</label>
+            </div>
+            <div class="col-12">
+                <label class=" bluelabel" style="text-align: left;">{{extraData.ordervalidity_type}}</label>
+            </div>
+        </div>
+        <div class="row" style="height: 70px;">
+            <div class="col-12">
+                <label class=" greylabel" style="text-align: left;">Transaction Date and Time:</label></div>
+            <div class="col-12">
+                <label class=" bluelabel" style="text-align: left;" *ngIf="blotterData.Order_Date">{{formatDate(TransDate)}}
+          {{blotterData.OrderTime}}</label>
+            </div>
+        </div>
+    </div>
+    <div class="col-1">
+        <div class="row" style="height: 70px;">
+            <div class="col-12">
+                <label class=" greylabel" style="text-align: left;">Order Direction</label>
+            </div>
+            <div class="col-12">
+                <label class=" bluelabel" style="text-align: left;">{{blotterData.Direction}}</label>
+            </div>
+        </div>
+        <div class="row" style="height: 70px;">
+            <div class="col-12">
+                <label class=" greylabel" style="text-align: left;">Bank RM</label>
+            </div>
+            <div class="col-12">
+                <label class=" bluelabel" style="text-align: left;" *ngIf="extraData.RM_Name">{{extraData.RM_Name}}</label>
+            </div>
+        </div>
+    </div>
+    <div class="col-1">
+        <div class="row " style="height: 70px;">
+            <div class="col-12">
+                <label class=" greylabel" style="text-align: left;">Ccy Pair</label>
+            </div>
+            <div class="col-12">
+                <label class=" bluelabel" style="text-align: left;">{{blotterData.Ccy_Pair}}</label>
+            </div>
+        </div>
+        <div class="row" style="height: 70px;">
+            <div class="col-12">
+                <label class=" greylabel" style="text-align: left;">From Acc</label>
+            </div>
+            <div class="col-12">
+                <label class=" bluelabel" style="text-align: left;">{{billingAcc}}</label>
+            </div>
+        </div>
+    </div>
+    <div class="col-1">
+        <div class="row " style="height: 70px;">
+            <div class="col-12">
+                <label class=" greylabel" style="text-align: left;">Rate</label>
+            </div>
+            <div class="col-12">
+                <label class="bluelabel" style="text-align: left;" *ngIf="blotterData.Order_Rate">{{formatNumber(blotterData.Order_Rate, precision) }}</label>
+            </div>
+        </div>
+        <div class="row" style="height: 70px;">
+        </div>
+    </div>
+    <div class="col-1" style=" flex: 0 0 10%;padding: 0;">
+        <div class="row" style="height: 70px;">
+            <div class="col-12" style="padding: 0;">
+                <label class=" greylabel" style="text-align: left;">Billing Amt</label>
+            </div>
+            <div class="col-12" style="padding: 0;">
+                <label class=" bluelabel" style="text-align: left;" *ngIf="blotterData.ccy1 && extraData.Amount1 && (blotterData.Direction !== 'Buy')">{{blotterData.ccy1}}
+          {{formatNumber(extraData.Amount1, Asset1Decimal)}}</label>
+                <label class=" bluelabel" style="text-align: left;" *ngIf="blotterData.ccy2 && extraData.Amount1 && (blotterData.Direction === 'Buy')">{{blotterData.ccy2}}
+          {{formatNumber(extraData.Amount2, Asset2Decimal)}}</label>
+            </div>
+        </div>
+        <div class="row" style="height: 70px;">
+            <div class="col-12" style="padding: 0;">
+                <label class=" greylabel" style="text-align: left;">To Acc</label>
+            </div>
+            <div class="col-12" style="padding: 0;">
+                <label class=" bluelabel" style="text-align: left;">{{creditAcc}}</label>
+            </div>
+        </div>
+    </div>
+    <div class="col-2" style="Padding-left: 2em;padding-right: 0;">
+        <div class="row" style="height: 70px;">
+            <div class="col-12">
+                <label class=" greylabel" style="text-align: left;">Credit Amt</label>
+            </div>
+            <div class="col-12">
+                <label class="bluelabel" style="text-align: left;" *ngIf="blotterData.ccy2 && extraData.Amount2 && (blotterData.Direction !== 'Buy')">{{blotterData.ccy2}}
+        {{formatNumber(extraData.Amount2, Asset2Decimal)}}</label>
+
+                <label class="bluelabel" style="text-align: left;" *ngIf="blotterData.ccy2 && extraData.Amount2 && (blotterData.Direction === 'Buy')">{{blotterData.ccy1}}
+        {{formatNumber(extraData.Amount1, Asset1Decimal)}}</label>
+            </div>
+        </div>
+        <div class="row" style="height: 70px;">
+            <div class="col-12">
+                <label class=" greylabel" style="text-align: left;">Expiry Date and Time</label>
+            </div>
+            <div class="col-12">
+                <label class=" bluelabel" style="text-align: left;">{{formatDateTimeHours(blotterData.ExpiryAt)}}</label>
+            </div>
+        </div>
+    </div>
+    <div class="col-1">
+        <div class="row col-1 action-buttons-alignment">
+            <!-- <button *ngIf="amendOrderButton && !cancelled" class="Submitbtn btnimg" style="padding: 5px 20px;"
+        (click)="amendOrderButton = false;">Amend</button>
+      <button *ngIf="cancelOrderButton && !cancelled" class="Submitbtn btnimg" style="padding: 5px 20px;"
+        (click)="CancelOrder(); cancelOrderButton = false;amendOrderButton= false;expireOrderButton= false;">Cancel</button>
+      <button *ngIf="expireOrderButton && !cancelled" class="Submitbtn btnimg" style="padding: 5px 20px;"
+        (click)="expireOrderButton = false;">Expire</button>-->
+
+            <!-- <button *ngIf="amendOrderButton && !cancelled && !expired " class="Submitbtn btnimg" style="padding: 5px 20px;" (click)="this.OrderAction('Amend');this.gotoOrderData('limitorder', 'Amend',orderid,blotterData) ;amendOrderButton = false;">Amend</button> -->
+            <button *ngIf="amendOrderButton && !cancelled && !expired && !LoadingDots" class=" btnimg button rowButtons" style="padding: 5px 20px;" (click)="AmendOrder();gotoLimitOrderDealEntryPage('limitorder');">Amend</button>
+            <button *ngIf="cancelOrderButton && !cancelled && !expired && !LoadingDots" class=" btnimg button rowButtons" style="padding: 5px 20px;margin-top: 5px;" (click)="CancelOrder();">Cancel</button>
+            <!-- <button *ngIf="expireOrderButton && !cancelled && !expired && !LoadingDots" class=" btnimg rowButtons"
+        style="padding: 5px 22px;margin-top: 3px;" (click)="ExpireOrder(); expireOrderButton = false;">Expire</button> -->
+            <!-- <div *ngIf="!cancelOrderButton && !cancelled && !noActions" class="confirm-container">
+            <label class="bluelabel">Confirm</label>
+            <div class="confirm-button-container">
+                <button class="Submitbtn btnimg" (click)="CancelOrder();cancelOrderButton = true;">Yes</button>
+                <button class="Submitbtn btnimg" (click)="cancelOrderButton = true;">No</button>
+            </div>
+        </div> -->
+            <!-- <button *ngIf="!confirmCancelOrder && cancelled"  class="Submitbtn-disabled btnimg" style="padding: 5px 20px;"
+        (click)="confirmCancelOrder = true;">Cancelled</button> -->
+            <label *ngIf="!confirmCancelOrder && cancelled" class="redlabel">Cancelled</label>
+            <label *ngIf="!expireOrderButton && expired" class="yellowlabel">Expired</label>
+            <label *ngIf="noActions" class="greylabel">{{orderStatus | titlecase}}</label>
+            <img *ngIf="LoadingDots" src="{{assetURL}}/loading_dots.gif " width="60px" height="60px " style="position: absolute; top: 50%; transform: translateY(-50%);">
+        </div>
+    </div>
+
+</div>

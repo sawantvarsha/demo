@@ -1,0 +1,23 @@
+.chart-legend {
+    display: grid;
+    font-size: 13px;
+    justify-content: left;
+    padding: 0px 50px;
+}
+
+.inline-flex {
+    display: inline-flex;
+    align-items: center;
+    margin: 3px 5px;
+    gap: 5px;
+}
+
+.legend-box {
+    height: 12px;
+    width: 12px;
+    margin-right: 3px;
+}
+
+.legend-text {
+    color: var(--text);
+}

@@ -1,0 +1,2528 @@
+ <!-- change on 09 Jan 2023 -->
+<div class="page-navigation">
+    <app-svg-icons class="back-button" [icon]="'back-button'" [width]="'30'" [height]="'30'" [fill]="'var(--headers)'"></app-svg-icons>
+    <div  class="page-title">{{pageTitle}}</div>
+</div>
+<div class="row" style="padding: 0em !important;margin-right: 0px;margin-left: 15px;">
+
+    <div class="headerDiv" style="margin-top:20px">
+        <!-- Added on 09 Jan 2023 -->
+        <div></div>
+        <div style="margin: 10px auto; display: flex; align-items: center; gap: 2%;">  <!-- Changes made for FIN1EURINT-383 : to show refresh/reload button || Kaustubh S || 05-Jun-2023 -->
+            <div style="margin:10px auto;text-align: center;" (clickOutside)="clickoutsideSearchPopup()">
+                <div class="searchInnerDiv">
+                    <img class="search-icon" src="{{asseturl}}search.png">
+
+                    <!-- <svg focusable="false" height="24px" viewBox="0 0 24 24" width="24px" style=" margin-left: 5px;"><path d="M20.49,19l-5.73-5.73C15.53,12.2,16,10.91,16,9.5C16,5.91,13.09,3,9.5,3S3,5.91,3,9.5C3,13.09,5.91,16,9.5,16 c1.41,0,2.7-0.47,3.77-1.24L19,20.49L20.49,19z M5,9.5C5,7.01,7.01,5,9.5,5S14,7.01,14,9.5S11.99,14,9.5,14S5,11.99,5,9.5z"></path><path d="M0,0h24v24H0V0z" fill="none"></path></svg> -->
+                    <input [(ngModel)]="search" type="text" placeholder="Search" name="search"
+                        class="txtSearch searchText" (click)="this.classApplied = false;" (keydown.enter)="txtSearch()"
+                        style="border:none !important">
+                        <!-- Bottom border removed by AdilP @30-03-2023 -->
+                    <svg style="margin-top:3px;cursor: pointer;" (click)="showsearchPopup()" focusable="false"
+                        height="24px" viewBox="0 0 24 24" width="24px">
+                        <path d="M7 10l5 5 5-5z" fill="var(--text)"></path>
+                        <path d="M0 0h24v24H0z" fill="none"></path>
+                    </svg>
+
+                </div>
+
+                <div id="searchPopup" *ngIf="classApplied" [ngClass]="'rmwSearchPopup'">
+                    <div class="searchPopupDiv1">
+                        <div>
+                            <div class="searchDivLeft bottomPadding">Product</div>
+                            <select [(ngModel)]="template" (change)="templateChange();">
+                                <option value="">All</option>
+                                <!-- <option value="ACC">Accumulator</option>
+                                <option value="EQC_Europe">Autocallable</option>
+                                <option value="AutocallablePhoenix">Autocallable Phoenix</option>
+                                <option value="CreditTranche">CreditTranche</option>
+                                <option value="DAC">Decumulator</option>
+                                <option value="Participation">Participation</option>
+                                <option value="ReverseConvertible">Reverse Convertible</option> -->
+                                <!-- <ng-template ngFor let-i="index" let-payoff [ngForOf]="this.api.payOffList"> -->
+                                <ng-template ngFor let-i="index" let-payoff [ngForOf]="this.payOffListSorted">
+                                    <option value="{{payoff.auditTProductType}}" class="ng-star-inserted"
+                                        *ngIf="payoff.display">{{payoff.displayName}}</option>
+                                </ng-template>
+                            </select>
+                        </div>
+                        <div>
+                            <div class="searchDivLeft bottomPadding">Product Name</div>
+                            <input type="text" name="productfilter" id="productfilter" [(ngModel)]="productfilter"
+                                style="margin-top: 2px;">
+
+                        </div>
+                        <div>
+                            <div class="searchDivLeft bottomPadding">Currency</div>
+                            <select [(ngModel)]="ddlNoteCcy">
+                                <option value="All">All</option>
+                                <option *ngFor="let c of CCY" (selected)="c === UnderlyingCurrency" [value]="c.Ccy">
+                                    {{ c.Ccy }}</option>
+                            </select>
+                        </div>
+                        <!-- <input type="text" name="publicList" id="publicList" [(ngModel)]="publicList"> -->
+                        <!-- <div>
+                            <div class="searchDivLeft">Public List</div>
+                            
+                            <select [(ngModel)]="publicList" (change)="listChange()"
+                                [disabled]="publicFlag || popupFlag">
+                                <option value="">All</option>
+                                <option *ngFor="let f of publicListArr" [value]="f.PF_Folder_Name">
+                                    {{ f.PF_Folder_Name }}</option>
+                            </select>
+                        </div> -->
+                        <div>
+                            <div class="searchDivLeft bottomPadding">Folder</div>
+                            <!-- <input type="text" name="privateList" id="privateList" [(ngModel)]="privateList"> -->
+                            <select [(ngModel)]="privateList" (change)="listChange()"
+                                [disabled]="privateFlag || popupFlag">
+								<!-- Changed by AdilP @19-04-2023 -->
+                                <option value="">All</option>
+                                <option *ngFor="let f of folderlist1" [value]="f">
+                                    {{ f }}</option>
+                            </select>
+                        </div>
+                        <div>
+                            <div class="searchDivLeft bottomPadding">ISIN</div>
+                            <input type="text" name="filterISIN" id="filterISIN" [(ngModel)]="filterISIN" 
+                                style="margin-top: 1.5px;">
+                        </div>
+
+                        <div>
+                            <div class="searchDivLeft bottomPadding">Issuer</div>
+                            <input type="text" name="filterIssuer" id="filterIssuer" [(ngModel)]="filterIssuer">
+                        </div>
+
+                        <div>
+                            <div class="searchDivLeft bottomPadding">Close From</div>
+                            <!-- changed by Amogh K | 5/4/2022 | datetime controller ui changes -->
+                            <div>
+                                <app-custom-datetime-field [format]="'date'" [width]="13" [(ngModel)]="maturityFrom"
+                                    [maxDate]="maturityTo"></app-custom-datetime-field>
+                            </div>
+                            <!--<input type="date" name="maturityFrom" id="maturityFrom" [(ngModel)]="maturityFrom"
+                                [max]="maturityTo">-->
+                        </div>
+
+                        <div>
+                            <div class="searchDivLeft bottomPadding">Close To</div>
+                            <!-- changed by Amogh K | 5/4/2022 | datetime controller ui changes -->
+                            <div>
+                                <app-custom-datetime-field [format]="'date'" width="13" [(ngModel)]="maturityTo">
+                                </app-custom-datetime-field>
+                            </div>
+                            <!--<input type="date" name="maturityTo" id="maturityTo" [(ngModel)]="maturityTo">-->
+                        </div>
+
+                        <div style="text-align:left;">
+                            <div class="searchDivLeft bottomPadding">Pool Type</div>
+                            <select [(ngModel)]="poolType" id="ddlPool">
+                                <option value="">All</option>
+                                <option value="Open Pool">Open for Subscription</option>
+                                <option value="Close Pool">Close for Subscription</option>
+                            </select>
+                        </div>
+                        <div style="text-align:left;" class="checkbox-div">
+                            <!-- <div class="searchDivLeft"></div> -->
+                            <input type="checkbox" id="likeChk" name="likeChk" [(ngModel)]="likeChk">&nbsp;
+                            <label for="likeChk">
+                                My Likes
+                            </label>
+                        </div>
+                        <!-- <div style="text-align:left;">
+
+                        </div>
+                        <div style="text-align:left;">
+
+                        </div> -->
+                        <div style="text-align:right;">
+                            <!-- <input type="button" class="button" (click)="applyFilter();hidefilter();" value="Apply"> --> <!-- Changes made for FIN1EURINT-383 : to show refresh/reload button || Kaustubh S || 05-Jun-2023 -->
+                        </div>
+                        <div style="text-align:right;">
+                            <!-- <input type="button" class="button" (click)="Clear()" value="Clear"> --> <!-- Changes made for FIN1EURINT-383 : to show refresh/reload button || Kaustubh S || 05-Jun-2023 -->
+                            <input type="button" class="button" (click)="applyFilter();hidefilter();" value="Apply">
+                        </div>
+                    </div>
+
+
+                </div>
+
+            </div>
+            <!-- Changes made for FIN1EURINT-383 : to show refresh/reload button || Kaustubh S || 05-Jun-2023 || START -->
+            <span class="refreshIcon">
+                <app-svg-icons [icon]="'reload-icon'" [width]="'15'" [height]="'15'" (click)="Clear()">
+                </app-svg-icons>
+            </span>
+            <!-- Changes made for FIN1EURINT-383 : to show refresh/reload button || Kaustubh S || 05-Jun-2023 || END -->
+        </div>
+        <div style="margin: 10px auto;">
+            <!-- <mat-paginator (page)="onPageChange($event)" [pageIndex]="pageIndex" [length]="totalcount"
+                [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 25, 100]">
+            </mat-paginator> -->
+            <div class="pagination-wrapper">
+                <div class="custom-pagination">
+                    <div class="flex">
+                        <span style="padding-top: 5px;">Items per page</span>
+                        <select style="text-align: center; border: none" class="pagination-select_Euroconnect" [ngModel]="pageSize"
+                            (change)="onPageChange({'pageNo':pageIndex,'pageSize':$event.target.value,'reload':true, 'length':totalcount})">
+                            <option *ngFor="let option of [5, 10, 25, 100]"  style="text-align: start;">
+							<!--Added by Adil P || 21-Mar-2023 -->
+                                {{option}}
+                            </option>
+                        </select>
+                    </div>
+                    <div>
+                        {{totalcount!== 0? this.pageStart+1 : 0 }}-{{totalcount !== 0 ? this.pageEnd :0 }} of {{totalcount}} 
+                        <!-- Pagination changed by Jyoti S || 14-Apr-2023  -->
+                    </div>
+                    <div>
+                        <!-- Vaibhav B | 02-03-2023 --> <!-- Added by AdilP | 11-04-2023 -->
+                        <!-- <img class="arrow-img" src="{{asseturl}}arrow-down.png" style="transform: rotate(90deg); cursor: pointer;"
+                            [ngClass]="{'btn-disabled':pageIndex==0}"
+                            (click)="pageStart!=0 ? onPageChange({'pageNo':pageIndex-1,'pageSize':pageSize,'reload':false, 'length':totalcount}):''"> -->
+                        <app-svg-icons class="arrow-img left-arrow" [ngClass]="{'btn-disabled':pageIndex==0}"
+                            (click)="pageStart!=0 ? onPageChange({'pageNo':pageIndex-1,'pageSize':pageSize,'reload':false, 'length':totalcount}):''"
+                            [icon]="'arrow-left'" [width]="'15'" [height]="'15'"
+                            [fill]="'var(--btn-border)'"></app-svg-icons>
+                    </div>
+                    <div>
+                        <!-- <img class="arrow-img" src="{{asseturl}}arrow-down.png" style="transform: rotate(270deg); cursor: pointer;"
+                            [ngClass]="{'btn-disabled':pageEnd == totalcount}"
+                            (click)="pageEnd-1 !== totalcount ?onPageChange({'pageNo':pageIndex+1,'pageSize':pageSize, 'reload':false,'length':totalcount}):''"> -->
+                        <app-svg-icons class="arrow-img left-arrow" [ngClass]="{'btn-disabled':pageEnd == totalcount}"
+                            (click)="pageEnd-1 !== totalcount ?onPageChange({'pageNo':pageIndex+1,'pageSize':pageSize, 'reload':false,'length':totalcount}):''"
+                            [icon]="'arrow'" [width]="'15'" [height]="'15'"
+                            [fill]="'var(--btn-border)'"></app-svg-icons>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<!-- Added by Rohit T. -->
+<div>{{currentItemsToShow && currentItemsToShow.length > 0 ? '' : 'No records found'}}</div>
+<!-- {{currentItemsToShow ? '' : 'No records found'}} -->
+
+<ng-template ngFor let-i="index" let-d [ngForOf]="currentItemsToShow">
+    <!-- Color code changed by AdilP for Workbench @21-03-2023 || Start-->
+    <div style="margin-left: 15px;" *ngIf="d.Template_Code === 'AutocallablePhoenix' || d.Template_Code === 'ReverseConvertible' 
+|| d.Template_Code === 'Participation' || d.Template_Code === 'CreditTranche' || d.Template_Code === 'ACC' || d.Template_Code === 'DAC'
+|| d.Template_Code === 'EQC_Europe' || d.Template_Code === 'YieldEnhancement'">
+        <div class="templateDiv" *ngIf="d.Template_Code === 'AutocallablePhoenix'">Autocall</div>
+        <div class="templateDiv" *ngIf="d.Template_Code === 'ReverseConvertible'" style="background-color:var(--lbl-reverseConvertible);">
+            Reverse Convertible</div>
+        <div class="templateDiv" *ngIf="d.Template_Code === 'Participation'" style="background-color:var(--lbl-participation);">
+            Participation</div>
+        <div class="templateDiv" *ngIf="d.Template_Code === 'CreditTranche'" style="background-color:var(--lbl-creditTranche);">Credit
+            Tranche
+        </div>
+        <div class="templateDiv" *ngIf="d.Template_Code === 'ACC'" style="background-color:var(--lbl-ACC);">Accumulator
+        </div>
+        <div class="templateDiv" *ngIf="d.Template_Code === 'DAC'" style="background-color:var(--lbl-DAC);">Decumulator
+        </div>
+        <div class="templateDiv" *ngIf="d.Template_Code === 'EQC_Europe'" style="background-color:var(--lbl-EQC);">Autocallable
+        </div>
+        <div class="templateDiv" *ngIf="d.Template_Code === 'YieldEnhancement'" style="background-color:var(--lbl-YE);">Yield
+            Enhancement
+        </div>
+        <!-- Color code changed by AdilP for Workbench @21-03-2023 || End-->
+        <div class="product-box">
+            <!-- AutocallablePhoenix -->
+            <div class="product-grid-layout" *ngIf="d.Template_Code === 'AutocallablePhoenix'">
+                <div class="product-summary">
+                    <div class="rmw-product-name">
+                        {{d.Product_Name}}
+                    </div>
+                    <div class="rmw-summary">
+                        <label *ngIf="d.Exotic_Misc6 !== ''">Summary</label>
+                        <p>{{d.Exotic_Misc6}}</p>
+                    </div>
+
+                    <div class="extras-wrapper">
+                        <span class="like-wrapper" (click)="likeProduct(d.Note_Master_ID,d.LikeValue)">
+                            <img class="like-img" [src]="getLikeImage(d.LikeValue)" />
+                            <!-- <span class="like-text">{{d.LikeValue === '0' ? 'Like' : 'Unlike'}}</span> -->
+                            <span class="like-text">Like</span>
+                        </span>
+						<!-- Img path changed by AdilP for Workbench @12-04-2023 || End-->
+                        <span class="attachment-wrapper" *ngIf="d.TermsheetRequestYN === 'Y'"
+                            (click)="ViewDoc(d.EP_ER_QuoteRequestId, d.Issuer, 'IndicativeTermsheet')">
+                            <img class="attachment-img"
+                                [src]="isProd? './assets/termsheet.png' : './../../assets/termsheet.png'" />
+                            <span class="attachment-text">View Termsheet</span>
+                        </span>
+                        <span class="attachment-wrapper" *ngIf="d.KIDRequestYN === 'Y'"
+                            (click)="ViewDoc(d.EP_ER_QuoteRequestId, d.Issuer)">
+                            <img class="attachment-img"
+                                [src]="isProd? './assets/termsheet.png' : './../../assets/termsheet.png'" />
+                            <span class="attachment-text">View KID</span>
+                        </span>
+                        <span class="attachment-wrapper"
+                            (click)="showFolderPopup(d.Note_Master_ID,d.ProductFoldersCSV)">
+                            <img class="attachment-img"
+                                [src]="isProd? './assets/folder.png' : './../../assets/folder.png'" />
+                            <span class="attachment-text">Folder</span>
+                        </span>
+                        <!-- <span class="attachment-wrapper" (click)="fillAttachmentPopup(d.Note_Master_ID)">
+                        <img class="attachment-img"
+                            [src]="isProd? './assets/attach.png' : './../../assets/attach.png'" />
+                        <span class="attachment-text">Attachment</span>
+                    </span> -->
+
+                        <!-- <span class="attachment-wrapper"
+                        [routerLink]="['/PreviousQuotesNew',{RFQ_ID:d.EP_ER_QuoteRequestId,Template_Code:d.Template_Code,RedirectedFrom:'RMW',Mode:'Launch Product'}]"
+                        routerLinkActive="active-link" > -->
+                        <span class="attachment-wrapper" (click)="showMoreDetails(d)">
+                            <img class="attachment-img"
+                                [src]="isProd? './assets/moredetails.png' : './../../assets/moredetails.png'" />
+                            <span class="attachment-text">More Details</span>
+                        </span>
+                        <span class="attachment-wrapper"
+                            (click)="showViewOrderPopup(d.Template_Code,d.Note_Master_ID,d)">
+                            <img class="attachment-img"
+                                [src]="isProd? './assets/cart.png' : './../../assets/cart.png'" />
+                            <span class="attachment-text">View Orders</span>
+                        </span>
+                        <!-- <span class="attachment-wrapper" [routerLink]="['/BackTest',{NoteMasterID:d.Note_Master_ID}]"
+                        routerLinkActive="active-link"> -->
+                        <!-- <span class="attachment-wrapper" 
+                        (click)="showBackTest(d)">
+                          <img class="attachment-img"
+                            [src]="isProd? './assets/backtest.png' : './../../assets/backtest.png'" />
+                        <span class="attachment-text">Backtest</span>
+                    </span> -->
+                        <!-- <span class="attachment-wrapper" 
+                        (click)="showBackTest(d)">
+                          <img class="attachment-img"
+                            [src]="isProd? './assets/backtest.png' : './../../assets/backtest.png'" />
+                        <span class="attachment-text">Backtest</span>
+                    </span> -->
+                        <!-- Added By ApurvaK for viewAttachment|16 Nov 2021| start -->
+                        <span class="attachment-wrapper" (click)="ViewAttachment(d)">
+                            <img class="attachment-img"
+                                [src]="isProd? './assets/backtest.png' : './../../assets/attach.png'" />
+                            <span class="attachment-text">View Attachment</span>
+                        </span>
+
+                        <!-- <span class="attachment-wrapper" (click)="showLifecycle(d)" *ngIf="d.Exotic_Misc5 === 'Hedged'">
+                            <img class="attachment-img"
+                                [src]="isProd? './assets/backtest.png' : './../../assets/backtest.png'" />
+                            <span class="attachment-text">Lifecycle</span>
+                        </span> -->
+
+                    </div>
+
+                    <div class="overlay" *ngIf="showAttahmentflag">
+                        <div class="attachments-popup-container">
+                            <!-- <div class="attachments-popup-title-bar">
+                            <div class="attachments-popup-title">Attachments</div>
+                            <div class="attachments-popup-close" (click)="closeLaunchProduct()">
+                                <img class="attachments-popup-close-img" src="{{asseturl}}close.png" />
+                            </div>
+                        </div> -->
+                            <div class="attachment-files-wrapper"
+                                *ngFor="let fileName of ViewAttachmentRes;let i = index">
+                                <div class="attachment-file">
+                                    <a class="attachment-file-link" target="_blank"
+                                        (click)="downloadAttachment(i)">{{fileName.DocumentName}}</a>
+                                </div>
+                            </div>
+                            <!-- <div class="attachment-files-wrapper">
+                            <div class="attachment-file">
+                                <a class="attachment-file-link" target="_blank"
+                                    (click)="downloadAttachment()">{{attachmentName}}</a>
+                            </div>
+                        </div> -->
+                        </div>
+                    </div>
+                </div>
+                <div class="product-info">
+                    <div>
+                        <label class="heading-rmw">Issuer: </label><label class="value">{{d.PPCode}}</label>
+                    </div>
+                    <div>
+                        <label class="heading-rmw">Currency: </label><label class="value">{{d.CurrencyAUP}}</label>
+                    </div>
+                    <div>
+                        <label class="heading-rmw">PRR: </label><label class="value">3</label>
+                    </div>
+                    <div>
+                        <label class="heading-rmw">Tenor: </label><label class="value">{{d.TenorAUP}}</label>
+                    </div>
+                    <div>
+                        <label class="heading-rmw">Issue Date: </label>
+                        <label class="value">{{cfs.formatSlashDate(d.ComputedStrikeDateTextAUP)}}</label>
+                    </div>
+                    <div>
+                        <label class="heading-rmw">Maturity Date: </label>
+                        <!-- <label class="value">{{cfs.formatSlashDate(d.ComputedTenorValue)}}</label> -->
+                        <label class="value">{{d.ER_MaturityDate | date:'dd-MMM-yyyy'}}</label>
+                    </div>
+                    <div>
+                        <label class="heading-rmw">Min Order Size: </label>
+                        <label class="value">{{d.minordersize | number:'1.2-2'}}</label>
+                    </div>
+                    <div>
+                        <label class="heading-rmw">Denomination: </label>
+                        <label class="value">{{d.denomination | number:'1.2-2'}}</label>
+                    </div>
+                </div>
+                <div class="product-moreinfo">
+                    <div class="rmw-summary">
+                        <label>Autocall</label>
+                        <p>{{d.StaticERCouponTypeAUP}} coupon with an autocall trigger at {{d.AutocallTriggerAUP}}%
+                            being
+                            observed every {{d.StaticKOFrequencyAUP}}
+                            <span *ngIf="d.InputKOStepdownAUP !== ''"> with a stepdown of
+                                {{d.InputKOStepdownAUP}}%</span><br />
+                            <span
+                                *ngIf="d.InputKOStepdownAUP !== '' && d.InputKOStepdownAUP !== '0.00'">{{d.AutocallCouponAUP}}%</span>
+                            <span *ngIf="d.InputKOStepdownAUP === '' || d.InputKOStepdownAUP === '0.00'"> No</span>
+                            Autocall
+                            Coupon
+                            <span
+                                *ngIf="d.ComputedAlternateCouponPercentAUP !== '' && d.ComputedAlternateCouponPercentAUP !== '0.00'">
+                                and {{d.ComputedAlternateCouponPercentAUP}}%</span>
+                            <span
+                                *ngIf="d.ComputedAlternateCouponPercentAUP === '' || d.ComputedAlternateCouponPercentAUP === '0.00'">
+                                and No</span> Alternate Coupon.
+                        </p>
+                    </div>
+                    <div class="rmw-summary">
+                        <label>Coupon</label>
+                        <p>
+                            <span *ngIf="d.StaticCouponType === 'No Coupon' || d.StaticCouponType === ''">No
+                                Coupon.</span>
+                            <span *ngIf="d.StaticCouponType === 'Standard'">
+                                {{d.CouponAUP}}% p.a. to be paid every {{d.InputFixedCouponFrequencyPeriod}} with a
+                                {{d.CouponTriggerAUP}}% coupon barrier.
+                            </span>
+                            <span *ngIf="d.StaticCouponType === 'Partial Memory'">
+                                {{d.CouponAUP}}% p.a. to be paid every {{d.InputFixedCouponFrequencyPeriod}} with a
+                                {{d.CouponTriggerAUP}}% coupon barrier and a memory of {{d.MemoryPeriodAUP}} periods.
+                            </span>
+                            <span *ngIf="d.StaticCouponType === 'Total Memory'">
+                                {{d.CouponAUP}}% p.a. to be paid every {{d.InputFixedCouponFrequencyPeriod}} with a
+                                {{d.CouponTriggerAUP}}% coupon barrier and total memory.
+                            </span>
+                            <span *ngIf="d.StaticCouponType === 'Fixed Coupon'">
+                                {{d.CouponAUP}}% p.a. to be paid every {{d.InputFixedCouponFrequencyPeriod}}.
+                            </span>
+                        </p>
+                    </div>
+                    <div class="rmw-summary">
+                        <label>Barrier</label>
+                        <p>
+                            Strike at {{d.StrikeAUP}}% and
+                            <span *ngIf="d.BarrierLevelAUP === '' || d.BarrierLevelAUP === '0.00'">no barrier.</span>
+                            <span
+                                *ngIf="d.BarrierLevelAUP !== '' && d.BarrierLevelAUP !== '0.00'">{{d.BarrierLevelAUP}}%
+                                barrier level to be observed
+                                <span *ngIf="d.StaticKIBarrierType !== 'Continuous'">{{d.StaticKIBarrierType}} .</span>
+                                <span *ngIf="d.StaticKIBarrierType === 'Continuous'">Continuously .</span>
+                            </span>
+                        </p>
+                    </div>
+                </div>
+                <div class="product-button">
+                    <div class="progressGrid">
+                        <div>
+                            <label>Total Orders</label><br>
+                            <label class="value">{{d.TotalDeals | number}}</label>
+                        </div>
+                        <div style="text-align: right;">
+                            <label>Max Pool Size</label><br>
+                            <label class="value">{{d.Maximum_Issue_Size | number}}</label>
+                        </div>
+                    </div>
+
+                    <div class="progress progressDiv">
+                        <fieldset class="progress-bar bg-success" role="progressbar"
+                            [style.width]="d.PercentageFilled+'%'" [attr.aria-valuenow]="d.PercentageFilled"
+                            aria-valuemin="0" aria-valuemax="100" [attr.disabled]="d.Exotic_Misc5 === 'Close Pool'">
+                        </fieldset>
+                        <!-- {{d.PercentageFilled}}% -->
+                    </div>
+                    <div class="subscription">
+                        <app-svg-icons [icon]="'clock-timer-icon'" [width]="'40'" [height]="'40'" [fill]="'var(--active)'" *ngIf="d.Exotic_Misc5 !== 'Close Pool'"></app-svg-icons>
+                        <!-- <div class="subscription-icon" *ngIf="d.Exotic_Misc5 !== 'Close Pool'"></div> -->
+                        <label class="heading-rmw" *ngIf="d.Exotic_Misc5 !== 'Close Pool'">Subscription Deadline</label>
+                        <label class="value" *ngIf="d.Exotic_Misc5 !== 'Close Pool'">{{d.Close_Date |
+                            date:'dd-MMM-yyyy'}}</label>
+                        <!-- <label class="value">22-Mar-2021 10:00:00 AM</label>  -->
+                        <label class="heading-rmw disabledlbl" *ngIf="d.Exotic_Misc5 === 'Close Pool'"
+                            style="font-size: 18px !important;">Closed for Subscription</label>
+                    </div>
+                    <div class="buttonsClass">
+                        <button class="button launch" (click)="showOrderPopup(d)"
+                            [disabled]="d.Exotic_Misc5 === 'Close Pool' || d.disabledSubscribeBtn">Subscribe</button>
+                        <!-- <button class="button cancel">More Details</button> -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- ReverseConvertible -->
+            <div class="product-grid-layout" *ngIf="d.Template_Code === 'ReverseConvertible'">
+                <div class="product-summary">
+                    <div class="rmw-product-name">
+                        {{d.Product_Name}}
+
+                    </div>
+                    <div class="rmw-summary">
+                        <label *ngIf="d.Exotic_Misc6 !== ''">Summary</label>
+                        <p>{{d.Exotic_Misc6}}</p>
+                    </div>
+                    <div class="extras-wrapper">
+                        <span class="like-wrapper" (click)="likeProduct(d.Note_Master_ID,d.LikeValue)">
+                            <img class="like-img" [src]="getLikeImage(d.LikeValue)" />
+                            <!-- <span class="like-text">{{d.LikeValue === '0' ? 'Like' : 'Unlike'}}</span> -->
+                            <span class="like-text">Like</span>
+                        </span>
+                        <span class="attachment-wrapper" *ngIf="d.TermsheetRequestYN === 'Y'"
+                            (click)="ViewDoc(d.EP_ER_QuoteRequestId, d.PPCode, 'IndicativeTermsheet')">
+                            <img class="attachment-img"
+                                [src]="isProd? './assets/termsheet.png' : './../../assets/termsheet.png'" />
+                            <span class="attachment-text">View Termsheet</span>
+                        </span>
+                        <span class="attachment-wrapper" *ngIf="d.KIDRequestYN === 'Y'"
+                            (click)="ViewDoc(d.EP_ER_QuoteRequestId, d.PPCode, 'KID')">
+                            <img class="attachment-img"
+                                [src]="isProd? './assets/termsheet.png' : './../../assets/termsheet.png'" />
+                            <span class="attachment-text">View KID</span>
+                        </span>
+                        <span class="attachment-wrapper"
+                            (click)="showFolderPopup(d.Note_Master_ID,d.ProductFoldersCSV)">
+                            <img class="attachment-img"
+                                [src]="isProd? './assets/folder.png' : './../../assets/folder.png'" />
+                            <span class="attachment-text">Folder</span>
+                        </span>
+                        <!-- <span class="attachment-wrapper" (click)="fillAttachmentPopup(d.Note_Master_ID)">
+                        <img class="attachment-img"
+                            [src]="isProd? './assets/attach.png' : './../../assets/attach.png'" />
+                        <span class="attachment-text">Attachment</span>
+                    </span> -->
+                        <!-- <span class="attachment-wrapper"
+                        [routerLink]="['/PreviousQuotesNew',{RFQ_ID:d.EP_ER_QuoteRequestId,Template_Code:d.Template_Code,RedirectedFrom:'RMW',Mode:'Launch Product'}]"
+                        routerLinkActive="active-link"> -->
+                        <span class="attachment-wrapper" (click)="showMoreDetails(d)">
+                            <img class="attachment-img"
+                                [src]="isProd? './assets/moredetails.png' : './../../assets/moredetails.png'" />
+                            <span class="attachment-text">More Details</span>
+                        </span>
+                        <span class="attachment-wrapper"
+                            (click)="showViewOrderPopup(d.Template_Code,d.Note_Master_ID,d)">
+                            <img class="attachment-img"
+                                [src]="isProd? './assets/cart.png' : './../../assets/cart.png'" />
+                            <span class="attachment-text">View Orders</span>
+                        </span>
+                        <!-- <span class="attachment-wrapper" [routerLink]="['/BackTest',{NoteMasterID:d.Note_Master_ID}]"
+                        routerLinkActive="active-link">
+                        <img class="attachment-img"
+                            [src]="isProd? './assets/backtest.png' : './../../assets/backtest.png'" />
+                        <span class="attachment-text">Backtest</span>
+                    </span> -->
+                        <!-- <span class="attachment-wrapper" 
+                        (click)="showBackTest(d)">
+                          <img class="attachment-img"
+                            [src]="isProd? './assets/backtest.png' : './../../assets/backtest.png'" />
+                        <span class="attachment-text">Backtest</span>
+                    </span> -->
+                        <!-- Added by ApurvaK for View Attachment| 22 Nov 2021 |start -->
+                        <span class="attachment-wrapper" (click)="ViewAttachment(d)">
+                            <img class="attachment-img"
+                                [src]="isProd? './assets/backtest.png' : './../../assets/attach.png'" />
+                            <span class="attachment-text">View Attachment</span>
+                        </span>
+                        <!-- Added by ApurvaK for View Attachment| 22 Nov 2021 |end -->
+
+
+                        <!-- <span class="attachment-wrapper" (click)="showLifecycle(d)" *ngIf="d.Exotic_Misc5 === 'Hedged'">
+                            <img class="attachment-img"
+                                [src]="isProd? './assets/backtest.png' : './../../assets/backtest.png'" />
+                            <span class="attachment-text">Lifecycle</span>
+                        </span> -->
+
+
+                    </div>
+                    <!-- Added by ApurvaK for View Attachment| 22 Nov 2021 |start -->
+                    <div class="overlay" *ngIf="showAttahmentflag">
+                        <div class="attachments-popup-container">
+                            <div class="attachments-popup-title-bar">
+                                <div class="attachments-popup-title">Attachments</div>
+                                <div class="attachments-popup-close" (click)="closeLaunchProduct()">
+                                    <img class="attachments-popup-close-img" src="{{asseturl}}close.png" />
+                                </div>
+                            </div>
+                            <div class="attachment-files-wrapper"
+                                *ngFor="let fileName of ViewAttachmentRes;let i = index">
+                                <div class="attachment-file">
+                                    <a class="attachment-file-link" target="_blank"
+                                        (click)="downloadAttachment(i)">{{fileName.DocumentName}}</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Added by ApurvaK for View Attachment| 22 Nov 2021 |end -->
+                </div>
+                <div class="product-info">
+                    <div>
+                        <label class="heading-rmw">Issuer: </label><label class="value">{{d.PPCode}}</label>
+                    </div>
+                    <div>
+                        <label class="heading-rmw">Currency: </label><label
+                            class="value">{{d.InputSettlementCurrencyRC}}</label>
+                    </div>
+                    <div>
+                        <label class="heading-rmw">PRR: </label><label class="value">3</label>
+                    </div>
+                    <div>
+                        <label class="heading-rmw">Tenor: </label><label
+                            class="value">{{d.ComputedPayoffSoftTenorRC}}</label>
+                    </div>
+                    <div>
+                        <label class="heading-rmw">Issue Date: </label><label
+                            class="value">{{cfs.formatSlashDate(d.StrikeDateRC)}}</label>
+                    </div>
+                    <div>
+                        <label class="heading-rmw">Maturity Date: </label>
+                        <!-- <label class="value">{{cfs.formatSlashDate(d.ComputedTenorValueRC)}}</label> -->
+                        <label class="value">{{d.ER_MaturityDate | date:'dd-MMM-yyyy'}}</label>
+                    </div>
+                    <div>
+                        <label class="heading-rmw">Min Order Size: </label>
+                        <label class="value">{{d.minordersize | number:'1.2-2'}}</label>
+                    </div>
+                    <div>
+                        <label class="heading-rmw">Denomination: </label>
+                        <label class="value">{{d.denomination | number:'1.2-2'}}</label>
+                    </div>
+                </div>
+                <div class="product-moreinfo">
+                    <div class="rmw-summary">
+                        <label>Coupon</label>
+                        <p>
+                            <span *ngIf="d.CouponTypeRC === 'No Coupon' || d.CouponTypeRC === ''">No Coupon.</span>
+                            <span *ngIf="d.CouponTypeRC === 'Standard'">
+                                {{d.CouponRC}}% p.a. to be paid every {{d.InputFixedCouponFrequencyPeriod}} with a
+                                {{d.CouponTriggerRC}}% coupon barrier.
+                            </span>
+                            <span *ngIf="d.CouponTypeRC === 'Partial Memory'">
+                                {{d.CouponRC}}% p.a. to be paid every {{d.InputFixedCouponFrequencyPeriod}} with a
+                                {{d.CouponTriggerRC}}% coupon barrier and a memory of {{d.MemoryPeriodRC}} periods.
+                            </span>
+                            <span *ngIf="d.CouponTypeRC === 'Total Memory'">
+                                {{d.CouponRC}}% p.a. to be paid every {{d.InputFixedCouponFrequencyPeriod}} with a
+                                {{d.CouponTriggerRC}}% coupon barrier and total memory.
+                            </span>
+                            <span *ngIf="d.CouponTypeRC === 'Fixed Coupon'">
+                                {{d.CouponRC}}% p.a. to be paid every {{d.InputFixedCouponFrequencyPeriod}}.
+                            </span>
+                        </p>
+                    </div>
+                    <div class="rmw-summary">
+                        <label>Barrier</label>
+                        <p>
+                            Strike at {{d.StrikeRC}}% and
+                            <span *ngIf="d.BarrierLevelRC === '' || d.BarrierLevelRC === '0.00'">no barrier.</span>
+                            <!-- <span *ngIf="d.BarrierLevelRC !== '' && d.BarrierLevelRC !== '0.00'">{{d.BarrierLevelRC}}% barrier level to be observed at expiry/daily/continuously.</span> -->
+                            <span *ngIf="d.BarrierLevelRC !== '' && d.BarrierLevelRC !== '0.00'">{{d.BarrierLevelRC}}%
+                                barrier level to be observed at
+                                <span *ngIf="d.StaticKIBarrierTypeRC !== 'Continuous'">{{d.StaticKIBarrierTypeRC}}
+                                    .</span>
+                                <span *ngIf="d.StaticKIBarrierTypeRC === 'Continuous'">Continuously .</span>
+                            </span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="product-button">
+                    <div class="progressGrid">
+                        <div>
+                            <label>Total Orders</label><br>
+                            <label class="value">{{d.TotalDeals | number}}</label>
+                        </div>
+                        <div style="text-align: right;">
+                            <label>Max Pool Size</label><br>
+                            <label class="value">{{d.Maximum_Issue_Size | number}}</label>
+                        </div>
+                    </div>
+
+                    <div class="progress progressDiv">
+                        <fieldset class="progress-bar bg-success" role="progressbar"
+                            [style.width]="d.PercentageFilled+'%'" [attr.aria-valuenow]="d.PercentageFilled"
+                            aria-valuemin="0" aria-valuemax="100" [attr.disabled]="d.Exotic_Misc5 === 'Close Pool'">
+                        </fieldset>
+                        <!-- {{d.PercentageFilled}}% -->
+                    </div>
+
+
+                    <br />
+                    <div class="subscription">
+                        <app-svg-icons [icon]="'clock-timer-icon'" [width]="'40'" [height]="'40'" [fill]="'var(--active)'" *ngIf="d.Exotic_Misc5 !== 'Close Pool'"></app-svg-icons>
+                        <!-- <div class="subscription-icon" *ngIf="d.Exotic_Misc5 !== 'Close Pool'"></div> -->
+                        <label class="heading-rmw" *ngIf="d.Exotic_Misc5 !== 'Close Pool'">Subscription Deadline</label>
+                        <label class="value" *ngIf="d.Exotic_Misc5 !== 'Close Pool'">{{d.Close_Date |
+                            date:'dd-MMM-yyyy'}}</label>
+                        <!-- <label class="value">22-Mar-2021 10:00:00 AM</label>  -->
+                        <label class="heading-rmw disabledlbl" *ngIf="d.Exotic_Misc5 === 'Close Pool'"
+                            style="font-size: 18px !important;">Closed for Subscription</label>
+                    </div>
+                    <div class="buttonsClass">
+                        <button class="button launch" (click)="showOrderPopup(d)"
+                            [disabled]="d.Exotic_Misc5 === 'Close Pool' || d.disabledSubscribeBtn">Subscribe</button>
+                        <!-- <button class="button cancel">More Details</button> -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Participation -->
+            <div class="product-grid-layout" *ngIf="d.Template_Code === 'Participation'">
+                <div class="product-summary">
+                    <div class="rmw-product-name">
+                        {{d.Product_Name}}
+
+                    </div>
+                    <div class="rmw-summary">
+                        <label *ngIf="d.Exotic_Misc6 !== ''">Summary</label>
+                        <p>{{d.Exotic_Misc6}}</p>
+                    </div>
+                    <div class="extras-wrapper">
+                        <span class="like-wrapper" (click)="likeProduct(d.Note_Master_ID,d.LikeValue)">
+                            <img class="like-img" [src]="getLikeImage(d.LikeValue)" />
+                            <!-- <span class="like-text">{{d.LikeValue === '0' ? 'Like' : 'Unlike'}}</span> -->
+                            <span class="like-text">Like</span>
+                        </span>
+                        <span class="attachment-wrapper" *ngIf="d.TermsheetRequestYN === 'Y'"
+                            (click)="ViewDoc(d.EP_ER_QuoteRequestId, d.PPCode, 'IndicativeTermsheet')">
+                            <img class="attachment-img"
+                                [src]="isProd? './assets/termsheet.png' : './../../assets/termsheet.png'" />
+                            <span class="attachment-text">View Termsheet</span>
+                        </span>
+                        <span class="attachment-wrapper" *ngIf="d.KIDRequestYN === 'Y'"
+                            (click)="ViewDoc(d.EP_ER_QuoteRequestId, d.PPCode, 'KID')">
+                            <img class="attachment-img"
+                                [src]="isProd? './assets/termsheet.png' : './../../assets/termsheet.png'" />
+                            <span class="attachment-text">View KID</span>
+                        </span>
+                        <span class="attachment-wrapper"
+                            (click)="showFolderPopup(d.Note_Master_ID,d.ProductFoldersCSV)">
+                            <img class="attachment-img"
+                                [src]="isProd? './assets/folder.png' : './../../assets/folder.png'" />
+                            <span class="attachment-text">Folder</span>
+                        </span>
+                        <!-- <span class="attachment-wrapper" (click)="fillAttachmentPopup(d.Note_Master_ID)">
+                        <img class="attachment-img"
+                            [src]="isProd? './assets/attach.png' : './../../assets/attach.png'" />
+                        <span class="attachment-text">Attachment</span>
+                    </span> -->
+                        <!-- <span class="attachment-wrapper"
+                        [routerLink]="['/PreviousQuotesNew',{RFQ_ID:d.EP_ER_QuoteRequestId,Template_Code:d.Template_Code,RedirectedFrom:'RMW',Mode:'Launch Product'}]"
+                        routerLinkActive="active-link"> -->
+                        <span class="attachment-wrapper" (click)="showMoreDetails(d)">
+                            <img class="attachment-img"
+                                [src]="isProd? './assets/moredetails.png' : './../../assets/moredetails.png'" />
+                            <span class="attachment-text">More Details</span>
+                        </span>
+                        <span class="attachment-wrapper"
+                            (click)="showViewOrderPopup(d.Template_Code,d.Note_Master_ID,d)">
+                            <img class="attachment-img"
+                                [src]="isProd? './assets/cart.png' : './../../assets/cart.png'" />
+                            <span class="attachment-text">View Orders</span>
+                        </span>
+                        <!-- <span class="attachment-wrapper" [routerLink]="['/BackTest',{NoteMasterID:d.Note_Master_ID}]"
+                        routerLinkActive="active-link">
+                        <img class="attachment-img"
+                            [src]="isProd? './assets/backtest.png' : './../../assets/backtest.png'" />
+                        <span class="attachment-text">Backtest</span>
+                    </span> -->
+                        <!-- <span class="attachment-wrapper" 
+                        (click)="showBackTest(d)">
+                          <img class="attachment-img"
+                            [src]="isProd? './assets/backtest.png' : './../../assets/backtest.png'" />
+                        <span class="attachment-text">Backtest</span>
+                    </span> -->
+                        <!-- Added by ApurvaK for View Attachment| 22 Nov 2021 |start -->
+                        <span class="attachment-wrapper" (click)="ViewAttachment(d)">
+                            <img class="attachment-img"
+                                [src]="isProd? './assets/backtest.png' : './../../assets/attach.png'" />
+                            <span class="attachment-text">View Attachment</span>
+                        </span>
+                        <!-- Added by ApurvaK for View Attachment| 22 Nov 2021 |end -->
+
+
+                        <!-- <span class="attachment-wrapper" (click)="showLifecycle(d)" *ngIf="d.Exotic_Misc5 === 'Hedged'">
+                            <img class="attachment-img"
+                                [src]="isProd? './assets/backtest.png' : './../../assets/backtest.png'" />
+                            <span class="attachment-text">Lifecycle</span>
+                        </span> -->
+
+                    </div>
+                    <!-- Added by ApurvaK for View Attachment| 22 Nov 2021 |start -->
+                    <div class="overlay" *ngIf="showAttahmentflag">
+                        <div class="attachments-popup-container">
+                            <div class="attachments-popup-title-bar">
+                                <div class="attachments-popup-title">Attachments</div>
+                                <div class="attachments-popup-close" (click)="closeLaunchProduct()">
+                                    <img class="attachments-popup-close-img" src="{{asseturl}}close.png" />
+                                </div>
+                            </div>
+                            <div class="attachment-files-wrapper"
+                                *ngFor="let fileName of ViewAttachmentRes;let i = index">
+                                <div class="attachment-file">
+                                    <a class="attachment-file-link" target="_blank"
+                                        (click)="downloadAttachment(i)">{{fileName.DocumentName}}</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Added by ApurvaK for View Attachment| 22 Nov 2021 |end -->
+                </div>
+                <div class="product-info">
+                    <div>
+                        <label class="heading-rmw">Issuer: </label><label class="value">{{d.PPCode}}</label>
+                    </div>
+                    <div>
+                        <label class="heading-rmw">Currency: </label><label
+                            class="value">{{d.InputSettlementCurrency}}</label>
+                    </div>
+                    <div>
+                        <label class="heading-rmw">PRR: </label><label class="value">3</label>
+                    </div>
+                    <div>
+                        <label class="heading-rmw">Tenor: </label><label
+                            class="value">{{d.ComputedPayoffSoftTenor}}</label>
+                    </div>
+                    <div>
+                        <label class="heading-rmw">Issue Date: </label><label
+                            class="value">{{cfs.formatSlashDate(d.ComputedStrikeDateText)}}</label>
+                    </div>
+                    <div>
+                        <label class="heading-rmw">Maturity Date: </label>
+                        <!-- <label class="value">{{cfs.formatSlashDate(d.ComputedTenorValuePPN)}}</label> -->
+                        <label class="value">{{d.ER_MaturityDate | date:'dd-MMM-yyyy'}}</label>
+                    </div>
+                    <div>
+                        <label class="heading-rmw">Min Order Size: </label>
+                        <label class="value">{{d.minordersize | number:'1.2-2'}}</label>
+                    </div>
+                    <div>
+                        <label class="heading-rmw">Denomination: </label>
+                        <label class="value">{{d.denomination | number:'1.2-2'}}</label>
+                    </div>
+                </div>
+                <div class="product-moreinfo">
+                    <div class="rmw-summary">
+                        <label>Product</label>
+                        <p>{{d.InputProductVariation}}</p>
+                    </div>
+                    <div class="rmw-summary">
+                        <label>Upside</label>
+                        <p>
+                            <span
+                                *ngIf="d.UpsideParticipationCapPercent === null || d.UpsideParticipationCapPercent === '' || d.UpsideParticipationCapPercent === '0.00'">
+                                Strike at {{d.InputStrikePercent}}%
+                                <span *ngIf="d.InputMinimumCouponPercentPA !== ''"> with a min coupon of
+                                    {{d.InputMinimumCouponPercentPA}}% p.a.</span>
+                                <span
+                                    *ngIf="d.InitialInputKOBarrierPercent !== '' && d.InitialInputKOBarrierPercent !== '0.00'">
+                                    up and out barrier at {{d.InitialInputKOBarrierPercent}}%</span>
+                            </span>
+                            <span
+                                *ngIf="d.UpsideParticipationCapPercent !== null && d.UpsideParticipationCapPercent !== '' && d.UpsideParticipationCapPercent !== '0.00'">
+                                Call Spread with a strike at {{d.InputStrikePercent}}% and upper strike at
+                                {{d.UpsideParticipationCapPercent}}% with {{d.UpsideParticipationPercent}}% gearing.
+                            </span>
+                        </p>
+                    </div>
+                    <div class="rmw-summary">
+                        <label>Downside</label>
+                        <p>
+                            Downside strike at {{d.InputDownsideStrikePercent}}% and {{d.DownsideParticipationPercent}}%
+                            leverage.
+                        </p>
+                    </div>
+                </div>
+                <div class="product-button">
+                    <div class="progressGrid">
+                        <div>
+                            <label>Total Orders</label><br>
+                            <label class="value">{{d.TotalDeals | number}}</label>
+                        </div>
+                        <div style="text-align: right;">
+                            <label>Max Pool Size</label><br>
+                            <label class="value">{{d.Maximum_Issue_Size | number}}</label>
+                        </div>
+                    </div>
+
+                    <div class="progress progressDiv">
+                        <fieldset class="progress-bar bg-success" role="progressbar"
+                            [style.width]="d.PercentageFilled+'%'" [attr.aria-valuenow]="d.PercentageFilled"
+                            aria-valuemin="0" aria-valuemax="100" [attr.disabled]="d.Exotic_Misc5 === 'Close Pool'">
+                        </fieldset>
+                        <!-- {{d.PercentageFilled}}% -->
+                    </div>
+
+
+                    <br />
+                    <div class="subscription">
+                        <app-svg-icons [icon]="'clock-timer-icon'" [width]="'40'" [height]="'40'" [fill]="'var(--active)'" *ngIf="d.Exotic_Misc5 !== 'Close Pool'"></app-svg-icons>
+                        <!-- <div class="subscription-icon" *ngIf="d.Exotic_Misc5 !== 'Close Pool'"></div> -->
+                        <label class="heading-rmw" *ngIf="d.Exotic_Misc5 !== 'Close Pool'">Subscription Deadline</label>
+                        <label class="value" *ngIf="d.Exotic_Misc5 !== 'Close Pool'">{{d.Close_Date |
+                            date:'dd-MMM-yyyy'}}</label>
+                        <!-- <label class="value">22-Mar-2021 10:00:00 AM</label>  -->
+                        <label class="heading-rmw disabledlbl" *ngIf="d.Exotic_Misc5 === 'Close Pool'"
+                            style="font-size: 18px !important;">Closed for Subscription</label>
+                    </div>
+                    <div class="buttonsClass">
+                        <button class="button launch" (click)="showOrderPopup(d)"
+                            [disabled]="d.Exotic_Misc5 === 'Close Pool' || d.disabledSubscribeBtn">Subscribe</button>
+                        <!-- <button class="button cancel">More Details</button> -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- CreditTranche -->
+            <div class="product-grid-layout" *ngIf="d.Template_Code === 'CreditTranche'">
+                <div class="product-summary">
+                    <div class="rmw-product-name">
+                        {{d.Product_Name}}
+                    </div>
+                    <div class="rmw-summary">
+                        <label *ngIf="d.Exotic_Misc6 !== ''">Summary</label>
+                        <p>{{d.Exotic_Misc6}}</p>
+                    </div>
+                    <div class="extras-wrapper">
+                        <span class="like-wrapper" (click)="likeProduct(d.Note_Master_ID,d.LikeValue)">
+                            <img class="like-img" [src]="getLikeImage(d.LikeValue)" />
+                            <!-- <span class="like-text">{{d.LikeValue === '0' ? 'Like' : 'Unlike'}}</span> -->
+                            <span class="like-text">Like</span>
+                        </span>
+                        <span class="attachment-wrapper" *ngIf="d.TermsheetRequestYN === 'Y'"
+                            (click)="ViewDoc(d.EP_ER_QuoteRequestId, d.PPCode, 'IndicativeTermsheet')">
+                            <img class="attachment-img"
+                                [src]="isProd? './assets/termsheet.png' : './../../assets/termsheet.png'" />
+                            <span class="attachment-text">View Termsheet</span>
+                        </span>
+                        <span class="attachment-wrapper" *ngIf="d.KIDRequestYN === 'Y'"
+                            (click)="ViewDoc(d.EP_ER_QuoteRequestId, d.PPCode, 'KID')">
+                            <img class="attachment-img"
+                                [src]="isProd? './assets/termsheet.png' : './../../assets/termsheet.png'" />
+                            <span class="attachment-text">View KID</span>
+                        </span>
+                        <span class="attachment-wrapper"
+                            (click)="showFolderPopup(d.Note_Master_ID,d.ProductFoldersCSV)">
+                            <img class="attachment-img"
+                                [src]="isProd? './assets/folder.png' : './../../assets/folder.png'" />
+                            <span class="attachment-text">Folder</span>
+                        </span>
+                        <!-- <span class="attachment-wrapper" (click)="fillAttachmentPopup(d.Note_Master_ID)">
+                        <img class="attachment-img"
+                            [src]="isProd? './assets/attach.png' : './../../assets/attach.png'" />
+                        <span class="attachment-text">Attachment</span>
+                    </span> -->
+                        <!-- <span class="attachment-wrapper"
+                        [routerLink]="['/PreviousQuotesNew',{RFQ_ID:d.EP_ER_QuoteRequestId,Template_Code:d.Template_Code,RedirectedFrom:'RMW',Mode:'Launch Product'}]"
+                        routerLinkActive="active-link"> -->
+                        <span class="attachment-wrapper" (click)="showMoreDetails(d)">
+                            <img class="attachment-img"
+                                [src]="isProd? './assets/moredetails.png' : './../../assets/moredetails.png'" />
+                            <span class="attachment-text">More Details</span>
+                        </span>
+                        <span class="attachment-wrapper"
+                            (click)="showViewOrderPopup(d.Template_Code,d.Note_Master_ID,d)">
+                            <img class="attachment-img"
+                                [src]="isProd? './assets/cart.png' : './../../assets/cart.png'" />
+                            <span class="attachment-text">View Orders</span>
+                        </span>
+                        <!-- <span class="attachment-wrapper" [routerLink]="['/BackTest',{NoteMasterID:d.Note_Master_ID}]"
+                        routerLinkActive="active-link">
+                        <img class="attachment-img"
+                            [src]="isProd? './assets/backtest.png' : './../../assets/backtest.png'" />
+                        <span class="attachment-text">Backtest</span>
+                    </span> -->
+                        <!-- <span class="attachment-wrapper" 
+                        (click)="showBackTest(d)">
+                          <img class="attachment-img"
+                            [src]="isProd? './assets/backtest.png' : './../../assets/backtest.png'" />
+                        <span class="attachment-text">Backtest</span>
+                    </span> -->
+                        <!-- Added by ApurvaK for View Attachment| 22 Nov 2021 |start -->
+                        <span class="attachment-wrapper" (click)="ViewAttachment(d)">
+                            <img class="attachment-img"
+                                [src]="isProd? './assets/backtest.png' : './../../assets/attach.png'" />
+                            <span class="attachment-text">View Attachment</span>
+                        </span>
+                        <!-- Added by ApurvaK for View Attachment| 22 Nov 2021 |end -->
+
+
+                        <!-- <span class="attachment-wrapper" (click)="showLifecycle(d)" *ngIf="d.Exotic_Misc5 === 'Hedged'">
+                            <img class="attachment-img"
+                                [src]="isProd? './assets/backtest.png' : './../../assets/backtest.png'" />
+                            <span class="attachment-text">Lifecycle</span>
+                        </span> -->
+
+
+                    </div>
+                    <!-- Added by ApurvaK for View Attachment| 22 Nov 2021 |start -->
+                    <div class="overlay" *ngIf="showAttahmentflag">
+                        <div class="attachments-popup-container">
+                            <div class="attachments-popup-title-bar">
+                                <div class="attachments-popup-title">Attachments</div>
+                                <div class="attachments-popup-close" (click)="closeLaunchProduct()">
+                                    <img class="attachments-popup-close-img" src="{{asseturl}}close.png" />
+                                </div>
+                            </div>
+                            <div class="attachment-files-wrapper"
+                                *ngFor="let fileName of ViewAttachmentRes;let i = index">
+                                <div class="attachment-file">
+                                    <a class="attachment-file-link" target="_blank"
+                                        (click)="downloadAttachment(i)">{{fileName.DocumentName}}</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Added by ApurvaK for View Attachment| 22 Nov 2021 |end -->
+                </div>
+                <div class="product-info">
+                    <div>
+                        <label class="heading-rmw">Issuer: </label><label class="value">{{d.PPCode}}</label>
+                    </div>
+                    <div>
+                        <label class="heading-rmw">Currency: </label><label
+                            class="value">{{d.InputSettlementCurrencyCT}}</label>
+                    </div>
+                    <div>
+                        <label class="heading-rmw">PRR: </label><label class="value">3</label>
+                    </div>
+                    <div>
+                        <label class="heading-rmw">Tenor: </label><label
+                            class="value">{{d.ComputedTenorValueCT}}</label>
+                    </div>
+                    <div>
+                        <label class="heading-rmw">Issue Date</label><label class="value">{{d.InputIssueDateCT |
+                            date:'dd-MMM-yyyy'}}</label>
+                    </div>
+
+                </div>
+                <div class="product-moreinfo">
+                    <div class="rmw-summary">
+                        <label>Tranche</label>
+                        <p>
+                            Attachment point at {{d.InputCreditAttachmentInteger}} credit events and Detachment point at
+                            {{d.InputCreditDettachmentInteger}} credit events
+                        </p>
+                    </div>
+                    <div class="rmw-summary">
+                        <label>Coupon</label>
+                        <p>
+                            <span *ngIf="d.StaticCouponTypeCT === 'Fixed'">
+                                {{d.InputCouponDayBasisCT}}% p.a. fixed coupon to be paid at
+                                {{d.InputFixedCouponFrequencyCT}} frequency.
+                            </span>
+                            <span *ngIf="d.StaticCouponTypeCT === 'Floating'">
+                                {{d.InputFloatingIndex}} + {{d.CouponSpreadCT}}% coupon to be paid at
+                                {{d.InputFixedCouponFrequencyCT}} frequency.
+                            </span>
+                        </p>
+                    </div>
+
+                </div>
+                <div class="product-button">
+                    <div class="progressGrid">
+                        <div>
+                            <label>Total Orders</label><br>
+                            <label class="value">{{d.TotalDeals | number}}</label>
+                        </div>
+                        <div style="text-align: right;">
+                            <label>Max Pool Size</label><br>
+                            <label class="value">{{d.Maximum_Issue_Size | number}}</label>
+                        </div>
+                    </div>
+
+                    <div class="progress progressDiv">
+                        <fieldset class="progress-bar bg-success" role="progressbar"
+                            [style.width]="d.PercentageFilled+'%'" [attr.aria-valuenow]="d.PercentageFilled"
+                            aria-valuemin="0" aria-valuemax="100" [attr.disabled]="d.Exotic_Misc5 === 'Close Pool'">
+                        </fieldset>
+                        <!-- {{d.PercentageFilled}}% -->
+                    </div>
+
+
+                    <br />
+                    <div class="subscription">
+                        <app-svg-icons [icon]="'clock-timer-icon'" [width]="'40'" [height]="'40'" [fill]="'var(--active)'" *ngIf="d.Exotic_Misc5 !== 'Close Pool'"></app-svg-icons>
+                        <!-- <div class="subscription-icon" *ngIf="d.Exotic_Misc5 !== 'Close Pool'"></div> -->
+                        <label class="heading-rmw" *ngIf="d.Exotic_Misc5 !== 'Close Pool'">Subscription Deadline</label>
+                        <label class="value" *ngIf="d.Exotic_Misc5 !== 'Close Pool'">{{d.Close_Date |
+                            date:'dd-MMM-yyyy'}}</label>
+                        <!-- <label class="value">22-Mar-2021 10:00:00 AM</label>  -->
+                        <label class="heading-rmw disabledlbl" *ngIf="d.Exotic_Misc5 === 'Close Pool'"
+                            style="font-size: 18px !important;">Closed for Subscription</label>
+                    </div>
+                    <div class="buttonsClass">
+                        <button class="button launch" (click)="showOrderPopup(d)"
+                            [disabled]="d.Exotic_Misc5 === 'Close Pool' || d.disabledSubscribeBtn">Subscribe</button>
+                        <!-- <button class="button cancel">More Details</button> -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Accumulator -->
+            <div class="product-grid-layout" *ngIf="d.Template_Code === 'ACC'">
+                <div class="product-summary">
+                    <div class="rmw-product-name">
+                        {{d.Product_Name}}
+                    </div>
+                    <div class="rmw-summary">
+                        <label *ngIf="d.Exotic_Misc6 !== ''">Summary</label>
+                        <p>{{d.Exotic_Misc6}}</p>
+                    </div>
+
+                    <div class="extras-wrapper">
+                        <span class="like-wrapper" (click)="likeProduct(d.Note_Master_ID,d.LikeValue)">
+                            <img class="like-img" [src]="getLikeImage(d.LikeValue)" />
+                            <!-- <span class="like-text">{{d.LikeValue === '0' ? 'Like' : 'Unlike'}}</span> -->
+                            <span class="like-text">Like</span>
+                        </span>
+                        <span class="attachment-wrapper" *ngIf="d.TermsheetRequestYN === 'Y'"
+                            (click)="ViewDoc(d.EP_ER_QuoteRequestId, d.PPCode, 'IndicativeTermsheet')">
+                            <img class="attachment-img"
+                                [src]="isProd? './assets/termsheet.png' : './../../assets/termsheet.png'" />
+                            <span class="attachment-text">View Termsheet</span>
+                        </span>
+                        <!-- <span class="attachment-wrapper" *ngIf="d.KIDRequestYN === 'Y'"
+                        (click)="ViewDoc(d.EP_ER_QuoteRequestId, d.PPCode, 'KID')">
+                        <img class="attachment-img"
+                            [src]="isProd? './assets/termsheet.png' : './../../assets/termsheet.png'" />
+                        <span class="attachment-text">View KID</span>
+                    </span> -->
+                        <span class="attachment-wrapper"
+                            (click)="showFolderPopup(d.Note_Master_ID,d.ProductFoldersCSV)">
+                            <img class="attachment-img"
+                                [src]="isProd? './assets/folder.png' : '../../../../../assets/Euroconnect/folder.png'" />
+                            <span class="attachment-text">Folder</span>
+                        </span>
+                        <!-- <span class="attachment-wrapper" (click)="fillAttachmentPopup(d.Note_Master_ID)">
+                        <img class="attachment-img"
+                            [src]="isProd? './assets/attach.png' : './../../assets/attach.png'" />
+                        <span class="attachment-text">Attachment</span>
+                    </span> -->
+
+                        <!-- <span class="attachment-wrapper"
+                        [routerLink]="['/PreviousQuotesNew',{RFQ_ID:d.EP_ER_QuoteRequestId,Template_Code:d.Template_Code,RedirectedFrom:'RMW',Mode:'Launch Product'}]"
+                        routerLinkActive="active-link"> -->
+                        <span class="attachment-wrapper" (click)="showMoreDetails(d)">
+                            <img class="attachment-img"
+                                [src]="isProd? './assets/moredetails.png' : './../../assets/moredetails.png'" />
+                            <span class="attachment-text">More Details</span>
+                        </span>
+                        <span class="attachment-wrapper"
+                            (click)="showViewOrderPopup(d.Template_Code,d.Note_Master_ID,d)">
+                            <img class="attachment-img"
+                                [src]="isProd? './assets/cart.png' : './../../assets/cart.png'" />
+                            <span class="attachment-text">View Orders</span>
+                        </span>
+                        <!-- <span class="attachment-wrapper" [routerLink]="['/BackTest',{NoteMasterID:d.Note_Master_ID}]"
+                        routerLinkActive="active-link">
+                        <img class="attachment-img"
+                            [src]="isProd? './assets/backtest.png' : './../../assets/backtest.png'" />
+                        <span class="attachment-text">Backtest</span>
+                    </span> -->
+                        <!-- <span class="attachment-wrapper" 
+                        (click)="showBackTest(d)">
+                          <img class="attachment-img"
+                            [src]="isProd? './assets/backtest.png' : './../../assets/backtest.png'" />
+                        <span class="attachment-text">Backtest</span>
+                    </span> -->
+                        <!-- Added by ApurvaK for View Attachment| 22 Nov 2021 |start -->
+                        <span class="attachment-wrapper" (click)="ViewAttachment(d)">
+                            <img class="attachment-img"
+                                [src]="isProd? './assets/backtest.png' : './../../assets/attach.png'" />
+                            <span class="attachment-text">View Attachment</span>
+                        </span>
+                        <!-- Added by ApurvaK for View Attachment| 22 Nov 2021 |end -->
+
+
+                        <!-- <span class="attachment-wrapper" (click)="showLifecycle(d)" *ngIf="d.Exotic_Misc5 === 'Hedged'">
+                            <img class="attachment-img"
+                                [src]="isProd? './assets/backtest.png' : './../../assets/backtest.png'" />
+                            <span class="attachment-text">Lifecycle</span>
+                        </span> -->
+
+                    </div>
+                    <!-- Added by ApurvaK for View Attachment| 22 Nov 2021 |start -->
+                    <div class="overlay" *ngIf="showAttahmentflag">
+                        <div class="attachments-popup-container">
+                            <div class="attachments-popup-title-bar">
+                                <div class="attachments-popup-title">Attachments</div>
+                                <div class="attachments-popup-close" (click)="closeLaunchProduct()">
+                                    <img class="attachments-popup-close-img" src="{{asseturl}}close.png" />
+                                </div>
+                            </div>
+                            <div class="attachment-files-wrapper"
+                                *ngFor="let fileName of ViewAttachmentRes;let i = index">
+                                <div class="attachment-file">
+                                    <a class="attachment-file-link" target="_blank"
+                                        (click)="downloadAttachment(i)">{{fileName.DocumentName}}</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Added by ApurvaK for View Attachment| 22 Nov 2021 |end -->
+                </div>
+                <div class="product-info" style="margin-bottom: 60px;">
+                    <div>
+                        <label class="heading-rmw">Issuer: </label><label class="value">{{d.PPCode}}</label>
+                    </div>
+                    <div>
+                        <label class="heading-rmw">Currency: </label><label class="value">{{d.Currency}}</label>
+                    </div>
+                    <!-- not required, commented by Pranav D. on 16Feb2022  -->
+                    <!-- <div>
+                    <label class="heading-rmw">PRR: </label><label class="value">3</label>
+                </div> -->
+                    <div>
+                        <label class="heading-rmw">Tenor: </label><label class="value">{{d.Soft_Tenor}}</label>
+                    </div>
+                    <div>
+                        <label class="heading-rmw">Strike (%): </label>
+                        <label class="value">{{d.C_Note_Strike_PC | number:'1.2-2'}}</label>
+                    </div>
+                    <!-- <div>
+                    <label class="heading-rmw">Maturity Date: </label>
+                    <label class="value">{{d.Maturity_Date_WB_LC}}</label>
+                </div> -->
+                    <!-- <div>
+                    <label class="heading-rmw">Min Order Size: </label>
+                    <label class="value">{{d.minordersize | number:'1.2-2'}}</label>
+                </div>
+                <div>
+                    <label class="heading-rmw">Denomination: </label>
+                    <label class="value">{{d.denomination | number:'1.2-2'}}</label>
+                </div> -->
+                </div>
+                <!-- <div class="product-moreinfo"> -->
+                <!-- <div class="rmw-summary">
+                    <label>Autocall</label>
+                    <p>{{d.StaticERCouponTypeAUP}} coupon with an autocall trigger at {{d.AutocallTriggerAUP}}% being
+                        observed every {{d.StaticKOFrequencyAUP}}
+                        <span *ngIf="d.InputKOStepdownAUP !== ''"> with a stepdown of
+                            {{d.InputKOStepdownAUP}}%</span><br />
+                        <span
+                            *ngIf="d.InputKOStepdownAUP !== '' && d.InputKOStepdownAUP !== '0.00'">{{d.AutocallCouponAUP}}%</span>
+                        <span *ngIf="d.InputKOStepdownAUP === '' || d.InputKOStepdownAUP === '0.00'"> No</span> Autocall
+                        Coupon
+                        <span
+                            *ngIf="d.ComputedAlternateCouponPercentAUP !== '' && d.ComputedAlternateCouponPercentAUP !== '0.00'">
+                            and {{d.ComputedAlternateCouponPercentAUP}}%</span>
+                        <span
+                            *ngIf="d.ComputedAlternateCouponPercentAUP === '' || d.ComputedAlternateCouponPercentAUP === '0.00'">
+                            and No</span> Alternate Coupon.
+                    </p>
+                </div>
+                <div class="rmw-summary">
+                    <label>Coupon</label>
+                    <p>
+                        <span *ngIf="d.StaticCouponType === 'No Coupon' || d.StaticCouponType === ''">No Coupon.</span>
+                        <span *ngIf="d.StaticCouponType === 'Standard'">
+                            {{d.CouponAUP}}% p.a. to be paid every {{d.InputFixedCouponFrequencyPeriod}} with a
+                            {{d.CouponTriggerAUP}}% coupon barrier.
+                        </span>
+                        <span *ngIf="d.StaticCouponType === 'Partial Memory'">
+                            {{d.CouponAUP}}% p.a. to be paid every {{d.InputFixedCouponFrequencyPeriod}} with a
+                            {{d.CouponTriggerAUP}}% coupon barrier and a memory of {{d.MemoryPeriodAUP}} periods.
+                        </span>
+                        <span *ngIf="d.StaticCouponType === 'Total Memory'">
+                            {{d.CouponAUP}}% p.a. to be paid every {{d.InputFixedCouponFrequencyPeriod}} with a
+                            {{d.CouponTriggerAUP}}% coupon barrier and total memory.
+                        </span>
+                        <span *ngIf="d.StaticCouponType === 'Fixed Coupon'">
+                            {{d.CouponAUP}}% p.a. to be paid every {{d.InputFixedCouponFrequencyPeriod}}.
+                        </span>
+                    </p>
+                </div> -->
+                <div class="product-info" style="margin-bottom: 60px;">
+                    <!-- <label>Autocall</label>
+                    <p> -->
+                    <!-- Strike at {{d.StrikeAUP}}% and -->
+                    <!-- <span *ngIf="d.C_Note_Barrier_PC === '' || d.C_Note_Barrier_PC === '0.00'">no barrier.</span>
+                        <span *ngIf="d.C_Note_Barrier_PC !== '' && d.C_Note_Barrier_PC !== '0.00'">{{d.C_Note_Barrier_PC}}%
+                            barrier level to be observed.
+                            <span *ngIf="d.StaticKIBarrierType !== 'Continuous'">{{d.StaticKIBarrierType}} .</span>
+                            <span *ngIf="d.StaticKIBarrierType === 'Continuous'">Continuously .</span>
+                        </span> -->
+                    <!-- An autocall trigger at {{d.C_Note_Barrier_PC}}% being
+                        observed {{d.Note_KO_Frequency_Type}}
+                    </p> -->
+                    <div>
+                        <label class="heading-rmw">Frequency: </label>
+                        <label class="value">{{d.Note_KO_Frequency_Type}}</label>
+                    </div>
+                    <!-- <div>
+                            <label class="heading-rmw">Strike (%): </label>
+                            <label class="value">{{d.C_Note_Strike_PC | number:'1.2-2'}}</label>
+                        </div> -->
+                    <div>
+                        <label class="heading-rmw">Upfront (%): </label>
+                        <label class="value">{{d.Upfront ? d.Upfront :'' }}</label>
+                        <!-- {{d.C_Note_Strike_PC | number:'1.2-2'}} -->
+                    </div>
+                    <div>
+                        <label class="heading-rmw">Autocall Trigger (%): </label>
+                        <label class="value">{{d.C_Note_Barrier_PC | number:'1.2-2'}}</label>
+                    </div>
+                    <div>
+                        <label class="heading-rmw">2x Gearing Leverage: </label>
+                        <label class="value">{{d.Leverage_ratio ? d.Leverage_ratio : ''}}</label>
+                        <!-- {{d.Trade_Date_WB_LC}} -->
+                    </div>
+                    <div>
+                        <label class="heading-rmw">Guarantee Periods: </label>
+
+                        <label class="value">{{d.Guaranteed_Days ? d.Guaranteed_Days : ''}}</label>
+                        <!-- {{d.Trade_Date_WB_LC}} -->
+                    </div>
+                </div>
+                <div class="product-button">
+                    <div class="progressGrid">
+                        <div>
+                            <label>Total Orders</label><br>
+                            <label class="value">{{d.TotalDeals | number}}</label>
+                        </div>
+                        <div style="text-align: right;">
+                            <label>Max Pool Size</label><br>
+                            <label class="value">{{d.Maximum_Issue_Size | number}}</label>
+                        </div>
+                    </div>
+
+                    <div class="progress progressDiv">
+                        <fieldset class="progress-bar bg-success" role="progressbar"
+                            [style.width]="d.PercentageFilled+'%'" [attr.aria-valuenow]="d.PercentageFilled"
+                            aria-valuemin="0" aria-valuemax="100" [attr.disabled]="d.Exotic_Misc5 === 'Close Pool'">
+                        </fieldset>
+                        <!-- {{d.PercentageFilled}}% -->
+                    </div>
+                    <br />
+                    <div class="subscription">
+                        <app-svg-icons [icon]="'clock-timer-icon'" [width]="'40'" [height]="'40'" [fill]="'var(--active)'" *ngIf="d.Exotic_Misc5 !== 'Close Pool'"></app-svg-icons>
+                        <!-- <div class="subscription-icon" *ngIf="d.Exotic_Misc5 !== 'Close Pool'"></div> -->
+                        <label class="heading-rmw" *ngIf="d.Exotic_Misc5 !== 'Close Pool'">Subscription Deadline</label>
+                        <label class="value" *ngIf="d.Exotic_Misc5 !== 'Close Pool'">{{d.Close_Date |
+                            date:'dd-MMM-yyyy'}}</label>
+                        <!-- <label class="value">22-Mar-2021 10:00:00 AM</label>  -->
+                        <label class="heading-rmw disabledlbl" *ngIf="d.Exotic_Misc5 === 'Close Pool'"
+                            style="font-size: 18px !important;">Closed for Subscription</label>
+                    </div>
+                    <div class="buttonsClass">
+                        <button class="button launch" (click)="showOrderPopup(d)"
+                            [disabled]="d.Exotic_Misc5 === 'Close Pool' || d.disabledSubscribeBtn">Subscribe</button>
+                        <!-- <button class="button cancel">More Details</button> -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Decumulator -->
+            <div class="product-grid-layout" *ngIf="d.Template_Code === 'DAC'">
+                <div class="product-summary">
+                    <div class="rmw-product-name">
+                        {{d.Product_Name}}
+                    </div>
+                    <div class="rmw-summary">
+                        <label *ngIf="d.Exotic_Misc6 !== ''">Summary</label>
+                        <p>{{d.Exotic_Misc6}}</p>
+                    </div>
+
+                    <div class="extras-wrapper">
+                        <span class="like-wrapper" (click)="likeProduct(d.Note_Master_ID,d.LikeValue)">
+                            <img class="like-img" [src]="getLikeImage(d.LikeValue)" />
+                            <!-- <span class="like-text">{{d.LikeValue === '0' ? 'Like' : 'Unlike'}}</span> -->
+                            <span class="like-text">Like</span>
+                        </span>
+                        <span class="attachment-wrapper" *ngIf="d.TermsheetRequestYN === 'Y'"
+                            (click)="ViewDoc(d.EP_ER_QuoteRequestId, d.PPCode, 'IndicativeTermsheet')">
+                            <img class="attachment-img"
+                                [src]="isProd? './assets/termsheet.png' : './../../assets/termsheet.png'" />
+                            <span class="attachment-text">View Termsheet</span>
+                        </span>
+                        <!-- <span class="attachment-wrapper" *ngIf="d.KIDRequestYN === 'Y'"
+                        (click)="ViewDoc(d.EP_ER_QuoteRequestId, d.PPCode, 'KID')">
+                        <img class="attachment-img"
+                            [src]="isProd? './assets/termsheet.png' : './../../assets/termsheet.png'" />
+                        <span class="attachment-text">View KID</span>
+                    </span> -->
+                        <span class="attachment-wrapper"
+                            (click)="showFolderPopup(d.Note_Master_ID,d.ProductFoldersCSV)">
+                            <img class="attachment-img"
+                                [src]="isProd? './assets/folder.png' : '../../../../../assets/Euroconnect/folder.png'" />
+                            <span class="attachment-text">Folder</span>
+                        </span>
+                        <!-- <span class="attachment-wrapper" (click)="fillAttachmentPopup(d.Note_Master_ID)">
+                        <img class="attachment-img"
+                            [src]="isProd? './assets/attach.png' : './../../assets/attach.png'" />
+                        <span class="attachment-text">Attachment</span>
+                    </span> -->
+
+                        <!-- <span class="attachment-wrapper"
+                        [routerLink]="['/PreviousQuotesNew',{RFQ_ID:d.EP_ER_QuoteRequestId,Template_Code:d.Template_Code,RedirectedFrom:'RMW',Mode:'Launch Product'}]"
+                        routerLinkActive="active-link"> -->
+                        <span class="attachment-wrapper" (click)="showMoreDetails(d)">
+                            <img class="attachment-img"
+                                [src]="isProd? './assets/moredetails.png' : './../../assets/moredetails.png'" />
+                            <span class="attachment-text">More Details</span>
+                        </span>
+                        <span class="attachment-wrapper"
+                            (click)="showViewOrderPopup(d.Template_Code,d.Note_Master_ID,d)">
+                            <img class="attachment-img"
+                                [src]="isProd? './assets/cart.png' : './../../assets/cart.png'" />
+                            <span class="attachment-text">View Orders</span>
+                        </span>
+                        <!-- <span class="attachment-wrapper" [routerLink]="['/BackTest',{NoteMasterID:d.Note_Master_ID}]"
+                        routerLinkActive="active-link">
+                        <img class="attachment-img"
+                            [src]="isProd? './assets/backtest.png' : './../../assets/backtest.png'" />
+                        <span class="attachment-text">Backtest</span>
+                    </span> -->
+                        <!-- <span class="attachment-wrapper" 
+                        (click)="showBackTest(d)">
+                          <img class="attachment-img"
+                            [src]="isProd? './assets/backtest.png' : './../../assets/backtest.png'" />
+                        <span class="attachment-text">Backtest</span>
+                    </span> -->
+                        <!-- Added by ApurvaK for View Attachment| 22 Nov 2021 |start -->
+                        <span class="attachment-wrapper" (click)="ViewAttachment(d)">
+                            <img class="attachment-img"
+                                [src]="isProd? './assets/backtest.png' : './../../assets/attach.png'" />
+                            <span class="attachment-text">View Attachment</span>
+                        </span>
+                        <!-- Added by ApurvaK for View Attachment| 22 Nov 2021 |end -->
+
+                        <!-- <span class="attachment-wrapper" (click)="showLifecycle(d)" *ngIf="d.Exotic_Misc5 === 'Hedged'">
+                            <img class="attachment-img"
+                                [src]="isProd? './assets/backtest.png' : './../../assets/backtest.png'" />
+                            <span class="attachment-text">Lifecycle</span>
+                        </span> -->
+
+                    </div>
+                    <!-- Added by ApurvaK for View Attachment| 22 Nov 2021 |start -->
+                    <div class="overlay" *ngIf="showAttahmentflag">
+                        <div class="attachments-popup-container">
+                            <div class="attachments-popup-title-bar">
+                                <div class="attachments-popup-title">Attachments</div>
+                                <div class="attachments-popup-close" (click)="closeLaunchProduct()">
+                                    <img class="attachments-popup-close-img" src="{{asseturl}}close.png" />
+                                </div>
+                            </div>
+                            <div class="attachment-files-wrapper"
+                                *ngFor="let fileName of ViewAttachmentRes;let i = index">
+                                <div class="attachment-file">
+                                    <a class="attachment-file-link" target="_blank"
+                                        (click)="downloadAttachment(i)">{{fileName.DocumentName}}</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Added by ApurvaK for View Attachment| 22 Nov 2021 |end -->
+                </div>
+                <div class="product-info" style="margin-bottom: 60px;">
+                    <div>
+                        <label class="heading-rmw">Issuer: </label><label class="value">{{d.PPCode}}</label>
+                    </div>
+                    <div>
+                        <label class="heading-rmw">Currency: </label><label class="value">{{d.Currency}}</label>
+                    </div>
+                    <!-- not required, commented by Pranav D. on 16Feb2022  -->
+                    <!-- <div>
+                    <label class="heading-rmw">PRR: </label><label class="value">3</label>
+                </div> -->
+                    <div>
+                        <label class="heading-rmw">Tenor: </label><label class="value">{{d.Soft_Tenor}}</label>
+                    </div>
+                    <div>
+                        <label class="heading-rmw">Strike (%): </label>
+                        <label class="value">{{d.C_Note_Strike_PC | number:'1.2-2'}}</label>
+                    </div>
+                    <!-- <div>
+                    <label class="heading-rmw">Maturity Date: </label>
+                   <label class="value">{{d.Maturity_Date_WB_LC}}</label>
+                </div> -->
+                    <!-- <div>
+                    <label class="heading-rmw">Min Order Size: </label>
+                    <label class="value">{{d.minordersize | number:'1.2-2'}}</label>
+                </div>
+                <div>
+                    <label class="heading-rmw">Denomination: </label>
+                    <label class="value">{{d.denomination | number:'1.2-2'}}</label>
+                </div> -->
+                </div>
+                <!-- <div class="product-moreinfo"> -->
+                <!-- <div class="rmw-summary">
+                    <label>Autocall</label>
+                    <p>{{d.StaticERCouponTypeAUP}} coupon with an autocall trigger at {{d.AutocallTriggerAUP}}% being
+                        observed every {{d.StaticKOFrequencyAUP}}
+                        <span *ngIf="d.InputKOStepdownAUP !== ''"> with a stepdown of
+                            {{d.InputKOStepdownAUP}}%</span><br />
+                        <span
+                            *ngIf="d.InputKOStepdownAUP !== '' && d.InputKOStepdownAUP !== '0.00'">{{d.AutocallCouponAUP}}%</span>
+                        <span *ngIf="d.InputKOStepdownAUP === '' || d.InputKOStepdownAUP === '0.00'"> No</span> Autocall
+                        Coupon
+                        <span
+                            *ngIf="d.ComputedAlternateCouponPercentAUP !== '' && d.ComputedAlternateCouponPercentAUP !== '0.00'">
+                            and {{d.ComputedAlternateCouponPercentAUP}}%</span>
+                        <span
+                            *ngIf="d.ComputedAlternateCouponPercentAUP === '' || d.ComputedAlternateCouponPercentAUP === '0.00'">
+                            and No</span> Alternate Coupon.
+                    </p>
+                </div> -->
+                <!-- <div class="rmw-summary">
+                    <label>Coupon</label>
+                    <p>
+                        <span *ngIf="d.StaticCouponType === 'No Coupon' || d.StaticCouponType === ''">No Coupon.</span>
+                        <span *ngIf="d.StaticCouponType === 'Standard'">
+                            {{d.CouponAUP}}% p.a. to be paid every {{d.InputFixedCouponFrequencyPeriod}} with a
+                            {{d.CouponTriggerAUP}}% coupon barrier.
+                        </span>
+                        <span *ngIf="d.StaticCouponType === 'Partial Memory'">
+                            {{d.CouponAUP}}% p.a. to be paid every {{d.InputFixedCouponFrequencyPeriod}} with a
+                            {{d.CouponTriggerAUP}}% coupon barrier and a memory of {{d.MemoryPeriodAUP}} periods.
+                        </span>
+                        <span *ngIf="d.StaticCouponType === 'Total Memory'">
+                            {{d.CouponAUP}}% p.a. to be paid every {{d.InputFixedCouponFrequencyPeriod}} with a
+                            {{d.CouponTriggerAUP}}% coupon barrier and total memory.
+                        </span>
+                        <span *ngIf="d.StaticCouponType === 'Fixed Coupon'">
+                            {{d.CouponAUP}}% p.a. to be paid every {{d.InputFixedCouponFrequencyPeriod}}.
+                        </span>
+                    </p>
+                </div> -->
+                <!-- <div class="rmw-summary">
+                        <label>Autocall</label>
+                        <p> -->
+                <!-- Strike at {{d.StrikeAUP}}% and -->
+                <!-- <span *ngIf="d.C_Note_Barrier_PC === '' || d.C_Note_Barrier_PC === '0.00'">no barrier.</span>
+                        <span *ngIf="d.C_Note_Barrier_PC !== '' && d.C_Note_Barrier_PC !== '0.00'">{{d.C_Note_Barrier_PC}}%
+                            barrier level to be observed.
+                            <span *ngIf="d.StaticKIBarrierType !== 'Continuous'">{{d.StaticKIBarrierType}} .</span>
+                            <span *ngIf="d.StaticKIBarrierType === 'Continuous'">Continuously .</span>
+                        </span> -->
+                <!-- An autocall trigger at {{d.C_Note_Barrier_PC}}% being
+                            observed {{d.Note_KO_Frequency_Type}}
+                        </p>
+                    </div> -->
+                <div class="product-info" style="margin-bottom: 60px;">
+                    <div>
+                        <label class="heading-rmw">Frequency: </label>
+                        <label class="value">{{d.Note_KO_Frequency_Type}}</label>
+                    </div>
+                    <div>
+                        <label class="heading-rmw">Upfront (%): </label>
+                        <label class="value">{{d.Upfront ? d.Upfront : '' }}</label>
+                    </div>
+                    <div>
+                        <label class="heading-rmw">Autocall Trigger (%): </label>
+                        <label class="value">{{d.C_Note_Barrier_PC | number:'1.2-2'}}</label>
+                    </div>
+                    <div>
+                        <label class="heading-rmw">2x Gearing Leverage: </label>
+                        <label class="value">{{d.Leverage_ratio ? d.Leverage_ratio : ''}}</label>
+                    </div>
+                    <div>
+                        <label class="heading-rmw">Guarantee Periods: </label>
+                        <label class="value">{{d.Guaranteed_Days ? d.Guaranteed_Days : ''}}</label>
+                    </div>
+                </div>
+                <div class="product-button">
+                    <div class="progressGrid">
+                        <div>
+                            <label>Total Orders</label><br>
+                            <label class="value">{{d.TotalDeals | number}}</label>
+                        </div>
+                        <div style="text-align: right;">
+                            <label>Max Pool Size</label><br>
+                            <label class="value">{{d.Maximum_Issue_Size | number}}</label>
+                        </div>
+                    </div>
+
+                    <div class="progress progressDiv">
+                        <fieldset class="progress-bar bg-success" role="progressbar"
+                            [style.width]="d.PercentageFilled+'%'" [attr.aria-valuenow]="d.PercentageFilled"
+                            aria-valuemin="0" aria-valuemax="100" [attr.disabled]="d.Exotic_Misc5 === 'Close Pool'">
+                        </fieldset>
+                        <!-- {{d.PercentageFilled}}% -->
+                    </div>
+                    <br />
+                    <div class="subscription">
+                        <app-svg-icons [icon]="'clock-timer-icon'" [width]="'40'" [height]="'40'" [fill]="'var(--active)'" *ngIf="d.Exotic_Misc5 !== 'Close Pool'"></app-svg-icons>
+                        <!-- <div class="subscription-icon" *ngIf="d.Exotic_Misc5 !== 'Close Pool'"></div> -->
+                        <label class="heading-rmw" *ngIf="d.Exotic_Misc5 !== 'Close Pool'">Subscription Deadline</label>
+                        <label class="value" *ngIf="d.Exotic_Misc5 !== 'Close Pool'">{{d.Close_Date |
+                            date:'dd-MMM-yyyy'}}</label>
+                        <!-- <label class="value">22-Mar-2021 10:00:00 AM</label>  -->
+                        <label class="heading-rmw disabledlbl" *ngIf="d.Exotic_Misc5 === 'Close Pool'"
+                            style="font-size: 18px !important;">Closed for Subscription</label>
+
+                    </div>
+                    <div class="buttonsClass">
+                        <button class="button launch" (click)="showOrderPopup(d)"
+                            [disabled]="d.Exotic_Misc5 === 'Close Pool' || d.disabledSubscribeBtn">Subscribe</button>
+                        <!-- <button class="button cancel">More Details</button> -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Early Redemption -->
+            <div class="product-grid-layout" *ngIf="d.Template_Code === 'EQC_Europe'">
+                <div class="product-summary">
+                    <div class="rmw-product-name">
+                        {{d.Product_Name}}
+                    </div>
+                    <div class="rmw-summary">
+                        <label *ngIf="d.Exotic_Misc6 !== ''">Summary</label>
+                        <p>{{d.Exotic_Misc6}}</p>
+                    </div>
+
+                    <div class="extras-wrapper">
+                        <span class="like-wrapper" (click)="likeProduct(d.Note_Master_ID,d.LikeValue)">
+                            <img class="like-img" [src]="getLikeImage(d.LikeValue)" />
+                            <!-- <span class="like-text">{{d.LikeValue === '0' ? 'Like' : 'Unlike'}}</span> -->
+                            <span class="like-text">Like</span>
+                        </span>
+                        <span class="attachment-wrapper" *ngIf="d.TermsheetRequestYN === 'Y'"
+                            (click)="ViewDoc(d.EP_ER_QuoteRequestId, d.PPCode, 'IndicativeTermsheet')">
+                            <img class="attachment-img"
+                                [src]="isProd? './assets/termsheet.png' : './../../assets/termsheet.png'" />
+                            <span class="attachment-text">View Termsheet</span>
+                        </span>
+                        <span class="attachment-wrapper" *ngIf="d.KIDRequestYN === 'Y'"
+                            (click)="ViewDoc(d.EP_ER_QuoteRequestId, d.PPCode, 'KID')">
+                            <img class="attachment-img"
+                                [src]="isProd? './assets/termsheet.png' : './../../assets/termsheet.png'" />
+                            <span class="attachment-text">View KID</span>
+                        </span>
+                        <span class="attachment-wrapper"
+                            (click)="showFolderPopup(d.Note_Master_ID,d.ProductFoldersCSV)">
+                            <img class="attachment-img"
+                                [src]="isProd? './assets/folder.png' : './../../assets/folder.png'" />
+                            <span class="attachment-text">Folder</span>
+                        </span>
+                        <!-- <span class="attachment-wrapper" (click)="fillAttachmentPopup(d.Note_Master_ID)">
+                        <img class="attachment-img"
+                            [src]="isProd? './assets/attach.png' : './../../assets/attach.png'" />
+                        <span class="attachment-text">Attachment</span>
+                    </span> -->
+
+                        <!-- <span class="attachment-wrapper"
+                        [routerLink]="['/PreviousQuotesNew',{RFQ_ID:d.EP_ER_QuoteRequestId,Template_Code:d.Template_Code,RedirectedFrom:'RMW',Mode:'Launch Product'}]"
+                        routerLinkActive="active-link"> -->
+                        <span class="attachment-wrapper" (click)="showMoreDetails(d)">
+                            <img class="attachment-img"
+                                [src]="isProd? './assets/moredetails.png' : './../../assets/moredetails.png'" />
+                            <span class="attachment-text">More Details</span>
+                        </span>
+                        <span class="attachment-wrapper"
+                            (click)="showViewOrderPopup(d.Template_Code,d.Note_Master_ID,d)">
+                            <img class="attachment-img"
+                                [src]="isProd? './assets/cart.png' : './../../assets/cart.png'" />
+                            <span class="attachment-text">View Orders</span>
+                        </span>
+                        <!-- <span class="attachment-wrapper" [routerLink]="['/BackTest',{NoteMasterID:d.Note_Master_ID}]"
+                        routerLinkActive="active-link">
+                        <img class="attachment-img"
+                            [src]="isProd? './assets/backtest.png' : './../../assets/backtest.png'" />
+                        <span class="attachment-text">Backtest</span>
+                    </span> -->
+                        <!-- <span class="attachment-wrapper" 
+                        (click)="showBackTest(d)">
+                          <img class="attachment-img"
+                            [src]="isProd? './assets/backtest.png' : './../../assets/backtest.png'" />
+                        <span class="attachment-text">Backtest</span>
+                    </span> -->
+                        <!-- Added by ApurvaK for View Attachment| 22 Nov 2021 |start -->
+                        <span class="attachment-wrapper" (click)="ViewAttachment(d)">
+                            <img class="attachment-img"
+                                [src]="isProd? './assets/backtest.png' : './../../assets/attach.png'" />
+                            <span class="attachment-text">View Attachment</span>
+                        </span>
+                        <!-- Added by ApurvaK for View Attachment| 22 Nov 2021 |end -->
+
+                        <!-- <span class="attachment-wrapper" (click)="showLifecycle(d)" *ngIf="d.Exotic_Misc5 === 'Hedged'">
+                            <img class="attachment-img"
+                                [src]="isProd? './assets/backtest.png' : './../../assets/backtest.png'" />
+                            <span class="attachment-text">Lifecycle</span>
+                        </span> -->
+
+                    </div>
+                    <!-- Added by ApurvaK for View Attachment| 22 Nov 2021 |start -->
+                    <div class="overlay" *ngIf="showAttahmentflag">
+                        <div class="attachments-popup-container">
+                            <div class="attachments-popup-title-bar">
+                                <div class="attachments-popup-title">Attachments</div>
+                                <div class="attachments-popup-close" (click)="closeLaunchProduct()">
+                                    <img class="attachments-popup-close-img" src="{{asseturl}}close.png" />
+                                </div>
+                            </div>
+                            <div class="attachment-files-wrapper"
+                                *ngFor="let fileName of ViewAttachmentRes;let i = index">
+                                <div class="attachment-file">
+                                    <a class="attachment-file-link" target="_blank"
+                                        (click)="downloadAttachment(i)">{{fileName.DocumentName}}</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Added by ApurvaK for View Attachment| 22 Nov 2021 |end -->
+                </div>
+                <div class="product-info">
+                    <div>
+                        <label class="heading-rmw">Issuer: </label><label class="value">{{d.PPCode}}</label>
+                    </div>
+                    <div>
+                        <label class="heading-rmw">Currency: </label><label class="value">{{d.Currency}}</label>
+                    </div>
+                    <!-- <div>
+                    <label class="heading-rmw">PRR: </label><label class="value">3</label>
+                </div> -->
+
+                    <div>
+                        <label class="heading-rmw">Strike Date: </label>
+                        <label class="value">{{d.Trade_Date_WB_LC | date:'dd-MMM-yyyy'}}</label>
+                    </div>
+                    <div>
+                        <label class="heading-rmw">Issue Date: </label>
+                        <!-- <label class="value">{{d.Trade_Date_WB_LC | date:'dd-MMM-yyyy'}}</label> -->
+                        <label class="value">{{d.ER_SettlmentDate | date:'dd-MMM-yyyy'}}</label>
+                    </div>
+                    <div>
+                        <label class="heading-rmw">Tenor: </label><label class="value">{{d.Soft_Tenor}}</label>
+                    </div>
+                    <!-- <div>
+                    <label class="heading-rmw">KO (%) </label>
+                    <label class="value"></label>
+                </div> -->
+                    <div>
+                        <label class="heading-rmw">Maturity Date: </label>
+                        <!-- <label class="value">{{cfs.formatSlashDate(d.ComputedTenorValue)}}</label> -->
+                        <label class="value">{{d.Maturity_Date_WB_LC | date:'dd-MMM-yyyy'}}</label>
+                    </div>
+                    <div>
+                        <label class="heading-rmw">Min Order Size: </label>
+                        <label class="value">{{d.minordersize | number:'1.2-2'}}</label>
+                    </div>
+                    <div>
+                        <label class="heading-rmw">Denomination: </label>
+                        <label class="value">{{d.denomination | number:'1.2-2'}}</label>
+                    </div>
+                </div>
+                <div class="product-moreinfo">
+                    <div class="rmw-summary">
+                        <label>Early Redemption</label>
+                        <p>{{d.Exotic_Misc4}}
+                            <!-- <span *ngIf="d.ERStepDown !== ''"> with a stepdown of
+                            {{d.ERStepDown}}%</span><br />
+                        <span
+                            *ngIf="d.ERStepDown !== '' && d.ERStepDown !== '0.00'">{{d.AutocallCouponAUP}}%</span>
+                        <span *ngIf="d.ERStepDown === '' || d.ERStepDown === '0.00'"> No</span> Autocall
+                        Coupon -->
+                            <!-- <span
+                            *ngIf="d.ComputedAlternateCouponPercentAUP !== '' && d.ComputedAlternateCouponPercentAUP !== '0.00'">
+                            and {{d.ComputedAlternateCouponPercentAUP}}%</span>
+                        <span
+                            *ngIf="d.ComputedAlternateCouponPercentAUP === '' || d.ComputedAlternateCouponPercentAUP === '0.00'">
+                            and No</span> Alternate Coupon. -->
+                        </p>
+                    </div>
+                    <div class="rmw-summary">
+                        <!-- <label>ER Coupon</label> -->
+                        <label>Autocall Coupon</label>
+                        <p>
+                            <!-- <span *ngIf="d.StaticCouponType === 'No Coupon' || d.StaticCouponType === ''">No Coupon.</span>
+                        <span *ngIf="d.StaticCouponType === 'Standard'">
+                            {{d.CouponAUP}}% p.a. to be paid every {{d.InputFixedCouponFrequencyPeriod}} with a
+                            {{d.CouponTriggerAUP}}% coupon barrier.
+                        </span>
+                        <span *ngIf="d.StaticCouponType === 'Partial Memory'">
+                            {{d.CouponAUP}}% p.a. to be paid every {{d.InputFixedCouponFrequencyPeriod}} with a
+                            {{d.CouponTriggerAUP}}% coupon barrier and a memory of {{d.MemoryPeriodAUP}} periods.
+                        </span>
+                        <span *ngIf="d.StaticCouponType === 'Total Memory'">
+                            {{d.CouponAUP}}% p.a. to be paid every {{d.InputFixedCouponFrequencyPeriod}} with a
+                            {{d.CouponTriggerAUP}}% coupon barrier and total memory.
+                        </span>
+                        <span *ngIf="d.StaticCouponType === 'Fixed Coupon'">
+                            {{d.CouponAUP}}% p.a. to be paid every {{d.InputFixedCouponFrequencyPeriod}}.
+                        </span> -->
+
+                            {{d.Exotic_Misc2}}
+                        </p>
+                    </div>
+                    <div class="rmw-summary"
+                        *ngIf="d.Exotic_Misc3 !=='' && d.Exotic_Misc3 !== 'No' && d.Exotic_Misc3 !== 'NO'">
+                        <label>Periodic Coupon</label>
+                        <p>
+                            {{d.Exotic_Misc3}}
+                        </p>
+                    </div>
+                </div>
+                <div class="product-button">
+                    <div class="progressGrid">
+                        <div>
+                            <label>Total Orders</label><br>
+                            <label class="value">{{d.TotalDeals | number}}</label>
+                        </div>
+                        <div style="text-align: right;">
+                            <label>Max Pool Size</label><br>
+                            <label class="value">{{d.Maximum_Issue_Size | number}}</label>
+                        </div>
+                    </div>
+
+                    <div class="progress progressDiv">
+                        <fieldset class="progress-bar bg-success" role="progressbar"
+                            [style.width]="d.PercentageFilled+'%'" [attr.aria-valuenow]="d.PercentageFilled"
+                            aria-valuemin="0" aria-valuemax="100" [attr.disabled]="d.Exotic_Misc5 === 'Close Pool'">
+                        </fieldset>
+                        <!-- {{d.PercentageFilled}}% -->
+                    </div>
+                    <br />
+                    <div class="subscription">
+                        <app-svg-icons [icon]="'clock-timer-icon'" [width]="'40'" [height]="'40'" [fill]="'var(--active)'" *ngIf="d.Exotic_Misc5 !== 'Close Pool'"></app-svg-icons>
+                        <!-- <div class="subscription-icon" *ngIf="d.Exotic_Misc5 !== 'Close Pool'"></div> -->
+                        <label class="heading-rmw" *ngIf="d.Exotic_Misc5 !== 'Close Pool'">Subscription Deadline</label>
+                        <label class="value" *ngIf="d.Exotic_Misc5 !== 'Close Pool'">{{d.Close_Date |
+                            date:'dd-MMM-yyyy'}}</label>
+                        <!-- <label class="value">22-Mar-2021 10:00:00 AM</label>  -->
+                        <label class="heading-rmw disabledlbl" *ngIf="d.Exotic_Misc5 === 'Close Pool'"
+                            style="font-size: 18px !important;">Closed for Subscription</label>
+
+                    </div>
+                    <div class="buttonsClass">
+                        <button class="button launch" (click)="showOrderPopup(d)"
+                            [disabled]="d.Exotic_Misc5 === 'Close Pool' || d.disabledSubscribeBtn">Subscribe</button>
+                        <!-- <button class="button cancel">More Details</button> -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Yield Enhancement Added by Amogh K on 5-Dec-2021-->
+            <div class="product-grid-layout" *ngIf="d.Template_Code === 'YieldEnhancement'">
+                <div class="product-summary">
+                    <div class="rmw-product-name">
+                        {{d.Product_Name}}
+                    </div>
+                    <div class="rmw-summary">
+                        <label *ngIf="d.Exotic_Misc6 !== ''">Summary</label>
+                        <p>{{d.Exotic_Misc6}}</p>
+                    </div>
+
+                    <div class="extras-wrapper">
+                        <span class="like-wrapper" (click)="likeProduct(d.Note_Master_ID,d.LikeValue)">
+                            <img class="like-img" [src]="getLikeImage(d.LikeValue)" />
+                            <!-- <span class="like-text">{{d.LikeValue === '0' ? 'Like' : 'Unlike'}}</span> -->
+                            <span class="like-text">Like</span>
+                        </span>
+                        <span class="attachment-wrapper" *ngIf="d.TermsheetRequestYN === 'Y'"
+                            (click)="ViewDoc(d.EP_ER_QuoteRequestId, d.PPCode, 'IndicativeTermsheet')">
+                            <img class="attachment-img"
+                                [src]="isProd? './assets/termsheet.png' : './../../assets/termsheet.png'" />
+                            <span class="attachment-text">View Termsheet</span>
+                        </span>
+                        <span class="attachment-wrapper" *ngIf="d.KIDRequestYN === 'Y'"
+                            (click)="ViewDoc(d.EP_ER_QuoteRequestId, d.PPCode, 'KID')">
+                            <img class="attachment-img"
+                                [src]="isProd? './assets/termsheet.png' : './../../assets/termsheet.png'" />
+                            <span class="attachment-text">View KID</span>
+                        </span>
+                        <span class="attachment-wrapper"
+                            (click)="showFolderPopup(d.Note_Master_ID,d.ProductFoldersCSV)">
+                            <img class="attachment-img"
+                                [src]="isProd? './assets/folder.png' : './../../assets/folder.png'" />
+                            <span class="attachment-text">Folder</span>
+                        </span>
+                        <!-- <span class="attachment-wrapper" (click)="fillAttachmentPopup(d.Note_Master_ID)">
+                        <img class="attachment-img"
+                            [src]="isProd? './assets/attach.png' : './../../assets/attach.png'" />
+                        <span class="attachment-text">Attachment</span>
+                    </span> -->
+
+                        <!-- <span class="attachment-wrapper"
+                        [routerLink]="['/PreviousQuotesNew',{RFQ_ID:d.EP_ER_QuoteRequestId,Template_Code:d.Template_Code,RedirectedFrom:'RMW',Mode:'Launch Product'}]"
+                        routerLinkActive="active-link"> -->
+                        <span class="attachment-wrapper" (click)="showMoreDetails(d)">
+                            <img class="attachment-img"
+                                [src]="isProd? './assets/moredetails.png' : './../../assets/moredetails.png'" />
+                            <span class="attachment-text">More Details</span>
+                        </span>
+                        <span class="attachment-wrapper"
+                            (click)="showViewOrderPopup(d.Template_Code,d.Note_Master_ID,d)">
+                            <img class="attachment-img"
+                                [src]="isProd? './assets/cart.png' : './../../assets/cart.png'" />
+                            <span class="attachment-text">View Orders</span>
+                        </span>
+                        <!-- <span class="attachment-wrapper" [routerLink]="['/BackTest',{NoteMasterID:d.Note_Master_ID}]"
+                        routerLinkActive="active-link">
+                        <img class="attachment-img"
+                            [src]="isProd? './assets/backtest.png' : './../../assets/backtest.png'" />
+                        <span class="attachment-text">Backtest</span>
+                    </span> -->
+                        <!-- <span class="attachment-wrapper" 
+                        (click)="showBackTest(d)">
+                          <img class="attachment-img"
+                            [src]="isProd? './assets/backtest.png' : './../../assets/backtest.png'" />
+                        <span class="attachment-text">Backtest</span>
+                    </span> -->
+                        <!-- Added by ApurvaK for View Attachment| 22 Nov 2021 |start -->
+                        <span class="attachment-wrapper" (click)="ViewAttachment(d)">
+                            <img class="attachment-img"
+                                [src]="isProd? './assets/backtest.png' : './../../assets/attach.png'" />
+                            <span class="attachment-text">View Attachment</span>
+                        </span>
+                        <!-- Added by ApurvaK for View Attachment| 22 Nov 2021 |end -->
+
+                        <!-- <span class="attachment-wrapper" (click)="showLifecycle(d)" *ngIf="d.Exotic_Misc5 === 'Hedged'">
+                            <img class="attachment-img"
+                                [src]="isProd? './assets/backtest.png' : './../../assets/backtest.png'" />
+                            <span class="attachment-text">Lifecycle</span>
+                        </span> -->
+
+                    </div>
+                    <!-- Added by ApurvaK for View Attachment| 22 Nov 2021 |start -->
+                    <div class="overlay" *ngIf="showAttahmentflag">
+                        <div class="attachments-popup-container">
+                            <div class="attachments-popup-title-bar">
+                                <div class="attachments-popup-title">Attachments</div>
+                                <div class="attachments-popup-close" (click)="closeLaunchProduct()">
+                                    <img class="attachments-popup-close-img" src="{{asseturl}}close.png" />
+                                </div>
+                            </div>
+                            <div class="attachment-files-wrapper"
+                                *ngFor="let fileName of ViewAttachmentRes;let i = index">
+                                <div class="attachment-file">
+                                    <a class="attachment-file-link" target="_blank"
+                                        (click)="downloadAttachment(i)">{{fileName.DocumentName}}</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Added by ApurvaK for View Attachment| 22 Nov 2021 |end -->
+                </div>
+                <div class="product-info">
+                    <div>
+                        <label class="heading-rmw">Issuer: </label><label class="value">{{d.PPCode}}</label>
+                    </div>
+                    <div>
+                        <label class="heading-rmw">Currency: </label><label class="value">{{d.Currency}}</label>
+                    </div>
+                    <!-- <div>
+                    <label class="heading-rmw">PRR: </label><label class="value">3</label>
+                </div> -->
+                    <div>
+                        <label class="heading-rmw">Strike Date: </label>
+                        <label class="value">{{d.Trade_Date_WB_LC | date:'dd-MMM-yyyy'}}</label>
+                    </div>
+                    <div>
+                        <label class="heading-rmw">Issue Date: </label>
+                        <!-- <label class="value">{{d.Trade_Date_WB_LC | date:'dd-MMM-yyyy'}}</label> -->
+                        <label class="value">{{d.ER_SettlmentDate | date:'dd-MMM-yyyy'}}</label>
+                    </div>
+                    <div>
+                        <label class="heading-rmw">Tenor: </label><label class="value">{{d.Soft_Tenor}}</label>
+                    </div>
+                    <!-- <div>
+                    <label class="heading-rmw">KO (%) </label>
+                    <label class="value"></label>
+                </div> -->
+                    <div>
+                        <label class="heading-rmw">Maturity Date: </label>
+                        <!-- <label class="value">{{cfs.formatSlashDate(d.ComputedTenorValue)}}</label> -->
+                        <label class="value">{{d.Maturity_Date_WB_LC | date:'dd-MMM-yyyy'}}</label>
+                    </div>
+                    <div>
+                        <label class="heading-rmw">Min Order Size: </label>
+                        <label class="value">{{d.minordersize | number:'1.2-2'}}</label>
+                    </div>
+                    <div>
+                        <label class="heading-rmw">Denomination: </label>
+                        <label class="value">{{d.denomination | number:'1.2-2'}}</label>
+                    </div>
+                </div>
+                <div class="product-moreinfo">
+                    <div class="rmw-summary" *ngIf="d.Template_Code !== 'YieldEnhancement'">
+                        <label>Early Redemption</label>
+                        <p>{{d.Exotic_Misc4 ? d.Exotic_Misc4 : "-" }}
+                            <!-- <span *ngIf="d.ERStepDown !== ''"> with a stepdown of
+                            {{d.ERStepDown}}%</span><br />
+                        <span
+                            *ngIf="d.ERStepDown !== '' && d.ERStepDown !== '0.00'">{{d.AutocallCouponAUP}}%</span>
+                        <span *ngIf="d.ERStepDown === '' || d.ERStepDown === '0.00'"> No</span> Autocall
+                        Coupon -->
+                            <!-- <span
+                            *ngIf="d.ComputedAlternateCouponPercentAUP !== '' && d.ComputedAlternateCouponPercentAUP !== '0.00'">
+                            and {{d.ComputedAlternateCouponPercentAUP}}%</span>
+                        <span
+                            *ngIf="d.ComputedAlternateCouponPercentAUP === '' || d.ComputedAlternateCouponPercentAUP === '0.00'">
+                            and No</span> Alternate Coupon. -->
+                        </p>
+                    </div>
+                    <div class="rmw-summary" *ngIf="d.Template_Code !== 'YieldEnhancement'">
+                        <!-- <label>ER Coupon</label> -->
+                        <label>Autocall Coupon</label>
+                        <p>
+
+                            {{d.Exotic_Misc2 ? d.Exotic_Misc2 : "-" }}
+                        </p>
+                    </div>
+                    <div class="rmw-summary"
+                        *ngIf="d.Exotic_Misc3 !=='' && d.Exotic_Misc3 !== 'No' && d.Exotic_Misc3 !== 'NO'">
+                        <label>Periodic Coupon</label>
+                        <p>
+                            {{d.Exotic_Misc3}}
+                        </p>
+                    </div>
+                    <div class="rmw-summary">
+                        <label>Payoff at maturity</label>
+                        <p>
+                            {{d.Exotic_Misc4 ? d.Exotic_Misc4 : "-" }}
+                        </p>
+                    </div>
+                </div>
+                <div class="product-button">
+                    <div class="progressGrid">
+                        <div>
+                            <label>Total Orders</label><br>
+                            <label class="value">{{d.TotalDeals | number}}</label>
+                        </div>
+                        <div style="text-align: right;">
+                            <label>Max Pool Size</label><br>
+                            <label class="value">{{d.Maximum_Issue_Size | number}}</label>
+                        </div>
+                    </div>
+
+                    <div class="progress progressDiv">
+                        <fieldset class="progress-bar bg-success" role="progressbar"
+                            [style.width]="d.PercentageFilled+'%'" [attr.aria-valuenow]="d.PercentageFilled"
+                            aria-valuemin="0" aria-valuemax="100" [attr.disabled]="d.Exotic_Misc5 === 'Close Pool'">
+                        </fieldset>
+                        <!-- {{d.PercentageFilled}}% -->
+                    </div>
+                    <br />
+                    <div class="subscription">
+                        <app-svg-icons [icon]="'clock-timer-icon'" [width]="'40'" [height]="'40'" [fill]="'var(--active)'" *ngIf="d.Exotic_Misc5 !== 'Close Pool'"></app-svg-icons>
+                        <!-- <div class="subscription-icon" *ngIf="d.Exotic_Misc5 !== 'Close Pool'"></div> -->
+                        <label class="heading-rmw" *ngIf="d.Exotic_Misc5 !== 'Close Pool'">Subscription Deadline</label>
+                        <label class="value" *ngIf="d.Exotic_Misc5 !== 'Close Pool'">{{d.Close_Date |
+                            date:'dd-MMM-yyyy'}}</label>
+                        <!-- <label class="value">22-Mar-2021 10:00:00 AM</label>  -->
+                        <label class="heading-rmw disabledlbl" *ngIf="d.Exotic_Misc5 === 'Close Pool'"
+                            style="font-size: 18px !important;">Closed for Subscription</label>
+
+                    </div>
+                    <div class="buttonsClass">
+                        <button class="button launch" (click)="showOrderPopup(d)"
+                            [disabled]="d.Exotic_Misc5 === 'Close Pool' || d.disabledSubscribeBtn">Subscribe</button>
+                        <!-- <button class="button cancel">More Details</button> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</ng-template>
+
+<!-- Ended by Rohit T. -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div style="margin: 0px 4%">
+</div>
+
+<div id="orderDetail" *ngIf="orderPopupFlag">
+    <div id="orderPopup" class="orderPopup">
+        <div class="header">
+            <div>
+                <label class="headerlbl" style="border:none;text-align: left;font-weight: 500;"
+                    *ngIf="orderData.Template_Code === 'AutocallablePhoenix'">
+                    {{orderData.Product_Name}}
+                </label>
+                <br *ngIf="orderData.Template_Code === 'AutocallablePhoenix'" />
+                <!-- <label class="headerLabel" style="text-align: left; border-bottom: none;"
+                        *ngIf="orderData.Template_Code === 'AutocallablePhoenix'">Underlying: <span
+                            class="headerLabelData">
+                            {{orderData.FirstUnderlyingCode1AUP}}{{orderData.SecondUnderlyingCode1AUP!=='' ? ',' : ''}}
+                            {{orderData.SecondUnderlyingCode1AUP}}{{orderData.ThirdUnderlyingCode1AUP!=='' ? ',' : ''}}
+                            {{orderData.ThirdUnderlyingCode1AUP}}{{orderData.FourthUnderlyingCode1AUP!=='' ? ',' : ''}}
+                            {{orderData.FourthUnderlyingCode1AUP}}{{orderData.FifthUnderlyingCode1AUP!=='' ? ',' : ''}}
+                            {{orderData.FifthUnderlyingCode1AUP}}{{orderData.sixthUnderlyingCode1AUP!=='' ? ',' : ''}}
+                            {{orderData.sixthUnderlyingCode1AUP}} </span></label> -->
+                <label class="headerlbl" style="border:none;text-align: left;font-weight: 500;"
+                    *ngIf="orderData.Template_Code === 'ReverseConvertible'">
+                    {{orderData.Product_Name}}</label>
+                <br *ngIf="orderData.Template_Code === 'ReverseConvertible'" />
+                <!-- <label class="headerLabel" style="text-align: left; border-bottom: none;"
+                        *ngIf="orderData.Template_Code === 'ReverseConvertible'">Underlying: <span
+                            class="headerLabelData">
+                            {{orderData.FirstUnderlyingCode1RC}}{{orderData.SecondUnderlyingCode1RC!=='' ? ',' : ''}}
+                            {{orderData.SecondUnderlyingCode1RC}}{{orderData.ThirdUnderlyingCode1RC!=='' ? ',' : ''}}
+                            {{orderData.ThirdUnderlyingCode1RC}}{{orderData.FourthUnderlyingCode1RC!=='' ? ',' : ''}}
+                            {{orderData.FourthUnderlyingCode1RC}}{{orderData.FifthUnderlyingCode1RC!=='' ? ',' : ''}}
+                            {{orderData.FifthUnderlyingCode1RC}}{{orderData.sixthUnderlyingCode1RC!=='' ? ',' : ''}}
+                            {{orderData.sixthUnderlyingCode1RC}} </span></label> -->
+                <label class="headerlbl" style="border:none;text-align: left;font-weight: 500;"
+                    *ngIf="orderData.Template_Code === 'Participation'"> {{orderData.Product_Name}}</label>
+                <br *ngIf="orderData.Template_Code === 'Participation'" />
+                <!-- <label class="headerLabel" style="text-align: left; border-bottom: none;"
+                        *ngIf="orderData.Template_Code === 'Participation'">Underlying: <span class="headerLabelData">
+                            {{orderData.InputUnderlyingCSV}}
+                        </span></label> -->
+                <label class="headerlbl" style="border:none;text-align: left;font-weight: 500;"
+                    *ngIf="orderData.Template_Code === 'CreditTranche'">{{orderData.Product_Name}}</label>
+                <br *ngIf="orderData.Template_Code === 'CreditTranche'" />
+                <!-- <label class="headerLabel" style="text-align: left; border-bottom: none;"
+                        *ngIf="orderData.Template_Code === 'CreditTranche'">Index: <span class="headerLabelData">
+                            {{orderData.InputCreditIndexTrancheCT}} </span></label> -->
+            </div>
+        </div>
+        <div style="position: absolute;right: 15px;top: 15px;">
+            <div (click)="hideOrderPopup()" class="modal-close" style=" pointer-events:all">
+            </div>
+        </div>
+        <div>
+            <div class="Product-grid-container">
+                <div>
+                    <div class="orderDiv">
+                        <div class="orderHeader">Book Order <span *ngIf="showOnBehalfOf">for</span>
+                            <div *ngIf="showOnBehalfOf">
+
+                                <select id="customerSelect" [(ngModel)]="onBehalfOf">
+                                    <!-- <option *ngFor="let bookData of api.allBooksData" value="{{bookData.BookCode}}">{{bookData.BookName}}</option> -->
+                                    <option *ngFor="let bookData of api.allBooksData" value="{{bookData.BookCode}}">
+                                        {{bookData.BookName}}</option>
+                                    <!-- <option>custoemr 1</option>
+                                <option>custoemr 1</option>
+                                <option>custoemr 1</option>
+                                <option>custoemrcustoemrcustoemr 1</option> -->
+                                </select>
+
+                            </div>
+                        </div>
+                        <div class="wrapper">
+                            <div class="wrapperDiv" *ngIf="this.showRMDetails">
+                                <label for="">RM</label>
+                                <div>
+                                    <!-- <input type="text" [(ngModel)]="RM" (blur)="reset();" tabindex="1"> -->
+                                    <select id="RM" [(ngModel)]="RM">
+                                        <option *ngFor="let RMItem of RMList" value="{{RMItem.RM_ID}}">
+                                            {{RMItem.Rel_Manager_Name}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <!-- <div class="wrapperDiv">
+                                <label for="">Client Rel ID</label>
+                                <div>
+                                    <input type="text" [(ngModel)]="customerID" (blur)="reset();">
+                                </div>
+                            </div> -->
+
+                            <!-- <div class="wrapperDiv" *ngIf="cfs.getLoggedInUserName()[1].EntityId !== '151' && cfs.getLoggedInUserName()[1].EntityId !== '157'"> -->
+                            <div class="wrapperDiv" *ngIf="this.showCustDetails">
+                                <label for="">CIF</label>
+                                <div>
+                                    <!-- <input type="text" [(ngModel)]="Notional" id='txtNotional' (focus)="cfs.UnformatNumber($event)" 
+                                    (blur)="checkValidNotional($event,'Notional');" (keypress)="cfs.NotionalValidateKeys($event)"
+                                     (keyup)="cfs.chkNotionalFormat_keyUp($event)"> -->
+                                    <input type="text" placeholder="Please enter customer" value="{{custName}}"
+                                        style="text-align: left;" [(ngModel)]="custName" maxlength="10"
+                                        (keypress)="ChangeIndex($event); showSuggestions = true"
+                                        (keydown.enter)="selectShare($event); flag=false;"
+                                        (keydown.backspace)="backKeyPress($event)"
+                                        (keydown.delete)="backKeyPress($event)" (keydown.tab)="setFocus(); flag=false;"
+                                        (keydown.ArrowUp)="selectedBIndex = cfs.moveUpSelection1($event, selectedBIndex)"
+                                        (keydown.ArrowDown)="selectedBIndex = cfs.moveDownSelection1($event, selectedBIndex)"
+                                        tabindex="2" Id="txtcustName" />
+
+                                    <div class="SelectorBox " *ngIf="flag && showSuggestions"
+                                        (clickOutside)="flag=false;">
+                                        <a *ngFor="let customer of customerList | searchFilter: custName; let i = index"
+                                            (keypress)="ChangeIndex($event)" (keydown.enter)="selectShare($event)">
+                                            <div *ngIf="customer" [attr.data-share]="customer.CustomerID"
+                                                (click)="showUnderlying($event,customer)"
+                                                [ngClass]="{HoverSuggestion: i === selectedBIndex}">
+                                                <span>{{ customer.CustomerName }}</span>
+                                            </div>
+                                        </a>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                            <div class="wrapperDiv">
+                                <label for=""
+                                    *ngIf="orderData.Template_Code !== 'ACC' && orderData.Template_Code !=='DAC'">Notional</label>
+                                <label for=""
+                                    *ngIf="orderData.Template_Code === 'ACC' || orderData.Template_Code ==='DAC'">Daily
+                                    No. Of Shares</label>
+                                <div>
+                                    <input type="text" [(ngModel)]="Notional" style="text-align: right; " id='txtNotional'
+                                        (focus)="cfs.UnformatNumber($event)"
+                                        (blur)="checkValidNotional($event,'Notional');"
+                                        (keypress)="cfs.NotionalValidateKeys($event)"
+                                        (keyup)="cfs.chkNotionalFormat_keyUp($event)" tabindex="3"
+                                        *ngIf="orderData.Template_Code !== 'ACC' && orderData.Template_Code !=='DAC'">
+
+                                    <!-- <input type="text" placeholder="" tabindex="7" [(ngModel)]="Notional"
+                                        id="txtNotional" maxlength="10"
+                                        (blur)="cfs.FormatNumber($event);calcEstNotional(orderData)"
+                                        (keypress)="cfs.allowIntegerOnly($event)"
+                                        onDrag="return false" onDrop="return false" onPaste="return false" *ngIf="orderData.Template_Code === 'ACC' || orderData.Template_Code ==='DAC'"/> -->
+
+                                    <input type="text" placeholder="" tabindex="7" [(ngModel)]="Notional" style="text-align: right; "
+                                        id="txtNotional" maxlength="10" (focus)="cfs.UnformatNumber($event)"
+                                        (blur)="this.reset();checkValidNotional($event, 'NoOfShare');calcEstNotional(orderData);"
+                                        (keypress)="cfs.NotionalValidateKeys($event)"
+                                        (keyup)="cfs.chkNotionalFormat_keyUp($event)" (change)="this.reset();"
+                                        onDrag="return false" onDrop="return false" onPaste="return false"
+                                        *ngIf="orderData.Template_Code === 'ACC' || orderData.Template_Code ==='DAC'" />
+                                </div>
+
+                            </div>
+                            <div class="wrapperDiv"
+                                *ngIf="orderData.Template_Code === 'ACC' || orderData.Template_Code ==='DAC'">
+                                <label for="">Estimated Notional</label>
+                                <div>
+                                    <input type="text" [(ngModel)]="estNotional" id='txtestNotional'
+                                        (focus)="cfs.UnformatNumber($event)"
+                                        (blur)="checkValidNotional($event,'estNotional'); "
+                                        (keypress)="cfs.NotionalValidateKeys($event)"
+                                        (keyup)="cfs.chkNotionalFormat_keyUp($event)" disabled>
+                                </div>
+
+                            </div>
+                            <div class="wrapperDiv"
+                                *ngIf="orderData.Template_Code !== 'ACC' && orderData.Template_Code !=='DAC' && showMinMaxSolveFor && orderData.ER_SolveFor !== 'Reoffer' && orderData.ER_SolveFor !== 'IBPrice'">
+                                <label for="">{{getSolveForLabel(orderData.ER_SolveFor)}} </label>
+                                <div>
+                                    <input type="text" [(ngModel)]="minCoupon" id='txtminCoupon'
+                                        (focus)="cfs.UnformatNumber($event)"
+                                        (blur)="checkValidNotional($event,'minCoupon');"
+                                        (keypress)="cfs.NotionalValidateKeys($event)"
+                                        (keyup)="cfs.chkNotionalFormat_keyUp($event)" tabindex="4">
+                                </div>
+
+                            </div>
+
+                            <div class="item">
+                                <label for="">Stock Eligibility Reason</label>
+                                <select style="max-width: 100%;padding: 0px !important;text-align: left; padding: 5px !important"
+                                    [(ngModel)]="AdvReason" (change)="reset();" tabindex="5">
+                                    <option selected="selected" value=""></option>
+                                    <option value="ADVR_001">Stocks are allowed for advisory trade</option>
+                                    <!-- <option value="ADVR_003">Client direct trade</option> -->
+                                </select>
+                            </div>
+                            <!-- 
+                            <div class="col-10">
+                                <input type="text" placeholder="Please Enter Underlying" value="{{ShareName}}" class="longText" style="text-align: left;" [(ngModel)]="ShareName" maxlength="10" (keypress)="ChangeIndex($event); showSuggestions = true" (keydown.enter)="selectShare($event); flag=false;"
+                                    (keydown.backspace)="backKeyPress($event)" (keydown.delete)="backKeyPress($event)" (keydown.tab)="setFocus(); flag=false;" (keydown.ArrowUp)="selectedBIndex = commonfunctions.moveUpSelection1($event, selectedBIndex)" (keydown.ArrowDown)="selectedBIndex = commonfunctions.moveDownSelection1($event, selectedBIndex)"
+                                    tabindex="5" Id="txtShare" />
+                                <div class="SelectorBox" *ngIf="flag && showSuggestions" (clickOutside)="flag=false;">
+                                    <a *ngFor="let share of (shares | searchUnderlying: ShareName); let i = index" (keypress)="ChangeIndex($event)" (keydown.enter)="selectShare($event)">
+                                        <div *ngIf="share" [attr.data-share]="share.Code" (click)="showUnderlying($event,share)" [ngClass]="{HoverSuggestion: i === selectedBIndex}">
+                                            <span>{{ share.LongName }}</span>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div> -->
+                        </div>
+                        <div class="ordertitle">
+
+                            <div style="margin:10px;">
+                                <span style="font-size: 14px; " class="successMsg" *ngIf="ordersuccessMsg !== ''">
+                                    {{ordersuccessMsg}}</span>
+                                <span style="font-size: 14px; ;" class="ordererrorMsg" *ngIf="ordererrorMsg !== ''">
+                                    {{ordererrorMsg}} </span>
+                            </div>
+
+                            <div style="text-align: right;padding: 12px 18px 10px 0px;">
+<!-- Added by AdilP for proper alignment @29-03-2023 -->
+                                <input class="confirmbtn" style="background-color:var(--btn-bg);; color: white;" type="button"
+                                    value="Confirm" (click)="BookOrder()" tabindex="6">
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="success-overlay" *ngIf="successMessage">
+    <div class="success-grid">
+        <div class="close-success-modal">
+            <div (click)="toggleSuccessMessage()" class="modal-close"></div>
+        </div>
+        <div class="success-div">
+            <div class="success-icon"></div>
+        </div>
+        <div class="success-div">
+            <label class="success-message-bold">{{ordersuccessMsg}}</label>
+        </div>
+        <!-- <div class="success-div">
+        <label class="success-message-light">{{successMsgProdLaunch}}</label>
+      </div> -->
+        <div class="success-div">
+            <button (click)="toggleSuccessMessage()" class="button success-button">Continue</button>
+        </div>
+    </div>
+</div>
+
+
+<div class="overlay" *ngIf="showAttachmentsPopup">
+    <div class="attachments-popup-container">
+        <div class="attachments-popup-title-bar">
+            <div class="attachments-popup-title">Attachments (
+                <span class="attachments-popup-count">{{attachmentCount}}</span>)
+            </div>
+            <div class="attachments-popup-close" (click)="clearAttachmentPopup()">
+                <img class="attachments-popup-close-img"
+                    [src]="isProd? './assets/close.png' : './../../assets/close.png'" />
+            </div>
+        </div>
+        <div class="attachment-files-wrapper">
+            <div class="attachment-file" *ngFor="let file of attachmentFiles">
+                <a class="attachment-file-link" [href]="file.Link" target="_blank"
+                    rel="noopener noreferrer">{{file.Filename}}</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Start || Added by AdilP for Page Loader || 04-05-2023 || FIN1EURINT-282 -->
+<div class="pageload-overlay" *ngIf="pageloadflag">
+    <div>
+        <svg version="1.1" id="L4" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
+      y="0px" [ngStyle]="{ width:  + '25px', height:  + '25px' }"
+      style="margin-left: 30px" viewBox="0 0 100 100" enable-background="new 0 0 0 0"
+      xml:space="preserve">
+      <circle stroke="#a1a1a1" cx="45" cy="25" r="1.4" stroke-width="0.1">
+        <animate attributeName="opacity" dur="2s" values="0;1;0" repeatCount="indefinite" begin="0.1" />
+      </circle>
+      <circle stroke="#a1a1a1" cx="45" cy="25" r="1.5" stroke-width="0.1">
+        <animate attributeName="opacity" dur="2s" values="0;1;0" repeatCount="indefinite" begin="0.1" />
+      </circle>
+    </svg>
+    </div>
+</div> 
+<!-- End || Added by Adil P || 03-05-2023 -->
+
+<div class="overlay" *ngIf="showFolderPopupFlag">
+    <div class="attachments-popup-container" style="min-height: 250px;">
+        <div class="attachments-popup-title-bar">
+            <div class="attachments-popup-title">Folder
+            </div>
+            <div class="attachments-popup-close" style="display:flex;align-items:center;">
+                <!-- <img style="margin-right: 10px;" class="attachments-popup-close-img"
+                    [src]="isProd? './assets/add.png' : './../../assets/add.png'"
+                    (click)="addFolder = true; fName=''" /> -->
+                    <span style="font-size:24px;height:fit-content"  (click)="addFolder = true; fName=''">+</span>
+                    <span (click)="createNewFolder()" style="height:fit-content">Save</span>
+                <!-- <img style="margin-right: 10px;" class="attachments-popup-close-img"
+                    [src]="isProd? './assets/save1.png' : './../../assets/save1.png'" (click)="createNewFolder()" /> -->
+                <img class="attachments-popup-close-img"
+                    [src]="isProd? './assets/close.png' : './../../assets/close.png'" (click)="hideFolderPopup()" />
+            </div>
+        </div>
+        <div class="attachment-files-wrapper" *ngIf="addFolder">
+            <input type="text" [(ngModel)]="fName" placeholder="Please enter folder name">
+
+        </div>
+        <div class="attachment-files-wrapper" *ngIf="successMsg!=='' || errorMsg!==''">
+            <span class="successMsg" *ngIf="successMsg!==''">
+                {{successMsg}} </span>
+            <span class="errorMsg" *ngIf="errorMsg!==''">
+                {{errorMsg}} </span>
+
+
+        </div>
+        <div #folderlistDiv id="folderlistDiv" class="attachment-files-wrapper"
+            style="max-height: 250px;overflow-y: scroll;">
+            <div class="attachment-file" *ngFor="let f of folderlist; let i=index">
+                <input type="checkbox" id="{{i}}" name="{{i}}" (change)="folderchkchange(i);">
+                <label for="{{i}}">
+                    <span style="font-size: 16px;font-weight :400;">{{f.PF_Folder_Name}}</span></label>
+            </div>
+            <!-- <div style="position:fixed;bottom:5px;right:5px;">
+                <input class="button" style="height: 0px;" type="button" value="Confirm" (click)="saveproducttofolder()">
+            </div> -->
+        </div>
+
+    </div>
+</div>
+
+<div class="success-overlay" *ngIf="errorMessage">
+    <div class="success-grid">
+        <div class="close-success-modal">
+            <div (click)="toggleErrorMessage()" class="modal-close"></div>
+        </div>
+        <div class="success-div">
+            <div class="error-icon"></div>
+        </div>
+        <div class="success-div">
+            <label class="success-message-bold">{{ErrorMsgTop}}</label>
+        </div>
+        <!-- <div class="success-div">
+        <label class="success-message-light">{{successMsgProdLaunch}}</label>
+      </div> -->
+        <div class="success-div">
+            <button (click)="toggleErrorMessage()" class="button error-button">Continue</button>
+        </div>
+    </div>
+</div>
+
+<div class="overlay" *ngIf="showviewOrderPopupFlag">
+    <div class="stage2-popup-container">
+        <div class="stage2-popup-title-bar">
+            <div class="stage2-popup-headline-wrapper">
+                <div class="stage2-popup-headline-text">
+                    Order Details
+                </div>
+
+            </div>
+            <div class="stage2-popup-close" (click)="hideViewOrderPopup()">
+                <img class="stage2-popup-close-img" src="{{asseturl}}close.png" />
+            </div>
+        </div>
+        <div *ngIf="!AQDQFlag">
+
+            <div class="headerDiv" style="margin-top:35px;margin-left: 0px;"
+                *ngIf="showMinMaxSolveFor && orderData.ER_SolveFor !== 'Reoffer' && orderData.ER_SolveFor !== 'IBPrice'">
+
+                <div></div>
+                <div style="margin: 10px auto;">
+                    <div style="margin:0px auto;text-align: center;">
+                        <div class="searchInnerDiv" style="border-radius: 5px;">
+                            <img class="search-icon" src="{{asseturl}}search.png">
+                            <input type="text" name="" placeholder="Enter {{getSolveForLabel(orderData.ER_SolveFor)}}"
+                                style="max-width: 100%; border-bottom: none !important;background: transparent;"
+                                [(ngModel)]="finalCoupon" (keypress)="cfs.InputNumber($event)">
+                            <!-- placeholder="Enter coupon" -->
+                        </div>
+                    </div>
+                </div>
+                <div style="margin: 10px auto;">
+                </div>
+            </div>
+        </div>
+		<!-- //changed on  20-04-2023 by AdilP -->
+        <div style="overflow: auto; height: 450px;">
+            <table class="orderTable" *ngIf="!AQDQFlag">
+                <span *ngIf="!viewOrderData || viewOrderData.length == 0">
+                    No data available</span>
+                <tr>
+                    <th style="padding:10px 5px !important; text-align: left !important;">Deal No</th>
+                    <!-- <th style="padding:10px !important" *ngIf="cfs.getLoggedInUserName()[1].EntityId !== '151' && cfs.getLoggedInUserName()[1].EntityId !== '157'">Customer Name</th> -->
+                    <th style="padding:10px 5px !important; text-align: left !important;" *ngIf="this.showRMDetails">RM Name</th>
+                    <th style="padding:10px 5px !important; text-align: left !important;" *ngIf="this.showCustDetails">Customer Name</th>
+                    <th style="padding:10px 5px !important; text-align: left !important;">Notional Amount</th>
+                    <th style="padding:10px 5px !important; text-align: center !important;">Note Price (%)</th>
+                    <!-- <th style="padding:10px !important">Trade Date</th> -->
+                    <!-- <th style="padding:10px !important">Min. Coupon</th> -->
+                    <th style="padding:10px 5px !important"
+                        *ngIf="showMinMaxSolveFor && orderData.ER_SolveFor !== 'Reoffer' && orderData.ER_SolveFor !== 'IBPrice'">
+                        {{getSolveForLabel(orderData.ER_SolveFor)}}</th>
+                </tr>
+                <ng-template ngFor let-i="index" let-t [ngForOf]="viewOrderData">
+                    <!-- <tr [ngClass]="finalCoupon !== '' && t.Min_x0020_Coupon[0] > finalCoupon ? 'selectedtr' : ''"> -->
+                    <tr [ngClass]="checkCouponRange(t) ? 'selectedtr' : ''">
+                        <td class="leftAlign">{{t.Deal_x0020_ID[0]}}</td>
+                        <!-- <td *ngIf="cfs.getLoggedInUserName()[1].EntityId !== '151' && cfs.getLoggedInUserName()[1].EntityId !== '157'">{{t.Customer_x0020_Name[0]}}</td> -->
+                        <td *ngIf="this.showRMDetails">{{t.RM_x0020_Name[0]}}</td>
+                        <td *ngIf="this.showCustDetails">{{t.Customer_x0020_Name[0]}}</td>
+                        <td class="rightAlign">{{t.Nominal_x0020_Amount[0] | number:'1.2-2'}}</td>
+                        <td class="centerAlign">{{t.Note_x0020_Price[0] | number:'1.2-2'}}</td>
+                        <!-- <td class="centerAlign">{{t.Trade_x0020_Date[0] | date:'dd-MMM-yyyy'}}</td> -->
+                        <td *ngIf="showMinMaxSolveFor && orderData.ER_SolveFor !== 'Reoffer' && orderData.ER_SolveFor !== 'IBPrice'"
+                            class="rightAlign">{{t.Solve_x0020_For_x0020_Value[0] | number:'1.2-2'}}</td>
+                    </tr>
+                </ng-template>
+
+            </table>
+
+            <table class="orderTable" *ngIf="AQDQFlag">
+                <span *ngIf="!viewOrderData || viewOrderData.length == 0">
+                    No data available</span>
+                <tr>
+                    <th style="padding:10px !important">Deal No</th>
+                    <th style="padding:10px !important" *ngIf="showRMDetails">RM Name</th>
+                    <th style="padding:10px !important" *ngIf="this.showCustDetails">Customer Name</th>
+                    <th style="padding:10px !important">Daily No. of Shares</th>
+                    <!-- <th style="padding:10px !important">Estimated Notional</th> -->
+                    <!-- <th style="padding:10px !important">Trade Date</th> -->
+                    <th style="padding:10px !important"
+                        *ngIf="orderData.Template_Code !== 'ACC' && orderData.Template_Code !=='DAC' && showMinMaxSolveFor && orderData.ER_SolveFor !== 'Reoffer' && orderData.ER_SolveFor !== 'IBPrice'">
+                        {{getSolveForLabel(orderData.ER_SolveFor)}}</th>
+                </tr>
+                <ng-template ngFor let-i="index" let-t [ngForOf]="viewOrderData">
+                    <!-- <tr  [ngClass]="finalCoupon !== '' && t.Solve_x0020_For_x0020_Value[0] > finalCoupon ? 'selectedtr' : ''"> -->
+                    <tr [ngClass]="checkCouponRange(t) ? 'selectedtr' : ''">
+                        <td class="centerAlign">{{t.Deal_x0020_ID[0]}}</td>
+                        <td *ngIf="showRMDetails">{{t.RM_x0020_Name[0]}}</td>
+                        <td *ngIf="this.showCustDetails">{{t.Customer_x0020_Name[0]}}</td>
+                        <td class="centerAlign">{{t['No._x0020_of_x0020_Shares'][0] | number}}</td>
+                        <!-- <td class="rightAlign">{{t.Nominal_x0020_Amount[0] | number:'1.2-2'}}</td> -->
+                        <!-- <td class="centerAlign">{{t.Trade_x0020_Date[0] | date:'dd-MMM-yyyy'}}</td> -->
+                        <td *ngIf="orderData.Template_Code !== 'ACC' && orderData.Template_Code !=='DAC' && showMinMaxSolveFor && orderData.ER_SolveFor !== 'Reoffer' && orderData.ER_SolveFor !== 'IBPrice'"
+                            class="centerAlign">{{t.Solve_x0020_For_x0020_Value[0] | number:'1.2-2'}}</td>
+                    </tr>
+                </ng-template>
+
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- {RFQ_ID:d.EP_ER_QuoteRequestId,Template_Code:d.Template_Code,RedirectedFrom:'RMW',Mode:'Launch Product'}]" -->
+<!-- //change on 09 Jan 2023 by Ashwini H for loading app-ec-previous-quotes from moredetails -->
+<!-- //changed on  11-04-2023 by AdilP -->
+
+<app-docs-modal *ngIf="showDocsPopup"
+    [tableData]="docsData"
+    [labelsData]="docsPopupLabels"
+    [displayMode]="docsView"
+    (closeModalEvent)="closeDocsModal(val)"></app-docs-modal>
+<router-outlet> </router-outlet>
+
+<app-ec-previous-quotes [RFQ_ID]="selectRecord['EP_ER_QuoteRequestId']" [Template_Code]="selectRecord['Template_Code']"  
+    [redirectFrom]="selectRecord['redirectFrom']" [Mode]="selectRecord['Mode']"
+    [prevQuoteLaunchPopUp]="prevQuoteLaunchPopUp" [srcComponent]="'RMW'" *ngIf="prevQuoteLaunchPopUp">
+<app-ec-previous-quotes>
+<app-backtest *ngIf="backTestPopUp" [NoteMasterID]="selectRecord['Note_Master_ID']" [backTestPopUp]="backTestPopUp">
+</app-backtest>
+
+<app-lifecycle *ngIf="lifecyclePopUp" [NoteMasterID]="selectRecord['Note_Master_ID']" [lifecyclePopUp]="lifecyclePopUp">
+</app-lifecycle>
+
+<!-- [RFQ_ID]="selectRecord['EP_ER_QuoteRequestId']" 
+[Template_Code]="selectRecord['Template_Code']"
+[redirectFrom]="selectRecord['redirectFrom']"
+[Mode]="selectRecord['Mode']"
+[prevQuoteLaunchPopUp] = "prevQuoteLaunchPopUp"
+[srcComponent] ="'RMW'" -->

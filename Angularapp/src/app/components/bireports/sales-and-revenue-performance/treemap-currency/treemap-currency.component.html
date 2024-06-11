@@ -1,0 +1,12 @@
+<div class="chartWrapperContainer">
+    <div class="treeMap-payoff-title">
+        <p style="color: rgba(180, 180, 180, 1.0); " class="chart-title">Revenue By Currency (USD eqv.)<span
+            style="float: right; margin-right: 4px; transform: rotate(45deg); color: #777;" (click)="pinChart($event, 'Revenue By PayOff (USD eqv.)')"
+           ><span class="material-icons">push_pin</span></span></p>
+    </div>
+    
+    <div class="treeMap-currency-component">
+        <canvas id="sarchart1" >{{chart}}</canvas>
+    </div>
+</div>
+

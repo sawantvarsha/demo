@@ -1,0 +1,66 @@
+.date-picker-container {
+    /* background-color: white; */
+    position: relative;
+    /* width: 250px; */
+}
+
+/* app-calendar {
+    position: absolute;
+    width: 100%;
+    top: 5px;
+    left: 2px;
+    margin: 0;
+    padding: 0;
+    z-index: 9999;
+} */
+
+.date-input {
+    width: 100%;
+    /* height: 30px; */
+    position: absolute;
+    content: '';
+    /* padding: 0 5px; */
+    /* border: 1px solid grey; */
+    background-image: url("data:image/svg+xml;utf8,%3Csvg%20version%3D%221.1%22%20id%3D%22Capa_1%22%20%0D%0A%09xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20%0D%0A%09xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20x%3D%220px%22%20y%3D%220px%22%20width%3D%2236.447px%22%20height%3D%2236.447px%22%20viewBox%3D%220%200%2036.447%2036.447%22%20style%3D%22enable-background%3Anew%200%200%2036.447%2036.447%3B%22%20xml%3Aspace%3D%22preserve%22%3E%0D%0A%09%3Cg%3E%0D%0A%09%09%3Cg%3E%0D%0A%09%09%09%3Cpath%20d%3D%22M30.224%2C3.948h-1.098V2.75c0-1.517-1.197-2.75-2.67-2.75c-1.474%2C0-2.67%2C1.233-2.67%2C2.75v1.197h-2.74V2.75%0D%0A%09%09%09c0-1.517-1.197-2.75-2.67-2.75c-1.473%2C0-2.67%2C1.233-2.67%2C2.75v1.197h-2.74V2.75c0-1.517-1.197-2.75-2.67-2.75%0D%0A%09%09%09c-1.473%2C0-2.67%2C1.233-2.67%2C2.75v1.197H6.224c-2.343%2C0-4.25%2C1.907-4.25%2C4.25v24c0%2C2.343%2C1.907%2C4.25%2C4.25%2C4.25h24%0D%0A%09%09%09c2.344%2C0%2C4.25-1.907%2C4.25-4.25v-24C34.474%2C5.855%2C32.567%2C3.948%2C30.224%2C3.948z%20M25.286%2C2.75c0-0.689%2C0.525-1.25%2C1.17-1.25%0D%0A%09%09%09c0.646%2C0%2C1.17%2C0.561%2C1.17%2C1.25v4.896c0%2C0.689-0.524%2C1.25-1.17%2C1.25c-0.645%2C0-1.17-0.561-1.17-1.25V2.75z%20M17.206%2C2.75%0D%0A%09%09%09c0-0.689%2C0.525-1.25%2C1.17-1.25s1.17%2C0.561%2C1.17%2C1.25v4.896c0%2C0.689-0.525%2C1.25-1.17%2C1.25s-1.17-0.561-1.17-1.25V2.75z%20M9.125%2C2.75%0D%0A%09%09%09c0-0.689%2C0.525-1.25%2C1.17-1.25s1.17%2C0.561%2C1.17%2C1.25v4.896c0%2C0.689-0.525%2C1.25-1.17%2C1.25s-1.17-0.561-1.17-1.25V2.75z%0D%0A%09%09%09%20M31.974%2C32.198c0%2C0.965-0.785%2C1.75-1.75%2C1.75h-24c-0.965%2C0-1.75-0.785-1.75-1.75v-22h27.5V32.198z%22%2F%3E%0D%0A%09%09%09%3Crect%20x%3D%226.724%22%20y%3D%2214.626%22%20width%3D%224.595%22%20height%3D%224.089%22%2F%3E%0D%0A%09%09%09%3Crect%20x%3D%2212.857%22%20y%3D%2214.626%22%20width%3D%224.596%22%20height%3D%224.089%22%2F%3E%0D%0A%09%09%09%3Crect%20x%3D%2218.995%22%20y%3D%2214.626%22%20width%3D%224.595%22%20height%3D%224.089%22%2F%3E%0D%0A%09%09%09%3Crect%20x%3D%2225.128%22%20y%3D%2214.626%22%20width%3D%224.596%22%20height%3D%224.089%22%2F%3E%0D%0A%09%09%09%3Crect%20x%3D%226.724%22%20y%3D%2220.084%22%20width%3D%224.595%22%20height%3D%224.086%22%2F%3E%0D%0A%09%09%09%3Crect%20x%3D%2212.857%22%20y%3D%2220.084%22%20width%3D%224.596%22%20height%3D%224.086%22%2F%3E%0D%0A%09%09%09%3Crect%20x%3D%2218.995%22%20y%3D%2220.084%22%20width%3D%224.595%22%20height%3D%224.086%22%2F%3E%0D%0A%09%09%09%3Crect%20x%3D%2225.128%22%20y%3D%2220.084%22%20width%3D%224.596%22%20height%3D%224.086%22%2F%3E%0D%0A%09%09%09%3Crect%20x%3D%226.724%22%20y%3D%2225.54%22%20width%3D%224.595%22%20height%3D%224.086%22%2F%3E%0D%0A%09%09%09%3Crect%20x%3D%2212.857%22%20y%3D%2225.54%22%20width%3D%224.596%22%20height%3D%224.086%22%2F%3E%0D%0A%09%09%09%3Crect%20x%3D%2218.995%22%20y%3D%2225.54%22%20width%3D%224.595%22%20height%3D%224.086%22%2F%3E%0D%0A%09%09%09%3Crect%20x%3D%2225.128%22%20y%3D%2225.54%22%20width%3D%224.596%22%20height%3D%224.086%22%2F%3E%0D%0A%09%09%3C%2Fg%3E%0D%0A%09%3C%2Fg%3E%0D%0A%3C%2Fsvg%3E");
+    background-repeat: no-repeat;
+    background-size: 25px 20px;
+    background-position: right center;
+    background-clip: border-box;
+    -moz-background-clip: border-box;
+    -webkit-background-clip: border-box;
+    cursor: pointer;
+}
+
+.example-form {
+    min-width: 150px;
+    max-width: 500px;
+    width: 100%;
+  }
+  
+  .example-full-width {
+    width: 300px;
+  }
+
+  .mat-radio-button ~ .mat-radio-button {
+    margin-left: 16px;
+  }
+  .mat-datepicker-toggle, .mat-datepicker-content .mat-calendar-next-button, .mat-datepicker-content .mat-calendar-previous-button {
+    color: rgb(247 247 247 / 54%);
+  }
+  ::ng-deep .mat-datepicker-content .time-container:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background-color: #FFFFFF;
+}
+
+::ng-deep .mat-calendar-period-button {
+  pointer-events: all !important;
+}
+
+.middle {
+  display: block !important;
+}

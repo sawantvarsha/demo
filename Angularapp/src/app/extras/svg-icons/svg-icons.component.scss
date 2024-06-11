@@ -1,0 +1,10 @@
+:host {
+  display: flex;
+}
+svg {
+  cursor: pointer !important;
+}
+
+svg[name="notional-swap-arrow-icon"]{ //UrmilaA | F5SAAINT-616 | 26-Dec-23
+  cursor: default !important;
+}

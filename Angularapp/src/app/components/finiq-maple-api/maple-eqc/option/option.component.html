@@ -1,0 +1,128 @@
+
+<div class="insideCard-gridview">
+    <div class="cls-td">
+        <label>Product</label>
+    </div>
+    <div class="">
+        <label class="productName">
+            Options
+        </label>
+    </div>
+    <div>
+        <div class="">
+            <select>
+                <option value = "European Call">European Call</option>
+                <option value="European Put">European Put</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="cls-td">
+        <label>Underlying / Ccy</label>
+    </div>
+    <div class="" (clickOutside)="onClickedOutside($event)">
+        <input type = "text" [(ngModel)]="selectedShareOption" class="InputClass left" (click)=" showSharePopup = !showSharePopup " />
+        <div class="share-popup" *ngIf = "showSharePopup">
+            <div class = "pair" *ngFor = "let share of shareListOption" (click)="fnShowSharePopup(share)">
+                {{share.Share}}
+            </div>
+            <div class="pair" (click) = "showSearchShare = !showSearchShare " >
+                More>>>
+            </div>
+            <div class="Searchshare-popup" *ngIf = "showSearchShare" (click) = "sharelistpopup = !sharelistpopup">
+                <input type = "text" class="searchShare" placeholder="Select share" (keypress)="searchShare($event)" (keydown.backspace)="searchShare($event)" />
+            </div>
+            <div class="Searchshare-popup sharelistpopup" *ngIf = "sharelistpopup">
+                <div  class = "sharelist" *ngFor = "let sharelist of FilterSharesOption" (click) = "selectShareFromDropdown(sharelist)">
+                    {{sharelist.LongName}}
+                </div>
+            </div>
+        </div>
+    
+    </div>
+    <div>
+        <select>
+            <option *ngFor = "let c of currencyList[0]" [value]="c.Ccy">{{c.Ccy}}</option>
+        </select>
+    </div>
+   
+
+    <div class="cls-td">
+        <label>No. of Shares / Solve For</label>
+    </div>
+    <div>
+        <input type = "text" [(ngModel)] = "NoOfSharesOption" class="InputClass"/>
+    </div>
+    <div>
+        <select [(ngModel)] = "solveForOption">
+            <option value="PREMIUM">Premium</option>
+            <option value="STRIKE">Strike</option>
+        </select>
+    </div>
+
+    <div class="cls-td">
+        <label>Tenor</label>
+    </div>
+    <div>
+        <select class="" [(ngModel)]="selectedTenorOption">
+            <option *ngFor = "let tenor of tenorOption" [value]="tenor.Tenor" >{{tenor.Tenor}}</option>
+        </select>
+    </div>
+    <div  class="cls-td">
+       <label>{{MaturityDate}}</label>
+    </div>
+    <div class="cls-td">
+        <label>Strike / Client</label>
+    </div>
+    <div>
+        <input type = "text" [(ngModel)] = "strikeOption" class="InputClass" *ngIf = "solveForOption === 'PREMIUM' " />
+        <input type = "text" class="InputClass" *ngIf = "solveForOption === 'STRIKE' " disabled/>
+    </div>
+        <label class="switch">
+            <input type="checkbox" id="togBtn">
+            <div class="slider round">
+             <span class="on buy">Buy</span>
+             <span class="off sell">Sell</span>
+            </div>
+        </label>
+
+    <div class="cls-td">
+        <label>Settlement / Premium</label>
+    </div>
+    <div>
+        <select [(ngModel)] = "Settlement">
+            <option value="Cash">Cash</option>
+            <option value="Physical">Physical</option>
+        </select>
+    </div>
+    <div>
+        <input type = "text" [(ngModel)]="Premium" class="InputClass" *ngIf = "solveForOption === 'STRIKE' " />
+        <input type = "text" class="InputClass" *ngIf = "solveForOption === 'PREMIUM' " disabled />
+    </div>
+   
+    
+</div>
+
+<div class="pricingTile"> 
+    <div class="pricing-div">
+        <div>
+    
+        </div>
+        <div>
+            <button class="btn-price">Price</button>
+        </div>
+        <div>
+            <button class="btn-price">Email</button>
+        </div>
+        <div>
+            <button class="btn-price">Order</button>
+        </div>
+    </div>   
+    
+    <div class="pricing-card">
+        <div>
+    
+        </div>
+    </div>
+</div>
+

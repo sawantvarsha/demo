@@ -1,0 +1,54 @@
+<div class="multi-body">
+    <div class="product-title">
+        <div class="back">
+            <app-svg-icons *ngIf="isShowProduct" [icon]="'back-button'" [width]="'40'" [height]="'40'" [fill]="'var(--headers)'"
+                (click)="closeProduct()"></app-svg-icons>
+        </div>
+        <label class="card-label page-title">FX Multi {{selectedProduct?.name || ''}} Request</label>
+    </div>
+    <div class="grid-container" *ngIf="!isShowProduct">
+        <div class="cards-container">
+            <div class="card" *ngFor="let card of multiReqCards" (click)="selectProduct(card)">
+                <app-svg-icons [icon]="card.name" [width]="'100'" [height]="'100'"></app-svg-icons>
+                <label class="card-label">FX {{card.name}}</label>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="isShowProduct">
+        <ng-container [ngSwitch]='selectedProduct.name'>
+            <ng-template [ngSwitchCase]="'Barrier'">
+                <app-fxbarrier-multi-request></app-fxbarrier-multi-request>
+            </ng-template>
+            <ng-template [ngSwitchCase]="'Vanilla'">
+                <app-fxvanilla-multi-request></app-fxvanilla-multi-request>
+            </ng-template>
+            <ng-template [ngSwitchCase]="'AQ/DQ'">
+                <app-fxaqdq-multi-request></app-fxaqdq-multi-request>
+            </ng-template>
+            <!-- <ng-template [ngSwitchCase]="'Vanilla'">
+                <app-vanilla [Product_ID]="selectedProduct.Product_Id" [Product_Code]="selectedProduct.Product_Code"
+                    [Product_Name]="selectedProduct.Product_Name"></app-vanilla>
+            </ng-template>
+            <ng-template [ngSwitchCase]="'Barrier'">
+                <app-barrier [Product_ID]="selectedProduct.Product_Id" [Product_Code]="selectedProduct.Product_Code"
+                    [Product_Name]="selectedProduct.Product_Name"></app-barrier>
+            </ng-template>
+            <ng-template [ngSwitchCase]="'AQ/DQ'">
+                <app-aqdq [Product_ID]="selectedProduct.Product_Id" [Product_Code]="selectedProduct.Product_Code"
+                    [Product_Name]="selectedProduct.Product_Name"></app-aqdq>
+            </ng-template>
+            <ng-template [ngSwitchCase]="'TRF'">
+                <app-trf [Product_ID]="selectedProduct.Product_Id" [Product_Code]="selectedProduct.Product_Code"
+                    [Product_Name]="selectedProduct.Product_Name"></app-trf>
+            </ng-template>
+            <ng-template [ngSwitchCase]="'Pivot'">
+                <app-pivot [Product_ID]="selectedProduct.Product_Id" [Product_Code]="selectedProduct.Product_Code"
+                    [Product_Name]="selectedProduct.Product_Name"></app-pivot>
+            </ng-template>
+            <ng-template [ngSwitchCase]="'Strategy'">
+                <app-strategy [Product_ID]="selectedProduct.Product_Id" [Product_Code]="selectedProduct.Product_Code"
+                    [Product_Name]="selectedProduct.Product_Name"></app-strategy>
+            </ng-template> -->
+        </ng-container>
+    </div>
+</div>

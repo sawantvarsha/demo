@@ -1,0 +1,1746 @@
+<!-- <p>{{i}}</p> -->
+<ng-container [ngSwitch]="control.dataType" >
+
+  <ng-template [ngSwitchCase]="'TEXT'">
+      <mat-form-field floatLabel="always"  [style.--width]="width" *ngIf="visibleFlag && control.udF_Feature1!='Hybrid Input' && textFlag == true" >
+        <input matInput class="UCPMatInput" [ngStyle]="{'height':control.newHt}" [required]="control.mandatory === 'Y' ? true : false" tabIndex={{control.tabIndex}} placeholder={{control.displayName}} [name]="control.fieldName"  [id]="control.fieldName" [(ngModel)]="control.value "
+        [ngClass]="{'readonly': control.readOnly === 'Y', 'udf-color': udfColor, 'udf-font-name': udfFontName, 'udf-font-size': udfFontSize, 'udf-bold': udfBold, 'udf-italic': udfItalic, 'udf-underline': udfUnderline}" 
+        [disabled]="control.readOnly === 'Y' ? true : false" [maxlength]="control.udF_Feature2 != '' && control.udF_Feature1.includes('Length') ? control.udF_Feature2 : '' "
+        [defaultValue]="control.currentValue" (change)="udfFieldValueChange(control)" autocomplete="off" (input)="validateInput(control)" (keydown)="!control.udF_Feature1.includes('Only Numeric') || onlyNumber($event)" (keypress)="!control.udF_Feature1.includes('Only Alphanumeric') || onlyAlphanumeric($event)" />
+      </mat-form-field>
+     
+      <mat-form-field floatLabel="always"  *ngIf="visibleFlag && control.udF_Feature1!='Hybrid Input' && textFlag == false" [style.--width]="width"  >
+        <textarea [style.--appliedHeight]="appliedHeight" [ngStyle]="{'overflow':'hidden'}" tabIndex={{control.tabIndex}} matInput class="UCPMatInput textareaprop" [required]="control.mandatory === 'Y' ? true : false" placeholder={{control.displayName}} [name]="control.fieldName"  [id]="control.fieldName" [(ngModel)]="control.value "
+        [ngClass]="{'readonly': control.readOnly === 'Y', 'udf-color': udfColor, 'udf-font-name': udfFontName, 'udf-font-size': udfFontSize, 'udf-bold': udfBold, 'udf-italic': udfItalic, 'udf-underline': udfUnderline}"
+        [disabled]="control.readOnly === 'Y' ? true : false" [defaultValue]="control.currentValue" (change)="udfFieldValueChange(control)" autocomplete="off" (input)="validateInput(control)" ></textarea>
+      </mat-form-field>
+
+      <div [ngStyle]="{'width':width,'display':'flex','flex-direction':'row'}" *ngIf="visibleFlag && control.udF_Feature1.includes('Hybrid Input') && textFlag == true">
+        <table>
+          <tr>
+            <td>
+              <label class="normal-label">{{control.displayName}}</label>
+            </td>
+            <td>
+              <table>
+                <tr>
+                  <td style="width: 25px;">
+                    <label class="normal-label">{{control.udF_Feature2}}</label>
+                  </td>
+                  <td>
+                    <mat-form-field floatLabel="always"  [ngStyle]="{'width':oneforthwidth}">
+                      <input matInput class="UCPMatInput ucp-hybrid-input" [required]="control.mandatory === 'Y' ? true : false" tabIndex={{control.tabIndex}} [name]="control.fieldName"  [id]="control.fieldName" [(ngModel)]="control.value "
+                      [ngClass]="{'readonly': control.readOnly === 'Y', 'udf-color': udfColor, 'udf-font-name': udfFontName, 'udf-font-size': udfFontSize, 'udf-bold': udfBold, 'udf-italic': udfItalic, 'udf-underline': udfUnderline}" 
+                      [disabled]="control.readOnly === 'Y' ? true : false" [defaultValue]="control.currentValue" (change)="udfFieldValueChange(control)" autocomplete="off" (input)="validateInput(control)" />
+                    </mat-form-field>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+        
+      </div>
+
+    <!-- <div class="label-group">
+      <img [src]="mandatoryImageUrl" class="mandatoryImage" *ngIf="control.mandatory === 'Y'">
+      <label [for]="control.fieldname" *ngIf="control.applicationType === 'Deal Entry'"
+        [ngClass]="{'labelAlignment': control.mandatory === 'N'}">{{control.displayName}}</label>
+    </div>
+    <input type="text" [name]="control.fieldName" [id]="control.fieldName" [(ngModel)]="control.value "
+      [readOnly]="control.readOnly === 'Y' ? true : false" [ngClass]="{'readonly': control.readOnly === 'Y'}"
+      [defaultValue]="control.currentValue" (change)="udfFieldValueChange(control)"> -->
+  </ng-template> 
+
+  <ng-template [ngSwitchCase]="'TEXTAREA'">
+    <!-- <div [ngStyle]="{'height':control.newHt}"> -->
+    <mat-form-field floatLabel="always"  [style.--width]="width" *ngIf="visibleFlag && (control.udF_Feature1 === '' || control.udF_Feature1.includes('Length'))" >
+      <textarea [ngStyle]="{'height':control.newHt,'overflow':'hidden'}" matInput class="UCPMatInput textareaprop" tabIndex={{control.tabIndex}} [required]="control.mandatory === 'Y' ? true : false"  [name]="control.fieldName"  [id]="control.fieldName" [(ngModel)]="control.value "
+      [ngClass]="{'readonly': control.readOnly === 'Y', 'udf-color': udfColor, 'udf-font-name': udfFontName, 'udf-font-size': udfFontSize, 'udf-bold': udfBold, 'udf-italic': udfItalic, 'udf-underline': udfUnderline}"
+      [disabled]="control.readOnly === 'Y' ? true : false" [defaultValue]="control.currentValue" (change)="udfFieldValueChange(control)" autocomplete="off" (input)="validateInput(control)" ></textarea>
+    </mat-form-field>
+    <!-- </div> -->
+    <div [ngStyle]="{'width':width,'display':'flex','flex-direction':'row'}" *ngIf="visibleFlag && control.udF_Feature1.includes('Hybrid Input')">
+      <table>
+        <tr>
+          <td>
+            <label class="normal-label">{{control.displayName}}</label>
+          </td>
+          <td>
+            <table>
+              <tr>
+                <td style="width: 25px;">
+                  <label class="normal-label">{{control.udF_Feature2}}</label>
+                </td>
+                <td>
+                  <mat-form-field [ngStyle]="{'width':oneforthwidth}">
+                    <input matInput class="UCPMatInput" [required]="control.mandatory === 'Y' ? true : false" tabIndex={{control.tabIndex}} [name]="control.fieldName"  [id]="control.fieldName" [(ngModel)]="control.value "
+                    [ngClass]="{'readonly': control.readOnly === 'Y', 'udf-color': udfColor, 'udf-font-name': udfFontName, 'udf-font-size': udfFontSize, 'udf-bold': udfBold, 'udf-italic': udfItalic, 'udf-underline': udfUnderline }"
+                    [disabled]="control.readOnly === 'Y' ? true : false" [defaultValue]="control.currentValue" (change)="udfFieldValueChange(control)" autocomplete="off" (input)="validateInput(control)" />
+                  </mat-form-field>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </ng-template> 
+
+  <ng-template [ngSwitchCase]="'AMOUNT'">
+    <div class="example-form" [style.--width]="width" *ngIf="visibleFlag === true && (control.udF_Feature1 === '' || control.udF_Feature1.includes('Allow Negative') || control.udF_Feature1.includes('Length'))">
+      <mat-form-field floatLabel="always"  [style.--width]="width">
+        <input [ngStyle]="{'height':control.newHt}" class="UCPMatInput" matInput [required]="control.mandatory === 'Y' ? true : false" tabIndex={{control.tabIndex}} placeholder={{control.displayName}}  [name]="control.fieldName" [id]="control.fieldName" [(ngModel)]="control.value"
+        [ngClass]="{'readonly': control.readOnly === 'Y', 'udf-color': udfColor, 'udf-font-name': udfFontName, 'udf-font-size': udfFontSize, 'udf-bold': udfBold, 'udf-italic': udfItalic, 'udf-underline': udfUnderline }" 
+        [disabled]="control.readOnly === 'Y' ? true : false" [maxlength]="control.udF_Feature2 != '' && control.udF_Feature1.includes('Length') ? control.udF_Feature2 : '' "
+        [defaultValue]="control.currentValue" (blur)="formatNumber(control)" (focus)="unformatNumber(control)"
+        (change)="udfFieldValueChange(control)" (input)="validateInput(control)" style="text-align: right;"  autocomplete="off" (keydown)="!control.udF_Feature1.includes('Allow Negative') || onlyNumberwithMinus($event) || allowNominalWithMKBDecimalwithoutMinus($event,control,control.ucgM_format)" />
+        <mat-error *ngIf="control.error === true">{{control.displayName}} cannot be empty!</mat-error>
+      </mat-form-field>
+    </div>
+    <div [ngStyle]="{'width':width,'display':'flex','flex-direction':'row'}" *ngIf="visibleFlag && control.udF_Feature1.includes('Hybrid Input')">
+      <table>
+        <tr>
+          <td>
+            <label class="normal-label">{{control.displayName}}</label>
+          </td>
+          <td>
+            <table>
+              <tr>
+                <td style="width: 25px;">
+                  <label class="normal-label">{{control.udF_Feature2}}</label>
+                </td>
+                <td>
+                  <mat-form-field [ngStyle]="{'width':oneforthwidth}">
+                    <input matInput class="UCPMatInput" [required]="control.mandatory === 'Y' ? true : false" tabIndex={{control.tabIndex}} [name]="control.fieldName"  [id]="control.fieldName" [(ngModel)]="control.value "
+                    [ngClass]="{'readonly': control.readOnly === 'Y', 'udf-color': udfColor, 'udf-font-name': udfFontName, 'udf-font-size': udfFontSize, 'udf-bold': udfBold, 'udf-italic': udfItalic, 'udf-underline': udfUnderline }"
+                    [disabled]="control.readOnly === 'Y' ? true : false" [defaultValue]="control.currentValue" (change)="udfFieldValueChange(control)" autocomplete="off" (input)="validateInput(control)" />
+                  </mat-form-field>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <!-- <div class="label-group">
+      <img [src]="mandatoryImageUrl" class="mandatoryImage" *ngIf="control.mandatory === 'Y'">
+      <label [for]="control.fieldname" *ngIf="control.applicationType === 'Deal Entry'"
+        [ngClass]="{'labelAlignment': control.mandatory === 'N'}">{{control.displayName}}</label>
+    </div>
+    <input type="text" [name]="control.fieldName" [id]="control.fieldName" [(ngModel)]="control.value"
+      [ngClass]="{'readonly': control.readOnly === 'Y'}" [readOnly]="control.readOnly === 'Y' ? true : false"
+      [defaultValue]="control.currentValue" (blur)="formatNumber(control)" (focus)="unformatNumber(control)"
+      (change)="udfFieldValueChange(control)" style="text-align: right;"> -->
+  </ng-template>
+
+  <ng-template [ngSwitchCase]="'NUMBER'">
+    <div class="example-form" *ngIf="visibleFlag === true && (control.udF_Feature1 === '' || control.udF_Feature1.includes('Allow Negative') || control.udF_Feature1.includes('Length'))">
+      <mat-form-field floatLabel="always"  [style.--width]="width">
+        <input [ngStyle]="{'height':control.newHt}" matInput class="UCPMatInput" [required]="control.mandatory === 'Y' ? true : false" tabIndex={{control.tabIndex}} placeholder={{control.displayName}}  [name]="control.fieldName" [id]="control.fieldName" [(ngModel)]="control.value"
+        [ngClass]="{'readonly': control.readOnly === 'Y', 'udf-color': udfColor, 'udf-font-name': udfFontName, 'udf-font-size': udfFontSize, 'udf-bold': udfBold, 'udf-italic': udfItalic, 'udf-underline': udfUnderline }" 
+        [disabled]="control.readOnly === 'Y' ? true : false" [maxlength]="control.udF_Feature2 != '' && control.udF_Feature1.includes('Length') ? control.udF_Feature2 : '' "
+        [defaultValue]="control.currentValue" (blur)="formatNumber(control)" (focus)="unformatNumber(control)"
+        (change)="udfFieldValueChange(control)" style="text-align: right;" autocomplete="off" (input)="validateInput(control)" (keydown)="!control.udF_Feature1.includes('Allow Negative') || onlyNumberwithMinus($event)" />
+      </mat-form-field>
+    </div>
+    <div [ngStyle]="{'width':width,'display':'flex','flex-direction':'row'}" *ngIf="visibleFlag && control.udF_Feature1.includes('Hybrid Input')">
+      <table>
+        <tr>
+          <td>
+            <label class="normal-label">{{control.displayName}}</label>
+          </td>
+          <td>
+            <table>
+              <tr>
+                <td style="width: 25px;">
+                  <label class="normal-label">{{control.udF_Feature2}}</label>
+                </td>
+                <td>
+                  <mat-form-field [ngStyle]="{'width':oneforthwidth}">
+                    <input matInput class="UCPMatInput" [required]="control.mandatory === 'Y' ? true : false" tabIndex={{control.tabIndex}} [name]="control.fieldName"  [id]="control.fieldName" [(ngModel)]="control.value "
+                    [ngClass]="{'readonly': control.readOnly === 'Y', 'udf-color': udfColor, 'udf-font-name': udfFontName, 'udf-font-size': udfFontSize, 'udf-bold': udfBold, 'udf-italic': udfItalic, 'udf-underline': udfUnderline }"
+                    [disabled]="control.readOnly === 'Y' ? true : false" [defaultValue]="control.currentValue" (change)="udfFieldValueChange(control)" autocomplete="off" (input)="validateInput(control)" />
+                  </mat-form-field>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <!-- <div class="label-group">
+      <img [src]="mandatoryImageUrl" class="mandatoryImage" *ngIf="control.mandatory === 'Y'">
+      <label [for]="control.fieldname" *ngIf="control.applicationType === 'Deal Entry'"
+        [ngClass]="{'labelAlignment': control.mandatory === 'N'}">{{control.displayName}}</label>
+    </div>
+    <input type="text" [name]="control.fieldName" [id]="control.fieldName" [(ngModel)]="control.value"
+      [ngClass]="{'readonly': control.readOnly === 'Y'}" [readOnly]="control.readOnly === 'Y' ? true : false"
+      [defaultValue]="control.currentValue" (blur)="formatNumber(control)" (focus)="unformatNumber(control)"
+      (change)="udfFieldValueChange(control)" style="text-align: right;"> -->
+  </ng-template>
+
+  <ng-template [ngSwitchCase]="'INTEGER'">
+    <div class="example-form" *ngIf="visibleFlag && (control.udF_Feature1 === '' || control.udF_Feature1.includes('Allow Negative') || control.udF_Feature1.includes('Length'))">
+      <mat-form-field floatLabel="always"  [style.--width]="width" *ngIf="visibleFlag === true">
+        <input [ngStyle]="{'height':control.newHt}" matInput class="UCPMatInput" [required]="control.mandatory === 'Y' ? true : false" tabIndex={{control.tabIndex}} placeholder={{control.displayName}}  [name]="control.fieldName" [id]="control.fieldName" [(ngModel)]="control.value"
+        [ngClass]="{'readonly': control.readOnly === 'Y', 'udf-color': udfColor, 'udf-font-name': udfFontName, 'udf-font-size': udfFontSize, 'udf-bold': udfBold, 'udf-italic': udfItalic, 'udf-underline': udfUnderline }" 
+        [disabled]="control.readOnly === 'Y' ? true : false" [maxlength]="control.udF_Feature2 != '' && control.udF_Feature1.includes('Length') ? control.udF_Feature2 : '' "
+        [defaultValue]="control.currentValue" (change)="udfFieldValueChange(control)" style="text-align: right;" autocomplete="off" (input)="validateInput(control)" (keydown)="!control.udF_Feature1.includes('Allow Negative') || onlyNumberwithMinus($event)" />
+      </mat-form-field>
+    </div>
+    <div [ngStyle]="{'width':width,'display':'flex','flex-direction':'row'}" *ngIf="visibleFlag && control.udF_Feature1.includes('Hybrid Input')">
+      <table>
+        <tr>
+          <td>
+            <label class="normal-label">{{control.displayName}}</label>
+          </td>
+          <td>
+            <table>
+              <tr>
+                <td style="width: 25px;">
+                  <label class="normal-label">{{control.udF_Feature2}}</label>
+                </td>
+                <td>
+                  <mat-form-field [ngStyle]="{'width':oneforthwidth}">
+                    <input matInput class="UCPMatInput" [required]="control.mandatory === 'Y' ? true : false" tabIndex={{control.tabIndex}} [name]="control.fieldName"  [id]="control.fieldName" [(ngModel)]="control.value "
+                    [ngClass]="{'readonly': control.readOnly === 'Y', 'udf-color': udfColor, 'udf-font-name': udfFontName, 'udf-font-size': udfFontSize, 'udf-bold': udfBold, 'udf-italic': udfItalic, 'udf-underline': udfUnderline }"
+                    [disabled]="control.readOnly === 'Y' ? true : false" [defaultValue]="control.currentValue" (change)="udfFieldValueChange(control)" autocomplete="off" (input)="validateInput(control)" />
+                  </mat-form-field>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <!-- <div class="label-group">
+      <img [src]="mandatoryImageUrl" class="mandatoryImage" *ngIf="control.mandatory === 'Y'">
+      <label [for]="control.fieldname" *ngIf="control.applicationType === 'Deal Entry'"
+        [ngClass]="{'labelAlignment': control.mandatory === 'N'}">{{control.displayName}}</label>
+    </div>
+    <input type="text" [name]="control.fieldName" [id]="control.fieldName" [(ngModel)]="control.value"
+      [ngClass]="{'readonly': control.readOnly === 'Y'}" [readOnly]="control.readOnly === 'Y' ? true : false"
+      [defaultValue]="control.currentValue" (change)="udfFieldValueChange(control)" style="text-align: right;"> -->
+  </ng-template>
+
+  <ng-template [ngSwitchCase]="'COMMON DATA'"> 
+
+    <!-- <div class="label-group">
+      <img [src]="mandatoryImageUrl" class="mandatoryImage" *ngIf="control.mandatory === 'Y'">
+      <label [for]="control.fieldname" *ngIf="control.applicationType === 'Deal Entry'"
+        [ngClass]="{'labelAlignment': control.mandatory === 'N'}">{{control.displayName}}</label>
+    </div>
+    <select  [name]="control.fieldName" [id]="control.fieldName" [(ngModel)]="control.value"
+      (change)="udfFieldValueChange(control)" *ngIf="control.udF_Feature1===''">
+        <option  [value]="d.code" *ngFor="let d of dropdowns[control.sourcingLink || control.fieldName]">{{d.code}}
+      </option>
+    </select > -->
+
+    <mat-form-field floatLabel="always"  *ngIf="(control.udF_Feature1 === ''  || control.udF_Feature1 === 'Custom Sort' || control.udF_Feature1.includes('Length')) && visibleFlag === true " [style.--width]="width">
+      <mat-select class="UCPMatSelect" [disabled]="control.readOnly === 'Y' ? true : false" tabIndex={{control.tabIndex}}  [required]="control.mandatory === 'Y' ? true : false" [placeholder]="control.displayName"  [name]="control.fieldName" [id]="control.fieldName"
+        [(ngModel)]="control.value" (selectionChange)="udfFieldValueChange(control)" 
+        [ngClass]="{'udf-color': udfColor, 'udf-font-name': udfFontName, 'udf-font-size': udfFontSize, 'udf-bold': udfBold, 'udf-italic': udfItalic, 'udf-underline': udfUnderline}" >
+        <mat-option [value]="d.code" *ngFor="let d of dropdowns[control.fieldName]">
+          {{d.code}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <div [ngStyle]="{'width':width,'display':'flex','flex-direction':'row'}" *ngIf="visibleFlag && control.udF_Feature1.includes('Hybrid Input')">
+      <label style="margin-top: 17px;">{{control.udF_Feature2}}</label>
+      <mat-form-field floatLabel="always"  [ngStyle]="{'width':halfWidth}">
+        <mat-select class="UCPMatSelect" [disabled]="control.readOnly === 'Y' ? true : false" tabIndex={{control.tabIndex}} [required]="control.mandatory === 'Y' ? true : false" [placeholder]="control.displayName"  [name]="control.fieldName" [id]="control.fieldName"
+          [(ngModel)]="control.value" (selectionChange)="udfFieldValueChange(control)" 
+          [ngClass]="{'udf-color': udfColor, 'udf-font-name': udfFontName, 'udf-font-size': udfFontSize, 'udf-bold': udfBold, 'udf-italic': udfItalic, 'udf-underline': udfUnderline}">
+          <mat-option [value]="d.code" *ngFor="let d of dropdowns[control.fieldName]">
+            {{d.code}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div [style.--width]="width" *ngIf="control.udF_Feature1.includes('Multiselect Dropdown') && visibleFlag == true">
+      <app-multi-select-dropdown [input]="control" [width]="width" [assignedValue]="control.value" [values]="dropdowns[control.fieldName]" [disabled]="control.readOnly === 'Y' ? true : false" (selectedValue)="udfFieldValueChange(control)"></app-multi-select-dropdown>
+    </div>
+    <div [style.width]="width" *ngIf="control.udF_Feature1.includes('Railway Line') && visibleFlag === true">
+      <table style="table-layout: auto;">
+        <tr>
+          <td>
+            <mat-label class="normal-label">{{ control.displayName }}</mat-label>
+          </td>
+          <td>
+            <app-railway-line [input]="control" [radioValues]="dropdowns[control.fieldName]"
+              (selectedValue)="udfFieldValueChange(control)"></app-railway-line>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div [style.width]="width" *ngIf="control.udF_Feature1.includes('Radio Button') && visibleFlag == true">
+      <table>
+        <tr>
+          <td style="width: 40%;  white-space: pre-wrap;">
+          <mat-label class="normal-label">{{control.displayName}}</mat-label>
+          </td>
+          <td style="width: 60%;  white-space: pre-wrap;">
+            <mat-radio-group style="margin-left: 10px;" class="normal-label" *ngFor="let d of dropdowns[control.fieldName]" [name]="control.fieldName"   
+            [id]="control.fieldName" [(ngModel)]="control.value" (change)="udfFieldValueChange(control)" for="control.fieldName">
+              <mat-radio-button  [value]="d.code" >{{d.code}}</mat-radio-button>
+            </mat-radio-group>
+        </td>
+        </tr>
+      </table>
+    </div> 
+
+    <!-- <div class="custom-control custom-radio" *ngIf="control.udF_Feature1 === 'Radio Button'">
+      <div *ngFor="let d of dropdowns[control.sourcingLink]">
+        <input type="radio" class="custom-control-input" [name]="control.fieldName" [id]="control.fieldName"
+          [(ngModel)]="control.value" [value]="d.code" (change)="udfFieldValueChange(control)">
+        <label class="custom-control-label" for="control.fieldName">{{d.code}}</label>
+      </div>
+    </div> -->
+
+    <div class="example-form" *ngIf="control.udF_Feature1.includes('Allow Blank Row')">
+      <div>
+        <mat-form-field floatLabel="always"   *ngIf="visibleFlag === true && control.sourcingLink" [style.--width]="width" >
+          <mat-select class="UCPMatSelect" [disabled]="control.readOnly === 'Y' ? true : false" tabIndex={{control.tabIndex}} [required]="control.mandatory === 'Y' ? true : false" [placeholder]="control.displayName" [name]="control.fieldName" [id]="control.fieldName" [(ngModel)]="control.value"
+          (selectionChange)="udfFieldValueChange(control)" *ngIf="control.sourcingLink"
+          [ngClass]="{'udf-color': udfColor, 'udf-font-name': udfFontName, 'udf-font-size': udfFontSize, 'udf-bold': udfBold, 'udf-italic': udfItalic, 'udf-underline': udfUnderline}">
+            <mat-option value=""></mat-option>
+            <mat-option [value]="d.code" *ngFor="let d of dropdowns[control.fieldName]"> {{d.code}} </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+    <div [style.--width]="width" *ngIf="control.udF_Feature1.includes('Show Picker') && visibleFlag === true">
+      <app-search [Multi_UCP]="Multi_UCP"
+        [TabFlag]="tabFlag" [width]="width" [input]="control" [searchArr]="searchArrays[control.fieldName]"
+        [disabled]="control.readonly" (selectedSearchVal)="udfFieldValueChange(control)"></app-search>
+    </div>
+    <div *ngIf="control.udF_Feature1.toUpperCase().includes('WIDTH')">
+        <mat-form-field floatLabel="always"   *ngIf="visibleFlag === true && control.sourcingLink" [ngStyle]="{'width':control.udF_Feature2+'px'}" >
+          <mat-select class="UCPMatSelect" [disabled]="control.readOnly === 'Y' ? true : false" tabIndex={{control.tabIndex}} [required]="control.mandatory === 'Y' ? true : false" [placeholder]="control.displayName" [name]="control.fieldName" [id]="control.fieldName" [(ngModel)]="control.value"
+          (selectionChange)="udfFieldValueChange(control)" *ngIf="control.sourcingLink"
+          [ngClass]="{'udf-color': udfColor, 'udf-font-name': udfFontName, 'udf-font-size': udfFontSize, 'udf-bold': udfBold, 'udf-italic': udfItalic, 'udf-underline': udfUnderline}">
+            <mat-option [value]="d.code" *ngFor="let d of dropdowns[control.fieldName]"> {{d.code}} </mat-option>
+          </mat-select>
+        </mat-form-field>
+    </div>
+    <!-- <div class="custom-control custom-radio" *ngIf="control.udF_Feature1 === 'Allow Blank Row'">
+      <select [name]="control.fieldName" [id]="control.fieldName" [(ngModel)]="control.value"
+        (change)="udfFieldValueChange(control)" *ngIf="control.sourcingLink">
+        <option *ngFor="let d of dropdowns[control.sourcingLink]" [value]="d.code">{{d.code}}
+        </option>
+      </select>
+    </div> -->
+  </ng-template>
+
+  <ng-template [ngSwitchCase]="null">
+  </ng-template>
+
+  <ng-template [ngSwitchCase]="'CUSTOMER'">
+    <div>
+      <!-- <div *ngIf="control.udF_Feature1 !='Show Picker'" class="label-group" style="align-items: baseline;">
+        <img [src]="mandatoryImageUrl" class="mandatoryImage" *ngIf="control.mandatory === 'Y'">
+        <label style="padding-top: 5px;" [for]="control.fieldname" *ngIf="control.applicationType === 'Deal Entry'"
+          [ngClass]="{'labelAlignment': control.mandatory === 'N'}">{{control.displayName}}</label>
+      </div> -->
+      <div [style.--width]="width"> <app-search *ngIf="control.udF_Feature1 ==='Show Picker' && visibleFlag === true" [Multi_UCP]="Multi_UCP" [TabFlag]="tabFlag" [width]="width" [input]="control" [searchArr]="searchArrays[control.fieldName]" [disabled]="control.readonly" (selectedSearchVal)="udfFieldValueChange(control)"></app-search> </div>
+      <div [style.--width]="width" *ngIf="control.udF_Feature1 === '' && visibleFlag === true ">
+        <mat-form-field floatLabel="always"  [style.--width]="width">
+          <mat-select class="UCPMatSelect" [disabled]="control.readOnly === 'Y' ? true : false" tabIndex={{control.tabIndex}} [required]="control.mandatory === 'Y' ? true : false" [placeholder]="control.displayName"  [name]="control.fieldName" [id]="control.fieldName" (selectionChange)="udfFieldValueChange(control)"
+          [(ngModel)]="control.value" 
+          [ngClass]="{'udf-color': udfColor, 'udf-font-name': udfFontName, 'udf-font-size': udfFontSize, 'udf-bold': udfBold, 'udf-italic': udfItalic, 'udf-underline': udfUnderline}">
+            <mat-option [value]="d.code" *ngFor="let d of dropdowns[control.fieldName]">
+              {{d.code}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div [style.--width]="width" *ngIf="control.udF_Feature1.includes('Radio Button') && visibleFlag === true">
+        <table>
+          <tr>
+            <td class="radio-label" style="width: 40%; white-space: pre-wrap;">
+              <mat-label class="normal-label">{{control.displayName}}</mat-label>
+            </td>
+            <td style="width: 60%; white-space: pre-wrap;">
+              <mat-radio-group style="display: flex; padding-top: 7px" [name]="control.fieldName"   
+              [id]="control.fieldName" [(ngModel)]="control.value" (change)="udfFieldValueChange(control)" [ngClass]="control.udF_Feature2.toUpperCase() === 'HORIZONTAL' ? 'radio-btn-hrz' : 'radio-btn-vrt'">
+                <mat-radio-button class="normal-label" [value]="d.code" *ngFor="let d of dropdowns[control.fieldName]">{{d.code}}</mat-radio-button>
+              </mat-radio-group>
+          </td>
+          </tr>
+        </table>
+      </div>
+      <div [style.width]="width" *ngIf="control.udF_Feature1.includes('Railway Line') && visibleFlag === true">
+        <table style="table-layout: auto;">
+          <tr>
+            <td>
+              <mat-label class="normal-label">{{ control.displayName }}</mat-label>
+            </td>
+            <td>
+              <app-railway-line [input]="control" [radioValues]="dropdowns[control.fieldName]"
+                (selectedValue)="udfFieldValueChange(control)"></app-railway-line>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div [style.--width]="width" class="example-form" *ngIf="control.udF_Feature1.includes('Allow Blank Row')">
+        <div>
+          <mat-form-field floatLabel="always"  [style.--width]="width" *ngIf="visibleFlag === true && control.sourcingLink" >
+            <mat-select class="UCPMatSelect" [disabled]="control.readOnly === 'Y' ? true : false" tabIndex={{control.tabIndex}} [required]="control.mandatory === 'Y' ? true : false" [placeholder]="control.displayName" [name]="control.fieldName" [id]="control.fieldName" [(ngModel)]="control.value"
+            (selectionChange)="udfFieldValueChange(control)" *ngIf="control.sourcingLink"
+            [ngClass]="{'udf-color': udfColor, 'udf-font-name': udfFontName, 'udf-font-size': udfFontSize, 'udf-bold': udfBold, 'udf-italic': udfItalic, 'udf-underline': udfUnderline}">
+              <mat-option value=""></mat-option>
+              <mat-option [value]="d.code" *ngFor="let d of dropdowns[control.fieldName]"> {{d.code}} </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+      <div [ngStyle]="{'width':width,'display':'flex','flex-direction':'row'}" *ngIf="visibleFlag && control.udF_Feature1.includes('Hybrid Input')">
+        <table>
+          <tr>
+            <td>
+              <label class="normal-label">{{control.displayName}}</label>
+            </td>
+            <td>
+              <table>
+                <tr>
+                  <td style="width: 25px;">
+                    <label class="normal-label">{{control.udF_Feature2}}</label>
+                  </td>
+                  <td>
+                    <mat-form-field floatLabel="always"  [ngStyle]="{'width':oneforthwidth}">
+                      <input matInput class="UCPMatInput"ucp-hybrid-input  [required]="control.mandatory === 'Y' ? true : false" tabIndex={{control.tabIndex}} [name]="control.fieldName"  [id]="control.fieldName" [(ngModel)]="control.value "
+                      [ngClass]="{'readonly': control.readOnly === 'Y', 'udf-color': udfColor, 'udf-font-name': udfFontName, 'udf-font-size': udfFontSize, 'udf-bold': udfBold, 'udf-italic': udfItalic, 'udf-underline': udfUnderline }"
+                      [disabled]="control.readOnly === 'Y' ? true : false" [defaultValue]="control.currentValue" (change)="udfFieldValueChange(control)" autocomplete="off" (input)="validateInput(control)" />
+                    </mat-form-field>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <!-- <select *ngIf="control.udF_Feature1 !='Show Picker'" [name]="control.fieldName" [id]="control.fieldName" (change)="udfFieldValueChange(control)"
+      [(ngModel)]="control.value">
+      <option [value]="d.code"  *ngFor="let d of dropdowns[control.fieldName]" >{{d.code}}</option>
+    </select> -->
+    </div>
+  </ng-template>
+
+  <ng-template [ngSwitchCase]="'CURRENCY'">
+    <div>
+    <!-- <div *ngIf="control.udF_Feature1 !='Show Picker'" class="label-group" style="align-items: baseline;">
+      <img [src]="mandatoryImageUrl" class="mandatoryImage" *ngIf="control.mandatory === 'Y'">
+      <label style="padding-top: 5px;" [for]="control.fieldname" *ngIf="control.applicationType === 'Deal Entry'"
+        [ngClass]="{'labelAlignment': control.mandatory === 'N'}">{{control.displayName}}</label>
+    </div> -->
+    <div [style.--width]="width"> <app-search *ngIf="control.udF_Feature1 ==='Show Picker' && visibleFlag === true" [Multi_UCP]="Multi_UCP" [TabFlag]="tabFlag" [width]="width" [input]="control" [searchArr]="searchArrays[control.fieldName]" [disabled]="control.readonly" (selectedSearchVal)="udfFieldValueChange(control)"></app-search> </div>
+    <div [style.--width]="width" *ngIf="control.udF_Feature1 === '' && visibleFlag === true ">
+      <mat-form-field floatLabel="always"  [style.--width]="width">
+        <mat-select class="UCPMatSelect" [disabled]="control.readOnly === 'Y' ? true : false" tabIndex={{control.tabIndex}} [required]="control.mandatory === 'Y' ? true : false" [placeholder]="control.displayName"  
+        [name]="control.fieldName" [id]="control.fieldName" (selectionChange)="udfFieldValueChange(control)" [(ngModel)]="control.value"
+        [ngClass]="{'udf-color': udfColor, 'udf-font-name': udfFontName, 'udf-font-size': udfFontSize, 'udf-bold': udfBold, 'udf-italic': udfItalic, 'udf-underline': udfUnderline}">
+          <mat-option [value]="d.code" *ngFor="let d of dropdowns[control.fieldName]">
+            {{d.code}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div [style.--width]="width" *ngIf="control.udF_Feature1.includes('Radio Button') && visibleFlag === true">
+      <table>
+        <tr>
+          <td class="radio-label" style="width: 40%;  white-space: pre-wrap;">
+            <mat-label class="normal-label">{{control.displayName}}</mat-label>
+          </td>
+          <td style="width: 60%;  white-space: pre-wrap;">
+            <mat-radio-group style="display: flex; padding-top: 7px" [name]="control.fieldName"   
+            [id]="control.fieldName" [(ngModel)]="control.value" (change)="udfFieldValueChange(control)" [ngClass]="control.udF_Feature2.toUpperCase() === 'HORIZONTAL' ? 'radio-btn-hrz' : 'radio-btn-vrt'">
+              <mat-radio-button class="normal-label" [value]="d.code" *ngFor="let d of dropdowns[control.fieldName]">{{d.code}}</mat-radio-button>
+            </mat-radio-group>
+        </td>
+        </tr>
+      </table>
+    </div>
+    <div [style.width]="width" *ngIf="control.udF_Feature1.includes('Railway Line') && visibleFlag === true">
+      <table style="table-layout: auto;">
+        <tr>
+          <td>
+            <mat-label class="normal-label">{{ control.displayName }}</mat-label>
+          </td>
+          <td>
+            <app-railway-line [input]="control" [radioValues]="dropdowns[control.fieldName]"
+              (selectedValue)="udfFieldValueChange(control)"></app-railway-line>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div [style.--width]="width" class="example-form" *ngIf="control.udF_Feature1.includes('Allow Blank Row')">
+      <div>
+        <mat-form-field floatLabel="always"  [style.--width]="width" *ngIf="visibleFlag === true && control.sourcingLink" >
+          <mat-select  class="UCPMatSelect" [disabled]="control.readOnly === 'Y' ? true : false"  tabIndex={{control.tabIndex}} [required]="control.mandatory === 'Y' ? true : false" [placeholder]="control.displayName" [name]="control.fieldName" [id]="control.fieldName" [(ngModel)]="control.value"
+          (selectionChange)="udfFieldValueChange(control)" *ngIf="control.sourcingLink"
+          [ngClass]="{'udf-color': udfColor, 'udf-font-name': udfFontName, 'udf-font-size': udfFontSize, 'udf-bold': udfBold, 'udf-italic': udfItalic, 'udf-underline': udfUnderline}">
+            <mat-option value=""></mat-option>
+            <mat-option [value]="d.code" *ngFor="let d of dropdowns[control.fieldName]"> {{d.code}} </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+    <div [ngStyle]="{'width':width,'display':'flex','flex-direction':'row'}" *ngIf="visibleFlag && control.udF_Feature1.includes('Hybrid Input')">
+      <table>
+        <tr>
+          <td>
+            <label class="normal-label">{{control.displayName}}</label>
+          </td>
+          <td>
+            <table>
+              <tr>
+                <td style="width: 25px;">
+                  <label class="normal-label">{{control.udF_Feature2}}</label>
+                </td>
+                <td>
+                  <mat-form-field [ngStyle]="{'width':oneforthwidth}">
+                    <input matInput class="UCPMatInput" [required]="control.mandatory === 'Y' ? true : false" tabIndex={{control.tabIndex}} [name]="control.fieldName"  [id]="control.fieldName" [(ngModel)]="control.value "
+                    [ngClass]="{'readonly': control.readOnly === 'Y', 'udf-color': udfColor, 'udf-font-name': udfFontName, 'udf-font-size': udfFontSize, 'udf-bold': udfBold, 'udf-italic': udfItalic, 'udf-underline': udfUnderline }"
+                    [disabled]="control.readOnly === 'Y' ? true : false" [defaultValue]="control.currentValue" (change)="udfFieldValueChange(control)" autocomplete="off" (input)="validateInput(control)" />
+                  </mat-form-field>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <!-- <select *ngIf="control.udF_Feature1 !='Show Picker'" [name]="control.fieldName" [id]="control.fieldName" (change)="udfFieldValueChange(control)"
+      [(ngModel)]="control.value">
+      <option  [value]="d.code" *ngFor="let d of dropdowns[control.fieldName]">{{d.code}}</option>
+    </select> -->
+  </div>
+  </ng-template>
+
+  <ng-template [ngSwitchCase]="'COUNTERPARTY'">
+
+    <!-- <div class="label-group" style="align-items: baseline;">
+      <img [src]="mandatoryImageUrl" class="mandatoryImage" *ngIf="control.mandatory === 'Y'">
+      <label style="padding-top: 5px;" [for]="control.fieldname" *ngIf="control.applicationType === 'Deal Entry'"
+        [ngClass]="{'labelAlignment': control.mandatory === 'N'}">{{control.displayName}}</label>
+    </div> -->
+    <div [style.--width]="width"> <app-search *ngIf="control.udF_Feature1 ==='Show Picker' && visibleFlag === true" [Multi_UCP]="Multi_UCP" [TabFlag]="tabFlag" [width]="width" [input]="control" [searchArr]="searchArrays[control.fieldName]" [disabled]="control.readonly" (selectedSearchVal)="udfFieldValueChange(control)"></app-search> </div>
+    <div [style.--width]="width" *ngIf="control.udF_Feature1 === '' && visibleFlag === true">
+      <mat-form-field floatLabel="always"  [style.--width]="width">
+        <mat-select class="UCPMatSelect" [disabled]="control.readOnly === 'Y' ? true : false" tabIndex={{control.tabIndex}} [required]="control.mandatory === 'Y' ? true : false" [placeholder]="control.displayName"
+          [name]="control.fieldName" [id]="control.fieldName" (selectionChange)="udfFieldValueChange(control)" [(ngModel)]="control.value"
+          [ngClass]="{'udf-color': udfColor, 'udf-font-name': udfFontName, 'udf-font-size': udfFontSize, 'udf-bold': udfBold, 'udf-italic': udfItalic, 'udf-underline': udfUnderline}">
+          <mat-option [value]="d.code" *ngFor="let d of dropdowns[control.fieldName]">
+            {{d.code}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div [style.--width]="width" *ngIf="control.udF_Feature1.includes('Radio Button') && visibleFlag === true">
+      <table>
+        <tr>
+          <td class="radio-label" style="width: 40%;  white-space: pre-wrap;">
+            <mat-label class="normal-label">{{control.displayName}}</mat-label>
+          </td>
+          <td style="width: 60%;  white-space: pre-wrap;">
+            <mat-radio-group style="display: flex; padding-top: 7px" [name]="control.fieldName"   
+            [id]="control.fieldName" [(ngModel)]="control.value" (change)="udfFieldValueChange(control)" [ngClass]="control.udF_Feature2.toUpperCase() === 'HORIZONTAL' ? 'radio-btn-hrz' : 'radio-btn-vrt'">
+              <mat-radio-button class="normal-label" [value]="d.code" *ngFor="let d of dropdowns[control.fieldName]">{{d.code}}</mat-radio-button>
+            </mat-radio-group>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div [style.width]="width" *ngIf="control.udF_Feature1.includes('Railway Line') && visibleFlag === true">
+      <table style="table-layout: auto;">
+        <tr>
+          <td>
+            <mat-label class="normal-label">{{ control.displayName }}</mat-label>
+          </td>
+          <td>
+            <app-railway-line [input]="control" [radioValues]="dropdowns[control.fieldName]"
+              (selectedValue)="udfFieldValueChange(control)"></app-railway-line>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div [style.--width]="width" class="example-form" *ngIf="control.udF_Feature1.includes('Allow Blank Row')">
+      <div>
+        <mat-form-field floatLabel="always"  [style.--width]="width" *ngIf="visibleFlag === true && control.sourcingLink" >
+          <mat-select class="UCPMatSelect" [disabled]="control.readOnly === 'Y' ? true : false" tabIndex={{control.tabIndex}} [required]="control.mandatory === 'Y' ? true : false" [placeholder]="control.displayName" [name]="control.fieldName" [id]="control.fieldName" [(ngModel)]="control.value"
+          (selectionChange)="udfFieldValueChange(control)" *ngIf="control.sourcingLink"
+          [ngClass]="{'udf-color': udfColor, 'udf-font-name': udfFontName, 'udf-font-size': udfFontSize, 'udf-bold': udfBold, 'udf-italic': udfItalic, 'udf-underline': udfUnderline}">
+            <mat-option value=""></mat-option>
+            <mat-option [value]="d.code" *ngFor="let d of dropdowns[control.fieldName]"> {{d.code}} </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+    <div [ngStyle]="{'width':width,'display':'flex','flex-direction':'row'}" *ngIf="visibleFlag && control.udF_Feature1.includes('Hybrid Input')">
+      <table>
+        <tr>
+          <td>
+            <label class="normal-label">{{control.displayName}}</label>
+          </td>
+          <td>
+            <table>
+              <tr>
+                <td style="width: 25px;">
+                  <label class="normal-label">{{control.udF_Feature2}}</label>
+                </td>
+                <td>
+                  <mat-form-field [ngStyle]="{'width':oneforthwidth}">
+                    <input matInput class="UCPMatInput" [required]="control.mandatory === 'Y' ? true : false" tabIndex={{control.tabIndex}} [name]="control.fieldName"  [id]="control.fieldName" [(ngModel)]="control.value "
+                    [ngClass]="{'readonly': control.readOnly === 'Y', 'udf-color': udfColor, 'udf-font-name': udfFontName, 'udf-font-size': udfFontSize, 'udf-bold': udfBold, 'udf-italic': udfItalic, 'udf-underline': udfUnderline }"
+                    [disabled]="control.readOnly === 'Y' ? true : false" [defaultValue]="control.currentValue" (change)="udfFieldValueChange(control)" autocomplete="off" (input)="validateInput(control)" />
+                  </mat-form-field>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <!-- <select [name]="control.fieldName" [id]="control.fieldName" (change)="udfFieldValueChange(control)"
+      [(ngModel)]="control.value">
+      <option  [value]="d.code" *ngFor="let d of dropdowns[control.fieldName]">{{d.code}}</option>
+    </select> -->
+  </ng-template>
+
+  <ng-template [ngSwitchCase]="'CURRENCY PAIR'">
+    <div>
+      <!-- <div *ngIf="control.udF_Feature1 !='Show Picker'" class="label-group" style="align-items: baseline;">
+        <img [src]="mandatoryImageUrl" class="mandatoryImage" *ngIf="control.mandatory === 'Y'">
+        <label style="padding-top: 5px;" [for]="control.fieldname" *ngIf="control.applicationType === 'Deal Entry'"
+          [ngClass]="{'labelAlignment': control.mandatory === 'N'}">{{control.displayName}}</label>
+      </div> -->
+      <div [style.--width]="width"> <app-search *ngIf="control.udF_Feature1 ==='Show Picker' && visibleFlag === true" [Multi_UCP]="Multi_UCP" [TabFlag]="tabFlag" [width]="width" [input]="control" [searchArr]="searchArrays[control.fieldName]" [disabled]="control.readonly" (selectedSearchVal)="udfFieldValueChange(control)"></app-search> </div>
+      <div [style.--width]="width" *ngIf="control.udF_Feature1 === '' && visibleFlag === true">
+        <mat-form-field floatLabel="always"  [style.--width]="width">
+          <mat-select class="UCPMatSelect" [disabled]="control.readOnly === 'Y' ? true : false" tabIndex={{control.tabIndex}} [required]="control.mandatory === 'Y' ? true : false" [placeholder]="control.displayName" 
+          [name]="control.fieldName" [id]="control.fieldName" (selectionChange)="udfFieldValueChange(control)" [(ngModel)]="control.value" 
+          [ngClass]="{'udf-color': udfColor, 'udf-font-name': udfFontName, 'udf-font-size': udfFontSize, 'udf-bold': udfBold, 'udf-italic': udfItalic, 'udf-underline': udfUnderline}">
+            <mat-option [value]="d.code" *ngFor="let d of dropdowns[control.fieldName]">
+              {{d.code}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div [style.--width]="width" *ngIf="control.udF_Feature1.includes('Radio Button') && visibleFlag === true">
+        <table>
+          <tr>
+            <td class="radio-label" style="width: 40%;  white-space: pre-wrap;">
+              <mat-label class="normal-label">{{control.displayName}}</mat-label>
+            </td>
+            <td style="width: 60%;  white-space: pre-wrap;">
+              <mat-radio-group style="display: flex; padding-top: 7px" [name]="control.fieldName"   
+              [id]="control.fieldName" [(ngModel)]="control.value" (change)="udfFieldValueChange(control)" [ngClass]="control.udF_Feature2.toUpperCase() === 'HORIZONTAL' ? 'radio-btn-hrz' : 'radio-btn-vrt'">
+                <mat-radio-button class="normal-label" [value]="d.code" *ngFor="let d of dropdowns[control.fieldName]">{{d.code}}</mat-radio-button>
+              </mat-radio-group>
+          </td>
+          </tr>
+        </table>
+      </div>
+      <div [style.width]="width" *ngIf="control.udF_Feature1.includes('Railway Line') && visibleFlag === true">
+        <table style="table-layout: auto;">
+          <tr>
+            <td>
+              <mat-label class="normal-label">{{ control.displayName }}</mat-label>
+            </td>
+            <td>
+              <app-railway-line [input]="control" [radioValues]="dropdowns[control.fieldName]"
+                (selectedValue)="udfFieldValueChange(control)"></app-railway-line>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div [style.--width]="width" class="example-form" *ngIf="control.udF_Feature1.includes('Allow Blank Row')">
+        <div>
+          <mat-form-field floatLabel="always"  [style.--width]="width" *ngIf="visibleFlag === true && control.sourcingLink" >
+            <mat-select class="UCPMatSelect" [disabled]="control.readOnly === 'Y' ? true : false" tabIndex={{control.tabIndex}} [required]="control.mandatory === 'Y' ? true : false" [placeholder]="control.displayName" [name]="control.fieldName" [id]="control.fieldName" [(ngModel)]="control.value"
+            (selectionChange)="udfFieldValueChange(control)" *ngIf="control.sourcingLink"
+            [ngClass]="{'udf-color': udfColor, 'udf-font-name': udfFontName, 'udf-font-size': udfFontSize, 'udf-bold': udfBold, 'udf-italic': udfItalic, 'udf-underline': udfUnderline}">
+              <mat-option value=""></mat-option>
+              <mat-option [value]="d.code" *ngFor="let d of dropdowns[control.fieldName]"> {{d.code}} </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+      <div [ngStyle]="{'width':width,'display':'flex','flex-direction':'row'}" *ngIf="visibleFlag && control.udF_Feature1.includes('Hybrid Input')">
+        <table>
+          <tr>
+            <td>
+              <label class="normal-label">{{control.displayName}}</label>
+            </td>
+            <td>
+              <table>
+                <tr>
+                  <td style="width: 25px;">
+                    <label class="normal-label">{{control.udF_Feature2}}</label>
+                  </td>
+                  <td>
+                    <mat-form-field floatLabel="always"  [ngStyle]="{'width':oneforthwidth}">
+                      <input matInput class="UCPMatInput"ucp-hybrid-input  [required]="control.mandatory === 'Y' ? true : false" tabIndex={{control.tabIndex}} [name]="control.fieldName"  [id]="control.fieldName" [(ngModel)]="control.value "
+                      [ngClass]="{'readonly': control.readOnly === 'Y', 'udf-color': udfColor, 'udf-font-name': udfFontName, 'udf-font-size': udfFontSize, 'udf-bold': udfBold, 'udf-italic': udfItalic, 'udf-underline': udfUnderline }"
+                      [disabled]="control.readOnly === 'Y' ? true : false" [defaultValue]="control.currentValue" (change)="udfFieldValueChange(control)" autocomplete="off" (input)="validateInput(control)" />
+                    </mat-form-field>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <!-- <select *ngIf="control.udF_Feature1 !='Show Picker'" [name]="control.fieldName" [id]="control.fieldName" (change)="udfFieldValueChange(control)"
+        [(ngModel)]="control.value">
+        <option  [value]="d.code" *ngFor="let d of dropdowns[control.fieldName]">{{d.code}}</option>
+      </select> -->
+    </div>
+  </ng-template>
+
+  <ng-template [ngSwitchCase]="'EXCHANGE'">
+    <div>
+      <!-- <div *ngIf="control.udF_Feature1 !='Show Picker'" class="label-group" style="align-items: baseline;">
+        <img [src]="mandatoryImageUrl" class="mandatoryImage" *ngIf="control.mandatory === 'Y'">
+        <label style="padding-top: 5px;" [for]="control.fieldname" *ngIf="control.applicationType === 'Deal Entry'"
+          [ngClass]="{'labelAlignment': control.mandatory === 'N'}">{{control.displayName}}</label>
+      </div> -->
+      <div [style.--width]="width"> <app-search *ngIf="control.udF_Feature1 ==='Show Picker' && visibleFlag === true" [Multi_UCP]="Multi_UCP" [TabFlag]="tabFlag" [width]="width"  [input]="control" [searchArr]="searchArrays[control.fieldName]" [disabled]="control.readonly" (selectedSearchVal)="udfFieldValueChange(control)"></app-search> </div>
+      <div [style.--width]="width" *ngIf="control.udF_Feature1 === '' && visibleFlag === true">
+        <mat-form-field floatLabel="always"  [style.--width]="width">
+          <mat-select class="UCPMatSelect" [disabled]="control.readOnly === 'Y' ? true : false" tabIndex={{control.tabIndex}} [required]="control.mandatory === 'Y' ? true : false" [placeholder]="control.displayName"
+          [name]="control.fieldName" [id]="control.fieldName" (selectionChange)="udfFieldValueChange(control)" [(ngModel)]="control.value"
+          [ngClass]="{'udf-color': udfColor, 'udf-font-name': udfFontName, 'udf-font-size': udfFontSize, 'udf-bold': udfBold, 'udf-italic': udfItalic, 'udf-underline': udfUnderline}">
+            <mat-option [value]="d.code" *ngFor="let d of dropdowns[control.fieldName]">
+              {{d.code}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div [style.--width]="width" *ngIf="control.udF_Feature1.includes('Radio Button') && visibleFlag === true">
+        <table>
+          <tr>
+            <td class="radio-label" style="width: 40%;  white-space: pre-wrap;">
+              <mat-label class="normal-label">{{control.displayName}}</mat-label>
+            </td>
+            <td style="width: 60%;  white-space: pre-wrap;">
+              <mat-radio-group style="display: flex; padding-top: 7px" [name]="control.fieldName"   
+              [id]="control.fieldName" [(ngModel)]="control.value" (change)="udfFieldValueChange(control)" [ngClass]="control.udF_Feature2.toUpperCase() === 'HORIZONTAL' ? 'radio-btn-hrz' : 'radio-btn-vrt'">
+                <mat-radio-button class="normal-label" [value]="d.code" *ngFor="let d of dropdowns[control.fieldName]">{{d.code}}</mat-radio-button>
+              </mat-radio-group>
+          </td>
+          </tr>
+        </table>
+      </div>
+      <div [style.width]="width" *ngIf="control.udF_Feature1.includes('Railway Line') && visibleFlag === true">
+        <table style="table-layout: auto;">
+          <tr>
+            <td>
+              <mat-label class="normal-label">{{ control.displayName }}</mat-label>
+            </td>
+            <td>
+              <app-railway-line [input]="control" [radioValues]="dropdowns[control.fieldName]"
+                (selectedValue)="udfFieldValueChange(control)"></app-railway-line>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div [style.--width]="width" class="example-form" *ngIf="control.udF_Feature1.includes('Allow Blank Row')">
+        <div>
+          <mat-form-field floatLabel="always"  [style.--width]="width" *ngIf="visibleFlag === true && control.sourcingLink" >
+            <mat-select class="UCPMatSelect" [disabled]="control.readOnly === 'Y' ? true : false" tabIndex={{control.tabIndex}} [required]="control.mandatory === 'Y' ? true : false" [placeholder]="control.displayName" [name]="control.fieldName" [id]="control.fieldName" [(ngModel)]="control.value"
+            (selectionChange)="udfFieldValueChange(control)" *ngIf="control.sourcingLink"
+            [ngClass]="{'udf-color': udfColor, 'udf-font-name': udfFontName, 'udf-font-size': udfFontSize, 'udf-bold': udfBold, 'udf-italic': udfItalic, 'udf-underline': udfUnderline}">
+              <mat-option value=""></mat-option>
+              <mat-option [value]="d.code" *ngFor="let d of dropdowns[control.fieldName]"> {{d.code}} </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+      <div [ngStyle]="{'width':width,'display':'flex','flex-direction':'row'}" *ngIf="visibleFlag && control.udF_Feature1.includes('Hybrid Input')">
+        <table>
+          <tr>
+            <td>
+              <label class="normal-label">{{control.displayName}}</label>
+            </td>
+            <td>
+              <table>
+                <tr>
+                  <td style="width: 25px;">
+                    <label class="normal-label">{{control.udF_Feature2}}</label>
+                  </td>
+                  <td>
+                    <mat-form-field floatLabel="always"  [ngStyle]="{'width':oneforthwidth}">
+                      <input matInput  class="UCPMatInput ucp-hybrid-input " [required]="control.mandatory === 'Y' ? true : false" tabIndex={{control.tabIndex}} [name]="control.fieldName"  [id]="control.fieldName" [(ngModel)]="control.value "
+                      [ngClass]="{'readonly': control.readOnly === 'Y', 'udf-color': udfColor, 'udf-font-name': udfFontName, 'udf-font-size': udfFontSize, 'udf-bold': udfBold, 'udf-italic': udfItalic, 'udf-underline': udfUnderline }"
+                      [disabled]="control.readOnly === 'Y' ? true : false" [defaultValue]="control.currentValue" (change)="udfFieldValueChange(control)" autocomplete="off" (input)="validateInput(control)" />
+                    </mat-form-field>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <!-- <select *ngIf="control.udF_Feature1 !='Show Picker'" [name]="control.fieldName" [id]="control.fieldName" (change)="udfFieldValueChange(control)"
+        [(ngModel)]="control.value">
+        <option  [value]="d.code" *ngFor="let d of dropdowns[control.fieldName]">{{d.code}}</option>
+      </select> -->
+    </div>
+  </ng-template>
+
+  <ng-template [ngSwitchCase]="'STATIC BUTTON'" *ngIf="(control.visibleOpt && control.visibleOpt === 'Y') || (control.visibility === 'Y')">
+    <div *ngIf="control.udF_Feature1 === ''">
+      <button [disabled]="control.readOnly === 'Y' ? true : false" class="UCPMatButton" [id]="control.fieldName" [ngStyle]="{'width':width}" (click)="udfFieldValueChange(control)" mat-raised-button >{{control.displayName}}</button>
+    </div>
+    <!-- <mat-form-field floatLabel="always"  *ngIf= "visibleFlag === true" [ngStyle]="{'width':width}">
+      <mat-select [required]="required" [placeholder]="control.displayName"  [name]="control.fieldName" [id]="control.fieldName" (selectionChange)="udfFieldValueChange(control)"
+      [(ngModel)]="control.value" >
+        <mat-option [value]="d.code" *ngFor="let d of dropdowns[control.fieldName]">
+          {{d.code}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field> -->
+  </ng-template>
+
+  <ng-template [ngSwitchCase]="'WFL BUTTON'" *ngIf="(control.visibleOpt && control.visibleOpt === 'Y') || (control.visibility === 'Y')">
+   <div *ngIf="sUCPMode!='UCPQEN' && control!=undefined"> 
+    <button style="background-color: #d0d0d0; color: black; width: inherit; font-size: 11px;" [id]="control.wB_ID" (click)="WFLButtonActionsChange(control)"
+    mat-raised-button *ngIf="control.showbtn"  [disabled]="control.readonly">{{control.caption}}</button> 
+          <button style="margin-right: 5px;" class="QueueButtons" id="WB_{{control.wB_ID}}_SaveAmend" (click)="SaveDataAmendModeChange()"
+          mat-raised-button *ngIf="!control.showbtn">{{Savingmsg}}</button>
+          <button class="QueueButtons" id="WB_{{control.wB_ID}}_CancelAmend" (click)="RefreshWFLModeChange()"
+          mat-raised-button *ngIf="!control.showbtn">{{Cancelmsg}}</button>
+  </div>
+  </ng-template>
+
+  <ng-template [ngSwitchCase]="'FREQUENCY'">
+    <!-- <div class="label-group">
+      <img [src]="mandatoryImageUrl" class="mandatoryImage" *ngIf="control.mandatory === 'Y'">
+      <label [for]="control.fieldname" *ngIf="control.applicationType === 'Deal Entry'"
+        [ngClass]="{'labelAlignment': control.mandatory === 'N'}">{{control.displayName}}</label>
+    </div>
+    <select [name]="control.fieldName" [id]="control.fieldName" (change)="udfFieldValueChange(control)"
+      [(ngModel)]="control.value">
+      <option  [value]="d.code" *ngFor="let d of dropdowns[control.fieldName]">{{d.code}}</option>
+    </select> -->
+     <div *ngIf= "control.udF_Feature1 === '' && visibleFlag === true" [style.--width]="width">
+       <mat-form-field floatLabel="always"  [style.--width]="width">
+        <mat-select class="UCPMatSelect" [disabled]="control.readOnly === 'Y' ? true : false" tabIndex={{control.tabIndex}} [required]="control.mandatory === 'Y' ? true : false" [placeholder]="control.displayName"
+        [name]="control.fieldName" [id]="control.fieldName" (selectionChange)="udfFieldValueChange(control)" [(ngModel)]="control.value" 
+        [ngClass]="{'udf-color': udfColor, 'udf-font-name': udfFontName, 'udf-font-size': udfFontSize, 'udf-bold': udfBold, 'udf-italic': udfItalic, 'udf-underline': udfUnderline}">
+          <mat-option [value]="d.code" *ngFor="let d of dropdowns[control.fieldName]">
+            {{d.code}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div [style.--width]="width" *ngIf="control.udF_Feature1.includes('Radio Button') && visibleFlag === true">
+      <table>
+        <tr>
+          <td class="radio-label" style="width: 40%;  white-space: pre-wrap;">
+            <mat-label class="normal-label">{{control.displayName}}</mat-label>
+          </td>
+          <td style="width: 60%;  white-space: pre-wrap;">
+            <mat-radio-group style="display: flex; padding-top: 7px" [name]="control.fieldName"   
+            [id]="control.fieldName" [(ngModel)]="control.value" (change)="udfFieldValueChange(control)" [ngClass]="control.udF_Feature2.toUpperCase() === 'HORIZONTAL' ? 'radio-btn-hrz' : 'radio-btn-vrt'">
+              <mat-radio-button class="normal-label" [value]="d.code" *ngFor="let d of dropdowns[control.fieldName]">{{d.code}}</mat-radio-button>
+            </mat-radio-group>
+        </td>
+        </tr>
+      </table>
+    </div>
+    <div [style.width]="width" *ngIf="control.udF_Feature1.includes('Railway Line') && visibleFlag === true">
+      <table style="table-layout: auto;">
+        <tr>
+          <td>
+            <mat-label class="normal-label">{{ control.displayName }}</mat-label>
+          </td>
+          <td>
+            <app-railway-line [input]="control" [radioValues]="dropdowns[control.fieldName]"
+              (selectedValue)="udfFieldValueChange(control)"></app-railway-line>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div [style.--width]="width" *ngIf="control.udF_Feature1.includes('Show Picker') && visibleFlag === true">
+      <app-search [Multi_UCP]="Multi_UCP"
+        [TabFlag]="tabFlag" [width]="width" [input]="control" [searchArr]="searchArrays[control.fieldName]"
+        [disabled]="control.readonly" (selectedSearchVal)="udfFieldValueChange(control)"></app-search>
+    </div>
+    <div [style.--width]="width" class="example-form" *ngIf="control.udF_Feature1.includes('Allow Blank Row')">
+      <div>
+        <mat-form-field floatLabel="always"  [style.--width]="width" *ngIf="visibleFlag === true && control.sourcingLink" >
+          <mat-select class="UCPMatSelect" [disabled]="control.readOnly === 'Y' ? true : false"  tabIndex={{control.tabIndex}} [required]="control.mandatory === 'Y' ? true : false" [placeholder]="control.displayName" [name]="control.fieldName" [id]="control.fieldName" [(ngModel)]="control.value"
+          (selectionChange)="udfFieldValueChange(control)" *ngIf="control.sourcingLink"
+          [ngClass]="{'udf-color': udfColor, 'udf-font-name': udfFontName, 'udf-font-size': udfFontSize, 'udf-bold': udfBold, 'udf-italic': udfItalic, 'udf-underline': udfUnderline}">
+            <mat-option value=""></mat-option>
+            <mat-option [value]="d.code" *ngFor="let d of dropdowns[control.fieldName]"> {{d.code}} </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+    <div [ngStyle]="{'width':width,'display':'flex','flex-direction':'row'}" *ngIf="visibleFlag && control.udF_Feature1.includes('Hybrid Input')">
+      <table>
+        <tr>
+          <td>
+            <label class="normal-label">{{control.displayName}}</label>
+          </td>
+          <td>
+            <table>
+              <tr>
+                <td style="width: 25px;">
+                  <label class="normal-label">{{control.udF_Feature2}}</label>
+                </td>
+                <td>
+                  <mat-form-field [ngStyle]="{'width':oneforthwidth}">
+                    <input matInput class="UCPMatInput" [required]="control.mandatory === 'Y' ? true : false" tabIndex={{control.tabIndex}} [name]="control.fieldName"  [id]="control.fieldName" [(ngModel)]="control.value "
+                    [ngClass]="{'readonly': control.readOnly === 'Y', 'udf-color': udfColor, 'udf-font-name': udfFontName, 'udf-font-size': udfFontSize, 'udf-bold': udfBold, 'udf-italic': udfItalic, 'udf-underline': udfUnderline }"
+                    [disabled]="control.readOnly === 'Y' ? true : false" [defaultValue]="control.currentValue" (change)="udfFieldValueChange(control)" autocomplete="off" (input)="validateInput(control)" />
+                  </mat-form-field>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </ng-template>
+
+  <ng-template [ngSwitchCase]="'SHARE'">
+    <div>
+    <!-- <div *ngIf="control.udF_Feature1 !='Show Picker'" class="label-group" style="align-items: baseline;">
+      <img [src]="mandatoryImageUrl" class="mandatoryImage" *ngIf="control.mandatory === 'Y'">
+      <label style="padding-top: 5px;" [for]="control.fieldname" *ngIf="control.applicationType === 'Deal Entry'"
+        [ngClass]="{'labelAlignment': control.mandatory === 'N'}">{{control.displayName}}</label>
+    </div> -->
+    <div [style.--width]="width"> <app-search *ngIf="control.udF_Feature1 ==='Show Picker' && visibleFlag === true" [Multi_UCP]="Multi_UCP" [TabFlag]="tabFlag" [width]="width" [input]="control" [searchArr]="shareArray" [disabled]="control.readonly" (selectedSearchVal)="udfFieldValueChange(control)"></app-search> </div>
+    <div [style.--width]="width" *ngIf="control.udF_Feature1 === '' && visibleFlag === true">
+      <mat-form-field floatLabel="always"  [style.--width]="width">
+        <mat-select class="UCPMatSelect" [disabled]="control.readOnly === 'Y' ? true : false" tabIndex={{control.tabIndex}} [required]="control.mandatory === 'Y' ? true : false" [placeholder]="control.displayName"
+        [name]="control.fieldName" [id]="control.fieldName" (selectionChange)="udfFieldValueChange(control)" [(ngModel)]="control.value"
+        [ngClass]="{'udf-color': udfColor, 'udf-font-name': udfFontName, 'udf-font-size': udfFontSize, 'udf-bold': udfBold, 'udf-italic': udfItalic, 'udf-underline': udfUnderline}" >
+          <mat-option [value]="d.code" *ngFor="let d of dropdowns[control.fieldName]">
+            {{d.code}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div [style.--width]="width" *ngIf="control.udF_Feature1.includes('Radio Button') && visibleFlag === true">
+      <table>
+        <tr>
+          <td class="radio-label" style="width: 40%;  white-space: pre-wrap;">
+            <mat-label class="normal-label">{{control.displayName}}</mat-label>
+          </td>
+          <td style="width: 60%;  white-space: pre-wrap;">
+            <mat-radio-group style="display: flex; padding-top: 7px" [name]="control.fieldName"   
+            [id]="control.fieldName" [(ngModel)]="control.value" (change)="udfFieldValueChange(control)" [ngClass]="control.udF_Feature2.toUpperCase() === 'HORIZONTAL' ? 'radio-btn-hrz' : 'radio-btn-vrt'">
+              <mat-radio-button class="normal-label" [value]="d.code" *ngFor="let d of dropdowns[control.fieldName]">{{d.code}}</mat-radio-button>
+            </mat-radio-group>
+        </td>
+        </tr>
+      </table>
+    </div>
+    <div [style.width]="width" *ngIf="control.udF_Feature1.includes('Railway Line') && visibleFlag === true">
+      <table style="table-layout: auto;">
+        <tr>
+          <td>
+            <mat-label class="normal-label">{{ control.displayName }}</mat-label>
+          </td>
+          <td>
+            <app-railway-line [input]="control" [radioValues]="dropdowns[control.fieldName]"
+              (selectedValue)="udfFieldValueChange(control)"></app-railway-line>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div [style.--width]="width" class="example-form" *ngIf="control.udF_Feature1.includes('Allow Blank Row')">
+      <div>
+        <mat-form-field floatLabel="always"  [style.--width]="width" *ngIf="visibleFlag === true && control.sourcingLink" >
+          <mat-select class="UCPMatSelect" [disabled]="control.readOnly === 'Y' ? true : false" tabIndex={{control.tabIndex}} [required]="control.mandatory === 'Y' ? true : false" [placeholder]="control.displayName" [name]="control.fieldName" [id]="control.fieldName" [(ngModel)]="control.value"
+          (selectionChange)="udfFieldValueChange(control)" *ngIf="control.sourcingLink"
+          [ngClass]="{'udf-color': udfColor, 'udf-font-name': udfFontName, 'udf-font-size': udfFontSize, 'udf-bold': udfBold, 'udf-italic': udfItalic, 'udf-underline': udfUnderline}">
+            <mat-option value=""></mat-option>
+            <mat-option [value]="d.code" *ngFor="let d of dropdowns[control.fieldName]"> {{d.code}} </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+    <div [ngStyle]="{'width':width,'display':'flex','flex-direction':'row'}" *ngIf="visibleFlag && control.udF_Feature1.includes('Hybrid Input')">
+      <table>
+        <tr>
+          <td>
+            <label class="normal-label">{{control.displayName}}</label>
+          </td>
+          <td>
+            <table>
+              <tr>
+                <td style="width: 25px;">
+                  <label class="normal-label">{{control.udF_Feature2}}</label>
+                </td>
+                <td>
+                  <mat-form-field [ngStyle]="{'width':oneforthwidth}">
+                    <input matInput class="UCPMatInput" [required]="control.mandatory === 'Y' ? true : false" tabIndex={{control.tabIndex}} [name]="control.fieldName"  [id]="control.fieldName" [(ngModel)]="control.value "
+                    [ngClass]="{'readonly': control.readOnly === 'Y', 'udf-color': udfColor, 'udf-font-name': udfFontName, 'udf-font-size': udfFontSize, 'udf-bold': udfBold, 'udf-italic': udfItalic, 'udf-underline': udfUnderline }"
+                    [disabled]="control.readOnly === 'Y' ? true : false" [defaultValue]="control.currentValue" (change)="udfFieldValueChange(control)" autocomplete="off" (input)="validateInput(control)" />
+                  </mat-form-field>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <!-- <select  *ngIf="control.udF_Feature1 !='Show Picker'" [name]="control.fieldName" [id]="control.fieldName" (change)="udfFieldValueChange(control)"
+      [(ngModel)]="control.value">
+      <option  [value]="d.code" *ngFor="let d of dropdowns[control.fieldName]">{{d.code}}</option>
+    </select> -->
+  </div>
+  </ng-template>
+
+  <ng-template [ngSwitchCase]="'SHARE COLLECTION'">
+    <div *ngIf=" visibleFlag === true" [style.width]="width">
+      <app-sharecollection [defaultshares]="control.value" [Tilda_sep]="false" [control]="control"
+      [allShares]="shareArray" [disabled]="control.readOnly === 'Y' ? true : false"
+      (selectedShareVal)="udfFieldValueChange(control)"></app-sharecollection>
+    </div>
+  </ng-template>
+
+  <ng-template [ngSwitchCase]="'YES/NO'">
+    <div class="example-form">
+      <div *ngIf="control.udF_Feature1 === '' && visibleFlag === true ">
+        <mat-form-field floatLabel="always"   [style.--width]="width" >
+          <mat-label>{{control.displayName}}</mat-label>
+          <mat-select class="UCPMatSelect" [disabled]="control.readOnly === 'Y' ? true : false" tabIndex={{control.tabIndex}} [required]="control.mandatory === 'Y' ? true : false" [name]="control.fieldName" [id]="control.fieldName" (selectionChange)="udfFieldValueChange(control)"
+          [(ngModel)]="control.value">
+            <mat-option  [value]="d.code" *ngFor="let d of dropdowns[control.fieldName]">
+              {{d.code}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div *ngIf="control.udF_Feature1 ==='Toggle Button' && visibleFlag === true && Multi_UCP != true" style="position: relative;top: -5px;padding-top: 15px;">
+        <table  [style.--width]="width">
+          <tr>
+            <td [ngStyle]="{'width':yesnolblwidth}"> <mat-label style="color: #1a4269 !important;" class="normal-label">{{control.displayName}}</mat-label> </td>
+            <td [ngStyle]="{'width':yesnocolwidth}">
+              <mat-slide-toggle [disabled]="control.readOnly === 'Y' ? true : false" style="padding-top: 1.5px;" [(ngModel)]="yesnoModel" [name]="control.fieldName" [id]="control.fieldName" (change)="displayYesNo($event);udfFieldValueChange(control);">
+                {{yesno}} 
+              </mat-slide-toggle>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div *ngIf="control.udF_Feature1 ==='Toggle Button' && visibleFlag === true && Multi_UCP === true" style="position: relative;top: -5px;">
+        <table  [style.width]="width">
+          <tr>
+            <!-- <td> -->
+              <mat-label style="font-size: 11px !important;color: #1a4269 !important;">{{control.displayName}}</mat-label>
+            <!-- </td> -->
+            <!-- <td> -->
+              <mat-slide-toggle [disabled]="control.readOnly === 'Y' ? true : false" style="padding-top: 1.5px;" [(ngModel)]="yesnoModel" [name]="control.fieldName" [id]="control.fieldName" (change)="displayYesNo($event);udfFieldValueChange(control);">
+                {{yesno}} 
+              </mat-slide-toggle>
+            <!-- </td> -->
+          </tr>
+        </table>
+      </div>
+      <div [style.width]="width" *ngIf="control.udF_Feature1 === 'Radio Button' && visibleFlag === true">
+        <table>
+          <tr>
+            <td style="width: 40%;  white-space: pre-wrap; padding-top: 11px;">
+              <mat-label class="normal-label">{{control.displayName}}</mat-label>
+            </td>
+            <td style="width: 60%;  white-space: pre-wrap;">
+              <mat-radio-group style="display: flex; padding-top: 7px" class="normal-label" [name]="control.fieldName"   
+              [id]="control.fieldName" [(ngModel)]="control.value" (change)="udfFieldValueChange(control)">
+                <mat-radio-button value="Yes" >Yes</mat-radio-button>
+                <mat-radio-button style="padding-left: 3px;" value="No" >No</mat-radio-button>
+              </mat-radio-group>
+          </td>
+          </tr>
+        </table>
+      </div>
+      <div [style.width]="width" *ngIf="control.udF_Feature1.includes('Railway Line') && visibleFlag === true">
+        <table style="table-layout: auto;">
+          <tr>
+            <td>
+              <mat-label class="normal-label">{{ control.displayName }}</mat-label>
+            </td>
+            <td>
+              <app-railway-line [input]="control" [radioValues]="['Yes', 'No']"
+                (selectedValue)="udfFieldValueChange(control)"></app-railway-line>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div [style.--width]="width" *ngIf="control.udF_Feature1.includes('Show Picker') && visibleFlag === true">
+        <app-search [Multi_UCP]="Multi_UCP"
+          [TabFlag]="tabFlag" [width]="width" [input]="control" [searchArr]="['Yes', 'No']"
+          [disabled]="control.readonly" (selectedSearchVal)="udfFieldValueChange(control)"></app-search>
+      </div>
+      <div [style.--width]="width" class="example-form" *ngIf="control.udF_Feature1.includes('Allow Blank Row')">
+        <div>
+          <mat-form-field floatLabel="always"  [style.--width]="width" *ngIf="visibleFlag === true && control.sourcingLink" >
+            <mat-select class="UCPMatSelect" [disabled]="control.readOnly === 'Y' ? true : false" tabIndex={{control.tabIndex}} [required]="control.mandatory === 'Y' ? true : false" [placeholder]="control.displayName" [name]="control.fieldName" [id]="control.fieldName" [(ngModel)]="control.value"
+            (selectionChange)="udfFieldValueChange(control)" *ngIf="control.sourcingLink"
+            [ngClass]="{'udf-color': udfColor, 'udf-font-name': udfFontName, 'udf-font-size': udfFontSize, 'udf-bold': udfBold, 'udf-italic': udfItalic, 'udf-underline': udfUnderline}">
+              <mat-option value=""></mat-option>
+              <mat-option [value]="d.code" *ngFor="let d of dropdowns[control.fieldName]"> {{d.code}} </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+    <!--<div class="label-group">
+      <img [src]="mandatoryImageUrl" class="mandatoryImage" *ngIf="control.mandatory === 'Y'">
+      <label [for]="control.fieldname" *ngIf="control.applicationType === 'Deal Entry'"
+        [ngClass]="{'labelAlignment': control.mandatory === 'N'}">{{control.displayName}}</label>
+    </div>
+    <select [name]="control.fieldName" [id]="control.fieldName" (change)="udfFieldValueChange(control)"
+      [(ngModel)]="control.value">
+      <option *ngFor="let d of dropdowns[control.fieldName]" [value]="d.code">{{d.code}}</option>
+    </select>-->
+  </ng-template>
+
+  <ng-template [ngSwitchCase]="'Y/N'">
+    <div class="example-form">
+      <div *ngIf="control.udF_Feature1 === '' && visibleFlag === true">
+        <mat-form-field floatLabel="always"  [style.--width]="width">
+          <mat-label>{{control.displayName}}</mat-label>
+          <mat-select class="UCPMatSelect" [disabled]="control.readOnly === 'Y' ? true : false" tabIndex={{control.tabIndex}} [required]="control.mandatory === 'Y' ? true : false" [name]="control.fieldName" [id]="control.fieldName" (selectionChange)="udfFieldValueChange(control)"
+          [(ngModel)]="control.value">
+            <mat-option [value]="d.code" *ngFor="let d of dropdowns[control.fieldName]" >
+              {{d.code}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div *ngIf="control.udF_Feature1 ==='Toggle Button' && visibleFlag === true">
+        <table>
+          <tr>
+            <td>
+              <mat-label class="normal-label">{{control.displayName}}</mat-label>
+            </td>
+            <td>
+              <mat-button-toggle-group [disabled]="control.readOnly === 'Y' ? true : false" value="Yes" style="margin-left: 30px;" [name]="control.fieldName" [id]="control.fieldName" (change)="udfFieldValueChange(control)">
+                <mat-button-toggle value="Yes">Yes</mat-button-toggle>
+                <mat-button-toggle value="No">No</mat-button-toggle>
+              </mat-button-toggle-group>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div [style.--width]="width" *ngIf="control.udF_Feature1.includes('Radio Button') && visibleFlag === true">
+        <table>
+          <tr>
+            <td class="radio-label" style="width: 40%;  white-space: pre-wrap;">
+              <mat-label class="normal-label">{{control.displayName}}</mat-label>
+            </td>
+            <td style="width: 60%;  white-space: pre-wrap;">
+              <mat-radio-group style="display: flex; padding-top: 7px" [name]="control.fieldName"   
+              [id]="control.fieldName" [(ngModel)]="control.value" (change)="udfFieldValueChange(control)" [ngClass]="control.udF_Feature2.toUpperCase() === 'HORIZONTAL' ? 'radio-btn-hrz' : 'radio-btn-vrt'">
+                <mat-radio-button class="normal-label" value="Y">Y</mat-radio-button>
+                <mat-radio-button class="normal-label" value="N">N</mat-radio-button>
+              </mat-radio-group>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div [style.width]="width" *ngIf="control.udF_Feature1.includes('Railway Line') && visibleFlag === true">
+        <table style="table-layout: auto;">
+          <tr>
+            <td>
+              <mat-label class="normal-label">{{ control.displayName }}</mat-label>
+            </td>
+            <td>
+              <app-railway-line [input]="control" [radioValues]="['Y', 'N']"
+                (selectedValue)="udfFieldValueChange(control)"></app-railway-line>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div [style.--width]="width" *ngIf="control.udF_Feature1.includes('Show Picker') && visibleFlag === true">
+        <app-search [Multi_UCP]="Multi_UCP"
+          [TabFlag]="tabFlag" [width]="width" [input]="control" [searchArr]="['Y', 'N']"
+          [disabled]="control.readonly" (selectedSearchVal)="udfFieldValueChange(control)"></app-search>
+      </div>
+      <div [style.--width]="width" class="example-form" *ngIf="control.udF_Feature1.includes('Allow Blank Row')">
+        <div>
+          <mat-form-field floatLabel="always"  [style.--width]="width" *ngIf="visibleFlag === true && control.sourcingLink" >
+            <mat-select class="UCPMatSelect" [disabled]="control.readOnly === 'Y' ? true : false" tabIndex={{control.tabIndex}} [required]="control.mandatory === 'Y' ? true : false" [placeholder]="control.displayName" [name]="control.fieldName" [id]="control.fieldName" [(ngModel)]="control.value"
+            (selectionChange)="udfFieldValueChange(control)" *ngIf="control.sourcingLink"
+            [ngClass]="{'udf-color': udfColor, 'udf-font-name': udfFontName, 'udf-font-size': udfFontSize, 'udf-bold': udfBold, 'udf-italic': udfItalic, 'udf-underline': udfUnderline}">
+              <mat-option value=""></mat-option>
+              <mat-option [value]="d.code" *ngFor="let d of dropdowns[control.fieldName]"> {{d.code}} </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="label-group">
+      <img [src]="mandatoryImageUrl" class="mandatoryImage" *ngIf="control.mandatory === 'Y'">
+      <label [for]="control.fieldname" *ngIf="control.applicationType === 'Deal Entry'"
+        [ngClass]="{'labelAlignment': control.mandatory === 'N'}">{{control.displayName}}</label>
+    </div>
+    <select [name]="control.fieldName" [id]="control.fieldName" (change)="udfFieldValueChange(control)"
+      [(ngModel)]="control.value">
+      <option *ngFor="let d of dropdowns[control.fieldName]" [value]="d.code">{{d.code}}</option>
+    </select> -->
+  </ng-template>
+
+  <ng-template [ngSwitchCase]="'ISSUER'">
+    <div>
+      <!-- <div *ngIf="control.udF_Feature1 !='Show Picker'" class="label-group" style="align-items: baseline;">
+        <img [src]="mandatoryImageUrl" class="mandatoryImage" *ngIf="control.mandatory === 'Y'">
+        <label style="padding-top: 5px;" [for]="control.fieldname" *ngIf="control.applicationType === 'Deal Entry'"
+          [ngClass]="{'labelAlignment': control.mandatory === 'N'}">{{control.displayName}}</label>
+      </div> -->
+      <div [style.--width]="width"> <app-search *ngIf="control.udF_Feature1 ==='Show Picker' && visibleFlag === true" [Multi_UCP]="Multi_UCP" [TabFlag]="tabFlag" [width]="width" [input]="control" [searchArr]="searchArrays[control.fieldName]" [disabled]="control.readonly" (selectedSearchVal)="udfFieldValueChange(control)"></app-search> </div>
+      <div [style.--width]="width" *ngIf="control.udF_Feature1 === '' && visibleFlag === true ">
+        <mat-form-field floatLabel="always"  [style.--width]="width">
+          <mat-select class="UCPMatSelect" [disabled]="control.readOnly === 'Y' ? true : false" tabIndex={{control.tabIndex}} [placeholder]="control.displayName"  [name]="control.fieldName"
+          [[id]="control.fieldName" (selectionChange)="udfFieldValueChange(control)" (ngModel)]="control.value"
+          [ngClass]="{'udf-color': udfColor, 'udf-font-name': udfFontName, 'udf-font-size': udfFontSize, 'udf-bold': udfBold, 'udf-italic': udfItalic, 'udf-underline': udfUnderline}">
+            <mat-option [value]="d.code" *ngFor="let d of dropdowns[control.fieldName]">
+              {{d.code}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div [style.--width]="width" *ngIf="control.udF_Feature1.includes('Radio Button') && visibleFlag === true">
+        <table>
+          <tr>
+            <td class="radio-label" style="width: 40%;  white-space: pre-wrap;">
+              <mat-label class="normal-label">{{control.displayName}}</mat-label>
+            </td>
+            <td style="width: 60%;  white-space: pre-wrap;">
+              <mat-radio-group style="display: flex; padding-top: 7px" [name]="control.fieldName"   
+              [id]="control.fieldName" [(ngModel)]="control.value" (change)="udfFieldValueChange(control)" [ngClass]="control.udF_Feature2.toUpperCase() === 'HORIZONTAL' ? 'radio-btn-hrz' : 'radio-btn-vrt'">
+                <mat-radio-button class="normal-label" [value]="d.code" *ngFor="let d of dropdowns[control.fieldName]">{{d.code}}</mat-radio-button>
+              </mat-radio-group>
+          </td>
+          </tr>
+        </table>
+      </div>
+      <div [style.width]="width" *ngIf="control.udF_Feature1.includes('Railway Line') && visibleFlag === true">
+        <table style="table-layout: auto;">
+          <tr>
+            <td>
+              <mat-label class="normal-label">{{ control.displayName }}</mat-label>
+            </td>
+            <td>
+              <app-railway-line [input]="control" [radioValues]="dropdowns[control.fieldName]"
+                (selectedValue)="udfFieldValueChange(control)"></app-railway-line>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div [style.--width]="width" class="example-form" *ngIf="control.udF_Feature1.includes('Allow Blank Row')">
+        <div>
+          <mat-form-field floatLabel="always"  [style.--width]="width" *ngIf="visibleFlag === true && control.sourcingLink" >
+            <mat-select class="UCPMatSelect" [disabled]="control.readOnly === 'Y' ? true : false" tabIndex={{control.tabIndex}} [required]="control.mandatory === 'Y' ? true : false" [placeholder]="control.displayName" [name]="control.fieldName" [id]="control.fieldName" [(ngModel)]="control.value"
+            (selectionChange)="udfFieldValueChange(control)" *ngIf="control.sourcingLink"
+            [ngClass]="{'udf-color': udfColor, 'udf-font-name': udfFontName, 'udf-font-size': udfFontSize, 'udf-bold': udfBold, 'udf-italic': udfItalic, 'udf-underline': udfUnderline}">
+              <mat-option value=""></mat-option>
+              <mat-option [value]="d.code" *ngFor="let d of dropdowns[control.fieldName]"> {{d.code}} </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+      <div [ngStyle]="{'width':width,'display':'flex','flex-direction':'row'}" *ngIf="visibleFlag && control.udF_Feature1.includes('Hybrid Input')">
+        <table>
+          <tr>
+            <td>
+              <label class="normal-label">{{control.displayName}}</label>
+            </td>
+            <td>
+              <table>
+                <tr>
+                  <td style="width: 25px;">
+                    <label class="normal-label">{{control.udF_Feature2}}</label>
+                  </td>
+                  <td>
+                    <mat-form-field floatLabel="always"  [ngStyle]="{'width':oneforthwidth}">
+                      <input matInput class="UCPMatInput ucp-hybrid-input" [required]="control.mandatory === 'Y' ? true : false" tabIndex={{control.tabIndex}} [name]="control.fieldName"  [id]="control.fieldName" [(ngModel)]="control.value "
+                      [ngClass]="{'readonly': control.readOnly === 'Y', 'udf-color': udfColor, 'udf-font-name': udfFontName, 'udf-font-size': udfFontSize, 'udf-bold': udfBold, 'udf-italic': udfItalic, 'udf-underline': udfUnderline }"
+                      [disabled]="control.readOnly === 'Y' ? true : false" [defaultValue]="control.currentValue" (change)="udfFieldValueChange(control)" autocomplete="off" (input)="validateInput(control)" />
+                    </mat-form-field>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <!-- <select *ngIf="control.udF_Feature1 !='Show Picker'" [name]="control.fieldName" [id]="control.fieldName" (change)="udfFieldValueChange(control)"
+        [(ngModel)]="control.value">
+        <option  [value]="d.code" *ngFor="let d of dropdowns[control.fieldName]">{{d.code}}</option>
+      </select> -->
+    </div>
+  </ng-template>
+
+  <ng-template [ngSwitchCase]="'INDEX'">
+    <div>
+    <!-- <div *ngIf="control.udF_Feature1 !='Show Picker'" class="label-group" style="align-items: baseline;">
+      <img [src]="mandatoryImageUrl" class="mandatoryImage" *ngIf="control.mandatory === 'Y'">
+      <label style="padding-top: 5px;" [for]="control.fieldname" *ngIf="control.applicationType === 'Deal Entry'"
+        [ngClass]="{'labelAlignment': control.mandatory === 'N'}">{{control.displayName}}</label>
+    </div> -->
+    <div [ngStyle]="{'width':width}"> <app-search *ngIf="control.udF_Feature1 ==='Show Picker' && visibleFlag === true" [Multi_UCP]="Multi_UCP" [TabFlag]="tabFlag" [width]="width" [input]="control" [searchArr]="searchArrays[control.fieldName]" [disabled]="control.readonly" (selectedSearchVal)="udfFieldValueChange(control)"></app-search> </div>
+    <div [ngStyle]="{'width':width}" *ngIf="control.udF_Feature1 === '' && visibleFlag === true ">
+      <mat-form-field floatLabel="always"  [ngStyle]="{'width':width}">
+        <mat-select class="UCPMatSelect" [disabled]="control.readOnly === 'Y' ? true : false" tabIndex={{control.tabIndex}} [required]="control.mandatory === 'Y' ? true : false" [placeholder]="control.displayName"
+        [name]="control.fieldName" [id]="control.fieldName" (selectionChange)="udfFieldValueChange(control)" [(ngModel)]="control.value"
+        [ngClass]="{'udf-color': udfColor, 'udf-font-name': udfFontName, 'udf-font-size': udfFontSize, 'udf-bold': udfBold, 'udf-italic': udfItalic, 'udf-underline': udfUnderline}">
+          <mat-option [value]="d.code" *ngFor="let d of dropdowns[control.fieldName]">
+            {{d.code}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div [style.--width]="width" *ngIf="control.udF_Feature1.includes('Radio Button') && visibleFlag === true">
+      <table>
+        <tr>
+          <td class="radio-label" style="width: 40%;  white-space: pre-wrap;">
+            <mat-label class="normal-label">{{control.displayName}}</mat-label>
+          </td>
+          <td style="width: 60%;  white-space: pre-wrap;">
+            <mat-radio-group style="display: flex; padding-top: 7px" [name]="control.fieldName"   
+            [id]="control.fieldName" [(ngModel)]="control.value" (change)="udfFieldValueChange(control)" [ngClass]="control.udF_Feature2.toUpperCase() === 'HORIZONTAL' ? 'radio-btn-hrz' : 'radio-btn-vrt'">
+              <mat-radio-button class="normal-label" [value]="d.code" *ngFor="let d of dropdowns[control.fieldName]">{{d.code}}</mat-radio-button>
+            </mat-radio-group>
+        </td>
+        </tr>
+      </table>
+    </div>
+    <div [ngStyle]="{'width':width}" *ngIf="control.udF_Feature1.includes('Railway Line') && visibleFlag === true">
+      <table style="table-layout: auto;">
+        <tr>
+          <td>
+            <mat-label class="normal-label">{{ control.displayName }}</mat-label>
+          </td>
+          <td>
+            <app-railway-line [input]="control" [radioValues]="dropdowns[control.fieldName]"
+              (selectedValue)="udfFieldValueChange(control)"></app-railway-line>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div [ngStyle]="{'width':width}" class="example-form" *ngIf="control.udF_Feature1.includes('Allow Blank Row')">
+      <div>
+        <mat-form-field floatLabel="always"  [ngStyle]="{'width':width}" *ngIf="visibleFlag === true && control.sourcingLink" >
+          <mat-select class="UCPMatSelect" [disabled]="control.readOnly === 'Y' ? true : false" tabIndex={{control.tabIndex}} [required]="control.mandatory === 'Y' ? true : false" [placeholder]="control.displayName" [name]="control.fieldName" [id]="control.fieldName" [(ngModel)]="control.value"
+          (selectionChange)="udfFieldValueChange(control)" *ngIf="control.sourcingLink"
+          [ngClass]="{'udf-color': udfColor, 'udf-font-name': udfFontName, 'udf-font-size': udfFontSize, 'udf-bold': udfBold, 'udf-italic': udfItalic, 'udf-underline': udfUnderline}">
+            <mat-option value=""></mat-option>
+            <mat-option [value]="d.code" *ngFor="let d of dropdowns[control.fieldName]"> {{d.code}} </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+    <div [ngStyle]="{'width':width,'display':'flex','flex-direction':'row'}" *ngIf="visibleFlag && control.udF_Feature1.includes('Hybrid Input')">
+      <table>
+        <tr>
+          <td>
+            <label class="normal-label">{{control.displayName}}</label>
+          </td>
+          <td>
+            <table>
+              <tr>
+                <td style="width: 25px;">
+                  <label class="normal-label">{{control.udF_Feature2}}</label>
+                </td>
+                <td>
+                  <mat-form-field [ngStyle]="{'width':oneforthwidth}">
+                    <input matInput class="UCPMatInput" [required]="control.mandatory === 'Y' ? true : false" tabIndex={{control.tabIndex}} [name]="control.fieldName"  [id]="control.fieldName" [(ngModel)]="control.value "
+                    [ngClass]="{'readonly': control.readOnly === 'Y', 'udf-color': udfColor, 'udf-font-name': udfFontName, 'udf-font-size': udfFontSize, 'udf-bold': udfBold, 'udf-italic': udfItalic, 'udf-underline': udfUnderline }"
+                    [disabled]="control.readOnly === 'Y' ? true : false" [defaultValue]="control.currentValue" (change)="udfFieldValueChange(control)" autocomplete="off" (input)="validateInput(control)" />
+                  </mat-form-field>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <!-- <select *ngIf="control.udF_Feature1 !='Show Picker'" [name]="control.fieldName" [id]="control.fieldName" (change)="udfFieldValueChange(control)"
+      [(ngModel)]="control.value">
+      <option  [value]="d.code" *ngFor="let d of dropdowns[control.fieldName]">{{d.code}}</option>
+    </select> -->
+  </div>
+  </ng-template>
+
+  <ng-template [ngSwitchCase]="'RM'">
+    <!-- <div class="label-group"  style="align-items: baseline;">
+      <img [src]="mandatoryImageUrl" class="mandatoryImage" *ngIf="control.mandatory === 'Y'">
+      <label style="padding-top: 5px;" [for]="control.fieldname" *ngIf="control.applicationType === 'Deal Entry'"
+        [ngClass]="{'labelAlignment': control.mandatory === 'N'}">{{control.displayName}}</label>
+    </div> -->
+    <div [ngStyle]="{'width':width}"> <app-search *ngIf="control.udF_Feature1 ==='Show Picker' && visibleFlag === true" [Multi_UCP]="Multi_UCP" [TabFlag]="tabFlag" [width]="width" [input]="control" [searchArr]="searchArrays[control.fieldName]" [disabled]="control.readonly" (selectedSearchVal)="udfFieldValueChange(control)"></app-search> </div>
+    <div [ngStyle]="{'width':width}" *ngIf="control.udF_Feature1 === '' && visibleFlag === true">
+      <mat-form-field floatLabel="always"  [ngStyle]="{'width':width}">
+        <mat-select class="UCPMatSelect" [disabled]="control.readOnly === 'Y' ? true : false" tabIndex={{control.tabIndex}} [required]="control.mandatory === 'Y' ? true : false" [placeholder]="control.displayName"
+        [name]="control.fieldName" [id]="control.fieldName" (selectionChange)="udfFieldValueChange(control)" [(ngModel)]="control.value" 
+        [ngClass]="{'udf-color': udfColor, 'udf-font-name': udfFontName, 'udf-font-size': udfFontSize, 'udf-bold': udfBold, 'udf-italic': udfItalic, 'udf-underline': udfUnderline}">
+          <mat-option [value]="d.code" *ngFor="let d of dropdowns[control.fieldName]">
+            {{d.code}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div [style.--width]="width" *ngIf="control.udF_Feature1.includes('Radio Button') && visibleFlag === true">
+      <table>
+        <tr>
+          <td class="radio-label" style="width: 40%;  white-space: pre-wrap;">
+            <mat-label class="normal-label">{{control.displayName}}</mat-label>
+          </td>
+          <td style="width: 60%;  white-space: pre-wrap;">
+            <mat-radio-group style="display: flex; padding-top: 7px" [name]="control.fieldName"   
+            [id]="control.fieldName" [(ngModel)]="control.value" (change)="udfFieldValueChange(control)" [ngClass]="control.udF_Feature2.toUpperCase() === 'HORIZONTAL' ? 'radio-btn-hrz' : 'radio-btn-vrt'">
+              <mat-radio-button class="normal-label" [value]="d.code" *ngFor="let d of dropdowns[control.fieldName]">{{d.code}}</mat-radio-button>
+            </mat-radio-group>
+        </td>
+        </tr>
+      </table>
+    </div>
+    <div [ngStyle]="{'width':width}" *ngIf="control.udF_Feature1.includes('Railway Line') && visibleFlag === true">
+      <table style="table-layout: auto;">
+        <tr>
+          <td>
+            <mat-label class="normal-label">{{ control.displayName }}</mat-label>
+          </td>
+          <td>
+            <app-railway-line [input]="control" [radioValues]="dropdowns[control.fieldName]"
+              (selectedValue)="udfFieldValueChange(control)"></app-railway-line>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div [ngStyle]="{'width':width}" class="example-form" *ngIf="control.udF_Feature1.includes('Allow Blank Row')">
+      <div>
+        <mat-form-field floatLabel="always"  [ngStyle]="{'width':width}" *ngIf="visibleFlag === true && control.sourcingLink" >
+          <mat-select class="UCPMatSelect" [disabled]="control.readOnly === 'Y' ? true : false" tabIndex={{control.tabIndex}} [required]="control.mandatory === 'Y' ? true : false" [placeholder]="control.displayName" [name]="control.fieldName" [id]="control.fieldName" [(ngModel)]="control.value"
+          (selectionChange)="udfFieldValueChange(control)" *ngIf="control.sourcingLink"
+          [ngClass]="{'udf-color': udfColor, 'udf-font-name': udfFontName, 'udf-font-size': udfFontSize, 'udf-bold': udfBold, 'udf-italic': udfItalic, 'udf-underline': udfUnderline}">
+            <mat-option value=""></mat-option>
+            <mat-option [value]="d.code" *ngFor="let d of dropdowns[control.fieldName]"> {{d.code}} </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+    <div [ngStyle]="{'width':width,'display':'flex','flex-direction':'row'}" *ngIf="visibleFlag && control.udF_Feature1.includes('Hybrid Input')">
+      <table>
+        <tr>
+          <td>
+            <label class="normal-label">{{control.displayName}}</label>
+          </td>
+          <td>
+            <table>
+              <tr>
+                <td style="width: 25px;">
+                  <label class="normal-label">{{control.udF_Feature2}}</label>
+                </td>
+                <td>
+                  <mat-form-field [ngStyle]="{'width':oneforthwidth}">
+                    <input matInput class="UCPMatInput" [required]="control.mandatory === 'Y' ? true : false" tabIndex={{control.tabIndex}} [name]="control.fieldName"  [id]="control.fieldName" [(ngModel)]="control.value "
+                    [ngClass]="{'readonly': control.readOnly === 'Y', 'udf-color': udfColor, 'udf-font-name': udfFontName, 'udf-font-size': udfFontSize, 'udf-bold': udfBold, 'udf-italic': udfItalic, 'udf-underline': udfUnderline }"
+                    [disabled]="control.readOnly === 'Y' ? true : false" [defaultValue]="control.currentValue" (change)="udfFieldValueChange(control)" autocomplete="off" (input)="validateInput(control)" />
+                  </mat-form-field>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <!-- <select *ngIf="control.udF_Feature1 !='Show Picker'" [name]="control.fieldName" [id]="control.fieldName" (change)="udfFieldValueChange(control)"
+      [(ngModel)]="control.value">
+      <option  [value]="d.code" *ngFor="let d of dropdowns[control.fieldName]">{{d.code}}</option>
+    </select> -->
+  </ng-template>
+
+  <ng-template [ngSwitchCase]="'DATE'" *ngIf="visibleFlag">
+    <!-- <div class="label-group">
+      <img [src]="mandatoryImageUrl" class="mandatoryImage" *ngIf="control.mandatory === 'Y'">
+      <label [for]="control.fieldname" *ngIf="control.applicationType === 'Deal Entry'"
+        [ngClass]="{'labelAlignment': control.mandatory === 'N'}">{{control.displayName}}</label>
+    </div> -->
+    <div [ngStyle]="{'width':width}"><app-date-picker [width]="width" [input]="control" [disabled]="control.readonly" [value]="control.value" (selectedDate)="udfFieldValueChange(control)">
+    </app-date-picker></div>
+  </ng-template>
+
+  <ng-template [ngSwitchCase]="'DATETIME'" *ngIf="visibleFlag">
+    <div [ngStyle]="{'width':width}">
+      <app-date-time-picker [width]="width" [input]="control" [disabled]="control.readonly" (selectedDate)="udfFieldValueChange(control)">
+      </app-date-time-picker>
+    </div>
+  </ng-template>
+
+  <!-- [ngClass]="{'labelAlignment': control.mandatory === 'N'}" Removed this style from LABEL, ANOTHER UCP, HYPER LINK in label tag - padding left 8 px - OnkarE on 25-Mar-2021 -->
+  <ng-template [ngSwitchCase]="'LABEL'">
+    <div *ngIf="visibleFlag" class="label-group example-full-width">
+      <label [for]="control.fieldname" [ngStyle]="{'color':udfColor,'font-size':udfFontSize,'font-family':udfFontName}"
+        >{{labelName}}</label>
+    </div>
+  </ng-template>
+
+  <ng-template [ngSwitchCase]="'ANOTHER UCP'">
+    <div class="label-group example-full-width">
+      <label [disabled]="control.readOnly === 'Y' ? true : false" [for]="control.fieldname"
+        class="anotherucplabel"><a (click)="HandleAnotherUCP(control)" >{{control.displayName}}</a></label>
+    </div>
+  </ng-template>
+
+  <ng-template [ngSwitchCase]="'HYPER LINK'">
+    <div class="label-group example-full-width">
+      <label [disabled]="control.readOnly === 'Y' ? true : false" [for]="control.fieldname"
+        class="anotherucplabel"><a (click)="HandleHyperlink(control)" >{{control.displayName}}</a></label>
+    </div>
+  </ng-template>
+
+  <ng-template [ngSwitchCase]="'TENOR'">
+    <div class="example-form" *ngIf="visibleFlag && control.udF_Feature1!='Hybrid Input'">
+      <mat-form-field floatLabel="always"  [ngStyle]="{'width':width}" *ngIf="visibleFlag === true">
+        <input matInput class="UCPMatInput" [required]="control.mandatory === 'Y' ? true : false" tabIndex={{control.tabIndex}} placeholder={{control.displayName}}  [name]="control.fieldName" [id]="control.fieldName" (change)="udfFieldValueChange(control)"
+        [(ngModel)]="control.value" [disabled]="control.readOnly === 'Y' ? true : false" [defaultValue]="control.currentValue" autocomplete="off"
+        [ngClass]="{'readonly': control.readOnly === 'Y', 'udf-color': udfColor, 'udf-font-name': udfFontName, 'udf-font-size': udfFontSize, 'udf-bold': udfBold, 'udf-italic': udfItalic, 'udf-underline': udfUnderline}" />
+      </mat-form-field>
+    </div>
+    <div [ngStyle]="{'width':width,'display':'flex','flex-direction':'row'}" *ngIf="visibleFlag && control.udF_Feature1 === 'Hybrid Input'">
+      <table>
+        <tr>
+          <td>
+            <label class="normal-label">{{control.displayName}}</label>
+          </td>
+          <td>
+            <table>
+              <tr>
+                <td style="width: 25px;">
+                  <label class="normal-label">{{control.udF_Feature2}}</label>
+                </td>
+                <td>
+                  <mat-form-field [ngStyle]="{'width':oneforthwidth}">
+                    <input matInput class="UCPMatInput" [required]="control.mandatory === 'Y' ? true : false" tabIndex={{control.tabIndex}} [name]="control.fieldName"  [id]="control.fieldName" [(ngModel)]="control.value "
+                    [disabled]="control.readOnly === 'Y' ? true : false" [defaultValue]="control.currentValue" (change)="udfFieldValueChange(control)" autocomplete="off" (input)="validateInput(control)"
+                    [ngClass]="{'readonly': control.readOnly === 'Y', 'udf-color': udfColor, 'udf-font-name': udfFontName, 'udf-font-size': udfFontSize, 'udf-bold': udfBold, 'udf-italic': udfItalic, 'udf-underline': udfUnderline}" />
+                  </mat-form-field>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <!-- <div class="label-group">
+      <img [src]="mandatoryImageUrl" class="mandatoryImage" *ngIf="control.mandatory === 'Y'">
+      <label [for]="control.fieldname" *ngIf="control.applicationType === 'Deal Entry'"
+        [ngClass]="{'labelAlignment': control.mandatory === 'N'}">{{control.displayName}}</label>
+    </div>
+    <input type="text" [name]="control.fieldName" [id]="control.fieldName" (change)="udfFieldValueChange(control)"
+      [(ngModel)]="control.value" [readOnly]="control.readOnly === 'Y' ? true : false"
+      [ngClass]="{'readonly': control.readOnly === 'Y'}" [defaultValue]="control.currentValue"> -->
+  </ng-template>
+
+  <ng-template [ngSwitchCase]="'CHART'" *ngIf=" visibleFlag === true">
+    <!-- Added by VijayH on 02-02-2022 to implement 3D Chart  -->
+    <div *ngIf="control.sourcingLink == '3D Chart'">
+      <app-ucp3-dchart-control [inputData]="control.value" [control]="control" ></app-ucp3-dchart-control>
+    </div>
+    <div *ngIf="control.sourcingLink != 'Bubble' && control.sourcingLink != 'Funnel' && control.sourcingLink != 'Pyramid' && control.sourcingLink != '3D Chart' " >
+      <google-chart [title]="control.displayName" [type]="control.sourcingLink" [data]="control.value?control.value:chart_data" [options]="control.chartoption" [width]="280" [height]="280">
+      </google-chart>
+    </div>
+    
+  </ng-template>
+
+  <ng-template [ngSwitchCase]="'IMAGE'">
+    <div *ngIf=" visibleFlag === true" class="example-form" [ngStyle]="{'width':width}" style="text-align: center;">
+        <img src="{{'data:image/jpg;base64,' + control.image_Data}}" [ngStyle]="{'height':control.newHt}" >
+    </div>
+  </ng-template>
+
+  <ng-template [ngSwitchCase]="'TIMER'">
+    <div class="label-group example-full-width">
+      <app-timer [countNum]="control.value"></app-timer>
+    </div>
+  </ng-template>
+
+  <ng-template [ngSwitchCase]="'UPLOAD'" *ngIf="(control.visibleOpt && control.visibleOpt === 'Y') || (control.visibility === 'Y')">
+    <div class="example-form" class="normal-label" [ngStyle]="{'width':width}">
+      <app-ucp-upload [control]="control" [FileType]="control.sourcingLink" [width]="width"  (FileData)="udfFieldValueChange(control)" [UCPMode]="sUCPMode">
+      </app-ucp-upload>
+    </div>
+    <!-- <div class="example-form" class="normal-label" [ngStyle]="{'width':width}" *ngIf="sUCPMode!='UCPQEN'">
+      <label>{{control.displayName}}</label><br>
+      <a (click)="OpenUploadedFile(control)" class="anotherucplabel">Click here to view file</a>
+    </div> -->
+  </ng-template>
+
+  <ng-template [ngSwitchCase]="'FILEPATH'">
+    <div *ngIf=" visibleFlag === true" class="example-form"  [ngStyle]="{'width':width}">
+      <table>
+        <tr>
+          <td [ngStyle]="{'width':halfWidth}"> <mat-label class="normal-label">{{control.displayName}}</mat-label></td>
+          <td [ngStyle]="{'width':halfWidth}"> <input class="normal-label" [ngStyle]="{'width':halfWidth}" type="text" [name]="control.fieldName" [id]="control.fieldName"
+            (change)="udfFieldValueChange(control)"
+              [(ngModel)]="control.value" [defaultValue]="control.currentValue">
+            </td>
+        </tr>
+      </table>  
+    </div>
+  </ng-template>
+ 
+  <ng-template [ngSwitchCase]="'FILE'">
+    <div  *ngIf=" visibleFlag === true" class="example-form"  [ngStyle]="{'width':width}">
+      <a [href]="control.image_Data" [download]="control.fieldName">{{control.fieldName}}</a>
+    </div>
+  </ng-template>
+
+  <ng-template [ngSwitchCase]="'UCP USER CONTROL'">
+    <div *ngIf=" control.sourcingLink === 'Generic Grid' && control.visibleOpt != 'N' && control.gridDt.length > 0" >
+      <app-generic-grid [gridControl]="control" [value]="control.gridDt" [width]="width" (HandleGridChange)="HandleGridData(control)" ></app-generic-grid>
+    </div>
+    <div *ngIf="control.sourcingLink === 'Generic Div' && control.visibleOpt != 'N' && control.gridDt.Column1 && control.gridDt.Column1.length > 0" >
+      <app-generic-div [gridControl]="control" [value]="control.gridDt" [width]="width" (HandleGridChange)="HandleGridData(control)" ></app-generic-div>
+    </div>
+  </ng-template>
+
+  <ng-template [ngSwitchCase]="'SCHEDULE CSV'">
+    <mat-form-field floatLabel="always"  [ngStyle]="{'width':width}" *ngIf="visibleFlag && (control.udF_Feature1 === '' || control.udF_Feature1.includes('Length'))" >
+      <input matInput class="UCPMatInput" [required]="control.mandatory === 'Y' ? true : false" tabIndex={{control.tabIndex}} placeholder={{control.displayName}} [name]="control.fieldName"  [id]="control.fieldName" [(ngModel)]="control.value" [disabled]="control.readOnly === 'Y' ? true : false"
+      [ngClass]="{'readonly': control.readOnly === 'Y', 'udf-color': udfColor, 'udf-font-name': udfFontName, 'udf-font-size': udfFontSize, 'udf-bold': udfBold, 'udf-italic': udfItalic, 'udf-underline': udfUnderline}"
+      [defaultValue]="control.currentValue" (change)="udfFieldValueChange(control)" autocomplete="off" (input)="validateInput(control)" />
+    </mat-form-field>
+    <div [ngStyle]="{'width':width,'display':'flex','flex-direction':'row'}" *ngIf="visibleFlag && control.udF_Feature1.includes('Hybrid Input')">
+      <table>
+        <tr>
+          <td>
+            <label class="normal-label">{{control.displayName}}</label>
+          </td>
+          <td>
+            <table>
+              <tr>
+                <td style="width: 25px;">
+                  <label class="normal-label">{{control.udF_Feature2}}</label>
+                </td>
+                <td>
+                  <mat-form-field [ngStyle]="{'width':oneforthwidth}">
+                    <input matInput class="UCPMatInput" [required]="control.mandatory === 'Y' ? true : false" tabIndex={{control.tabIndex}} [name]="control.fieldName"  [id]="control.fieldName" [(ngModel)]="control.value "
+                    [ngClass]="{'readonly': control.readOnly === 'Y', 'udf-color': udfColor, 'udf-font-name': udfFontName, 'udf-font-size': udfFontSize, 'udf-bold': udfBold, 'udf-italic': udfItalic, 'udf-underline': udfUnderline }"
+                    [disabled]="control.readOnly === 'Y' ? true : false" [defaultValue]="control.currentValue" (change)="udfFieldValueChange(control)" autocomplete="off" (input)="validateInput(control)" />
+                  </mat-form-field>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </ng-template>
+
+  <ng-template [ngSwitchCase]="'BOOK'">
+    <mat-form-field floatLabel="always"  *ngIf= "visibleFlag === true" [ngStyle]="{'width':width}">
+      <mat-select class="UCPMatSelect" [disabled]="control.readOnly === 'Y' ? true : false" tabIndex={{control.tabIndex}} [required]="control.mandatory === 'Y' ? true : false" [placeholder]="control.displayName"
+      [name]="control.fieldName" [id]="control.fieldName" (selectionChange)="udfFieldValueChange(control)" [(ngModel)]="control.value" 
+      [ngClass]="{'udf-color': udfColor, 'udf-font-name': udfFontName, 'udf-font-size': udfFontSize, 'udf-bold': udfBold, 'udf-italic': udfItalic, 'udf-underline': udfUnderline}">
+        <mat-option [value]="d.code" *ngFor="let d of dropdowns[control.fieldName]">
+          {{d.code}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </ng-template>
+
+  <ng-template [ngSwitchCase]="'COMMODITY'">
+    <div *ngIf="control.udF_Feature1 === '' && visibleFlag === true">
+      <mat-form-field floatLabel="always"  [ngStyle]="{'width':width}">
+        <mat-select class="UCPMatSelect" [disabled]="control.readOnly === 'Y' ? true : false" tabIndex={{control.tabIndex}} [required]="control.mandatory === 'Y' ? true : false" [placeholder]="control.displayName"
+        [name]="control.fieldName" [id]="control.fieldName" (selectionChange)="udfFieldValueChange(control)" [(ngModel)]="control.value"
+        [ngClass]="{'udf-color': udfColor, 'udf-font-name': udfFontName, 'udf-font-size': udfFontSize, 'udf-bold': udfBold, 'udf-italic': udfItalic, 'udf-underline': udfUnderline}" >
+          <mat-option [value]="d.code" *ngFor="let d of dropdowns[control.fieldName]">
+            {{d.code}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div [style.--width]="width" *ngIf="control.udF_Feature1.includes('Radio Button') && visibleFlag === true">
+      <table>
+        <tr>
+          <td class="radio-label" style="width: 40%;  white-space: pre-wrap;">
+            <mat-label class="normal-label">{{control.displayName}}</mat-label>
+          </td>
+          <td style="width: 60%;  white-space: pre-wrap;">
+            <mat-radio-group style="display: flex; padding-top: 7px" [name]="control.fieldName"   
+            [id]="control.fieldName" [(ngModel)]="control.value" (change)="udfFieldValueChange(control)" [ngClass]="control.udF_Feature2.toUpperCase() === 'HORIZONTAL' ? 'radio-btn-hrz' : 'radio-btn-vrt'">
+              <mat-radio-button class="normal-label" [value]="d.code" *ngFor="let d of dropdowns[control.fieldName]">{{d.code}}</mat-radio-button>
+            </mat-radio-group>
+        </td>
+        </tr>
+      </table>
+    </div>
+    <div [style.width]="width" *ngIf="control.udF_Feature1.includes('Railway Line') && visibleFlag === true">
+      <table style="table-layout: auto;">
+        <tr>
+          <td>
+            <mat-label class="normal-label">{{ control.displayName }}</mat-label>
+          </td>
+          <td>
+            <app-railway-line [input]="control" [radioValues]="dropdowns[control.fieldName]"
+              (selectedValue)="udfFieldValueChange(control)"></app-railway-line>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div [ngStyle]="{'width':width}" *ngIf="control.udF_Feature1.includes('Show Picker') && visibleFlag === true">
+      <app-search [Multi_UCP]="Multi_UCP"
+        [TabFlag]="tabFlag" [width]="width" [input]="control" [searchArr]="searchArrays[control.fieldName]"
+        [disabled]="control.readonly" (selectedSearchVal)="udfFieldValueChange(control)"></app-search>
+    </div>
+    <div [ngStyle]="{'width':width}" class="example-form" *ngIf="control.udF_Feature1.includes('Allow Blank Row')">
+      <div>
+        <mat-form-field floatLabel="always"  [ngStyle]="{'width':width}" *ngIf="visibleFlag === true && control.sourcingLink" >
+          <mat-select [disabled]="control.readOnly === 'Y' ? true : false" tabIndex={{control.tabIndex}} [required]="control.mandatory === 'Y' ? true : false" [placeholder]="control.displayName" [name]="control.fieldName" [id]="control.fieldName" [(ngModel)]="control.value"
+          (selectionChange)="udfFieldValueChange(control)" *ngIf="control.sourcingLink"
+          [ngClass]="{'udf-color': udfColor, 'udf-font-name': udfFontName, 'udf-font-size': udfFontSize, 'udf-bold': udfBold, 'udf-italic': udfItalic, 'udf-underline': udfUnderline}">
+            <mat-option value=""></mat-option>
+            <mat-option [value]="d.code" *ngFor="let d of dropdowns[control.fieldName]"> {{d.code}} </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+    <div [ngStyle]="{'width':width,'display':'flex','flex-direction':'row'}" *ngIf="visibleFlag && control.udF_Feature1.includes('Hybrid Input')">
+      <table>
+        <tr>
+          <td>
+            <label class="normal-label">{{control.displayName}}</label>
+          </td>
+          <td>
+            <table>
+              <tr>
+                <td style="width: 25px;">
+                  <label class="normal-label">{{control.udF_Feature2}}</label>
+                </td>
+                <td>
+                  <mat-form-field [ngStyle]="{'width':oneforthwidth}">
+                    <input matInput class="UCPMatInput" [required]="control.mandatory === 'Y' ? true : false" tabIndex={{control.tabIndex}} [name]="control.fieldName"  [id]="control.fieldName" [(ngModel)]="control.value "
+                    [ngClass]="{'readonly': control.readOnly === 'Y', 'udf-color': udfColor, 'udf-font-name': udfFontName, 'udf-font-size': udfFontSize, 'udf-bold': udfBold, 'udf-italic': udfItalic, 'udf-underline': udfUnderline }"
+                    [disabled]="control.readOnly === 'Y' ? true : false" [defaultValue]="control.currentValue" (change)="udfFieldValueChange(control)" autocomplete="off" (input)="validateInput(control)" />
+                  </mat-form-field>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </ng-template>
+
+  <ng-template [ngSwitchCase]="'TIME'">
+    <div [style.--width]="width">
+      <app-time-picker [width]="width" [input]="control" [disabled]="control.readonly" (selectedTime)="udfFieldValueChange(control)">
+      </app-time-picker>
+    </div>
+  </ng-template>
+
+</ng-container>

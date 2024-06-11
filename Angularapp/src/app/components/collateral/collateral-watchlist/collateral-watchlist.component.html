@@ -1,0 +1,43 @@
+<div *ngIf="isRM" class="page-navigation" [ngClass]=''>
+
+    <div class="page-title">
+        <app-svg-icons class="back-button" [icon]="'back-button'" [width]="'30'" [height]="'30'"
+            [fill]="'var(--headers)'" (click)="commonApi.back()"></app-svg-icons>
+        <div>Collateral Watchlist</div>
+    </div>
+</div>
+
+<div class="collateral-watchlist-component">
+
+    <div *ngIf="!isRM" class="page-title">
+        <app-svg-icons class="back-button" [icon]="'back-button'" [width]="'30'" [height]="'30'"
+            [fill]="'var(--headers)'" (click)="commonApi.back()" style="align-items: center;"></app-svg-icons>
+        <div>Collateral Watchlist</div>
+    </div>
+
+    <div class="collateral-watchlist-grid">
+        <div class="collateral-watchlist-app">
+            <app-watchlist [WatchlistData]="watchlistData"
+                (selectWatchlistDataEvent)="selectedWatchlistDataEvent($event)"></app-watchlist>
+        </div>
+        <div class="collateral-margin-app">
+            <div class="collateral-margin-app-header">
+                <div class="horizontal-line"></div>
+
+            </div>
+            <div>
+                <app-collateral-details-chart [CustomerDetails]="custDetails"></app-collateral-details-chart>
+            </div>
+            <div>
+                <app-collateral-details-chart [CustomerDetails]="custDetails"></app-collateral-details-chart>
+            </div>
+            <div>
+                <app-collateral-details-chart [CustomerDetails]="custDetails"></app-collateral-details-chart>
+            </div>
+            <div>
+                <app-collateral-details-chart [CustomerDetails]="custDetails"></app-collateral-details-chart>
+            </div>
+        </div>
+    </div>
+
+</div>

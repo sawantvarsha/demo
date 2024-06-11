@@ -1,0 +1,372 @@
+<!-- Added by Urmila A  -->
+<div class="LogMonitorGlobalGrid">
+  
+   <div class="filter-grid">
+    <div class="filterRow">
+        <label>Entity</label>
+        <!-- Added loaders by Urmila A | 6-Jan-23 -->
+        <div>
+            <!-- LGTGTWINT-1783, Urmila A, 29-Mar-23 -->
+            <select name="" id="" *ngIf="EntityData.length !== 0" (change)="fnChngEntity($event)">
+                <option *ngFor="let obj of EntityData" [value]="obj.code">{{obj.value}}</option>
+            </select>
+            <app-loader *ngIf="EntityData.length === 0"></app-loader>
+        </div>
+       
+        <label> Product</label>
+        <!-- Added loaders by Urmila A | 6-Jan-23 -->
+        <div>
+
+            <!-- HSBCFXEINT-102 | Page filters issues | ChaitanyaM | 21-May-2024 -->
+            <select *ngIf="Products.length !== 0" name="" id="" (change)="fnChangeProdct($event)" [(ngModel)]="prodID">
+                <option value="4" selected>All</option>
+                <option *ngFor="let data of Products" [value]="data.Product_Id">{{data.Product_Name}}</option>
+            </select>
+			<!-- HSBCFXEINT-102 | Page filters issues | ChaitanyaM | 21-May-2024 -->
+            <app-loader *ngIf="Products.length === 0"></app-loader>
+        </div>
+        
+        <label>From Date</label> 
+        <span style="position: relative;"> <!-- Changed by Rohit T. 10-Jan-2023 -->
+            <input type="date" (change)="fnChngFromdate($event)" ngModel>
+            <span class="lblfromTodate">{{ Fromdate | date: "dd-MMM-yyyy" }}</span>
+        </span>
+   
+        <label>RFQ ID</label>
+        <input type="text" (change)="fnSearchByRFQ($event)" [(ngModel)]="RFQID" 
+        (dragover)="FXD_cfs.onDragOver($event)" (drop)="FXD_cfs.onDrop($event)" (keypress)="FXD_cfs.InputNunbersOnly($event)">
+        <button class="button" (click)="fnLoad()">Load</button>
+        <!-- F5SAAINT-1 | Allow only numbers | Chaitanya M | 27-Feb-2024-->  
+    </div>
+    <div class="filterRow">
+        <label name="txt_checkbox_col">
+            <input type="checkbox" (change)="fnPriceProviderCheckbox($event)" checked>
+            Best Price Provider(s)
+        </label>
+        <!-- Added loaders by Urmila A | 6-Jan-23 -->
+        <div>
+            <select  *ngIf="PriceProvidersArr.length !== 0" (change)="fnSelectPriceProvider($event)">
+                <option value="All">All</option>
+                <option *ngFor="let obj of PriceProvidersArr" [value]="obj.PP_Code">{{obj.PP_Code}}</option>
+            </select>
+            <app-loader *ngIf="PriceProvidersArr.length === 0"></app-loader>
+        </div>
+       
+        <!-- commented by Mayuri D. on 24-Mar-2023 | LGTGTWINT - 1743 | -->
+        <!-- <label>Data Type</label>
+        <select name="" id="">
+            <option value="Live">Live</option>
+        </select> -->
+        <!-- START --- Added block by Mayuri D. on 24-Mar-2023 | LGTGTWINT - 1743 | -->
+        <label>Owner</label>
+        <select [(ngModel)]="FilterType" (change)="ChangeFilter($event)">
+            <!-- options visibilities by Urmila A, LGTGTWINT-1798 | 3-april-23 -->   
+            <!-- Changes added by AdittiM on 28-Feb-24 : F5SAAINT-2998 FXD Connect - > Quote and order history all drop down values should be in Ascending order -->
+            <option value="All" *ngIf="this.FilterGroup === 'SEN' ">All</option>
+            <option value="Group" *ngIf="this.FilterGroup === 'SEN' || this.FilterGroup === 'QEN' || this.FilterGroup === 'QEN_LRC' ">Group</option>
+            <option value="Self" *ngIf="this.FilterGroup === 'SEN' || this.FilterGroup === 'QEN' || this.FilterGroup === 'QEN_LRC' ">Self</option>
+        </select>
+         <!-- END --- Added block by Mayuri D. on 24-Mar-2023 | LGTGTWINT - 1743 | -->
+        <label>To Date</label>
+        <span style="position: relative;"> <!-- Changed by Rohit T. 10-Jan-2023 -->
+            <input type="date" (change)="fnChngTodate($event)" ngModel>
+            <span class="lblfromTodate">{{ Todate | date: "dd-MMM-yyyy" }}</span>
+        </span>
+        <label>Select Top</label>
+          <!-- UrmilaA | 13-Dec-23 | Restriction of drag-drop on input fields -->
+        <input type="text" (dragover)="FXD_cfs.onDragOver($event)" (drop)="FXD_cfs.onDrop($event)" [(ngModel)]="TopRecord" 
+        (change)="this.FXD_cfs.InputNunbersOnly($event);fnSelectTopRecord($event)">
+        <!--  Added changes by Mayuri D. on 7-Dec-2022 | LGTGTWINT : 557 -->
+        <!-- <app-svg-icons [icon]="'xls'" (click)="exportToexcel()"></app-svg-icons>  //commented by Urmila A |13-Dec-22   -->
+        <button class="button" (click)="exportToexcel()">Export</button>                               
+    </div> 
+    <app-notifications></app-notifications>
+    <div class="filterRow">
+        <!-- Urmila A, LGTGTWINT-1783, 29-Mar-23 , start-->
+        <!-- <label name="txt_checkbox_col">
+             <input type="checkbox">
+                  Refresh Freq.
+             </label> 
+             <input type="text">
+        -->
+        <label> RFQ Source</label>
+        <select (change)="fnChngRFQsrc($event)" [(ngModel)]="RFQSource">
+            <!-- Changes added by AdittiM on 28-Feb-24 : F5SAAINT-2998 FXD Connect - > Quote and order history all drop down values should be in Ascending order -->
+            <option value="All">All</option>
+            <option value="Instant_Pricer">Instant Pricer</option> 
+            <!-- Modified by Lalit G || HSBCFXEINT-102 || 24 May 24 || Sigle price rfq was not visible -->
+            <option value="Single_Pricer">Single Pricer</option>  
+            <!-- HSBCFXEINT-101 | Instant Pricer RFQs are not visible | Chaitanya M |13-May-2024-->         
+            <!-- <option value="Web_CP3">Single Pricer (old)</option>  Removed by UrmilaA | 12-Dec-23 | as discussed with RahulP-->
+            
+        </select>
+        <!-- Urmila A, LGTGTWINT-1783, 29-Mar-23 , end-->
+     
+        <label>Total Executed Deal(s):</label>
+        <label>{{ TotalExeDeals.length }}</label>
+        <label>Record(s) Per Page:</label>
+        <!-- itemsPerPage = $event.target.value; p=1; -->
+          <!-- UrmilaA | 13-Dec-23 | Restriction of drag-drop on input fields -->
+		    <!-- Changes added by AdittiM on 29-Feb-24 : F5SAAINT-3090 FXD Connect -> Quote and order history page issues -->
+        <input type="text" (dragover)="FXD_cfs.onDragOver($event)" (drop)="FXD_cfs.onDrop($event)"
+        [(ngModel)]="itemsPerPage" (change)="fnchngRecordsPerPage($event)" (keypress)="FXD_cfs.InputNunbersOnly($event)" maxlength="3">   <!--chng function added by UrmilaA | LGTGTWINT-2138 | 26-June-23-->  
+        <label>Total Record(s):</label>
+        <label >{{ TotalRecords }}</label>  <!--modified by UrmilaA | LGTGTWINT-2138 -->                                                                                          
+    </div> 
+   </div>
+   <div class="contentBody">
+    <table class="RFQTable" >
+        <thead>
+            <tr class="RFQHeaders">
+                <th></th>
+                <th *ngFor="let data of RFQLogHeaders">
+                        {{data.key}}
+                </th>
+            </tr>
+        </thead>
+        <tbody *ngIf="RFQLogHeaders.length > 0">
+            <!-- added Expand/collapse functionality by Urmila A | 23-Mar-23 | LGTGTWINT-1743-->
+            <ng-template ngFor let-i="index" let-item [ngForOf]="LogRFQData" >                       
+                    <tr *ngIf="item.BestPriceYN === 'Y' || item.BestPriceYN === 'N' " [ngClass]="{'evenRow' : (item.ClubbingId % 2 == 0), 'oddRow' : (item.ClubbingId % 2 != 0)}">
+                        <td *ngIf="item.DCDRFQID !== selectedQuoteToExpand " (click)="ExpandRFQ(item.ClubbingId, item.DCDRFQID, i, true);"
+                        [ngClass]="{'evenRow' : (item.ClubbingId % 2 == 0), 'oddRow' : (item.ClubbingId % 2 != 0)}" >            
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" style="cursor: pointer; height:12px; width:12px">
+                                <path id="plus"
+                                    d="M68.98,36.98H44.949V12.949a3.984,3.984,0,1,0-7.969,0V36.98H12.949a3.984,3.984,0,0,0,0,7.969H36.98V68.98a3.984,3.984,0,1,0,7.969,0V44.949H68.98a3.984,3.984,0,1,0,0-7.969Z"
+                                    transform="translate(-8.965 -8.965)" fill="var(--btn-bg)" />
+                                <use href="#plus" />
+                            </svg>
+                        </td>
+
+                        <td (click)="ExpandRFQ(item.ClubbingId, item.DCDRFQID, i, false)" *ngIf="item.DCDRFQID === selectedQuoteToExpand && !showExpandloader" 
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="var(--btn-bg)" width="12" height="12" viewBox="0 0 31 6" style="cursor: pointer;">
+                                    <rect id="Rectangle_2583" data-name="Rectangle 2583" width="31" height="6" rx="3"/>
+                                </svg>
+                        </td>
+                        <td *ngIf="item.DCDRFQID === selectedQuoteToExpand && showExpandloader" >
+                            <app-svg-icons class="emptyStateSVG"  [icon]="'order-placement-loader'" [width]="'12'" [height]="'12'"></app-svg-icons>
+                        </td>
+
+                        <td *ngFor="let data of RFQLogHeaders " [ngClass]="{'centeralign': data.align === 'center', 'leftalign': data.align === 'left', 'rightalign': data.align === 'right',
+                        'evenRow' : (item.ClubbingId % 2 == 0), 'oddRow' : (item.ClubbingId % 2 != 0)}"
+                        [ngStyle]="{'color': data.value === 'DCDRFQID'   ? 'var(--mail)' : 'var(--text-color)' }" [attr.name]="data.value" >  <!-- Urmila A | 13-April-23 , LGTGTWINT-1873 -->
+                         <!--Added  || data.value === 'Executed_RFQ' condition by UrmilaA,  2-May-23 | LGTGTWINT-1945 -->       
+                        <!-- [ngStyle]="{'color': data.value === 'InternalRFQID' ? 'var(--label)' : 'var(--text-color)' }" -->
+                                <button class="button" *ngIf="data.type === 'btn' && data.value === 'InternalRFQID'" 
+                                (click)="fnGetLegPremDetails(item[data.value],item.DCDRFQID)"> RFQ Details</button> <!--item.DCDRFQID added by Urmila A | 22-Aug-23 | Core-migration API req parameters modified-->
+
+                                <div *ngIf="data.type === 'text' && data.value !== 'InternalRFQID' && data.value !== 'DCDRFQID'">  <!--Added  || data.value !== 'Executed_RFQ' condition by UrmilaA,  2-May-23 | LGTGTWINT-1945 --> 
+                                    {{item[data.value] ? item[data.value] : ''}}
+                                </div>
+
+                                <!-- Urmila A | 27-Mar-23 , LGTGTWINT-1758 -->
+                                <div *ngIf="data.type === 'text' && data.value === 'DCDRFQID'" 
+                                (click)="fnRedirectSinglePricer(item)" >
+                                    {{item[data.value] ? item[data.value] : ''}}
+                                </div>
+
+                                <!-- Added by UrmilaA, 2-May-23 | LGTGTWINT-1945 | start -->
+                                <!-- <div *ngIf="data.type === 'text' && data.value === 'Executed_RFQ'" 
+                                (click)="fnRedirectSinglePricer(item)" >
+                                    {{item[data.value] ? item[data.value] : ''}}
+                                </div> -->
+                                <!-- Added by UrmilaA, 2-May-23 | LGTGTWINT-1945 | ends -->
+
+                                <div *ngIf="data.type === 'number' && data.value !== 'InternalRFQID' ">  <!--Urmila A | LGTGTWINT-1465 | 22-feb-23 -->
+                                    {{ item[data.value] ? ( item[data.value] | number:'1.2-4' ): ''}}
+                                </div>
+                                <!-- (click)="fnGetLegPremDetails(item[data.value])" -->
+                                <div *ngIf="data.type === 'text' && data.value === 'InternalRFQID'"  >
+                                    {{item[data.value] ? item[data.value] : ''}}
+                                </div>
+                            
+                                <div *ngIf="data.type === 'date'">
+                                    {{item[data.value] ? (item[data.value] | date:'dd-MMM-yyyy') : ''}}
+                                </div>
+                                <div *ngIf="data.type === 'datetime'">
+                                    {{item[data.value] ? (item[data.value] | date:'dd-MMM-yyyy HH:mm:ss:aa') : ''}} <!--added datepipe by Urmila A,  LGTGTWINT-1759 | 30-Mar-23-->
+                                </div>
+                        </td>                                 
+                    </tr>   
+                    
+                    <tr *ngIf="item.BestPriceYN !== 'Y' && item.BestPriceYN !== 'N' && item.DCDRFQID === selectedQuoteToExpand " [ngClass]="{'evenRow' : (selectedIndex == 'even'), 'oddRow' : (selectedIndex == 'odd')}">
+                        <td [ngClass]="{'evenRow' : (selectedIndex == 'even'), 'oddRow' : (selectedIndex == 'odd')}"></td>
+                        <td *ngFor="let data of RFQLogHeaders" [ngClass]="{'centeralign': data.align === 'center', 'leftalign': data.align === 'left', 'rightalign': data.align === 'right',
+                        'evenRow' : (selectedIndex == 'even'), 'oddRow' : (selectedIndex == 'odd')}"
+                        [ngStyle]="{'color': data.value === 'DCDRFQID'  ? 'var(--mail)' : 'var(--text-color)' }" [attr.name]="data.value"
+                       >     <!--Added  || data.value === 'Executed_RFQ' condition by UrmilaA,  2-May-23 | LGTGTWINT-1945 -->
+                     
+                       <!--  [ngStyle]="{'color': data.value === 'InternalRFQID' ? 'var(--label)' : 'var(--text-color)' }" -->
+                            <button class="button" *ngIf="data.type === 'btn' && data.value === 'InternalRFQID'" 
+                            (click)="fnGetLegPremDetails(item[data.value])"> RFQ Details</button>
+
+                            <div *ngIf="data.type === 'text' && data.value !== 'InternalRFQID' && data.value !== 'DCDRFQID'"> <!--Added  || data.value !== 'Executed_RFQ' condition by UrmilaA,  2-May-23 | LGTGTWINT-1945 --> 
+                                {{item[data.value] ? item[data.value] : ''}}                                       
+                            </div>
+
+                            <!-- Urmila A | 27-Mar-23 , LGTGTWINT-1758 -->
+                            <div *ngIf="data.type === 'text' && data.value === 'DCDRFQID'" (click)="fnRedirectSinglePricer(item)">
+                                {{item[data.value] ? item[data.value] : ''}}
+                            </div>
+
+                            <!-- Added by UrmilaA, 2-May-23 | LGTGTWINT-1945 | start -->
+                            <!-- <div *ngIf="data.type === 'text' && data.value === 'Executed_RFQ'" 
+                            (click)="fnRedirectSinglePricer(item)" >
+                                {{item[data.value] ? item[data.value] : ''}}
+                            </div> -->
+                            <!-- Added by UrmilaA, 2-May-23 | LGTGTWINT-1945 | ends -->
+                           
+                            <div *ngIf="data.type === 'number' && data.value !== 'InternalRFQID'"> 
+                                {{ item[data.value] ? ( item[data.value] | number:'1.2-4' ): ''}}
+                            </div>
+                            <div *ngIf="data.type === 'text' && data.value === 'InternalRFQID'" (click)="fnGetLegPremDetails(item[data.value])" >
+                                {{item[data.value] ? item[data.value] : ''}}
+                            </div>
+                        
+                            <div *ngIf="data.type === 'date'">
+                                {{item[data.value] ? (item[data.value] | date:'dd-MMM-yyyy') : ''}}
+                            </div>
+                            <div *ngIf="data.type === 'datetime'">
+                                {{item[data.value] ? (item[data.value] | date:'dd-MMM-yyyy HH:mm:ss:aa') : ''}} <!--added datepipe by Urmila A,  LGTGTWINT-1759 | 30-Mar-23-->
+                            </div>
+                        </td>   
+                    </tr>
+            </ng-template>                   
+        </tbody>
+     
+        <tbody *ngIf="LoadRFQ && BKP_RFQdata.length === 0"> <!--BKP_RFQdata.length === 0, Urmila A | LGTGTWINT-1367 | 8-Feb-23-->
+            <div class="loaderdiv">
+                <div class="loader-center">
+                <div class="multi-ripple">
+                    <div></div>
+                    <div></div>
+                </div>
+                </div>
+            </div>   
+        </tbody>
+        <div *ngIf="NoRecordsFounds && !LoadRFQ " class="NoRecordsFound"> <!--Urmila A | LGTGTWINT-1367 | 8-Feb-23-->
+                <label>No Records found</label>
+        </div>
+    </table>    
+   </div>
+  <!-- Pagination added by UrmilaA | LGTGTWINT-2138 | 4-July-23 |start -->
+  <div class="fxd-pagination-container">
+    <div class="nav-tabs" >
+        <button class="button" (click)="getPage('prev','')" [disabled]="currentPage === 1">Previous</button>    <!-- added by UrmilaA | 18-July-23 | LGTCLI-438 -->
+        <div [ngClass]="{'activeBtn': selectedPage == ActivePage}" *ngFor="let ActivePage of pages" (click)="getPage('current', ActivePage)">{{ ActivePage }}</div>  
+        <button class="button" (click)="getPage('next','')" [disabled]="currentPage === totalpages">Next</button> 
+    </div>
+ </div>
+ <!-- Pagination added by UrmilaA | LGTGTWINT-2138 | 4-July-23 |ends -->
+
+</div>
+
+
+<!-- Added by Urmila A  | RFQ Leg details pop-up-->
+<div class="FXDorderPopup-overlay" *ngIf="this.QuoteIDClicked" > 
+<div class="LogMonitorGlobalGrid" name="LegTable">
+    <div class="clsLeg">
+        <svg name="closebtn" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 32.008 32" (click)="closeLegPopup()">
+            <path fill="var(--headers)" id="cancel" d="M31.082,27.289,42.514,15.857a2.679,2.679,0,1,0-3.788-3.788L27.294,23.5,15.861,12.068a2.679,2.679,0,1,0-3.788,3.788L23.505,27.289,12.073,38.721a2.679,2.679,0,0,0,3.788,3.788L27.294,31.077,38.726,42.509a2.679,2.679,0,1,0,3.788-3.788Z" transform="translate(-11.285 -11.289)"/>
+        </svg>
+    </div>
+        <div class="filter-grid">
+            <div class="filterRow" name="LegTable">
+                <label>RFQ Id:</label>
+                <div class="highlight">{{ legRFQID }}</div>
+                <label>Quote Request Id:</label>
+                <div class="highlight">{{ QuoteId }}</div>
+                <div>
+                    <input type="radio" id="shortView" [checked]="ShortView && !LongView" (click)="fnshortView()"> Short View
+                </div>
+                <button class="button" (click)="fnExportRFQLegData()">Export</button>
+                <div></div>                 
+            </div>
+            <div class="filterRow" name="LegTable">
+                <label>Provider:</label>
+                <div class="highlight"> {{ legProvider }}</div>
+                <label>Product:</label>
+                <div class="highlight"> {{ legProduct }}</div>
+                <div>
+                    <input type="radio" id="longtView" [checked]="LongView && !ShortView" (click)="fnlongView()"> Long View
+                </div>                   
+                <label>Leg Count: {{QuoteLegData.length}}</label>                      
+                <label>Record(s) Per Page: </label>
+                <input type="text" [(ngModel)]="RFQLegRowsPerPage"  (change)="fnChangeRFQLegRowsPerPage($event)" (keypress)="FXD_cfs.InputNunbersOnly($event)" maxlength="3" > 
+            </div>                  
+        </div>  
+        <div class="contentBody">
+                <table class="RFQTable"  >
+                    <thead>
+                        <tr class="RFQHeaders">
+                            <th *ngFor="let data of RFQLegDataHeaders">
+                                    {{data.key}}
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody *ngIf="QuoteLegData.length > 0">
+                            <tr *ngFor="let item of QuoteLegData; let i=index"   >
+                                <td *ngFor="let data of RFQLegDataHeaders; let i=index" [id]="data.value" [attr.name]="data.value"
+                                [ngClass]="{'centeralign': data.align === 'center', 'leftalign': data.align === 'left', 'rightalign': data.align === 'right'}"
+                                >
+                                    <div *ngIf="data.type === 'text'">
+                                        {{item[data.value] ? item[data.value] : ''}}
+                                    </div>   
+                                    <div *ngIf="data.type === 'number'">
+                                        {{item[data.value] ? item[data.value] : ''}}
+                                    </div>                              
+                                    <div *ngIf="data.type === 'date'">
+                                        {{item[data.value] ? (item[data.value] | date:'dd-MMM-yyyy') : ''}}
+                                    </div>
+                                    <div *ngIf="data.type === 'datetime'">
+                                        {{item[data.value] ? (item[data.value] | date:'dd-MMM-yyyy , h:mm a') : ''}}
+                                    </div>
+                                </td>
+                            </tr>
+                    </tbody>
+                    <tbody *ngIf="QuoteLegData.length === 0  && loadLefData"> <!--Urmila A | LGTGTWINT-1367 | 8-Feb-23-->
+                        <div class="loaderdiv">
+                            <div class="loader-center">
+                            <div class="multi-ripple">
+                                <div></div>
+                                <div></div>
+                            </div>
+                            </div>
+                        </div>   
+                    </tbody>
+                    <!-- Urmila A | LGTGTWINT-1761 | 30-Mar-23  -->
+                    <div *ngIf="NoLegRecordsFounds && !loadLefData && QuoteLegData.length === 0" class="NoRecordsFound"> <!--Urmila A | LGTGTWINT-1367 | 8-Feb-23-->
+                        <label>No Records found</label>
+                    </div>
+
+                </table>
+        </div>             
+</div>
+
+
+</div>
+
+
+<!-- added by Urmila A, LGTCLI-383 | start | 31-Mar-23 -->
+<div class="FXDorderPopup-overlay" *ngIf="showRFQSrcWarning" id="rfqsrc">
+<div class="OrderContainer"> 
+<div class="OrderSection">
+    <div class="OrderPopUpheader">
+        <span>User Notification</span>
+        <svg name="closebtn" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 32.008 32" (click)="showRFQSrcWarning = false">
+            <path fill="var(--headers)" id="cancel" d="M31.082,27.289,42.514,15.857a2.679,2.679,0,1,0-3.788-3.788L27.294,23.5,15.861,12.068a2.679,2.679,0,1,0-3.788,3.788L23.505,27.289,12.073,38.721a2.679,2.679,0,0,0,3.788,3.788L27.294,31.077,38.726,42.509a2.679,2.679,0,1,0,3.788-3.788Z" transform="translate(-11.285 -11.289)"/>
+        </svg>
+    </div>
+    <div class="OrderpopupBody" name="rfqsrc">           
+      <span >This may result in a longer loading time. Do you wish to proceed?</span>                                    
+    </div>
+    <div  class="FXDRouteToDealerBtnSection">
+            <button  class="button" (click)="fnYesContinueRFQ()">Yes</button>
+            <button  class="button" (click)="fnNoContinueRFQ()">No</button>                  
+    </div>
+</div>               
+</div>
+</div>
+<!-- added by Urmila A, LGTCLI-383 | end | 31-Mar-23 -->
+

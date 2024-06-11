@@ -1,0 +1,48 @@
+<!-- <select *ngIf="this.CCYList.length > 0" id="ddl_Curr" class="ddl ddlccy" class="longText"
+    [(ngModel)]="CurrencyPair" (change)=" setCCY($event);ResetAllFields(); GetStrikeRate();">
+    <option *ngFor="let c of CCYList" (selected)="c.Asset_Pair === CurrencyPair" [value]="c.Asset_Pair">
+        <img class="ccyFlag flagPos" [src]="'http://'+domainURL+'/assets/Flags_Circular/'+c.Asset_Pair.split(' -')[0]+'.png'" alt="ccy">
+            {{ c.Asset_Pair }}
+            <img class="ccyFlag" [src]="'http://'+domainURL+'/assets/Flags_Circular/'+c.Asset_Pair.split('- ')[1]+'.png'" alt="ccy">
+        
+    </option>
+</select> -->
+
+<div class="underlying-main-container">
+    <div class="CCYDiv">
+        <!-- Added FXDInputOnlyChar($event) function in (keypress) by Urmila A | 31-Jan-23 | LGTGTWINT-790 | for restricting other than char in ccysearch field-->
+        <!-- UrmilaA | 13-Dec-23 | Restriction of drag-drop on input fields -->
+        <!-- fnCheckValidCCY added by UrmilaA | for checking valid ccy | 15-Dec-23 -->
+        <!-- GauravM | 03-Jan-24 | F5SAAINT-1432 | Added parameter to EnterCurrencyPair()  -->
+        <img *ngIf="CurrencyPair.length > 8" class="ccyFlag flagPos" [src]="'http://'+domainURL+'/assets/Flags_Circular/'+CurrencyPair.split(' -')[0]+'.png'"  alt="ccy">
+        <img *ngIf="CurrencyPair.length > 8" class="ccyFlag" style="margin-right: 10px;" [src]="'http://'+domainURL+'/assets/Flags_Circular/'+CurrencyPair.split('- ')[1]+'.png'"  alt="ccy">
+        <input (dragover)="FXD_cfs.onDragOver($event)" (drop)="FXD_cfs.onDrop($event)" [disabled]="disabled" type="text" class="text" [(ngModel)]="CurrencyPair" maxlength="9" 
+        (copy)="FXD_cfs.DisableCopy($event)" (paste)="FXD_cfs.DisablePaste($event)" 
+        (input)="onInput($event)"
+        (keypress)="showUnderlyingList = true;ChangeIndex(); FXD_cfs.FXDInputOnlyChar($event);" (change)="chngCCY();fnCheckValidCCY($event)"
+        (keydown.enter)="EnterCurrencyPair('enter');this.EnteredUnderlying = false" (keydown.backspace)="backKeyPress()"
+        (keydown.delete)="backKeyPress()" (keydown.tab)="EnterCurrencyPair('enter');" (keydown.ArrowUp)="selectedBIndex = moveUpSelection(selectedBIndex)" 
+        (keydown.ArrowDown)="selectedBIndex = moveDownSelection(selectedBIndex)" (focus)="Common_cfs.SelectFullText($event)" /> 
+             <!-- added (click)="chngCCY()" by UrmilaA |LGTGTWINT-2112| 9-june-23 -->
+    </div>
+     
+ 
+     <!-- added (click)="showUnderlying(ccy.Asset_Pair)", (mouseover)="updateCCy(ccy.Asset_Pair)" by UrmilaA |LGTGTWINT-2112| 13-june-23 -->
+      <!-- fnCheckValidCCY added by UrmilaA | for checking valid ccy | 26-Dec-23 -->
+     <!-- GauravM, UrmilaA | 08-Jan-24 | F5SAAINT-1432  HSBCFXEINT-40| CCY pair issue | Added parameter to EnterCurrencyPair()  | code sync with 5Star -->
+     <div class="SelectorBox" *ngIf="CurrencyPair !== '' && showUnderlyingList">
+        <a *ngFor="let ccy of (this.CCYList | searchccy: CurrencyPair); let i = index" 
+            (keypress)="ChangeIndex($event)" (keydown.enter)="EnterCurrencyPair('enter')"  > 
+            <div [attr.data-ccy]="ccy.asset_Pair"  [ngClass]="{HoverSuggestion: i === selectedBIndex}" (click)="fnCheckValidCCY(ccy.asset_Pair);showUnderlying(ccy.asset_Pair)">
+             
+                <div class="currencyPairFlags" (mouseover)="updateCCy(ccy.asset_Pair)">
+                    <img class="ccyFlag flagPos"  [src]="'http://'+domainURL+'/assets/Flags_Circular/'+ccy.asset_Pair.split(' -')[0]+'.png'"  alt="ccy" >
+                   {{ ccy.asset_Pair }}
+                    <img class="ccyFlag" [src]="'http://'+domainURL+'/assets/Flags_Circular/'+ccy.asset_Pair.split('- ')[1]+'.png'"  alt="ccy" >
+                </div>            
+            <!-- <span>{{ ccy.Asset_Pair }}</span> -->              
+            </div>
+             
+        </a>
+    </div>
+</div>

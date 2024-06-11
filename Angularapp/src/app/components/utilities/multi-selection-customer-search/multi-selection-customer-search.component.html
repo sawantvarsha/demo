@@ -1,0 +1,76 @@
+<!--Added by Ashwini H. 
+    Task Assign : Mohan P.
+    Date : 31st Jan 2022
+    Jira Id : STANHCINT-591 -->
+
+
+<!-- For multi selection without checkbox -->
+<div class = "multi-select-input">
+    <div *ngFor = "let selectCustomer of selectedCustomerArrayNew; let i = index;"  class = "selected-customer-text">
+        <span class = "customername-width"> {{selectCustomer.CustomerName}} </span> 
+        <app-svg-icons [icon]="'cancel-icon'" [width]="'10'" [height]="'10'" (click) = "clearSelectedCustomerList(selectCustomer.CustomerName, i);"
+        class="closebtn"></app-svg-icons>
+    </div>
+
+    <input type="text" [tabindex]="1" placeholder="Search Customer" class = "search-text-height" [(ngModel)]="selectedCustomer" (keydown.enter)="
+        selectCustomer1($event); showSuggestions = false;
+        " (keydown.ArrowUp)="
+        selectedCustomerIndex = cfs.moveUpSelection($event, selectedCustomerIndex)
+        " (keydown.ArrowDown)="
+        selectedCustomerIndex = cfs.moveDownSelection($event, selectedCustomerIndex)
+        " (keypress)="showSuggestions = true"/>
+</div>
+
+
+<div class="UnderlyingSearch" *ngIf="showSuggestions">
+  <div id="CustomerNameList" class="SelectorBox" (clickOutside)="onClickedOutside($event)">
+    <a #CustomerNamesList *ngFor="
+        let customer of customersOfRMArray
+          | search: selectedCustomer:'CustomerName';
+        let i = index
+      " (keypress)="ChangeIndex($event)">
+      <!-- <div
+        class = "selection-row-client" [ngClass]="{ HoverSuggestion: i === selectedCustomerIndex }" (click)="selectCustomer(customer)"  (keydown.enter)="selectCustomer(customer)" >
+  
+        <span id = "custName">{{ customer.CustomerName }}</span>
+      </div> -->
+
+      <div *ngIf="customer" [attr.data-mf]="customer['CustomerName']" (click)="selectCustomer(customer)"
+        (keydown.enter)="selectCustomer(customer)" [ngClass]="{ HoverSuggestion: i === selectedCustomerIndex }">
+        <span>{{ customer.CustomerName }}</span>
+      </div>
+
+    </a>
+  </div>
+</div>
+
+
+<!-- Customer selection with checkbox - 01 Feb 2022 -->
+
+
+
+  <!-- <input type="text" [tabindex]="1" placeholder="Search Customer" [(ngModel)]="selectedCustomer" (keydown.enter)="
+  selectCustomer1($event); 
+  " (keydown.ArrowUp)="
+  selectedCustomerIndex = cfs.moveUpSelection($event, selectedCustomerIndex)
+  " (keydown.ArrowDown)="
+  selectedCustomerIndex = cfs.moveDownSelection($event, selectedCustomerIndex)
+  " (keypress)="showSuggestions = true;" (keypress)="selectCustomer1($event); "/>
+
+
+<div class="UnderlyingSearch" *ngIf="showSuggestions">
+  <div id="CustomerNameList" class="SelectorBox" (clickOutside)="onClickedOutside($event)">
+    <a #CustomerNamesList *ngFor="
+        let customer of customersOfRMArray
+          | search: selectedCustomer:'CustomerName';
+        let i = index
+      " (keypress)="ChangeIndex($event)">
+      <div *ngIf="customer" [attr.data-mf]="customer['CustomerName']"
+        class = "selection-row-client" [ngClass]="{ HoverSuggestion: i === selectedCustomerIndex }" (click)="selectCustomer(customer); checkedCustomer(customer,i);"  (keydown.enter)="selectCustomer(customer)"  >
+     
+        <input type = "checkbox" for = "custName" class = "checkbox-client-search" [checked]="customer.CustFlag" />
+        <span id = "custName">{{ customer.CustomerName }}</span>
+      </div>
+    </a>
+  </div>
+</div> -->

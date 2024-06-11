@@ -1,0 +1,95 @@
+<div class="timeline-container">
+    <div class="header-options">
+        <div class="flex-row">
+            <label>From</label>&nbsp;
+            <input type="date" [attr.data-date]="fromDate"  [(ngModel)]="fromDate" (change)="fromDate = selectDate(fromDate);dateChanged();">
+        </div>
+        <div class="flex-row">
+            <label>To</label>&nbsp;
+            <input type="date" [attr.data-date]="toDate" [(ngModel)]="toDate" (change)="toDate = selectDate(toDate);dateChanged();">
+        </div>
+
+        <div class="flex-row">
+            <input type="radio" name="expand" (change)="toggleDataView()" [checked] = "!isReduced">&nbsp;
+            <label>Expand</label>&nbsp;
+            <input type="radio" name="expand" (change)="toggleDataView()" [checked] = "isReduced">&nbsp;
+            <label>Reduced</label>&nbsp;
+        </div>
+
+        <button class="button">Load</button>
+
+        <!-- <button class="button">Edit</button>
+
+        <button class="button">Save</button>
+
+        <button class="button">Cancel</button> -->
+
+        <div class="excel-icon" (click)="exportToExcel()">
+            <app-svg-icons [icon]="'xls'" [width]="'25px'" [height]="'25px'"></app-svg-icons>
+        </div>
+    </div>
+
+    <br>
+    <div  *ngIf="!isLoader && !isEmpty">
+
+        <div class="performance-grid" id="performance-grid">
+            <div class="date-column">
+                <label class="header">Date</label>
+            </div>
+            <div>
+                <div class="sub-row-grid" [style.grid-template-columns]="setGrid()">
+                    <ng-container *ngFor="let header of headerArr;">
+                        <label class="header">{{header.Field_Display_Name}}</label>
+                    </ng-container>
+                </div>
+
+            </div>
+        </div>
+        <div class="performance-grid-tbody">
+            <ng-container *ngFor="let data of RUHDatesArr;">
+                <div class="performance-grid">
+    
+                    <div class="date-column">
+                        <label>{{data.RUH_Schedule_Date.split(' ')[0] | date:'dd-MMM-yyyy'}}</label>
+                    </div>
+                    <div>
+                        <!-- <div class="sub-row-grid" [style.grid-template-columns]="setGrid()">
+                            <ng-container *ngFor="let row of data.records">
+                                <div class="data-grid">
+                                    <ng-container *ngFor="let col of row.headerKeys">
+                                        <label> {{col.values[0].RUH_Rule_Result}} </label>
+                                    </ng-container>l
+                                </div>
+                            </ng-container>
+                        </div> -->
+
+                        <div *ngFor="let row of data.records" class="sub-row-grid2" [style.grid-template-columns]="setGrid()">
+                            <ng-container *ngFor="let col of row | slice:1">
+                                <div [style.text-align] = "alignContent(col)">
+                                    <label>{{col.RUH_Rule_Result}}</label>
+                                </div>
+                            </ng-container>
+                        </div>
+        
+                    </div>
+                </div>
+    
+            </ng-container>
+
+        </div>
+    </div>
+
+    <div *ngIf="isEmpty">
+        <label>No Records Found</label>
+    </div>
+
+    <div *ngIf="isLoader" class="mtm-history-loader">
+        <div class="loader-icon" >
+          <div class="multi-ripple">
+            <div></div>
+            <div></div>
+          </div>
+        </div>
+    </div>
+
+</div>

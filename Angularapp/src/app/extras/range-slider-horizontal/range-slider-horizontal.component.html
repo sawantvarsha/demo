@@ -1,0 +1,17 @@
+<div class="rangeslidercomponent">
+  <div class="slider1">
+    <!-- <audio preload="auto" #rangeSliderHorzSound muted>
+            <source src="../../../assets/Safe-Lock-Click.mp3">
+            <source src="../../../assets/Safe-Lock-Click.ogg">
+        </audio> -->
+        <input type="range" class="range-slider__range" orient="vertical" [min]="min" [max]="max" width="100%" [(ngModel)]="ticks" (input)="sliderChange($event)" #slider1 [id]="id" />
+    <div class="range-flex">
+      <label *ngFor="let number of range">{{ number }}</label>
+    </div>
+  </div>
+  <div class="slider-value">
+    <div class="slider-form-group field">
+            <input type="text" class="form__field" autocomplete="off" [(ngModel)]="ticks" (change)="sliderChange($event)" />
+    </div>
+  </div>
+</div>

@@ -1,0 +1,267 @@
+<div [ngClass]="{'insuranceComponentrmw': isUserRM === true, 'insuranceComponent': isUserRM === false}">
+
+    <div class="fundname-row" *ngIf="isUserRM">
+        <div class="middle">Customer</div>
+        <div class="middle">
+            <app-customer-search (sendCustomerDetails)="getCustomerDetails($event)"
+                (selectedCustomerValue)="selectedCustomerValue1($event)"></app-customer-search>
+        </div>
+    </div>
+
+    <div class="fundname-row" *ngIf="!displaySearch">
+        <div class="middle">Product</div>
+        <div class="middle">
+            <input type="text" placeholder="Search" [(ngModel)]="search"
+                (keydown.enter)="selectShareOnEnter($event); showSuggestions = false"
+                (keydown.ArrowUp)="selectedBIndex = com.moveUpSelection($event, selectedBIndex)"
+                (keydown.ArrowDown)="selectedBIndex = com.moveDownSelection($event, selectedBIndex)"
+                (keypress)="searchShare(); showSuggestions = true">
+            <div class="top UnderlyingSearch " *ngIf="search && showSuggestions">
+                <div class="SelectorBox">
+                    <a *ngFor="let Product of shareList; let i = index" (keypress)="ChangeIndex($event)">
+                        <div *ngIf="Product" [attr.data-sharedata]="Product.Product_Code"
+                            (click)="selectShareOnClick(Product.Product_Code)"
+                            (keydown.enter)="selectShareOnClick(Product.Product_Code)"
+                            [ngClass]="{HoverSuggestion: i === selectedBIndex}">
+                            <span>{{ Product.Product_Code }} {{Product.Product_Description}}</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="gridInfo">
+        <div class="funddetails">
+            <div class="fundtitlerow" *ngIf="this.selectedShare">{{ProductName}}</div>
+        </div>
+        <div class="funddetails " style="color: red;" *ngIf="ProductName">{{msg}}
+        </div>
+    </div>
+    <div class="param-cols">
+        <div class="column1">
+            <div class="fundparams-row">
+                <div class="middle">Product Code</div>
+                <div class="middle">
+                    <input type="text" [(ngModel)]="ProductCode" disabled>
+                </div>
+            </div>
+            <!-- <div class="fundparams-row">
+        <div class="middle">Payment Method</div>
+        <div class="middle">
+          <select [(ngModel)]="Method" tabindex="3" (change)="ChnagePaymentMethod()">
+            <option value="Cash">Cash</option>
+            <option value="Cheque">Cheque</option>
+            <option value="CPFOA">CPFOA</option>
+            <option value="SRS">SRS</option>
+          </select>
+        </div>
+      </div> -->
+            <div class="fundparams-row">
+                <div class="middle">Policy Term</div>
+                <div class="middle">
+                    <input type="text" [(ngModel)]="policyTerm">
+
+                </div>
+            </div>
+            <div class="fundparams-row">
+                <div class="middle">Commencement Date</div>
+                <div class="middle">
+                    <!-- <input type="date" class="input-dob center" [attr.data-date]="commenceDate" disabled placeholder="dd-mm-yyyy"
+            data-date-format="DD-MMM-YYYY" value="" min="1997-01-01" max="2030-12-31" [(ngModel)]="commenceDate"
+            tabindex="6" (change)="selectDate('commenceDate',commenceDate )"> -->
+                    <input class="center" [(ngModel)]="commenceDate" disabled>
+                </div>
+            </div>
+            <div class="fundparams-row">
+                <div class="middle">Sum Assured</div>
+                <div class="middle">
+                    <input type="text" class="right" value="1" [(ngModel)]="SumAssured"
+                        (keypress)="com.NotionalValidate($event);"
+                        (change)="SumAssured = com.NotionalChange($event); changeSumAssured()"
+                        (focus)="com.UnformatNumber($event);com.SelectFullText($event);" (blur)="com.FormatNumber($event)" maxlength="20">
+                </div>
+            </div>
+
+        </div>
+        <div class="column2">
+            <div class="fundparams-row">
+                <div class="middle">Application No.</div>
+                <div class="middle">
+                    <input type="text" [(ngModel)]="ApplicationID" maxlength="14" (keypress)="omit_special_char($event)"
+                        disabled>
+                </div>
+            </div>
+
+            <div class="fundparams-row">
+                <div class="middle">Premium Payment Term</div>
+                <div class="middle">
+                    <input type="text" [(ngModel)]="paymentTerm">
+                </div>
+            </div>
+            <div class="fundparams-row">
+                <div class="middle">Payment Frequency</div>
+                <div class="middle">
+                    <select [(ngModel)]="paymentFreq">
+                        <option value="Daily">Daily</option>
+                        <option value="Biweekly">Biweekly</option>
+                        <option value="Weekly">Weekly</option>
+                        <option value="Bimonthly">Bimonthly</option>
+                        <option value="Monthly">Monthly</option>
+                        <option value="Quarterly">Quarterly</option>
+                        <option value="Semiannually">Semiannually</option>
+                        <option value="Annually">Annually</option>
+                    </select>
+                </div>
+            </div>
+            <div class="fundparams-row">
+                <div class="middle">Premium</div>
+                <div class="middle">
+                    <input type="text" class="right" value="" [(ngModel)]="InsurancePremium"
+                        (keypress)="com.NotionalValidate($event);"
+                        (change)="InsurancePremium = com.NotionalChange($event); changeSumAssured()"
+                        (focus)="com.UnformatNumber($event);com.SelectFullText($event);" (blur)="com.FormatNumber($event)" maxlength="20">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="param-cols" *ngIf="this.moredetails !== 'More Details'">
+        <div class="column1">
+            <div class="fundparams-row">
+                <div class="middle">Customer</div>
+                <div class="middle">
+                    <input type="text" [(ngModel)]="CustomerName" disabled placeholder="Customer" />
+                </div>
+            </div>
+            <div class="fundparams-row">
+                <div class="middle">Portfolio</div>
+                <div class="middle">
+                    <select [(ngModel)]="portfolio" (change)="updatePortfolio()" [disabled]="!enablePortfolio">
+                        <option *ngFor="let arr of portfolioList;" [value]="arr.FacDesc">{{arr.PortfolioName}}
+                        </option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="column2">
+            <!-- <div class="fundparams-row">
+                <div class="middle">Currency</div>
+                <div class="middle">
+
+                </div>
+            </div> -->
+
+            <div class="fundparams-row">
+                <div class="middle">Currency</div>
+                <div class="middle">
+                    <input type="text" class="left" [(ngModel)]="Currency" disabled>
+                </div>
+            </div>
+            <div class="fundparams-row">
+                <div class="middle">Account Number</div>
+                <div class="middle">
+                    <select class = "right paddingR_30px"  [(ngModel)]="Account_Number" (change)="cashBalance()" ><!--cashBalance() Added by AlolikaG on 2nd Feb 2022-->
+                        <option *ngFor="let arr of accountList;">{{arr.Param1}}
+                        </option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="fund-button-row">
+
+        <div></div>
+        <div class="details right">
+
+            <div class="link" (click)="moredetailsCheck()"> <u>
+                    {{moredetails}}</u></div>
+            <div>
+                <button class="button" [disabled]="!showSubmit" (click)="addPolicy()">Submit</button>
+            </div>
+        </div>
+        <div>
+            <button class="button" (click)="reset()">Clear</button>
+        </div>
+    </div>
+    <div class="fund-message-row">
+        <div *ngIf="loadflag">
+            <img [src]="isProd?'assets/loading_dots.gif':'../../../../../assets/loading_dots.gif'" height="100px"
+                width="100px">
+        </div>
+        <div *ngIf="!loadflag">
+            {{successMsg}}
+        </div>
+    </div>
+
+</div>
+<div [ngClass]="{'overlay':popUpflag}">
+    <div class="popuptab1 " *ngIf="popUpflag">
+        <div class="content-header" *ngIf="popUpflag" [ngClass]="{'maincontainer-opacity':!popUpflag}">
+            <div class="content-header-name">
+                <span>Customer {{CustomerName}}|{{CustomerID}}</span>
+            </div>
+            <div class="closebtn" (click)="showdetailsPopUp()">X</div>
+        </div>
+        <div class="content">
+            <div class="gridclass">
+                <span class="link">Target Asset Allocation</span>
+                <button class="button  btn">Apply</button>
+            </div>
+
+            <div class="content-container">
+                <table style="width: 100%;">
+                    <thead>
+                        <tr class="tableheadGrid">
+                            <th class="minwidth600">Parameters</th>
+                            <th class="maxwidth150 display" style="padding-left: 40px;">
+                                <input type="checkbox" value="CIF A" />
+                                <span style="    padding-left: 10px;">CIF A</span>
+                            </th>
+                            <th class="maxwidth120">Eligible Y/N</th>
+                            <th class="minwidth450">Failed Reason</th>
+                            <th class="maxwidth100">Ref.</th>
+                            <th class="maxwidth100 display">
+                                <input type="checkbox" value="CIF A" />
+                                <span style="    padding-left: 10px;">Override</span>
+                            </th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+                        <tr class="tableGrid" *ngFor="let item of finalSuitabilityData">
+                            <td class="minwidth600">{{item.Parameter}}</td>
+                            <td class="maxwidth160"> <input type="text" disabled value={{item.CIF}}></td>
+                            <td class="maxwidth120">{{item.EligibleYN}}</td>
+                            <td class="minwidth450">{{item.Reason}}</td>
+                            <td class="maxwidth100">{{item.Ref}}</td>
+                            <td class="maxwidth120" style="    padding-left: 40px;"><input type="checkbox"
+                                    [disabled]="item.Override" value="" /></td>
+                        </tr>
+                        <!-- <tr class="tableGrid">
+              <td class="minwidth600">Account Currency</td>
+              <td class="maxwidth160"><input type="text" disabled value="USD"/></td>
+              <td class="maxwidth120"><input type="text" disabled value="Y"/></td>
+              <td class="minwidth450"></td>
+              <td class="maxwidth100">Ref:USD</td>
+              <td class="maxwidth120"><input type="checkbox" disabled value=""/></td>
+            </tr>
+            <tr class="tableGrid">
+              <td class="minwidth600">Customer Age Cap</td>
+              <td class="maxwidth160"><input type="text" disabled value="60"/></td>
+              <td class="maxwidth120"><input type="text" disabled value="N"/></td>
+              <td class="minwidth450">Customer Age is greater than 55</td>
+              <td class="maxwidth100">Ref:55</td>
+              <td class="maxwidth120"><input type="checkbox"  value=""/></td>
+            </tr> -->
+                    </tbody>
+
+                </table>
+
+
+
+            </div>
+
+        </div>
+
+    </div>
+</div>

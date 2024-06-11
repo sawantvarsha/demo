@@ -1,0 +1,284 @@
+.main-container {
+  min-height: 180px !important;
+  // width: 80%;  //Added by Urmila A | 7-Jan-23
+  margin: 9px 0px 10px 0px; //Added by Urmila A | 19-Jan-23
+  .cards-section {
+    display: flex;
+    justify-content: flex-start;
+    gap: var(--gap);
+    margin: 10px 0px 0px 0px;
+    // flex-wrap: nowrap;
+    flex-wrap: wrap;
+  }
+  .loading-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+.Card-container {
+  min-height: 180px !important;
+  .cards-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--gap);
+  }
+  .loading-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .card-card {
+    width: 100%;
+    // height: 50px;
+    // background-color: var(--select-bg);
+    border-radius: 5px;
+    display: grid;
+    grid-template-rows: none;
+    grid-template-columns: 1.2fr 1fr;
+    padding: 8px;
+    box-shadow: var(--neumorphic-up);
+    border: 1px solid var(--disabled);
+    .card-card-LPLogo {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      // background: var(--fx-tile);
+      // border-right: 1px solid var(--border);
+    }
+    .card-card-header {
+      display: flex;
+      font-size: 15px;
+      color: var(--heading-label);
+      align-items: center;
+      padding-left: 10px;
+    }
+    .card-card-contents {
+      display: grid;
+      // grid-template-rows: 1fr 1.5fr;
+     
+      .card-card-price {
+        display: flex;
+        justify-content: flex-end;
+        align-items: flex-start;
+        font-size: 15px;
+        font-weight: 400;
+      }
+      .card-card-timer {
+        display: flex;
+        justify-content: flex-end;
+        font-size: 12px;
+        color: var(--heading-label);
+        gap: 4px;
+        align-items: center;
+      }
+     
+    }
+  }
+  .highlight-card-card {
+    box-shadow: 0px 0px 4px 1px var(--active) !important;
+    background-color: var(--input-bg);
+    // box-shadow: 3px 0px 0px 0px var(--active) inset;
+  }
+  .highlight-card-price {
+    // color: var(--active) !important;
+    // font-size: 17px !important;
+  }
+}
+.card {
+  min-width: 105px !important;
+  // height: 205px;
+  height: 205px; // Updated By Anmol B || 12-Apr-2024 || JIRA ID : F5SAAINT-3655
+  background-color: var(--card-bg);
+  border-radius: 5px;
+  display: grid;
+  grid-template-rows: 20px 30px auto auto 45px;
+  // grid-template-rows: 1fr 0.5fr 0.8fr 0.5fr;
+  padding: 10px;
+  box-shadow: var(--neumorphic-up);
+  // border: var(--border-light);
+  width: 115px; //added by UrmilaA, change told by Milind Sir | 29-May-23 | LGTGTWINT-2061
+  .card-lp-logo {
+    display: flex;
+    justify-content: center;
+  }
+  .card-header{
+    margin: auto;
+    font-size: 12px;
+    color: var(--heading-label);
+  }
+  .card-sub-header {
+    margin: auto;
+    font-size: 14px;
+    color: var(--heading-label);
+  }
+
+  //DCI Pricing block | UrmilaA | Modified | 3-Jan-24
+  .card-yield {
+    margin: auto;
+    font-size: 14px;
+  }
+  .card-contents {
+    display: flex;
+    flex-direction: column; // Added By Anmol B || 12-Apr-2024 || JIRA ID : F5SAAINT-3655
+    gap:4px; // Added By Anmol B || 12-Apr-2024 || JIRA ID : F5SAAINT-3655
+    justify-content: center;
+    align-items: center;
+    // font-size: 17px; // F5SAAINT-2228 | UI Distortion on price with large length | Chaitanya M | 04-March-2024
+    font-weight: 400;
+    .Red_highlight{  //Added by UrmilaA | 16-Jan-23 | LGTGTWINT-1044
+      color: #ff0007 !important; //LGTCLI-343, Urmila A | 2-Mar-23
+    }
+    // Start : F5SAAINT-2228 | UI Distortion on price with large length | Chaitanya M | 04-March-2024
+    .Red_highlightsmall{
+      color: var(--red) !important; // Modified by Lalit G || 31-05-24
+      font-size: 14px !important;
+    }
+    .Normal_highlight{
+      font-size: 17px !important;
+    }
+    .Normal_highlightsmall{
+      font-size: 14px !important;
+    }
+    // End : F5SAAINT-2228 | UI Distortion on price with large length | Chaitanya M | 04-March-2024
+
+    //DCI Pricing block | UrmilaA | 29-Dec-23
+    span[name="DCD"]{
+      font-size: 14px;
+      display: flex;
+    }
+  }
+  .card-buttons {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .card-timer {
+    display: flex;
+    justify-content: center;
+    color: var(--heading-label);
+     align-items: center;
+  }
+  .card-loader{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    // height: 30px;
+  }
+}
+
+//DCI Pricing block | UrmilaA | 29-Dec-23 | start
+.card[name="DCD"]{
+  grid-template-rows: 20px 30px auto auto auto 45px !important;
+  width: 130px !important;
+}
+//DCI Pricing block | UrmilaA | 29-Dec-23 | ends
+
+.highlight-card {
+  border: var(--border-active);
+  box-shadow: 0px 0px 8px 3px var(--active) !important;
+  .card-sub-header {
+    color: var(--text);
+    font-size: 14px;
+  }
+  .card-contents {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    // font-size: 21px; //commented by UrmilaA | LGTGTWINT-2063 | 1-June-23
+    color: var(--active);
+    border-top: 0.5px dotted var(--active-light);
+
+
+    //DCI Pricing block | UrmilaA | 29-Dec-23
+    span[name="DCD"]{
+      font-size: 14px;
+      display: flex;
+    }
+    //DCI Pricing block | UrmilaA | 29-Dec-23 | ends
+
+  }
+
+  //DCI Pricing block | UrmilaA | 29-Dec-23 | start
+  .card-yield {
+    margin: auto;
+    font-size: 14px;
+    color: var(--active);
+  }
+  //DCI Pricing block | UrmilaA | 29-Dec-23 | ends
+
+}
+.card > .hover-card {
+  box-shadow: 0px 0px 1px 1px var(--active);
+}
+.button {
+  max-width: 60px;
+}
+.RFQNO {
+  display: flex;
+  align-items: flex-end;
+  column-gap: 10px;
+  .RFQNOtxt {
+    color: var(--inline-label);
+    text-align: right;
+    font-size: 20px;
+  }
+}
+
+
+
+
+//Added by Urmila A | 14-Nov-22 | Start
+//Modified on 6-Jan-23, by Rohit T | start
+@media screen and (min-width: 1200px) and (max-width: 1400px) {
+  .main-container{
+      width: 90%; //Added by Urmila A | 11-Jan-22
+      .cards-section .card{
+        // width: -webkit-fill-available !important; //commented by Urmila A | LGTCLI-284 | 1-Feb-23
+        min-width: 105px !important;
+        width: unset; //added by UrmilaA, change told by Milind Sir | 30-May-23 | LGTGTWINT-2061
+      }
+  }
+  //Added by Urmila A | 9-Jan-22 | start |LGTGTWINT-890
+  .card{
+    .card-contents{
+      font-size: 15px !important;
+    }
+  }
+  //Added by Urmila A | 9-Jan-22 | end
+
+  //Urmila A | LGTCLI-327 | 23-Feb-23 | start
+  .highlight-card{
+    .card-contents{
+      font-size: 17px !important;
+    }
+  }
+   //Urmila A | LGTCLI-327 | 23-Feb-23 | end
+  
+}
+//Modified on 6-Jan-23, by Rohit T | end
+
+//Urmila A | 19-Jan-23 | start
+@media screen and (min-width: 1400px) and (max-width: 1600px){
+  // .main-container{
+  //     width: 70% !important;
+  // }
+  .card{ //Urmila A | 1-Feb-23 | LGTCLI-284
+    min-width: 105px !important;
+    width: unset; //added by UrmilaA, change told by Milind Sir | 30-May-23 |LGTGTWINT-2061
+  }
+}
+//Urmila A | 19-Jan-23 | end
+
+//Urmila A | LGTCLI-327 | 24-Feb-23 | start
+@media screen and (min-width: 1000px) and (max-width: 1700px){
+    
+    .highlight-card{
+      .card-contents{
+        font-size: 17px !important;
+      }
+    }
+    
+}
+//end

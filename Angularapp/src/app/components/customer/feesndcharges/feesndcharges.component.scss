@@ -1,0 +1,183 @@
+$assetPath: "http://40.65.134.77";
+.feesndcharges-component {
+    display: flex;
+    background-color: var(--main-bg-color);
+    flex-direction: column;
+    font-size: 15px;
+}
+
+.content {
+    transition: 0.3s;
+    margin: 0px 0px 0px 30px;
+    .content-totalcontribution {
+        display: grid;
+        grid-template-columns: 1fr;
+        .text {
+            font-size: 17px;
+            line-height: 35px;
+            text-align: initial;
+            color: var(--label);
+            text-align: start;
+            padding-left: 20px;
+        }
+    }
+}
+
+.content-container {
+    overflow-x: scroll;
+    // width: calc(100%); //removed BY Uddesh on 7 Feb, 2022
+    width: calc(100% - 20px); //added by Uddesh on 7 Feb, 2022
+}
+
+.content-container-button {
+    margin: auto;
+    padding-top: 5px;
+}
+
+.date-lbl {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.lbl {
+    font-size: 15px;
+    line-height: 35px;
+    text-align: initial;
+    color: var(--label);
+    width: 60px;
+    text-align: start;
+    padding-top: 9px;
+    padding-right: 10px;
+}
+
+td {
+    font-size: 12px;
+    margin: 0px !important;
+}
+
+.right {
+    float: none !important;
+}
+
+thead {
+    //Updated by Uddesh on 7 Feb, 2022
+    height: 50px !important;
+    text-align: center; //Updated by Uddesh on 7 Feb, 2022
+    tr {
+        display: grid;
+        grid-template-columns: 1fr 1.2fr 5fr 2fr 1fr 1.4fr 1.4fr 2fr 1.5fr;
+    }
+}
+
+tr {
+    //updated by Uddesh on 7 Feb, 2022
+    display: grid;
+    grid-template-columns: 1fr 1.2fr 5fr 2fr 1fr 1.4fr 1.4fr 2fr 1.5fr;
+    padding: 5px;
+    margin-bottom: 5px;
+    height: max-content !important;
+    margin-bottom: 10px !important;
+}
+
+th {
+    border-bottom: none !important;
+}
+
+.maxwidth50 {
+    max-width: 50px !important;
+    min-width: 50px !important;
+}
+
+.maxwidth100 {
+    max-width: 100px !important;
+    min-width: 100px !important;
+}
+
+.maxwidth120 {
+    max-width: 120px !important;
+    min-width: 120px !important;
+}
+
+.maxwidth150 {
+    max-width: 150px !important;
+    min-width: 150px !important;
+}
+
+.minwidth600 {
+    max-width: 350px !important;
+    min-width: 350px !important;
+    white-space: pre-line;
+}
+
+thead,
+tbody {
+    display: block;
+}
+
+tbody {
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-top: 15px !important;
+    border-top: solid 1px var(--table-header-text) !important;
+}
+
+::-webkit-scrollbar {
+    width: 5px;
+    height: 0px;
+}
+
+.input-dob {
+    position: relative;
+    height: 35px;
+    color: white;
+    width: 150px;
+    margin-top: 7px;
+}
+
+.input-dob:before {
+    position: absolute;
+    top: 10px;
+    left: 5px;
+    content: attr(data-date);
+    display: inline-block;
+    color: black;
+}
+
+.input-dob::-webkit-datetime-edit,
+.input-dob::-webkit-inner-spin-button,
+.input-dob::-webkit-clear-button {
+    display: none;
+}
+
+.input-dob::-webkit-calendar-picker-indicator {
+    position: absolute;
+    top: 8px;
+    right: 0;
+    color: black;
+    opacity: 1;
+}
+
+.xls-icon,
+.pdf-icon {
+    padding: 0px !important;
+    min-width: 30px !important;
+    min-height: 30px !important;
+    margin: 0px 10px 0px 5px !important;
+    cursor: pointer;
+}
+
+.pdf-icon {
+    background: url(#{$assetPath}/assets/pdf.png) no-repeat scroll calc(50%) center/25px auto !important;
+}
+
+.xls-icon {
+    background: url(#{$assetPath}/assets/xls.png) no-repeat scroll calc(50%) center/25px auto !important;
+}
+
+.icon {
+    display: flex;
+    align-items: center;
+    padding-top: 8px;
+}

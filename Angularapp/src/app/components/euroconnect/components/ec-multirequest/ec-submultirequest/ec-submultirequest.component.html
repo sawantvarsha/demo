@@ -1,0 +1,1046 @@
+<ng-container *ngTemplateOutlet="content"></ng-container>
+<ng-template #content>
+<!-- <td class="deleteCol sticky-col first-col tdalignCenter" *ngIf="ProductName!=='CreditTranche'" (click)="deleteRow();">
+    <img src="{{asseturl}}delete.png" width="30px" style="filter: invert(50%);cursor: pointer;" title="Delete">
+    <app-svg-icons [icon]="'delete'" [width]="'20'" [height]="'20'">
+    </app-svg-icons>
+  </td>
+  <td class="deleteCol sticky-col first-col" *ngIf="ProductName==='CreditTranche'" (click)="deleteCreditRow();">
+    <app-svg-icons [icon]="'delete'" [width]="'20'" [height]="'20'">
+    </app-svg-icons>
+    <img src="{{asseturl}}delete.png" width="30px" style="filter: invert(50%);cursor: pointer;" title="Delete">
+</td> -->
+<!-- RESULT -->
+<td class="sticky-col first-col" style="min-width: 15em !important;">
+    <!-- <div> -->
+    <!-- <div class="topcorner" [matMenuTriggerFor]="menu" #menuTrigger *ngIf="this.AllPrices.length > 0" -->
+      <div class="topleftcorner" *ngIf="ProductName!=='CreditTranche'" (click)="deleteRow();">
+        <app-svg-icons [icon]="'delete'" [width]="'15'" [height]="'15'">
+        </app-svg-icons>
+      </div>
+      <div class="topleftcorner" *ngIf="ProductName==='CreditTranche'" (click)="deleteCreditRow();">
+        <app-svg-icons [icon]="'delete'" [width]="'15'" [height]="'15'">
+        </app-svg-icons>
+      </div>
+    <div class="topcorner infoMulti" (click)="displaySortedLpPopup()" #menuTrigger *ngIf="this.sortedAllPrices.length > 0" style="cursor: pointer; float: right;" (clickOutside)="showSortedLpPopup=false;">
+        <!-- {{this.AllPrices.length}}</div> -->
+        {{this.sortedAllPrices.length}}
+    </div>
+        <!-- <div class="lp-list-popup" id="menucontainer" *ngIf="showSortedLpPopup">
+            <div style="width: max-content; max-height: 130px; overflow-y: auto;">
+                <div class="ddlitem" *ngFor="let s of sortedAllPrices;let i=index;"> -->
+                    <!-- <div class="ddlitem" *ngFor="let s of AllPrices;let i=index;"> -->
+                    <!-- <span class="multiReplyList">
+            {{ s.Price === 'Rejected' ? s.Price :
+            s.Price === '' ? '-' : s.Price | number:'1.2-2'}} {{ s.Price !== '' && s.Price !== 'Rejected' ? '%' : ''}}
+          </span> &nbsp; / &nbsp;
+                    <span style="color: grey;font-size: 14px;">{{s.lp}}</span>
+                </div>
+
+            </div>
+        </div>
+    </div> -->
+
+<!-- Added by SandipA for FIN1EURINT-121 || 03-May-2023 ||START -->
+<div [ngClass]="showSortedLpPopup ? 'infodivMulti' : ''" *ngIf="this.sortedAllPrices.length > 0 && showSortedLpPopup" >
+  <span [ngClass]="showSortedLpPopup ? 'infoNote' : ''" *ngIf="this.sortedAllPrices.length > 0" style="white-space: initial; width: 200px;">
+    <div *ngFor="let s of sortedAllPrices;let i=index;">
+      <span>
+        {{ s.Price === 'Rejected' || s.Price === 'Unsupported' ? s.Price :
+        s.Price === '' ? '-' : s.Price | number:'1.2-2'}} {{ s.Price !== '' && s.Price !== 'Rejected' && s.Price !== 'Unsupported' ? '%' : ''}}
+      </span>
+      &nbsp; / &nbsp;
+      <span >{{s.lp}}</span>
+    </div>
+  </span>
+</div>
+<!-- Added by SandipA for FIN1EURINT-121 || 03-May-2023 ||END -->
+
+    <!-- <div class="topcorner infoMulti" (click)="displayToggleSortedLpPopup()" #menuTrigger *ngIf="this.togglesortedAllPrices.length > 0" style="cursor: pointer; float: right;" (clickOutside)="showToggleSortedLpPopup=false;"> -->
+        <!-- {{this.AllPrices.length}}</div> -->
+        <!-- {{this.togglesortedAllPrices.length}}
+    </div> -->
+        <!-- <div class="lp-list-popup" id="menucontainer" *ngIf="showToggleSortedLpPopup">
+            <div style="width: max-content; max-height: 130px; overflow-y: auto;">
+                <div class="ddlitem" *ngFor="let s of togglesortedAllPrices;let i=index;"> -->
+                    <!-- <div class="ddlitem" *ngFor="let s of AllPrices;let i=index;"> -->
+                    <!-- <span class="multiReplyList">
+            {{ s.Price === 'Rejected' ? s.Price :
+            s.Price === '' ? '-' : s.Price | number:'1.2-2'}} {{ s.Price !== '' && s.Price !== 'Rejected' ? '%' : ''}}
+          </span> &nbsp; / &nbsp;
+                    <span style="color: grey;font-size: 14px;">{{s.lp}}</span>
+                </div>
+
+            </div>
+        </div>
+    </div> -->
+
+<!-- Added by SandipA for FIN1EURINT-121 || 03-May-2023 ||START -->
+<!-- <div [ngClass]="showToggleSortedLpPopup ? 'infodivMulti' : ''" *ngIf="this.togglesortedAllPrices.length > 0 && showToggleSortedLpPopup" >
+  <span [ngClass]="showToggleSortedLpPopup ? 'infoNote' : ''" *ngIf="this.togglesortedAllPrices.length > 0" style="white-space: initial; width: 200px;">
+    <div *ngFor="let s of togglesortedAllPrices;let i=index;">
+      <span>
+        {{ s.Price === 'Rejected' || s.Price === 'Unsupported' ? s.Price :
+        s.Price === '' ? '-' : s.Price | number:'1.2-2'}} {{ s.Price !== '' && s.Price !== 'Rejected' && s.Price !== 'Unsupported' ? '%' : ''}}
+      </span>
+      &nbsp; / &nbsp;
+      <span >{{s.lp}}</span>
+    </div>
+  </span>
+</div> -->
+<!-- Added by SandipA for FIN1EURINT-121 || 03-May-2023 ||END -->
+    <!-- <mat-menu #menu="matMenu">
+    <div>
+      <div class="ddlitem" *ngFor="let s of sortedAllPrices;let i=index;">
+       
+        <span class="multiReplyList">
+          {{ s.Price === 'Rejected' ? s.Price :
+          s.Price === '' ? '-' : s.Price | number:'1.2-2'}} {{ s.Price !== '' && s.Price !== 'Rejected' ? '%' : ''}}
+        </span>
+        &nbsp; / &nbsp;
+        <span style="color: grey;font-size: 14px;">{{s.lp}}</span>
+      </div>
+    </div>
+  </mat-menu> -->
+    <!-- <mat-menu #menuToggle="matMenu">
+    <div>
+      <div class="ddlitem" *ngFor="let s of togglesortedAllPrices;let i=index;">
+        
+        <span class="multiReplyList">
+          {{ s.Price === 'Rejected' ? s.Price :
+          s.Price === '' ? '-' : s.Price | number:'1.2-2'}} {{ s.Price !== '' && s.Price !== 'Rejected' ? '%' : ''}}
+        </span>
+        &nbsp; / &nbsp;
+        <span style="color: grey;font-size: 14px;">{{s.lp}}</span>
+      </div>
+    </div>
+  </mat-menu> -->
+    <img id="loadingImg" src="{{asseturl}}loading_dots.gif" alt="" width="80px" style="margin-top: -5px;" *ngIf="loadflag">
+    <!-- START || Added by SandipA for FIN1EURINT-301 || 09-May-2023 -->
+    <!-- <div *ngIf="pageloadflag" class="loading" id="loading">
+                            
+      <img src="{{asseturl}}loading_dots.gif" alt="Loading..." class="loadingImg" >
+          
+  </div> -->
+    <!-- END || Added by SandipA for FIN1EURINT-301 || 09-May-2023 -->
+	
+    <!-- <span [ngClass]="this.togglesortedAllPrices[0].Price === 'Rejected' ? 'multiRejectMsg' : 'multiReply'" *ngIf="this.togglesortedAllPrices.length > 0 " style="font-size: 18px;font-weight: bold;color: var(--active);">
+    <span style="color: var(--header);font-size: 18px;font-family:var(--font-family); font-weight: normal;">{{ this.togglesortedAllPrices[0].lp }}</span> &nbsp;&nbsp; {{ this.togglesortedAllPrices[0].Price === 'Rejected' ? this.togglesortedAllPrices[0].Price : this.togglesortedAllPrices[0].Price | number:'1.2-2'}}
+    </span> -->
+
+    <span [ngClass]="this.sortedAllPrices[0].Price === 'Rejected' ? 'multiRejectMsg' : 'multiReply'" *ngIf="this.sortedAllPrices.length > 0 " style="font-size: 18px;font-weight: bold;color: var(--active);">
+    <span style="color: var(--header);font-size: 18px;font-family:var(--font-family); font-weight: normal;">{{ this.sortedAllPrices[0].lp }}</span> &nbsp;&nbsp; {{ this.sortedAllPrices[0].Price === 'Rejected' ? this.sortedAllPrices[0].Price : this.sortedAllPrices[0].Price | number:'1.2-2'}}
+    </span>
+    <!-- <span *ngIf="timerinSec >= 0" style="color: #4180c3;font-weight: 500;">{{timerinSec}}</span>
+  </div> -->
+    <h6 class="multiRejectMsg" *ngIf="timeoutMsg!=='' && !this.sortedAllPrices.length">
+        {{timeoutMsg}}
+    </h6>
+    <!-- <h6 *ngIf="rfqID" style="white-space: nowrap;">
+    RFQs generated.
+  </h6> -->
+    <!-- : {{rfqID}} -->
+    <!-- <h6 style="white-space: nowrap;" *ngIf="this.sortedAllPrices.length > 0"> RFQ ID: {{this.sortedAllPrices[0].NoteMasterID}} </h6 > -->
+    <h6 style="white-space: nowrap; font-weight: normal;" *ngIf="noteMasterID && noteMasterID.length > 0"> RFQ ID {{this.noteMasterID}} </h6>
+    <!-- <h6 *ngIf="timerinSec >= 0" style="color: #4180c3;">
+    {{timerinSec}}
+  </h6> -->
+    <h6 *ngIf="orderID && showCptyId" style="white-space: nowrap;font-weight: normal;">
+        Cpty Ref {{orderID}}
+    </h6>
+    <ng-container *ngIf="TSFlag;  then shwViewTS; else shwReqTS">
+    </ng-container>
+
+    <ng-template #shwReqTS>
+      <!-- Changed by Amogh K | 20apr2022 | request TS config check | assigned by pranav D -->
+        <!-- FIN1EURINT-520 | Request for TS and KID links disable for LPs not supporting documentation -->
+		<a class="TSlink" *ngIf="(ProductName !== 'Accumulator' && ProductName !== 'Decumulator') && this.sortedAllPrices.length > 0 && this.sortedAllPrices[0].Price !== 'Rejected' && timeoutMsg === '' 
+          &&(EQ_Show_Termsheet_Button === 'YES' || EQ_Show_Termsheet_Button === 'Y' || EQ_Show_Termsheet_Button === 'Yes')&& !TSFlag && reqSuccessMsg==='' && this.sortedAllPrices[0].TSSupported" (click)="RequestTermsheet()" routerLinkActive="active-link">Request TS
+    </a>
+      <!-- Added by Suvarna P | 28Apr2022 | request TS button when toggle between Horizontal/Vertical layout || assigned by pranav D -->
+      <!-- FIN1EURINT-520 | Request for TS and KID links disable for LPs not supporting documentation -->
+	  <a class="TSlink" *ngIf="(ProductName !== 'Accumulator' && ProductName !== 'Decumulator') && this.sortedAllPrices.length > 0 && this.sortedAllPrices[0].Price !== 'Rejected' && timeoutMsg === '' 
+        &&(EQ_Show_Termsheet_Button === 'YES' || EQ_Show_Termsheet_Button === 'Y' || EQ_Show_Termsheet_Button === 'Yes')&& !TSFlag && reqSuccessMsg==='' && this.sortedAllPrices[0].TSSupported" (click)="RequestTermsheet()" routerLinkActive="active-link">Request TS
+      </a>
+        <!-- <span *ngIf="reqSuccessMsg!=='' && ProductName !== 'Accumulator' && ProductName !== 'Decumulator'">{{reqSuccessMsg}}</span> -->
+        <span style="font-size: 13px;color: var(--green);" *ngIf="reqSuccessMsg!=='' && ProductName !== 'Accumulator' && ProductName !== 'Decumulator' && reqSuccessMsg !=='TS Request Failed.'">{{reqSuccessMsg}}</span>
+        <span style="color: #ff4545 !important; white-space: pre-line" *ngIf="ProductName !== 'Accumulator' && ProductName !== 'Decumulator' && reqSuccessMsg =='TS Request Failed.'">{{reqSuccessMsg}}</span>
+<!-- Indicative Termsheet generation and Download - added by PriyaL on 07Mar2022 -assigned by PranavD -->
+<!-- Changed by Amogh K | 20apr2022 | request TS config check | assigned by pranav D -->
+        <!-- FIN1EURINT-520 | Request for TS and KID links disable for LPs not supporting documentation -->
+		<a class="TSlink" *ngIf="(ProductName === 'Accumulator' || ProductName === 'Decumulator') && this.sortedAllPrices.length > 0 && this.sortedAllPrices[0].Price !== 'Rejected' && timeoutMsg === '' 
+          &&(EQ_Show_Termsheet_Button === 'YES' || EQ_Show_Termsheet_Button === 'Y' || EQ_Show_Termsheet_Button === 'Yes')&& !TSFlag && reqSuccessMsg==='' && this.sortedAllPrices[0].TSSupported" (click)="GenerateDocument()" routerLinkActive="active-link">Request TS
+           </a>
+           <!-- Added by Suvarna P | 28Apr2022 | request TS button when toggle between Horizontal/Vertical layout || assigned by pranav D -->
+        <!-- <a class="TSlink" *ngIf="(ProductName === 'Accumulator' || ProductName === 'Decumulator') && this.togglesortedAllPrices.length > 0 && this.togglesortedAllPrices[0].Price !== 'Rejected' && timeoutMsg === '' 
+          &&(EQ_Show_Termsheet_Button === 'YES' || EQ_Show_Termsheet_Button === 'Y' || EQ_Show_Termsheet_Button === 'Yes')&& !TSFlag && reqSuccessMsg===''" (click)="GenerateDocument()" routerLinkActive="active-link">Request TS
+        </a> -->
+               <!-- <span *ngIf="reqSuccessMsg!=='' && ProductName === 'Accumulator' && ProductName === 'Decumulator'">{{reqSuccessMsg}}</span> -->
+               <span style="font-size: 13px;color: var(--green);" *ngIf="reqSuccessMsg!=='' && ProductName === 'Accumulator' && ProductName === 'Decumulator' && reqSuccessMsg !=='TS Request Failed.'">{{reqSuccessMsg}}</span>
+               <span style="color: #ff4545 !important; white-space: pre-line" *ngIf="ProductName === 'Accumulator' && ProductName === 'Decumulator' && reqSuccessMsg =='TS Request Failed.'">{{reqSuccessMsg}}</span>
+    </ng-template>
+
+    <br *ngIf="ProductName !== 'Accumulator' && ProductName !== 'Decumulator'" />
+
+    
+    <ng-container *ngIf="KIDFlag;  then shwViewKID; else shwReqKID">
+    </ng-container>
+    <ng-template #shwReqKID>
+      <!-- Changed by Amogh K | 21apr2022 | request KID config check | assigned by pranav D -->
+        <!-- FIN1EURINT-520 | Request for TS and KID links disable for LPs not supporting documentation -->
+		<a class="TSlink" *ngIf="(ProductName !== 'Accumulator' && ProductName !== 'Decumulator') && this.sortedAllPrices.length > 0 && this.sortedAllPrices[0].Price !== 'Rejected' && timeoutMsg === '' 
+    &&(EQ_Show_KID_Button === 'YES' || EQ_Show_KID_Button === 'Y' || EQ_Show_KID_Button === 'Yes')&& !KIDFlag && reqKIDSuccessMsg==='' && ProductName !== 'Accumulator' && ProductName !== 'Decumulator' && this.sortedAllPrices[0].KidSupported" (click)="RequestKID()" routerLinkActive="active-link">Request KID
+    </a>
+        <!-- <span *ngIf="reqKIDSuccessMsg!=='' && ProductName !== 'Accumulator' && ProductName !== 'Decumulator'">{{reqKIDSuccessMsg}}</span> -->
+        <span style="font-size: 13px;color: var(--green);" *ngIf="reqKIDSuccessMsg!=='' && ProductName !== 'Accumulator' && ProductName !== 'Decumulator' && reqKIDSuccessMsg!=='KID Request Failed.'">{{reqKIDSuccessMsg}}</span>
+        <span style="color: #ff4545 !important; white-space: pre-line" *ngIf="ProductName !== 'Accumulator' && ProductName !== 'Decumulator' && reqKIDSuccessMsg =='KID Request Failed.'">{{reqKIDSuccessMsg}}</span>
+    </ng-template>
+
+    <br />
+
+    <ng-template #shwViewTS>
+        <a class="TSlink" *ngIf="TSFlag" (click)="ViewTermsheet()" routerLinkActive="active-link">View TS
+    </a>
+    </ng-template>
+
+
+    <br *ngIf="TSFlag && ProductName !== 'Accumulator' && ProductName !== 'Decumulator'" />
+    <ng-template #shwViewKID>
+        <a class="TSlink" *ngIf="KIDFlag && ProductName !== 'Accumulator' && ProductName !== 'Decumulator'" (click)="ViewKID()" routerLinkActive="active-link">View KID
+    </a>
+    </ng-template>
+    <div>
+        <a class="TSlink" *ngIf="this.sortedAllPrices.length > 0 && quoteEmailSuccessMsg == ''" (click)="emailQuote(sortedAllPrices[0].rfq)"> Mail best Quote </a>
+        <!-- <a class="TSlink" *ngIf="this.togglesortedAllPrices.length > 0 && quoteEmailSuccessMsg == ''" (click)="emailQuote(togglesortedAllPrices[0].rfq)"> Mail best Quote </a> -->
+        <span style="font-size: 13px;color: var(--green);" *ngIf="quoteEmailSuccessMsg!==''">{{quoteEmailSuccessMsg}}</span>
+
+        <div class="bottomcorner" *ngIf="timerinSec > 0">
+            <!-- style="color: #4180c3;" -->
+            {{this.timerinSec}}
+        </div>
+    </div>
+</td>
+
+<!-- Participation Type -->
+<td *ngIf="ProductName==='Participation'">
+    <select [(ngModel)]="participationType" (change)="onchangeProduct()" tabindex="ComponentIndex * totalFields + 1">
+    <option value="Twin Win">Twin Win
+    </option>
+    <option value="Booster">Booster
+    </option>
+    <option value="Guaranteed Capital">
+      Guaranteed
+      Capital
+    </option>
+  </select>
+</td>
+
+<!-- UNDERLYING  -->
+<td *ngIf="ProductName!=='CreditTranche'" class="tdalignCenter">
+    <input type="text" placeholder="Please enter underlying" value="{{ShareName}}" class="longText" style="text-align: left;min-width: 14em !important;max-width: 15em !important;" [(ngModel)]="ShareName" maxlength="10" (keypress)="ChangeIndex($event); showSuggestions = true" (keydown.enter)="selectShare($event); flag=false;"
+        (keydown.backspace)="backKeyPress($event)" (keydown.delete)="backKeyPress($event)" (keydown.tab)="setFocus();flag=false;" (keydown.ArrowUp)="selectedBIndex = commonfunctions.moveUpSelection1($event, selectedBIndex)" (keydown.ArrowDown)="selectedBIndex = commonfunctions.moveDownSelection1($event, selectedBIndex)"
+        id="txtShare{{ComponentIndex}}" tabindex="ComponentIndex * totalFields + 2" [disabled]="enabledisablefields('Underlyings')"/>
+    <div class="SelectorBox" *ngIf="flag && showSuggestions" (clickOutside)="flag=false;">
+        <a *ngFor="let share of (shares | searchunderlying: ShareName); let i = index" (keypress)="ChangeIndex($event)" (keydown.enter)="selectShare($event)">
+            <!-- HSBCECCLI-3 : Bulk Pricer - Underlying data discrepancy on enter and click action -->
+            <div *ngIf="share" [attr.data-share]="share.Code" (click)="showUnderlying($event,share)" [ngClass]="{HoverSuggestion: i === selectedBIndex}">
+                <span>{{ share.LongName }}</span>
+            </div>
+        </a>
+    </div>
+    <br>
+    <!-- <a *ngFor="let Selectedshare of ShareBasket; let rowIndex = index;">
+        <button class="sharebasket" style="padding-right: 0 !important;" (click)="onclickShareBasket(Selectedshare)">
+      {{Selectedshare.BloombergCode}} &nbsp;
+      <img src="{{asseturl}}clear.png" width="18px" style="float: right;" (click)="removeShare(rowIndex);">
+    </button>
+    </a> -->
+
+    <!-- Added by SandipA for share selection in underlying section || 25-Apr-2023 ||START -->
+  <div class="row-grid-1" *ngIf="ShareBasket && ShareBasket.length > 0">
+    <!--Shares List-->
+    <div class="sharebasket" *ngFor="let Selectedshare of ShareBasket; let rowIndex = index;" style="display: flex;">
+        <button class="shareName" style="padding-right: 0 !important;" (click)="onclickShareBasket(Selectedshare)">
+          {{Selectedshare.BloombergCode}} &nbsp;
+            </button>
+        <!-- <input [(ngModel)]="Selectedshare.Weight" value="{{ShareBasket.Weight}}" type="text" style="min-width: 4em !important;width: 4em !important;height: initial;" *ngIf="upsideType === 'Call Custom Basket'" (blur)="shareweightcalc()"> -->
+        <!-- <img src="{{asseturl}}clear.png" width="20px" style="float: right;height: 20px;margin: auto;" (click)="removeShare(rowIndex);"> -->
+        <app-svg-icons (click)="removeShare(rowIndex);" class="cancel-icon" [icon]="'close-icon'" [width]="'12'" [height]="'12'">
+        </app-svg-icons>
+    </div>
+</div>
+<!-- Added by SandipA for share selection in underlying section || 25-Apr-2023 ||END -->
+
+</td>
+
+<!-- <ng-container *ngIf="(ProductName !== 'Accumulator' && ProductName !== 'Decumulator');  then oldProd; else newProd">
+</ng-container> -->
+<ng-container *ngIf="(ProductName !== 'Accumulator' && ProductName !== 'Decumulator');  then oldProdER; else AccDecProd">
+</ng-container>
+
+<ng-template #oldProdER>
+    <ng-container *ngIf="(ProductName == 'AutocallablePhoenixER'); then ERProd ; else oldProd">
+    </ng-container>
+</ng-template>
+
+<!-- <ng-container *ngIf="(ProductName =='Accumulator' && ProductName == 'Decumulator');  then AccDecProd; 
+                  elseif AccDecProd">
+</ng-container> -->
+
+<!-- CREDIT - Index Tranche  -->
+<ng-template #oldProd>
+    <td *ngIf="ProductName==='CreditTranche'">
+        <select id="indexTranche{{ComponentIndex}}" [(ngModel)]="indexTranche" (change)="changeIndexTranche()">
+      <option value=""></option>
+      <option *ngFor="let arr of indexTrancheArr" [value]="arr.LongName.split('-')[1]">
+        {{ arr.LongName.split('-')[1] }}</option>
+    </select>
+    </td>
+    <!-- format  -->
+    <td>
+      <!-- FIN1EURINT-104 : Participation pay off addition in 1Europe -->
+      <select [(ngModel)]="format" (change)="formatChange()" tabindex="ComponentIndex * totalFields + 3">
+        <option *ngFor="let f of Format" (selected)="f.Key === format" [value]="f.Key">
+          {{ f.Key }}</option>      
+      </select>
+   
+
+
+    </td>
+    <!-- solve for  -->
+    <td *ngIf="ProductName!=='CreditTranche'">
+        <select [(ngModel)]="SolveForvalue" (change)="setSolveFor($event)" tabindex="ComponentIndex * totalFields + 4">
+      <option value="RebateCoupon" *ngIf="ProductName==='AutocallablePhoenix'">
+        Autocall Coupon</option>
+      <option value="KI"
+        *ngIf="barrierType !== 'None' && (ProductName==='AutocallablePhoenix' || ProductName==='ReverseConvertible')">
+        Barrier Level(%)</option>
+      <option value="KO" *ngIf="ProductName==='AutocallablePhoenix'">
+        Autocall Trigger</option>
+      <option value="Coupon" *ngIf="cpnType !== 'No Coupon' && format!=='Option' && ProductName!=='Participation'">
+        Coupon
+        (%)
+      </option>
+      <option value="CouponBarrier"
+        *ngIf="cpnType !== 'No Coupon' && cpnType !== 'Fixed Coupon' && format!=='Option' && ProductName!=='CreditTranche' && ProductName!=='Participation'">
+        Coupon Trigger</option>
+      <option value="IBPrice" *ngIf="ProductName!=='CreditTranche'">Price
+      </option>
+
+      <option value="Strike" *ngIf="ProductName!=='CreditTranche' && ProductName!=='Participation'">
+        Strike (%)
+      </option>
+
+      <option value="FundingRate" *ngIf="this.format === 'Swap' && ProductName!=='Participation'">Rate/Spread
+        (%)</option>
+    </select>
+    </td>
+
+    <!-- Credit solve for  -->
+    <td *ngIf="ProductName ==='CreditTranche'">
+        <select [(ngModel)]="creditSolveFor" (change)="setCreditSolveFor($event)">
+      <option value="Coupon">Coupon</option>
+      <option value="Reoffer">Reoffer</option>
+    </select>
+    </td>
+    <!-- Price / Issue Price -->
+    <td *ngIf="ProductName!=='CreditTranche'">
+        <input type="text" [(ngModel)]="IBPrice" id="txtIBPrice{{ComponentIndex}}" maxlength="10" [disabled]="this.SolveForvalue === 'IBPrice' " (blur)="IBPricechange();this.IBPrice = commonfunctions.setDecimal($event)" (keypress)="(format === 'Swap' || format === 'Option') ? commonfunctions.InputNegativeNumber($event) :commonfunctions.InputNumber($event)" tabindex="ComponentIndex * totalFields + 5"
+        />
+        <input type="text" [(ngModel)]="issuePrice" *ngIf="ProductName!=='CreditTranche'" (blur)="this.issuePrice = commonfunctions.setDecimal($event); IssuePricechange();" maxlength="10" (keypress)="commonfunctions.InputNumber($event)" [disabled]="format === 'Swap' || format === 'Option'" tabindex="ComponentIndex * totalFields + 6"
+        />
+    </td>
+    <!-- Ccy / Size-->
+    <td style="width: 120px;">
+        <select [(ngModel)]="ddlNoteCcy" (change)="currencyChange();" [disabled]="format === 'BonoJ' || format === 'Warrant'" tabindex="ComponentIndex * totalFields + 7">
+      <option *ngFor="let c of CCY" (selected)="c === UnderlyingCurrency" [value]="c">
+        {{ c }}</option>
+    </select>
+        <input type="text" maxlength="14" id="txtnotional{{ComponentIndex}}" value="{{ Notional }}" (focus)="commonfunctions.UnformatNumber($event)" (blur)="(ProductName === 'CreditTranche' ? this.creditreset(): (ProductName === 'Participation' ? this.ptcreset():this.reset()));checkValidNotional($event);checkNotional($event);"
+            (keypress)="commonfunctions.NotionalValidateKeys($event)" (keyup)="commonfunctions.chkNotionalFormat_keyUp($event) === false ? Notional = '': Notional=Notional" placeholder="Enter Notional" [(ngModel)]="Notional" tabindex="ComponentIndex * totalFields + 8" />
+     <!-- Modified keyup event to handle invalid notional || Added by Priya L || 01Apr2022 || assigned by Pranav D. -->
+          </td>
+
+    <td *ngIf="ProductName==='Participation'">
+        <span style="white-space: nowrap;" *ngIf="ProductName==='Participation'">
+
+        <select tabindex="ComponentIndex * totalFields + 9" [(ngModel)]="stkshift"
+          (change)="this.ptcreset();this.txtTenorDateChange('Payment');changeStkShiftToggle()"
+          style="width:5em !important; min-width: 5em !important" [disabled]="enabledisablefields('StrikeShifterDate')">
+          <option value="0B">TOD </option>
+          <option value="Fwd">FWD </option>
+        </select>
+        <input type="date" [(ngModel)]="stkdate" id="txtstkdate{{ComponentIndex}}" tabindex="ComponentIndex * totalFields + 10" value="{{stkdate}}"
+          (change)="this.ptcreset();" (blur)="txtTenorDateChange('Payment');" [disabled]="!(stkshift === 'Fwd')"
+          style="margin-left: 5px  !important; width: 135px !important;max-width: 135px !important;min-width: 110px !important; margin-top: 0 !important;"
+          class="dateLabel" *ngIf="ProductName!=='CreditTranche'">
+    </span>
+
+
+    <!-- Payment-->
+      <div *ngIf="ProductName!=='CreditTranche'">
+        <span style="white-space: nowrap;" *ngIf="ProductName!=='Participation'">
+      <input #focusable type="text" class="tenorBox" maxlength="4" style="min-width: 3em !important;"
+        (blur)="txtTenorChange($event,'Strike');" (keypress)="this.commonfunctions.tenorDateValidation($event);"
+        [(ngModel)]="stkshift"> /
+
+      <input type="date" [(ngModel)]="stkdate" style="font-size: 14px !important;" value="{{stkdate}}"
+        *ngIf="ProductName!=='CreditTranche'" id="txtstkdate{{ComponentIndex}}"
+        (change)="this.reset();this.enableToggle();" (blur)="txtTenorDateChange('Payment');">
+    </span>
+        <br *ngIf="ProductName!=='Participation'">
+        <span style="white-space: nowrap;">
+          <select [(ngModel)]="paymentshift" class="YNbox1" tabindex="ComponentIndex * totalFields + 11" style="width: 82px;"
+            (change)="this.ERReset();" (blur)="txtTenorDateChange('Payment');txtTenorDateChange('Expiry');"
+            style="width:5em !important; min-width: 5em !important" [disabled]="enabledisablefields('IssueDateOffset')">
+            <option *ngFor="let d of IssueDateOffset" (selected)="d.Value === paymentshift" [value]="d.Value">
+              {{ d.Key }}</option>
+          </select>
+          <input type="date" [(ngModel)]="settdate" value="{{settdate}}" tabindex="ComponentIndex * totalFields + 12"
+        id="txtsettdate{{ComponentIndex}}"
+        (change)="(ProductName === 'Participation' ? this.ptcreset():this.reset());this.enableToggle();"
+            (blur)="txtTenorDateChange('Expiry');txtTenorDateChange('Payment');"
+            [disabled]="!(paymentshift === 'Custom')"
+            style="margin-left: 5px !important; width: 135px !important;max-width: 135px !important;min-width: 110px !important; margin-top: 0 !important;"
+            class="dateLabel">
+    </span>
+      </div>
+
+    <!-- Expiry-->
+      <div *ngIf="ProductName!=='CreditTranche'">
+        <span style="white-space: nowrap;">
+          <select [(ngModel)]="expshift" class="YNbox1" tabindex="ComponentIndex * totalFields + 13" (blur)="txtTenorChange($event,'Expiry');"
+            (change)="this.ptcreset();changeAutoFreqOnTenor();customTenor = ''"
+            style="width:5em !important; min-width: 5em !important" [disabled]="enabledisablefields('Tenor')">
+            <option *ngFor="let t of Tenor" (selected)="t.Value === expshift" [value]="t.Value">
+              {{ t.Key }}</option>
+          </select>
+          <input type="text" name="" maxlength="4" [(ngModel)]="customTenor" tabindex="ComponentIndex * totalFields + 14"
+            (blur)="this.ptcreset();changeAutoFreqOnTenor();customTenorChange();"
+            (keypress)="commonfunctions.customTenorValidation($event, customTenor)"
+            style="margin-left: 5px !important; width: 135px !important;max-width: 135px !important;min-width: 110px !important;"
+            [disabled]="expshift !== 'Custom'">
+
+    </span>
+      </div>
+    </td>
+    <!-- Strike / Leverage / Strike Date -->
+    <td *ngIf="ProductName!=='CreditTranche' && ProductName!=='Participation'">
+        <input type="text" [(ngModel)]="Strike" class="tenorBox" id="txtStrike{{ComponentIndex}}" maxlength="8" (blur)="this.Strike = commonfunctions.setDecimal($event);PriceValidation($event,'Strike');strikeChange();" (keypress)="commonfunctions.InputNumber($event)"
+            [disabled]="this.SolveForvalue === 'Strike' " *ngIf="ProductName!=='Participation'" style="max-width: none !important;width: 100% !important;">
+
+        <select id="ddlLeverage{{ComponentIndex}}" [(ngModel)]="LeverageYN" *ngIf="ProductName!=='Participation'" [disabled]="!LeverageFlag" (change)="this.reset(); this.enableToggle();" disabled>
+      <option value="Yes">Yes</option>
+      <option value="No">No</option>
+    </select>
+
+    </td>
+
+    <!-- KI / KI Barrier Type  -->
+    <td *ngIf="ProductName!=='CreditTranche' && ProductName!=='Participation' ">
+
+        <select [(ngModel)]="barrierType" (change)="barrierTypeChange()">
+      <option value="None">None</option>
+      <option value="At Expiry">At Expiry</option>
+      <option value="Daily">Daily</option>
+      <option value="Continuous">Continuous</option>
+    </select>
+
+        <input type="text" [(ngModel)]="barrierLevel" id="txtKI{{ComponentIndex}}" maxlength="8" *ngIf="barrierType !== 'None'" (blur)="this.barrierLevel = commonfunctions.setDecimal($event);PriceValidation($event,'BarrierLevel');" (keypress)="commonfunctions.InputNumber($event)"
+            [disabled]="this.SolveForvalue === 'KI'">
+    </td>
+
+    <!-- KO / KO Freq  -->
+    <td *ngIf="ProductName==='AutocallablePhoenix' || ProductName==='Autocallable'">
+
+        <select [(ngModel)]="autoFreq" (change)="changeAutoFreq();">
+      <option *ngFor="let a of autoFreqArr" (selected)="a === autoFreq" [value]="a">
+        {{ a }}</option>
+      <!-- <option value="1m">1m</option>
+    <option value="2m">2m</option>
+    <option value="3m">3m</option>
+    <option value="4m">4m</option>
+    <option value="6m">6m</option>
+    <option value="12m">12m</option> -->
+    </select>
+        <input type="text" [(ngModel)]="autoTrigger" id="txtKO{{ComponentIndex}}" maxlength="100" (keypress)="commonfunctions.AutocallTriggerInputNumber($event);" [disabled]="this.SolveForvalue === 'KO' " (blur)="PriceValidation($event,'AutoTrigger');" style="min-width: 6em !important; width:87% !important;">
+        <!-- style="min-width: 6em !important; width:87% !important;" -->
+        <span (clickOutside)="onClickedOutside('autoTrigger')" style=" position: relative;">
+      <img src="{{asseturl}}info.jpg" class="info" *ngIf="autoTrigger !==''" (click)="GetTriggerValue('autoTrigger')">
+      <div *ngIf="autoTriggerPopup" class="triggerTable">
+
+        <table style="width: 100%;">
+          <tr class="popuptr">
+            <th class="popupth" style="width: 10em;">Periods</th>
+            <th class="popupth" style="width: 10em;">
+              Trigger</th>
+          </tr>
+          <tr *ngFor="let t of TriggerValueArr; let i = index; " class="popuptr" style="width: 100%;">
+
+            <td class="popuptd tdRight" style="width:10em;">{{t.NoOfPeriods}} </td>
+            <td class="popuptd tdRight" style="width: 10em;"> {{t.OutTrigger | number:'1.2-2'}}
+            </td>
+
+          </tr>
+        </table>
+      </div>
+    </span>
+    </td>
+    <!-- Stepdown / non-call  -->
+    <td *ngIf="ProductName==='AutocallablePhoenix' || ProductName==='Autocallable'">
+        <input type="text" [(ngModel)]="autoStepDown" id="txtautoStepDown{{ComponentIndex}}" maxlength="8" (blur)="this.autoStepDown = commonfunctions.setDecimal($event)" (keypress)="this.reset();this.enableToggle();commonfunctions.InputNumber($event)" [disabled]="this.SolveForvalue === 'KO'">
+        <!-- (blur)="autoNonCall = commonfunctions.FormatNumber($event)" -->
+        <input type="text" [(ngModel)]="autoNonCall" id="txtautoNonCall{{ComponentIndex}}" (keypress)="commonfunctions.InputNumberForInteger($event)" (change)="this.reset();this.enableToggle();" maxlength="8">
+        <!-- <img src="{{asseturl}}info.jpg" class="info" *ngIf="autoNonCall !==''">
+  <div class="infodiv" *ngIf="autoNonCall !==''">
+    <span class="infoNote" *ngIf="autoNonCall !==''" style="white-space: initial;">
+      Autocall from {{ getNoncall() }} period.
+    </span>
+  </div> -->
+    </td>
+    <!-- PHOENIX - ER CPN / CPN Type  -->
+    <td *ngIf="ProductName==='AutocallablePhoenix' || ProductName==='Autocallable'">
+        <select [(ngModel)]="autocallCouponType" (change)="this.reset();this.enableToggle();">
+      <option value="Flat">Flat</option>
+      <option value="Snowball">Snowball</option>
+    </select>
+        <input type="text" [(ngModel)]="autocallCoupon" id="txtRebateCoupon{{ComponentIndex}}" maxlength="8" (blur)="this.reset();this.enableToggle();this.autocallCoupon = commonfunctions.setDecimal($event);" (keypress)="commonfunctions.InputNumber($event)" [disabled]="this.SolveForvalue === 'RebateCoupon' ">
+    </td>
+
+
+    <!-- Cpn Type / Memory Pds  -->
+    <td *ngIf="ProductName!=='CreditTranche' && ProductName!=='Participation'">
+        <select [(ngModel)]="cpnType" (change)="cpnTypeChange()" [disabled]="this.format === 'Option'">
+      <option value="No Coupon">No Coupon</option>
+      <option value="Standard">Standard</option>
+      <option value="Total Memory">Total Memory
+      </option>
+      <option value="Partial Memory">Partial Memory
+      </option>
+      <option value="Fixed Coupon">Fixed Coupon
+      </option>
+    </select>
+        <input type="text" [(ngModel)]="MemoryPeriods" maxlength="8" (change)="this.reset();this.enableToggle();" (keypress)="commonfunctions.allowIntegerOnly($event)" *ngIf="cpnType === 'Partial Memory'" [disabled]="this.format === 'Option'">
+    </td>
+
+
+
+
+    <!-- CPN Trig / freq  -->
+    <td *ngIf="ProductName!=='CreditTranche' && ProductName!=='Participation'">
+        <input type="text" [(ngModel)]="cpnTrigger" id="txtCouponBarrier{{ComponentIndex}}" maxlength="100" (blur)="PriceValidation($event,'CouponTrigger');" (keypress)="commonfunctions.AutocallTriggerInputNumber($event)" *ngIf="cpnType !== 'No Coupon' && cpnType !== 'Fixed Coupon'"
+            [disabled]="this.SolveForvalue === 'CouponBarrier' || this.format === 'Option' " style="min-width: 6em !important; width:87% !important;">
+        <!-- style="min-width: 6em !important; width:87% !important;" -->
+        <span (clickOutside)="onClickedOutside('cpnTrigger')" style=" position: relative;">
+      <img src="{{asseturl}}info.jpg" class="info" *ngIf="cpnTrigger !==''" (click)="GetTriggerValue('cpnTrigger')">
+      <div *ngIf="cpnTriggerPopup" class="triggerTable" style="top:-130px;">
+
+        <table style="width: 100%;">
+          <tr class="popuptr">
+            <th class="popupth" style="width: 10em;">Periods</th>
+            <th class="popupth" style="width: 10em;">
+              Trigger</th>
+          </tr>
+          <tr *ngFor="let t of TriggerValueArr; let i = index; " class="popuptr" style="width: 100%;">
+
+            <td class="popuptd tdRight" style="width:10em;">{{t.NoOfPeriods}} </td>
+            <td class="popuptd tdRight" style="width: 10em;"> {{t.OutTrigger | number:'1.2-2'}}
+            </td>
+
+          </tr>
+        </table>
+      </div>
+    </span>
+        <select [(ngModel)]="cpnFreq" *ngIf="cpnType !== 'No Coupon' && ProductName==='AutocallablePhoenix'" (change)="this.reset();this.enableToggle();">
+      <option value="1m">1m</option>
+      <option value="2m"
+        *ngIf="autoFreq === '2m'|| autoFreq === '3m' || autoFreq === '4m' || autoFreq === '6m'|| autoFreq === '12m'">2m
+      </option>
+      <option value="3m" *ngIf="autoFreq === '3m'|| autoFreq === '4m' || autoFreq === '6m'|| autoFreq === '12m'">3m
+      </option>
+      <option value="4m" *ngIf="autoFreq === '4m'|| autoFreq === '6m'|| autoFreq === '12m'">4m</option>
+      <option value="6m" *ngIf="autoFreq === '6m'|| autoFreq === '12m'">6m</option>
+      <option value="12m" *ngIf="autoFreq === '12m'">12m</option>
+
+    </select>
+        <select [(ngModel)]="cpnFreq" *ngIf="cpnType !== 'No Coupon' && ProductName==='ReverseConvertible'" [disabled]="this.format === 'Option'" (change)="this.reset();this.enableToggle();">
+      <option value="1m">1m</option>
+      <option value="2m">2m</option>
+      <option value="3m">3m</option>
+      <option value="4m">4m</option>
+      <option value="6m">6m</option>
+      <option value="12m">12m</option>
+      <option value="At Maturity" *ngIf="ProductName === 'ReverseConvertible'">At
+        Maturity</option>
+    </select>
+    </td>
+    <!-- Cpn % / Observation  -->
+    <td *ngIf="ProductName!=='CreditTranche' && ProductName!=='Participation'">
+        <input type="text" id="txtCoupon{{ComponentIndex}}" [(ngModel)]="cpnCoupon" maxlength="8" (blur)="this.reset();this.enableToggle();this.cpnCoupon = commonfunctions.setDecimal($event);" (keypress)="commonfunctions.InputNumber($event)" *ngIf="cpnType !== 'No Coupon'"
+            [disabled]="this.SolveForvalue === 'Coupon' || this.format==='Option'">
+        <select [(ngModel)]="cpnObservation" *ngIf="cpnType !== 'No Coupon'" disabled>
+      <option value="PerAnnum">p.a.</option>
+      <option value="PerFreq">Per Freq.</option>
+    </select>
+    </td>
+
+    <!-- Alt Cpn /  Obs -->
+    <td *ngIf="ProductName==='AutocallablePhoenix' || ProductName==='Autocallable'">
+        <input type="text" [(ngModel)]="altCoupon" id="txtaltCoupon{{ComponentIndex}}" maxlength="8" (blur)="this.reset();this.enableToggle();this.altCoupon = commonfunctions.setDecimal($event);" (keypress)="commonfunctions.InputNumber($event)">
+    </td>
+
+    <!-- CREDIT - Tenor -->
+    <td *ngIf="ProductName==='CreditTranche'">
+        <span style="white-space: nowrap;">
+      <input #focusable type="text" name="" class="tenorBox" maxlength="4" style="min-width: 3em !important;"
+        (keypress)="this.commonfunctions.tenorDateValidation($event);" (blur)="txtTenorChange_Credit($event,'Payment');"
+        [(ngModel)]="paymentshift">
+      /
+      <input type="date" tabindex="ComponentIndex * totalFields + 4" [(ngModel)]="issueDate" id="issueDate" style="font-size: 14px !important;"
+        disabled>
+    </span>
+        <select [(ngModel)]="creditTenor" (change)="this.creditreset();this.enableToggle();">
+      <option value="3Y" *ngIf="indexTranche.toLowerCase().includes('main')">
+        3Y</option>
+      <option value="5Y">5Y</option>
+      <option value="7Y" *ngIf="indexTranche.toLowerCase().includes('main')">
+        7Y</option>
+    </select>
+    </td>
+    <!-- CREDIT - Attach/Detach -->
+    <td *ngIf="ProductName==='CreditTranche'">
+        <span style="white-space: nowrap;">
+      <input type="text" class="adTxt" style="min-width: 4em !important;" [(ngModel)]="AttachVal" maxlength="5"
+        id="AttachVal{{ComponentIndex}}"
+        (blur)="this.creditreset();this.enableToggle();getAttachDetachData();calculateAttachPercent()"
+        (keypress)="commonfunctions.allowIntegerOnly($event)" (keyup)="commonfunctions.allowIntegerOnly($event)">
+      &nbsp;/
+      &nbsp;
+      <input type="text" class="adTxt" style="min-width: 4em !important;" [(ngModel)]="Attach" maxlength="5"
+        (blur)="Attach = commonfunctions.setDecimaltoFour($event);this.creditreset();this.enableToggle();"
+        maxlength="10" (keypress)="commonfunctions.InputNumber($event)" disabled />
+      %
+    </span>
+        <br>
+        <span style="white-space: nowrap;">
+      <input type="text" class="adTxt" style="min-width: 4em !important;" [(ngModel)]="DetachVal" maxlength="5"
+        id="DetachVal{{ComponentIndex}}"
+        (blur)="this.creditreset(); this.enableToggle(); getAttachDetachData();calculateDetachPercent()"
+        (keypress)="commonfunctions.allowIntegerOnly($event)" (keyup)="commonfunctions.allowIntegerOnly($event)">
+      &nbsp;/
+      &nbsp;
+      <input type="text" class="adTxt" style="min-width: 4em !important;" [(ngModel)]="Detach"
+        (blur)="Detach = commonfunctions.setDecimaltoFour($event);this.creditreset();this.enableToggle();"
+        maxlength="10" (keypress)="commonfunctions.InputNumber($event)" disabled />
+      %
+    </span>
+    </td>
+
+    <!-- CREDIT - Reoffer Price  -->
+    <td *ngIf="ProductName==='CreditTranche'">
+        <input type="text" id="txtReoffer{{ComponentIndex}}" [disabled]="creditSolveFor!='Coupon'" [(ngModel)]="creditReofferPrice" (blur)="this.creditReofferPrice = commonfunctions.setDecimal($event); this.creditreset();this.enableToggle();" maxlength="10" (keypress)="(format === 'Swap') ? commonfunctions.InputNegativeNumber($event) :commonfunctions.InputNumber($event)"
+        />
+
+    </td>
+    <!-- CREDIT - Issue Price  -->
+    <td *ngIf="ProductName==='CreditTranche'">
+        <input type="text" maxlength="10" [(ngModel)]="creditIssuePrice" (blur)="this.creditIssuePrice = commonfunctions.setDecimal($event); this.creditreset(); this.enableToggle();" [disabled]="format === 'Swap'">
+    </td>
+    <!-- CREDIT - Indicative/ Firm  -->
+    <td *ngIf="ProductName==='CreditTranche'">
+        <mat-button-toggle-group [(ngModel)]="toggleFlag" (change)="toggeleOnOff()">
+            <mat-button-toggle value="Ind" style="width: 5.5em;">Ind.
+            </mat-button-toggle>
+            <mat-button-toggle value="Firm" style="width: 5.5em;">Firm
+            </mat-button-toggle>
+        </mat-button-toggle-group>
+    </td>
+
+    <!-- CREDIT - cpn type  -->
+    <td *ngIf="ProductName==='CreditTranche'">
+        <select [(ngModel)]="creditcouponType" (change)="creditcouponTypeChange()">
+      <option value="Fixed">Fixed</option>
+      <option value="Floating">Floating</option>
+    </select>
+    </td>
+    <!-- CREDIT - Floating Ref.  -->
+    <td *ngIf="ProductName==='CreditTranche'">
+        <select [(ngModel)]="floatingRef" [disabled]="creditcouponType!=='Floating'" (change)="changeFreq()">
+      <option *ngFor="let arr1 of floatingRefArr" [value]="arr1.LongName.split('-')[1]">
+        {{ arr1.LongName.split('-')[1] }}</option>
+
+    </select>
+    </td>
+    <!-- CREDIT - Freq.  -->
+    <td *ngIf="ProductName==='CreditTranche'">
+        <select [(ngModel)]="creditcouponFreq" [disabled]="creditcouponType === 'Floating'" (change)="this.creditreset();this.enableToggle();">
+      <option value="Monthly">Monthly</option>
+      <option value="Quarterly">Quarterly</option>
+      <option value="Semi-Annual">Semi-Annual</option>
+      <option value="Annual">Annual</option>
+    </select>
+    </td>
+    <!-- CREDIT - Coupon Basis -->
+    <td *ngIf="ProductName==='CreditTranche'">
+        <select [(ngModel)]="creditcouponBasis" (change)="this.creditreset(); this.enableToggle();">
+      <option value="30/360">30/360</option>
+      <option value="Act/360">Act/360</option>
+      <option value="Act/Act">Act/Act</option>
+      <!-- <option value="Act/365">Act/365</option> -->
+    </select>
+    </td>
+    <!-- CREDIT - Cpn/Spread  -->
+    <td *ngIf="ProductName==='CreditTranche'">
+
+        <input type="text" id="txtCoupon{{ComponentIndex}}" [disabled]="creditSolveFor!='Reoffer'" [(ngModel)]="creditSpread" (blur)="this.creditSpread = commonfunctions.setDecimal($event);this.creditreset();this.enableToggle();" maxlength="10" (keypress)="commonfunctions.InputNumber($event)"
+        />
+    </td>
+
+
+    <!-- Funding Type / Freq.  -->
+    <td *ngIf="ProductName!=='Participation'">
+        <select [(ngModel)]="fundType" [disabled]="format !== 'Swap'" (change)="(ProductName==='CreditTranche' ? this.creditreset() : this.reset());this.enableToggle();">
+      <option value="Fixed Rate">Fixed Rate</option>
+      <option value="Floating Rate">Floating Rate
+      </option>
+    </select>
+        <select [(ngModel)]="fundFreq" [(ngModel)]="fundFreq" [disabled]="format !== 'Swap'" (change)="(ProductName==='CreditTranche' ? this.creditreset() : this.reset());this.enableToggle();">
+      <option value="1m">1m</option>
+      <option value="3m" *ngIf="ProductName ==='ReverseConvertible' || ProductName ==='CreditTranche'">3m</option>
+      <option value="6m" *ngIf="ProductName ==='ReverseConvertible' || ProductName ==='CreditTranche'">6m</option>
+      <option value="12m" *ngIf="ProductName ==='ReverseConvertible' || ProductName ==='CreditTranche'">12m</option>
+      <option value="3m"
+        *ngIf="(ProductName ==='AutocallablePhoenix') && (autoFreq === '3m' || autoFreq === '6m' || autoFreq === '12m')">
+        3m</option>
+      <option value="6m" *ngIf="(ProductName ==='AutocallablePhoenix') && (autoFreq === '6m' || autoFreq === '12m')">6m
+      </option>
+      <option value="12m" *ngIf="(ProductName ==='AutocallablePhoenix') && (autoFreq === '12m')">12m</option>
+    </select>
+    </td>
+    <!-- Index Rate / Spread -->
+    <td *ngIf="ProductName!=='Participation'">
+        <input type="text" [(ngModel)]="fundRate" id="txtFundingRate{{ComponentIndex}}" maxlength="100" (blur)="(ProductName === 'CreditTranche'? this.creditreset() : this.reset());this.enableToggle();this.fundRate = commonfunctions.setDecimal($event);" (keypress)="commonfunctions.InputSpread($event)"
+            [disabled]="format !== 'Swap' || this.SolveForvalue === 'FundingRate'" style="min-width: 6em !important; width:87% !important;">
+        <span (clickOutside)="onClickedOutside('fundRate')" style=" position: relative;">
+      <img src="{{asseturl}}info.jpg" class="info" *ngIf="format === 'Swap' && fundRate !==''"
+        (click)="GetTriggerValue('fundRate')">
+      <div *ngIf="fundRatePopup" class="triggerTable" style="left:-310px">
+        <table style="width: 100%;">
+          <tr class="popuptr">
+            <th class="popupth" style="width: 10em;">Periods</th>
+            <th class="popupth" style="width: 10em;">
+              Trigger</th>
+          </tr>
+          <tr *ngFor="let t of TriggerValueArr; let i = index; " class="popuptr" style="width: 100%;">
+
+            <td class="popuptd tdRight" style="width:10em;">{{t.NoOfPeriods}} </td>
+            <td class="popuptd tdRight" style="width: 10em;"> {{t.OutTrigger | number:'1.2-2'}}
+            </td>
+
+          </tr>
+        </table>
+      </div>
+    </span>
+    </td>
+
+    <!-- Participation Fields  -->
+
+    <!-- Participation Strike / Gearing -->
+    <td *ngIf="ProductName==='Participation'">
+        <input type="text" [(ngModel)]="upStrike" id="txtupStrike{{ComponentIndex}}" maxlength="8" (blur)="upStrike = commonfunctions.setDecimal($event);PTCPriceValidation($event,'upStrike');" (keypress)="commonfunctions.InputNumber($event)" tabindex="ComponentIndex * totalFields + 15">
+        <input type="text" id="txtupGearing{{ComponentIndex}}" [(ngModel)]="upGearing" maxlength="8" (blur)="upGearing = commonfunctions.setDecimal($event);PTCPriceValidation($event,'upGearing');" [disabled]="upBarrierType!=='None'" tabindex="ComponentIndex * totalFields + 16">
+    </td>
+    <!-- Participation Upper Strike/Min Cpn-->
+    <td *ngIf="ProductName==='Participation'">
+        <input type="text" [(ngModel)]="upUpperStrike" id="txtupUpperStrike{{ComponentIndex}}" maxlength="8" (blur)="upUpperStrike = commonfunctions.setDecimalForBlank($event);PTCPriceValidation($event,'upUpperStrike');" (keypress)="commonfunctions.InputNumber($event)" tabindex="ComponentIndex * totalFields + 17"
+            (change)="upUpperStrikeChange();" [disabled]="upCoupon !==''">
+        <input type="text" [(ngModel)]="upCoupon" id="txtupCoupon{{ComponentIndex}}" [disabled]="upUpperStrike !==''" (blur)="upCoupon = commonfunctions.setDecimalForBlank($event);PTCPriceValidation($event,'upCoupon');txtupCouponChange();" maxlength="8" tabindex="ComponentIndex * totalFields + 18">
+
+    </td>
+    <!-- Participation Upside Barrier Type-->
+    <td *ngIf="ProductName==='Participation'">
+        <select (change)="upbarrierTypeChange();" [(ngModel)]="upBarrierType" title="Up&In Barrier Type" [disabled]="upUpperStrike !== '' || upCoupon !== '0.00'" tabindex="ComponentIndex * totalFields + 19">
+      <option value="None">None</option>
+      <option value="American">American
+      </option>
+      <option value="Daily">Daily
+      </option>
+      <option value="At Expiry">At Expiry
+      </option>
+    </select>
+    </td>
+    <!-- Participation Upside Barrier Level / Rebate -->
+    <td *ngIf="ProductName==='Participation'">
+        <input type="text" title="Up&In Barrier Level" [(ngModel)]="upBarrierLevel" id="txtupBarrierLevel{{ComponentIndex}}" maxlength="8" (blur)="upBarrierLevel = commonfunctions.setDecimal($event);PTCPriceValidation($event,'upBarrierLevel');" (keypress)="commonfunctions.InputNumber($event)"
+            [disabled]="upBarrierType === 'None'" tabindex="ComponentIndex * totalFields + 20">
+        <input type="text" [(ngModel)]="upRebate" title="Rebate if Up&Out Barrier is touched" id="txtRebateCoupon{{ComponentIndex}}" maxlength="8" (blur)="upRebate = commonfunctions.setDecimal($event);PTCPriceValidation($event,'upRebate');" [disabled]="upBarrierType === 'None'" tabindex="ComponentIndex * totalFields + 21">
+
+    </td>
+    <!-- Participation Downside Strike / Lower strike-->
+    <td *ngIf="ProductName==='Participation'">
+        <input type="text" [(ngModel)]="downStrike" id="txtdownStrike{{ComponentIndex}}" maxlength="8" (blur)="downStrike = commonfunctions.setDecimal($event);PTCPriceValidation($event,'downStrike');calculateLeverage();" (keypress)="commonfunctions.InputNumber($event)"
+            title="Only for Put Spread" [disabled]="participationType === 'Guaranteed Capital'" tabindex="ComponentIndex * totalFields + 22">
+
+        <input type="text" title="Only for Put Spread" [(ngModel)]="downLowerStrike" id="txtdownLowerStrike{{ComponentIndex}}" maxlength="8" (change)="changelowerStrikeYN()" (blur)="downLowerStrike = commonfunctions.setDecimalForBlank($event);PTCPriceValidation($event,'downLowerStrike');"
+            (keypress)="commonfunctions.InputNumber($event)" [disabled]="participationType !== 'Booster'" tabindex="ComponentIndex * totalFields + 23">
+
+    </td>
+    <!-- Participation Leverage toggle and leverage -->
+    <td *ngIf="ProductName==='Participation'">
+        <select id="ddldownLeverageYN{{ComponentIndex}}" [(ngModel)]="downLeverageYN" (change)="this.ptcreset(); this.enableToggle();changedownLeverageYN();" [disabled]="participationType !== 'Booster'" tabindex="ComponentIndex * totalFields + 24">
+      <option value="Yes">Yes</option>
+      <option value="No">No</option>
+    </select>
+        <input type="text" [(ngModel)]="downLeverage" id="txtdownLeverage{{ComponentIndex}}" maxlength="8" (blur)="downLeverage = commonfunctions.setDecimal($event);PTCPriceValidation($event,'downLeverage');" (keypress)="commonfunctions.InputNumber($event)" [disabled]="participationType !== 'Booster' || downLowerStrike === '' || downLeverageYN === 'No'" tabindex="ComponentIndex * totalFields + 25">
+    </td>
+    <!-- Participation Downside Barrier Type / Level -->
+    <td *ngIf="ProductName==='Participation'">
+        <select [(ngModel)]="downBarrierType" title="Down&In Barrier Type" (change)="downbarrierTypeChange();" [disabled]="participationType === 'Guaranteed Capital'" tabindex="ComponentIndex * totalFields + 26">
+      <option value="None" *ngIf="participationType === 'Booster'">None</option>
+      <option value="At Expiry">At Expiry
+      </option>
+      <option value="Daily">Daily</option>
+      <option value="Continuous">
+        Continuous</option>
+    </select>
+        <input type="text" title="Down&In Barrier Level" [(ngModel)]="downBarrierLevel" id="txtdownBarrierLevel{{ComponentIndex}}" maxlength="8" *ngIf="downBarrierType !== 'None' && participationType !== 'Guaranteed Capital'" (blur)="downBarrierLevel = commonfunctions.setDecimal($event);PTCPriceValidation($event,'downBarrierLevel');"
+            (keypress)="commonfunctions.InputNumber($event)" tabindex="ComponentIndex * totalFields + 27">
+    </td>
+
+    <!-- Participation Guarateed Coupon Capital Guaranteed Level -->
+    <td *ngIf="ProductName==='Participation'">
+        <input type="text" [(ngModel)]="capitalGuaranteed" id="txtcapitalGuaranteed{{ComponentIndex}}" maxlength="8" (blur)="capitalGuaranteed = commonfunctions.setDecimal($event);PTCPriceValidation($event,'Strike');" (keypress)="commonfunctions.InputNumber($event)"
+            title="Only for Put Spread" disabled tabindex="ComponentIndex * totalFields + 28">
+    </td>
+
+    <!-- Participation  Guarateed Coupon Coupon / Coupon Freq-->
+    <td *ngIf="ProductName==='Participation'">
+        <input type="text" [(ngModel)]="guaranteedCoupon" [disabled]="participationType !== 'Guaranteed Capital'" maxlength="8" (blur)="this.ptcreset();this.enableToggle();" tabindex="ComponentIndex * totalFields + 29">
+        <select [(ngModel)]="guaranteedCouponFreq" [disabled]="participationType !== 'Guaranteed Capital'" (change)="this.ptcreset();this.enableToggle();" tabindex="ComponentIndex * totalFields + 30">
+      <option value="At Maturity">At Maturity</option>
+    </select>
+    </td>
+
+    <!-- Participation Funding Type / Freq-->
+    <!-- FIN1EURINT - 327 : Hide Funding Section for Bulk Pricer -->
+    <td *ngIf="ProductName==='Participation' && displayFundingSection">
+      <select [disabled]="format !== 'Swap'" [(ngModel)]="fundType" (change)="this.ptcreset();this.enableToggle();">
+        <option value="Fixed Rate">Fixed
+          Rate</option>
+        <option value="Floating Rate">
+          Floating Rate</option>
+
+    </select>
+        <select [(ngModel)]="fundFreq" [disabled]="format !== 'Swap'" [(ngModel)]="fundFreq" (change)="this.ptcreset();this.enableToggle();">
+      <option value="1m">1m</option>
+      <option value="3m">3m</option>
+      <option value="6m">6m</option>
+      <option value="12m">12m</option>
+    </select>
+    </td>
+
+    <!-- Participation Funding Rate / Spread-->
+    <!-- FIN1EURINT - 327 : Hide Funding Section for Bulk Pricer -->
+    <td *ngIf="ProductName==='Participation' && displayFundingSection">
+        <input type="text" [(ngModel)]="fundRate" id="txtFundingRate{{ComponentIndex}}" maxlength="100" (blur)="this.ptcreset();this.enableToggle();this.fundRate = commonfunctions.setDecimal($event);" (keypress)="commonfunctions.InputSpread($event)" [disabled]="format !== 'Swap' || this.SolveForvalue === 'FundingRate'"
+            style="min-width: 6em !important; width:87% !important;">
+        <span (clickOutside)="onClickedOutside('fundRate')" style=" position: relative;">
+      <img src="{{asseturl}}info.jpg" class="info" *ngIf="format === 'Swap' && fundRate !==''"
+        (click)="GetTriggerValue('fundRate')">
+      <div *ngIf="fundRatePopup" class="triggerTable" style="left:-310px">
+        <table style="width: 100%;">
+          <tr class="popuptr">
+            <th class="popupth" style="width: 10em;">Periods</th>
+            <th class="popupth" style="width: 10em;">
+              Trigger</th>
+          </tr>
+          <tr *ngFor="let t of TriggerValueArr; let i = index; " class="popuptr" style="width: 100%;">
+
+            <td class="popuptd tdRight" style="width:10em;">{{t.NoOfPeriods}} </td>
+            <td class="popuptd tdRight" style="width: 10em;"> {{t.OutTrigger | number:'1.2-2'}}
+            </td>
+
+          </tr>
+        </table>
+      </div>
+    </span>
+    </td>
+</ng-template>
+<ng-template #AccDecProd>
+<!-- set focus and modified tabindex || Priya L || 29Apr2022 || Reported by Rishabh -->
+    <!-- AccuDecu- Solve For -->
+    <td class="tdalignCenter">
+        <select #focusable [(ngModel)]="accuSolveFor" (change)="setAccuDecuSolveFor($event)" [disabled]="enabledisablefields('SolveFor')" tabindex="ComponentIndex * totalFields + {{ComponentIndex}}02">
+      <option value="Strike">Strike (%) </option>
+      <option value="Upfront">Upfront (%)</option>
+    </select>
+    </td>
+    <td class="tdalignCenter">
+        <!-- AccuDecu- Daily No of Shares -->
+        <input tabindex="ComponentIndex * totalFields + {{ComponentIndex}}03" type="text" maxlength="14" id="noOfShares{{ComponentIndex}}" value="{{ noOfShares }}" (focus)="commonfunctions.UnformatNumber($event)" (blur)="commonfunctions.FormatNumber($event)" (keypress)="commonfunctions.allowIntegerOnly($event)" 
+        (keyup)="commonfunctions.chkNotionalFormat_keyUp($event) === false ? noOfShares = '': noOfShares=noOfShares" 
+            [(ngModel)]="noOfShares" (change)="accuDecuReset();this.calculateNotional(this.shareCode, this.exchngCode,this.noOfShares);" [disabled]="enabledisablefields('Shares')"/>
+        <!-- (keypress)="commonfunctions.NotionalValidateKeys($event)" -->
+     <!-- Modified keyup event to handle invalid notional || Added by Priya L || 01Apr2022 || assigned by Pranav D. -->
+      </td>
+
+    <!-- AccuDecu- Estimated Notional -->
+    <td style="min-width: 30px!important;width: 30px;" class="tdalignCenter">
+
+        <!-- <span style="white-space: nowrap;"> -->
+        <input tabindex="ComponentIndex * totalFields + {{ComponentIndex}}04" type="text" maxlength="14" id="estimatedNotional{{ComponentIndex}}" value="{{ estimatedNotional }}" (focus)="commonfunctions.UnformatNumber($event)" (keypress)="commonfunctions.NotionalValidateKeys($event)" 
+        (keyup)="commonfunctions.chkNotionalFormat_keyUp($event) === false ? estimatedNotional = '': estimatedNotional=estimatedNotional" 
+            [(ngModel)]="estimatedNotional" disabled /><br>
+        <!-- <label style="color: #676765;">({{ddlNoteCcy}})</label></span> -->
+         <!-- Modified keyup event to handle invalid notional || Added by Priya L || 01Apr2022 || assigned by Pranav D. -->
+         <span style="white-space: nowrap;">
+
+          <input type="text" class="tenorBox" maxlength="2" id="accuTenor{{ComponentIndex}}" value="{{ accuTenor }}"
+            (keypress)="this.commonfunctions.tenorDateValidation($event);" style="min-width: 2em !important;"
+            [(ngModel)]="accuTenor" (change)="changeAccuTenor();this.calculateNotional(this.shareCode, this.exchngCode,this.noOfShares);"
+            [disabled]="enabledisablefields('Tenor')" tabindex="ComponentIndex * totalFields + {{ComponentIndex}}05">
+    
+          <select [(ngModel)]="accuTenorType" maxlength="4"
+            style="width: 74px !important; margin-left: 0.5em !important; min-width: 74px !important;"
+            (change)="changeAccuTenor();this.calculateNotional(this.shareCode, this.exchngCode,this.noOfShares);"
+            [disabled]="enabledisablefields('TenorType')" tabindex="ComponentIndex * totalFields + {{ComponentIndex}}06">
+            <option value="Month">Month</option>
+            <option value="Year">Year</option>
+          </select>
+        </span>
+        
+    </td>
+
+    <!-- AccuDecu- Tenor -->
+    <!-- <td class="tdalignCenter">
+        <span style="white-space: nowrap;">
+
+      <input type="text" class="tenorBox" maxlength="2" id="accuTenor{{ComponentIndex}}" value="{{ accuTenor }}"
+        (keypress)="this.commonfunctions.tenorDateValidation($event);" style="min-width: 2em !important;"
+        [(ngModel)]="accuTenor" (change)="changeAccuTenor();this.calculateNotional(this.shareCode, this.exchngCode,this.noOfShares);"
+        [disabled]="enabledisablefields('Tenor')">
+
+      <select [(ngModel)]="accuTenorType" maxlength="4"
+        style="width: 90px !important; margin-left: 0.5em !important; min-width: 90px !important;"
+        (change)="changeAccuTenor();this.calculateNotional(this.shareCode, this.exchngCode,this.noOfShares);"
+        [disabled]="enabledisablefields('TenorType')">
+        <option value="Month">Month</option>
+        <option value="Year">Year</option>
+      </select>
+    </span>
+    </td> -->
+
+    <!-- AccuDecu- Strike -->
+    <td class="tdalignCenter">
+        <input tabindex="ComponentIndex * totalFields + {{ComponentIndex}}07" type="text" [(ngModel)]="accuStrike" id="txtStrike{{ComponentIndex}}" maxlength="10" 
+        [disabled]="this.accuSolveFor === 'Strike' || enabledisablefields('Strike') " (blur)="this.accuStrike = commonfunctions.setDecimal($event)" (keypress)="commonfunctions.InputNumber($event)" (change)="accuDecuReset()"
+        />
+        <!-- id="txtaccuStrike{{ComponentIndex}}" -->
+      
+    </td>
+
+    <!-- AccuDecu- Upfront -->
+    <td class="tdalignCenter">
+        <input tabindex="ComponentIndex * totalFields + {{ComponentIndex}}08" type="text" [(ngModel)]="accuUpfront" id="txtUpfront{{ComponentIndex}}" maxlength="10" [disabled]="this.accuSolveFor === 'Upfront' || enabledisablefields('Upfront')" 
+        (blur)="this.accuUpfront = commonfunctions.setDecimal($event)" (keypress)="commonfunctions.InputNumber($event)"
+            (change)="accuDecuReset()" />
+    </td>
+    <!-- id="txtaccuUpfront{{ComponentIndex}}" -->
+
+    <!-- AccuDecu- KO% of Initial -->
+    <td class="tdalignCenter">
+      <!-- Margin added by SandipA @28-Mar-2023 -->
+        <input tabindex="ComponentIndex * totalFields + {{ComponentIndex}}09" type="text" [(ngModel)]="accuKOPerInit" id="txtaccuKOPerInit{{ComponentIndex}}" maxlength="10" style="margin-bottom: 12px !important; margin-top: 25px !important;"
+        (blur)="this.accuKOPerInit = commonfunctions.setDecimal($event);checkKO(accuKOPerInit)" (keypress)="commonfunctions.InputNumber($event)" (change)="accuDecuReset()"
+        [disabled]="enabledisablefields('AutoTrigger')"/><br/>
+        <!-- <input type="text" [(ngModel)]="accuKOSttlType" id="txtaccuKOSttlType{{ComponentIndex}}" 
+    maxlength="10"/> -->
+        <label type="text" id="txtaccuKOSttlType{{ComponentIndex}}" maxlength="2" style="color: #676765;margin-left: 0.5em !important;" disabled>
+      {{accuKOSttlType}}
+    </label>
+    </td>
+
+    <!-- AccuDecu- KO% Sttl. Type -->
+    <!-- <td>
+  <input type="text" [(ngModel)]="accuKOSttlType" id="txtaccuKOSttlType{{ComponentIndex}}" 
+    maxlength="10"/>
+  </td> -->
+
+    <!-- AccuDecu- 2x Gearing Leverage -->
+    <!-- <td>
+      <input type="checkbox" checked="checked" style="width: 10px !important;"
+      [(ngModel)]="accuChkLeverage"  (change)="this.accuDecuReset();chkLeverageChange();" />
+  </td> -->
+
+    <!-- AccuDecu- Leverage / Frequency -->
+    <td class="tdalignCenter">
+      <!-- Margin top added by SandipA @28-Mar-2023 -->
+        <select tabindex="ComponentIndex * totalFields + {{ComponentIndex}}10" [(ngModel)]="accuFreq" (change)="accuDecuReset();this.calculateNotional(this.shareCode, this.exchngCode,this.noOfShares);"
+        [disabled]="enabledisablefields('Frequency')"  style="margin-top: 34px;margin-bottom: 0px;">
+      <option value="BIWEEKLY">Bi-Weekly</option>
+      <option value="MONTHLY">Monthly</option>
+    </select>
+        <br />
+        <!-- Vertical alignment added by SandipA @28-Mar-2023 -->
+        <input tabindex="ComponentIndex * totalFields + {{ComponentIndex}}11" type="checkbox" checked="checked" style="width: 10px !important;vertical-align: middle;" [(ngModel)]="accuChkLeverage" (change)="this.accuDecuReset();chkLeverageChange();"
+        [disabled]="enabledisablefields('GearingLeverage')" />
+        <!-- <label type="text" style="color: #676765;margin-left: 0.5em !important;margin-bottom: 0.5em !important;" disabled> -->
+          <label type="text" style="color: #676765;margin-left: 0.5em !important" disabled>
+      2x Gearing Leverage
+    </label>
+    </td>
+
+    <!-- AccuDecu- Frequency -->
+    <!-- <td>
+    <select [(ngModel)]="accuFreq"  >
+     <option value="BiWeekly">Bi-Weekly</option>
+     <option value="Monthly">Monthly</option>
+    </select>
+  </td> -->
+
+    <!-- AccuDecu- Guarentee -->
+    <td class="tdalignCenter">
+	 <!-- Span Commented by SandipA @28-Mar-2023 -->
+        <!-- <span style="white-space: nowrap;"> -->
+          <!-- Changed min-width from 3em to 3.8em for 80% resolution display issue| 04Mar2022 -->
+          <!-- Margin added by SandipA @28-Mar-2023 -->
+      <select tabindex="ComponentIndex * totalFields + {{ComponentIndex}}12" [(ngModel)]="accuGuarantee" class="tenorBox" maxlength="3" style="min-width: 3.8em !important;margin-top: 22px !important;
+      margin-bottom: 8px !important;"
+        (change)="accuDecuReset()" [disabled]="enabledisablefields('GuaranteePeriods')">
+        <option value="0">0</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3" *ngIf="accuFreq =='MONTHLY'">3</option>
+        <option value="4" *ngIf="accuFreq =='BIWEEKLY'">4</option>
+        <option value="6" *ngIf="accuFreq =='BIWEEKLY'">6</option>
+      </select>
+  <br>
+      <label type="text" maxlength="2" style="color: #676765;margin-left: 0.5em !important;" disabled> Settlement Periods
+      </label>
+    <!-- </span> -->
+    </td>
+
+    <!-- Loader icon position changed by AdilP FIN1EURINT-506 || 05-07-2023 ||START -->
+<div class="pageload-overlay" *ngIf="pageloadflag">
+  <div>
+      <svg version="1.1" id="L4" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
+    y="0px" [ngStyle]="{ width:  + '25px', height:  + '25px' }"
+    style="margin-left: 30px" viewBox="0 0 100 100" enable-background="new 0 0 0 0"
+    xml:space="preserve">
+    <circle stroke="#a1a1a1" cx="45" cy="23" r="1.4" stroke-width="0.1" fill="var(--icon-active-bg)">
+      <animate attributeName="opacity" dur="2s" values="0;1;0" repeatCount="indefinite" begin="0.1" />
+    </circle>
+    <circle stroke="#a1a1a1" cx="45" cy="23" r="1.5" stroke-width="0.1" fill="var(--icon-active-bg)">
+      <animate attributeName="opacity" dur="2s" values="0;1;0" repeatCount="indefinite" begin="0.1" />
+    </circle>
+  </svg>
+  </div>
+</div>
+<!-- Loader icon position changed by AdilP FIN1EURINT-506 || 05-07-2023 ||END -->
+
+</ng-template>
+<ng-template #ERProd>
+
+</ng-template>
+
+</ng-template>

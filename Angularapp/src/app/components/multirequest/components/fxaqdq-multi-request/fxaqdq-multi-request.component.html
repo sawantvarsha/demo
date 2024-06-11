@@ -1,0 +1,236 @@
+<div class="fxaqdq-multirequest-component">
+    <div class="button-contianer">
+        <input class="button" type="button" value="Add" (click)="addRow()" />
+        <input class="button" type="button" value="Price All" (click)="priceAll()" />
+        <div style="flex-grow: 1;"></div>
+        <div class="togglebtn">
+            <app-svg-icons [icon]="'grid'" [width]="'35'" [height]="'35'" [fill]="'var(--headers)'"
+                style="transform: rotate(90deg) translate(0px,0);"></app-svg-icons>
+            <label class="switch">
+                <input type="checkbox" [(ngModel)]="isHorizontal" (change)="transpose()">
+                <span class="slider round"></span>
+            </label>
+            <app-svg-icons [icon]="'grid'" [width]="'35'" [height]="'35'" style="transform: translate(0px, 3px);">
+            </app-svg-icons>
+        </div>
+    </div>
+    <div class="multirequest-grid-container">
+        <div class="multi-request-grid" [ngStyle]="{'grid-auto-flow': direction === 'horizontal' ? 'row' : 'column'}">
+            <div class="headers" [ngStyle]="{'grid-auto-flow': direction === 'horizontal' ? 'column' : 'row' }"
+                [ngClass]="{'vertical-header-border':direction === 'vertical'}">
+                <div class="header-block" [ngClass]="{'header-small':direction !== 'vertical'}">
+                    <div class="column-name">
+
+                    </div>
+                </div>
+                <div class="header-block result-container" [ngClass]="{'header-small':direction !== 'vertical'}">
+                    <div class="column-name">Result</div>
+                </div>
+                <div class="header-block priceDivClass" [ngClass]="{'header-small':direction !== 'vertical'}">
+                    <div class="column-name" [ngStyle]="{'height': direction === 'horizontal' ? '25px' : '60px'}">Price
+                    </div>
+                </div>
+                <div class="header-block">
+                    <div class="column-name">Product Type</div>
+                    <div class="column-name">Currency Pair</div>
+                    <div class="column-name">Spot Rate</div>
+                </div>
+                <div class="header-block">
+                    <div class="column-name">Strike Rate</div>
+                    <div class="column-name">KO Rate</div>
+                    <div class="column-name">No of Fixing</div>
+                </div>
+                <div class="header-block">
+                    <div class="column-name">Notional Ccy</div>
+                    <div class="column-name">Notional Per Fix</div>
+                    <div class="column-name">Total Notional</div>
+                </div>
+                <div class="header-block">
+                    <div class="column-name">Tenor</div>
+                    <div class="column-name">Fix. Frequency</div>
+                    <div class="column-name">Sett. Frequency</div>
+                    <div class="column-name">Option Cut</div>
+                </div>
+                <div class="header-block">
+                    <div class="column-name">Leverage</div>
+                    <div class="column-name">Gaur. Periods</div>
+                </div>
+                <div class="header-block">
+                    <div class="column-name">Trade Date</div>
+                    <div class="column-name">Premium Date</div>
+                    <div class="column-name">First Fixing Date</div>
+                    <div class="column-name">Final Fixing Date</div>
+                    <div class="column-name">Final Sett. Date</div>
+                </div>
+                <div class="header-block ib-prem">
+                    <div class="column-name">IB Prem</div>
+                </div>
+            </div>
+
+
+            <div *ngFor="let row of arrAqDq; let i = index;" class="headers"
+                [ngStyle]="{'grid-auto-flow': direction === 'horizontal' ? 'column' : 'row'}">
+                <div class="row-block" [ngClass]="{'row-small':direction !== 'vertical'}"
+                    [ngStyle]="{'flex-direction': direction === 'horizontal' ? 'column' : 'row'}">
+                    <input class="button" type="button" value="Delete" (click)="removeRow(i)"
+                        [disabled]="arrAqDq.length === 1" />
+                    <input class="button" type="button" value="Clone" (click)="cloneRow(i)" />
+                </div>
+                <div class="row-block result-container" [ngClass]="{'row-small':direction !== 'vertical'}">
+                    <div class="row-content priceprovider" *ngIf="row.price">
+                        <span>{{row.displayProvider}}</span>
+                    </div>
+                    <div class="row-content price" *ngIf="row.price">
+                        <span>{{row.price}}</span>
+                    </div>
+                    <div class="row-content error result-container" *ngIf="row.error">
+                        <span>{{row.error}}</span>
+                    </div>
+                    <div class="row-content loader result-container" *ngIf="row.isLoading && !row.error">
+                        <div class="multi-ripple">
+                            <div></div>
+                            <div></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row-block priceDivClass" [ngClass]="{'row-small':direction !== 'vertical'}">
+                    <div class="row-content">
+                        <input class="button" type="button" value="Price" (click)="price(i)" />
+                    </div>
+                    <div class="row-content">
+                        <select [(ngModel)]="row.provider" (change)="reset(i)">
+                            <option *ngFor="let provider of priceProviders">{{provider}}</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row-block">
+                    <div class="row-content">
+                        <select [(ngModel)]="row.productType" (change)="changeProductType(i);reset(i);">
+                            <option value="AQ">AQ</option>
+                            <option value="DQ">DQ</option>
+                        </select>
+                    </div>
+                    <div class="row-content">
+                        <select [(ngModel)]="row.ccyPair" (change)="changeCurrency(i);reset(i)">
+                            <option *ngFor="let pair of currencyPairs" [value]="pair">{{pair}}</option>
+                        </select>
+                    </div>
+                    <div class="row-content">
+                        <span>{{row.bidRate}}</span>
+                        /
+                        <span>{{row.askRate}}</span>
+                    </div>
+                </div>
+
+                <div class="row-block">
+                    <div class="row-content">
+                        <input type="text" [(ngModel)]="row.strikeRate" class="align-right"
+                            (change)="changeAmount(i,'strikeRate'); reset(i)" (blur)="formatAmount(i, 'strikeRate')"
+                            (focus)="editAmount(i, 'strikeRate')" />
+                    </div>
+                    <div class="row-content">
+                        <input type="text" [(ngModel)]="row.korate" class="align-right"
+                            (change)="changeAmount(i,'korate'); reset(i);" (blur)="formatAmount(i, 'korate')"
+                            (focus)="editAmount(i, 'korate')">
+                    </div>
+                    <input type="text" [(ngModel)]="row.nooffixing" class="align-right" disabled>
+                </div>
+
+                <div class="row-block">
+                    <div class="row-content">
+                        <select [(ngModel)]="row.notionalCcy" (change)="reset(i)">
+                            <option *ngFor="let ccy of row.ccyPair.split(' - ')">{{ccy}}</option>
+                        </select>
+                    </div>
+                    <div class="row-content">
+                        <input type="text" [(ngModel)]="row.notionalperfix" class="align-right"
+                            (change)="changeAmount(i,'notionalperfix'); reset(i);getNoOfFixing(i);"
+                            (blur)="formatAmount(i, 'notionalperfix')" (focus)="editAmount(i, 'notionalperfix')">
+                    </div>
+                    <div class="row-content">
+                        <input type="text" [(ngModel)]="row.totalnotional" class="align-right"
+                            (change)="changeAmount(i,'totalnotional'); reset(i);"
+                            (blur)="formatAmount(i, 'totalnotional')" (focus)="editAmount(i, 'totalnotional')" disabled>
+                    </div>
+                </div>
+                <div class="row-block">
+                    <div class="row-content">
+                        <select [(ngModel)]="row.tenor" (change)="changeTenor(i);reset(i);">
+                            <option *ngFor="let tenor of tenors" [value]="tenor">{{tenor}}</option>
+                        </select>
+                        <input type="text" [(ngModel)]="row.tenorDays" />
+                    </div>
+                    <div class="row-content">
+                        <select [(ngModel)]="row.fixingFreq" (change)="changeFixingFrequency(i);reset(i);">
+                            <option>BiWeekly</option>
+                            <option>Daily</option>
+                            <option>Monthly</option>
+                            <option>Weekly</option>
+                        </select>
+                    </div>
+                    <div class="row-content">
+                        <select [(ngModel)]="row.settFreq" (change)="reset(i)">
+                            <option value="{{row.settFreq}}">{{row.settFreq}}</option>
+                            <!-- <option selected >Monthly</option>
+                    <option>Weekly</option> -->
+                        </select>
+                    </div>
+                    <div class="row-content">
+                        <select [(ngModel)]="row.optionCut" (change)="reset(i)">
+                            <option *ngFor="let optionCut of optionCuts" [value]="optionCut">{{optionCut}}</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row-block">
+                    <div class="row-content">
+                        <select [(ngModel)]="row.leverageFactor" (change)="reset(i)">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                        </select>
+                    </div>
+                    <div class="row-content">
+                        <input type="text" [(ngModel)]="row.gauranteeperiod">
+                    </div>
+                </div>
+
+                <div class="row-block">
+                    <div class="row-content">
+                        <span>{{row.tradeDate}}</span>
+                    </div>
+                    <div class="row-content">
+                        <span>{{row.premDate}}</span>
+                    </div>
+                    <div>
+                        <input type="text" [(ngModel)]="row.firstFixingDate">
+                    </div>
+                    <div class="row-content">
+                        <span>{{row.finalFixingDate}}</span>
+                    </div>
+                    <div class="row-content">
+                        <span>{{row.FinalSettDate}}</span>
+                    </div>
+                </div>
+
+                <div class="row-block ib-prem">
+                    <div class="row-content">
+                        <span class="align-right" (change)="changeAmount(i,'ibPrem'); reset(i)"
+                            (blur)="formatAmount(i, 'ibPrem')" (focus)="editAmount(i, 'ibPrem')">{{row.ibPrem}}</span>
+                    </div>
+                    <div class="row-content">
+                        <select (change)="reset(i)">
+                            <option *ngFor="let ccy of row.ccyPair.split(' - ')">{{ccy}}</option>
+                        </select>
+                    </div>
+                    <div class="row-content">
+                        <input type="text" [(ngModel)]="row.ibpremnotional" class="align-right"
+                            (change)="changeAmount(i,'ibpremnotional'); reset(i)"
+                            (blur)="formatAmount(i, 'ibpremnotional')" (focus)="editAmount(i, 'ibpremnotional')" />
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

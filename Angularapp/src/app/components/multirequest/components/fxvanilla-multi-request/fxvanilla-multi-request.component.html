@@ -1,0 +1,230 @@
+<div class="fxvanilla-multirequest-component">
+    <div class="button-contianer">
+        <input class="button" type="button" value="Add" (click)="addRow()" />
+        <input class="button" type="button" value="Price All" (click)="priceAll()" />
+        <div style="flex-grow: 1;"></div>
+        <!-- <input class="button" type="button" value="Transpose" (click)="transpose()" /> -->
+        <div class="togglebtn">
+            <app-svg-icons [icon]="'grid'" [width]="'35'" [height]="'35'" [fill]="'var(--headers)'"
+                style="transform: rotate(90deg) translate(0px,0);"></app-svg-icons>
+            <label class="switch">
+                <input type="checkbox" [(ngModel)]="isHorizontal" (change)="transpose()">
+                <span class="slider round"></span>
+            </label>
+            <app-svg-icons [icon]="'grid'" [width]="'35'" [height]="'35'" style="transform: translate(0px, 3px);">
+            </app-svg-icons>
+        </div>
+    </div>
+    <div class="multirequest-grid-container">
+
+        <div class="multi-request-grid" [ngStyle]="{'grid-auto-flow': direction === 'horizontal' ? 'row' : 'column'}">
+            <div class="headers" [ngStyle]="{'grid-auto-flow': direction === 'horizontal' ? 'column' : 'row' }"
+                [ngClass]="{'vertical-header-border':direction === 'vertical'}">
+                <div class="header-block" [ngClass]="{'header-small':direction !== 'vertical'}">
+                    <div class="column-name">
+
+                    </div>
+                </div>
+                <div class="header-block result-container" [ngClass]="{'header-small':direction !== 'vertical'}">
+                    <div class="column-name">Result</div>
+                </div>
+                <div class="header-block priceDivClass" [ngClass]="{'header-small':direction !== 'vertical'}">
+                    <div class="column-name" [ngStyle]="{'height': direction === 'horizontal' ? '25px' : '60px'}">Price
+                    </div>
+                </div>
+                <div class="header-block">
+                    <!-- <div class="column-name">Product Type</div> -->
+                    <div class="column-name">Direction</div>
+                    <div class="column-name">Currency Pair</div>
+                    <div class="column-name">Spot Rate</div>
+                </div>
+                <div class="header-block">
+                    <div class="column-name">Strike Point / Rate</div>
+                    <div class="column-name">Tenor</div>
+                    <div class="column-name">Notional</div>
+                </div>
+                <div class="header-block">
+                    <div class="column-name">IB Prem. Ccy</div>
+                    <div class="column-name">Upfront (%)</div>
+                    <div class="column-name">IB Prem.</div>
+                    <div class="column-name">Client Prem.</div>
+                </div>
+                <div class="header-block">
+                    <!-- <div class="column-name">Upfront</div> -->
+                    <div class="column-name">Option Type</div>
+                    <div class="column-name">Option Cut</div>
+                    <div class="column-name">Pricing Model</div>
+                    <!-- <div class="column-name">Upper Barrier</div>
+            <div class="column-name">Lower Barrier</div> -->
+                </div>
+                <div class="header-block">
+                    <div class="column-name">Trade Date</div>
+                    <div class="column-name">Premium Date</div>
+                    <div class="column-name">Final Fixing Date</div>
+                    <div class="column-name">Final Sett. Date</div>
+                </div>
+                <!-- <div class="header-block">
+            <div class="column-name">Option Cut</div>
+            <div class="column-name">Pricing Model</div>
+        </div> -->
+
+            </div>
+
+
+            <div *ngFor="let row of arrVanilla; let i = index;" class="headers"
+                [ngStyle]="{'grid-auto-flow': direction === 'horizontal' ? 'column' : 'row'}">
+                <div class="row-block" [ngClass]="{'row-small':direction !== 'vertical'}"
+                    [ngStyle]="{'flex-direction': direction === 'horizontal' ? 'column' : 'row'}">
+                    <input class="button" type="button" value="Delete" (click)="removeRow(i)"
+                        [disabled]="arrVanilla.length === 1" />
+                    <input class="button" type="button" value="Clone" (click)="cloneRow(i)" />
+                </div>
+                <div class="row-block result-container" [ngClass]="{'row-small':direction !== 'vertical'}">
+                    <div class="row-content priceprovider" *ngIf="row.price">
+                        <span>{{row.displayProvider}}</span>
+                    </div>
+                    <div class="row-content price" *ngIf="row.price">
+                        <span>{{row.price}}</span>
+                    </div>
+                    <div class="row-content error result-container" *ngIf="row.error">
+                        <span>{{row.error}}</span>
+                    </div>
+                    <div class="row-content loader result-container" *ngIf="row.isLoading && !row.error">
+                        <!-- <div class="loader-center"> -->
+                        <div class="multi-ripple">
+                            <div></div>
+                            <div></div>
+                        </div>
+                        <!-- </div> -->
+                    </div>
+                </div>
+                <div class="row-block" [ngClass]="{'row-small':direction !== 'vertical'}">
+                    <div class="row-content">
+                        <input class="button" type="button" value="Price" (click)="price(i)" />
+                    </div>
+                    <div class="row-content">
+                        <select [(ngModel)]="row.provider" (change)="reset(i)">
+                            <option *ngFor="let provider of priceProviders">{{provider}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row-block">
+                    <!-- <div class="row-content">
+                <select [(ngModel)]="row.productname">
+                    <option value="E-RKI+KO">E-RKI+KO</option>
+                    <option value="European Reverse Knock-In">European Reverse Knock-In</option>
+                    <option value="Knock-In" selected>Knock-In</option>
+                    <option value="Knock-Out">Knock-Out</option>
+                    <option value="Reverse Knock-In">Reverse Knock-In</option>
+                    <option value="Reverse Knock-Out">Reverse Knock-Out</option>
+                    <option value="RKI+KO">RKI+KO</option>
+                    <option value="RKO+KI">RKO+KI</option>
+                </select>
+            </div> -->
+                    <div class="row-content">
+                        <select [(ngModel)]="row.direction" (change)="reset(i)">
+                            <option>Buy</option>
+                            <option>Sell</option>
+                        </select>
+                    </div>
+                    <div class="row-content">
+                        <select [(ngModel)]="row.ccyPair" (change)="changeCurrency(i);reset(i)">
+                            <option *ngFor="let pair of currencyPairs" [value]="pair">{{pair}}</option>
+                        </select>
+                    </div>
+                    <div class="row-content">
+                        <span>{{row.bidRate}}</span>
+                        /
+                        <span>{{row.askRate}}</span>
+                    </div>
+                </div>
+                <div class="row-block">
+                    <div class="row-content">
+                        <div class="split">
+                            <input type="text" [(ngModel)]="row.strikepoints" (change)="changeStrikeRate(i)"
+                                class="align-right" />
+                            <input type="text" [(ngModel)]="row.strikeRate" class="align-right" />
+                        </div>
+                    </div>
+                    <div class="row-content">
+                        <div class="split">
+                            <select [(ngModel)]="row.tenor" (change)="changeTenor(i);reset(i)">
+                                <option *ngFor="let tenor of tenors" [value]="tenor">{{tenor}}</option>
+                            </select>
+                            <input type="text" [(ngModel)]="row.tenorDays" />
+                        </div>
+                    </div>
+                    <div class="row-content">
+                        <div class="split">
+                            <select [(ngModel)]="row.notionalCcy" (change)="reset(i)">
+                                <option *ngFor="let ccy of row.ccyPair.split(' - ')">{{ccy}}</option>
+                            </select>
+                            <input type="text" [(ngModel)]="row.nominal" class="align-right"
+                                (change)="changeAmount(i,'nominal'); reset(i)" (blur)="formatAmount(i, 'nominal')"
+                                (focus)="editAmount(i, 'nominal')">
+                        </div>
+                    </div>
+                </div>
+                <div class="row-block">
+                    <div class="row-content">
+                        <select [(ngModel)]="row.ibPremCcy" (change)="reset(i)">
+                            <option *ngFor="let ccy of row.ccyPair.split(' - ')">{{ccy}}</option>
+                        </select>
+                    </div>
+                    <div class="row-content">
+                        <input type="text" [(ngModel)]="row.upfront" class="align-right"
+                            (blur)="formatAmount(i, 'upperBarrier')" (focus)="editAmount(i, 'upperBarrier')">
+                    </div>
+                    <div class="row-content">
+                        <span>{{row.ibPrem}}</span>
+                    </div>
+                    <div class="row-content">
+                        <span>{{row.clientPrem}}</span>
+                    </div>
+                </div>
+                <div class="row-block">
+                    <div class="row-content">
+                        <select [(ngModel)]="row.optionType" (change)="changeStrikeRate(i);reset(i)">
+                            <option value="Call">Call</option>
+                            <option value="Put">Put</option>
+                        </select>
+                    </div>
+                    <div class="row-content">
+                        <select [(ngModel)]="row.optionCut" (change)="reset(i)">
+                            <option *ngFor="let optionCut of optionCuts" [value]="optionCut">{{optionCut}}</option>
+                        </select>
+                    </div>
+
+                    <div class="row-content">
+                        <select (change)="reset(i)">
+                            <option>{{row.pricingModel}}</option>
+                        </select>
+                    </div>
+                    <!-- <div class="row-content"><input type="text" name="" id="" [(ngModel)]="row.upperBarrier"></div>
+            <div class="row-content"><input type="text" name="" id="" [(ngModel)]="row.lowerBarrier"></div> -->
+                </div>
+                <div class="row-block">
+                    <div class="row-content"><span>{{row.tradeDate}}</span></div>
+                    <div class="row-content"><span>{{row.premDate}}</span></div>
+                    <div class="row-content"><span>{{row.finalFixingDate}}</span></div>
+                    <div class="row-content"><span>{{row.FinalSettDate}}</span></div>
+                </div>
+                <!-- <div class="row-block">
+            <div class="row-content">
+                <select  [(ngModel)]="row.optionCut">
+                    <option *ngFor="let optionCut of optionCuts" [value]="optionCut">{{optionCut}}</option>
+                </select>
+            </div>
+
+            <div class="row-content">
+                <select>
+                    <option>{{row.pricingModel}}</option>
+                </select>
+            </div>
+        </div> -->
+
+            </div>
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,99 @@
+
+<div class="insideCard-gridview">
+    <div class="cls-td">
+        <label>Product</label>
+    </div>
+    <div class="">
+        <label class="productName">
+            ELI
+        </label>
+    </div>
+    <div>
+        <div class="">
+          <select>
+              <option>FC</option>
+              <option>DD</option>
+          </select>
+        </div>
+    </div>
+
+    <div class="cls-td">
+        <label>Underlying</label>
+    </div>
+    <div class=" ">
+        <input type="text" value="PEP.N" class="InputClass underlying">
+    </div>
+    <div class="">
+        <!-- <input type="text" value="1,000,000.00" class="InputClass"> -->
+    </div>
+
+    <div class="cls-td">
+        <label>Contract Amt</label>
+    </div>
+    <div class="">
+        <input type="text" value="2,000,000.00" class="InputClass">
+    </div>
+    <div class="">
+        <select [(ngModel)]="selectedCcy">
+            <option *ngFor = "let c of currency" [value]="c">
+              {{c}}
+            </option>
+        </select>
+    </div>
+
+    <div class="cls-td">
+        <label>Tenor</label>
+    </div>
+    <div>
+        <select>
+            <option>6M</option>
+        </select>
+    </div>
+    <div class="cls-td">
+        <label>07-Feb-2022 </label>
+    </div>
+
+    <div class="cls-td">
+        <label>Strike / Coupon </label>
+    </div>
+    <div>
+        <input type = "text" value="98.00" class="InputClass strikeDiv"/>%
+    </div>
+    <div>
+        <input type = "text" value="6.00" class="InputClass strikeDiv"/>%
+    </div>
+   
+    <div class="cls-td">
+        <label>KO / KI</label>
+    </div>
+    <div>
+        <input type = "text" value="108.00" class="InputClass strikeDiv"/>%
+    </div>
+    <div>
+        <input type = "text" value="68.00" class="InputClass strikeDiv"/>%
+    </div>
+
+    <!-- <div class="row-merge"></div> -->
+
+</div>
+
+<div class="pricingTile">
+    <div class="pricing-div">
+        <div>
+
+        </div>
+        <div></div>
+        <div>
+            <button class="btn-price">Best Price</button>
+        </div>
+        <div>
+            <button class="btn-price">Book Request</button>
+        </div>
+    </div>   
+
+    <div class="pricing-card">
+        <div>
+
+        </div>
+    </div>
+</div> 

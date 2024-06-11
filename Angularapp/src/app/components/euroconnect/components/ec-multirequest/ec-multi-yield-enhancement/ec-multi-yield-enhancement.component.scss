@@ -1,0 +1,1122 @@
+app-ec-submultirequest-ye { //Anubhav 05-01-2023
+    display: table-row;
+}
+.pageHeader {
+    font-size: 30px !important;
+}
+img {
+    vertical-align: middle;
+    // margin-top: 2px;
+    border-style: none;
+}
+table {
+    border-collapse: separate;
+    border-spacing: 0.2em 0.2em;
+    // background-color: #fff;
+}
+
+tr {
+    border-bottom: 1px solid black !important;
+}
+
+td,
+th {
+    width: max-content;
+    padding: 5px;
+    min-width: 9em;
+    font-family: var(--font-family) !important;
+}
+
+
+/* th {
+  background-color: #808080;
+  color: #fff;
+  font-weight: 500;
+  margin: 5px !important;
+  border-radius: 2px;
+  text-align: center;
+  word-break: break-word;
+} */
+
+th {
+    /* background-color: #a0a0a0;
+  color: #ffffff;
+  font-weight: 500;
+  margin: 5px !important;
+  padding: 0px 0px;
+  border-radius: 2px;*/
+    text-align: center;
+    min-width: 10em;
+    font-size: 13px !important;
+    vertical-align: middle;
+    /* display: flex;
+      align-items: center; */
+    background-color: var(--table-header-bg);
+    //color: var(--heading-label);
+    //font-weight Added by SandipA
+    color: var(--table-th);
+    font-weight: 500;
+    padding: 0.7em 0em;
+    border-bottom: none;
+    // border: 1px solid #fff;
+}
+
+td {
+    margin: 10px !important;
+    border-radius: 2px;
+    text-align: center;
+    padding: 5px 5px;
+    border: 1px solid var(--border) !important;
+    vertical-align: middle;
+    font-size: 13px !important;
+    font-family: var(--font-family) !important;
+}
+
+tr:nth-child(even) {
+    background-color: #f5f5f548;
+}
+
+tr:nth-child(odd) {
+    background-color: #fff;
+}
+
+
+/* tr:hover {
+  background-color: #bbbbbb21;
+} */
+
+select {
+    padding-left: 0px !important;
+    max-width: 19em;
+}
+
+select {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    -webkit-appearance: button;
+    -moz-appearance: none;
+    background-image: none !important;
+    background-position: none;
+    background-size: 0px;
+    background-repeat: initial;
+    /* max-width: ; */
+}
+
+input[type="text"],
+select,
+input[type=date] {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    width: 100%;
+    text-align: left;
+}
+
+input[type="text"],
+input[type=date] {
+    max-width: 8em ;
+    font-family: var(--font-family) !important;
+}
+
+input[type=date] {
+    width: 100%;
+}
+
+:focus {
+    /* box-shadow: 2px 2px 2px 1px rgba(131, 131, 131, 0.6); */
+    box-shadow: 1px 1px 1px 1px rgba(131, 131, 131, 0.6);
+    outline: none !important;
+}
+
+.multiReq {
+    margin-top: 0.4%;
+    min-width: 1700px;
+}
+
+.paymentdateTxt {
+    text-align: center;
+}
+
+td {
+    font-size: 16px !important;
+    font-family: var(--font-family) !important;
+    /* margin: 0px !important;
+  padding: 0px !important; */
+}
+
+.trheadergeight {
+    height: 60px;
+}
+
+button {
+    border: none;
+    outline: none;
+    margin-right: 5px;
+}
+
+//Added By Sharayu.S || 05-04-2022 || Code diff check || Start
+.btnPrice {
+    background: var(--button-bg);
+    color: white;
+    padding: 10px;
+    font-size: 14px !important;
+    border: none;
+    margin-top: 0px !important;
+    width: max-content;
+    font-family: var(--font-family) !important;
+    margin-left: 0px !important;
+}
+//Added By Sharayu.S || 05-04-2022 || Code diff check || End
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    /* position: absolute; */
+    position: fixed;
+    background-color: #f1f1f1;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 6px 8px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {
+    background-color: #ddd;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown:hover .dropbtn:hover {
+    background-color: #1a3863;
+}
+
+.pageTitle {
+    margin-top: 3.7%;
+}
+
+.fontSize {
+    font-size: 16px !important;
+    font-family: var(--font-family) !important;
+}
+
+.SelectorBox {
+    width: auto !important;
+    max-width: 20em;
+    position: initial;
+}
+
+.sharebasket {
+    background: #aaaaaa;
+    background-size: 100% 100%;
+    background-position-x: center;
+    background-position-y: center;
+    background-repeat: no-repeat;
+    height: 2em;
+    min-width: 6.5em;
+    vertical-align: middle;
+    color: white;
+    text-align: center;
+    font-size: 0.8em;
+    border-radius: 0.1em;
+    cursor: pointer;
+    margin: 0.5em 0.1em 0.2em 0.1em;
+    font-weight: 500;
+    font-family: var(--font-family) !important;
+}
+
+.longText {
+    width: 16em !important;
+    max-width: 16em !important;
+}
+
+.deleteCol {
+    width: 55px !important;
+    min-width: 55px !important;
+    max-width: 55px !important;
+    border: none !important;
+    background-color: var(--table-header-bg)!important;
+}
+
+.adTxt {
+    width: 30% !important;
+}
+
+.info {
+    filter: invert(60%) !important;
+    margin: auto auto auto 5px;
+}
+
+.info:hover+.infoNote {
+    display: absolute;
+    right: 7%;
+    color: rgb(68, 68, 68);
+    max-width: 10em;
+}
+
+.contentdiv,
+.contentdiv1 {
+    /* zoom: 100% !important; */
+}
+
+#table1 th {
+    position: relative;
+}
+
+.sticky-col {
+    position: sticky !important;
+    position: -webkit-sticky !important;
+    // border-right: 1px solid var(--border);
+    z-index: 1;
+    top: 0px;
+}
+
+.third-col {
+    left: 190px
+}
+
+.tableContainer {
+    max-height: 100vh !important;
+}
+
+.submultiDivHeader {
+    height: 50px;
+    vertical-align: middle;
+    display: flex;
+    align-items: center;
+    background-color: var(--table-header-bg);
+    //Font-weight added by SandipA
+    //color: var(--heading-label);
+    color: var(--table-th);
+    font-weight: 500;
+    padding: 0em 1em;
+    //border: 1px solid #fff;
+    font-family: var(--font-family) !important;
+    margin: 0.2em 0.2em;
+    border-radius: 2px;
+}
+
+.subDivHeader {
+    margin-left: 0;
+    margin-top: 0;
+}
+.headerSubDiv{
+    margin-top: 0;
+}
+
+.headerSubDiv2{
+    margin-bottom: 0;
+}
+.subDivHeader2{
+    margin-bottom: 0;
+}
+
+.headerDiv {
+    display: grid;
+    grid-template-columns: 115px 1fr;
+}
+
+.subHeaderDiv {
+    display: grid;
+    grid-template-columns: 1fr;
+}
+
+.btn-split {
+    color: #fff;
+    background-color: var(--btn-bg) !important;
+    border-color: var(--btn-bg) !important;
+    height: auto;
+    min-height: 35px;
+    min-width: 1em;
+    vertical-align: middle;
+    text-align: center;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    /* margin: 0.5em; */
+    border: none;
+    /* padding: 10px; */
+    /* padding-left: 15px; */
+    /* padding-right: 15px;*/
+}
+
+.ddl {
+    min-width: 180px !important;
+}
+
+.calendar-wrapper {
+    width: 300px;
+    text-align: center;
+}
+
+.scheduleDiv {
+    display: grid;
+    grid-template-columns: auto 270px;
+}
+
+.schedulePopup {
+    max-width: 100%;
+    padding: 10px;
+    background-color: #ffffff;
+    visibility: visible;
+    transform-origin: top;
+    position: absolute;
+    z-index: 1001;
+    /* border-radius: 1.5em; */
+    /* box-shadow: 0px 2px 5px rgba(136, 136, 136, 0.4); */
+    position: fixed;
+    top: 100px;
+    margin-left: 50%;
+    transform: translateX(-50%);
+}
+
+#schedule {
+    position: fixed;
+    /* display: none; */
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgb(64 64 64 / 53%);
+    z-index: 10;
+    cursor: pointer;
+}
+
+.scheduleInput {
+    // background-color: #fff !important;
+    border-bottom: 1px solid var(--border)bbb78 !important;
+    border-radius: 0 !important;
+    max-width: 240px !important;
+    margin: 20px 0px 0px 20px;
+    text-align: left !important;
+}
+
+.scheduleInput:hover {
+    box-shadow: none !important;
+}
+
+.saveshareDiv {
+    display: grid;
+    grid-template-columns: auto 270px;
+}
+
+.savesharePopup {
+    max-width: 100%;
+    padding: 10px;
+    background-color: var(--containers);//Changed by SandipA || 24-May-2023
+    visibility: visible;
+    transform-origin: top;
+    position: absolute;
+    z-index: 1001;
+    /* border-radius: 1.5em; */
+    /* box-shadow: 0px 2px 5px rgba(136, 136, 136, 0.4); */
+    position: fixed;
+    top: 100px;
+    margin-left: 50%;
+    transform: translateX(-50%);
+    width: 500px;
+    border: 1px solid var(--border);//Added by SandipA || 24-May-2023
+    border-radius: 8px;
+}
+
+#saveShare {
+    position: fixed;
+    /* display: none; */
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgb(64 64 64 / 53%);
+    z-index: 10;
+    cursor: pointer;
+}
+
+.saveShareInput {
+    // background-color: #fff !important;
+    border-bottom: 1px solid var(--border)bbb78 !important;
+    border-radius: 0 !important;
+    text-align: left;
+}
+
+.saveShareInput:hover {
+    box-shadow: none !important;
+}
+
+.userListDiv {
+    display: grid;
+    grid-template-columns: 30px auto 70px;
+    row-gap: 5px;
+}
+
+.SelectorBox>a {
+    line-height: 2em;
+}
+
+.SelectorBox>a>div {
+    padding-left: 0.5em;
+}
+
+.SelectorBox>a>div:hover {
+    background: #5f5f5f;
+    color: white;
+}
+
+.HoverSuggestion {
+    background: #5f5f5f;
+    color: white;
+}
+
+.sub-link {
+    cursor: pointer;
+}
+
+.SelectorBox {
+    height: auto;
+    max-height: 10em;
+    margin-left: 0 !important;
+    padding-left: 2px;
+    overflow-y: scroll;
+    position: absolute;
+    float: left;
+    z-index: 20;
+    background: white;
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    border-bottom: 1px ridge #ccc;
+    cursor: pointer;
+    border: none !important;
+    background-color: rgb(238, 238, 238);
+    padding-top: 0.275em;
+    padding-bottom: 0.275em;
+    margin-top: 0.4em;
+    color: #676765;
+    border-radius: 0.3em;
+    text-align: left;
+    font-size: 1em;
+    width: 100% !important;
+    max-width: 96%;
+    font-family: var(--font-family) !important;
+}
+
+.underlying-container {
+    position: relative;
+}
+
+.UnderlyingSearch {
+    display: flex;
+    align-self: flex-end;
+    /* padding-top: 2em; */
+    position: absolute;
+    width: 100%;
+    color: white;
+    padding-right: 2.2em;
+    margin-right: 0 !important;
+}
+
+
+/* .order-grid-container {
+    display: grid;
+    grid-template-columns: 0.1fr 100% .1fr auto;
+    padding-top: 45px;
+    margin-top: 20px;
+    height: 100%;
+    width: 100%;
+}
+
+
+
+
+
+ .row {
+  padding: 0em 1em 0 0.5em !important;
+} */
+
+
+/****Css added by Nikita B 03/11/2020 ****/
+
+.order-box {
+    // height: 95%;
+    // margin: 20px;
+}
+
+.box-container {
+    border-radius: 8px;
+    opacity: 1;
+    padding: 5px 10px 10px 10px;
+    
+}
+
+.row {
+    padding-top: 1em !important;
+}
+
+.tabs {
+    display: flex;
+}
+
+@media screen and (min-width:300px) and (max-width: 600px) {
+    .main-grid-container {
+        padding-top: 45px;
+        height: 100%;
+        width: 49%;
+        margin-left: 40%;
+        /* grid-template-columns: 10px 175% auto 10px; */
+        grid-template-columns: auto;
+    }
+}
+
+/* Added by Vaibhav Bhavsar 07-02-2022 */
+@media screen and (max-width: 1540px) {
+    .main-grid-container {
+        zoom: 85% !important;
+    }
+}
+
+@media screen and (width: 1536px) {
+    .main-grid-container {
+        zoom: 93% !important;
+    }
+}
+
+@media screen and (max-width: 1520px) {
+    .main-grid-container {
+        zoom: 93% !important;
+    }
+}
+
+@media only screen and (min-width: 850px) {
+    .main-grid-container {
+        display: grid;
+        /* grid-template-columns: 10px 175% auto 10px; */
+        grid-template-columns: auto;
+        /* grid-template-rows: repeat(2,1fr); */
+        padding-top: 45px;
+        height: 100%;
+        /* width: 50%; */
+        /* margin-left: 10%; */
+    }
+
+    .tablephx {
+        overflow-x: auto;
+        margin-bottom: 5px;
+        overflow-y: auto;
+        width: 100%;
+    }
+}
+
+@media screen and (min-width:600px) and (max-width: 850px) {
+    .SaveReqs-Table {
+        max-height: fit-content !important;
+    }
+
+    .main-grid-item {
+        width: 350px;
+        /* overflow-x: auto; */
+        margin: 5px auto;
+    }
+
+    .main-grid-container {
+        padding-top: 45px;
+        height: 100%;
+        margin-left: 10%;
+        /* grid-template-columns: 10px 175% auto 10px; */
+        grid-template-columns: auto;
+
+    }
+
+    .tablephx {
+        overflow-x: auto;
+        margin-bottom: 5px;
+        overflow-y: auto;
+        width: 100%;
+    }
+}
+
+@media screen and (min-width:300px) and (max-width: 600px) {
+    .SaveReqs-Table {
+        max-height: fit-content !important;
+    }
+
+    .main-grid-item {
+        margin-left: 45%;
+    }
+
+    .tablephx {
+        overflow-x: auto;
+        margin-bottom: 5px;
+        overflow-y: auto;
+        width: 100%;
+    }
+}
+
+// .SaveReqsTable>tr>td:first-child {
+//     /* background-color: #0079c10d; */
+//     white-space: nowrap;
+// }
+.SaveReqsTable>tr>td:first-child,.innergrid {
+    /* background-color: #0079c10d; */
+    white-space: nowrap;
+    display: flex;
+    gap: 10px;
+    align-items: baseline;
+    flex-direction: row;
+}
+
+@media only screen and (min-width: 1366px) {
+    .main-grid-container {
+        display: grid;
+        /* grid-template-columns: 10px 175% auto 10px; */
+        grid-template-columns: auto;
+
+        padding-top: 45px;
+        font-size: 13px;
+        font-family: var(--font-family) !important;
+        /* margin-left: 10%; */
+        // width: 50%;
+    }
+
+    
+}
+
+
+/****/
+
+.row {
+    padding: 0em 1em 0 0.5em !important;
+}
+
+.scheduleBtnGrid {
+    display: grid;
+    grid-template-columns: 50% 50%;
+}
+
+.btnDel {
+    background-color: transparent !important;
+}
+
+.btnDel:disabled {
+    /* background-color: #7c98b5 !important; */
+    cursor: not-allowed;
+}
+
+.innergrid {
+    display: flex;
+    gap: 10px;
+}
+
+.multiPayoffList>ul>li {
+    padding-left: 0px !important;
+}
+
+.multiPayoffList ul li .tab.active {
+    color: var(--subMenu-color) !important;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.multiPayoffList a {
+    font-size: 18px;
+    display: inline;
+    font-family: var(--font-family);
+}
+
+.separator {
+    height: 1px;
+    width: 100vw;
+    box-shadow: 5px 5px #ddd;
+}
+
+.active {
+    color: var(--btn-bg-color);
+    /* text-decoration-line: underline;
+      text-underline-offset: 15px; */
+    cursor: pointer;
+}
+
+.disabledtabs {
+    color: #b6b6b6 !important;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+li {
+    font-size: 16px;
+    font-weight: 500;
+    text-decoration: none;
+    display: inline;
+    line-height: 60px;
+    padding-left: 0px;
+    /* padding-right  : 40px; */
+    padding-right: 40px;
+}
+
+.tab {
+    cursor: pointer;
+    text-decoration-line: none;
+}
+
+.ddlitem {
+    padding-right: 10px !important;
+    padding-left: 10px !important;
+}
+
+ .verticalTableGrid {
+    grid-template-columns: 155px auto;
+    display: grid;
+    overflow-x: scroll;
+    /* width: calc(100vw - 300px); */
+    height: auto !important ;
+    overflow: inherit;
+}
+
+.SelectorBox>a {
+    line-height: 2em;
+}
+
+.SelectorBox>a>div {
+    padding-left: 0.5em;
+}
+
+.SelectorBox>a>div:hover {
+    background: var(--dropdown-hover);
+    color: var(--dropdown-hover-text);
+    z-index: 10000;
+}
+.SelectorBox {
+    height: auto;
+    max-height: 10em;
+    margin-left: 0;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    float: left;
+    cursor: pointer;
+    width: 20.5em;
+    border: none !important;
+    background-color: var(--input-bg);
+    padding-top: 0.275em;
+    padding-bottom: 0.275em;
+    margin-top: 0.4em;
+    color: var(--dropdown-text);
+    border-radius: 0.3em;
+    padding-left: 0;
+    padding-right: 0;
+    text-align: left;
+    font-size: 1em;
+    z-index: 10000;
+    box-shadow: 0 2px 5px rgb(136 136 136 / 40%);
+    position: absolute;
+    font-family: var(--font-family) !important;
+
+}
+
+.SelectorBox {
+    width: 320px !important;
+    max-width: 20em;
+    position: absolute;
+}
+
+.portfolio-label{
+    color: var(--heading-label);
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+}
+.sr-only{
+    position:absolute;
+    width:1px;
+    height:1px;
+    padding:0;
+    margin:-1px;
+    overflow:hidden;
+    clip:rect(0,0,0,0);
+    white-space:nowrap;
+    border:0
+}
+.btn-group>.btn-group:not(:first-child)>.btn, .btn-group>.btn:not(:first-child) {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+.btn-group>.btn-group:not(:last-child)>.btn, .btn-group>.btn:not(:last-child):not(.dropdown-toggle) {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+.btn-group>.btn-group:not(:first-child), .btn-group>.btn:not(:first-child) {
+    margin-left: -1px;
+}
+.dropdown-toggle-split {
+    padding-right: .5625rem;
+    padding-left: .5625rem;
+}
+
+.arrow {
+    width: 0; 
+    height: 0; 
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid black;
+    display: inline-block;
+    margin-left: -4px;
+}
+// Added by SandipA for input:active @30-Mar-2023
+textarea:active, textarea:focus, select:active, input:active, select:focus, input:focus{
+    border: solid 1px var(--light-gray) !important;
+    
+  }
+
+input[type="date"]::-webkit-datetime-edit{
+    display: block !important;
+}
+// Added by SandipA @03-July-2023
+::-webkit-scrollbar {
+    width: 0px !important;
+    height: 10px !important;
+  }
+
+  // Inline CSS to class converted by SandipA @10-July-2023 
+  .padding-top1{
+    padding-top: 0px !important;
+  }
+  .max-height{
+    max-height: 100%;
+  }
+  .display{
+    display: block;
+    display: none;
+  }
+  .margin{
+    margin-right: 29px
+  }
+  .margin-width{
+    margin-right: 46px;
+    min-width: 170px
+  }
+  .max-width{
+    max-width: 16em !important
+  }
+  .width{
+    width: 145px;
+  }
+  .align{
+    vertical-align: middle;
+  }
+  .save-portfolio{
+    height: 35px !important; 
+    font-size: 13px !important;
+    width: 20px !important; 
+    margin-bottom: 2px;
+  }
+  .update-portfolio{
+    float: left; 
+    padding-left: 5px;
+    padding-right: 5px;
+    margin-top: 5px;
+  }
+  .padding-top{
+   padding-top: 5px; 
+  }
+  .save-icon{
+    float: left; 
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+  .save-icon-width{
+    width: 21px;
+  }
+  .flex1{
+    filter: invert(50%); 
+    width: 30px;
+  }
+  .flex2{
+    filter: invert(50%);
+    width: 30px;
+    transform: rotate(90deg);
+  }
+  .slide-toggle{
+    vertical-align: sub;
+  }
+  .shared-portfolio{
+    margin-top: 10px
+  }
+  .add-btn1{
+    position: relative; 
+    display: inline-block
+  }
+  .add-btn2{
+    margin: 0px;
+    margin-right: 10px;
+    height: 35px;
+    width: 80px;
+    min-width: 80px;
+  }
+  .clone-icon{
+    filter: invert(50%);
+    width: 23px;
+    margin: 0px 8px 0px 0px;
+  }
+  .cursor{
+    cursor: pointer  
+  }
+  .addNew-row{
+    filter: invert(50%);
+    width: 23px;
+    margin: 0px 8px 0px 0px;
+  }
+  .new-btn{
+    margin: 0px; 
+    margin-right: 10px; 
+    height: 35px
+  }
+  .new-btn1{
+    width: 80px;
+    min-width: 80px;
+    height: 35px !important;
+    font-size: 13px;
+  }
+  .priceAll-btn{
+    margin-left: -11px;
+  }
+  .clearPrice-btn{
+    margin-left: 375px;
+  }
+  .reset-btn{
+    margin-left: -13px;
+  }
+  .error-msg{
+    color: #ff4545 !important;
+    white-space: pre-line
+  }
+  .success-msg{
+    font-size: 13px;
+    color: var(--green);
+  }
+  .result-horz{
+    min-width: 100px !important;
+  }
+  .vertical{
+    max-height: 650px;
+    overflow: auto;
+    width: 100%;
+  }
+  .vertical-headers{
+    width: 250px;
+  }
+  .vert-result{
+    min-height: 150px; 
+  }
+  .vert-underlying{
+    height: 150px
+  }
+  .vert-height{
+    height: auto;
+  }
+  .vert-submulti{
+    display: flex;
+    margin-left:95px;
+  }
+  .vert-submultiYE{
+    text-align: center;
+    max-width: 250px;
+    min-width: 250px;
+  }
+  .date-time{
+    margin-left: 10px;
+    font-size: 20px;
+    font-weight: 500;
+  }
+  .hideSchedule-Popup{
+    font-weight: 700;
+    font-size:medium;
+    float:right;
+  }
+  .schedule-Input1{
+    max-width: 240px !important;
+    margin: 20px 0px 0px 20px !important;
+  }
+  .schedule-Input2{
+    border: none;
+    width: 100%;
+    color: #676765;
+    font-size: 14px !important;
+  }
+  .error-msg1{
+    color: #ff4545 !important;
+    font-size: 14px !important;
+    white-space: pre-line;
+  }
+  .save-share{
+    text-align:center;
+    margin-bottom: 20px;
+  }
+  .share-label{
+    margin-left: 10px;
+    font-size: 14px;
+    font-weight: 500
+  }
+  .shareWith-user{
+    text-align: left;
+    max-width: 100% !important;
+  }
+  .user-name{
+    margin-left: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--links);
+  }
+  .user-access{
+    width:max-content !important;
+  }
+  .port-label{
+    text-align:center;
+    margin-bottom: 15px !important;
+  }
+  .port-owner{
+    margin-left: 10px;
+    font-size: 12px;
+    font-weight: 500 
+  }
+  .portOwner-label{
+    margin-left: 10px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--links);
+  }
+  .port-shareDiv{
+    text-align:center;
+    margin-bottom: 5px;
+  }
+  .port-cancel{
+    margin-right: 10px !important;
+  }
+
+#table1{
+    width: auto;
+}
+.colminwidth{
+    min-width: fit-content;
+}
+
+// Bulk Pricer (YE) - Export to excel 
+.exportExcel{
+    cursor: pointer;vertical-align: middle;
+}

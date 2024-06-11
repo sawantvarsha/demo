@@ -1,0 +1,28 @@
+:host {
+    width: 100%;
+}
+
+.UnderlyingSearch {
+    display: flex;
+    align-self: flex-end;
+    position: absolute;
+    width: 99% !important;
+    margin-left: 0.5em;
+    padding-right: 2.2em;
+    margin-right: 0 !important;
+}
+
+.SelectorBox {
+    height: auto;
+    max-height: 10em;
+    overflow-y: scroll;
+    position: absolute;
+    float: right;
+    z-index: 10000;
+    border: 0.05em solid var(--gray);
+    cursor: pointer;
+    width: 50%;
+    margin-left: -4px;
+    background-color: var(--input-bg);
+    top: -3px;
+}

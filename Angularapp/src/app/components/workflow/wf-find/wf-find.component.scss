@@ -1,0 +1,52 @@
+.popup {
+    box-shadow: var(--box-shadow);
+    background: var(--containers);
+    padding: auto;
+    z-index: 10;
+    position: absolute;
+    box-shadow: 0 0 10px 1px var(--gray);
+    width: 450px;
+    height: 340px;
+    overflow-y: scroll;
+
+}
+
+.center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+}
+
+.popupcontent {
+    margin: 12px;
+}
+
+.top-bar {
+    display: grid;
+    grid-gap: 10px;
+    gap: 10px;
+    margin-bottom: 25px;
+    grid-template-columns: 3fr 1fr 35px 45px 35px;
+    justify-items: start;
+    align-items: center;
+}
+
+.inline{
+    display: inline-flex;
+    gap: 10px;
+    align-items: center;
+}
+
+label{
+    white-space: nowrap;
+}
+
+input[type="text"]
+{
+  width: 220px;
+}
+
+.link{
+    cursor: pointer;
+}

@@ -1,0 +1,143 @@
+<div class="page-title">Position Blotter</div>
+<div class="main-container">
+
+  <div id="wrapper form" Class="">
+    <div class="filters">
+      <div class="filterrow">
+        <div class="col-lg-3 col-md-12 col-sm-12 row resclass" style="margin: auto 0;">
+          <div class="col-2" style="margin: auto 0; color:#255caf;">
+            {{filterLen}}/{{workflowLen}}
+          </div>
+          <div class="col-9 ccyddl">
+            <select style="width: 93%;padding: 0;padding-left: 1em;margin-left: 0.6em;" (change)="filterdata()"
+              [(ngModel)]="ccy">
+              <option value="all"> All </option>
+              <option value="{{c.PairCode}}" *ngFor="let c of ccyList">
+                {{c.PairCode}}
+              </option>
+            </select>
+           
+          </div>
+
+        </div>
+
+        
+
+        <div class="resclass pdfdiv" style="margin:auto 0;padding-left: 0px;">
+          <div class="col-6 download" (click)="captureScreen()">
+            <img src="{{assetURL}}/pdf.png" alt="" class="imgclass">
+            <label style="margin-left: 0.5em;cursor: pointer;"> PDF </label>
+          </div>
+          <div class="col-6 download" (click)="exportexcel() " style="margin-left: 10px;">
+            <img src="{{assetURL}}/pdf.png" alt="" class="imgclass">
+            <label style="margin-left: 0.5em;cursor: pointer;"> CSV </label>
+          </div>
+
+        </div>
+        <div class="col-lg-1 col-md-3 col-sm-4 row resclass" style="margin: auto 0;padding-left: 0px;">
+          <div class="col-12" style="margin-left:10px;padding-left: 0px;">
+            <button class="btn_refresh" (click)="callWorkflow()"> Refresh </button>
+          </div>
+        </div>
+        <div class="test row" style="margin-left: 2%; margin-bottom: 1%; color: #8876e8;">
+          <span>{{validationMsg}}</span>
+        </div>
+
+      </div>
+
+    </div>
+    <div class="filters">
+      <div class="workflow">
+        <div id='contentToConvert1' class="table-responsive" style="font-size: 0.9em;">
+          <table class="table table-striped" style="width: 100%;" id="excel-table">
+            <tr class="header">
+              <th scope="col"> Ccy Pair </th>
+              <th scope="col"> Spot Date </th>
+              <th scope="col"> Net Position </th>
+              <th scope="col"> USD Eqv.</th>
+              <th scope="col"> Market Rate </th>
+              <th scope="col"> Net Bought </th>
+              <th scope="col"> WAvg Buy Rate </th>
+              <th scope="col"> Net Sold </th>
+              <th scope="col"> WAvg Sell Rate </th>
+              <th scope="col"> Buy MTM</th>
+              <th scope="col"> Sell MTM</th>
+              <th scope="col"> Total P/L</th>
+            </tr>
+
+            <tr *ngFor="let record of filteredWorflowRecords">
+              <td style="text-align: center;">{{record.Pair}}</td>
+              <td style="text-align: center;">{{this.setfiniqdateformat(record.Spot_Date)}}</td>
+              <td style="text-align: right;" [ngClass]="{'netsold_css':convertparseFloat(record.NetPosition) < 0}">
+                <span *ngIf="convertparseFloat(record.NetPosition) < 0">(</span>
+                <span>{{this.commonfunction.FormatNumberWithoutEventForAmount(absValue(record.NetPosition) , record.Ccy1AmountDecimal)}}</span>
+                <span *ngIf="convertparseFloat(record.NetPosition) < 0">)</span>
+              </td>
+              <td style="text-align: right;" [ngClass]="{'netsold_css':convertparseFloat(record.USDEqvPosition) < 0}">
+                <span *ngIf="convertparseFloat(record.USDEqvPosition) < 0">(</span>
+                <span>{{this.commonfunction.FormatNumberwithFloat(absValue(record.USDEqvPosition)| number:'1.2-2')}}</span>
+                <span *ngIf="convertparseFloat(record.USDEqvPosition) < 0">)</span>
+              </td>
+              <td style="text-align: right;">
+                {{this.commonfunction.FormatNumberWithoutEventForRate(record.CurrentMKTRate,record.RateDecimal) }}</td>
+              <td style="text-align: right;">
+                {{this.commonfunction.FormatNumberWithoutEventForAmount(record.NetBought ,record.Ccy1AmountDecimal)}}
+              </td>
+              <td style="text-align: right;">
+                {{ this.commonfunction.FormatNumberWithoutEventForRate(record.WAvgBuyRate,record.RateDecimal)}}
+              </td>
+              <td style="text-align: right;" [ngClass]="{'netsold_css':convertparseFloat(record.NetSold) < 0}">
+                <span *ngIf="convertparseFloat(record.NetSold) < 0">(</span>
+                <span>{{this.commonfunction.FormatNumberWithoutEventForAmount(absValue(record.NetSold),record.Ccy2AmountDecimal)}}</span>
+                <span *ngIf="convertparseFloat(record.NetSold) < 0">)</span>
+              </td>
+
+              <td style="text-align: right;">
+                {{ this.commonfunction.FormatNumberWithoutEventForRate(record.WAvgSellRate,record.RateDecimal)}}</td>
+              <td style="text-align: right;" [ngClass]="{'netsold_css':convertparseFloat(record.Buy_MTM_PNL) < 0}">
+                <span *ngIf="convertparseFloat(record.Buy_MTM_PNL) < 0">(</span>
+                <span>{{this.commonfunction.FormatNumberwithFloat(absValue(record.Buy_MTM_PNL)| number:'1.2-2')}}</span>
+                <span *ngIf="convertparseFloat(record.Buy_MTM_PNL) < 0">)</span>
+              </td>
+              <td style="text-align: right;" [ngClass]="{'netsold_css':convertparseFloat(record.Sell_MTM_PNL) < 0}">
+                <span *ngIf="convertparseFloat(record.Sell_MTM_PNL) < 0">(</span>
+                <span>{{this.commonfunction.FormatNumberwithFloat(absValue(record.Sell_MTM_PNL)| number:'1.2-2')}}</span>
+                <span *ngIf="convertparseFloat(record.Sell_MTM_PNL) < 0">)</span>
+              </td>
+              <td style="text-align: right;" [ngClass]="{'netsold_css':convertparseFloat(record.TotalPNL) < 0}">
+                <span *ngIf="convertparseFloat(record.TotalPNL) < 0">(</span>
+                <span>{{this.commonfunction.FormatNumberwithFloat(absValue(record.TotalPNL)| number:'1.2-2')}}</span>
+                <span *ngIf="convertparseFloat(record.TotalPNL) < 0">)</span>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+
+      <div *ngIf="loading">
+        <img src="{{assetURL}}/loading_dots.gif" alt="" style="height: 2em;margin-left: 1em;">
+      </div>
+    </div>
+  </div>
+  <!-- <div id="lightbox" *ngIf="CancelRequest" Class="show" >
+      
+            <div id="lightbox_area" class="col-12">
+              <span class="row header">Cancel Trade</span>
+              <div style="color: white;margin-top: -2.1em;float: right;" (click)="CancelRequest = false">X</div>
+              <div class="line"></div>
+              <div class="row" style="padding-top: 3%;">
+                <div class="col-12" style="text-align: center;">
+                <span>Do you want to cancel trade?</span>
+            </div>
+            </div>
+              <div class="row" style="margin:5%;padding-bottom: 2%;">
+              <button class="col-3 select" style="margin-left: 20%;background-color: white;" (click)= "approveCancel=true;approveRejectCancel();">Yes</button>
+              <div class="col-1"></div>
+              <button class="col-3 select" style="background-color: white;" (click)= "approveCancel=false;approveRejectCancel();">No</button>
+              </div>
+              
+            </div>
+        
+    </div> -->
+
+</div>

@@ -1,0 +1,73 @@
+<div *ngIf="loader || loaderForWhatIF" class="pageOverlay">
+  <div class="loader-center">
+    <div class="multi-ripple">
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+</div>
+<div class="parent">
+    <div class="div1">
+        <div style='background-color: var(--tile-1)' class="tile" >
+            <div class="Card">
+                <div class="CardIcon"><img class="summaryIcon" src="{{asseturl}}TotalNotional.png"></div>
+                <div class="CardTitle">Nominal(Sum)</div>
+            </div>
+            <div class="briefInfo" *ngIf="notionalCount">{{notionalCount}}&nbsp;EUR</div>
+            <div class="briefInfo" *ngIf="!notionalCount">No data</div>
+        </div>
+    </div>
+    <div class="div2">
+        <div style='background-color: var(--tile-2)' class="tile" >
+            <div class="Card">
+                <div class="CardIcon"><img class="summaryIcon" src="{{asseturl}}TotalNotional.png"></div>
+                <div class="CardTitle">Total Indicative Valuation</div>
+            </div>
+            <div class="briefInfo" *ngIf="notionalCount">{{MTMCount}}&nbsp;EUR<span style="font-size:1vw"> <br>( {{changePercent}}&nbsp;%) </span> </div>
+            <div class="briefInfo" *ngIf="!notionalCount">No data</div>
+            
+        </div>
+    </div>
+    <div class="div3">
+        <div class="tile" style='background-color: var(--tile-3)' >
+            <div class="Card">
+                <div class="CardIcon"><img class="summaryIcon" src="{{asseturl}}TradeCount.png"></div>
+                <div class="CardTitle">Trade Count</div>
+            </div>
+            <div class="briefInfo" *ngIf="tradeCount">{{tradeCount}}</div>
+            <div class="briefInfo" *ngIf="!tradeCount">No data</div>
+        </div>
+    </div>
+    <div class="div4">
+        <div class="tile" style='background-color: var(--tile-4)' >
+            <div class="Card">
+                <div class="CardIcon"><img class="summaryIcon" src="{{asseturl}}Time.png"></div>
+                <div class="CardTitle">Time To Maturity(Avg)</div>
+            </div>
+            <div class="briefInfo" *ngIf="timeToMaturityCnt">
+                <div class="NotionalAmt">{{timeToMaturityCnt}}&nbsp;Months</div>
+            </div>
+            <div class="briefInfo" *ngIf="!timeToMaturityCnt">No data</div>
+        </div>
+    </div>
+    <div class="div5">
+        <div *ngIf="copied"><span class="copied">External copied to clipboard<span>
+                </span></span></div>
+        <div class="chart-container">
+            <canvas id="simulation-chart" #chartSimulation>{{chart}}</canvas>
+        </div>
+        <div class="pagination-bar">
+            <ul class="pagination" *ngIf='totalPages'>
+                <li (click)="changePage(1)" [class.disabled]="currentPage === 1">First</li>
+                <li (click)="changePage(currentPage - 1)" [class.disabled]="currentPage === 1">Prev</li>
+                <li (click)="changePageRange('prev')" [class.disabled]="CurrentStartPage -20 < 0">...</li>
+                <li *ngFor="let page of pages" (click)="changePage(page)" [class.active]="currentPage === page">{{ page
+                    }}</li>
+                <li (click)="changePageRange('next')" [class.disabled]="CurrentEndPAge + 20 > totalPages ">...</li>
+                <li (click)="changePage(currentPage + 1)" [class.disabled]="currentPage === totalPages">Next</li>
+                <li (click)="changePage(totalPages)" [class.disabled]="currentPage === totalPages">Last</li>
+            </ul>
+
+        </div>
+    </div>
+</div>

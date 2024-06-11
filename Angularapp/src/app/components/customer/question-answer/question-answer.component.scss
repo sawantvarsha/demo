@@ -1,0 +1,84 @@
+.V-card {
+  // height: 100vh;
+  .V-card-header {
+    color: var(--label);
+    // line-height: 80px;
+    height: 45px;
+    font-size: 22px;
+    text-align: start;
+    padding: 10px 15px;
+  }
+
+  .V-card-content {
+    box-shadow: var(--box-shadow-thin);
+    transition: 0.3s;
+    // margin-left: 40px; // 15-Mar-2021 || Viplav T. || CHange 20px to 40px
+    padding: 10px 20px;
+    margin-top: var(--gap);
+    background: var(--containers);
+    border-radius: 4px;
+    margin-right: 35px;
+
+    .V-rowcontent {
+      display: grid;
+      grid-template-columns: 1fr;
+      padding: 0.5% 0%;
+
+      .content {
+        width: 100%;
+      }
+    }
+  }
+
+  .Summary-card {
+    box-shadow: var(--box-shadow-thin);
+    transition: 0.3s;
+    padding: 20px;
+    background: var(--containers);
+    margin-left: 20px !important;
+    margin-bottom: 24px;
+    border-radius: 4px;
+    margin: 0px 2px;
+
+    .Summary-card-header {
+      color: var(--label);
+      height: 50px;
+      font-size: 22px;
+      text-align: start;
+      padding: 0% 1%;
+      font-weight: normal;
+      margin-top: 1.5%;
+    }
+
+    .Summary-card-content {
+      .Summary-rowcontent {
+        display: grid;
+        grid-template-columns: 1fr 1.5fr;
+        padding: 0.5% 1%;
+        .content {
+          width: 100%;
+        }
+      }
+    }
+  }
+}
+
+.V-card-content:hover {
+  box-shadow: var(--box-shadow-hovered) !important;
+}
+
+.question {
+  color: var(--off-color);
+}
+.lbl {
+  font-size: 15px;
+  line-height: 35px;
+  text-align: initial;
+}
+.V-card-sectionHeader {
+  font-size: 20px;
+}
+
+.Error-msg {
+  padding-left: 40px;
+}

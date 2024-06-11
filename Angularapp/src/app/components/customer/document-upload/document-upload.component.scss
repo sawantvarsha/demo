@@ -1,0 +1,41 @@
+.filter-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    row-gap: 10px;
+    column-gap: 20px;
+    padding: 20px;
+  
+    letter-spacing: 0.72px;
+    border-radius: 10px;
+    margin-left: 5px;
+    width: 100%;
+    background-color: white;
+  
+    padding-bottom: 15px;
+    box-shadow: var(--box-shadow-thin);
+    transition: 0.3s;
+    background: var(--containers);
+    margin-left: 20px !important;
+    margin-bottom: 24px;
+    border-radius: 4px;
+    margin: 0px 2px;
+  
+    .filter-row {
+      display: grid;
+      row-gap: 10px;
+      grid-template-columns: 40% 60% ;
+    }
+  
+   
+  }
+
+  .custom-file-input::-webkit-file-upload-button {
+    background-color: var(--btn-bg);
+    border: var(--btn-bg);
+    color: var(--btn-text);
+    border-radius: 5px;
+    text-align: center;
+    height: 25px;
+    width: 100px;
+    
+  }

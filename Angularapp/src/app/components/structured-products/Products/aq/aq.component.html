@@ -1,0 +1,86 @@
+<div class="Card-container" *ngIf="ViewMode === 'Card'">
+    <div class="Card-input-parameters">
+        <label class="disabledlbl">Underlying</label>
+        <label *ngIf="aqModel.SolveFor === 'UPFRONT'" class="disabledlbl">Strike(%)</label>
+        <label *ngIf="aqModel.SolveFor === 'Strike'" class="disabledlbl">Upfront(%)</label>
+        <label class="disabledlbl">KO(%)
+
+        </label>
+        <label class="disabledlbl">Leverage</label>
+
+        <app-underlying [ClassModel]='aqModel' (UnderlyingChanged)="fnUnderlyingchanged($event)"></app-underlying>
+
+        <!-- <input title="Strike (%)" type="text" class="right" [(ngModel)]="aqModel.Strike" onCopy="return false"
+            onDrag="return false" onDrop="return false" onPaste="return false" /> -->
+
+        <input *ngIf="aqModel.SolveFor === 'UPFRONT'" title="Strike (%)" type="text" class="right" (keypress)="this.EQC_cfs.NotionalValidate($event);" (change)="ResetAllFields();EQC_cfs.fnStrikeValidation($event);" [(ngModel)]="aqModel.Strike" />
+
+        <input *ngIf="aqModel.SolveFor === 'Strike'" title="Upfront (%)" type="text" class="right" [(ngModel)]="aqModel.Upfront" maxlength="6" (blur)="EQC_cfs.FormatNumber($event); EQC_cfs.setDecimal($event); priceValidation(this.upfront,'Upfront (%)');" (keypress)="EQC_cfs.InputNumber($event)"  (change)="this.ResetAllFields();" />
+
+        <input type="text" class="right" [(ngModel)]="aqModel.KO" maxlength="6" (change)="ChangeKO();" (blur)="EQC_cfs.FormatNumber($event); EQC_cfs.setDecimal($event);ChangeKO($event);" />
+
+        <input type="number" class="right" [(ngModel)]="aqModel.Leverage" maxlength="1" (change)="ChangeKO();"/>
+
+        <label class="disabledlbl">Guar. Period</label>
+        <label class="disabledlbl">Tenor</label>
+        <label class="disabledlbl">Shares</label>
+        <label class="disabledlbl">Notional</label>
+
+        <select [(ngModel)]="aqModel.SelectedGuaranteePeriod" (change)="this.ResetAllFields();">
+            <option value="0">0</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3" *ngIf="aqModel.SelectedFrequency =='Monthly'">3</option>
+            <option value="4" *ngIf="aqModel.SelectedFrequency =='BiWeekly'">4</option>
+            <option value="6" *ngIf="aqModel.SelectedFrequency =='BiWeekly'">6</option>
+        </select>
+
+        <div class="column-2">
+            <input #focusable type="text" [(ngModel)]="aqModel.Tenor" minlength="1" maxlength="3" placeholder=""
+                value={{aqModel.Tenor}} (keydown.enter)="changeTenor();" (keypress)="EQC_cfs.TenorValidation($event)"
+                (change)="changeTenor();"/>
+
+            <select style="padding-left: 7px !important;" [(ngModel)]="aqModel.SelectedTenorType"
+                (change)="this.ResetAllFields();">
+                <option value="MONTH">Month</option>
+                <option value="YEAR">Year</option>
+            </select>
+        </div>
+
+        <div>
+            <input type="number" class="right" [(ngModel)]="aqModel.DailyNoOfShares" maxlength="10"
+                (blur)="EQC_cfs.FormatNumber($event)" (keypress)="EQC_cfs.InputNumber($event)"
+                (change)="this.changeDailyNoOfShare()" />
+        </div>
+
+        <div>
+            <input type="text" type="text" class="right" value="{{ aqModel.Notional | number:'1.2-2'}}"
+                (focus)="EQC_cfs.UnformatNumber($event)" (blur)="EQC_cfs.FormatNumber($event)"
+                (change)="EQC_cfs.NotionalChange($event);" (keypress)="EQC_cfs.NotionalValidate($event)" disabled />
+        </div>
+
+        <label class="disabledlbl">Solve for</label>
+        <label></label>
+        <label></label>
+        <label></label>
+
+        <select style="padding-left: 7px !important;" [(ngModel)]="aqModel.SolveFor" (change)="setSolveFor()">
+            <option value="Strike">Strike (%)</option>
+            <option value="UPFRONT">Upfront (%)</option>
+        </select>
+
+
+        <div class="Card-buttons">
+            <button style="width: auto;" class="button" (click)="fnValidations();" [disabled]="disabledPrembtn || loadflag && !BestPrice">
+                <div title="Price All (F8)">Price All</div>
+            </button>
+
+        </div>
+    </div>
+
+    <div class="Card-pricing">
+        <app-eqc-pricing style="width: 100%;" [startLoading]="LoadingPrices" [ViewMode]="'Card'" [ClassModel]='aqModel'>
+        </app-eqc-pricing>
+    </div>
+
+</div>

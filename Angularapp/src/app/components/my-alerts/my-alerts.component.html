@@ -1,0 +1,146 @@
+<div class="my-alerts-component">
+  <div class="page-title">
+    <app-svg-icons
+      class="back-button"
+      [icon]="'back-button'"
+      [width]="'40'"
+      [height]="'40'"
+      [fill]="'var(--headers)'"
+      (click)="commonApi.back()"
+    ></app-svg-icons>
+    <div>My Alerts</div>
+    <div>
+      <app-svg-icons
+        (click)="refresh()"
+        [icon]="'refresh'"
+        [width]="'26'"
+        [height]="'26'"
+      >
+      </app-svg-icons>
+    </div>
+  </div>
+  <div class="my-alerts-grid">
+    <div class="my-alerts-table">
+      <table>
+        <thead>
+          <tr class="alert-header-grid">
+            <th>Received At</th>
+            <th>Customer</th>
+            <th>Subject</th>
+            <!-- <th>Alert Type</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Frequency</th> -->
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let alerts of myAlerts" class="alert-row-grid">
+            <td>
+              <div class="align-right">
+                {{ alerts.CAE_Created_At | date: "dd-MMM-yyy hh:mm:ss a" }}
+              </div>
+            </td>
+            <td>
+              <div class="align-center">
+                {{ homeApi.CustomerName || "-" }}
+              </div>
+            </td>
+            <td>
+              <div class="align-left wrap-text">
+                {{ alerts.CAE_Subject || "-" }}
+              </div>
+            </td>
+            <!-- <td>
+                            <div class="align-center">
+                                {{alerts.CAE_Alert_Type|| '-'}}
+                            </div>
+                        </td>
+                        <td>
+                            <div class="align-center">
+                                {{alerts.CAE_Start_Datetime | date:'dd-MMM-yyy'}}
+                            </div>
+                        </td>
+                        <td>
+                            <div class="align-center">
+                                {{alerts.CAE_End_Datetime | date:'dd-MMM-yyy'}}
+                            </div>
+                        </td>
+                        <td>
+                            <div class="align-center">
+                                {{alerts.CAE_Frequency|| '-'}}
+                            </div>
+                        </td> -->
+            <td>
+              <div class="alert-actions">
+                <app-svg-icons
+                  class="pdf"
+                  [icon]="'pdf'"
+                  [width]="'28'"
+                  [height]="'28'"
+                  [fill]="'var(--headers)'"
+                  (click)="showPDF(alerts)"
+                ></app-svg-icons>
+                <app-svg-icons
+                  class="view-details"
+                  [icon]="'view-details'"
+                  [width]="'28'"
+                  [height]="'28'"
+                  [fill]="'var(--headers)'"
+                  (click)="showDescriptionFn(alerts)"
+                ></app-svg-icons>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- View Alert -->
+
+<div class="overlay" *ngIf="showDescription">
+  <div class="showAlertPopup">
+    <div class="close-icon-alert">
+      <div class="close-icon" (click)="closeAlertsPopup()">
+        <app-svg-icons
+          [icon]="'cancel-icon'"
+          [width]="'18'"
+          [height]="'18'"
+        ></app-svg-icons>
+      </div>
+    </div>
+
+    <div class="contact-div box-container">
+      <label
+        class="left"
+        style="font-size: 20px; color: var(--off-color); margin-bottom: 5px"
+        >View Details</label
+      >
+
+      <div class="left form-element">
+        <label style="color: var(--heading-label)">Subject</label>
+        <input
+          type="text"
+          class="text-long"
+          placeholder="Enter subject"
+          [(ngModel)]="subject"
+          disabled
+        />
+      </div>
+      <div class="left form-element">
+        <label style="color: var(--heading-label)">Body</label>
+        <textarea
+          id="message"
+          name="message"
+          class="text-long"
+          rows="15"
+          placeholder="Type your message"
+          [(ngModel)]="emailBody"
+          disabled
+        ></textarea>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,274 @@
+$assetURL: "../../../../../";
+
+.overlay {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: var(--overlay-bg);
+    transition: opacity 500ms;
+    visibility: visible;
+    opacity: 1;
+    z-index: 10000; // Added by AdilP 
+}
+
+.tblWidgetWrapper {
+    display: flex;
+    flex-direction: column;
+    width: 75%;
+    height: 75%;
+    padding: 1%;
+    background-color: var(--containers);
+    box-shadow: 0 0px 50px var(--table-row-hovered);
+    border-radius: 10px;
+    overflow: auto;
+}
+
+.widgetTitle {
+    font-size: 26px;
+    color: var(--off-color);
+    border-bottom: 2px solid var(--icon-active);
+    height: max-content;
+}
+
+.widgetHeader {
+    display: flex;
+    justify-content: space-between;
+    height: 10%;
+}
+
+.modal-close {
+  background-image: url($assetURL + "assets/close.png") ;
+    background-size: contain;
+    width: 18px;
+    height: 18px;
+    background-repeat: no-repeat;
+    margin: 15px 0px 15px 15px;
+    opacity: 0.7;
+    cursor: pointer;
+}
+
+.modal-close:hover {
+    opacity: 1;
+}
+
+.clickable {
+    cursor: pointer;
+    text-decoration: underline !important;
+    color: var(--links);
+    display: flex;
+    justify-content: center;
+}
+
+.tableWidget, .attachModal, .widgetLabels {
+    padding: 0 20px;
+}
+.tableWidget{
+    // overflow: hidden;
+}
+
+.labelRow {
+    display: flex;
+    width: 100%;
+    padding-bottom: 10px;
+}
+
+.labelRow .col1{
+   // width: 10%;
+    display: flex;
+    align-items: center; 
+}
+
+.labelRow .col2{
+   // width: 86%; 
+}
+
+.attachRow{
+    display: flex;
+    width: 100%;
+    padding-bottom: 10px;
+    gap: 100px;
+}
+
+.attachRow div {
+    display: flex;
+    width: 30%;
+    gap: 2%;
+}
+
+.attachRow .col1{
+    width: 45%;
+    display: flex;
+    align-items: center; 
+}
+
+.attachRow .col2{
+    width: 53%; 
+}
+
+.attachRow .col3{
+    width: 35%;
+    display: flex;
+    align-items: center;  
+}
+
+.attachRow .col4{
+    width: 45%; 
+}
+
+.attachRow div.col2 {
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+}
+
+.tableWidget div {
+    height: 100%;
+    overflow: auto;
+    
+}
+
+.tableWidget div::-webkit-scrollbar-corner {
+    background-color: transparent;
+}
+
+.tableWidget div > table thead th {
+    position: sticky;
+    position: -webkit-sticky;
+    top: 0;
+    z-index: 1;
+    background-color: var(--table-header-bg);
+    color: var(--heading-label);
+    border: 1px solid var(--section-bottom) !important;
+    box-shadow: inset 0px 1px 0px 0px var(--section-bottom) !important;
+    border-top: 1px !important;
+}
+
+.tableWidget div > table > tbody > tr {
+    border-bottom: solid 1px var(--input-bg);
+}
+
+.tableWidget div > table > tbody td {
+    min-width: 200px;
+    max-width: 700px;
+    white-space: break-spaces;
+    border: 1px solid var(--section-bottom);
+}
+
+.centerAlign {
+    text-align: center !important;
+}
+
+.leftAlign {
+    text-align: left !important;
+}
+
+.rightAlign {
+    text-align: right !important;
+}
+.errorMsg {
+    color: #ff5252;
+    font-weight: 400;
+}
+.successMsg {
+    color: #0cb614a6;
+    font-weight: 400;
+}
+
+.pageload-overlay {
+    
+    background-color: var(--overlay-bg);
+    // background-color: #4f4646a1;;
+
+    transition: opacity 500ms;
+    visibility: visible;
+    opacity: 1;
+    z-index: 100;
+    //height: 0px !important;
+}
+//Added by AdilP for sucess message popups || 02-06-2023 || Start ||
+.button:disabled{
+    background: var(--btn-disabled);
+    color: var(--bt-disabled-text)
+}
+
+.tableWidget .pageload-overlay{
+    overflow: unset;
+}
+.success-overlay {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--overlay-bg);
+    z-index: 999;
+}
+
+.success-grid {
+    width: 400px;
+    height: auto;
+    padding: 20px;
+    grid-template-rows: 20px auto auto auto auto;
+    gap: 10px;
+    background-color: var(--containers);
+    border-radius: 10px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -65%);
+    position: fixed;
+    display: grid;
+}
+.close-success-modal {
+    display: flex;
+    width: 100%;
+    flex-direction: row-reverse;
+}
+.success-div {
+    text-align: center;
+}
+
+.success-icon {
+    //background-image: url(/assets/checked.png);
+    background-image: url($assetURL + "assets/checked.png") ;
+    background-size: contain;
+    width: 60px;
+    height: 60px;
+    background-repeat: no-repeat;
+    margin: auto;
+}
+
+.success-message-bold {
+    font-size: 20px;
+    text-align: center;
+    font-weight: 600;
+    margin: 0;
+}
+
+.success-button {
+    background-color: #22d1aa;
+    width: 80%;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    height: 40px;
+}
+
+.warning-button {
+    background-color: #fea000;
+    width: 80%;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    height: 40px;
+}
+.success-button:hover {
+    background-color: #45dab9;
+}
+.warning-button:hover {
+    background-color: #fea000;
+}
+
+
+//Added by AdilP for sucess message popups || 02-06-2023 || End ||

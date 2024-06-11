@@ -1,0 +1,48 @@
+<div class="component">
+    <!-- <div class="filter">
+        <label class="matLabelText">Select Month</label>
+        <select [(ngModel)]="month" (change)="monthchanges($event) ">
+            <option id='dropDownDiv' *ngFor="let month of months; " [value]="month.value">
+              {{month.value}}
+          </option>
+            </select>
+
+    </div> -->
+    <div class="main-container">
+        <div *ngFor="let event of eventData;">
+            <div class=" content-container ">
+                <div style="text-align: right;">
+                    <!-- <div [ngClass]="(day[0] === today) ? 'today' : 'everyday'"> {{day[0]}}</div>
+                    <span> {{day[1]}}, </span>-->
+                    <span class="everyday"> {{ event.Day  }} </span>
+                    <span>{{event.RS_Schedule_Date}}</span>
+                </div>
+                <div>
+                    <!-- <div class="event " *ngFor="let event of day[3];">
+                        <span>{{event}}</span>
+                    </div> -->
+                    <span>{{event.Event_Name}}</span>
+                </div>
+                <!-- <div *ngIf="day[3].length === 0">
+                    <div class="event ">
+                        <span>-</span>
+                    </div>
+                </div> -->
+                <div>
+                    <!-- <div class="details " *ngFor="let product of day[4];">
+                        <span>{{product}}</span>
+                    </div> -->
+                    <span>{{event.Product_Name}}</span>
+                </div>
+                <!-- <div *ngIf="day[4].length === 0">
+                    <div class="details ">
+                        <span>-</span>
+                    </div>
+                </div> -->
+            </div>
+            <div class="line">
+            </div>
+
+        </div>
+
+    </div>

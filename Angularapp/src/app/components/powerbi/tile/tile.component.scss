@@ -1,0 +1,60 @@
+// .Card{
+//     min-height: 220px;
+//     height: 100%;
+//     background-color: #adadad;
+//     border-radius: 10px;
+//     .card-header{
+//         font-size: 17px;
+//         color: white;
+//         font-family: var(--font-primary);
+//         padding: 5px 0px 0px 5px;
+//     }
+// }
+
+.card {
+    background-image: url(https://gatewaymarkets.finiq-connect.com/assets/App_Resources/PersonaliseBG/Blank.jpg) !important;
+    box-shadow: var(--box-shadow-thin);
+    border-radius: 4px;
+    margin-bottom: 15px;
+    background-size: cover;
+    // min-width: 384px;
+    // max-width: 384px;
+}
+
+.example-custom-placeholder {
+    background: #ccc;
+    border: dotted 3px #999;
+    min-height: 60px;
+    margin: 10px;
+    padding: 2px;
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.emptyCard{
+    background-color: var(--bg-color);
+    min-height: 350px;
+    border: 1px dashed gray;
+    border-radius: 4px;
+    margin-bottom: 15px;
+    cursor: none;
+    pointer-events: none;
+}
+
+.card-content{
+    padding: 15px;
+    max-height: 370px;
+    .card-title{
+        font-size: 20px;
+        color: var(--headers);
+        letter-spacing: 0.9px;
+        padding-bottom: 0.1rem;
+    }
+
+    .header-line{
+        margin-top: 10px;
+    }
+}
+
+.card-content iframe{
+    clip-path: inset(0px 0px 60px 0px);
+  }

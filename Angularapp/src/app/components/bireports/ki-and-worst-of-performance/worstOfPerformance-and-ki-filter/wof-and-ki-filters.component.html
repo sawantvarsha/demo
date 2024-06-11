@@ -1,0 +1,50 @@
+<div class="mtm-and-ki-filter-container">
+    <div style="display: flex;justify-content: center;align-items: center;margin-bottom: 70px;">
+        <div style="width:100%">
+            <div style=" font-family: 'Roboto';  font-size: 20px; padding-top: 20px;font-family: 'Roboto'; margin-bottom: 25px" class="filterTitle">
+                KI Distance (%)</div>
+                <div style="margin-top: 12px;" class="ki-number">
+                    <input type="number" class="knumber" [value]="current_KI_StartValue" [min]="startKIValue" [ngModel]="current_KI_StartValue"
+                        [max]="endKIValue" class="inputBox" (change)="binder($event)" step="0.01" name="input1">
+                </div>
+                <div style="margin-top: 12px;" class="ki-number second">
+                    <input type="number" class="knumber" [value]="current_KI_LastValue" [ngModel]="current_KI_LastValue"
+                        [min]="startKIValue" [max]="endKIValue" class="inputBox" step="0.01" (change)="binder($event)" name="input2">
+                </div>
+                <!-- <mat-slider [min]="startKIValue" [max]="endKIValue" class="slider" step="0.01">
+                    <input [(ngModel)]="current_KI_StartValue" matSliderStartThumb (valueChange)="binder()">
+                    <input [(ngModel)]="current_KI_LastValue" matSliderEndThumb (valueChange)="binder()">
+                </mat-slider> -->
+                    <ng-container [ngSwitch]="display">
+                        <ng-template [ngSwitchCase]="1"><ngx-slider class="ngx-ki-dist-slider" [(value)]="current_KI_StartValue" [(highValue)]="current_KI_LastValue" [options]="options"  (userChange)="sliderToInputBinder()"></ngx-slider ></ng-template>
+                        <ng-template [ngSwitchCase]="2"><ngx-slider class="ngx-ki-dist-slider" [(value)]="current_KI_StartValue" [(highValue)]="current_KI_LastValue" [options]="options"  (userChange)="sliderToInputBinder()"></ngx-slider ></ng-template>
+                    </ng-container>
+
+            <div class="filterTitle" style="font-family: 'Roboto'; font-size: 20px;font-family: 'Roboto'; ">Worst Of Underlying</div>
+                <select [(ngModel)]="selectedUnderlying" (change)="sendSelectedUnderlying(selector1.value)"
+                    #selector1>
+                    <option value="All">All</option>
+                    <option *ngFor="let wol of worOfUnderlingList;" [value]="wol">
+                        {{wol}}
+                    </option>
+                </select>
+                <!-- <div class="select-list">
+                    <div class="title" (click)="manipulateDropDown()"><button
+                            class="displayBox"><p style="overflow: hidden;height: 16px;">{{displayString}}</p></button>
+                        </div>
+                    <div *ngIf="displayDropdown">
+                        <div class="select-options">
+                            <div *ngFor="let underlying of worOfUnderlingList;">
+                                <div class="option">
+                                    <input type="checkbox" 
+                                        [checked]="this.selectedWorstOfUnderlyings.indexOf(underlying) !== -1?true:false"
+                                        (click)="optionManipulation(underlying)" />
+                                    <label for="option">{{underlying}}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
+        </div>
+    </div>
+</div>

@@ -1,0 +1,526 @@
+<!-- <div class="page-title" style="padding-left: 5px !important" *ngIf="!dynamicWorkflow">
+  Workflow Blotter
+</div> -->
+
+<div class="page-title">
+  <app-svg-icons class="back-button" [icon]="'back-button'" [width]="'40'" [height]="'40'" [fill]="'var(--headers-alt)'"
+    (click)="back();"></app-svg-icons>
+  <div>Workflow Blotter</div>
+</div>
+
+<!-- Added by Mitali D -  04-01-2023 - START - For show/hide workflow and queue panels -->
+<div class="toggle-bar">
+  <app-svg-icons (click)="showWorkflowList=!showWorkflowList" [fill]="'white'" [icon]="'side-menu'" [width]="'20'"
+    [height]="'20'">
+  </app-svg-icons>
+  <div>
+  </div>
+  <app-svg-icons (click)="showQueueList=!showQueueList" [fill]="'white'" [icon]="'side-menu'" [width]="'20'"
+    [height]="'20'">
+  </app-svg-icons>
+</div>
+<!-- Added by Mitali D -  04-01-2023 - END -->
+
+<!-- Changed by Mitali D  - 10-01-2023 - LGTGTWINT-902 - START -->
+<div [ngClass]="{
+    'workflow-gridview': !dynamicWorkflow,
+    'dynamic-workflow-gridview': dynamicWorkflow || !showWorkflowList,
+    'noqueue-workflow-gridview':!showQueueList,
+    'only-records-gridview':!showQueueList && !showWorkflowList
+  }">
+  <!-- Changed by Mitali D  - 10-01-2023 - LGTGTWINT-902 - END -->
+  <div class="workflow-list-div" *ngIf="!dynamicWorkflow && showWorkflowList">
+    <div class="workflowlist-header">
+      <div>
+        <label class="header-text">Workflows</label>
+      </div>
+
+      <input type="text" placeholder="Search" class="search workflow-search" (keypress)="searchWorkflowList($event)"
+        (click)="searchWorkflowList($event)" (keydown.backspace)="searchWorkflowList($event)" />
+    </div>
+
+    <div class="workflowlist-cls">
+      <div *ngFor="let item of WorkflowList">
+        <li class="list-item" (click)="selectWorkflow(item)"
+          [ngClass]="{ active: item.Value === selectedWorkflowType }">
+          {{ item.Value }}
+        </li>
+      </div>
+    </div>
+  </div>
+
+  <div class="workflow-table-div">
+    <div class="workflowlist-header">
+      <div class="selected-workflow-header">
+        <label class="header-text selected-workflow-header">{{ selectedWorkflowType }} - {{ selectedQueue }}</label>
+      </div>
+
+      <!-- Changed by Mitali D - 15-02-2023 - LGTCLI-308 - layout change - START -->
+      <div class="top-bar wrap">
+
+        <div class="search-fields">
+          <!--  Changed by Mitali D - 22-09-2023 - FIN1EURINT-613 - START -->
+          <select [(ngModel)]="selectedEID" (change)="applyProductOREntityFilter()">
+            <!-- <option value="0">All</option>Added by Shraddha D - 26-04-2023 - LGTGTWINT-1917 -->
+            <option *ngFor="let e of entities" [ngValue]="e.code">{{e.value}}</option>
+          </select>
+           <!--  Changed by Mitali D - 22-09-2023 - FIN1EURINT-613 - END -->
+  
+          <select [(ngModel)]="selectedTID" (change)="applyProductOREntityFilter()">
+            <option *ngFor="let p of products" [ngValue]="p.Id">{{p.Template_Name}}</option>
+          </select>
+          <!-- Changed by Mitali D - 04-03-2023 - LGTGTWINT-1655 - START -->
+          <input id="searchwfrecord" type="text" placeholder="Search" class="search workflow-search"
+           [(ngModel)]="searchToken"
+          (keydown.enter)="searchWorkflowRecords($event)"  />
+          <!-- Changed by Mitali D - 04-03-2023 - LGTGTWINT-1655 - END -->
+
+        </div>
+
+       
+
+          <!-- ...START... Added Change by Mayuri D. on 21-Nov-2022 | LGTCLI-133 -->
+              <!-- Commented by Mitali D - 15-02-2023 - LGTCLI-308 - START -->
+              <!-- Start ||Added by Shraddha D/Mitali D - LGTGTWINT-681 || 6-Jan-2023 -->
+              <!-- <div>
+                <label class="switch">
+                  <input type="checkbox" id="toggle_vat" class="toggle_vat" [(ngModel)]="isEvtFilter"
+                    (ngModelChange)="applyFilter()">
+                  <div class="slider round" [ngClass]="{'slider-left': isEvtFilter, 'slider-right':!isEvtFilter }">
+                    <span class="slider_text">
+                      <span [ngClass]="{'on': isEvtFilter, 'off':!isEvtFilter }" title="Event Date">Event Date</span>
+                      <span [ngClass]="{'on': !isEvtFilter, 'off':isEvtFilter }" title="Last Modified">Last Modified</span>
+                    </span>
+                  </div>
+                </label>
+                 <input type="date" [(ngModel)]="FromDate"/> 
+    
+              </div> -->
+              <!-- End ||Added by Shraddha D/Mitali D - LGTGTWINT-681 || 6-Jan-2023 -->
+              <!-- Commented by Mitali D - 15-02-2023 - LGTCLI-308 - END -->
+              <!-- ...END... Added Change by Mayuri D. on 21-Nov-2022 | LGTCLI-133 -->
+
+              <div class="inline">
+
+                <div class="datefilter">
+                  <label>From</label>
+                  <div class="FromDateLabel">
+                    <input type="date" name="FromDate" id="FromDate" class="input-dob" tabindex="16" min="2000-01-01"
+                      [(ngModel)]="FromDate" (change)="changeFromDate($event)" />
+                    <span id="FromDateLabel">{{ FromDate | date: "dd-MMM-yyyy" }}</span>
+                  </div>
+                  <div class="Date_filter">
+                    <span class="date_filter_buttons" (click)="GetDate('Y')" style="padding-left: 10px;">Y</span>
+                    <span class="date_filter_buttons" (click)="GetDate('M')" style="padding-left: 10px;">M</span>
+                    <span class="date_filter_buttons" (click)="GetDate('W')" style="padding-left: 10px;">W</span>
+                    <span class="date_filter_buttons" (click)="GetDate('D')" style="padding-left: 10px;">D</span>
+                  </div>
+                </div>
+        
+                <div class="datefilter">
+                  <label>To</label>
+                  <div class="ToDateLabel">
+                    <input type="date" name="ToDate" id="ToDate" class="input-dob" tabindex="16" min="2000-01-01"
+                      [(ngModel)]="ToDate" (change)="changeToDate($event)" />
+                    <span id="ToDatelabel">{{ ToDate | date: "dd-MMM-yyyy" }}</span>
+                  </div>
+                </div>
+
+              </div>
+
+      
+
+        <div>
+          <app-svg-icons [icon]="'refresh'" [width]="'25'" [height]="'25'" (click)="refresh()"
+            [fill]="'var(--active)'" title="Refresh"></app-svg-icons>
+        </div>
+        <div>
+          <!--  Changed by Mitali D - 08-02-2023 - LGTGTWINT-922 - START -->
+          <!-- <app-svg-icons [icon]="'xls'" (click)="exportToexcel()"></app-svg-icons> -->
+          <app-svg-icons [icon]="'xls'" (click)="exportWorkflowBlotter()" title="Export to Excel"></app-svg-icons>
+          <!--  Changed by Mitali D - 08-02-2023 - LGTGTWINT-922 - END -->
+        </div>
+
+        <!-- Added by Mitali D - 23-02-2023 - START  -->
+        <!-- Changed by Mitali D - 01-11-23 - START -->
+        <app-svg-icons (click)="showPersonalSettings=true" class="support-icon" [fill]="'var(--active)'"
+         [icon]="'settings'" title="Personal Settings" [width]="'25'" [height]="'25'">
+        </app-svg-icons> 
+        <!-- Changed by Mitali D - 01-11-23 - END -->
+        <!-- Added by Mitali D - 23-02-2023 - END  -->
+
+        <!-- Added by Mitali D - 16-03-2023 - LGTGTWINT-1495 - START -->
+        <div> 
+          <app-svg-icons [icon]="'icon-search'" [width]="'30'" [height]="'30'"  [fill]="'var(--active)'"  (click)="showWFFind=true"
+            title="WF Find"></app-svg-icons>
+        </div>
+        <!-- Added by Mitali D - 16-03-2023 - LGTGTWINT-1495 - END -->
+
+        <!-- Added by Mitali D - 06-01-2023 - LGTGTWINT-681 | START  -->
+        <div>
+          <app-svg-icons [icon]="'wfMoreFilters'" [width]="'25'" [height]="'25'" (click)="showMoreFilters=true"
+            title="More Filters"></app-svg-icons>
+        </div>
+        <!-- Added by Mitali D - 06-01-2023 - LGTGTWINT-681 | END  -->
+
+      
+          
+      </div>
+      <!-- Changed by Mitali D - 15-02-2023 - LGTCLI-308 - layout change - END -->
+
+
+      <div *ngIf="errorMsg !== ''">
+        <label class="error-message-workflow">
+          {{ errorMsg }}
+        </label>
+      </div>
+      <div *ngIf="successMsg !== ''">
+        <label class="succ-message-workflow">
+          {{ successMsg }}
+        </label>
+      </div>
+      <div *ngIf="unlockMSG !== ''">
+        <label class="error-message-workflow">
+          {{ unlockMSG }}
+        </label>
+      </div>
+    </div>
+
+    <div class="main-blotter" *ngIf="!loaderFlag">
+      <div *ngFor="let mainBlotter of workflowCustomData; let i = index">
+        <div class="card">
+          <!-- <div class="row-header" style="display: flex;justify-content: space-between;"> -->
+          <div class="row-header">
+            <!-- <div>
+              <label class="header">Product Name</label>
+            </div> -->
+            <!-- <div style="align-items: flex-end; position: relative;">
+              <div class="three-dots" (click)="openDetail($event,mainBlotter.Actions,mainBlotter.Token_x0020_Id,mainBlotter.Ref_x0020_No,i);closePopup(i);">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            
+              <div *ngIf="showActions[i] === true" class="linkdiv">
+                <div *ngFor="let item of actionbtns" (click)="onActionBtnClick(this.actionbtns.TokenID,item,this.actionbtns.TokenID); showActions[i] = false" >{{item}}</div>
+              </div>
+            </div> -->
+          </div>
+          <div class="row-data ProductBorder" *ngIf="workflowCustomData !== undefined">
+            <label class="value first-row">{{
+              mainBlotter.PRODUCT_NAME
+              }}</label>
+          </div>
+          <div class="row-header">
+            <diV>
+              <div class="workflowGrid">
+                <label class="header">FinIQ Ref No</label>
+                <!-- click function added by Urmila A | for Deal details functionality , added hyperlink class, LGTGTWINT-561 | 14-Dec-22-->
+				<!-- Added by Shraddha D || 21-Apr-23 || LGTGTWINT-1900 !-->
+               <label *ngIf="!selectedWorkflowType.includes('FXD')" class="value refNo hyperLink" (click)="OnRefNoClick(mainBlotter['TOKEN ID'])"> {{ mainBlotter['REF NO']}}</label>
+
+                <u *ngIf="selectedWorkflowType.includes('FXD')" class="value refNo hyperLink"
+                  (click)="fnGotoFXD('Navigate',mainBlotter )">{{ mainBlotter['REF NO'] }}</u>
+                <!-- <label *ngIf="UserGroup !== 'Dealer_FXD'" class="value refNo"> {{ mainBlotter.Ref_x0020_No }}</label> 
+                <u *ngIf="UserGroup === 'Dealer_FXD'" class="value refNo hyperLink" (click)="fnGotoFXD('Navigate',mainBlotter )">{{ mainBlotter.Ref_x0020_No }}</u> -->
+              </div>
+            </diV>
+            <div *ngFor="let data of workflowMetadataArr; let j = index">
+              <div *ngIf="j < 4" class="workflowGrid">
+                <label class="header">{{
+                  workflowMetadataHeaderNameArr[j]
+                  }}</label>
+                <label class="value refNo" *ngIf="data.WBM_Column_Data_type === 'DATE'">{{
+                  formatDate(mainBlotter[data.WBM_Target_Value])
+                  }}</label>
+                <label class="value" *ngIf="data.WBM_Column_Data_type === 'NUMERIC'">{{
+                  cmnapis.FormatNumberInWorkflow(mainBlotter[data.WBM_Target_Value],2)
+                  }}</label>
+                <label class="value refNo" *ngIf="
+                    data.WBM_Column_Data_type === 'NUMBER'
+                  " [ngStyle]="{
+                    color: data.WBM_Target_Value === 'Status' ? data.Color : ''
+                  }">{{ mainBlotter[data.WBM_Target_Value] }}</label>
+                <label class="value" *ngIf="
+                    data.WBM_Column_Data_type === 'TEXT' ||
+                    data.WBM_Column_Data_type === 'CURRENCY'
+                  " [ngStyle]="{
+                    color: data.WBM_Target_Value === 'Status' ? data.Color : ''
+                  }">{{ mainBlotter[data.WBM_Target_Value] }}</label>
+                <label class="value" *ngIf="data.WBM_Column_Data_type === 'NUMERIC4'">{{
+                  cmnapis.FormatNumberInWorkflow(mainBlotter[data.WBM_Target_Value],4)
+                  }}</label>
+                <label class="value" *ngIf="data.WBM_Column_Data_type === 'NUMERIC2'">{{
+                  cmnapis.FormatNumberInWorkflow(mainBlotter[data.WBM_Target_Value],2)
+                  }}</label>
+                <!-- Changed by Mitali D - LGTGTWINT-1552 - 27-02-2023 - START  -->
+                <label class="value" *ngIf="data.WBM_Column_Data_type === 'DATETIME'">{{
+                  mainBlotter[data.WBM_Target_Value]
+                  | date: 'dd-MMM-yyyy hh:mm:ss a'
+                  }}</label>
+                 <!-- Changed by Mitali D - LGTGTWINT-1552 - 27-02-2023 - END  -->
+              </div>
+              <div *ngIf="!isActive[i] && j > 3" class="workflowGrid">
+                <label class="header">{{
+                  workflowMetadataHeaderNameArr[j]
+                  }}</label>
+
+                <label class="value" *ngIf="data.WBM_Column_Data_type === 'DATE'">{{
+                  formatDate(mainBlotter[data.WBM_Target_Value])
+                  }}</label>
+                <label class="value" *ngIf="data.WBM_Column_Data_type === 'NUMERIC'">{{
+                  cmnapis.FormatNumberInWorkflow(mainBlotter[data.WBM_Target_Value],2)
+                  }}</label>
+                <label class="value" *ngIf="
+                    data.WBM_Column_Data_type === 'TEXT' ||
+                    data.WBM_Column_Data_type === 'CURRENCY'
+                  ">{{ mainBlotter[data.WBM_Target_Value] }}</label>
+
+                <label class="value refNo" *ngIf="
+                  data.WBM_Column_Data_type === 'NUMBER'
+                " [ngStyle]="{
+                  color: data.WBM_Target_Value === 'Status' ? data.Color : ''
+                }">{{ mainBlotter[data.WBM_Target_Value] }}</label>
+
+                <label class="value" *ngIf="
+                  data.WBM_Target_Value === 'UserId'">{{ mainBlotter['UserID'] }}</label>
+
+                <label class="value" *ngIf="data.WBM_Column_Data_type === 'NUMERIC4'">{{
+                  cmnapis.FormatNumberInWorkflow(mainBlotter[data.WBM_Target_Value],4)
+                  }}</label>
+                <label class="value" *ngIf="data.WBM_Column_Data_type === 'NUMERIC2'">{{
+                  cmnapis.FormatNumberInWorkflow(mainBlotter[data.WBM_Target_Value],2)
+                  }}</label>
+                 <!-- Changed by Mitali D - LGTGTWINT-1552 - 27-02-2023 - START  -->
+                <label class="value" *ngIf="data.WBM_Column_Data_type === 'DATETIME'">{{
+                  mainBlotter[data.WBM_Target_Value]
+                  | date: 'dd-MMM-yyyy hh:mm:ss a'
+                  }}</label>
+                 <!-- Changed by Mitali D - LGTGTWINT-1552 - 27-02-2023 - END  -->
+              </div>
+            </div>
+          </div>
+
+          <!-- <div class="row-data">
+
+            <div class="">
+              <label class="value refNo">{{mainBlotter.Ref_x0020_No}}</label>
+            </div>
+
+            <div *ngFor="let data of workflowMetadataArr">
+              <label class="value">{{mainBlotter[data.WBM_Target_Value]}}</label>
+            </div>
+          </div> -->
+          <div style="display: flex; gap: 25px">
+            <!--margin-top: 20px;-->
+            <!-- <ng-container *ngIf="showActionBtns" > 
+             <div *ngFor="let item of mainBlotter.actionbtns" class="ActionBtn" style="display: flex; align-items: center; justify-content: center;" (click)="
+                onActionBtnClick(
+                  mainBlotter.TOKEN_X0020_ID,
+                  item,
+                  mainBlotter.TI_DEALNO,
+                  mainBlotter
+                )
+              "> -->
+              <!-- Changed by Mitali D - 01-03-2023 - START -->
+              <!-- Changed by Mitali D - 22-09-2023 - FIN1EURINT-613 - START -->
+              <ng-container *ngIf="showActionBtns && mainBlotter.ACTIONS !== undefined && mainBlotter.ACTIONS !== null && mainBlotter.ACTIONS.length" > <!-- Changed by Mitali D - 11-04-2023 - LGTGTWINT-1861  -->
+                <div *ngFor="let item of mainBlotter.ACTIONS.split(',')" class="ActionBtn" style="display: flex; align-items: center; justify-content: center;" (click)="
+                CallActions(
+                  mainBlotter['TOKEN ID'],
+                  item,
+                  mainBlotter.TI_DEALNO,
+                  mainBlotter
+                )
+                ">
+              <!-- Changed by Mitali D - 22-09-2023 - FIN1EURINT-613 - END -->
+              
+            
+              <!-- Changed by Mitali D - 01-03-2023 - END -->
+              <!-- Added by Urmila A | 28-06-2022 | Workflow Journey Start-->
+              <span style="cursor: pointer;">
+                <u (click)="fnGotoFXD(item,mainBlotter )" >
+                  {{ item }}
+                </u>
+
+
+              </span>
+
+              <!-- Added by Urmila A | 28-06-2022 | Workflow Journey End-->
+            </div>
+            </ng-container>
+            <button *ngIf="
+                this.selectedWorkflowType ===
+                'Investment Proposal and Trade Ideas'
+              " mat-raised-button style="font-size: 15px; display: flex; gap: 35px" (click)="ReturnIndex(i)">
+              Place Orders
+            </button>
+            <div style="flex-grow: 1"></div>
+            <div class="accordion-div">
+              <app-svg-icons class="material-icons" [icon]="'down-arrow'" (click)="accordion(i)" [width]="'12'" [height]="'12'" [fill]="'var(--sidebar-li)'" [ngClass]="{ 'rotate-toggle-menu-icon': !isActive[i] }"></app-svg-icons>
+              <!-- <span class="material-icons" (click)="accordion(i)"
+                [ngClass]="{ 'rotate-toggle-menu-icon': !isActive[i] }">expand_more</span> -->
+            </div>
+          </div>
+
+          <div *ngIf="mainBlotter.ViewProposalDiv">
+            <!-- <div *ngIf="mainBlotter.ViewProposalDocs.length > 0" class="document-information-div">
+              <div>
+                <div style="display: grid;grid-template-columns: repeat(3,1fr);">
+                  <div></div>
+                   <div style="text-align: center;padding-bottom: 15px;">Document Type</div> 
+                  <div style="text-align: center;overflow-wrap: break-word;padding-bottom: 15px;">
+                    Document</div>
+                  <div style="text-align: center;padding-bottom: 15px;">View</div>
+                </div>
+              </div>
+              <div>
+                <div *ngFor="let doc of mainBlotter.ViewProposalDocs" style="display: grid;grid-template-columns: repeat(3,1fr);">
+                  <div><span class="dot"></span></div>
+                  <div style="color: var(--heading-label);">
+                    {{ doc.Event_Name || doc.Event_Code }}
+                  </div>
+                 
+                  <div (click)="showFile(doc.DGT_ID, mainBlotter.Ref_x0020_No[0])"
+                    style="color: var(--off-color);text-align: center;">
+                    <app-svg-icons icon="{{'pdf'}}" widdiv="{{'26px'}}" height="{{'26px'}}"></app-svg-icons>
+                  </div>
+                </div>
+              </div>
+            </div> -->
+
+            <table *ngIf="mainBlotter.ViewProposalDocs.length > 0" class="document-information-table">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th style="text-align: center; padding-bottom: 15px">
+                    Document Type
+                  </th>
+                  <th style="
+                      text-align: center;
+                      overflow-wrap: break-word;
+                      padding-bottom: 15px;
+                    ">
+                    Document
+                  </th>
+                  <th style="text-align: center; padding-bottom: 15px">View</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let doc of mainBlotter.ViewProposalDocs">
+                  <td><span class="dot"></span></td>
+                  <td style="color: var(--heading-label)">
+                    {{ doc.Event_Name || doc.Event_Code }}
+                  </td>
+                  <td style="overflow-wrap: anywhere; white-space: initial">
+                    {{ doc.Document_Output_Path }}
+                  </td>
+                  <td (click)="showFile(doc.DGT_ID, mainBlotter['REF NO'])"
+                    style="color: var(--off-color); text-align: center">
+                    <app-svg-icons style="justify-content: center" [icon]="'pdf'" [width]="'23'" [height]="'23'">
+                    </app-svg-icons>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- 
+        <div *ngIf = "isActive[i]">
+          <div>
+
+          </div>
+        </div> -->
+        </div>
+      </div>
+
+      <!-- Added by Arsh P on 25-Feb-2022 || To fetch Token Id and Proposal Name -->
+      <div class="popup" *ngIf="showOrdersPopup">
+        <app-svg-icons class="closebtn closebtn-position" [icon]="'cancel-icon'" [width]="'15'" [height]="'15'"
+          (click)="showOrdersPopup = false">
+        </app-svg-icons>
+        <app-place-orders [OrderPlacementDetails]="workflowCustomData" [Index]="OrderIndex">
+        </app-place-orders>
+      </div>
+      <!-- End -->
+    </div>
+
+    <!-- Changed by Mitali D - 08-02-2023 - LGTGTWINT-922 -->
+    <div class="loader-container" *ngIf="loaderFlag || exportInprogress">
+      <div class="center">
+        <div class="multi-ripple">
+          <div></div>
+          <div></div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="pagination-class">
+      <div>
+        <span class="common-font rows-per-page" style="font-size: 12px">Record(s) Per Page</span>
+        <input class="common-font rows-per-page-input" type="text" [(ngModel)]="recordsPerPage"
+          (change)="changePagePerRecords($event)" style="margin-right: 20px !important" />
+
+        <button mat-raised-button style="font-size: 12px" (click)="prevBtnClick()">
+          Prev
+        </button>
+        <input class="common-font rows-per-page-input" type="text" id="txtpage" [(ngModel)]="pageNo" (keypress)="isNumber($event)" 
+          style="margin-right: 20px !important; margin-left: 20px !important" (keydown.enter)="changePageOnEnter()"/>
+        <button mat-raised-button style="font-size: 12px" (click)="nextBtnClick()">
+          Next
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="queue-list-div" *ngIf="showQueueList">
+    <div class="workflowlist-header">
+      <div>
+        <label class="header-text">Queues</label>
+      </div>
+
+      <input type="text" placeholder="Search" class="search workflow-search" (click)="searchQueueList($event)"
+        (keypress)="searchQueueList($event)" (keydown.backspace)="searchQueueList($event)" />
+    </div>
+
+    <div class="workflowlist-cls">
+      <div *ngFor="let item of QueueList;let i = index">
+        <li class="list-item" [ngClass]="{ active: item.Display_Name === selectedQueue }" (click)="selectQueue(item,i)">
+          {{ item.Display_Name }}
+        </li>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="journey-overlay" *ngIf="JouneyClickFlag">
+
+  <app-workflow-journey *ngIf="JouneyClickFlag" [visible]="JouneyClickFlag" [TokenId]="Wf_TokenID"
+    [WF_ID]="selectedWorkflowId">
+  </app-workflow-journey>
+</div>
+
+ <div class="journey-overlay" *ngIf="showPersonalSettings">
+  <!-- Changed by Mitali D - 04-03-2023 - LGTGTWINT-1813 - START -->
+  <app-personal-settings (close)="afterPSClosed()" [(autoRefresh)]="autoRefresh" [(autoRefreshEnabled)]="autoRefreshActive" [uid]="UserID" [wflList]="WorkflowList" [wflSettings]="wflSettings" [autoRefresh]="autoRefresh" [serverTimeStamp]="cardsRefreshedAt" ></app-personal-settings>
+  <!-- Changed by Mitali D - 04-03-2023 - LGTGTWINT-1813 - END -->
+</div> 
+
+<!-- Added by Mitali D - 06-01-2023 - LGTGTWINT-681 | START -->
+<div class="journey-overlay" *ngIf="showMoreFilters">
+  <app-more-filters [moreFiltersTbl]="filterInfo" (filterdata)="moreFilters()"
+    (closemf)="showMoreFilters=false"></app-more-filters>
+</div>
+<!-- Added by Mitali D - 06-01-2023 - LGTGTWINT-681 | END -->
+
+<!-- Added by Mitali D - 16-03-2023 - LGTGTWINT-1495 | START -->
+<div class="journey-overlay" *ngIf="showWFFind">
+  <app-wf-find (goToWf)="wfFind($event)" (closewf)="showWFFind=false"></app-wf-find>
+</div>
+<!-- Added by Mitali D - 16-03-2023 - LGTGTWINT-1495 | END -->
+
+<!-- Added by Mitali D - 06-03-2023 - LGTGTWINT-1600 | START -->
+<div  class="journey-overlay" *ngIf="this.wfs.showPopup">
+  <router-outlet></router-outlet>
+</div>
+<!-- Added by Mitali D - 06-03-2023 - LGTGTWINT-1600 | END -->

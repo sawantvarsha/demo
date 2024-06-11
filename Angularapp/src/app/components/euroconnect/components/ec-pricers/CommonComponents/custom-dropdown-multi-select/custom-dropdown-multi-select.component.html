@@ -1,0 +1,84 @@
+<div #dropdownRef
+	[ngClass]="{
+    'custom-ddl': pricerType === 'single' || pricerType ===  'dropdown' || pricerType ===  'dropdownSearch',
+    'custom-ddl-multi': pricerType !== 'single' && pricerType !==  'dropdown' && pricerType !==  'dropdownSearch',
+    'ddlSearch': pricerType === 'dropdownSearch'
+    }" 
+    (click)="onTouched();postbackMethod();">
+    <!-- <button class="ip-border" tabindex="{{tabIdx}}" [ngClass]="pricerType==='single' || pricerType === 'dropdown'?'ddl-input':disabledMulti?'ddl-input-disabled':'ddl-input-multi'" (click)="toggleDropdown();postbackMethod();" > -->
+    <button class="ip-border" tabindex="{{tabIdx}}" [ngClass]="{
+        'ddl-input': pricerType === 'single' || pricerType === 'dropdown' || pricerType === 'dropdownSearch',
+        'ddl-input-disabled': !(pricerType === 'single' || pricerType === 'dropdown' || pricerType === 'dropdownSearch') && disabledMulti,
+        'ddl-input-multi': !(pricerType === 'single' || pricerType === 'dropdown' || pricerType === 'dropdownSearch') && !disabledMulti,
+        'disabled': disabled, 'highlight-border': (placeholder!=displayText2 && pricerType === 'dropdown') 
+        }" (click)="toggleDropdown();postbackMethod();" >
+        <!-- <span class="ddl-text" textOverflowTooltip>{{displayText || ' '}}</span> -->
+        <span class="ddl-text" textOverflowTooltip>{{ (placeholder || ' ') | translate}}</span>
+        <!-- <span class="ddl-text" textOverflowTooltip>Format</span> -->
+        <div class="ddl-icon" >
+            <!-- <svg style="width: 12px !important; height: 9px !important;" >
+                <g class="down" stroke="#616161" stroke-width="2px" stroke-linecap="square">
+                    <line x1="0" y1="0" x2="6" y2="6"></line>
+                    <line x1="6" y1="6" x2="12" y2="0"></line>
+                </g>
+            </svg> -->
+
+            <svg xmlns="http://www.w3.org/2000/svg" width="8" height="6.5" viewBox="0 0 15 7.5">
+                <path id="Icon_material-arrow-drop-down" data-name="Icon material-arrow-drop-down" d="M10.5,15,18,22.5,25.5,15Z" transform="translate(-10.5 -15)" fill="#808080"/>
+            </svg>
+        </div>
+    </button>
+    <!-- Top changed by SandipA for Regulatory popup issue || 04-Apr-2023 -->
+    <div #optionsRef *ngIf="showOptions && pricerType === 'multi'" [ngStyle] = "alignment === 'horizontal'?{'top':'-170px'}:{'top':'-175px'}" class="ddl-options-multi ddl-open" >
+        <div class="ddl-item" (click)="toggleSelectFlag();postbackMethod();">
+            <input type="checkbox" [checked]="selectAllFlag" (click)="toggleSelectFlag();postbackMethod();">
+            <label >Select All</label>
+        </div>
+        <!-- Changed by Jyoti S || 04-Dec-2023 || F5SAAINT-967 || START -->
+        <div class="ddl-item" *ngFor="let item of options" (click)="setValue(item.Key, true);postbackMethod();">
+            <input type="checkbox" [name]="item.Key" [id]="item.Key" [value]="item.Key" [checked]="isSelected(item.Key)" (click)="setValue(item.Key,true);postbackMethod();">
+            <label [for]="item.Key">{{item.Key}}</label>
+        </div>
+        <!-- Changed by Jyoti S || 04-Dec-2023 || F5SAAINT-967 || END -->
+    </div>
+    <div #optionsRef *ngIf="showOptions && pricerType === 'single'" class="ddl-options ddl-open ScrollCss" >
+        <div class="ddl-item" (click)="toggleSelectFlag();postbackMethod();">
+            <input type="checkbox" [checked]="selectAllFlag" (click)="toggleSelectFlag();postbackMethod();" [disabled]="disabled">
+            <label >Select All</label>
+        </div>
+        <!-- Changed by Jyoti S || 04-Dec-2023 || F5SAAINT-992 || START -->
+        <div class="ddl-item" *ngFor="let item of options" (click)="setValue(item.Key,true);postbackMethod();">
+            <input type="checkbox" [name]="item.Key" [id]="item.Key " [value]="item.Key" [checked]="isSelected(item.Key)" (click)="setValue(item.Key,true);postbackMethod();" [disabled]="disabled">
+            <label [for]="item.Key">{{item.Key}}</label>
+        </div>
+        <!-- Changed by Jyoti S || 04-Dec-2023 || F5SAAINT-992 || END -->
+    </div>
+    <div #optionsRef *ngIf="showOptions  && pricerType === 'dropdown'" class="ddl-options ddl-open ScrollCss" >
+        <div class="ddl-item" (click)="toggleSelectFlag2();postbackMethod();">
+            <input type="checkbox" [checked]="isSelected()" [name]="'all'" [id]="'all'" [value]="'all'" (click)="toggleSelectFlag2()" [disabled]="disabled">
+            <label [for]="'all'">{{'Select All' | translate}}</label>
+        </div>
+        <div class="ddl-item" *ngFor="let item of options;" (click)="setValue2(item,true)">
+            <input type="checkbox" [name]="item" [id]="item" [value]="item" [checked]="isSelected(item)" (click)="setValue2(item, true);postbackMethod();" [disabled]="disabled">
+            <label [for]="item  ">{{ item  | translate}}</label>
+        </div>
+    </div>
+
+    <!-- Multi select dropdown with search option | 12-10-2023 -->
+    <div #optionsRef *ngIf="showOptions  && pricerType === 'dropdownSearch'" >
+        <cdk-virtual-scroll-viewport itemSize="50" class="ddl-options ddlSearch-open ScrollCss" >
+            <div class="multiSelectSearch">
+                <input type="text" placeholder="{{'Search' | translate}}" [(ngModel)]="multiSelectSearch" (keyup)="filterOptions()">
+            </div>
+            <div class="ddl-item ddlSearch-item" (click)="selectAll(true);">
+                <input type="checkbox" [checked]="selectAllFlag || isRefreshed" [name]="'all'" [id]="'all'" [value]="'all'" >
+                <label [for]="'all'">{{'Select All' | translate}}</label>
+            </div>
+            <div class="ddl-item ddlSearch-item" *cdkVirtualFor="let item of options;" (click)="selectOne(item)">
+                <input type="checkbox" [name]="item.value" [id]="item.value" [value]="item.value" [checked]="item.checked">
+                <label [for]="item  ">{{ item.value | translate }}</label>
+            </div>
+        </cdk-virtual-scroll-viewport>
+    </div>
+    
+</div>

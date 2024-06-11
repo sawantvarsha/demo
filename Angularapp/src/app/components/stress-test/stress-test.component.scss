@@ -1,0 +1,61 @@
+:host{
+    display: flex;
+    flex-direction: column;
+    gap: 2em;
+    height: 100%;
+    align-items: flex-start;
+    // padding: 1em 0em;
+}
+
+.stress-test-topbar{
+    display: flex;
+    gap: var(--gap); 
+    align-items: center;
+    margin-top: 15px;
+    input{
+        width: 150px;
+    }
+}
+
+label{
+//    white-space: nowrap;
+}
+
+thead, tr{
+    display: grid;
+    grid-template-columns: 1fr 1fr 200px 200px 250px 200px 200px;
+    justify-items: stretch;
+}
+tr td{
+    // max-width: 196px;
+}
+
+@media screen and (max-width : "1000px") {
+    .stress-test-topbar{
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+    }    
+}
+
+
+// Added on 25th Jul 2022
+.product-title{
+    color: var(--text);
+    font-weight: 500;
+    font-size: 30px;
+    line-height: 40px;
+}
+
+.product-issuername{
+    color: var(--off-color);
+    font-size: 15px;
+    text-align: left;
+}
+.loader-container {
+    display: flex;
+    height: 38vh;
+    align-items: center;
+    margin-left: 46em;
+    // margin-right: auto;
+    justify-content: center;
+  }

@@ -1,0 +1,186 @@
+.mainDiv {
+  padding: 15px;
+}
+
+.arrow {
+  margin-left: -2.3%;
+  z-index: 1;
+  margin-top: 0.9%;
+}
+
+input {
+  border-radius: 4px;
+  border: 1px solid var(--btn-border);
+  background-color: var(--input-bg);
+  width: 100%;
+  color: var(--text);
+  height: 35px;
+  text-align: left;
+  padding: 5px;
+}
+
+input:focus {
+  -webkit-box-shadow: 10px 13px 11px -11px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 10px 13px 11px -11px rgba(0, 0, 0, 0.75);
+  box-shadow: 10px 13px 11px -11px rgba(0, 0, 0, 0.75);
+}
+
+.info {
+  height: 50px !important;
+  padding: 0px !important;
+}
+
+select:focus {
+  -webkit-box-shadow: 10px 13px 11px -11px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 10px 13px 11px -11px rgba(0, 0, 0, 0.75);
+  box-shadow: 10px 13px 11px -11px rgba(0, 0, 0, 0.75);
+}
+
+.externalLinkIcon[_ngcontent-pnd-c2] {
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 1000 1000" style="fill: rgb(53,122,226);"><path d="M640 768H128V257.90599999999995L256 256V128H0v768h768V576H640V768zM384 128l128 128L320 448l128 128 192-192 128 128V128H384z"/></svg>')
+    no-repeat;
+  background-position-x: 50%;
+  cursor: pointer;
+  margin: 0px 7px;
+  padding: 10px;
+}
+
+/* label {
+  padding-top: 4px;
+} */
+
+button {
+  width: 100%;
+
+  background-size: 20px 20px;
+  background-repeat: no-repeat;
+  background-position: 90% center;
+}
+
+button:focus {
+  border: 1px solid pink;
+  -webkit-box-shadow: 10px 13px 11px -11px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 10px 13px 11px -11px rgba(0, 0, 0, 0.75);
+  box-shadow: 10px 13px 11px -11px rgba(0, 0, 0, 0.75);
+}
+
+.expiry-time {
+  width: 100px !important;
+}
+
+.app-calender:hover {
+  -webkit-box-shadow: 10px 13px 11px -11px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 10px 13px 11px -11px rgba(0, 0, 0, 0.75);
+  box-shadow: 10px 13px 11px -11px rgba(0, 0, 0, 0.75);
+}
+
+@media (min-width: 1300px) {
+  .expDateTime {
+    max-width: 29%;
+  }
+}
+@media (min-width: 1280) {
+  .customTime {
+  }
+}
+
+/* .order-entry-label {
+  color: var(--fontcolor);
+  display: flex;
+  justify-content: flex-end;
+}
+
+.striped {
+  background-color: whitesmoke;
+}
+.orderentry-row {
+  height: 60px;
+  align-items: center;
+}
+.orderentry-row select {
+  width: 100%;
+}
+.orderentry-row button {
+  width: 50%;
+}
+
+.orderentry-row-label,
+.label-in-row {
+  display: flex;
+  justify-content: flex-end;
+}
+
+
+.orderentry-field label {
+  padding: 10px;
+}
+
+@media (min-width: 1200px){
+  .label-in-row {
+    max-width: 9%;
+  }
+} */
+
+.customer-suggesstion-container {
+  position: relative;
+  background: #e2e2e2;
+  max-height: 145px;
+  overflow-y: auto;
+}
+
+.customer-list-item {
+  padding: 0 5px;
+  cursor: pointer;
+}
+
+.customer-list-hover,
+.customer-list:hover {
+  background: var(--fontcolor);
+  color: white;
+  margin-right: 2%;
+}
+
+.expirytype {
+  float: left;
+  margin-left: -8.5%;
+  padding: 0 0 0 0.2em;
+}
+
+@media screen and (max-width: 1675) and(min-width:1326) /* 75% */ {
+  .expirytype {
+    float: left;
+    margin-left: -8.5%;
+    padding: 1em;
+  }
+}
+
+.one-column {
+  display: grid;
+  grid-template-columns: 200px 5fr;
+  gap: 20px;
+  line-height: 35px;
+}
+
+.two-column {
+  display: grid;
+  grid-template-columns: 200px 1fr 200px 1fr;
+  gap: 20px;
+  line-height: 35px;
+}
+
+app-calender-control .mat-calendar {
+  height: 35px !important;
+}
+/* Added by Uddesh on Feb 22, 2022 */
+.bg {
+  border-radius: 4px;
+  background-color: var(--input-bg);
+  width: 100%;
+  color: var(--text);
+  height: 35px;
+  text-align: left;
+  padding-left: 10px;
+}

@@ -1,0 +1,20 @@
+<div class="notification-stack" >
+    <div *ngFor="let item of NotificationsStack; let i = index">
+        <div class="toast toast-color" *ngIf="item.showNotification" id="notification"
+            [ngClass]="{'warning-toast': item.NotificationType === 'Warning', 'success-toast': item.NotificationType === 'Success', 'failure-toast': item.NotificationType === 'Failure', 'error-toast': item.NotificationType === 'Error'}">
+            <div class="toast-header">
+                <div> <label class="header-label" >{{ item.NotificationType }}</label> <small
+                        style="margin-left: 5px;">{{item.DateandTime}}</small></div>
+                <app-svg-icons class="closebtnEQC" [icon]="'cancel-icon'" [width]="'15'" [height]="'15'"
+                    (click)="fnCloseNotification(i)">
+                </app-svg-icons>
+            </div>
+            <div class="toast-body">
+                <label>{{item.bodyNotification}}</label>
+            </div>
+            <div class="toast-button">
+                <button class="button ok-button" (click)="fnClosepopuponButton(i)">OK</button>
+            </div>
+        </div>
+    </div>
+</div>

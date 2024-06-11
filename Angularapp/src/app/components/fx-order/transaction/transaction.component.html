@@ -1,0 +1,31 @@
+<div class="neworderentryComponent">
+  <div class="transaction-header">
+    <app-svg-icons class="back-button" [icon]="'back-button'" [width]="'40'" [height]="'40'" [fill]="'var(--text)'" (click)="back()">
+    </app-svg-icons>
+    <div class="page-title">Transactions</div>
+  </div>
+  <div class="main-container">
+    <div class="content-container">
+      <div class="tabs-pages">
+        <div class="tabs" *ngIf="newTradeFlag" style="justify-content: flex-start;padding-left: 20px;"
+          [ngClass]="{'tab-active': this.newtransaction}">New Transaction Details</div>
+        <!-- (click)="changeProduct('newtransaction'); this.commonfunction.changeTab('TransactionShow');this.apifunction.FXOBestPriceTransaction.next([]);" -->
+        <div class="tabs" *ngIf="!newTradeFlag" [ngClass]="{'tab-active': this.blotter}"
+          (click)="changeProduct('blotter'); this.commonfunction.disablePopUp(false);loadBlotter();">Transaction History
+        </div>
+        <div class="tabs" *ngIf="!newTradeFlag" [ngClass]="{'tab-active': this.maturing}"
+          (click)="changeProduct('maturing'); this.commonfunction.disablePopUp(false);loadBlotter();">Maturing
+          Transaction</div>
+      </div>
+      <div *ngIf="this.newtransaction && newTradeFlag">
+        <app-newtransaction></app-newtransaction>
+      </div>
+      <div *ngIf="this.blotter && !newTradeFlag">
+        <app-spotforwardblotter> </app-spotforwardblotter>
+      </div>
+      <div *ngIf="this.maturing && !newTradeFlag">
+        <app-maturingtransaction></app-maturingtransaction>
+      </div>
+    </div>
+  </div>
+</div>

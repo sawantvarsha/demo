@@ -1,0 +1,293 @@
+<div class="main-grid-container " [ngClass]="{'overlay':showStage2Popup}">
+  <div class="news-container">
+    <div class="filter-container">
+      <app-svg-icons *ngIf="IsBackButtonEnabled" class="back-button" [icon]="'back-button'" [width]="'40'" [height]="'40'" [fill]="'var(--headers)'"
+      (click)="fnRedirectToHomePage();"></app-svg-icons>
+      <div class="form-group">
+        <!-- <input type="text" class="txt search" placeholder="Search" [(ngModel)]="search"> -->
+        <input type="text" class="txt search" placeholder="Search" name="search" [(ngModel)]="search">
+        <img style="width:20px;height:20px;" [src]="'http://'+domainURL+'/assets/search.png'">
+      </div>
+      <div class="filter-options-alignment-wrapper">
+        <div class="filter-options-wrapper">
+          <button class="filter-btn" [ngClass]="{'active':activeFilter === FilterAction.Recent}"
+            (click)="changeFilter(FilterAction.Recent)">Recent</button>
+          <button class="filter-btn" [ngClass]="{'active':activeFilter === FilterAction.Liked}"
+            (click)="changeFilter(FilterAction.Liked)">Liked</button>
+          <button class="filter-btn" [ngClass]="{'active':activeFilter === FilterAction.Recommended}"
+            (click)="changeFilter(FilterAction.Recommended)">Recommended</button>
+          <button class="filter-btn" [ngClass]="{'active':activeFilter === FilterAction.Popular}"
+            (click)="changeFilter(FilterAction.Popular)">Popular</button>
+        </div>
+      </div>
+    </div>
+    <div class="loader-container" *ngIf="LoadingFlag">
+      <div class="loader-center">
+        <div class="multi-ripple">
+          <div></div>
+          <div></div>
+        </div>
+      </div>
+      <!-- <img [src]="isProd ? 'assets/loading_dots.gif' : '../../assets/loading_dots.gif'" height="100px"
+          width="100px" /> -->
+    </div>
+    <div class="news-wrapper" *ngIf="!LoadingFlag">
+
+      <div class="news-item" *ngFor="let item of this.newsFiltered | searchNews:'Headline':search, let index = index"
+        [ngStyle]="{'display': getNewsDisplayStyle(item.NewsID)}" [ngClass]="getNewsSizeClass(item.NewsSize, index)">
+        <div class="news-item-image" *ngIf="item.ImageLink.length">
+          <img [src]="item.ImageLink" alt="Image not available" class="news-image">
+        </div>
+        <div class="news-details">
+          <div class="news-headline-wrapper">
+            <span class="news-headline" (click)="fillStage2Popup(item.NewsID)">{{item.Headline}}</span>
+            <div *ngIf="item.Recommend ==='Y'" class="recommended" data-tooltip="Recommended">
+              <img [src]="isProd?'assets/star.svg':'./../../assets/star.svg'">
+            </div>
+          </div>
+          <div class="news-publish-details">
+            <div class="news-time">
+              {{item.RelativeTime}}
+            </div>
+          </div>
+          <!-- <div class="news-description" *ngIf="item.NewsSize !== 'small'"> -->
+          <div class="news-description">
+            <span *ngIf="shouldShowNewsDescription(item, index)" [innerHTML]="item.NewsDescriptionShort">
+              <!-- {{item.NewsDescriptionShort}} -->
+            </span>
+          </div>
+          <div class="news-more-details-wrapper">
+            <div class="news-extras-wrapper">
+              <span class="like-wrapper" (click)="setNewsLikeAPI(item.Like, item.NewsID)">
+                <!-- <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 456.814 456.814" style="enable-background:new 0 0 456.814 456.814;"
+                xml:space="preserve" *ngIf="item.Like =='N'">
+                  <use href="#likeIcon"/>
+                </svg> -->
+                <!-- <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 456.814 456.814" style="enable-background:new 0 0 456.814 456.814;"
+                xml:space="preserve" *ngIf="item.Like =='Y'">
+                  <use href="#likedIcon"/>
+                </svg> -->
+                <div *ngIf="item.Like ==='N'">
+                  <app-svg-icons icon="{{'like'}}"></app-svg-icons>
+                </div>
+                <div *ngIf="item.Like ==='Y'">
+                  <app-svg-icons icon="{{'liked'}}"></app-svg-icons>
+                </div>
+
+                <!-- <img class="like-img" [src]="getLikeImage(item.Like)" /> -->
+                <!-- <span class="like-text">{{item.Like === 'N' ? 'Like' : 'Unlike'}}</span> -->
+                <span class="like-text">Like</span>
+              </span>
+              <span class="attachment-wrapper" *ngIf="item.Documents.length > 0 && showStage1Buttons === true"
+                (click)="fillAttachmentPopup(item.NewsID)">
+                <img class="attachment-img" [src]="isProd ? 'assets/attach.png' : './../../assets/attach.png'" />
+                <span class="attachment-text">Attachment</span>
+              </span>
+              <!-- <a style="color:var(--blue);" (click)="showPopup(item.Headline,item.List_Name);">
+                Products
+              </a> -->
+              <span class="product-wrapper" *ngIf="showStage1Buttons === true"
+                (click)="showPopup(item.Headline,item.List_Name);">
+                <img class="product-img" [src]="isProd ? 'assets/cart.png' : './../../assets/cart.png'" />
+                <span class="product-text">Products</span>
+              </span>
+            </div>
+            <div class="news-more-details">
+              <!-- <a style="color:var(--blue);" (click)="showPopup(item.Headline,item.List_Name);">
+                Products
+              </a> -->
+              <span (click)="fillStage2Popup(item.NewsID)"><u>Read more</u></span>
+              <!-- <a target="_blank" [href]="item.NewsLink">
+                Read more
+              </a> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="showStage2Popup">
+  <div class="stage2-popup-container">
+    <div class="stage2-popup-title-bar">
+      <div class="stage2-popup-headline-wrapper">
+        <div class="stage2-popup-headline-text">
+          {{stage2Headline}}
+        </div>
+        <div class="stage2-popup-news-time">
+          {{stage2Time}}
+        </div>
+      </div>
+      <div class="stage2-popup-close" (click)="clearStage2Popup()">
+        <img class="stage2-popup-close-img" [src]="isProd ? 'assets/close.png' : './../../assets/close.png'" />
+      </div>
+    </div>
+    <div class="stage2-content-wrapper">
+      <div class="stage2-news-image-wrapper" *ngIf="stage2ImageLink.length">
+        <img [src]="stage2ImageLink" alt="Image not available" class="stage2-news-image">
+      </div>
+      <div class="stage2-news-description" [innerHTML]="stage2Description">
+      </div>
+      <div class="blank" *ngIf="relatedNews.length === 0"></div>
+      <!-- <div class="stage2-related-links-wrapper" *ngIf="relatedNews.length > 0">
+        <div class="stage2-related-title">Related</div>
+        <div class="related-news-wrapper">
+          <div class="related-news" *ngFor="let item of relatedNews;" (click)="fillStage2Popup(item.NewsID)">
+            <div class="related-news-item-image-wrapper" *ngIf="item.ImageLink.length">
+              <img [src]="item.ImageLink" alt="Image not available" class="related-news-image">
+            </div>
+            <div class="related-news-headline">
+              {{item.Headline}}
+            </div>
+          </div>
+        </div>
+      </div> -->
+      <div class="stage2-news-extras-wrapper">
+        <div class="news-extras-wrapper">
+          <span class="like-wrapper" (click)="setNewsLikeAPI(stage2Like, stage2NewsId)">
+            <div *ngIf="stage2Like ==='N'">
+              <app-svg-icons icon="{{'like'}}"></app-svg-icons>
+            </div>
+            <div *ngIf="stage2Like ==='Y'">
+              <app-svg-icons icon="{{'liked'}}"></app-svg-icons>
+            </div>
+            <!-- <img class="like-img" [src]="getLikeImage(stage2Like)" /> -->
+            <!-- <span class="like-text">{{item.Like === 'N' ? 'Like' : 'Unlike'}}</span> -->
+            <span class="like-text">Like</span>
+          </span>
+          <span class="attachment-wrapper" *ngIf="stage2Documents.length > 0 && showStage2Buttons === true"
+            (click)="fillAttachmentPopup(stage2NewsId)">
+            <img class="attachment-img" [src]="isProd ? 'assets/attach.png' : './../../assets/attach.png'" />
+            <span class="attachment-text">Attachment</span>
+          </span>
+          <!-- <a style="color:var(--blue);" (click)="showPopup(item.Headline,item.List_Name);">
+            Products
+          </a> -->
+          <!-- <span class="product-wrapper" *ngIf="showStage2Buttons === true"
+            (click)="showPopup(stage2Headline, stage2ProductList);">
+            <img class="product-img" [src]="isProd ? 'assets/cart.png' : './../../assets/cart.png'" />
+            <span class="product-text">Products</span>
+          </span> -->
+        </div>
+        <a class="stage2-external-link" target="_blank" [href]="stage2ExternalLink">
+          Read Full
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" *ngIf="showAttachmentsPopup">
+  <div class="attachments-popup-container">
+    <div class="attachments-popup-title-bar">
+      <div class="attachments-popup-title">Attachments
+        (<span class="attachments-popup-count">{{attachmentCount}}</span>)
+      </div>
+      <div class="attachments-popup-close" (click)="clearAttachmentPopup()">
+        <img class="attachments-popup-close-img" [src]="isProd ? 'assets/close.png' : './../../assets/close.png'" />
+      </div>
+    </div>
+    <div class="attachment-files-wrapper">
+      <div class="attachment-file" *ngFor="let file of attachmentFiles">
+        <a class="attachment-file-link" [href]="file.Link" target="_blank"
+          rel="noopener noreferrer">{{file.Filename}}</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div id="filters">
+  <div class="rmwFilterSection">
+
+    <div class="popupheader">
+      <div class="popuptd" style="width:100%;border-radius: 10px 10px 0px 0px; margin-top:10px">
+        <p style="color:var(--blue);padding: 5px 10px;">{{this.headline}}</p>
+      </div>
+      <div (click)="showProductDetail()" style="margin-top:10px">
+        <!-- <label *ngIf="!productDetailFlag">More Details... </label> -->
+        <!-- <label *ngIf="productDetailFlag" style="color:red;">Less Details... </label> -->
+
+        <button *ngIf="!productDetailFlag" class="btnMoreDetails" type="button" title="Details">
+          <svg class="moreDetailsicon" focusable="false" viewBox="0 0 24 24">
+            <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path>
+          </svg>
+
+        </button>
+
+        <button *ngIf="productDetailFlag" class="btnMoreDetails" type="button" title="List">
+          <svg class="moreDetailsicon" focusable="false" viewBox="0 0 24 24">
+            <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"></path>
+          </svg>
+        </button>
+      </div>
+      <div class="btnClose" style="margin-top: 10px;font-weight: 500;font-size:medium;padding-top: 2px;"
+        (click)="hidePopup()">
+        X
+      </div>
+    </div>
+
+    <div id="productCardDiv"
+      [ngClass]="RMWBondProductDetailsArr.length === 1 ? 'singleproductCardDiv' : 'productCardDiv'"
+      *ngIf="!productDetailFlag">
+      <div style="margin-right: 15px;" *ngFor="let d of RMWBondProductDetailsArr;">
+        <!-- <div class="templateDiv" *ngIf="d.Template_Code === 'Bonds'">Bonds</div>
+        <div class="templateDiv" *ngIf="d.Template_Code === 'Fund_Setup'" style="background-color:#6897b2d6;">Mutual
+          Funds</div>
+        <div class="templateDiv" *ngIf="d.Template_Code === 'FCNMemory'" style="background-color:#566c7abf;">EQ
+          Autocallable Note</div> -->
+
+        <div id="card1" class="box-container">
+          <div class="inner-table-title">
+            <div style="text-align: center;margin: 15px;">
+              <img style="width:100px;height:100px;" [src]="isProd?'assets/bonds.png':'./../../assets/bonds.png'"
+                *ngIf="d.Template_Code === 'Bonds'">
+              <img style="width:100px;height:100px;"
+                [src]="isProd?'assets/mutual-funds.png':'./../../assets/mutual-funds.png'"
+                *ngIf="d.Template_Code === 'Fund_Setup'">
+              <img style="width:100px;height:100px;" [src]="isProd?'assets/autocall.png':'./../../assets/autocall.png'"
+                *ngIf="d.Template_Code === 'FCNMemory'">
+            </div>
+            <div style="text-align: center;">
+              <label class="rmwdiv" style="border:none;font-weight: 500;">
+                {{ d.Product_Name }} ({{ d. ISIN }})
+              </label>
+            </div>
+            <div style="text-align: center;" *ngIf="d.Template_Code === 'Bonds'">
+              <label class="rmwtableheader" style="border-bottom: none;">Issuer: <span
+                  class="rmwtabledata">{{d.Issuer_Name}}</span></label>
+            </div>
+            <div style="text-align: center;" *ngIf="d.Template_Code === 'Bonds'">
+              <label>
+                <span class="rmwtableheader" style="border-bottom: none;">S&P: </span><span
+                  class="rmwtabledata">{{d.Misc1}}&nbsp;</span>
+                <span class="rmwtableheader" style="border-bottom: none;">Moody's: </span><span
+                  class="rmwtabledata">{{d.Curve_Code}}&nbsp;</span>
+                <span class="rmwtableheader" style="border-bottom: none;">Fitch </span><span
+                  class="rmwtabledata">{{d.Bond_Fitch_Rating}}&nbsp;</span></label>
+            </div>
+            <div style="text-align: center;" *ngIf="d.Template_Code === 'Fund_Setup'">
+              <label class="rmwtableheader" style="text-align: left; border-bottom: none;">Category: <span
+                  class="rmwtabledata" *ngIf="d.Template_Code === 'Fund_Setup'"> {{d.Remarks}} </span></label>
+            </div>
+            <div style="text-align: center;" *ngIf="d.Template_Code === 'Fund_Setup'">
+              <label class="rmwtableheader" style="border-bottom: none; text-align: left;"
+                *ngIf="d.Template_Code === 'Fund_Setup'">Min Initial Investement: <span
+                  class="rmwtabledata">{{d.Minimum_Investment_Amount | number:'1.2-2'}}</span></label>
+            </div>
+            <div style="text-align: center;" *ngIf="d.Template_Code === 'FCNMemory'">
+              <label class="rmwtableheader" style="text-align: left; border-bottom: none;">Underlying: <span
+                  class="rmwtabledata"> {{d.Asset}} </span></label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div id="rmwbondDiv" class="rmwbondDiv" *ngIf="productDetailFlag">
+      <!-- <app-rmwbond [RMWBondProductDetailsArr]="RMWBondProductDetailsArr" [popupFlag]="popupFlag" [ListName]="ListName">
+      </app-rmwbond> -->
+    </div>
+  </div>
+</div>

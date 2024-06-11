@@ -1,0 +1,97 @@
+<div *ngIf="showOrderPlacement">
+  <div>
+    <button class="button" (click)="BulkOrderPlacement()"> Place Orders(s)</button>
+    
+  </div>
+
+  <div>
+    <label class="sub-Section-title"> Bulk Order Booking </label>
+  </div>
+
+  <div>
+    <br>
+    <table>
+      <tr>
+        <th> </th>
+        <th> Trading Action </th>
+        <th> ISIN </th>
+        <th> Security Code </th>
+        <th> Security </th>
+        <th> Currency </th>
+        <th> Nominal </th>
+        <th> Portfolio </th>
+        <th> Account No. </th>
+        <th> status </th>
+      </tr>
+
+      <tr *ngFor="let item of securityListArray; let i = index;" >
+        <td> 
+          <button class="bg btnPtr" 
+          (click)="loadflag=true;PlaceOrder(i, item.AssetType);"         
+          [ISIN_PO]="this.ISIN_PO"
+          > Place Order </button> <!-- "placeOrder(i, item.Action, 'Bonds Investment', item)" -->
+        </td>
+        
+        <td> {{item.Action}}  </td>
+        
+        <td> {{item.ISIN}} </td>
+        
+        <td> {{item.SecurityCode}} </td>
+        
+        <td> {{item.Security}} </td>
+        
+        <td> {{item.Currency}} </td>
+        
+        <td> {{item.Nominal}} </td>
+
+        <td>
+          <select 
+          [(ngModel)]="item.Portfolio" 
+          (ngModelChange)="changedPortfolio($event, i)" 
+          name="fieldName"
+          ngDefaultControl>
+
+            <option *ngFor="let x of PortfoliosDropdown" value="{{x}}" > {{x}} </option>
+          </select> 
+        </td>
+        
+        <td>
+          <select 
+          [(ngModel)]="item.AccountNo" 
+          name="fieldName"
+          ngDefaultControl>
+
+            <option  *ngFor="let y of item.AccountNo_dd" value="{{y}}" > {{y}} </option>
+          </select> 
+        </td>
+        
+        <td  
+        [(ngModel)]="item.statusMsg" 
+        value="{{item.statusMsg}}" 
+        name="fieldName" 
+        ngDefaultControl>  {{item.statusMsg}} </td>
+
+        <!-- <td>
+          <div *ngIf="status[i] === '' " ></div>
+
+          <div *ngIf="status[i] !== '' " > {{status[i]}}</div>
+        </td> -->
+      
+        <!-- <td>
+          <div *ngIf="!loadflag">
+            {{successMsg}}
+        </div>
+        </td> -->
+
+      </tr>
+    </table>
+    <div class="fund-message-row">
+
+      <div *ngIf="!loadflag">
+          {{successMsg}}
+      </div>
+  </div>
+  </div>
+
+</div>
+  

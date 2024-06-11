@@ -1,0 +1,24 @@
+/* For field names selection list */
+.mat-list-base .mat-list-item, .mat-list-base .mat-list-option {
+    height: 25px;
+}
+
+::ng-deep .mat-list-base .mat-list-item .mat-list-item-content-reverse, .mat-list-base .mat-list-option 
+    .mat-list-item-content-reverse {
+    display: inline-flex !important;
+    flex-direction: inherit !important;
+    padding: 0px;
+}
+
+::ng-deep .mat-pseudo-checkbox {
+    margin-right: 5px;
+}
+
+::ng-deep .mat-pseudo-checkbox-checked {
+    background-color: #656565 !important;
+}
+
+::ng-deep .mat-list-item-disabled {
+    background-color: #f5f5f5;
+}
+/* End for field names selection list */

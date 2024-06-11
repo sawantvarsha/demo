@@ -1,0 +1,71 @@
+<div *ngIf="loader" class="pageOverlay">
+  <div class="loader-center">
+    <div class="multi-ripple">
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+</div>
+<div class="flexContainer">
+  <div class="chart-title" style="font-family: 'Roboto';">
+    <button class="button margin-x" (click)='this.updateScaleXValues("External")'
+      [ngClass]="{'ChartSelected': selectedXValues != 'External'}">External</button>
+    <button class="button margin-x" (click)='this.updateScaleXValues("Underlyings")'
+      [ngClass]="{'ChartSelected': selectedXValues != 'Underlyings'}">Underlyings</button>
+
+    <input *ngIf="userInputDisplay" type="text" id="userInput" maxlength="32" [(ngModel)]="inputString">
+    <button *ngIf="userInputDisplay" class="submit button"
+      (click)="pinChart($event,'Greeks chart by ISIN')">Submit</button>
+  </div>
+  <div class="sortButtonBox">
+    <button class="button margin-x" (click)='this.changeChart("delta")'
+      [ngClass]="{'ChartSelected': selectedChart != 'delta'}">Delta</button>
+    <button class="button margin-x" (click)='this.changeChart("gamma")'
+      [ngClass]="{'ChartSelected': selectedChart != 'gamma'}">Gamma</button>
+    <button class="button margin-x" (click)='this.changeChart("vega")'
+      [ngClass]="{'ChartSelected': selectedChart != 'vega'}">Vega</button>
+
+    <!-- <input id="colorpicker" type="color" list="preferredlist" [(ngModel)]="color" (ngModelChange)="onColorChange($event)">
+    <datalist id="preferredlist">
+      <option>#5f72bf</option>
+      <option>#aa5555</option>
+      <option>#255272</option>
+      <option>#a55fbf</option>
+      <option>#6d97bf</option>
+    </datalist>    -->
+
+    <!-- <div class="button-group"><span
+      style="float: right; margin-right: 10px; transform: rotate(45deg);" (click)="userInputDisplay=true"
+     ><span class="material-icons" style='color: var(--sub-header-lcm)'>push_pin</span></span></div> -->
+  </div>
+</div>
+<div *ngIf="copied" ><span class="copied">External copied to clipboard<span>
+</span></span></div>
+
+<!-- <div class="chart-container" >
+  <canvas id="greek-lcm" style="width: 100%;height:100%" #chart>{{chart}}</canvas>
+</div> -->
+<div class="chart-container">
+  <!-- <div class="chart"><canvas id="greek-lcm-delta" #deltachart>{{chart}}</canvas></div>  
+    <div class="chart"><canvas id="greek-lcm-vega"  #vegachart>{{chart1}}</canvas></div>
+    <div class="chart"><canvas id="greek-lcm-gamma" #gammachart>{{chart2}}</canvas></div>   -->
+
+  <div [ngClass]="{'ViewC': selectedChart != 'delta'}" class="chart"><canvas id="greek-lcm-delta"
+      #deltachart>{{chart}}</canvas></div>
+  <div [ngClass]="{'ViewC': selectedChart != 'gamma'}" class="chart"><canvas id="greek-lcm-gamma"
+      #vegachart>{{chart1}}</canvas></div>
+  <div [ngClass]="{'ViewC': selectedChart != 'vega'}" class="chart"><canvas id="greek-lcm-vega"
+      #gammachart>{{chart2}}</canvas></div>
+</div>
+<div class="pagination-bar">
+  <ul class="pagination" *ngIf='totalPages'>
+    <li (click)="changePage(1)" [class.disabled]="currentPage === 1">First</li>
+    <li (click)="changePage(currentPage - 1)" [class.disabled]="currentPage === 1">Prev</li>
+    <li (click)="changePageRange('prev')" [class.disabled]="CurrentStartPage -20 < 0">...</li>
+    <li *ngFor="let page of pages" (click)="changePage(page)" [class.active]="currentPage === page">{{ page }}</li>
+    <li (click)="changePageRange('next')" [class.disabled]="CurrentEndPAge + 20 > totalPages ">...</li>
+    <li (click)="changePage(currentPage + 1)" [class.disabled]="currentPage === totalPages">Next</li>
+    <li (click)="changePage(totalPages)" [class.disabled]="currentPage === totalPages">Last</li>
+    </ul>
+
+</div>

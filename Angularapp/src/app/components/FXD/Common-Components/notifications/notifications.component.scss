@@ -1,0 +1,145 @@
+.notification-stack {
+    display: flex;
+    // position: absolute;
+    position: fixed; //Added change for LGTCLI - 221
+    top: 20px;
+    right: 20px;
+    flex-direction: column;
+    // row-gap: 10px;
+    z-index: 9999;
+    //  animation: startAnimation;
+    // animation-duration: 3s;
+}
+
+.toast {
+    // position: absolute;
+    // top: 20px;
+    // right: 20px;
+
+    min-height: 80px;
+    width: 400px;
+    border-radius: 5px;
+    padding: 5px;
+    animation: startAnimation;
+    animation-duration: 1s;
+    padding: 10px;
+    margin-top: 10px;
+}
+
+.warning-toast {
+    box-shadow: 0px 0px 0px 1px var(--active) !important;
+}
+
+.success-toast {
+    box-shadow: 0px 0px 0px 1px limegreen !important;
+}
+
+.error-toast {
+    box-shadow: 0px 0px 0px 1px var(--red) !important;
+}
+
+.failure-toast {
+    box-shadow: 0px 0px 0px 1px var(--red) !important;
+}
+
+@-webkit-keyframes startAnimation {
+    0% {
+        right: -100px;
+    }
+
+    20% {
+        right: -80px;
+    }
+
+    40% {
+        right: -60px;
+    }
+
+    60% {
+        right: -40px;
+    }
+
+    80% {
+        right: -10px;
+    }
+
+    100% {
+        right: 20px;
+    }
+}
+
+.toast-header {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    border-bottom: 1px solid dimgrey;
+    padding-bottom: 5px;
+}
+
+.toast-color {
+    color: var(--text);
+    background-color: var(--setting-box);
+    // box-shadow: 0 0 10px 1px var(--gray);
+    // background-color: #33b5e5;
+}
+
+.toast-button {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+
+    button {
+        background: #3f3f3f;
+        width: 50px;
+        height: 25px;
+        color: var(--button-text) !important;
+    }
+
+    .ok-button :hover {
+        background: var(--green);
+    }
+}
+
+.toast-body {
+    padding: 10px 0px;
+    font-size: 13px;
+    overflow-wrap: break-word;
+}
+
+h1 {
+    color: green;
+}
+
+.header-label {
+    font-size: 20px;
+}
+
+// --- START--- Added change for LGTCLI - 221
+@media only screen and (min-width: 940px) and (max-width : 1253px) {
+    .toast {
+        width: calc(100vw - 70vw);
+    }
+
+}
+
+@media only screen and (min-width: 1253px) and (max-width : 1440px) {
+    .toast {
+        width: calc(100vw - 75vw);
+    }
+
+}
+
+@media only screen and (min-width: 1440px) {
+    .toast {
+        width: calc(100vw - 75vw);
+    }
+}
+
+@media only screen and (max-width : 940px) {
+    .toast {
+        width: calc(100vw - 65vw);
+    }
+
+}
+
+
+// --- END--- Added change for LGTCLI - 221

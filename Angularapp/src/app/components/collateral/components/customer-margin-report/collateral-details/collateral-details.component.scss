@@ -1,0 +1,15 @@
+.collateral-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 0px;
+    position: relative;
+}
+
+.google-chart {
+    // position: absolute;
+    height: 100%;
+}
+
+.collateral {
+    width: 100%;
+}

@@ -1,0 +1,406 @@
+
+.contain {
+    background: var(--lightgrey);
+    padding-top: 1em;
+    height: 100%;
+}
+
+.statusbar {
+    background: var(--containers);
+    padding: 0.2em;
+    /* border: 1.65px solid #e6e6e6; */
+    border-radius: 4px;
+    box-shadow: var(--box-shadow-thin);
+}
+
+.bluelabel {
+    color: #1385b3;
+    font-size: 0.8em;
+    font-weight: 500;
+}
+
+.blacklabel {
+    color: var(--darkgrey);
+    font-size: 0.8em;
+    font-weight: 500;
+}
+
+.cardtop {
+    /* margin-top: 1.5em; */
+    padding: 0px !important;
+}
+
+.plusdiv {
+    border: 1px solid #e8e8e8;
+    text-align: center;
+    padding-top: 6em;
+    padding-bottom: 6em;
+}
+
+.ccybox {
+    float: left;
+    width: 6em;
+    height: 2.1em;
+    margin-left: 0.5em;
+    /* background: #ccc; */
+    margin-top: 0.5em;
+    padding: 0.2em;
+    padding-left: 0.5em;
+    border: 1px var(--tiles) solid;
+    cursor: pointer;
+    background: var(--midgrey);
+    font-size: 1em;
+    font-weight: 400;
+    
+}
+
+.btn_refresh {
+    width: 7em;
+    /* background: var(--mustard-yellow); */
+    border: none;
+    height: 2em;
+    /* color: var(--alphacolor); */
+    font-weight: 599;
+    font-size: 1.1em;
+}
+
+.btn_refresh :hover {
+    background-color: #357ae2;
+}
+
+#lightbox_area {
+    left: 35%;
+    position: fixed;
+    background: #fff;
+    width: 34em;
+    border: 1px solid var(--fontcolor);
+    z-index: 1000;
+    /* height: 11em; */
+    top: 35%;
+}
+
+.radioButton {
+    display: block;
+    position: relative;
+    padding-left: 35px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-size: 22px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+
+/* Hide the browser's default radio button */
+
+.radioButton input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+}
+
+
+/* Create a custom radio button */
+
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 16px;
+    width: 16px;
+    border: solid 1px var(--fontcolor);
+    border-radius: 50%;
+}
+
+.header {
+    background-color: var(--fontcolor);
+    text-align: center;
+    color: white;
+    padding: 2%;
+    padding-left: 5%;
+}
+
+
+/* Create the indicator (the dot/circle - hidden when not checked) */
+
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+
+/* Show the indicator (dot/circle) when checked */
+
+.radioButton input:checked~.checkmark:after {
+    display: block;
+}
+
+
+/* Style the indicator (dot/circle) */
+
+.radioButton .checkmark:after {
+    top: 2.1px;
+    left: 2.3px;
+    width: 9px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--fontcolor);
+}
+
+@media screen and (max-width: 568px) {
+    .resclass {
+        padding: 0;
+        padding-top: 1em !important;
+    }
+}
+
+@media screen and (min-width: 1200px) {
+    .container,
+    .container-lg,
+    .container-md,
+    .container-sm,
+    .container-xl {
+        max-width: 1158px;
+    }
+}
+
+.container {
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.row {
+    display: -webkit-box;
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
+}
+
+@media screen and (min-width: 992px) {
+    .col-lg-4 {
+        -webkit-box-flex: 0;
+        flex: 0 0 33.333333%;
+        max-width: 33.333333%;
+    }
+}
+
+@media screen and (min-width: 768px) {
+    .col-md-6 {
+        -webkit-box-flex: 0;
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+}
+
+@media screen and (min-width: 576px) {
+    .col-sm-12 {
+        -webkit-box-flex: 0;
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+    .col-sm-10 {
+        -webkit-box-flex: 0;
+        flex: 0 0 83.333333%;
+        max-width: 83.333333%;
+    }
+}
+
+.col,
+.col-1,
+.col-10,
+.col-11,
+.col-12,
+.col-2,
+.col-3,
+.col-4,
+.col-5,
+.col-6,
+.col-7,
+.col-8,
+.col-9,
+.col-auto,
+.col-lg,
+.col-lg-1,
+.col-lg-10,
+.col-lg-11,
+.col-lg-12,
+.col-lg-2,
+.col-lg-3,
+.col-lg-4,
+.col-lg-5,
+.col-lg-6,
+.col-lg-7,
+.col-lg-8,
+.col-lg-9,
+.col-lg-auto,
+.col-md,
+.col-md-1,
+.col-md-10,
+.col-md-11,
+.col-md-12,
+.col-md-2,
+.col-md-3,
+.col-md-4,
+.col-md-5,
+.col-md-6,
+.col-md-7,
+.col-md-8,
+.col-md-9,
+.col-md-auto,
+.col-sm,
+.col-sm-1,
+.col-sm-10,
+.col-sm-11,
+.col-sm-12,
+.col-sm-2,
+.col-sm-3,
+.col-sm-4,
+.col-sm-5,
+.col-sm-6,
+.col-sm-7,
+.col-sm-8,
+.col-sm-9,
+.col-sm-auto,
+.col-xl,
+.col-xl-1,
+.col-xl-10,
+.col-xl-11,
+.col-xl-12,
+.col-xl-2,
+.col-xl-3,
+.col-xl-4,
+.col-xl-5,
+.col-xl-6,
+.col-xl-7,
+.col-xl-8,
+.col-xl-9,
+.col-xl-auto {
+    position: relative;
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+.container-fluid,
+.container-lg,
+.container-md,
+.container-sm,
+.container-xl {
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+    overflow: scroll;
+}
+
+.statusbar-grid {
+    display: grid;
+    /* grid-template-columns: 4fr 1fr; */
+    gap: 20px;
+    width: 100%;
+    max-width: 1200px;
+}
+
+.statusbar-inner {
+    display: flex;
+}
+
+.pairs-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+}
+
+.container {
+    position: relative;
+}
+
+.price-popup-overlay {
+    background-color: #33373f91;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 10;
+    left: 10;
+    z-index: 999;
+    margin-left: 10px;
+}
+
+.price-popup {
+    max-width: 40%;
+    height: fit-content;
+    position: absolute;
+    background-color: white;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.price-popup .top-row {
+    display: flex;
+    justify-content: flex-end;
+    height: 30px;
+    padding: 0 5px;
+}
+
+.price-popup .LP-content {
+    padding: 10px;
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    padding: 0 5px;
+}
+
+.price-popup .singleLP {
+    height: 180px;
+    width: 120px;
+    margin: 5px;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--border);
+    justify-content: space-around;
+    align-items: center;
+    border-radius: 5px;
+    box-shadow: var(--box-shadow-thin);
+}
+
+.price-popup .singleLP:nth-child(1) {
+    background-color: #f5f5f5;
+    box-shadow: var(--box-shadow);
+}
+
+.cancel-icon {
+    float: right;
+    padding: 0px !important;
+    min-width: 21px !important;
+    min-height: 20px !important;
+    /* // margin:-7px -8px -20px 10px !important; */
+    background: url(https://52.187.114.119/assets/cancel.png) no-repeat scroll calc(50%) center/16px auto !important;
+    background-size: 100% 100%;
+    background-position-x: center;
+    background-position-y: center;
+    background-repeat: no-repeat;
+    margin: -5px;
+    cursor: pointer;
+    filter: grayscale(1) brightness(1.5);
+}
+
+.SelectorBox {
+    width: 40% !important;
+    margin-left: -8px;
+}
+.msg{
+    position: absolute;
+    top: 10%;
+    float: left;
+    /* right: 59px; */
+    left: 30%;
+}

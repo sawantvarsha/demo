@@ -1,0 +1,90 @@
+<div class="regularinvestment-component">
+    <div class="page-title">My Contributions</div>
+    <div class="content">
+        <div class="content-totalcontribution">
+            <div class="text">
+                <span class="bold"> Total Contribution : &nbsp;</span> <span class="small">&nbsp; USD </span> {{USDEqv | number:'1.2-2' }}<span class="small">&nbsp;&nbsp; As of {{today}}</span>
+            </div>
+        </div>
+        <div class="content-filter">
+            <div class="date-lbl">
+                <div class="lbl">From </div>
+                <input type="date" name="FromDate" id="FromDate" class="input-dob" [attr.data-date]="FromDate" data-date-format="DD-MMM-YYYY" tabindex="16" min="2000-01-01" [(ngModel)]="FromDate" (change)="selectFromDate(FromDate);">
+            </div>
+            <div class="date-lbl">
+                <div class="lbl">To </div>
+                <input type="date" name="ToDate" id="ToDate" class="input-dob" [attr.data-date]="ToDate" data-date-format="DD-MMM-YYYY" tabindex="16" min="2000-01-01" [(ngModel)]="ToDate" (change)="selectToDate(ToDate);">
+            </div>
+            <div class="content-container-button">
+                <input class="button" type="button" value="Load" (click)="Generate()">
+            </div>
+            <div class="icon">
+                <div class="pdf-icon"></div>
+                <div class="xls-icon" (click)="ExportToExcel();"></div>
+                </div>
+        </div>
+        <div class="content-container" *ngIf="!IsLoading && blotter.length > 0">
+            <table id="excel-table">
+                <thead>
+                    <tr>
+                        <th class="maxwidth100 ">Event date</th>
+                        <th class="maxwidth100">Settlement date</th>
+                        <th class="minwidth600 ">Product</th>
+                        <th class="maxwidth120 ">Currency</th>
+                        <th class="maxwidth150 ">Amount</th>
+                        <th class="maxwidth100 ">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let arr of blotter">
+
+                        <td class="center maxwidth100">{{arr.RISPaymentSchedule[2].Value | date:'dd-MMM-yyyy'}}</td>
+                        <td class="center maxwidth100">{{arr.RISPaymentSchedule[3].Value | date:'dd-MMM-yyyy'}}</td>
+                        <td class=" minwidth600 ">{{arr.RISPaymentSchedule[0].Value}}</td>
+                        <td class="center maxwidth120 ">{{arr.RISPaymentSchedule[6].Value}}</td>
+                        <td class="right maxwidth150">{{arr.RISPaymentSchedule[7].Value | number:'1.2-2'}}</td>
+                        <td class="center maxwidth100 ">{{arr.RISPaymentSchedule[5].Value}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="content-container" *ngIf="blotter.length === 0">
+            No data available.
+        </div>
+        <div class="loaderdiv" *ngIf="IsLoading && blotter.length!==0">
+            <img [src]="isProd?'assets/loading_dots.gif':'../../assets/loading_dots.gif'" height="100px" width="100px">
+        </div>
+    </div>
+
+    <!-- <div class="content-container" *ngIf="!IsLoading && blotter.length > 0">
+        <table id="excel-table">
+            <thead>
+                <tr>
+                    <th class="maxwidth100 ">Event date</th>
+                    <th class="maxwidth150">Settlement date</th>
+                    <th class="minwidth600 ">Product</th>
+                    <th class="maxwidth120 ">Currency</th>
+                    <th class="maxwidth150 ">Amount</th>
+                    <th class="maxwidth100 ">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let arr of blotter">
+
+                    <td class="center maxwidth100">{{arr.RISPaymentSchedule[2].Value | date:'dd-MMM-yyyy'}}</td>
+                    <td class="center maxwidth150">{{arr.RISPaymentSchedule[3].Value | date:'dd-MMM-yyyy'}}</td>
+                    <td class=" minwidth600 ">{{arr.RISPaymentSchedule[0].Value}}</td>
+                    <td class="center maxwidth120 ">{{arr.RISPaymentSchedule[6].Value}}</td>
+                    <td class="right maxwidth150">{{arr.RISPaymentSchedule[7].Value | number:'1.2-2'}}</td>
+                    <td class="center maxwidth100 ">{{arr.RISPaymentSchedule[5].Value}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="content-container" *ngIf="blotter.length === 0">
+        No data available.
+    </div>
+    <div class="loaderdiv" *ngIf="IsLoading">
+        <img [src]="isProd?'assets/loading_dots.gif':'../../assets/loading_dots.gif'" height="100px" width="100px">
+    </div> -->
+</div>

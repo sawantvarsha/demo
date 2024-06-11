@@ -1,0 +1,98 @@
+<div class="page-grid">
+
+    <div class="EventWatchWrapper">
+
+        <div class="SearchWrapperEW">
+            <div class="SearchBoxEW">
+                <label class="lbl" style="width: 140px;">Index Code</label>
+                <input id="indexSearch" [(ngModel)]="this.fastFrontendService.indexSearch"  class="indexSearch" type="text" (keydown.enter)="IndexMaster()" (change)="IndexMaster()"/>
+            </div>
+            <div class="SearchButtonsEW">
+                <input id="btnLoad" class=" btn btnLoadIM" width="80px" (click)="IndexMaster()" type="button" value="Load" />
+                <input id="btnE2E" class=" btn btnLoadIM" width="80px" type="button" value="Export" (click)="ExportToExcel('gvIndexMaster');" />
+            </div>
+        </div>
+
+        <div class="MonthsWrapperEW">
+            <div class="MonthsArrEW">
+                <label id="lnkPrevMon" class="PrevNext lblLinkprev" (click)="month_changed('P');"></label>
+                <ul class="filterMonth">
+                    <li *ngFor="let _month of this.fastFrontendService.months" [ngClass]="{'active': this.fastFrontendService.months[this.fastFrontendService.selectedMonth - 1].accesskey === _month.accesskey}" 
+                    [attr.accesskey]="_month.accesskey" (click)="month_changed(_month.accesskey)">
+                        {{_month.month}}
+                    </li>
+                </ul>
+                <label id="lnkNextMon" class="PrevNext lbllinkNext" (click)="month_changed('N');"></label>
+                <label id="lnkPrevYear" class="lblLinkprev" (click)="Year_changed('P');"></label>
+                <input type="text" id="txtYear" [(ngModel)]="this.fastFrontendService.selectedYear" style="width: 40px; " class="txt txtYear" readonly />
+                <label id="lnkNextYear" class="lbllinkNext" (click)="Year_changed('N');"></label>
+            </div>
+            <div class="paginationEW">
+                <label id="lnkPrev" class="PrevNext lblLinkprev" (click)="pageIndex_changed('P');"></label>
+                <input id="txtPageNo" [(ngModel)]="this.fastFrontendService.pageNo" class="pageNo" width="35px" type="text" value="1" readonly />
+                <label id="lnkNext" class="PrevNext lbllinkNext" (click)="pageIndex_changed('N');"></label>
+                <!-- <input type="checkbox" id="btnHide" value="Hide" checked="true" (click)="HideTable('PgName');">
+                <label for="btnHide">Show Blank Rows</label> -->
+            </div>
+        </div>
+
+        <div class="EventsDataEW">
+            <div *ngIf="this.fastFrontendService.showError" class="error">
+                {{this.fastFrontendService.errorMsg}}
+            </div>
+            <div class="pageload-overlay" *ngIf="pageloadflag">
+                <div>
+                    <svg version="1.1" id="L4" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
+                y="0px" [ngStyle]="{ width:  + '25px', height:  + '25px' }"
+                class="pageLoadSvg" viewBox="0 0 100 100" enable-background="new 0 0 0 0"
+                xml:space="preserve">
+                <circle stroke="#a1a1a1" cx="55" cy="23" r="1.4" stroke-width="0.1" fill="var(--icon-active-bg)">
+                    <animate attributeName="opacity" dur="2s" values="0;1;0" repeatCount="indefinite" begin="0.1" />
+                </circle>
+                <circle stroke="#a1a1a1" cx="55" cy="23" r="1.5" stroke-width="0.1" fill="var(--icon-active-bg)">
+                    <animate attributeName="opacity" dur="2s" values="0;1;0" repeatCount="indefinite" begin="0.1" />
+                </circle>
+                </svg>
+                </div>
+            </div>
+            <table *ngIf="!this.fastFrontendService.showError" id="gvIndexMaster" cellpadding="1" cellspacing="1" style="border-collapse: collapse; margin-left: 0;">
+                <thead>
+                    <tr>
+                        <th *ngFor="let header of columnTargetValues; let i = index">
+                            <div class="filter-grid">
+                                <span>{{header['displayName']}}</span>
+                                <img style="width: 13px; height: 10px; cursor: pointer; margin: auto;"
+                                    src="{{asseturl}}filter-icon.png" (click)="filterColumn(i);">
+                                <div class="filterbox" *ngIf="this.fastFrontendService.filterflag[i]">
+                                    <input placeholder="Filter By...." class="filter-search"
+                                         type="text" [(ngModel)]="this.fastFrontendService.filterObj[header['key']]">
+
+                                    <div class="filterlabelNew" (click)="showAscOrder(i)"><img
+                                            style="width: 13px; height: 13px; margin: auto;"
+                                            src="{{asseturl}}ascending.png"><label>Ascending</label></div>
+                                    <div class="filterlabelNew" (click)="showDescOrder(i)"><img
+                                            style="width: 13px; height: 13px; margin: auto;"
+                                            src="{{asseturl}}descending.png"><label>Descending</label></div>
+                                </div>
+                            </div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let event of (eventsData)">
+                        <td *ngFor="let header of columnTargetValues; let i = index">
+                            <ng-template [ngIf]="header['key'] === 'p'.concat(i)" [ngIfElse]="regularHeader">
+                                <label for="">{{ (event[header['key']]) !== 0 ? ( event[header['key']] | number : '1.2-2' ) : ''}}</label><br>
+                            </ng-template>
+                            <ng-template #regularHeader>
+                                <label for="">{{event[header['key']]}}</label>
+                            </ng-template>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+    </div>
+
+</div>

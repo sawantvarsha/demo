@@ -1,0 +1,85 @@
+/* changed by Amogh K | 4/4/2022 | styling changes */
+/* changed by Kaustubh S | 21/03/2023 | for editable datetime field :: START */
+.datetime-container{
+    display:flex;
+    position: relative;
+    align-items: center; 
+    color-scheme: var(--calendar-bg-theme);//Changed by Varsha G || 04-Apr-2023
+ }
+ /* changed by Kautubh S | 21/03/2023 | for editable datetime field :: END */
+ .date-icon{
+     width:2rem !important;
+ }
+ /* changed by Amogh K | 10May2022 | styling changes */
+ /* changed by Kaustubh S | 21/03/2023 | for editable datetime field :: START */
+ .display-date{
+    
+     border: solid 1px var(--btn-border);
+     border-right: 0px;
+     margin-right: 0 !important;
+     border-top-right-radius: 0 !important;
+     border-bottom-right-radius: 0 !important;
+     flex:1;  //change on 09 Jan 2023 by Ashwini H 
+     background-color: var(--date-bg-color);  //changed by Varsha G ||  25-Mar-2023
+ }
+ /* changed by Kaustubh S | 21/03/2023 | for editable datetime field :: END */
+ /* changed by Amogh K | 10May2022 | styling changes */
+ 
+ .hidden-datetime{
+    //  width: min-content !important;
+    width: 2.5em !important; //change on 09 Jan 2023 
+    z-index: 99;
+    //  position: absolute; /* changed by Kaustubh S | 21/03/2023 | for editable datetime field */
+    margin-right:0 !important;
+    border-bottom-left-radius: 0 !important;
+    border-top-left-radius: 0 !important;
+    border: solid 1px var(--btn-border);
+    border-left: 0px;
+ }
+ .hidden-date-container{
+     position: absolute;
+ }
+ img{
+     vertical-align: -webkit-baseline-middle;
+     margin: 0 auto;
+ }
+ .image-wrapper{
+     height: 100%;
+     width:2.5em !important;
+     text-align: center;
+     background: #eeeeee;
+     align-items: center;
+     border-top-right-radius: 0.2em;
+     display:flex;
+     flex-direction: row;
+     border-bottom-right-radius: 0.2em;
+ }
+ 
+ .hidden-datetime::-webkit-inner-spin-button,
+ .hidden-datetime::-webkit-calendar-picker-indicator {
+     /* display: none;
+     -webkit-appearance: none; */
+     margin:0;
+ }
+ .hidden-datetime::-webkit-datetime-edit {
+     display:none;
+ }
+ input{
+     box-sizing: border-box;
+ }
+
+ 
+input[type=date] {
+    margin-top: 0px !important;
+    background-color: var(--date-bg-color);  //Changed by Varsha G || 25-Mar-2023
+}
+
+.hidden-datetime:focus {
+    border: solid 1px var(--light-gray) !important;
+    // border-left: 0px !important;
+}
+
+.display-date:focus{
+    border: solid 1px var(--light-gray) !important;
+    // border-right: 0px !important;
+}

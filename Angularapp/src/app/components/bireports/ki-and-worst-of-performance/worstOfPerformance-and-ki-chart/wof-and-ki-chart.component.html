@@ -1,0 +1,86 @@
+<div *ngIf="loader" class="pageOverlay">
+  <div class="loader-center">
+    <div class="multi-ripple">
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+</div>
+<div class="flexContainer">
+  <div class="chart-title" style="font-family: 'Roboto'; ">
+    <!-- KI Distance(%) & Worst Of Performance (%) by ISIN -->
+    
+    <input *ngIf="userInputDisplay" type="text" id="userInput" maxlength="32"  [(ngModel)]="inputString">
+
+<button *ngIf="userInputDisplay" class="submit button" (click)="pinChart($event,'KI Distance(%) & Worst Of Performance (%) by ISIN')">Submit</button>
+  </div>
+
+  <div class="sortButtonBox">
+
+     <!-- <input id="colorpicker" type="color" list="preferredlist" [(ngModel)]="color" (ngModelChange)="onColorChange($event)">
+    <datalist id="preferredlist">
+      <option>#5f72bf</option>
+      <option>#aa5555</option>
+      <option>#255272</option>
+      <option>#a55fbf</option>
+      <option>#6d97bf</option>
+    </datalist> -->
+     <!-- <div class="button-group"><span
+      style="float: right; margin-right: 10px; transform: rotate(45deg);" (click)= "userInputDisplay=true"
+     ><span class="material-icons" style='color:var(--sub-header-lcm)'>push_pin</span></span></div> -->
+     
+    <!-- <div class="button-group" > -->
+      <!-- <button class="sort" (click)="display()">
+        <span class="material-icons">more_horiz</span>
+      </button> -->
+
+      <!-- <div class="menu" *ngIf="showDiv === 'true'"  >
+
+        <button class="sorting" (click)="filterData('Ascending')" style="text-align:center;">
+          <span class="tick" *ngIf="selectedOption === 'Ascending'">&#10003;</span> Sort Ascending</button>
+        <button class="sorting"  (click)="filterData('Descending')">
+          <span class="tick" *ngIf="selectedOption === 'Descending'">&#10003;</span> Sort Descending</button>
+
+        <div class="sub-menu">
+           <button  class="sorting" (click)="filterData1('ISIN')">
+        <span class="tick" *ngIf="selectedOption1 === 'ISIN'">&#10003;</span> ISIN
+      </button>
+      <button  class="sorting" (click)="filterData1('Trace_KI_Distance')">
+        <span class="tick" *ngIf="selectedOption1 === 'Trace_KI_Distance'">&#10003;</span> KI Distance (%)
+      </button>
+      <button  class="sorting" (click)="filterData1('WorstOfPerformance')" >
+        <span class="tick" *ngIf="selectedOption1 === 'WorstOfPerformance'">&#10003;</span> Worst Of Performance (%)
+      </button>
+      <button  class="sorting"  (click)="filterData1('NM_Airbag_PC')" >
+        <span class="tick" *ngIf="selectedOption1 === 'NM_Airbag_PC'">&#10003;</span> KI (%)
+      </button>
+      <button  class="sorting" (click)="filterData1('WorstOfUnderlying')" >
+        <span class="tick" *ngIf="selectedOption1 === 'WorstOfUnderlying'">&#10003;</span>Worst-of Underlying 
+      </button>
+      <button  class="sorting"  (click)="filterData1('Note_Master_ID')">
+        <span class="tick" *ngIf="selectedOption1 === 'Note_Master_ID'">&#10003;</span> Product Name
+      </button>
+        </div>
+
+      </div> -->
+    <!-- </div> -->
+  </div>
+</div>
+<div *ngIf="copied" ><span class="copied">External copied to clipboard<span>
+</span></span></div>
+
+<div class="chart-container">
+  <canvas id="ki-chart" style="width: 100%;height:100%" #chart>{{chart}}</canvas>
+</div>
+<div class="pagination-bar">
+  <ul class="pagination" *ngIf='totalPages'>
+    <li (click)="changePage(1)" [class.disabled]="currentPage === 1">First</li>
+    <li (click)="changePage(currentPage - 1)" [class.disabled]="currentPage === 1">Prev</li>
+    <li (click)="changePageRange('prev')" [class.disabled]="CurrentStartPage -20 < 0">...</li>
+    <li *ngFor="let page of pages" (click)="changePage(page)" [class.active]="currentPage === page">{{ page }}</li>
+    <li (click)="changePageRange('next')" [class.disabled]="CurrentEndPAge + 20 > totalPages ">...</li>
+    <li (click)="changePage(currentPage + 1)" [class.disabled]="currentPage === totalPages">Next</li>
+    <li (click)="changePage(totalPages)" [class.disabled]="currentPage === totalPages">Last</li>
+    </ul>
+
+</div>

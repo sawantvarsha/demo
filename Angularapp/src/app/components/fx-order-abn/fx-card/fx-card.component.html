@@ -1,0 +1,115 @@
+<div class="fx-card">
+    <div class="fx-card-grid">
+        <div class="ccy-header">
+            <img src="{{ assetURL }}/favourite_silver.png" alt=""
+                style="height: 1em; margin: auto; cursor: pointer;margin-left: 5px; filter: grayscale(0.3);"
+                *ngIf="!favorite" />
+            <img src="{{ assetURL }}/favourite_gold.png" alt=""
+                style="height: 1em; margin: auto; cursor: pointer;margin-left: 5px; filter: grayscale(0.3);"
+                *ngIf="favorite" />
+            <label class="fx-heading">{{ccyName}}</label>
+            <img src="{{ assetURL }}/cancel_icon.png" alt=""
+                style="height: 1em; margin: auto; cursor: pointer; margin-right: 5px;" />
+        </div>
+        <div class="notional-base">
+            <div class="input-ccy" style="border-right: 1px solid var(--fx-line);">
+                <label class="greylabel">{{baseCcy}}</label>
+                <input type="text" [(ngModel)]="baseNotional"
+                    (blur)="baseNotional = commonfunctionApi.formatNumberWithKLM(baseNotional)"
+                    (focus)="baseNotional = commonfunctionApi.unformatNumber(baseNotional)"
+                    (change)="baseNotional = changeNotional(baseNotional, 'base')">
+            </div>
+        </div>
+        <div class="notional-alt">
+            <div class="input-ccy">
+                <label class="greylabel">{{altCcy}}</label>
+                <input type="text" [(ngModel)]="altNotional"
+                    (blur)="altNotional = commonfunctionApi.formatNumberWithKLM(altNotional)"
+                    (focus)="altNotional = commonfunctionApi.unformatNumber(altNotional)"
+                    (change)="altNotional = changeNotional(altNotional, 'alt')">
+            </div>
+        </div>
+        <div class="tenor">
+            <div class="tenor-tabs">
+                <label [ngClass]="optionType === 'Spot' ? 'bluelabel' : 'greylabel'"
+                    (click)="optionType = 'Spot';">Spot</label>
+                <label class="bluelabel">/</label>
+                <label [ngClass]="optionType === 'Forward' ? 'bluelabel' : 'greylabel'"
+                    (click)="optionType = 'Forward';">Forward</label>
+            </div>
+            <div style="display: flex; position: relative;">
+                <div class="datebox divleft" (click)="picker.close()">
+                    <div *ngIf="optionType === 'Forward'" style="display: flex;">
+                        <div class="datebottom divleft">
+                            <!-- {{ valuedateday }} -->10
+                        </div>
+                        <div class="divleft" style="margin-left: 1px"><span> / </span></div>
+                        <div class="datebottom divleft" style="margin-left: 2px">
+                            <!-- {{ valuedatemonth }} -->11
+                        </div>
+                        <div class="divleft" style="margin-left: 1px"><span> / </span></div>
+                        <div class="datebottom divleft">
+                            <!-- {{ valuedateyear }} -->2021
+                        </div>
+                    </div>
+                </div>
+                <select *ngIf="optionType === 'Spot'" class="dropdown">
+                    <option>SPOT</option>
+                    <option>TOD</option>
+                    <option>TOM</option>
+                </select>
+
+                <select *ngIf="optionType === 'Forward'" class="dropdown">
+                    <option>1W</option>
+                    <option>2W</option>
+                    <option>3W</option>
+                </select>
+                <mat-form-field style="position: absolute; z-index: -1; right: 1em;">
+                    <input matInput [matDatepicker]="picker" class="picker"
+                        (click)="optionType === 'Forward' ? (showTenorBox = !showTenorBox) : false" [min]="minDate" />
+                    <!-- <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle> -->
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+                <img src="{{ assetURL }}/calendar.png" alt=""
+                    (click)="showTenorBox = false; optionType === 'Forward' ? picker.open() : false;"
+                    style="height: 22px;margin-bottom: 0.6em;margin-left: 10px;cursor: pointer; margin-top: 10px;" />
+            </div>
+
+        </div>
+        <div class="rate-ask" style="border-right: 1px solid var(--fx-line);">
+            <label class="sellbuylabel">YOU {{direction}}</label>
+            <div class="rate-div">
+                <img *ngIf="askRate===''" src="{{ assetURL }}/loading_dots.gif" alt="" style="height: 35px" />
+                <div *ngIf="askRate!==''" class="rate-div-text">
+                    <span class="rate-small">{{askSmall}}</span>
+                    <span class="rate-large">{{askLarge}}</span>
+                </div>
+                <div *ngIf="askRate==='NA'" class="rate-div-text">
+                    <span class="rate-small">{{askRate}}</span>
+                </div>
+
+            </div>
+        </div>
+        <div class="rate-bid">
+            <label class="sellbuylabel">YOU {{altDirection}}</label>
+            <div class="rate-div">
+
+                <img *ngIf="bidRate===''" src="{{ assetURL }}/loading_dots.gif" alt="" style="height: 35px" />
+                <div *ngIf="bidRate!==''" class="rate-div-text">
+                    <span class="rate-small">{{bidSmall}}</span>
+                    <span class="rate-large">{{bidLarge}}</span>
+                </div>
+                <div *ngIf="bidRate==='NA'" class="rate-div-text">
+                    <span class="rate-small">{{bidRate}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="trade" (click)="placeQuoteRequest()">
+            <div class="triangle-right"></div>
+            <label>Trade</label>
+        </div>
+        <div class="interchange" (click)="changeDirection()">
+            <img src="{{ assetURL }}/interchange.png" alt="" style="height: 2em; cursor: pointer;" />
+        </div>
+    </div>
+</div>

@@ -1,0 +1,9 @@
+<div>
+    <!-- <input *ngSwitchCase="'textbox'" type="text" [name]="control.id" [id]="control.id" [placeholder]="control.placeholder"> -->
+    <!-- <select *ngSwitchCase="'dropdown'" [name]="control.type" [id]="control.id">
+      <option *ngFor="let option of control.values" value="option">{{option}}</option>
+    </select> -->
+    <input *ngIf="controlSelectionCondition && !buttonAsLink" type="button" class="btn" [id]="id" [value]="controlDetails['Action_Button_Title']" (click)="ButtonClick();">
+    <a *ngIf="controlSelectionCondition && buttonAsLink" class="link" [id]="id" (click)="ButtonClick();">{{controlDetails['Action_Button_Title']}}</a>
+    <!-- <label *ngSwitchCase="'label'" [id]="control.id">{{control.text}}</label> -->
+</div>

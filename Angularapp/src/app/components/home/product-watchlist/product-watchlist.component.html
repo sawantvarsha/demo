@@ -1,0 +1,9 @@
+<app-watchlist
+  [WatchlistData]="watchlistData"
+  [WatchlistSearchItems]="watchlistSearchItems"
+  [AddNewWatchList]="isNewWatchlist"
+  (selectWatchlistDataEvent)="selectedWatchlistDataEvent($event)"
+  (selectWatchlistSearchItemEvent)="selectWatchlistSearchItemEvent($event)"
+  (deleteWatchlistShare)="deleteWatchlistShare($event)"
+  [Page]="'dashboard'"
+></app-watchlist>

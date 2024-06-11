@@ -1,0 +1,612 @@
+<div class="login-bg"></div>
+<app-svg-icons class="back-button" [icon]="'back-button'" [width]="'40'" [height]="'40'" [fill]="'var(--text)'"
+    (click)="backtologin()">
+</app-svg-icons>
+<div class="loginPage" *ngIf="userType.toUpperCase() !== 'CLIENT'">
+    <div class="loginCard" style="height: max-content !important">
+
+        <div class="login-header">
+            <!-- <span class="material-icons">how_to_reg </span> -->
+            <img class="service-img" [src]="'http://'+domainURL+'/assets/rm.png'">
+            <p class="form-header">
+                New <span>{{ userType.toUpperCase() }}</span> Registration
+            </p>
+        </div>
+        <br />
+        <form action="">
+            <div class="login-form">
+                <div class="form-group input-check-username">
+                    <input type="text" class="form-control username" placeholder="Username" id="uname"
+                        [ngModelOptions]="{standalone: true}" required="required" [(ngModel)]="username"
+                        [ngClass]="{ 'input-error': isError || isDuplicateUser }" autocomplete="new-password"
+                        (change)="checkDuplicateUser()" />
+                    <div class="show-password">
+                        <span><img *ngIf="!isDuplicateUser" [src]="
+                isProd ? 'assets/correct.png' : '../../../assets/correct.png'
+              " style="width: 20px; height: 20px" alt="" /></span>
+                        <span><img *ngIf="isDuplicateUser"
+                                [src]="isProd ? 'assets/wrong.png' : '../../../assets/wrong.png'"
+                                style="width: 20px; height: 20px" alt="" /></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control username" placeholder="Email address" required="required"
+                        [ngModelOptions]="{standalone: true}" [(ngModel)]="emailid"
+                        [ngClass]="{ 'input-error': isError }" autocomplete="password" [disabled]="isDuplicateUser" />
+                </div>
+
+                <div class="form-group">
+                    <div class="input-password">
+                        <input [type]="isPasswordText ? 'text' : 'password'" class="form-control password"
+                            [ngModelOptions]="{standalone: true}" placeholder="Password" required="required"
+                            autocomplete="new-password" [ngClass]="{ 'input-error': isError }" [(ngModel)]="password"
+                            [ngModelOptions]="{ standalone: true }" [disabled]="isDuplicateUser" />
+                        <app-password-strength-bar *ngIf="password && !confirmPassword" [passwordToCheck]="password"
+                            [barLabel]="barLabel">
+                        </app-password-strength-bar>
+                        <div class="show-password" (click)="isPasswordText = !isPasswordText">
+                            <span><img *ngIf="isPasswordText"
+                                    [src]="isProd ? 'assets/eye.png' : '../../../assets/eye.png'"
+                                    style="width: 20px; height: 20px" alt="" /></span>
+                            <span><img *ngIf="!isPasswordText" [src]="
+                  isProd
+                    ? 'assets/visibility.png'
+                    : '../../../assets/visibility.png'
+                " style="width: 20px; height: 20px" alt="" /></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="input-password">
+                        <input [type]="isConfirmPasswordText ? 'text' : 'password'" class="form-control password"
+                            [ngModelOptions]="{standalone: true}" placeholder="Confirm password" required="required"
+                            autocomplete="new-password" [ngClass]="{ 'input-error': isError }"
+                            [(ngModel)]="confirmPassword" [ngModelOptions]="{ standalone: true }"
+                            [disabled]="isDuplicateUser" />
+
+                        <div class="show-password" (click)="isConfirmPasswordText = !isConfirmPasswordText">
+                            <span><img *ngIf="isConfirmPasswordText"
+                                    [src]="isProd ? 'assets/eye.png' : '../../../assets/eye.png'"
+                                    style="width: 20px; height: 20px" alt="" /></span>
+                            <span><img *ngIf="!isConfirmPasswordText" [src]="
+                  isProd
+                    ? 'assets/visibility.png'
+                    : '../../../assets/visibility.png'
+                " style="width: 20px; height: 20px" alt="" /></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-login btn-block" (click)="register()"
+                        [disabled]="isDuplicateUser">
+                        Submit
+                    </button>
+                </div>
+            </div>
+        </form>
+        <p class="error-message" style="margin-bottom: 0px" *ngIf="isError">
+            {{ ErrorMsg }}
+        </p>
+        <p class="success-message" style="margin-bottom: 0px" *ngIf="isSuccess" [innerHTML]="SuccessMsg"></p>
+
+        <br />
+
+        <p style="font-size: 12px !important" class="footer">
+            2021 © FinIQ Consulting Pte. Ltd. All Rights Reserved.
+        </p>
+    </div>
+    <div class="register">
+        <span>Already Registered? &nbsp;</span>
+        <a href="" [routerLink]="['/login/' + userType]">Login now!</a>
+    </div>
+</div>
+
+<div class="registerPage" *ngIf="userType.toUpperCase() === 'CLIENT'">
+    <div class="register-container">
+        <div style="text-align: left">
+            <div class="page-title" style="padding-left: 0px">Create Profile</div>
+        </div>
+        <div class="BI-card">
+            <div class="BI-card-header">User Profile</div>
+            <div class="BI-card-content" style="margin-bottom: 20px">
+                <div class="BI-rowcontent1 loginCard">
+                    <div class="loginCardelement">
+                        <input type="text" class="form-control username" placeholder="Username" id="uname"
+                            [(ngModel)]="username" [ngClass]="{ 'input-error': isError || isDuplicateUser }"
+                            autocomplete="new-password" (change)="checkDuplicateUser()" />
+                        <!-- <div class="show-password" (click)="isConfirmPasswordText=!isConfirmPasswordText">
+                            <span><img *ngIf="isConfirmPasswordText"
+                                    [src]="isProd?'assets/eye.png':'../../../assets/eye.png'"
+                                    style="width: 20px; height: 20px;" alt=""></span>
+                            <span><img *ngIf="!isConfirmPasswordText"
+                                    [src]="isProd?'assets/visibility.png':'../../../assets/visibility.png'"
+                                    style="width: 20px; height: 20px;" alt=""></span>
+                        </div> -->
+                    </div>
+                    <div class="loginCardelement">
+                        <!-- <input type="text" class="form-control username" placeholder="Username" value="" required="required"
+                  [(ngModel)]="emailid1"  [ngClass]="{'input-error': isError}" autocomplete="new-password"> -->
+
+                        <input type="text" placeholder="Email address" required="required" [(ngModel)]="emailid"
+                            [ngClass]="{ 'input-error': isError }" autocomplete="new-password"
+                            [disabled]="isDuplicateUser" />
+                    </div>
+                    <div class="loginCardelement">
+                        <div>
+                            <input [type]="isPasswordText ? 'text' : 'password'" class="form-control"
+                                placeholder="Password" required="required" autocomplete="new-password"
+                                [ngClass]="{ 'input-error': isError }" [(ngModel)]="password"
+                                [ngModelOptions]="{ standalone: true }" [disabled]="isDuplicateUser" />
+
+                            <div class="loginCardelement">
+                                <app-password-strength-bar *ngIf="password && !confirmPassword"
+                                    [passwordToCheck]="password" [barLabel]="barLabel">
+                                </app-password-strength-bar>
+                            </div>
+                        </div>
+
+                        <div class="show-password" style="position: relative !important;"
+                            (click)="isPasswordText = !isPasswordText">
+                            <span><img *ngIf="isPasswordText"
+                                    [src]="isProd ? 'assets/eye.png' : '../../../assets/eye.png'"
+                                    style="width: 20px; height: 20px" alt="" /></span>
+                            <span><img *ngIf="!isPasswordText" [src]="
+                    isProd
+                      ? 'assets/visibility.png'
+                      : '../../../assets/visibility.png'
+                  " style="width: 20px; height: 20px" alt="" /></span>
+                        </div>
+                    </div>
+                    <!-- <input type="password" class="form-control password" placeholder="Password" id="pwd" required="required"
+                          [(ngModel)]="password" [ngClass]="{'input-error': isError}" autocomplete="new-password"> -->
+                    <div class="loginCardelement">
+                        <input [type]="isConfirmPasswordText ? 'text' : 'password'" class="form-control password"
+                            placeholder="Confirm password" required="required" autocomplete="new-password"
+                            [(ngModel)]="confirmPassword" [ngClass]="{ 'input-error': isError }"
+                            [disabled]="isDuplicateUser" />
+
+                        <div class="show-password" style="position: relative !important;"
+                            (click)="isConfirmPasswordText = !isConfirmPasswordText">
+                            <span><img *ngIf="isConfirmPasswordText"
+                                    [src]="isProd ? 'assets/eye.png' : '../../../assets/eye.png'"
+                                    style="width: 20px; height: 20px" alt="" /></span>
+                            <span><img *ngIf="!isConfirmPasswordText" [src]="
+                    isProd
+                      ? 'assets/visibility.png'
+                      : '../../../assets/visibility.png'
+                  " style="width: 20px; height: 20px" alt="" /></span>
+                        </div>
+                    </div>
+                    <!-- <input type="password" class="form-control password" placeholder="Confirm password" required="required"
+                          [(ngModel)]="confirmPassword" [ngClass]="{'input-error': isError}" autocomplete="new-password"> -->
+                    <!-- <div class="form-group">
+                              <button type="submit" class="button" (click)="register()"
+                                [disabled]="isDuplicateUser">Submit</button>
+                            </div>-->
+
+                    <p class="error-message" style="margin-bottom: 0px" *ngIf="isError">
+                        {{ ErrorMsg }}
+                    </p>
+                    <p class="success-message" style="margin-bottom: 0px" *ngIf="isSuccess" [innerHTML]="SuccessMsg">
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="BI-card">
+            <div class="BI-card-header" style="padding-top: 0px">
+                Personal Details
+            </div>
+            <div class="BI-card-content">
+                <div class="BI-rowcontent">
+                    <div class="lbl">
+                        <label for="Name" class="lbl" *ngIf="BasicInfoNew.Name.visibility">
+                            * Name
+                        </label>
+                    </div>
+                    <div class="div"></div>
+                    <div class="">
+                        <input type="text" name="CustomerName" class="txt" tabindex="1" id="CustomerName"
+                            [(ngModel)]="BasicInfoNew.Name.value" *ngIf="BasicInfoNew.Name.visibility" />
+                    </div>
+                </div>
+                <div class="BI-rowcontent">
+                    <div class="lbl">
+                        <label for="Block/House No" class="lbl" *ngIf="BasicInfoNew.BlockHouseNo.visibility">
+                            Block/House No
+                        </label>
+                    </div>
+                    <div class="lbl">
+                        <label for="Street Name" class="lbl" *ngIf="BasicInfoNew.StreetName.visibility">
+                            Street Name
+                        </label>
+                    </div>
+                    <div class="">
+                        <input type="text" name="BlockHouseNo" class="txt" tabindex="2" id="BlockHouseNo"
+                            [(ngModel)]="BasicInfoNew.BlockHouseNo.value" *ngIf="BasicInfoNew.BlockHouseNo.visibility"
+                            autocomplete="new-password" />
+                    </div>
+                    <div class="">
+                        <input type="text" name="StreetName" class="txt" tabindex="3" id="StreetName"
+                            [(ngModel)]="BasicInfoNew.StreetName.value" *ngIf="BasicInfoNew.StreetName.visibility"
+                            autocomplete="new-password" />
+                    </div>
+                </div>
+                <div class="BI-rowcontent">
+                    <div class="lbl">
+                        <label for="City" class="lbl" *ngIf="BasicInfoNew.City.visibility">
+                            City</label>
+                    </div>
+                    <div class="lbl">
+                        <label for="State" class="lbl" *ngIf="BasicInfoNew.State.visibility">
+                            State</label>
+                    </div>
+                    <div class="" style="display: flex; line-height: 40px">
+                        <input type="text" name="City" id="City" tabindex="4" class="txt" maxlength="15"
+                            [(ngModel)]="BasicInfoNew.City.value" *ngIf="BasicInfoNew.City.visibility"
+                            (keydown)="cfs.isalpha($event)" autocomplete="new-password" />
+                    </div>
+                    <div class="lbl verticleCenter">
+                        <input type="text" name="State" id="State" tabindex="5" class="txt" maxlength="15"
+                            [(ngModel)]="BasicInfoNew.State.value" *ngIf="BasicInfoNew.State.visibility"
+                            (keydown)="cfs.isalpha($event)" autocomplete="new-password" />
+                    </div>
+                </div>
+                <div class="BI-rowcontent">
+                    <div class="lbl">
+                        <label for="Country" class="lbl" *ngIf="BasicInfoNew.Country.visibility">
+                            Country</label>
+                    </div>
+                    <div class="lbl">
+                        <label for="PostalCode" class="lbl" *ngIf="BasicInfoNew.PostalCode.visibility">
+                            Postal Code</label>
+                    </div>
+                    <div class="">
+                        <select name="Country" id="Country" class="txt" tabindex="6"
+                            [(ngModel)]="BasicInfoNew.Country.value" *ngIf="BasicInfoNew.Country.visibility">
+                            <option *ngFor="let item of countryNames" [value]="item.Code">
+                                {{ item.Code }}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="">
+                        <input type="text" name="Postal Code" id="Postal Code" class="txt" maxlength="15" tabindex="7"
+                            [(ngModel)]="BasicInfoNew.PostalCode.value" *ngIf="BasicInfoNew.PostalCode.visibility"
+                            (keydown)="cfs.isAlphaNumeric($event)" autocomplete="new-password" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="BI-card">
+            <div class="BI-card-header">Identification Details</div>
+            <div class="BI-card-content">
+                <div class="BI-rowcontent">
+                    <div class="lbl">
+                        <label for="IdentificationNo" class="lbl" *ngIf="BasicInfoNew.CIF.visibility">
+                            * CIF
+                        </label>
+                    </div>
+                    <div class="div"></div>
+                    <div class="">
+                        <input type="text" name="cif" id="cif" class="txt" tabindex="12"
+                            [(ngModel)]="BasicInfoNew.CIF.value" *ngIf="BasicInfoNew.CIF.visibility"
+                            (keypress)="cfs.isNumber($event)" autocomplete="new-password" />
+                    </div>
+                </div>
+                <div class="BI-rowcontent">
+                    <div class="lbl">
+                        <label for="DOB" class="lbl" *ngIf="BasicInfoNew.CustomerIDType.visibility">
+                            Customer ID Type</label>
+                    </div>
+
+                    <div class="lbl">
+                        <label for="Nationality" class="lbl" *ngIf="BasicInfoNew.CustomerIDNumber.visibility">
+                            Customer ID No</label>
+                    </div>
+                    <div class="">
+                        <select name="CustomerType" id="CustomerType" class="txt" tabindex="13"
+                            [(ngModel)]="BasicInfoNew.CustomerIDType.value"
+                            *ngIf="BasicInfoNew.CustomerIDType.visibility">
+                            <option *ngFor="let item of customerTypes" [value]="item">
+                                {{ item }}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="">
+                        <input type="text" name="CustomerIDNumber" id="CustomerIDNumber" class="txt" tabindex="14"
+                            [(ngModel)]="BasicInfoNew.CustomerIDNumber.value"
+                            *ngIf="BasicInfoNew.CustomerIDNumber.visibility" placeholder="Enter Customer ID No"
+                            (keypress)="cfs.isAlphaNumeric($event)" autocomplete="new-password" />
+                    </div>
+                </div>
+                <div class="BI-rowcontent">
+                    <div class="lbl">
+                        <label for="DOB" class="lbl" *ngIf="BasicInfoNew.AlternateDocID.visibility">
+                            Alternate Doc ID</label>
+                    </div>
+
+                    <div class="lbl">
+                        <label for="DOB" class="lbl" *ngIf="BasicInfoNew.DateOfBirth.visibility">* Date of Birth</label>
+                    </div>
+                    <div class="">
+                        <input type="text" name="AlternateDocID" id="AlternateDocID" class="txt"
+                            [(ngModel)]="BasicInfoNew.AlternateDocID.value"
+                            *ngIf="BasicInfoNew.AlternateDocID.visibility" (keypress)="cfs.isAlphaNumeric($event)"
+                            autocomplete="new-password" />
+
+                        <!-- <select name="AlternateDocID" id="AlternateDocID" class="txt" tabindex="15" [(ngModel)]="BasicInfoNew.AlternateDocID.value" *ngIf="BasicInfoNew.AlternateDocID.visibility" (change)="BasicInfoFormFillingStatus();" >
+                <option *ngFor="let item of dd_ALternateDocID" [value]="item">{{item}}
+                </option>
+            </select> -->
+                    </div>
+                    <div class="">
+                        <input type="date" name="DOB" id="DOB" class="txt input-dob"
+                            [attr.data-date]="BasicInfoNew.DateOfBirth.value" data-date-format="DD-MMM-YYYY"
+                            tabindex="16" [(ngModel)]="BasicInfoNew.DateOfBirth.value"
+                            *ngIf="BasicInfoNew.DateOfBirth.visibility"
+                            (change)="selectDateOfBirth(BasicInfoNew.DateOfBirth.value)" min="1950-01-01"
+                            max="2000-01-01" autocomplete="new-password" />
+                    </div>
+                </div>
+                <div class="BI-rowcontent">
+                    <div class="lbl">
+                        <label for="DOB" class="lbl" *ngIf="BasicInfoNew.CountryResidence.visibility">
+                            * Country Residence</label>
+                    </div>
+
+                    <div class="lbl">
+                        <label for="Nationality" class="lbl"
+                            *ngIf="BasicInfoNew.Nationality.visibility">Nationality</label>
+                    </div>
+                    <div class="">
+                        <select name="CountryResidence" id="CountryResidence" tabindex="17" class="txt"
+                            [(ngModel)]="BasicInfoNew.CountryResidence.value"
+                            *ngIf="BasicInfoNew.CountryResidence.visibility">
+                            <option *ngFor="let item of countryNames" [value]="item.Code">
+                                {{ item.Code }}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="">
+                        <select name="Nationality" id="Nationality" tabindex="18" class="txt"
+                            [(ngModel)]="BasicInfoNew.Nationality.value" *ngIf="BasicInfoNew.Nationality.visibility">
+                            <option *ngFor="let item of countryNames" [value]="item.Code">
+                                {{ item.Code }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="BI-card" *ngIf="moreDetails">
+            <div class="BI-card-header">Contact Info</div>
+            <div class="BI-card-content">
+                <div class="BI-rowcontent">
+                    <div class="lbl">
+                        <label for="IdentificationNo" class="lbl" *ngIf="BasicInfoNew.HomePhoneNumber.visibility">
+                            Home Phone Number
+                        </label>
+                    </div>
+
+                    <div class="lbl">
+                        <label for="IdentificationNo" class="lbl" *ngIf="BasicInfoNew.OfficePhoneNumber.visibility">
+                            Office Phone Number
+                        </label>
+                    </div>
+                    <div class="">
+                        <input type="text" name="HomePhoneNumber" id="HomePhoneNumber" class="txt" tabindex="8"
+                            [(ngModel)]="BasicInfoNew.HomePhoneNumber.value"
+                            *ngIf="BasicInfoNew.HomePhoneNumber.visibility" (keypress)="cfs.isvalidContactNo($event)"
+                            autocomplete="new-password" />
+                    </div>
+                    <div class="">
+                        <input type="text" name="OfficePhoneNumber" id="OfficePhoneNumber" class="txt" tabindex="9"
+                            *ngIf="BasicInfoNew.OfficePhoneNumber.visibility"
+                            [(ngModel)]="BasicInfoNew.OfficePhoneNumber.value" (keypress)="cfs.isvalidContactNo($event)"
+                            autocomplete="new-password" />
+                    </div>
+                </div>
+                <div class="BI-rowcontent">
+                    <div class="lbl">
+                        <label for="DOB" class="lbl" *ngIf="BasicInfoNew.FaxNumber.visibility">
+                            Fax No</label>
+                    </div>
+
+                    <div class="lbl">
+                        <label for="Email" class="lbl" *ngIf="BasicInfoNew.Email.visibility">
+                            Email
+                        </label>
+                    </div>
+                    <div class="">
+                        <input type="text" name="FaxNumber" id="FaxNumber" class="txt" tabindex="10"
+                            *ngIf="BasicInfoNew.FaxNumber.visibility" [(ngModel)]="BasicInfoNew.FaxNumber.value"
+                            (keypress)="cfs.isvalidContactNo($event)" autocomplete="new-password" />
+                    </div>
+                    <div class="">
+                        <input type="email" name="email" id="email" class="txt" tabindex="11"
+                            *ngIf="BasicInfoNew.Email.visibility" [(ngModel)]="BasicInfoNew.Email.value"
+                            autocomplete="new-password" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="BI-card" *ngIf="moreDetails">
+            <div class="BI-card-header">Investor Details</div>
+            <div class="BI-card-content">
+                <div class="BI-rowcontent">
+                    <div class="lbl">
+                        <label for="CustomerType" class="lbl" *ngIf="BasicInfoNew.CustomerType.visibility">* Customer
+                            Type</label>
+                    </div>
+
+                    <div class="lbl">
+                        <label for="CustomerSegment" class="lbl"
+                            *ngIf="BasicInfoNew.CustomerSegment.visibility">Customer
+                            Segment</label>
+                    </div>
+                    <div class="">
+                        <select name="CustomerType" id="CustomerType" class="txt"
+                            [(ngModel)]="BasicInfoNew.CustomerType.value" *ngIf="BasicInfoNew.CustomerType.visibility"
+                            tabindex="19">
+                            <option *ngFor="let item of dd_CustomerType" [value]="item.Code">
+                                {{ item.Code }}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="">
+                        <select name="CustomerSegment" id="CustomerSegment" class="txt" tabindex="20"
+                            [(ngModel)]="BasicInfoNew.CustomerSegment.value"
+                            *ngIf="BasicInfoNew.CustomerSegment.visibility">
+                            <option *ngFor="let item of dd_customerSegment" [value]="item">
+                                {{ item }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="BI-rowcontent">
+                    <div class="lbl">
+                        <label for="Category" class="lbl" *ngIf="BasicInfoNew.Category.visibility">
+                            Category
+                        </label>
+                    </div>
+
+                    <div class="lbl">
+                        <label for="ProfessionalInvestor" class="lbl"
+                            *ngIf="BasicInfoNew.ProfessionalInvestor.visibility">
+                            Professional Investor
+                        </label>
+                    </div>
+                    <div class="">
+                        <select name="Category" id="Category" class="txt" tabindex="21"
+                            [(ngModel)]="BasicInfoNew.Category.value" *ngIf="BasicInfoNew.Category.visibility">
+                            <option *ngFor="let item of dd_Category" [value]="item">
+                                {{ item }}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="">
+                        <select name="ProfessionalInvestor" id="ProfessionalInvestor" tabindex="22" class="txt"
+                            [(ngModel)]="BasicInfoNew.ProfessionalInvestor.value"
+                            *ngIf="BasicInfoNew.ProfessionalInvestor.visibility">
+                            <option *ngFor="let item of dd_ProfessionalInvestor" [value]="item">
+                                {{ item }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="BI-rowcontent">
+                    <div class="lbl">
+                        <label for="LastKYCDoneOn" class="lbl" *ngIf="BasicInfoNew.LastKYCDoneOn.visibility">
+                            Last CPRA Done on
+                        </label>
+                    </div>
+                    <!-- <div class="lbl">
+            <label
+              for="NextKYCDueon"
+              class="lbl"
+              *ngIf="BasicInfoNew.PEPFlag.visibility"
+            >
+              * PEP Flag
+            </label>
+          </div> -->
+                    <div class="">
+                        <input type="date" name="lastKYCDoneon" id="lastKYCDoneon" class="txt input-dob"
+                            [attr.data-date]="BasicInfoNew.LastKYCDoneOn.value" data-date-format="DD-MMM-YYYY"
+                            tabindex="23" [(ngModel)]="BasicInfoNew.LastKYCDoneOn.value"
+                            *ngIf="BasicInfoNew.LastKYCDoneOn.visibility"
+                            (change)="selectLastKYCDoneOn(BasicInfoNew.LastKYCDoneOn.value)" min="2020-01-01"
+                            max="2030-01-01" />
+                    </div>
+                    <!-- <div class="">
+            <select
+              name="PEPFlag"
+              id="PEPFlag"
+              class="txt"
+              tabindex="26"
+              [(ngModel)]="BasicInfoNew.PEPFlag.value"
+              *ngIf="BasicInfoNew.PEPFlag.visibility"
+            >
+              <option *ngFor="let item of dd_PEPFlag" [value]="item">
+                {{ item }}
+              </option>
+            </select>
+          </div> -->
+                </div>
+            </div>
+        </div>
+        <div class="BI-card" *ngIf="moreDetails">
+            <div class="BI-card-header">Document Upload</div>
+            <div class="BI-card-content">
+                <div class="BI-rowcontent">
+                    <div class="btnGrid" style="text-align: left">
+                        <!-- <button class="button btn" value="Buy" (click)="uploadtempDoc()">
+              Upload
+            </button> -->
+                        <button class="button btn" value="View" (click)="selectFunctionDD()">
+                            Add
+                        </button>
+                    </div>
+                </div>
+                <div class="BI-rowcontent">
+                    <div class="">
+                        <div *ngFor="let file of fileChosen; let i = index" style="grid-column: 1"
+                            style="margin-top: 25px">
+                            <div *ngIf="!file">
+                                <div class="form-group filegrid">
+                                    <div style="margin-top: 20px">{{ i + 1 }}.</div>
+
+                                    <div class="gridEvent">
+                                        <div style="font-size: 12px; text-align: left">
+                                            <label>Event</label>
+                                        </div>
+                                        <select name="docUploadDD" id="docUploadDD" class="txt"
+                                            (change)="eventChange($event, i)" tabindex="19">
+                                            <option *ngFor="let docUpload of dropDownList" [value]="docUpload">
+                                                {{ docUpload }}
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <input type="file" id="file" style="margin-top: 15px !important; margin-left: 15px"
+                                        class="custom-file-input" (change)="fileSelectionFunction($event, i)"
+                                        autocomplete="new-password" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="" style="margin-top: 25px">
+                        <h3 class="textnewentry" style="font-weight: 400">
+                            {{ DocumentMessage }}
+                        </h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="anchor" *ngIf="!moreDetails" (click)="moreDetails = true">
+            More Details...
+        </div>
+        <div class="anchor" *ngIf="moreDetails" (click)="moreDetails = false">
+            Less Details...
+        </div>
+        <div style="    display: grid;
+    gap: 10px;
+    grid-template-columns: 10% 10% auto;">
+            <input class="button" style="margin: 20px" type="button" tabindex="42" value="Confirm"
+                (click)="SubmitBasicInfo();" />
+            <!-- <input class="button" type="button" tabindex="42" value="Prev" (click)="PrevBasicInfo()"> -->
+            <!-- <button class="button" style="margin: 20px;" (click)="saveDetails('Insert')">Confirm</button> -->
+            <button class="button" style="margin: 20px" (click)="CancelEditProfile()">
+                Cancel
+            </button>
+            <p class="error-message" style="    padding: 25px;" *ngIf="isError">
+                {{ ErrorMsg }}
+            </p>
+            <p class="success-message" style="    padding: 25px;" *ngIf="isSuccess"
+                [innerHTML]="AccountMessage + Message">
+            </p>
+        </div>
+    </div>
+</div>

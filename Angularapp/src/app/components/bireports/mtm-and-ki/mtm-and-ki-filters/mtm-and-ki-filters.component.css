@@ -1,0 +1,198 @@
+.mtm-and-ki-filter-container{
+  /* height: 100%; */
+  width: 100%;
+  /* background-color: black; */
+}
+
+.filter-flexbox{
+  display: flex;
+}
+
+.filterTitle{
+  font-size: 20px;
+  margin-bottom: 5px;
+  padding-top: 5px;
+  /* color: white; */
+  color: var(--sub-header-lcm);
+}
+
+.inputBox {
+  /* background-color: black; */
+  height: 35px;
+  
+  /* color: white; */
+  border: 1px white solid;
+  font-size: 20px;
+}
+
+.slider {
+  /* margin: 5px 10px; */
+  width: 95%;
+}
+
+@media (min-width: 1200px) and (max-width: 1440px){
+  .ki-number{
+    display: inline-grid;
+    width: 45%;
+}
+  .inputBox{
+      width:90%
+  }
+
+  .second{
+    margin-left: 8%;
+}
+
+  .inputBox {
+    /* background-color: black; */
+    height: 20px;
+    text-align: center;
+    /* color: white; */
+    border: 1px gray solid;
+    font-size: 20px;
+    /* /height: 40px;
+    width: 100px;
+    color: white;
+    margin: 5px 10px;
+    border: 1px white solid;
+    font-size: 20px;
+    padding-left: 10px; */
+  }
+}
+
+@media  (min-width: 1440px) and (max-width: 1600px){
+  .ki-number{
+    display: inline-grid;
+    width: 45%;
+}
+
+.second{
+  margin-left: 8%;
+}
+  .inputBox{
+      width:90%
+  }
+
+  .inputBox {
+    /* background-color: black; */
+    height: 25px;
+    text-align: center;
+    /* color: white; */
+    border: 1px gray solid;
+    font-size: 20px;
+    /* /height: 40px;
+    width: 100px;
+    color: white;
+    margin: 5px 10px;
+    border: 1px white solid;
+    font-size: 20px;
+    padding-left: 10px; */
+  }
+}
+
+@media  (min-width: 1600px) and (max-width: 1920px){
+  .ki-number{
+      display: inline-grid;
+      width: 45%;
+  }
+  .second{
+      margin-left: 8%;
+  }
+
+  .inputBox {
+    /* background-color: black; */
+    height: 30px;
+    text-align: center;
+    /* color: white; */
+    border: 1px gray solid;
+    font-size: 20px;
+    /* /height: 40px;
+    width: 100px;
+    color: white;
+    margin: 5px 10px;
+    border: 1px white solid;
+    font-size: 20px;
+    padding-left: 10px; */
+  }
+}
+
+@media (min-width: 1920px) {
+  .ki-number{
+      display: inline-grid;
+      width: 45%;
+  }
+  .second{
+      margin-left: 8%;
+  }
+
+  .inputBox {
+    /* background-color: black; */
+    height: 35px;
+    text-align: center;
+    /* color: white; */
+    border: 1px gray solid;
+    font-size: 20px;
+    /* /height: 40px;
+    width: 100px;
+    color: white;
+    margin: 5px 10px;
+    border: 1px white solid;
+    font-size: 20px;
+    padding-left: 10px; */
+  }
+}
+
+select {
+  width: 100%;
+  /* background-color: black; */
+    /* color: white; */
+    font-family: 'Roboto';
+    font-size: 14px;
+    padding: 10px;
+    border: 1px solid grey;
+}
+
+
+ option {
+  /* background-color: black; */
+  /* color: white; */
+  font-family: 'Roboto';
+  font-size: 14px;
+  padding: 10px;
+  margin-bottom: 5px;
+}
+
+
+::ng-deep .ngx-mtm-slider{
+  margin-top: 20px;
+}
+
+::ng-deep .ngx-mtm-slider .ngx-slider-pointer{
+  width: 25px !important;
+  height: 25px !important;
+  top: -12px !important;
+  background-color: white !important;
+  z-index: 3;
+  border-radius: 16px;
+}
+
+::ng-deep .ngx-mtm-slider .ngx-slider-selection {
+  background: rgba(8, 80, 134, 255) !important;
+}
+
+::ng-deep .ngx-mtm-slider .ngx-slider-pointer::after {
+  background: white !important;
+  top: 9px !important;
+  left: 9px !important;
+}
+
+::ng-deep .ngx-mtm-slider .ngx-slider-pointer.ngx-slider-active::after {
+  background: white !important;
+}
+
+select:focus {
+  border: 1px solid grey !important;
+}
+input:focus {
+  border: 1px solid grey !important;
+}

@@ -1,0 +1,19 @@
+{
+  "apiBaseUrl": "https://finiq866.finiq-sp.com/FinIQAPIGateway/api/",
+  "authUrl": "https://finiq866.finiq-sp.com/FinIQAPIGateway/api/",
+  "hostedAppName": "/",
+  "pgmessage": "funds/message",
+  "pgfunds": "payments/addfunds",
+  "pgpayments": "funds/payments",
+  "marginpledgemessage": "pledge/message",
+  "marginpledge": "depository/pledgesecurities",
+  "dbyear": "2023",
+  "logo": "FINIQ",
+  "isBanner": true,
+  "isAmbigous": true,
+  "isBannerGradient": true,
+  "ipAddress": "localhost",
+   "BankBaseCCy":"USD",
+  "CSP_Company_Logo" : "client",
+  "newsImgResourcePath": "https://finiq866.finiq-sp.com/FinIQWebApp/News_Twitter/FinIQNewsImage/"
+}

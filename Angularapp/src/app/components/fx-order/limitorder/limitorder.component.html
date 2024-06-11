@@ -1,0 +1,60 @@
+<!-- <div class="form col-12">
+
+  <div class="topnav" style="margin-left: 12%;  background-color: whitesmoke !important;">
+    <div class="tab" [ngClass]="{'active': show === 'dealentry'}" (click)="show = 'dealentry'">Order Entry</div>
+    <div class="tab" [ngClass]="{'active': show === 'blotter'}" (click)="show = 'blotter'">Order History</div>
+    <div class="tab" [ngClass]="{'active': show === 'orderhistory'}" (click)="show = 'orderhistory'">Active Orders</div>
+  </div>
+
+  <div *ngIf="show === 'dealentry'">
+    <app-order-entry></app-order-entry>
+  </div>
+  <div *ngIf="show === 'blotter'">bil
+    <app-tab2></app-tab2>
+  </div>
+
+  <div *ngIf="show === 'orderhistory'">
+    <app-orderhistory></app-orderhistory>
+  </div>
+
+</div> -->
+
+<div class="neworderentryComponent">
+  <div class="page-title">Limit Order</div>
+  <div class="main-container">
+    <div class="content-container">
+      <div class="tabs-pages">
+        <div
+          class="tabs"
+          [ngClass]="{ 'tab-active': this.dealentry }"
+          (click)="changeProduct('dealentry')"
+        >
+          Order Entry
+        </div>
+        <div
+          class="tabs"
+          [ngClass]="{ 'tab-active': this.blotter }"
+          (click)="changeProduct('blotter')"
+        >
+          Order History
+        </div>
+        <div
+          class="tabs"
+          [ngClass]="{ 'tab-active': this.orderhistory }"
+          (click)="changeProduct('orderhistory')"
+        >
+          Active Orders
+        </div>
+      </div>
+      <div *ngIf="this.dealentry">
+        <app-order-entry></app-order-entry>
+      </div>
+      <div *ngIf="this.blotter">
+        <app-tab2></app-tab2>
+      </div>
+      <div *ngIf="this.orderhistory">
+        <app-orderhistory></app-orderhistory>
+      </div>
+    </div>
+  </div>
+</div>

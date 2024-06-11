@@ -1,0 +1,687 @@
+<div class="topPadding22" *ngIf="!PanelYesNo"></div>
+<div *ngIf="this.Embedded_Control != 'NATIVEFX' " class="hardblock mainDEBGColor">
+  <h2
+    *ngIf="this.Embedded_Control=='' && PanelYesNo && this.sUCPMode == 'UCPQEN'"
+    class="common-font dealEntryHeader">
+   {{ h2DealEntry }}
+  </h2>
+  <div
+    [ngClass]="this.Embedded_Control == '' ? 'hardblock-contents' : 'hardblock-contents_multi_ucp'"
+     [ngStyle]="PanelYesNo == false && {'grid-template-columns': '220px 0.4fr 1fr', 'padding-left':'35px'}" >
+    <table *ngIf="this.Embedded_Control=='' && PanelYesNo">
+      <tbody>
+        <tr>
+          <!-- <td>
+            <div class="licensor">FinIQ</div>
+          </td> -->
+        </tr>
+        <!-- <tr>
+          <td>
+            <span class="ComapnyName">The Financial Engineering Company</span>
+          </td>
+        </tr> -->
+        <tr>
+          <td class="showhidebuttons" (click)="showhHideTabs()">{{showTabText}}</td>
+          <td *ngIf="sUCPMode == 'UCPQEN' && selectedTabName.toUpperCase() == 'TPTRADECAPTURE'" class="showhidebuttons" (click)="ClearTemplateFields()">Input Fresh Records</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="template-name">
+      <h1 *ngIf="sProductName=='' && template">
+        {{template.template_Name}}
+        <span
+          *ngIf="(this.Embedded_Control=='MULTIUCP' || this.Embedded_Control=='POSTCARD')  && subTemplate!=undefined && subTemplate.toM_Sub_Template_Name!=''"
+          >- {{subTemplate.toM_Sub_Template_Name}}
+        </span>
+      </h1>
+      <h1 *ngIf="sProductName!=''">{{sProductName}}</h1>
+    </div>
+    <!-- <app-loader *ngIf="this.loader"></app-loader> -->
+    <div>
+      <div
+        *ngIf="Message"
+        [ngClass]="this.Embedded_Control!='POSTCARD' ? 'messages' : 'messages_postcard'">
+        <p class="SaveMsg">{{Message}}</p>
+      </div>
+    </div>
+    <div class="hardblock-notification" *ngIf="ErrorMessage">
+      <p style="padding-top: 8px;">{{ErrorMessage}}</p>
+    </div>
+  </div>
+</div>
+<div class="mainDEBGColor"
+  *ngIf="this.Embedded_Control=='MULTIUCP' || this.Embedded_Control == 'POSTCARD'">
+</div>
+<div class="tabPanel mainDEBGColor" *ngIf="showtabsFlag && PanelYesNo">
+  <mat-list *ngFor="let data of mappedTabs" class="matListStyle" [ngClass]="{'activeTab': data.isActive === true }">
+    <table>
+      <tr>
+        <td class="width2percent">
+          <!-- <mat-icon class="mappedTabs" fontSet="fa" fontIcon="fa-caret-right"></mat-icon> -->
+          <mat-icon class="mappedTabs">play_arrow</mat-icon>
+        </td>
+        <td class="tabNameTd">
+          <mat-list-item class="mappedTabs" (click)="openClickedTab(data)">{{data.uciF_Display_Name}}</mat-list-item>
+        </td>
+      </tr>
+    </table>
+  </mat-list>
+</div>
+
+<div class="filter mainDEBGColor" *ngIf="this.Embedded_Control=='' && selectedTabName.toUpperCase() == 'TPTRADECAPTURE' &&  PanelYesNo">
+  
+  <mat-toolbar-row *ngIf="sUCPMode == 'UCPQEN'" class="leftpanelstyle">
+    <input
+      type="text"
+      class="common-font round modschtempSearchInput"
+      placeholder=" Search Module,Scheme,Template "
+      [formControl]="myControl"
+      [matAutocomplete]="auto5"
+      [(ngModel)]="selectedValue"
+      [value]="DefaultValue"
+      (keyup)="searchTemplate()"
+      (keydown.enter)="onChange($event)"/>
+
+    <mat-autocomplete
+      class="custom-scroll-bar"
+      [panelWidth]="500"
+      #auto5="matAutocomplete"
+      [displayWith]="ShowTemplatename1"
+      (optionSelected)="onChange($event)">
+      <!-- <mat-option style="background-color:#dddddd;" class="common-font dd-font-size ">Module     |     Scheme     |   Template</mat-option> -->
+      <mat-option
+        class="common-font dd-font-size width500"
+        *ngFor="let template of AllTemplatesSearchOptions | async"
+        [value]="template">
+        <span class="height5"> {{template.Product_Name}}</span> |
+        <span class="height5"> {{template.Scheme_Name}}</span> |
+        <span class="height5">{{template.Template_Name}}</span>
+      </mat-option>
+    </mat-autocomplete>
+  </mat-toolbar-row>
+  <div class="filterrow" *ngIf="ShowStaticField==true">
+    <!-- <span>{{EntityText}}</span>
+    <select>
+      <option *ngFor="let e of Entityddl" disabled selected> {{e.entity_Name}}</option>
+    </select> -->
+    <!-- <mat-form-field class="example-full-width">
+      <mat-select [disabled]="sUCPMode === 'UCPWFL' ? true : false"  [placeholder]="EntityText" [(ngModel)]="selectedEntity" >
+        <mat-option [value]="e.entity_ID" *ngFor="let e of Entityddl" disabled>
+          {{e.entity_Name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field> -->
+
+    <mat-form-field class="example-full-width" floatLabel="always">
+      <input
+      disabled
+        matInput
+        class="common-font UCPMatInput staticFieldPadding"
+        [placeholder]="EntityText"
+        [matAutocomplete]="auto3"
+        [(ngModel)]="entityData"/>
+
+      <mat-autocomplete
+      disabled
+        class="custom-scroll-bar"
+        #auto3="matAutocomplete">
+        <mat-option
+        disabled
+          class="common-font dd-font-size"
+          *ngFor="let e of Entityddl"
+          [value]="e">
+          <span>{{e.entity_Name}}</span>
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+  </div>
+  <div class="filterrow" *ngIf="ShowStaticField==true">
+    <!-- <span>{{ModuleText}}</span>
+    <select [(ngModel)]="module" (change)="changeModule()">
+      <option *ngFor="let a of Moduleddl" [value]="a.product_Id">{{a.product_Name}}</option>
+    </select> -->
+    <mat-form-field class="example-full-width" [disabled]="(sUCPMode === 'UCPWFL' || sUCPMode === 'DLSADD')"  floatLabel="always">
+      <input
+      [disabled]="(sUCPMode === 'UCPWFL' || sUCPMode === 'DLSADD')"
+        matInput
+        class="common-font UCPMatInput staticFieldPadding"
+        [placeholder]="ModuleText"
+        [matAutocomplete]="auto"
+        [(ngModel)]="moduleData"
+        (keydown.enter)="changeModule()"/>
+
+      <mat-autocomplete
+        class="custom-scroll-bar"
+        #auto="matAutocomplete"
+        [displayWith]="ShowProductName"
+        (optionSelected)="changeModule()">
+        <mat-option
+          class="common-font dd-font-size"
+          *ngFor="let a of filteredOptions | async"
+          [value]="a">
+          <span>{{a.product_Name}}</span>
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+
+    <!-- <mat-form-field class="example-full-width">
+      <mat-select [disabled]="sUCPMode === 'UCPWFL' ? true : false" [placeholder]="ModuleText"  [(ngModel)]="module" (selectionChange)="changeModule()">
+        <mat-option [value]="a.product_Id" *ngFor="let a of Moduleddl">
+          {{a.product_Name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field> -->
+  </div>
+  <div class="filterrow" *ngIf="ShowStaticField==true">
+    <!-- <span>{{AssetText}}</span>
+    <select [(ngModel)]="scheme" (change)="changeScheme()">
+      <option *ngFor="let a of Schemeddl" [value]="a.scheme_Code">{{a.scheme_Name}}</option>
+    </select> -->
+    <!-- <mat-form-field class="example-full-width">
+      <mat-select [disabled]="sUCPMode === 'UCPWFL' ? true : false" [(ngModel)]="scheme" [placeholder]="AssetText"   (selectionChange)="changeScheme()">
+        <mat-option  *ngFor="let a of Schemeddl" [value]="a">{{a.scheme_Name}}</mat-option>
+      </mat-select>
+    </mat-form-field> -->
+
+    <mat-form-field class="example-full-width"  floatLabel="always">
+      <input
+        [disabled]="(sUCPMode === 'UCPWFL' || sUCPMode === 'DLSADD')"
+        matInput
+        class="common-font UCPMatInput staticFieldPadding"
+        [placeholder]="AssetText"
+        [matAutocomplete]="auto1"
+        [(ngModel)]="scheme"
+        (keydown.enter)="changeScheme()" />
+
+      <mat-autocomplete
+        class="custom-scroll-bar"
+        #auto1="matAutocomplete"
+        [displayWith]="ShowSchemeName"
+        (optionSelected)="changeScheme()">
+        <mat-option
+          class="common-font dd-font-size"
+          *ngFor="let sch of schemeOptions | async"
+          [value]="sch">
+          <span>{{sch.scheme_Name}}</span>
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+  </div>
+  <div class="filterrow" *ngIf="ShowStaticField==true">
+    <!-- <span>{{ProductText}}</span>
+    <select [(ngModel)]="template" (change)="changeTemplate()">
+      <option *ngFor="let a of Templateddl" [ngValue]="a">{{a.template_Name}}</option>
+    </select> -->
+
+    <mat-form-field class="example-full-width"  floatLabel="always">
+      <input
+      [disabled]="(sUCPMode === 'UCPWFL' || sUCPMode === 'DLSADD')"
+        matInput
+        class="common-font UCPMatInput staticFieldPadding"
+        [placeholder]="ProductText"
+        [matAutocomplete]="auto2"
+        [(ngModel)]="template"
+        (keydown.enter)="changeTemplate()"/>
+
+      <mat-autocomplete
+        class="custom-scroll-bar"
+        #auto2="matAutocomplete"
+        [displayWith]="ShowTemplateName"
+        (optionSelected)="changeTemplate()">
+        <mat-option
+          class="common-font dd-font-size"
+          *ngFor="let temp of templateOptions | async"
+          [value]="temp">
+          <span>{{temp.template_Name}}</span>
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+
+    <!-- <mat-form-field class="example-full-width">
+      <mat-select [disabled]="sUCPMode === 'UCPWFL' ? true : false" [placeholder]="ProductText"  [(ngModel)]="template" (selectionChange)="changeTemplate()">
+        <mat-option [value]="a" *ngFor="let a of Templateddl"  >
+          {{a.template_Name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field> -->
+  </div>
+  <div class="filterrow" *ngIf="isSubTemp && ShowStaticField==true">
+    <mat-form-field class="example-full-width"  floatLabel="always">
+      <input
+      [disabled]="(sUCPMode === 'UCPWFL' || sUCPMode === 'DLSADD')"
+        matInput
+        class="common-font UCPMatInput staticFieldPadding"
+        placeholder="Sub Template"
+        [matAutocomplete]="autoSubTemp"
+        [(ngModel)]="subTemplate"
+        (keydown.enter)="changesubtemplate()"/>
+      <mat-autocomplete
+        class="custom-scroll-bar"
+        #autoSubTemp="matAutocomplete"
+        [displayWith]="ShowSubTemplateName"
+        (optionSelected)="changesubtemplate()">
+        <mat-option
+          class="common-font dd-font-size"
+          *ngFor="let subTemp of subTemplateOptions | async"
+          [value]="subTemp">
+          <span>{{subTemp.toM_Sub_Template_Name}}</span>
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+  </div>
+   <div class="filterrow" *ngIf="ShowStaticField==true">  <!--*ngIf="sUCPMode != 'UCPWFL'" removed ngif by devesh -->
+    <!-- <span>Booking model</span>
+    <select>
+      <option value="">Product</option>
+    </select> -->
+    <mat-form-field class="example-full-width"  floatLabel="always">
+      <input
+      [disabled]="(sUCPMode === 'UCPWFL' || sUCPMode === 'DLSADD')"
+        matInput
+        class="common-font UCPMatInput staticFieldPadding"
+        [placeholder]="HedgingTypeText"
+        [matAutocomplete]="auto4"
+        [(ngModel)]="selectedBookingModel"
+        [hidden]="isHedgingHidden"
+        (keydown.enter)="changeHedgeType()" />
+
+      <mat-autocomplete
+        class="custom-scroll-bar"
+        #auto4="matAutocomplete"
+        [displayWith]="ShowBookingModel"
+        (optionSelected)="changeHedgeType()">
+        <mat-option
+          class="common-font dd-font-size"
+          *ngFor="let hedge of bookingModelOptions | async"
+          [value]="hedge">
+          <span>{{hedge}}</span>
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+
+    <!-- <mat-form-field class="example-full-width">
+      <mat-select [disabled]="sUCPMode === 'UCPWFL' ? true : false" placeholder="Booking model" [(ngModel)]="selectedBookingModel">
+        <mat-option value="bookingProduct" >Product</mat-option>
+        <mat-option value="pooling" >Pooling</mat-option>
+      </mat-select>
+    </mat-form-field> -->
+  </div>
+  <div class="filterButton" *ngIf="sUCPMode == 'UCPQEN' && ShowStaticField==true">
+    <!-- class filterButton-color can be applied to all buttons if same color grey - #5a5a5a is required. 
+    Removed these classes from here to have differet colors as per in webpack deal entry - Onkar E -->
+    <button
+      class="draftBtn"
+      [ngClass]="SMADataObj.draftVisibility == 'TRUE' ? 'display-button' : 'hide-button'"
+      id="btnDraft"
+      (click)="CheckDraft()"
+      mat-raised-button>
+      {{BtnDraftName}}
+    </button>
+    <button
+      class="saveBtn"
+      [ngClass]="SMADataObj.saveVisibility == 'TRUE' ? 'display-button' : 'hide-button'"
+      id="btnSave"
+      (click)="InsertTokenDatasavebtn()"
+      [ngClass]="{disabled: !productdDrafted}"
+      mat-raised-button>
+      {{BtnSaveName}}
+    </button>
+  </div>
+  <div class="filterButton" *ngIf="sUCPMode == 'UCPQEN' && ShowStaticField==true">
+    <button
+      class="repriceBtn"
+      [ngClass]="SMADataObj.repriceVisibility == 'TRUE' ? 'display-button' : 'hide-button'"
+      id="btnReprice"
+      (click)="btnReprice_Click()"
+      mat-raised-button>
+      {{BtnRepriceName}}
+    </button>
+    <button
+      class="clearBtn"
+      [ngClass]="SMADataObj.clearVisibility == 'TRUE' ? 'display-button' : 'hide-button'"
+      id="btnClear"
+      (click)="ClearTemplateFields()"
+      mat-raised-button>
+      {{BtnClearName}}
+    </button>
+  </div>
+  <div class="filterButton" *ngIf="sUCPMode == 'UCPQEN' && ShowStaticField==true">
+    <button
+      class="simulationBtn"
+      [ngClass]="SMADataObj.simulationVisibility == 'TRUE' ? 'display-button' : 'hide-button'"
+      id="btnSimulation"
+      mat-raised-button>
+      {{BtnSimulationName}}
+    </button>
+  </div>
+  <div class="wflbtn" *ngIf="sUCPMode!='UCPQEN' && dtWFLButtons && ShowStaticField==true">
+    <table *ngIf="dtWFLButtons.length > 0">
+      <tr *ngFor="let row of ((dtWFLButtons.length)%2==0?[].constructor(dtWFLButtons.length/2):[].constructor((dtWFLButtons.length+1)/2));let i=index;" class="WFLButtonTR">  <!-- Added WFLButtonTR class by OnkarE to use Grid style to avoid button alignemnt issue -->
+        <td class="wflBtntd">
+          <button class="button wflBtnUCP" id="WB_{{dtWFLButtons[i*2].wB_ID}}" (click)="WFLButtonActions(dtWFLButtons[i*2])"
+          *ngIf="dtWFLButtons[i*2].showbtn" [disabled]="dtWFLButtons[i*2].readonly">{{dtWFLButtons[i*2].caption}}</button> 
+          <button style="margin-right: 5px;" class="QueueButtons button wflBtnUCP" id="WB_{{dtWFLButtons[i*2].wB_ID}}_SaveAmend" (click)="SaveDataAmendMode()"
+           *ngIf="!dtWFLButtons[i*2].showbtn">{{sSaveMessageText}}</button>
+          <button class="QueueButtons button wflBtnUCP" id="WB_{{dtWFLButtons[i*2].wB_ID}}CancelAmend" (click)="RefreshWFLMode()"
+           *ngIf="!dtWFLButtons[i*2].showbtn">{{sCancelMessageText}}</button>
+        </td>
+        <td *ngIf="dtWFLButtons[(i*2)+1]" class="wflBtntd">
+          <button class="button wflBtnUCP" id="WB_{{dtWFLButtons[(i*2)+1].wB_ID}}" (click)="WFLButtonActions(dtWFLButtons[(i*2)+1])"
+           *ngIf="dtWFLButtons[(i*2)+1].showbtn" [disabled]="dtWFLButtons[(i*2)+1].readonly">{{dtWFLButtons[(i*2)+1].caption}}</button>
+          <button style=" margin-right: 5px;" class="QueueButtons button wflBtnUCP" id="WB_{{dtWFLButtons[(i*2)+1].wB_ID}}_SaveAmend" (click)="SaveDataAmendMode()"
+           *ngIf="!dtWFLButtons[(i*2)+1].showbtn">{{sSaveMessageText}}</button>
+          <button class="QueueButtons button wflBtnUCP" id="WB_{{dtWFLButtons[(i*2)+1].wB_ID}}CancelAmend" (click)="RefreshWFLMode()"
+           *ngIf="!dtWFLButtons[(i*2)+1].showbtn">{{sCancelMessageText}}</button>        
+        </td>   
+      </tr>
+     </table>
+  </div> 
+</div>
+
+<div
+  class="overlay_grey"
+  [ngStyle]="{'position': this.Embedded_Control=='POSTCARD'?'fixed':'absolute'}"
+  *ngIf="this.loader && this.Embedded_Control!='MULTIUCP'">
+</div>
+<app-loader
+      *ngIf="this.loader"
+      [ngStyle]="{'position': this.Embedded_Control!='MULTIUCP'?'fixed':'absolute','margin-left': '45%','z-index': '10','top':this.Embedded_Control!='MULTIUCP'?'45%':''}">
+</app-loader>
+<div class="mainDEBGColor" *ngIf="selectedTabName.toUpperCase() == 'TPTRADECAPTURE' ">
+    <div class="dealentrycontent" #Dealentry style="padding-left: 0.5px;" *ngIf="DefaultValuesAvailable && selectedTabName.toUpperCase() == 'TPTRADECAPTURE' && layoutloaded">
+      <div #Custom [hidden]="!(CustomTabs.columns.length && ShowCustom==true)" class="custom-tabs">
+      <table class="widthmax">
+          <!-- pointer-events: none; style for disable except UCPQEN-->
+          <thead>
+            <tr class="customHeaderRow">
+              <th class="stylewidth30" (click)="IncTableRowCount()"> 
+                <!-- [ngClass]="sUCPMode != 'UCPQEN'?'custom-tab-disabled': ''" -->
+                <button class="custom-tabs-button stylewidth30 UCPMatButton UCPCustomTabHeader" [ngClass]="{'disabled': (sUCPMode === 'UCPWFL' || sUCPMode === 'DLSADD')}" [disabled]="sUCPMode == 'UCPQEN' ? false : true" >
+                  +
+                </button>
+              </th>
+              <th *ngFor="let column of CustomTabs.columns">{{column}}</th>
+            </tr>
+          </thead>
+          <tbody *ngFor="let row of tableRow; let i = index;">
+            <!-- <tr> -->
+            <!-- <td (click)="decTableRowCount()">
+              <span class="btnCustomTab">-</span>
+            </td>
+            <td *ngFor="let control of row">
+              <app-field-templates class="mandate-fix" [dropdowns]="dropdowns" [control]="control"></app-field-templates>
+            </td> -->
+            <app-custom-tabs-row
+              style="display: table-row;"
+              [index]="i"
+              [dropdowns]="dropdowns"
+              [CustomTabs]="CustomTabs"
+              [sUCPMode]="sUCPMode"
+              [row]="row"
+              [searchArrays]="searchArrays"
+              [shareArray]="shareArray"
+              (removeRow)="decTableRowCount($event)"
+              [draftcheck]="draftclicked"
+              (checkResponse)="DraftResponse($event)"
+              (CustomTabChangeChange)="customTabFieldValueChange($event)">
+            </app-custom-tabs-row>
+
+            <!-- </tr> -->
+            <!-- <td> + </td>
+          <td *ngFor="let control of CustomTabs.data">
+            <app-field-templates [dropdowns]="dropdowns" [control]="control"></app-field-templates>
+          </td> -->
+          </tbody>
+        </table>
+      </div>
+      <div #UDF [hidden]="!(ShowUDF==true)" class="fields paddingtop15">
+        <!-- <app-loader
+          *ngIf="this.loader"
+          style="position: absolute;margin-left: 40%;z-index: 10;">
+        </app-loader> -->
+        <!-- <app-loader
+          *ngIf="this.loader1"
+          class="loaderstyle">
+        </app-loader> -->
+        <table class="widthmax" *ngIf="orientation && orientation.toUpperCase() == 'NORTH-SOUTH'">
+          <tr>
+            <td
+              *ngFor="let e of [].constructor(max_ColSize); let j=index"
+              class="appfieldtd">
+              <table class="widthmax">
+                <tr #refEl [ngStyle]="(checkTrUDFVisibility(refEl, j,i,control))"
+                  *ngFor="let control of controls | slice:(j==0?0:j*max_Rowsize):(j==0?max_Rowsize:max_Rowsize*(j+1)); let i = index">
+                  <app-field-templates
+                    id="{{control.fieldName}}"
+                    [ngStyle]="(checkUDFVisibility(j,i,control))"
+                    [dropdowns]="dropdowns"
+                    [shareArray]="shareArray"
+                    [searchArrays]="searchArrays"
+                    [control]="control"
+                    class="form-group"
+                    [ColSize]="ColSize"
+                    [RowSize]="RowSize"
+                    [Multi_UCP]="ApplTypeFlag"
+                    [layoutColWidth]="layoutColWidth"
+                    [layoutLblWidth]="layoutLblWidth"
+                    [WFLqueueButtons]="WFLqueueButtons"
+                    [Savingmsg]="sSaveMessageText"
+                    [Cancelmsg]="sCancelMessageText"
+                    (UDFFieldChangeChange)="udfFieldValueChange($event)"
+                    (WFLButtonActions)="WFLButtonActions($event)"
+                    (SaveDataAmendMode)="SaveDataAmendMode()"
+                    (RefreshWFLMode)="RefreshWFLMode()"
+                    (HandleHyperlinkChange)="HandleHyperLink(control)"
+                    (HandleAnotherUCPChange)="HandleAnotherUCP(control)"
+                    (HandleStaticButtonClick)="InvokeButtonLinkedFunctions(control)"
+                    (HandleGridChangeChange)="HandleGridData(control)"
+                    [sUCPMode]="sUCPMode"
+                    [themeList]="themeList">
+                  </app-field-templates>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+        <table class="widthmax-EW" *ngIf="orientation && orientation.toUpperCase() == 'EAST-WEST'">
+          <tr>
+            <td
+              *ngFor="let e of [].constructor(max_ColSize); let j=index"
+              class="appfieldtd">
+              <table class="widthmax-EW">
+                <tr #refEl [ngStyle]="(checkTrUDFVisibility(refEl, j,i,control))"
+                  *ngFor="let control of controls | slice:(j==0?0:j*max_Rowsize):(j==0?max_Rowsize:max_Rowsize*(j+1)); let i = index">
+                  <app-field-templates-ew
+                    id="{{control.fieldName}}"
+                    [ngStyle]="(checkUDFVisibility(j,i,control))"
+                    [dropdowns]="dropdowns"
+                    [shareArray]="shareArray"
+                    [searchArrays]="searchArrays"
+                    [control]="control"
+                    class="form-group"
+                    [ColSize]="ColSize"
+                    [RowSize]="RowSize"
+                    [Multi_UCP]="ApplTypeFlag"
+                    [layoutColWidth]="layoutColWidth"
+                    [layoutLblWidth]="layoutLblWidth"
+                    [WFLqueueButtons]="WFLqueueButtons"
+                    [Savingmsg]="sSaveMessageText"
+                    [Cancelmsg]="sCancelMessageText"
+                    (UDFFieldChangeChange)="udfFieldValueChange($event)"
+                    (WFLButtonActions)="WFLButtonActions($event)"
+                    (SaveDataAmendMode)="SaveDataAmendMode()"
+                    (RefreshWFLMode)="RefreshWFLMode()"
+                    (HandleHyperlinkChange)="HandleHyperLink(control)"
+                    (HandleAnotherUCPChange)="HandleAnotherUCP(control)"
+                    (HandleStaticButtonClick)="InvokeButtonLinkedFunctions(control)"
+                    (HandleGridChangeChange)="HandleGridData(control)"
+                    [sUCPMode]="sUCPMode"
+                    [themeList]="themeList">
+                  </app-field-templates-ew>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+        <table class="widthmax" *ngIf="orientation && orientation.toUpperCase() != 'EAST-WEST' && orientation.toUpperCase() != 'NORTH-SOUTH'">
+          <tr>
+            <td
+              *ngFor="let e of [].constructor(max_ColSize); let j=index"
+              class="appfieldtd">
+              <table class="widthmax">
+                <tr #refEl [ngStyle]="(checkTrUDFVisibility(refEl, j,i,control))"
+                  *ngFor="let control of controls | slice:(j==0?0:j*max_Rowsize):(j==0?max_Rowsize:max_Rowsize*(j+1)); let i = index">
+                  <app-field-templates
+                    id="{{control.fieldName}}"
+                    [ngStyle]="(checkUDFVisibility(j,i,control))"
+                    [dropdowns]="dropdowns"
+                    [shareArray]="shareArray"
+                    [searchArrays]="searchArrays"
+                    [control]="control"
+                    class="form-group"
+                    [ColSize]="ColSize"
+                    [RowSize]="RowSize"
+                    [Multi_UCP]="ApplTypeFlag"
+                    [layoutColWidth]="layoutColWidth"
+                    [layoutLblWidth]="layoutLblWidth"
+                    [WFLqueueButtons]="WFLqueueButtons"
+                    [Savingmsg]="sSaveMessageText"
+                    [Cancelmsg]="sCancelMessageText"
+                    (UDFFieldChangeChange)="udfFieldValueChange($event)"
+                    (WFLButtonActions)="WFLButtonActions($event)"
+                    (SaveDataAmendMode)="SaveDataAmendMode()"
+                    (RefreshWFLMode)="RefreshWFLMode()"
+                    (HandleHyperlinkChange)="HandleHyperLink(control)"
+                    (HandleAnotherUCPChange)="HandleAnotherUCP(control)"
+                    (HandleStaticButtonClick)="InvokeButtonLinkedFunctions(control)"
+                    (HandleGridChangeChange)="HandleGridData(control)"
+                    [sUCPMode]="sUCPMode"
+                    [themeList]="themeList">
+                  </app-field-templates>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+        <!-- <table>
+          <tr>
+            <tbody *ngFor="let e of [].constructor(max_ColSize); let j=index" style="vertical-align: top; width: max-content;">
+              <table>
+                <tr *ngFor="let control of controls | slice:(j==0?0:j*max_Rowsize):(j==0?max_Rowsize:max_Rowsize*(j+1)); let i = index">        
+                  <app-field-templates [ngStyle]="checkUDFVisibility((j*max_Rowsize)+i, control)" [dropdowns]="dropdowns" [shareArray]="shareArray"
+                  [searchArrays]="searchArrays" [control]="control" class="form-group"
+                  [ngClass]="{'invisible' : control.visibility === 'N'}" [ColSize]="ColSize" [RowSize]="RowSize"
+                  [Multi_UCP]="ApplTypeFlag" [layoutColWidth]="layoutColWidth" [layoutLblWidth]="layoutLblWidth"
+                  (UDFFieldChangeChange)="udfFieldValueChange(control)" (HandleHyperlinkChange)="HandleHyperLink(control)"
+                  (HandleAnotherUCPChange)="HandleAnotherUCP(control)"
+                  (HandleStaticButtonClick)="InvokeButtonLinkedFunctions(control)"
+                  (HandleGridChangeChange)="HandleGridData(control)">
+                </app-field-templates>
+                
+                </tr>
+              </table>
+              
+            </tbody>
+          </tr>
+          
+        </table> -->
+      </div>
+      <div #CustGrid
+        class="customer-grid"
+        [hidden]="!(CustomerGrid.columns.length && template.showClientGrid === 'Y' && ShowCustGrid==true)">
+        <table
+          *ngIf="CustomerGrid.columns.length && (selectedBookingModel.toUpperCase() === 'POOLING' || selectedBookingModel.toUpperCase() 
+          === 'BACK TO BACK' || selectedBookingModel.toUpperCase() === 'DYNAMIC' || selectedBookingModel.toUpperCase() === 'MARKET' || selectedBookingModel.toUpperCase() === 'ORDER')"
+          class="custgridtable">
+          <thead class="custgridborder">
+            <tr class="customHeaderRow">
+              <th class="stylewidth30">
+                <button class="custom-tabs-button stylewidth30 UCPMatButton UCPCustomerGridHead" [ngClass]="btnPoolreadonly ?'custom-tab-disabled': ''" [hidden]="(selectedBookingModel.toUpperCase() === 'POOLING' && selectedBookingModel.toUpperCase() != 'DYNAMIC' &&  selectedBookingModel.toUpperCase() === 'BACK TO BACK' )?true:false" (click)="AddClientLegToCustomerGrid(custGridTableRow.length, custGridTableRow.length - 1)" [disabled]="btnPoolreadonly">
+                  +
+                </button>
+              </th>
+              <th *ngFor="let data of CustomerGrid.data" [ngStyle]="data.visible != 'Y' && {'display': 'none'}">
+                <div>{{data.displayName}}</div>
+              </th>
+            </tr>
+          </thead>
+          <tbody
+            *ngFor="let row of custGridTableRow; let i = index;">
+            <app-customer-grid
+              [ngStyle]="{'display': (custGridTableRow[i].HideCustomerGridMarketLeg == true || HideCustomerGridMarketLeg == true) ? 'none':'table-row'}"
+              [index]="i"
+              [dropdowns]="dropdowns"
+              [sUCPMode]="sUCPMode"
+              [row]="row"
+              [template]="template"
+              [selectedBookingModel]="selectedBookingModel"
+              [searchArrays]="searchArrays"
+              [shareArray]="shareArray"
+              (removeRow)="decCustGridTableRowCount($event)"
+              [draftcheck]="draftclicked"
+              (checkResponse)="DraftResponse($event)"
+              (CustomerGridChangeChange)="CustomerGridValueChange($event)"
+              (GetCustomerId)="setcustomerid($event)" 
+              [parentCustGridLength]="parentCustGridLength"
+              >
+            </app-customer-grid>
+          </tbody>
+        </table>
+      </div>
+      <div #PricingGrid class="PricingGrid" [hidden]="!(showPricingGrid == 'Y' && readLayoutResponse)">
+        <!-- <app-pricing-component
+          [NoteMasterID]="NoteMasterID" [PricingMethod]="PricingMethod" (orderplaced)="SavePricingOrder($event)" [AppTableData]="controls" [rfqList]="rfqList" [triggerPrice]="triggerPrice" [EQPrices]="EQPrices" (PriceCompOutput)="StartEQPrices(data)" [PricingMode]="PricingMode" [PPData]="PPData" [ProdDetails]="Embedded_Template" [EntityId]="selectedEntity" [LoginId]="Login_Id" [userGroup]="userGroup">
+        </app-pricing-component> -->
+      </div>
+    </div>
+</div>
+<div class="dealentrycontent mainDEBGColor" *ngIf="selectedTabName.toUpperCase() == 'TPCSVSCHEDULE' ">
+  <app-view-schedule [iNoteMasterID]="iNoteMasterID" [entityId]="selectedEntity" [iTemplateID]="template.template_Id"
+    [sUCPMode]="sUCPMode" [oUCPAppTablesData]="oUCPAppTablesData" [ruleScheduleData]="oViewSchedule" (GetViewSchedule)="SetViewSchedule($event)"></app-view-schedule>
+</div>
+<div  class="dealentrycontent mainDEBGColor"  *ngIf="selectedTabName.toUpperCase() == 'TPCHANGEAUDIT'">
+  <app-ucp-product-amendment [iTemplateID]="template.template_Id" [iNoteMasterID]="iNoteMasterID" [sUCPMode]="sUCPMode" [oUCPAppTablesData]="oUCPAppTablesData"></app-ucp-product-amendment>
+</div>
+<div  class="dealentrycontent mainDEBGColor" *ngIf="selectedTabName.toUpperCase() == 'UCP_PRODUCTSCHEDULE'" >
+  <app-ucp-product-schedule class="selected_tab" [iNoteMasterID]="iNoteMasterID" [entityId]="selectedEntity" [iTemplateID]="template.template_Id"
+  [sUCPMode]="sUCPMode" [oUCPAppTablesData]="oUCPAppTablesData" [oldSchdeule]="oProductSchedule" (GetProductSchedule)="SetProductSchedule($event)"></app-ucp-product-schedule>
+</div>
+<div  class="dealentrycontent mainDEBGColor"   *ngIf="selectedTabName.toUpperCase() == 'TPINDEXHISTORY'">
+  <app-ucp-indexmaster class="selected_tab" [iNoteMasterID]="iNoteMasterID" [entityId]="selectedEntity"></app-ucp-indexmaster>
+</div> 
+<div class="dealentrycontent mainDEBGColor" *ngIf="selectedTabName.toUpperCase() == 'TPPACKAGESCHEDULE'">
+  <app-ucp-package-schedule class="selected_tab" [iNoteMasterID]="iNoteMasterID" [entityId]="selectedEntity" [iTemplateID]="template.template_Id" 
+    [sUCPMode]="sUCPMode" [oUCPAppTablesData]="oUCPAppTablesData" [customStaticTabDetails]="CustomStaticTabDetails" (GetPackageSchedule)="SetPackageSchedule($event)"></app-ucp-package-schedule>
+</div>
+<!-- Added by RajeshC 06-Sept || Trace Tab -->
+<div  class="dealentrycontent mainDEBGColor"  *ngIf="selectedTabName.toUpperCase() == 'TPUCPEVTFIX'">
+  <app-trace  [iNoteMasterID]="iNoteMasterID" [iTemplateSrNo]="iTemplateSrNo" [iTemplateId]="template.template_Id" [sUCPMode]="sUCPMode" ></app-trace>
+</div>  
+<!-- Added by RajeshC 17-Sept || Fees Tab -->
+<!-- <div  class="dealentrycontent"  *ngIf="selectedTabName.toUpperCase() == 'TPFEES'">
+  <app-fees [iTemplateId]="template.template_Id" [iNoteDealID]="iNoteDealID" [sUCPMode]="sUCPMode" [iNoteMasterID]="iNoteMasterID"  [iTemplateSrNo]="iTemplateSrNo"   [oFieldDetails]="oFieldDetails" [iTemplateCode]="template.template_Code" ></app-fees>
+</div> -->
+<!-- Added by RajeshC 17-Sept || Subscription Tab -->
+<div  class="dealentrycontent mainDEBGColor"  *ngIf="selectedTabName.toUpperCase() == 'TPSUBSCRIPTION'">
+  <app-ucp-subscription-tab-control [iTemplateId]="template.template_Id"  [sUCPMode]="sUCPMode" [iNoteMasterID]="iNoteMasterID"></app-ucp-subscription-tab-control>
+</div>
+
+<div  class="dealentrycontent mainDEBGColor"  *ngIf="selectedTabName.toUpperCase() == 'TPMUTATIONSCHEDULE'">
+  <app-ucp-mutation-schedule [iTemplateID]="template.template_Id" [iNoteMasterID]="iNoteMasterID" [entityId]="selectedEntity" [sUCPMode]="sUCPMode" [oUCPAppTablesData]="oUCPAppTablesData"></app-ucp-mutation-schedule>
+</div>
+
+<div  class="dealentrycontent mainDEBGColor"  *ngIf="selectedTabName.toUpperCase() == 'TPPAYMENTS'">
+  <app-ucp-payment [iTemplateID]="template.template_Id" [iNoteMasterID]="iNoteMasterID" [entityId]="selectedEntity" [sUCPMode]="sUCPMode" [oUCPAppTablesData]="oUCPAppTablesData"></app-ucp-payment>
+</div>
+ <ng-template #Promptbox let-data>
+  <button mat-mini-fab  mat-dialog-close class="edit-close-button">
+    <mat-icon class="edit-close-icon" matTooltip="Close (f4)">clear</mat-icon>
+  </button>
+  <div mat-dialog-content>
+    <p class="dd-font-size">{{data.dialogText}}</p>   
+  </div>
+  <div mat-dialog-actions align="center">
+    <button mat-button mat-dialog-close>No</button>
+    <button mat-button [mat-dialog-close]="true" (click)="PromptYes_click()" cdkFocusInitial>Yes</button>
+  </div>
+</ng-template> 

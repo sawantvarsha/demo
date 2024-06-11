@@ -1,0 +1,393 @@
+<div class="statementComponent">
+    <div class="page-navigation">
+        <app-svg-icons class="back-button" *ngIf="userType !== 'SelectedUser'" [icon]="'back-button'" [width]="'40'" [height]="'40'" [fill]="'var(--headers)'"
+        (click)="back()"></app-svg-icons>
+    <div class="page-title" *ngIf="userType === 'Client' || userType === 'SelectedUser'">Statements</div>
+    <div class="page-title" *ngIf="userType === 'RM'">Statements (RM)</div>
+    </div>
+    <div class="main-container">
+        <div class="content-container">
+            <!-- <div class="tabs-pages" >
+                <div class="tabs" *ngIf="subpages[0].displayYN === 'true'" [ngClass]="{'tab-active': pageMode === 3}" (click)="changeStatementTab('PORTFOLIO')">
+                    Portfolio</div>
+                <div class="tabs" *ngIf="subpages[1].displayYN === 'true'" [ngClass]="{'tab-active': pageMode === 1}" (click)="changeStatementTab('ACCOUNT');">
+                    Account</div>
+                <div class="tabs" *ngIf="subpages[2].displayYN === 'true'" [ngClass]="{'tab-active': pageMode === 2}" (click)="changeStatementTab('PNL');">
+                    PnL</div>
+                    <div class="tabs" *ngIf="subpages[3].displayYN === 'true'" [ngClass]="{'tab-active': pageMode === 4}" (click)="changeStatementTab('CREDITSUMMARY');">
+                        Credit Summary</div>
+            </div> -->
+            <div *ngIf="pageMode === 5">
+                <div class="grid-container">
+                    <!-- <div class="page-title">
+                        Account Statement
+                    </div> -->
+                    <div class="grid-filter">
+                        <div class="grid-filter-buttons">
+                            <div>
+                                <button [ngClass]="{'active': isActive === '1Month' }" (click)="SelectFilter('1M')">1
+                                    Month</button>
+                            </div>
+                            <div>
+                                <button [ngClass]="{'active': isActive === '3Month' }" (click)="SelectFilter('3M')">3
+                                    Months</button>
+                            </div>
+                            <div>
+                                <button [ngClass]="{'active': isActive === '6Month' }" (click)="SelectFilter('6M')">6
+                                    Months</button>
+                            </div>
+                            <div>
+                                <button [ngClass]="{'active': isActive === 'Custom' }"
+                                    (click)="SelectFilter('C')">Custom</button>
+                            </div>
+                        </div>
+                        <div class="grid-filter-dates">
+                            <div class="grid-filter-label">
+                                From
+                            </div>
+
+                            <div class="grid-filter-label">
+                                To
+                            </div>
+                            <div class="grid-filter-dates-input">
+                                <input type="date" name="FromDate" id="FromDate" class="input-dob"
+                                    [attr.data-date]="FromDate" data-date-format="DD-MMM-YYYY" tabindex="16"
+                                    min="2000-01-01" [(ngModel)]="FromDate" (change)="selectFromDate(FromDate);">
+                            </div>
+                            <div class="grid-filter-dates-input">
+                                <input type="date" name="ToDate" id="ToDate" class="input-dob" [attr.data-date]="ToDate"
+                                    data-date-format="DD-MMM-YYYY" tabindex="16" min="2000-01-01" [(ngModel)]="ToDate"
+                                    (change)="selectToDate(ToDate);">
+                            </div>
+                        </div>
+
+                        <div class="grid-filter-fileformatsendvia">
+                            <div class="grid-filter-label">
+                                Format
+                            </div>
+                            <div class="grid-filter-label">
+                                Send As
+                            </div>
+                            <div class="grid-filter-dates-select">
+                                <select [(ngModel)]="Format">
+                                    <option value="PDF">PDF</option>
+                                    <option value="EXCEL">EXCEL</option>
+                                </select>
+                            </div>
+                            <div class="grid-filter-dates-select">
+                                <select [(ngModel)]="SendAs">
+                                    <option value="Download"></option>
+                                    <option value="Email"></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="grid-filter-generate-btn" *ngIf="SendAs === 'Email'">
+                            <button class="button" value="Send Email" (click)='SendEmail()'>Send Email</button>
+                            <span class="msg-class" *ngIf="EmailFlag">{{EmailMsg}}</span>
+                            <!-- <a href='{{PDFLink}}'>Generate pdf</a> -->
+                        </div>
+                        <div class="grid-filter-generate-btn" *ngIf="SendAs === 'Download'">
+                            <button class="button" value="Generate" (click)='GenerateStatement()'>Generate</button>
+                            <!-- <a href='{{PDFLink}}'>Generate pdf</a> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="pageMode === 2">
+                <div class="grid-container">
+                    <!-- <div class="page-title">
+                        PnL Statement
+                    </div> -->
+                    <div class="grid-filter">
+                        <div class="grid-filter-fileformatsendvia">
+                            <div class="grid-filter-label">
+                                Format
+                            </div>
+                            <div class="grid-filter-label">
+                                Send as
+                            </div>
+                            <div class="grid-filter-dates-select">
+                                <select [(ngModel)]="Format">
+                                    <option value="PDF">PDF</option>
+                                    <option value="EXCEL">EXCEL</option>
+                                </select>
+                            </div>
+                            <div class="grid-filter-dates-select">
+                                <select [(ngModel)]="SendAs">
+                                    <option value="Download">Download</option>
+                                    <option value="Email">Email</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="grid-filter-generate-btn" *ngIf="SendAs === 'Email'">
+                            <button class="button" value="Send Email" (click)='SendEmail()'>Send Email</button>
+                            <span class="msg-class" *ngIf="EmailFlag" >{{EmailMsg}}</span>
+                            <!-- <a href='{{PDFLink}}'>Generate pdf</a> -->
+                        </div>
+                        <div class="grid-filter-generate-btn" *ngIf="SendAs === 'Download'">
+                            <button class="button" value="Generate" (click)="GeneratePnLStatement()">Generate</button>
+                            <!-- <a href='{{PDFLink}}'>Generate pdf</a> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="pageMode === 3">
+                <div class="grid-container">
+                    <!-- <div class="page-title">
+                        Portfolio Statement
+                    </div> -->
+                    <div class="grid-filter">
+
+                        <div class="grid-filter-fileformatsendvia">
+                            <div class="grid-filter-label">
+                                Format
+                            </div>
+                            <div class="grid-filter-label">
+                                Send as
+                            </div>
+                            <div class="grid-filter-dates-select">
+                                <select [(ngModel)]="Format">
+                                    <option value="PDF">PDF</option>
+                                    <option value="EXCEL">EXCEL</option>
+                                </select>
+                            </div>
+                            <div class="grid-filter-dates-select">
+                                <select [(ngModel)]="SendAs">
+                                    <option value="Download">Download</option>
+                                    <option value="Email">Email</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="grid-filter-fileformatsendvia">
+                            <div class="grid-filter-label">
+                                Mode
+                            </div>
+                            <div class="grid-filter-label">
+
+                            </div>
+                            <div class="grid-filter-dates-select">
+                                <select [(ngModel)]="PortfolioPDFModetxt">
+                                    <option *ngFor="let item of PortfolioPDFMode" [value]="item">
+                                        {{item}}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="grid-filter-dates-select">
+
+                            </div>
+                        </div>
+                        <div class="grid-filter-generate-btn" *ngIf="SendAs === 'Email'">
+                            <button class="button" value="Send Email" (click)='SendEmail()'>Send Email</button>
+                            <span class="msg-class" *ngIf="EmailFlag" >{{EmailMsg}}</span>
+                            <!-- <a href='{{PDFLink}}'>Generate pdf</a> -->
+                        </div>
+                        <div class="grid-filter-generate-btn" *ngIf="SendAs === 'Download'">
+                            <button class="button" type="button" value="Generate" (click)="GeneratePortfolioStatement()">Generate</button>
+                            <!-- <a href='{{PDFLink}}'>Generate pdf</a> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="pageMode === 4">
+                <div class="grid-container">
+                    <!-- <div class="page-title">
+                        Portfolio Statement
+                    </div> -->
+
+                    <div class="grid-filter">
+
+                        <div class="grid-filter-fileformatsendvia">
+                            <div class="grid-filter-label">
+                                Format
+                            </div>
+                            <div class="grid-filter-label">
+                                Send as
+                            </div>
+                            <div class="grid-filter-dates-select">
+                                <select [(ngModel)]="Format">
+                                    <option value="PDF">PDF</option>
+                                    <option value="EXCEL">EXCEL</option>
+                                </select>
+                            </div>
+                            <div class="grid-filter-dates-select">
+                                <select [(ngModel)]="SendAs">
+                                    <option value="Download">Download</option>
+                                    <option value="Email">Email</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="grid-filter-generate-btn" *ngIf="SendAs === 'Email'">
+                            <button class="button" value="Send Email" (click)='SendEmail()'>Send Email</button>
+                            <span class="msg-class" *ngIf="EmailFlag">{{EmailMsg}}</span>
+                            <!-- <a href='{{PDFLink}}'>Generate pdf</a> -->
+                        </div>
+                        <div class="grid-filter-generate-btn" *ngIf="SendAs === 'Download'">
+                            <button class="button" type="button" value="Generate" (click)="GenerateCollateralStatement()">Generate</button>
+                            <!-- <a href='{{PDFLink}}'>Generate pdf</a> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <div class="grid-container">
+
+                    <div class="statement-row" *ngIf="userType === 'RM'">
+                        <div>
+                            <div><label>Customer:</label></div>                                                    
+                        </div>
+                        <div>
+                            <app-customer-search (sendCustomerDetails)="getCustomerDetails($event)"
+                            (selectedCustomerValue)="selectedCustomerValue1($event)"></app-customer-search>
+                        </div>
+                    </div>
+
+                    <div class="statement-row" *ngIf="userType === 'SelectedUser'">
+                        <div>
+                            <div><label>Customer:</label></div>                                                    
+                        </div>
+                        <div>
+                            <input type="text " [(ngModel)]="CustUserType" [disabled] = "true"/>
+                        </div>
+                    </div>
+
+                                  <!-- <div class="tabs-pages" >
+                <div class="tabs" *ngIf="subpages[0].displayYN === 'true'" [ngClass]="{'tab-active': pageMode === 3}" (click)="changeStatementTab('PORTFOLIO')">
+                    Portfolio</div>
+                <div class="tabs" *ngIf="subpages[1].displayYN === 'true'" [ngClass]="{'tab-active': pageMode === 1}" (click)="changeStatementTab('ACCOUNT');">
+                    Account</div>
+                <div class="tabs" *ngIf="subpages[2].displayYN === 'true'" [ngClass]="{'tab-active': pageMode === 2}" (click)="changeStatementTab('PNL');">
+                    PnL</div>
+                    <div class="tabs" *ngIf="subpages[3].displayYN === 'true'" [ngClass]="{'tab-active': pageMode === 4}" (click)="changeStatementTab('CREDITSUMMARY');">
+                        Credit Summary</div>
+            </div> -->          
+
+                    <div class="statement-row">
+
+                        <div><label>Select Statement: </label></div>
+                        <div>
+                            <select [(ngModel)]="statementType" (change) = "changeTab()">
+                                <option value="PORTFOLIO">Portfolio Statements</option>
+                                <option value="ACCOUNT">Account Statements</option>
+                                <option value="PNL">PnL Statements</option>
+                                <option value="CREDITSUMMARY">Credit Summary Statements</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="statement-row">
+                        <div><label>Select Format: </label></div>
+                        <div class="selector-group">
+                            <div class="select-box large" (click)="SelectFormat('PDF')" [ngClass]="{'active': Format === 'PDF' }">
+                                <app-svg-icons [icon]="'pdf-icon'" [width]="'23'" [height]="'30'" style="margin: auto;"></app-svg-icons>
+                                <label>PDF</label>
+                            </div>
+                            <div class="select-box large" (click)="SelectFormat('EXCEL')" [ngClass]="{'active': Format === 'EXCEL' }">
+                                <app-svg-icons [icon]="'xls-icon'" [width]="'30'" [height]="'30'" style="margin: auto;"></app-svg-icons>
+                                <label>XLS</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="statement-row" style="margin-bottom: 10px;">
+                        <div><label>Send as: </label></div>
+                        <div class="selector-group">
+                            <div class="select-box" (click)="SendAsFormat('Download')" [ngClass]="{'active': SendAs === 'Download' }">
+                                <label>Download</label>
+                            </div>
+                            <div class="select-box" (click)="SendAsFormat('Email')" [ngClass]="{'active': SendAs === 'Email' }">
+                                <label>Email</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="statement-row" style="margin-bottom: 10px;" *ngIf="statementType === 'PORTFOLIO'">
+                        <div><label>Select Mode: </label></div>
+                        <div class="selector-group">
+                            <div class="select-box" (click)="SelectMode('Compact')" [ngClass]="{'active': PortfolioPDFModetxt === 'Compact' }">
+                                <label>Compact</label>
+                            </div>
+                            <div class="select-box" (click)="SelectMode('Full')" [ngClass]="{'active': PortfolioPDFModetxt === 'Full' }">
+                                <label>Full</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="statement-row" *ngIf="statementType === 'ACCOUNT'">
+                        <div><label>Select Duration: </label></div>
+                        <div class="selector-group">
+                            <div class="select-box" (click)="SelectFilter('1M')" [ngClass]="{'active': isActive === '1Month' }">
+                                <label>1 Month</label>
+                            </div>
+                            <div class="select-box" (click)="SelectFilter('3M')" [ngClass]="{'active': isActive === '3Month' }">
+                                <label>3 Month</label>
+                            </div>
+                            <div class="select-box" (click)="SelectFilter('6M')" [ngClass]="{'active': isActive === '6Month' }">
+                                <label>6 Month</label>
+                            </div>
+                            <div class="select-box" (click)="SelectFilter('C')" [ngClass]="{'active': isActive === 'Custom' }">
+                                <label>Custom</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="statement-row" *ngIf="isActive === 'Custom' && statementType === 'ACCOUNT'">
+                        <div></div>
+                        <div class="grid-filter-dates">
+                            <div class="grid-filter-label">
+                                From
+                            </div>
+    
+                            <div class="grid-filter-label">
+                                To
+                            </div>
+                            <div class="grid-filter-dates-input">
+                                <input type="date" name="FromDate" id="FromDate" class="input-dob"
+                                    [attr.data-date]="FromDate" data-date-format="DD-MMM-YYYY" tabindex="16"
+                                    min="2000-01-01" [(ngModel)]="FromDate" (change)="selectFromDate(FromDate);">
+                            </div>
+                            <div class="grid-filter-dates-input">
+                                <input type="date" name="ToDate" id="ToDate" class="input-dob" [attr.data-date]="ToDate"
+                                    data-date-format="DD-MMM-YYYY" tabindex="16" min="2000-01-01" [(ngModel)]="ToDate"
+                                    (change)="selectToDate(ToDate);">
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div class="grid-filter-generate-btn" *ngIf="SendAs === 'Email'">
+                        <button class="button" value="Send Email" (click)='SendEmail()'>Send Email</button>
+                        <span class="msg-class" *ngIf="EmailFlag">{{EmailMsg}}</span>
+                    </div>
+                    <div class="grid-filter-generate-btn" *ngIf="SendAs === 'Download'">
+                        <button class="button" *ngIf = "statementType === 'PORTFOLIO'" value="Generate" (click)='GeneratePortfolioStatement()'>Generate</button>
+                        <button class="button" *ngIf = "statementType === 'ACCOUNT'" value="Generate" (click)='GenerateStatement()'>Generate</button>
+                        <button class="button" *ngIf = "statementType === 'PNL'" value="Generate" (click)='GeneratePnLStatement()'>Generate</button>
+                        <button class="button" *ngIf = "statementType === 'CREDITSUMMARY'" value="Generate" (click)='GenerateCollateralStatement()'>Generate</button>
+                    </div> -->
+
+                    <div class="statement-row" style="margin-bottom: 10px;">
+                        <div></div>
+                        <div class="selector-group">
+                            <div class="grid-filter-generate-btn" *ngIf="SendAs === 'Email'">
+                                <button class="button" value="Send Email" (click)='SendEmail()'>Send Email</button>
+                                <span class="msg-class" *ngIf="EmailFlag">{{EmailMsg}}</span>
+                                <!-- <a href='{{PDFLink}}'>Generate pdf</a> -->
+                            </div>
+                            <div class="grid-filter-generate-btn" *ngIf="SendAs === 'Download'">
+                                <button class="button" *ngIf="statementType === 'PORTFOLIO'" value="Generate"
+                                    (click)='GeneratePortfolioStatement()'>Generate</button>
+                                <button class="button" *ngIf="statementType === 'ACCOUNT'" value="Generate"
+                                    (click)='GenerateStatement()'>Generate</button>
+                                <button class="button" *ngIf="statementType === 'PNL'" value="Generate"
+                                    (click)='GeneratePnLStatement()'>Generate</button>
+                                <button class="button" *ngIf="statementType === 'CREDITSUMMARY'" value="Generate"
+                                    (click)='GenerateCollateralStatement()'>Generate</button>
+                                <!-- <a href='{{PDFLink}}'>Generate pdf</a> -->
+                                <span *ngIf="isDownloading">Downloading....</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style = "text-align: center;padding-top: 20px;" *ngIf = "!loadflag">
+                        {{successMsg}}
+                    </div>                   
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

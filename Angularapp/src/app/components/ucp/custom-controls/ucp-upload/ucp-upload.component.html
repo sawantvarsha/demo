@@ -1,0 +1,19 @@
+<div [style.width]="width">
+    <label style="margin-bottom: 0.1px !important;">{{control.displayName}}</label><br>
+    <a (click)="OpenUploadedFile(control)" class="anotherucplabel" *ngIf="UCPMode=='UCPWFL'">Click here to view uploaded file</a>
+    <div *ngIf="UCPMode=='UCPQEN' && control.defaultValue==''">
+        <input type="file"
+        id="file"
+        (change)="onSelectFile($event)">
+
+    </div>
+    <div *ngIf="(UCPMode=='UCPQEN' && control.defaultValue!='')||(UCPMode!='UCPWFL' && UCPMode!='UCPQEN')">  
+    <!-- <label for="file">Choose File</label> -->
+        <a (click)="OpenUploadedFile(control)" class="anotherucplabel">Click here to view uploaded file</a>
+    <input type="file"
+           id="file"
+           (change)="onSelectFile($event)">
+    </div>
+
+   
+</div>

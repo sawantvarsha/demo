@@ -1,0 +1,144 @@
+.fixeddepositComponent {
+    display: grid;
+    grid-template-rows: auto 50px;
+    padding: 10px;
+    .funddetails {
+        color: var(--fund-details);
+        justify-content: center;
+        display: flex;
+        flex-direction: column;
+        .fundtitlerow {
+            color: var(--text);
+        font-weight: 500;
+        font-size: 30px;
+        line-height: 40px;
+        margin-bottom: 10px;
+        }
+    }
+    .param-cols {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 50px;
+        margin-top: 10px;
+    }
+    .fundname-row {
+        display: grid;
+        grid-template-columns: 19% 81%;
+    }
+    .fund-details {
+        display: grid;
+        grid-template-columns: 1fr;
+        font-size: 18px;
+        gap: 10%;
+        height: 45px;
+    }
+    .fundparams-row {
+        display: grid;
+        grid-template-columns: 40% 60%;
+        height: 45px;
+    }
+    .fund-button-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr 2fr;
+        gap: 20px;
+        align-items: center;
+        margin-top: 20px;
+        .btn-submit {
+            display: flex;
+            justify-content: flex-end;
+            margin-right: 25px;
+        }
+    }
+    .details {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        align-items: center;
+        text-align: right;
+        cursor: pointer;
+    }
+    .fund-message-row {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 30px;
+    }
+}
+
+.fixeddepositComponentrmw {
+  display: grid;
+  grid-template-rows: 50px auto 50px;
+  padding: 10px;
+  .funddetails {
+      color: var(--fund-details);
+      justify-content: center;
+      display: flex;
+      flex-direction: column;
+      .fundtitlerow {
+        color: var(--text);
+    font-weight: 500;
+    font-size: 30px;
+    line-height: 40px;
+    margin-bottom: 10px;
+    }
+  }
+  .param-cols {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 50px;
+      margin-top: 10px;
+  }
+  .fundname-row {
+      display: grid;
+      grid-template-columns: 19% 81%;
+  }
+  .fund-details {
+      display: grid;
+      grid-template-columns: 1fr;
+      font-size: 18px;
+      gap: 10%;
+      height: 45px;
+  }
+  .fundparams-row {
+      display: grid;
+      grid-template-columns: 40% 60%;
+      height: 45px;
+  }
+  .fund-button-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 2fr;
+      gap: 20px;
+      align-items: center;
+      margin-top: 20px;
+      .btn-submit {
+          display: flex;
+          justify-content: flex-end;
+          margin-right: 25px;
+      }
+  }
+  .details {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      align-items: center;
+      text-align: right;
+      cursor: pointer;
+  }
+  .fund-message-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 30px;
+  }
+}
+
+.FreqLabel {
+    color: #b6b6b6;
+}
+
+@media only screen and (max-width: 600px) {
+    .param-cols {
+        display: flex !important;
+        flex-direction: column !important;
+    }
+}

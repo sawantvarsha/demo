@@ -1,0 +1,47 @@
+<div class="V-card">
+    <div style="padding-left: 40px">{{ Errormsg }}</div>
+    <div *ngIf="!IsLoading">
+        <div *ngFor="let viewKYCQuestionsAnswersElement of QuestionsAnswers; let i = index" style="margin: 7px 0px">
+            <div *ngIf="i > 0">
+                <div class="V-card-sectionHeader"
+                    *ngIf="QuestionsAnswers[i-1].SectionName !==  viewKYCQuestionsAnswersElement.SectionName">
+                    {{viewKYCQuestionsAnswersElement.SectionName}}
+                </div>
+            </div>
+            <div *ngIf="i === 0">
+                <div class="V-card-sectionHeader">
+                    {{viewKYCQuestionsAnswersElement.SectionName}}
+                </div>
+            </div>
+            <div class="V-card-content" *ngIf="viewKYCQuestionsAnswersElement.dataType === 'SectionValue'">
+                <div class="V-rowcontent">
+                    <div class="lbl">
+                        <label for="Name" class="lbl question">
+                            Q.{{ viewKYCQuestionsAnswersElement.QuestionNumber }} &nbsp;
+                            {{ viewKYCQuestionsAnswersElement.key }}
+                        </label>
+                    </div>
+                    <div class="V-card-answer">
+                        <label for="Name" class="lbl"> A: </label>
+                        <label for="Name" class="lbl">
+                            {{ viewKYCQuestionsAnswersElement.value }}
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- <div class="Error-msg" *ngIf="QuestionsAnswers.length === 0 && !IsLoading" style="text-align: start; padding: 10px 45px">
+            Please Update {{clientFormName}}.
+        </div> -->
+    </div>
+    <div *ngIf="!IsLoading && QuestionsAnswers.length === 0">
+        <div style="padding: 20px 0px 0px 0px;"> <span>No Data Found.</span> </div>
+        <div style="margin-left: 50%; transform: translate(-50%,0);">
+            <app-svg-icons [icon]="'no-data-found'" [width]="'300'" [height]="'300'" style="margin: auto;">
+            </app-svg-icons>
+        </div>
+    </div>
+    <!-- <div class="loaderdiv" *ngIf="IsLoading" style="text-align: center; margin-top: 15%;">
+        <img [src]="isProd? 'assets/loading_dots.gif': '../../assets/loading_dots.gif'" height="150px" width="150px" />
+    </div> -->
+</div>

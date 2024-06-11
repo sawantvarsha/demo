@@ -1,0 +1,74 @@
+
+  .blotterbox{
+    background: white;
+    padding: 1em;
+    box-shadow: 1px 1px 10px 0px #d4cccc;
+  }
+ .contain{
+     width: 80%;
+ }
+ label{
+    color: var(--fontcolor);
+ }
+ .filter{
+  /* border-bottom: var(--midgrey) 1px solid; */
+  padding: 2em 0;
+ }
+.table td{
+  color: grey;
+  font-weight: 400;
+  padding-right:0.5em;
+}
+.table th{
+  color: var(--fontcolor);
+  font-weight: 500;
+  text-align: center;
+}
+.txt{
+    border: none;
+    padding: 0.3em;
+    color: var(--fontcolor);
+    background: var(--lightgrey);
+}
+.txtpopup{
+  border: none;
+  padding: 0.3em;
+  color: var(--fontcolor);
+  background: white;
+}
+.inputcancel{
+    width: 1.2em;
+    height: 1.2em;
+    margin-left: -1.6em;
+    
+}
+.popup{
+    position: absolute;
+    z-index: 50;
+    width: 42%;
+    /* height: 60%; */
+    background: var(--lightgrey);
+    top: 12%;
+    left: 29%;
+    padding: 2em;
+}
+.popupheader{
+    font-size: 1.3em;
+}
+.setbtn{
+  margin-left: 2em;
+    width: 5em;
+}
+#overlay {
+  position: fixed;
+  display: none;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.5);
+  z-index: 2;
+  cursor: pointer;
+}

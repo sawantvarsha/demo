@@ -1,0 +1,12 @@
+<td *ngIf="extraData" class="center">{{formatDate(record.Trade_x0020_Date)}} {{record.OrderTime}}</td>
+<td *ngIf="extraData">{{record.TI_DealNo}}</td>
+<td *ngIf="extraData" class="center">{{record.Direction}}</td>
+<td *ngIf="extraData" class="center">{{record.Ccy_Pair}}</td>
+<td *ngIf="extraData" class="center">{{extraData.ordervalidity_type}}</td>
+<td *ngIf="extraData" class="center">{{record.ccy1}}</td>
+<td *ngIf="extraData" class="center">{{record.ccy2}}</td>
+<!-- <td *ngIf="extraData" class="center">{{this.commonfunction.FormatNumberwithFloat(record.OrderAmount| number:'1.2-2')}}</td> -->
+<td *ngIf="extraData" class="center">{{formatNumber(extraData.Amount1, Asset1Decimal)}}</td>
+
+<td *ngIf="extraData" class="right">{{formatNumber(record.Order_Rate, precision)}}</td>
+<td *ngIf="extraData" class="center">{{record.Status}}</td>

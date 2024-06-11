@@ -1,0 +1,290 @@
+.component {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+
+    .fundname {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .funddetails {
+        color: var(--fund-details);
+        justify-content: center;
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+
+        .fund-name {
+            color: var(--text);
+            font-weight: 500;
+            font-size: 30px;
+            line-height: 40px;
+        }
+    }
+
+    .off-color {
+        color: var(--off-color) !important;
+    }
+
+    .field-grid {
+        display: grid;
+        gap: 100px;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .gap {
+        gap: 15px !important;
+    }
+
+    .link {
+        display: flex;
+        gap: 5px;
+        align-items: center;
+        cursor: pointer;
+    }
+
+    .align-center {
+        height: 30px;
+    }
+
+    .flex-grid {
+        display: flex;
+        gap: 5px;
+        flex-direction: column;
+    }
+
+    .floatRight {
+        text-align: end;
+    }
+
+    .flex-row {
+        display: flex;
+        gap: 50px;
+    }
+
+    .button-row {
+        display: flex;
+        grid-gap: 20px;
+        gap: 20px;
+        margin-top: 10px;
+        align-self: center;
+    }
+
+    .view-toggle {
+        display: flex;
+        // align-self: flex-end;
+        // padding: var(--padding);
+    }
+
+    .arrow-rotate {
+        transition: transform 0.5s;
+        -webkit-transform: rotate(90deg);
+        -ms-transform: rotate(90deg);
+        -o-transform: rotate(90deg);
+        transform: rotate(90deg);
+    }
+
+    .arrow-rotate-up {
+        transition: transform 0.5s;
+        -webkit-transform: rotate(-90deg);
+        -ms-transform: rotate(-90deg);
+        -o-transform: rotate(-90deg);
+        transform: rotate(-90deg);
+    }
+
+
+
+    .toggle {
+        width: -webkit-fill-available;
+        height: 35px;
+        background-color: var(--input-bg);
+        // min-width: 74px;
+        // padding: 3px;
+        border-radius: 2px;
+        display: flex;
+        gap: 3px;
+
+        .toggle-item.selectedBuy {
+            width: 50%;
+            border-radius: 2px;
+            background-color: var(--green-bg-sg);
+            height: 28px;
+            align-self: center;
+            margin: 5px;
+
+        }
+
+        .toggle-item.selected {
+            width: 50%;
+            border-radius: 2px;
+            background-color: var(--active-sidebar);
+            height: 28px;
+            align-self: center;
+            margin: 5px;
+
+        }
+
+        .toggle-item.selectedSell {
+            width: 50%;
+            border-radius: 2px;
+            background-color: var(--red-bg-sg);
+            height: 28px;
+            align-self: center;
+            margin: 5px;
+
+        }
+
+        .toggle-item {
+            width: 50%;
+            border-radius: 4px;
+            background-color: transparent;
+            display: flex;
+            cursor: pointer;
+
+            .small-icon {
+                margin: auto;
+                cursor: pointer;
+            }
+
+            label {
+                margin: auto;
+                line-height: 28px;
+                text-transform: uppercase;
+                font-size: var(--14);
+                cursor: pointer;
+                // font-weight: var(--font-weight);
+            }
+        }
+    }
+}
+
+.overlay {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 20;
+}
+
+.popuptab1 {
+    position: absolute;
+    border: 1px solid var(--containers);
+    border-radius: 5px;
+    background-color: var(--containers);
+    z-index: 999;
+    height: 75vh;
+    width: calc(60vw);
+    top: -7%;
+    left: -50%;
+
+}
+
+.popuptab2 {
+    position: absolute;
+    border: 1px solid var(--containers);
+    border-radius: 5px;
+    background-color: var(--containers);
+    z-index: 999;
+    height: 75vh;
+    width: calc(60vw);
+    top: calc(100vh - 910px);
+    left: -50%;
+
+}
+
+.closebtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 25px;
+    width: 25px;
+    border-radius: 2px;
+    font-size: 18px;
+    color: var(--text);
+    font-weight: 800;
+    // margin-top: 7px;
+}
+
+.content-header {
+    height: 50px;
+    padding: 10px;
+    display: grid;
+    grid-template-columns: 97% 3%;
+    background-color: var(--content-header);
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+
+    .content-header-name {
+        font-size: 18px;
+        color: white;
+        display: flex;
+        margin: 0;
+        padding: 0;
+        padding-bottom: 5px;
+
+        img {
+            margin: 0px 5px;
+            width: 25px;
+            height: 25px;
+            // filter: invert(1);
+        }
+    }
+}
+
+.FromDateLabel {
+    position: relative;
+    span {
+        position: absolute;
+        left: 70px;
+        font-size: 13px;
+        top: 10px;
+    }
+  }
+
+@media screen and (max-width: 1280px) {
+    .component {
+        gap: 5px !important;
+
+        .gap {
+            gap: 8px !important;
+        }
+
+        .funddetails .fund-name {
+            color: var(--text);
+            font-weight: 500;
+            font-size: 30px;
+            line-height: 22px;
+        }
+    }
+
+    .heading {
+        font-size: 13px !important;
+    }
+
+    label {
+        font-size: 13px !important;
+    }
+
+    .fs24 {
+        font-size: 20px !important;
+    }
+
+}
+
+@media screen and (max-width: 1600px) {
+    .component {
+        gap: 10px;
+    }
+}
+
+@media screen and (max-width: 1440px) {
+    .component {
+        gap: 10px;
+    }
+
+}

@@ -1,0 +1,78 @@
+.doughnut-chart-payoff-component {
+    /* margin-left:26px;*/
+    /* padding-left: 5%; */
+    /* padding-right: 5%;  */
+    max-height: 300px;
+    /* min-height: 300px; */
+    width: 400px;
+    height: 300px;
+}
+
+.chartWrapper{
+    display:flex;
+    width:100%;
+    justify-content: center;
+}
+
+@media only screen and (min-width: 1200px) and (max-width: 1280px) {
+    .chart-title {
+        font-size: 0.8rem;
+        margin-bottom: 0px;
+    }
+
+    .doughnut-chart-payoff-component {
+        max-height: 200px;
+        width: 300px;
+        height: 200px;
+    }
+}
+
+@media only screen and (min-width: 1280px) and (max-width: 1440px) {
+    .chart-title {
+        font-size: 1.0rem;
+        margin-bottom: 5px;
+    }
+
+    .doughnut-chart-payoff-component {
+        max-height: 225px;
+        width: 325px;
+        height: 225px;
+    }
+}
+
+@media only screen and (min-width: 1440px) and (max-width: 1600px) {
+    .chart-title {
+        font-size: 1.0rem;
+        margin-bottom: 5px;
+    }
+
+    .doughnut-chart-payoff-component {
+        max-height: 250px;
+        width: 350px;
+        height: 250px;
+    }
+}
+
+@media only screen and (min-width: 1600px) and (max-width: 1920px) {
+    .chart-title {
+        font-size: 20px;
+    }
+
+    .doughnut-chart-payoff-component {
+        max-height: 275px;
+        width: 375px;
+        height: 275px;
+    }
+}
+
+@media only screen and (min-width: 1920px) {
+    .chart-title {
+        font-size: 22px;
+    }
+
+    .doughnut-chart-payoff-component {
+        max-height: 300px;
+        width: 400px;
+        height: 300px;
+    }
+}

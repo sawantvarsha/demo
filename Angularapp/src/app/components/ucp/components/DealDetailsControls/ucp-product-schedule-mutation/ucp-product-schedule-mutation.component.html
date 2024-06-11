@@ -1,0 +1,207 @@
+<div style="height: 987px;">
+    <table class="tbl-container-filter">
+        <tr>
+            <td style="vertical-align: top; width: 20%; padding: 0px 13px 0px 9px;" class="label-color">
+                <label style="letter-spacing: 0.4px;">From</label>
+                <app-date-picker [ParentComp]="'Schedule'" [width]="'180px'" [input]="fromDate" [disabled]="false" [value]="fromDate.value" (selectedDate)="FilterDatechanged(fromDate)">
+                </app-date-picker>
+            </td>
+    
+            <td style="vertical-align: top; width: 20%; padding: 0px 13px 0px 0px;" class="label-color">
+                <label style="letter-spacing: 0.4px;">To</label>
+                <app-date-picker [ParentComp]="'Schedule'" [width]="'180px'" [input]="toDate" [disabled]="false" [value]="toDate.value" (selectedDate)="FilterDatechanged(toDate)">
+                </app-date-picker>
+            </td>
+    
+            <td style="vertical-align: top; width: 20%; padding: 0px 13px 0px 0px;" class="label-color">
+                <label style="letter-spacing: 0.4px;">Search By</label>
+                <br/>
+                <div style="padding-top: 3px;">
+                    <mat-form-field class="width_250px dd_bg">
+                        <mat-select [(ngModel)]="TSM_code" name="TSM_code" (selectionChange)="ddlTSM_codeschange()">
+                            <mat-option *ngFor="let code of distinct_codes" [value]="code">
+                            {{code}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>  
+            </td>
+            <!-- <td style="vertical-align: top; width: 20%;align-items: center; padding: 0px 13px 0px 0px;">
+                <mat-checkbox class="ucp-checkbox" [(ngModel)]="Show_processed" [checked]="Show_processed" (change)="Process_Toggle()">
+                </mat-checkbox>
+                &nbsp; 
+               <label style="letter-spacing: 0.4px;">Show Only Processed</label>
+            </td> -->
+            <td style="width: 20%;align-items: center; padding: 15px 13px 0px 0px;">
+                <button class="ucp-btn-text-clr" mat-raised-button matTooltip="Refesh" (click)="Load_Click()">
+                    <mat-icon>refresh</mat-icon>
+                </button>
+            </td>
+            <!-- <td style="vertical-align: top; width: 20%;align-items: center; padding: 15px 13px 0px 0px;">
+                <button class="ucp-btn-text-clr" mat-raised-button matTooltip="Export Schedule" (click)="exportToExcel()">
+                    <mat-icon>download</mat-icon>
+                </button>
+            </td> -->
+        </tr>
+    </table>
+    
+    <!-- <table>
+        <tr>
+            <td style="padding: 12px 0px 12px 0px;">
+                &nbsp;
+                <button class="ucp-btn-text-clr" mat-raised-button matTooltip="Refesh" (click)="Load_Click()">
+                    <mat-icon>refresh</mat-icon>
+                </button>
+                
+                    &nbsp;
+                        <button class="ucp-btn-text-clr" mat-raised-button matTooltip="Delete Fields" (click)="btnDelete_Row()">
+                            <mat-icon>delete</mat-icon>
+                        </button> 
+    
+                        &nbsp;
+                        <button class="ucp-btn-text-clr" mat-raised-button [disabled]="sUCPMode.toUpperCase()==='UCPQEN' ? true : false" matTooltip="Save Schedule" (click)="btnSave_click()">
+                            <mat-icon>save</mat-icon>
+                        </button> 
+    
+                        &nbsp;
+                        <button class="ucp-btn-text-clr" mat-raised-button matTooltip="Export Schedule" (click)="exportToExcel()">
+                            <mat-icon>download</mat-icon>
+                        </button>
+    
+                        &nbsp;
+                        <input style="width: fit-content;background-color: var(--ucp-input-bg);max-width: 271px;" #fileUpload (change)="onImportClick($event)" type="file"  multiple="multiple" accept=".xlsx"  />   
+                        &nbsp;                 
+                        <label style="color: red;">{{lblErrorMessage}}</label>
+            </td>
+        </tr>
+    </table> -->
+    
+    
+    <!-- <app-loader *ngIf="this.loader" class="loader"></app-loader>
+    <div class="overlay_grey" *ngIf="this.loader"></div> -->
+    
+    
+    
+    <div class="tbl-container mat-elevation-z8">
+    
+    <table mat-table [dataSource]="dataSource">
+    
+        <!-- Checkbox Column -->
+        <!-- <ng-container matColumnDef="select">
+          <th class="width_50px centered-cell" style="padding-left: 0px;" mat-header-cell *matHeaderCellDef>
+            <mat-checkbox class="ucp-checkbox" (change)="$event ? masterToggle() : null"
+                          [checked]="selection.hasValue() && isAllSelected()"
+                          [indeterminate]="selection.hasValue() && !isAllSelected()">
+            </mat-checkbox>
+          </th>
+          <td mat-cell class="centered-cell centered-cell" style="padding-left: 0px;" *matCellDef="let row">
+            <mat-checkbox class="ucp-checkbox" (click)="$event.stopPropagation()"
+                          (change)="$event ? selection.toggle(row) : null"
+                          [checked]="selection.isSelected(row)">
+            </mat-checkbox>
+          </td>
+        </ng-container> -->
+        
+        <ng-container *ngFor="let disCol of displayedColumns; let colIndex = index" [matColumnDef]="disCol">
+            <!-- <mat-header-cell class="matHeaderClass width_30px" *matHeaderCellDef>{{disCol}}</mat-header-cell> -->    
+                <ng-container *ngIf="disCol == 'Fixing'">
+                    <th mat-header-cell class="width_250px centered-cell headerPadding" *matHeaderCellDef > Fixing Date</th>
+                    <td mat-cell class="centered-cell headerPadding" *matCellDef="let element"> 
+                        <app-date-picker [width]="'150px'" [ParentComp]="'Schedule'" [input]="element.Fixing" [disabled]="false" [value]="element.Fixing.value" (selectedDate)="Griddatechanged($event)"></app-date-picker> </td>
+                </ng-container>
+                <ng-container  *ngIf="disCol == 'Settlement'">
+                    <th mat-header-cell class="width_250px centered-cell headerPadding" *matHeaderCellDef > Payment Date</th>
+                    <td mat-cell class="centered-cell headerPadding" *matCellDef="let element"> 
+                        <app-date-picker [width]="'150px'" [ParentComp]="'Schedule'" [input]="element.Settlement" [disabled]="false" [value]="element.Settlement.value" (selectedDate)="Griddatechanged($event)"></app-date-picker> </td>
+                </ng-container>
+                <ng-container *ngIf="disCol == 'StartDate'">
+                    <th mat-header-cell class="width_250px centered-cell headerPadding" *matHeaderCellDef > Start Date</th>
+                    <td mat-cell class="centered-cell headerPadding" *matCellDef="let element"> 
+                        <app-date-picker [width]="'150px'" [ParentComp]="'Schedule'" [input]="element.StartDate" [disabled]="false" [value]="element.StartDate.value" (selectedDate)="Griddatechanged($event)"></app-date-picker> </td>
+                </ng-container>
+                <ng-container  *ngIf="disCol == 'EndDate'">
+                    <th mat-header-cell class="width_250px centered-cell headerPadding" *matHeaderCellDef > End Date</th>
+                    <td mat-cell class="centered-cell headerPadding" *matCellDef="let element"> 
+                        <app-date-picker [width]="'150px'" [ParentComp]="'Schedule'" [input]="element.EndDate" [disabled]="false" [value]="element.EndDate.value" (selectedDate)="Griddatechanged($event)"></app-date-picker> </td>
+                </ng-container>
+                <ng-container *ngIf="disCol != 'Fixing' && disCol != 'Settlement' && disCol != 'StartDate' && disCol != 'EndDate'" >
+                    <th mat-header-cell class="width_250px centered-cell headerPadding" *matHeaderCellDef >{{disCol}}</th>
+                    <td mat-cell class="centered-cell headerPadding" *matCellDef="let element">{{element[disCol]}}</td>
+                </ng-container>
+
+                <!-- <mat-form-field floatLabel="auto" style="font-size: 11px !important; width: 90% !important;">
+                    <input matInput placeholder="Name" [value]="element[disCol]" [(ngModel)]="element[disCol]" (change)="HandleGridData()" />
+                </mat-form-field> -->
+        </ng-container>
+
+
+        <!-- Fixing Column -->
+        <!-- <ng-container matColumnDef="Fixing">
+          <th mat-header-cell class="width_150px centered-cell" *matHeaderCellDef > Fixing Date</th>
+          <td mat-cell class="centered-cell" *matCellDef="let element"> 
+              <app-date-picker [width]="'150px'" [ParentComp]="'Schedule'" [input]="element.Fixing" [disabled]="false" [value]="element.Fixing.value" (selectedDate)="Griddatechanged($event)"></app-date-picker> </td>
+        </ng-container> -->
+      
+        <!-- Settlement Column -->
+        <!-- <ng-container matColumnDef="Settlement">
+            <th mat-header-cell class="width_150px centered-cell" centered-cell *matHeaderCellDef > Payment Date</th>
+            <td mat-cell class="centered-cell" *matCellDef="let element"> 
+                <app-date-picker [width]="'150px'" [ParentComp]="'Schedule'" [input]="element.Settlement" [disabled]="false" [value]="element.Settlement.value" (selectedDate)="Griddatechanged($event)"></app-date-picker> </td>
+          </ng-container> -->
+      
+        <!-- Schedule Code -->
+         <!-- <ng-container matColumnDef="pS_TSM_Code">
+          <th mat-header-cell class="width_150px centered-cell" *matHeaderCellDef > Schedule Code </th>
+          <td mat-cell class="centered-cell width_120px font-size-14 ucp-opposite" *matCellDef="let element"> {{element.pS_TSM_Code}} </td>
+        </ng-container>  -->
+           
+         <!-- StartDate Column -->
+         <!-- <ng-container matColumnDef="StartDate">
+            <th mat-header-cell class="width_150px centered-cell" centered-cell *matHeaderCellDef > Start Date</th>
+            <td mat-cell class="centered-cell" *matCellDef="let element"> 
+                <app-date-picker [width]="'150px'" [ParentComp]="'Schedule'" [input]="element.StartDate" [disabled]="false" [value]="element.StartDate.value" (selectedDate)="Griddatechanged($event)"></app-date-picker> </td>
+          </ng-container> -->
+
+           <!-- EndDate Column -->
+        <!-- <ng-container matColumnDef="EndDate">
+            <th mat-header-cell class="width_150px centered-cell" centered-cell *matHeaderCellDef > End Date</th>
+            <td mat-cell class="centered-cell" *matCellDef="let element"> 
+                <app-date-picker [width]="'150px'" [ParentComp]="'Schedule'" [input]="element.EndDate" [disabled]="false" [value]="element.EndDate.value" (selectedDate)="Griddatechanged($event)"></app-date-picker> </td>
+          </ng-container> -->
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"
+            (click)="selection.toggle(row)">
+        </tr>
+      </table>
+      <table>
+        <tr class="paginarorBG">
+            <td align="left" style="padding: 5px 0px 0px 0px;">
+                <span class="common-font rows-per-page font-size-14 rowsperpage_padding">Rows Per Page</span>
+            <input class="common-font rows-per-page-input font-size-14" [(ngModel)]="pageSizeVal" #items type="text"
+                (keyup.enter)="rowsperpage(items.value)" [ngModelOptions]="{standalone: true}"
+                (blur)=rowsperpage(items.value)>
+            </td>
+            <td align="right" style="padding: 2px 0px 0px 0px;">
+                <mat-paginator class="common-font font-size-14 paginatortext" [pageSize]="pageSizeVal" showFirstLastButtons></mat-paginator>
+            </td>
+        </tr>
+      </table>
+    
+      <!-- <div class="only-float-left">
+        <object class="paginator-top-padding" align="left">
+            <span class="common-font rows-per-page">Rows Per Page:</span>
+            <input class="common-font rows-per-page-input" [(ngModel)]="pageSizeVal" #items type="text"
+                (keyup.enter)="rowsperpage(items.value)" [ngModelOptions]="{standalone: true}"
+                (blur)=rowsperpage(items.value)>
+        </object>
+        <object align="right">
+            <mat-paginator class="common-font schedulePaginator" [pageSize]="pageSizeVal" showFirstLastButtons></mat-paginator>
+        </object>
+       </div> -->
+    
+    </div>
+    </div>
+    
+      <!-- Copyright 2018 Google Inc. All Rights Reserved.
+          Use of this source code is governed by an MIT-style license that
+          can be found in the LICENSE file at http://angular.io/license -->

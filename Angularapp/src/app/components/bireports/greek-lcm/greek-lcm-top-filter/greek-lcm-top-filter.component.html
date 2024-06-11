@@ -1,0 +1,381 @@
+<!-- Added by AdilP @15-09-2023 -->
+<div class="showTitle">
+    <div class="pageHeader">Greeks</div>
+    <div style="align-self: center;">
+        <div class="serchbarDiv">
+            <div style='display:flex'>
+                <div
+                    style="line-height: 17px; margin-right: 0.5em !important; font-size: 13px; font-family: var(--font-family) !important;align-self: center;">
+                    Sort By
+                </div>
+            </div>
+            <div>
+                <!-- <select placeholder="Product Type" [(ngModel)]="selectedSorting"  class="filterSelect" (change)="portfolioSort($event)"></select> -->
+                <select placeholder="Product Type" [(ngModel)]="selectedSorting" class="filterSelect"
+                    (change)="basicSort(Sortfilter.value)" #Sortfilter>
+                    <option value="" [ngValue]="'SelectOption'" disabled selected hidden>External</option>
+                    <option value='External'>External</option>
+                    <option value='Notional_Amt'>Notional </option>
+                    <option value='Delta'>Delta</option>
+                    <option value='Gamma'>Gamma</option>
+                    <option value='Vega'>Vega</option>
+                </select>
+            </div>
+            <div>
+                <!-- <select placeholder="Product Type" [(ngModel)]="selectedSorting"  class="filterSelect" (change)="portfolioSort($event)"></select> -->
+                <select placeholder="Sorting Type" [(ngModel)]="selectedSortingAsc" class="filterSelectAsc"
+                    (change)="basicSortAsc(SortfilterAsc.value)" #SortfilterAsc>
+                    <option value="Ascending" selected>Ascending</option>
+                    <option value="Descending">Descending</option>
+                </select>
+
+            </div>
+            <div class="searchInnerDiv">
+                <!-- <img style="width:15px;height:15px;margin-left:5px; margin-top:10px;" src="{{asseturl}}search.png"> -->
+                <input [ngClass]="{'highlight-border': selectedExternal !=''}" type="text" placeholder="External1, External2, ..." [(ngModel)]="selectedExternal" name="search"
+                    class="txtSearch" (keyup)="FilterBasedOnExternal($event)">
+                <!-- <input type="text" placeholder="External1, External2, ..." [(ngModel)]="selectedExternal" name="search" class="txtSearch" (keyup)="FilterForAll($event)"> -->
+
+                <app-svg-icons class="filterIcon" (click)="showFilterDropdown=!showFilterDropdown"
+                    [icon]="'filter-icon'" [width]="'18'" [height]="'20'" [fill]="'var(--input-icon)'"></app-svg-icons>
+            </div>
+            <div class="forTitleRow">
+                <input id="colorpicker" type="color" list="preferredlist" [(ngModel)]="color"
+                    (ngModelChange)="onColorChange($event)">
+                <datalist id="preferredlist">
+                    <option>#5f72bf</option>
+                    <option>#aa5555</option>
+                    <option>#255272</option>
+                    <option>#a55fbf</option>
+                    <option>#6d97bf</option>
+                </datalist>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div *ngIf="showFilterDropdown==true" class="filterDiv">
+    <div class="filterMainDiv">
+        <div class="labelRowContainer">
+            <div class="filterTH alignLeft labelDivWidth labelFilerBlock">
+                <span>Client Filters:</span>
+                <span class="link eachRowFilter cursorpoint " (click)="clearClient()">Clear Filters</span>
+            </div>
+            <div class="clientFilterDiv">
+
+                <!-- <div> <input type="text" placeholder="Group" name="Group" [(ngModel)]="selectedGroup"
+                        (keyup)="FilterForAll(ip1.value, 1)" class="filterIputs" #ip1></div>
+                <div> <input type="text" placeholder="Client" name="Group" [(ngModel)]="selectedClient"
+                        (keyup)="FilterForAll(ip2.value, 2)" class="filterIputs" #ip2></div>
+                <div> <input type="text" placeholder="Type" name="Group" [(ngModel)]="selectedType"
+                        (keyup)="FilterForAll(ip3.value,3)" class="filterIputs" #ip3></div>
+                <div> <input type="text" placeholder="Tutela" name="Group" [(ngModel)]="selectedTutela"
+                        (keyup)="FilterForAll(ip4.value,4)" class="filterIputs" #ip4></div>
+                <div> <input type="text" placeholder="Subtutela" name="Group" [(ngModel)]="selectedSubtutela"
+                        (keyup)="FilterForAll(ip5.value,5)" class="filterIputs" #ip5></div>
+                <div> <input type="text" placeholder="Branch" name="Group" [(ngModel)]="selectedBranch"
+                        (keyup)="FilterForAll(ip6,$value,6)" class="filterIputs" #ip6></div>
+                <div> <input type="text" placeholder="Territory" name="Group" [(ngModel)]="selectedTerritory"
+                        (keyup)="FilterForAll(ip7.value,7)" class="filterIputs" #ip7></div>
+                <div> <input type="text" placeholder="Zone" name="Group" [(ngModel)]="selectedZone"
+                        (keyup)="FilterForAll(ip8.value,8)" class="filterIputs" #ip8></div> -->
+
+                <!-- <div><input type="text" placeholder="Group" [(ngModel)]="selectedGroup" (keyup)="FilterForAll($event)" class="filterIputs"></div> -->
+                <app-custom-dropdown-multi-select [options]="groupArr" [backupOptions]="groupArr"
+                    [(ngModel)]="selectedGroup"
+                    [displayText2]=" groupArr?.length === 1 ? groupArr[0]['value'] : 'Group'"
+                    [pricerType]="'dropdownSearch'" [isRefreshed]="clearClientFilterSelectAll()"
+                    (selectOptionsEmitter)="clientFilterData($event)" [ngClass]="{ 'disabled': groupArr.length <= 1 }">
+                </app-custom-dropdown-multi-select>
+
+                <!-- <div><input type="text" placeholder="Client" [(ngModel)]="selectedClient" (keyup)="FilterForAll($event)" class="filterIputs"></div> -->
+                <app-custom-dropdown-multi-select [options]="clientArr" [backupOptions]="clientArr"
+                    [(ngModel)]="selectedClient" [displayText2]="'Client'" [pricerType]="'dropdownSearch'"
+                    [isRefreshed]="clearClientFilterSelectAll()" (selectOptionsEmitter)="clientFilterData($event)">
+                </app-custom-dropdown-multi-select>
+
+                <!-- <div><input type="text" placeholder="Internal Ref./J" [(ngModel)]="selectedIntRef" (keyup)="FilterForAll($event)" class="filterIputs"></div> -->
+                <app-custom-dropdown-multi-select [options]="intRefArr" [backupOptions]="intRefArr"
+                    [(ngModel)]="selectedIntRef" [displayText2]="'Internal Ref./J'" [pricerType]="'dropdownSearch'"
+                    [isRefreshed]="clearClientFilterSelectAll()" (selectOptionsEmitter)="clientFilterData($event)">
+                </app-custom-dropdown-multi-select>
+
+                <!-- <div><input type="text" placeholder="Type" [(ngModel)]="selectedType" (keyup)="FilterForAll($event)" class="filterIputs"></div> -->
+                <app-custom-dropdown-multi-select [options]="typeArr" [backupOptions]="typeArr"
+                    [(ngModel)]="selectedType" [displayText2]="'Type'" [pricerType]="'dropdownSearch'"
+                    [isRefreshed]="clearClientFilterSelectAll()" (selectOptionsEmitter)="clientFilterData($event)">
+                </app-custom-dropdown-multi-select>
+
+
+                <!-- <div><input type="text" placeholder="Tutela" [(ngModel)]="selectedTutela" (keyup)="FilterForAll($event)"  class="filterIputs"></div> -->
+                <app-custom-dropdown-multi-select [options]="tutelaArr" [backupOptions]="tutelaArr"
+                    [(ngModel)]="selectedTutela"
+                    [displayText2]=" tutelaArr?.length === 1 ? tutelaArr[0]['value'] : 'Tutela'"
+                    [pricerType]="'dropdownSearch'" [isRefreshed]="clearClientFilterSelectAll()"
+                    (selectOptionsEmitter)="clientFilterData($event)" [ngClass]="{ 'disabled': tutelaArr.length <= 1 }">
+                </app-custom-dropdown-multi-select>
+
+                <!-- <div><input type="text" placeholder="Subtutela" [(ngModel)]="selectedSubtutela" (keyup)="FilterForAll($event)" class="filterIputs"></div> -->
+                <app-custom-dropdown-multi-select [options]="subtutelaArr" [backupOptions]="subtutelaArr"
+                    [(ngModel)]="selectedSubtutela" [displayText2]="'Subtutela'" [pricerType]="'dropdownSearch'"
+                    [isRefreshed]="clearClientFilterSelectAll()" (selectOptionsEmitter)="clientFilterData($event)">
+                </app-custom-dropdown-multi-select>
+
+                <!-- <div><input type="text" placeholder="Branch" [(ngModel)]="selectedBranch" (keyup)="FilterForAll($event)" class="filterIputs"></div> -->
+                <app-custom-dropdown-multi-select [options]="branchArr" [backupOptions]="branchArr"
+                    [(ngModel)]="selectedBranch" [displayText2]="'Branch'" [pricerType]="'dropdownSearch'"
+                    [isRefreshed]="clearClientFilterSelectAll()" (selectOptionsEmitter)="clientFilterData($event)">
+                </app-custom-dropdown-multi-select>
+
+                <!-- <div><input type="text" placeholder="Territory" [(ngModel)]="selectedTerritory" (keyup)="FilterForAll($event)" class="filterIputs"></div> -->
+                <app-custom-dropdown-multi-select [options]="territoryArr" [backupOptions]="territoryArr"
+                    [(ngModel)]="selectedTerritory" [displayText2]="'Territory'" [pricerType]="'dropdownSearch'"
+                    [isRefreshed]="clearClientFilterSelectAll()" (selectOptionsEmitter)="clientFilterData($event)">
+                </app-custom-dropdown-multi-select>
+
+                <!-- <div><input type="text" placeholder="Zone" [(ngModel)]="selectedZone" (keyup)="FilterForAll($event)" class="filterIputs"></div> -->
+                <app-custom-dropdown-multi-select [options]="zoneArr" [backupOptions]="zoneArr"
+                    [(ngModel)]="selectedZone" [displayText2]="'Zone'" [pricerType]="'dropdownSearch'"
+                    [isRefreshed]="clearClientFilterSelectAll()" (selectOptionsEmitter)="clientFilterData($event)">
+                </app-custom-dropdown-multi-select>
+
+            </div>
+            <!-- <div class="clearFilter">
+                <span class="link " (click)="refresh()">Clear All Filters</span>
+            </div> -->
+        </div>
+        <div class="labelRowContainer">
+            <div style="" class="filterTH labelDivWidth labelFilerBlock">
+                <span>Product Filters:</span>
+                <span class="link eachRowFilter cursorpoint" (click)="clearProduct()">Clear Filters</span>
+            </div>
+
+            <div class="productFilterDiv">
+                <!-- <div class="columnContainer">
+                    <div class="filterLabels">
+                        Underlyings
+                    </div>
+                    <select [(ngModel)]="selectedUnderlying" placeholder="Underlyings"
+                        (change)="sendSelectedUnderlying(selector1.value)" class="filterSelect filterIputs" #selector1>
+                        <option value="" disabled hidden>Underlyings</option>
+                        <option value="All">All</option>
+                        <option *ngFor="let wol of worOfUnderlingList;" [value]="wol">{{wol}}</option>
+                    </select>
+                    
+                </div> -->
+                <div class="columnContainer">
+                    <!-- <select [(ngModel)]="selectedFormatList" placeholder="Format"
+                        (change)="sendselectedFormatList(selector4.value)" class="filterSelect filterIputs" #selector4>
+                        <option value="" disabled hidden>Format</option>
+                        <option value="All">All</option>
+                        <option *ngFor="let format of formatList;" [value]="format">{{format}}</option>
+                    </select> -->
+                    <app-custom-dropdown-multi-select [options]="formatList" [displayText2]="'Format'"
+                        [pricerType]="'dropdown'" [isRefreshed]="refreshMultiSelect('format')" [(ngModel)]="selectedFormat"
+                        (selectOptionsEmitter)="sendselectedFormatList($event)">
+                    </app-custom-dropdown-multi-select>
+                </div>
+                <div class="columnContainer">
+                    <!-- <input type="text" placeholder="Currency" (keyup)="FilterForAll($event)"
+                        [(ngModel)]="selectedCurrency" name="Group" class="filterIputs"> -->
+                    <!-- <select [(ngModel)]="selectedCurrency" placeholder="Currency"
+                        (change)="sendSelectedCurrency(selector2.value)" class="filterSelect filterIputs" #selector2>
+                        <option value="" disabled hidden>Currency</option>
+                        <option value="All">All</option>
+                        <option *ngFor="let curr of currencies;" [value]="curr">{{curr}}</option>
+                    </select> -->
+                    <app-custom-dropdown-multi-select [options]="currencies" [displayText2]="'Currency'"
+                        [pricerType]="'dropdown'" [isRefreshed]="refreshMultiSelect('currency')"
+                        [(ngModel)]="selectedCurrency" (selectOptionsEmitter)="sendSelectedCurrency($event)">
+                    </app-custom-dropdown-multi-select>
+                </div>
+                <div class="columnContainer">
+                    <!-- <select [(ngModel)]="selectedPayOff" placeholder="Product Type"
+                        (change)="sendSelectedPayoff(selector3.value)" class="filterSelect filterIputs" #selector3>
+                        <option value="" disabled hidden>Product Type</option>
+                        <option value="All">All</option>
+                        <option *ngFor="let payOff of payOff;" [value]="payOff">{{payOff}}</option>
+                    </select> -->
+                    <app-custom-dropdown-multi-select [options]="payOff" [displayText2]="'PayOff'"
+                        [pricerType]="'dropdown'" [isRefreshed]="refreshMultiSelect('payoff')"
+                        [(ngModel)]="selectedPayOff" (selectOptionsEmitter)="sendSelectedPayoff($event)">
+                    </app-custom-dropdown-multi-select>
+
+                </div>
+                <!-- <div> <input type="text" placeholder="Cap. At Risk"  [(ngModel)]="selectedCapAtRisk" name="Group" class="filterIputs" (keyup)="FilterForAll($event)"></div> -->
+                <div class="columnContainer">
+                    <input [ngClass]="{'highlight-border': selectedUnderlying != '' && selectedUnderlying != 'Underlying'}" type="text" placeholder="Underlying" name="Group" class="filterIputs"
+                        style="width:244px !important" [(ngModel)]="selectedUnderlying"
+                        (keyup)="sendSelectedUnderlying($event)">
+                </div>
+
+                <div class="toggleDiv">
+                    <div class="toggleLabels">Live</div>
+                    <div class="togglePos">
+                        <mat-slide-toggle (change)="checkLiveToggle($event);" [checked]="LiveCheck"
+                            class="slide-toggle"></mat-slide-toggle>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="labelRowContainer">
+            <div style="margin-top: 25px;" class="filterTH labelDivWidth labelFilerBlock">
+                <span> Product Specs:</span>
+                <span class="link eachRowFilter cursorpoint" (click)="clearProductSpecs()">Clear Filters</span>
+            </div>
+            <div class="productSpecsDiv">
+                <div class="columnContainer">
+                    <div class="filterLabels">
+                        Issue Date
+                    </div>
+                    <div [ngClass]="{ 'showFilter': showSDate,'hideFilter': (!showSDate) }" style="position: relative;">
+                        <input type="date" [ngClass]="{'highlight-border': StartDate!=''}" class="input-dob filterIputs"
+                            [(ngModel)]="StartDate" value="StartDate" (change)="selectDate(StartDate); " #SDateField
+                            id="SDate">
+                        <span *ngIf="StartDate === '' || StartDate === undefined" class="sDatePlaceHolder">From
+                            Date</span>
+                        <span *ngIf="StartDate !== '' && StartDate !== undefined" class="sDate">{{StartDate}}</span>
+                    </div>
+                    <div [ngClass]="{ 'showFilter': showSDate,'hideFilter': (!showSDate) }" style="position: relative;">
+                        <input type="date" [ngClass]="{'highlight-border': EndDate!=''}" class="input-dob filterIputs"
+                            [(ngModel)]="EndDate" value="EndDate" (change)="selectEndDate(EndDate);" #SDateField
+                            id="SDate">
+                        <span *ngIf="EndDate === '' || EndDate === undefined" class="sDatePlaceHolder">To Date</span>
+                        <span *ngIf="EndDate !== '' && EndDate !== undefined" class="sDate">{{EndDate}}</span>
+                    </div>
+                </div>
+                <div class="alignBottom sliderPosition columnContainer">
+                    <div class="filterLabels">
+                        Notional:
+                    </div>
+                    <div style="display:flex; gap:1em;">
+                        <div class="ki-number">
+                            <input [ngClass]="{'highlight-border': startNotionalValue != current_Notional_StartValue}"
+                                type="number" class="knumber filterIputs" placeholder="{{startNotionalValue}} %"
+                                [min]="startNotionalValue" [max]="endNotionalValue" class="inputBox"
+                                (change)="binder3($event);" name="input1"
+                                [(value)]="current_Notional_StartValue"><!--[value]="current_BarrierD_StartValue"-->
+                            <!-- <span>%</span> -->
+                        </div>
+                        <div class="ki-number second">
+                            <input [ngClass]="{'highlight-border': endNotionalValue!= current_Notional_LastValue}"
+                                type="number" class="knumber filterIputs" placeholder="{{endNotionalValue}} %"
+                                [min]="startNotionalValue" [max]="endNotionalValue" class="inputBox"
+                                (change)="binder3($event);" name="input2" [(value)]="current_Notional_LastValue">
+                            <!--[value]="current_BarrierD_LastValue"-->
+                        </div>
+                    </div>
+                    <ng-container [ngSwitch]="display">
+                        <ng-template [ngSwitchCase]="1"><ngx-slider class="ngx-Notional-dist-slider cancelProbSlider"
+                                [(value)]="current_Notional_StartValue" [(highValue)]="current_Notional_LastValue"
+                                [options]="options3" (userChange)="sliderToInputBinder3()"></ngx-slider></ng-template>
+                        <ng-template [ngSwitchCase]="2"><ngx-slider class="ngx-Notional-dist-slider cancelProbSlider"
+                                [(value)]="current_Notional_StartValue" [(highValue)]="current_Notional_LastValue"
+                                [options]="options3" (userChange)="sliderToInputBinder3()"></ngx-slider></ng-template>
+                    </ng-container>
+                </div>
+                <div class="alignBottom sliderPosition columnContainer">
+                    <div class="filterLabels">
+                        Delta:
+                    </div>
+                    <div style="display:flex; gap:1em;">
+                        <div class="ki-number">
+                            <input [ngClass]="{'highlight-border': startDeltaValue != current_Delta_StartValue}"
+                                type="number" class="knumber filterIputs" placeholder="{{startDeltaValue}} %"
+                                [min]="startDeltaValue" [max]="endDeltaValue" class="inputBox"
+                                (change)="binder($event);" name="input1"
+                                [(value)]="current_Delta_StartValue"><!--[value]="current_BarrierD_StartValue"-->
+                            <!-- <span>%</span> -->
+                        </div>
+                        <div class="ki-number second">
+                            <input [ngClass]="{'highlight-border': endDeltaValue != current_Delta_LastValue}"
+                                type="number" class="knumber filterIputs" placeholder="{{endDeltaValue}} %"
+                                [min]="startDeltaValue" [max]="endDeltaValue" class="inputBox"
+                                (change)="binder($event);" name="input2" [(value)]="current_Delta_LastValue">
+                            <!--[value]="current_BarrierD_LastValue"-->
+                        </div>
+                    </div>
+                    <ng-container [ngSwitch]="display">
+                        <ng-template [ngSwitchCase]="1"><ngx-slider class="ngx-Delta-dist-slider cancelProbSlider"
+                                [(value)]="current_Delta_StartValue" [(highValue)]="current_Delta_LastValue"
+                                [options]="optionsDelta"
+                                (userChange)="sliderToInputBinder()"></ngx-slider></ng-template>
+                        <ng-template [ngSwitchCase]="2"><ngx-slider class="ngx-Delta-dist-slider cancelProbSlider"
+                                [(value)]="current_Delta_StartValue" [(highValue)]="current_Delta_LastValue"
+                                [options]="optionsDelta"
+                                (userChange)="sliderToInputBinder()"></ngx-slider></ng-template>
+                    </ng-container>
+                </div>
+                <div class="alignBottom sliderPosition columnContainer">
+                    <div class="filterLabels">
+                        Gamma:
+                    </div>
+                    <div style="display:flex; gap:1em;">
+                        <div class="ki-number">
+                            <input [ngClass]="{'highlight-border': startGammaValue!= current_Gamma_StartValue}"
+                                type="number" class="knumber filterIputs" placeholder="{{startGammaValue}} %"
+                                [min]="startGammaValue" [max]="endGammaValue" class="inputBox"
+                                (change)="binder1($event);" name="input1"
+                                [(value)]="current_Gamma_StartValue"><!--[value]="current_BarrierD_StartValue"-->
+                            <!-- <span>%</span> -->
+                        </div>
+                        <div class="ki-number second">
+                            <input [ngClass]="{'highlight-border': endGammaValue!= current_Gamma_LastValue}"
+                                type="number" class="knumber filterIputs" placeholder="{{endGammaValue}} %"
+                                [min]="startGammaValue" [max]="endGammaValue" class="inputBox"
+                                (change)="binder1($event);" name="input2" [(value)]="current_Gamma_LastValue">
+                            <!--[value]="current_BarrierD_LastValue"-->
+                        </div>
+                    </div>
+                    <ng-container [ngSwitch]="display">
+                        <ng-template [ngSwitchCase]="1"><ngx-slider class="ngx-Gamma-dist-slider cancelProbSlider"
+                                [(value)]="current_Gamma_StartValue" [(highValue)]="current_Gamma_LastValue"
+                                [options]="options1" (userChange)="sliderToInputBinder1()"></ngx-slider></ng-template>
+                        <ng-template [ngSwitchCase]="2"><ngx-slider class="ngx-Gamma-dist-slider cancelProbSlider"
+                                [(value)]="current_Gamma_StartValue" [(highValue)]="current_Gamma_LastValue"
+                                [options]="options1" (userChange)="sliderToInputBinder1()"></ngx-slider></ng-template>
+                    </ng-container>
+                </div>
+                <div class="alignBottom sliderPosition columnContainer">
+                    <div class="filterLabels">
+                        Vega:
+                    </div>
+                    <div style="display:flex; gap:1em;">
+                        <div class="ki-number">
+                            <input [ngClass]="{'highlight-border': startVegaValue!= current_Vega_StartValue}"
+                                type="number" class="knumber filterIputs" placeholder="{{startVegaValue}} %"
+                                [min]="startVegaValue" [max]="endVegaValue" class="inputBox" (change)="binder2($event);"
+                                name="input1Vega"
+                                [(value)]="current_Vega_StartValue"><!--[value]="current_BarrierD_StartValue"-->
+                            <!-- <span>%</span> -->
+                        </div>
+                        <div class="ki-number second">
+                            <input [ngClass]="{'highlight-border': endVegaValue!= current_Vega_LastValue}" type="number"
+                                class="knumber filterIputs" placeholder="{{endVegaValue}} %" [min]="startVegaValue"
+                                [max]="endVegaValue" class="inputBox" (change)="binder2($event);" name="input2"
+                                [(value)]="current_Vega_LastValue">
+                            <!--[value]="current_BarrierD_LastValue"-->
+                        </div>
+                    </div>
+                    <ng-container [ngSwitch]="display">
+                        <ng-template [ngSwitchCase]="1"><ngx-slider class="ngx-Vega-dist-slider cancelProbSlider"
+                                [(value)]="current_Vega_StartValue" [(highValue)]="current_Vega_LastValue"
+                                [options]="options2" (userChange)="sliderToInputBinder2()"></ngx-slider></ng-template>
+                        <ng-template [ngSwitchCase]="2"><ngx-slider class="ngx-Vega-dist-slider cancelProbSlider"
+                                [(value)]="current_Vega_StartValue" [(highValue)]="current_Vega_LastValue"
+                                [options]="options2" (userChange)="sliderToInputBinder2()"></ngx-slider></ng-template>
+                    </ng-container>
+                </div>
+            </div>
+
+        </div>
+        <div class="lastRow">
+            <div class="clearFilter">
+                <span class="link cursorpoint" (click)="refresh()">Clear All Filters</span>
+            </div>
+            <div class="pageCount">
+                <span class="paginationtext">Trade Count: {{products}} </span>
+            </div>
+        </div>
+    </div>
+</div>

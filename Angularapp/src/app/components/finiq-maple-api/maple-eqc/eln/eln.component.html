@@ -1,0 +1,140 @@
+
+<div class="insideCard-gridview">
+    <div class="cls-td">
+        <label>Product</label>
+    </div>
+    <div class="">
+        <label class="productName">
+            ELN
+        </label>
+    </div>
+    <div>
+        <div class="">
+            <select [(ngModel)] = "ELNType">
+                <option value = "Simple">Simple</option>
+                <option value = "CONTINUOUS">KO Intraday</option>
+                <option value = "DAILY_CLOSE">KO Day Close</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="cls-td">
+        <label>Underlying / Ccy</label>
+    </div>
+    <div class="" (clickOutside)="onClickedOutside($event)">
+        <input type = "text" [(ngModel)]="selectedShare" class="InputClass left" (click)=" showSharePopup = !showSharePopup " />
+        <div class="share-popup" *ngIf = "showSharePopup">
+            <div class = "pair" *ngFor = "let share of shareList" (click)="fnShowSharePopup(share)">
+                {{share.Share}}
+            </div>
+            <div class="pair" (click) = "showSearchShare = !showSearchShare " >
+                More>>>
+            </div>
+            <div class="Searchshare-popup" *ngIf = "showSearchShare" (click) = "sharelistpopup = !sharelistpopup">
+                <input type = "text" class="searchShare" placeholder="Select share" (keypress)="searchShare($event)" (keydown.backspace)="searchShare($event)" />
+            </div>
+            <div class="Searchshare-popup sharelistpopup" *ngIf = "sharelistpopup">
+                <div  class = "sharelist" *ngFor = "let sharelist of FilterSharesELN" (click) = "selectShareFromDropdown(sharelist)">
+                    {{sharelist.LongName}}
+                </div>
+            </div>
+        </div>
+    
+    </div>
+    <div>
+        <select [(ngModel)]="selectedCurrency">
+            <option *ngFor = "let c of currencyList[0]" [value]="c.Ccy">{{c.Ccy}}</option>
+        </select>
+    </div>
+
+    <div class="cls-td">
+        <label>Contract Amt. / Solve for</label>
+    </div>
+    <div class="" (clickOutside)="onClickedOutsideAmt($event)">
+        <input type = "text" [(ngModel)]="notional" class="InputClass" (click)=" showAmountPopup = !showAmountPopup " (change) = "getNotional($event)" />
+        <div class="share-popup" *ngIf = "showAmountPopup">
+            <div class = "pair" *ngFor = "let notional of AmountArray" (click)="fnShowAmountPopup(notional)">
+              <div>  {{notional.Amount}} </div>
+            </div>
+            <div class="pair" (click) = "showSearchAmount = !showSearchAmount " >
+                More>>>
+            </div>
+            <div class="Searchshare-popup" *ngIf = "showSearchAmount" style="left:2px !important">
+                <input type = "text" class="searchShare" placeholder="Enter Notional" (change)="getNotional($event)"/>
+            </div>
+           
+        </div>
+    
+    </div>
+    <div>
+        <select [(ngModel)]="solveFor">
+            <option value = "StrikePercentage">Strike (%)</option>
+            <option value = "PricePercentage">IB Price (%)</option>
+        </select>
+    </div>
+
+    <div class="cls-td">
+        <label>Tenor / Upfront</label>
+    </div>
+    <div>
+        <select class="select-tenor" [(ngModel)]="selectedTenor">
+            <option *ngFor = "let tenor of tenor" [value]="tenor.Tenor" >{{tenor.Tenor}}</option>
+        </select>
+        {{MaturityDate}}
+    </div>
+    <div >
+        <input type = "text" [(ngModel)]="upfront" class="InputClass"/>
+        <label class="PerPaddingLeft">%</label>
+    </div>
+    <div class="cls-td">
+        <label>Strike / IB Price</label>
+    </div>
+    <div>
+        <input type = "text" [(ngModel)] = "strike" class="InputClass" *ngIf = "solveFor === 'PricePercentage'"/>
+        <input type = "text" [(ngModel)] = "strike" class="InputClass" *ngIf = "solveFor === 'StrikePercentage'" disabled/>
+        <label class="PerPaddingLeft">%</label>
+    </div>
+    <div>
+        <input type = "text" [(ngModel)] = "IBPrice" class="InputClass" *ngIf = "solveFor === 'StrikePercentage'" />
+        <input type = "text" [(ngModel)] = "IBPrice" class="InputClass" *ngIf = "solveFor === 'PricePercentage'" disabled/>
+        <label class="PerPaddingLeft">%</label>
+    </div>
+    <div class="cls-td">
+        <label>KO</label>
+    </div>
+    <div>
+        <input type = "text" [(ngModel)] = "KOPerc" class="InputClass"/>
+        <label class="PerPaddingLeft">%</label>
+    </div>
+    <div *ngIf = "solveFor === 'StrikePercentage'">
+        <input type = "text" [(ngModel)]="clientYield" class="InputClass" />
+        <label class="PerPaddingLeft">%</label>
+    </div>
+   
+    
+</div>
+
+
+<div class="pricingTile">
+    <div class="pricing-div">
+        <div>
+    
+        </div>
+        <div>
+            <button class="btn-price" (click)="priceELN()">Price</button>
+        </div>
+        <div>
+            <button class="btn-price">Email</button>
+        </div>
+        <div>
+            <button class="btn-price">Order</button>
+        </div>
+    </div>   
+    
+    <div class="pricing-card">
+        <div>
+    
+        </div>
+    </div>
+</div>
+

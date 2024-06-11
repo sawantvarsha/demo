@@ -1,0 +1,163 @@
+<div style="padding: 0px 15px">
+  <div style="height: 100px; color: var(--text); padding: 0px 5px">
+    <div
+      style="
+        height: 37px;
+        font-size: x-large;
+        font-weight: 400;
+        line-height: 28px;
+        color: var(--label);
+        margin-bottom: 10px;
+        display: flex;
+        justify-content: space-between;
+      "
+    >
+      <p style="margin: 0px" *ngIf="selectedMPGitem">
+        {{ selectedMPGitem.BCM_long_name }}
+      </p>
+      <!-- <app-svg-icons [icon]="'expand'" [width]="'20'" [height]="'20'" (click)="toggleExpand()" *ngIf="!expandedMPG" class="expand-icon"></app-svg-icons> -->
+      <!-- <app-svg-icons [icon]="'collapse'" [width]="'20'" [height]="'20'" (click)="toggleExpand()" *ngIf="expandedMPG" class="collapse-icon"></app-svg-icons> -->
+    </div>
+    <div style="display: flex; gap: 10px; align-items: flex-end">
+      <input
+        type="text"
+        placeholder="Search"
+        [(ngModel)]="sTokenToSearch"
+        class="search"
+        (keydown.enter)="onKeydownFilter()"
+      />
+      <!-- <button class="button" (click)="refreshData()"> -->
+      <app-svg-icons
+        [icon]="'refresh'"
+        [width]="'30'"
+        [height]="'30'"
+        (click)="refreshData()"
+      ></app-svg-icons>
+      <app-svg-icons [icon]="'xls'" (click)="exportAsXLSX()"></app-svg-icons>
+
+      <!-- <mat-icon> -->
+      <!-- </mat-icon> -->
+      <!-- </button> -->
+      <!-- <button class="button" (click)="exportAsXLSX()">Export -->
+      <!-- <mat-icon class="export-button-color export-icon-alignment" svgIcon="Export">Export</mat-icon> -->
+      <!-- </button> -->
+
+      <!-- &nbsp; -->
+      <div class="pagination-class">
+        <!-- <mat-paginator #paginator [length]="noOfRecords" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
+                  (page)="pageEvent = $event;getPageInfo($event)">
+                </mat-paginator> -->
+
+        <div>
+          <span class="common-font rows-per-page" style="font-size: 12px"
+            >Record(s) Per Page</span
+          >
+          <input
+            class="common-font rows-per-page-input"
+            [(ngModel)]="pageSize"
+            type="text"
+            (keyup.enter)="onKeydownRowsPerPage(pageSize)"
+            (blur)="onKeydownRowsPerPage(pageSize)"
+            style="margin-right: 20px !important"
+          />
+
+          <button
+            mat-raised-button
+            (click)="prevBtnClicked()"
+            style="font-size: 12px"
+          >
+            Prev
+          </button>
+          <input
+            class="common-font rows-per-page-input"
+            [(ngModel)]="pageNo"
+            type="text"
+            (keyup.enter)="onKeydownPageNo(pageNo)"
+            (blur)="onKeydownPageNo(pageNo)"
+            style="margin-right: 20px !important; margin-left: 20px !important"
+          />
+          <button
+            mat-raised-button
+            (click)="nextBtnClicked()"
+            style="font-size: 12px"
+          >
+            Next
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- <div class="cards-list" style="margin-top: 40px;">      margin-top: 130px;
+        padding-left: 10px;-->
+  <div
+    class="cards-list beutifyPopUp UserGrpPopup"
+    style="font-size: 12px; height: calc(100vh - 292px); padding: 0px 5px"
+  >
+    <!-- <div *ngIf="!BlotterDataRows || BlotterDataRows.length==0" style="color : #FF4E4E !important;"> &nbsp;&nbsp; -->
+    <div
+      *ngIf="errorMsg !== ''"
+      style="color: var(--red) !important; font-size: 15px; margin-top: 5px"
+    >
+      &nbsp;&nbsp;&nbsp;&nbsp; {{ currDate | date: "dd-MMM-yyyy h:mm:ss a" }}:
+      {{ errorMsg }}
+    </div>
+    <!-- <div *ngIf="BlotterDataRows && BlotterDataRows.length>0" style="color: #008000 !important"> -->
+    <div
+      *ngIf="succMsg !== ''"
+      style="color: var(--green) !important; font-size: 15px; margin-top: 5px"
+    >
+      &nbsp;&nbsp;&nbsp;&nbsp; {{ currDate | date: "dd-MMM-yyyy h:mm:ss a" }}:
+      {{ succMsg }}
+    </div>
+    <div class="mpg-rows-loader" *ngIf="isLoader && !BlotterDataRows.length">
+      <div class="loader-center">
+        <div class="multi-ripple">
+          <div></div>
+          <div></div>
+        </div>
+      </div>
+    </div>
+    <div *ngFor="let rowItem of BlotterDataRows; let i = index">
+      <!-- <div class="card"> -->
+      <div class="card" *ngIf="i >= pageFirstRecord - 1 && i < pageLastRecord">
+        <div class="label">
+          <!-- {{replaceChar(BlotterDataColumnHeader[0][0])}}: -->
+          {{ this.apifunction.mapHeader(BlotterDataColumnHeader[0][0]) }}
+        </div>
+        <div class="value">
+          {{ BlotterDataRows[i][BlotterDataColumnHeader[0][0]] }}
+        </div>
+        <div style="display: grid; grid-template-columns: auto 30px">
+          <div class="inner-grid">
+            <ng-template
+              ngFor
+              let-ii="index"
+              let-headerItem
+              [ngForOf]="BlotterDataColumnHeader"
+            >
+              <div *ngIf="ii > 0">
+                <div class="label">
+                  <!-- {{replaceChar(headerItem[0])}} :  -->
+                  <!-- {{ this.apifunction.metaDataResult[ii]?.Header }} -->
+                  {{ this.apifunction.mapHeader(headerItem[0]) }}
+                </div>
+                <div class="value">{{ rowItem[headerItem[0]] || "-" }}</div>
+              </div>
+            </ng-template>
+          </div>
+          <div class="record-no">
+            <!-- <label style="color:grey">{{((pageNo - 1)* pageSize )+ i+1}} </label> -->
+            <!-- <label style="color:rgb(128, 128, 128)"> -->
+            <label style="font-size: 23px; color: #dddddd">
+              <!-- {{i+1}} :: -->
+              {{ i + 1 < 10 ? (i + 1 | number: "2.0") : i + 1 }}
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- </div>   -->
+      <!-- </ng-template> -->
+    </div>
+  </div>
+</div>

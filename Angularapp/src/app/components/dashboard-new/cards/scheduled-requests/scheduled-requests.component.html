@@ -1,0 +1,107 @@
+<div class="save-request-list">
+    <ul>
+        <li>
+            <div class="item-prev" *ngFor="let item of scheduledreqAll ">
+                <div class="First-row">
+                    <!-- <label class="Save-requests-header">● Pending Response</label> -->
+                    <label class=""><span class="labels11">{{Requestid | translate}}
+                                                </span>{{item.Req_x0020_ID}}</label>
+                    <ng-container *ngFor="let schedule of CommonDataProducts">
+                        <label class="" *ngIf="schedule.Data_Value == item.Product"><span>{{
+                                                                schedule.misc1}}</span></label>
+                    </ng-container>
+                </div>
+                <div class="details-container">
+                    <!-- <div class="details"><label>{{Solvefor | translate}}</label><span>{{item.Solve_x0020_For}}</span> </div> -->
+                    <div class="details" *ngIf="item.Solve_x0020_For == 'Coupon'"><label>{{Solvefor
+                                                        |
+                                                        translate}}</label><span>{{item.Solve_x0020_For}} (%)</span>
+                    </div>
+                    <div class="details" *ngIf="(item.Solve_x0020_For != 'Coupon') 
+                    && (item.Solve_x0020_For !='IBPrice') 
+                    && (item.Solve_x0020_For !='KI + CouponBarrier') 
+                    && (item.Solve_x0020_For !='Reoffer Price') 
+                    && (item.Solve_x0020_For !='KO') 
+                    && (item.Solve_x0020_For !='RebateCoupon') 
+                    && (item.Solve_x0020_For !='CouponBarrier') 
+                    && (item.Solve_x0020_For !='KI') 
+                    && (item.Solve_x0020_For !='Strike + CouponBarrier') 
+                    && (item.Solve_x0020_For !='KO + Strike') 
+                    && (item.Solve_x0020_For !='FundingRate')
+                    && (item.Solve_x0020_For !='Strike')
+                    "
+                    >
+                        <label>{{Solvefor |
+                                                        translate}}</label><span>{{item.Solve_x0020_For}}</span>
+                    </div>
+                    <div class="details" *ngIf="item.Solve_x0020_For == 'IBPrice'">
+                        <label>{{Solvefor
+                                                        |
+                                                        translate}}</label><span>Reoffer Price</span>
+                    </div>
+                    <div class="details" *ngIf="item.Solve_x0020_For == 'KI + CouponBarrier'">
+                        <label>{{Solvefor |
+                                                        translate}}</label><span>KI Barrier Level + Coupon Trigger</span>
+                    </div>
+                    <div class="details" *ngIf="item.Solve_x0020_For == 'Reoffer Price'">
+                        <label>{{Solvefor |
+                                                        translate}}</label><span>Price</span>
+                    </div>
+                    <div class="details" *ngIf="item.Solve_x0020_For == 'KO'"><label>{{Solvefor |
+                                                        translate}}</label><span>Autocall Trigger</span></div>
+                    <div class="details" *ngIf="item.Solve_x0020_For == 'RebateCoupon'">
+                        <label>{{Solvefor |
+                                                        translate}}</label><span>Autocall Coupon</span>
+                    </div>
+                    <div class="details" *ngIf="item.Solve_x0020_For == 'CouponBarrier'">
+                        <label>{{Solvefor |
+                                                        translate}}</label><span>Coupon Trigger</span>
+                    </div>
+                    <div class="details" *ngIf="item.Solve_x0020_For == 'KI'"><label>{{Solvefor |
+                                                        translate}}</label><span>KI Barrier Level (%)</span></div>
+                    <div class="details" *ngIf="item.Solve_x0020_For == 'Strike + CouponBarrier'">
+                        <label>{{Solvefor |
+                                                        translate}}</label><span>Barrier Strike +Coupon Trigger</span>
+                    </div>
+                    <div class="details" *ngIf="item.Solve_x0020_For == 'KO + Strike'">
+                        <label>{{Solvefor |
+                                                        translate}}</label><span>Autocall Trigger+Strike</span>
+                    </div>
+                    <div class="details" *ngIf="item.Solve_x0020_For == 'FundingRate'">
+                        <label>{{Solvefor |
+                                                        translate}}</label><span>Rate/Spread (%)</span>
+                    </div>
+                    <div class="details" *ngIf="item.Solve_x0020_For == 'Strike'">
+                        <label>{{Solvefor |
+                                                        translate}}</label><span>Strike (%)</span>
+                    </div>
+                    <div class="details"><label style="align-items: center;text-align: center;">{{format |
+                                                        translate}}</label><span style="align-items: center;text-align: center;">{{item.Format}}</span>
+                    </div>
+                    <div class="details"><label style="text-align: end;">{{size |
+                                                        translate}}</label><span style="text-align: end;">{{item.Size}}</span> </div>
+                </div>
+                <div>
+                    <!-- <label class="underlyings-card" *ngIf="item.Product !== 'Dual Currency Note' || ">{{}}</label>
+                    <label class="underlyings-card">{{}}</label> -->
+                    <!-- <label *ngIf="item.Product == 'Dual Currency Note'" class="underlyings-card">{{item.Currency_x0020_Pair}}</label>
+                    *ngIf="item.Product !== 'Dual Currency Note'"
+                    -->
+                    <label class="underlyings-card">{{item.Underlyings}}{{item.UnderlyingsCLN}}{{item.UnderlyingsCT}}{{item.Currency_x0020_Pair}}</label>
+                    <label style="float: right;" (click)="fetchScheduledReqDetails(item.Req_x0020_ID[0], false,item.Product[0])"><span
+                                                        class="Hlink">Clone</span></label>
+                    <label style="float: right;margin-right:10px" class="Hlink" (click)="fetchScheduledReqDetails(item.Req_x0020_ID[0], true,item.Product[0])"><span
+                                                        class="Hlink">View</span></label>
+                    <label style="float: right;margin-right:10px" class="Hlink" (click)="CancelScheduleReq(item.Req_x0020_ID[0])"><span
+                                                        class="Hlink">Cancel</span></label>
+
+                </div>
+                <hr class="line" style="margin-top: 15px;">
+            </div>
+
+
+        </li>
+
+    </ul>
+    <div *ngIf="scheduledreqAll.length <= 0">No Data Found</div>
+</div>

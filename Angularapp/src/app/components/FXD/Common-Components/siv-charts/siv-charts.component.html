@@ -1,0 +1,132 @@
+<div class="container">
+    <div class="chart-container">
+        <label class="chart-header"> Spot rates ({{ccyPair}})</label>
+        <div class="chart-content" *ngIf="!LoadingFlagSpotRates">
+            <div *ngIf="historychart.data.length > 0">
+                <google-chart #googlechart [type]="historychart.type" [data]="historychart.data"
+                    [options]="historychart.options" [width]="width" [height]="height">
+                </google-chart>
+            </div>
+            <div class="no-data-found" *ngIf="historychart.data.length === 0">
+                No data found
+            </div>
+        </div>
+        <!-- <div class="chart-ccy-label"> <label>{{ccyPair}}</label></div> -->
+        <div class="chart-content" *ngIf="LoadingFlagSpotRates">
+            <app-loader></app-loader>
+            <!-- <div class="FXD-loader">
+                <div>
+                    <div class="multi-ripple">
+                        <div></div>
+                        <div></div>
+                    </div>
+                </div>
+            </div> -->
+        </div>
+    </div>
+    <div class="chart-container">
+        <label class="chart-header">Interest rates (%)</label>
+        <div class="chart-content" >
+            <div *ngIf="interestRateChart.data.length > 0">
+                <google-chart #googlechart [type]="interestRateChart.type" [data]="interestRateChart.data"
+                    [options]="interestRateChart.options" [width]="width" [height]="height"
+                    [columns]="interestRateChart.columnNames">
+                </google-chart>
+            </div>
+            
+            <div class="no-data-found" *ngIf="interestRateChart.data.length === 0">
+                <app-svg-icons [icon]="'no-data-icon'" [width]="'70'" [height]="'70'" [fill]="'var(--active)'">
+                </app-svg-icons>
+                <span style="font-size: 12px;">No data found</span> 
+            </div>
+        </div>
+        <!-- <div class="chart-content" *ngIf="LoadingFlagInterestRates">
+            <app-loader></app-loader>
+        </div> -->
+    </div>
+
+    <!--VOL surface chart plotly --START -->
+    <!-- <div class="card"> -->
+    <div class="content" [ngClass]="{'content-hover': toggleVolChart}">
+        <div class="chart-container front" [ngStyle]="{'display':toggleVolChart ? 'none' : ''}">
+            <!-- <div class="toggle-grid"> -->
+            <label class="chart-header">Volatility ({{ccyPair}} )</label>
+            <span class="align-center svgChart" (click)="toggleVolChart = true">
+                <app-svg-icons [icon]="'table-icon'" [width]="'21'" [height]="'21'" [fill]="'var(--active)'">
+                </app-svg-icons>
+            </span>
+            <!-- <div class="switch-container">
+                        <label class="switch" style="margin-top: 5px;">
+                            <input type="checkbox" [(ngModel)]="toggleVolChart">
+                            <span class="slider"></span>
+                        </label>
+                    </div> -->
+            <!-- </div> -->
+
+            <div class="chart-content" *ngIf="!LoadingFlagVolatility">
+                <div *ngIf="graph && graph.data  &&  graph.data.length > 0 && volSurfDetails.length > 0">
+                    <!-- <plotly-plot [data]="graph.data" [layout]="graph.layout" [config]="graph.config"
+                        [useResizeHandler]="true" [style]="{position: 'relative'}">
+                    </plotly-plot> -->
+
+                </div>
+                <div class="no-data-found" *ngIf="volSurfDetails.length === 0">
+                    No data found
+                </div>
+            </div>
+            <div class="chart-content" *ngIf="LoadingFlagVolatility">
+                <app-loader></app-loader>
+            </div>
+        </div>
+        <!--VOL surface chart plotly --END -->
+
+        <div class="chart-container back">
+            <label class="chart-header">Volatility Surface (%)</label>
+            <span class="align-center" (click)="toggleVolChart = false">
+                <app-svg-icons class="svgChart" [icon]="'chart-line-icon'" [width]="'15'" [height]="'15'"
+                    [fill]="'var(--active)'">
+                </app-svg-icons>
+            </span>
+            <div class="chart-content" *ngIf="!LoadingFlagVolatility">
+                <table *ngIf="volSurfDetails.length > 0" class="smallfontVoltable"
+                    style="padding:10px; overflow: scroll; ">
+                    <tr>
+                        <th>Expiry <br> (Code)</th>
+                        <th>10d <br> Puts</th>
+                        <th>25d <br> Puts</th>
+                        <th>ATM</th>
+                        <th>25d <br> Calls</th>
+                        <th>10d <br> Calls</th>
+                    </tr>
+                    <tr *ngFor="let arrV of volSurfDetails">
+                        <td *ngIf="arrV.SoftMaturity!=='3W' && arrV.SoftMaturity!=='2Y'">{{ arrV.SoftMaturity }}
+                        </td>
+                        <td *ngIf="arrV.SoftMaturity!=='3W' && arrV.SoftMaturity!=='2Y'">{{arrV.s10DP |
+                            number:'1.2-2'}}
+                        </td>
+                        <td *ngIf="arrV.SoftMaturity!=='3W' && arrV.SoftMaturity!=='2Y'">{{arrV.s25DP |
+                            number:'1.2-2' }}
+                        </td>
+                        <td *ngIf="arrV.SoftMaturity!=='3W' && arrV.SoftMaturity!=='2Y'">{{arrV.ATM |
+                            number:'1.2-2'}}</td>
+                        <td *ngIf="arrV.SoftMaturity!=='3W' && arrV.SoftMaturity!=='2Y'">{{arrV.s25DC |
+                            number:'1.2-2'}}
+                        </td>
+                        <td *ngIf="arrV.SoftMaturity!=='3W' && arrV.SoftMaturity!=='2Y'">{{arrV.s10DC |
+                            number:'1.2-2'}}
+                        </td>
+                    </tr>
+                </table>
+                <div class="no-data-found" *ngIf="volSurfDetails.length === 0">
+                    No data found
+                </div>
+            </div>
+            <div class="chart-content" *ngIf="LoadingFlagVolatility">
+                <app-loader></app-loader>
+            </div>
+        </div>
+    </div>
+    <!-- </div> -->
+
+
+</div>

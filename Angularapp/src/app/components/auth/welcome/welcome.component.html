@@ -1,0 +1,92 @@
+<!-- <div class="login-background"> -->
+<div class="glass-container">
+    <div class="flex-down">
+
+        <!-- FINIQ -->
+        <div class="logo-div" *ngIf="CompanyLogo === 'FinIQ'">
+            <div class="finiq-logo"></div>
+        </div>
+
+        <!-- SH CAPITAL -->
+        <div class="logo-div" *ngIf="CompanyLogo === 'SHC'">
+            <app-svg-icons class="bluewater-logo" [icon]="'blue-water'"
+                [width]="'calc(175px + (220 - 175) * ((100vw - 1200px) / (1920 - 1200)))'"
+                [height]="'calc(100px + (120 - 100) * ((100vw - 1200px) / (1920 - 1200)))'"></app-svg-icons>
+        </div>
+
+        <!-- GATEWAY MARKETS -->
+        <div class="logo-div" *ngIf="CompanyLogo === 'GWM'">
+            <app-svg-icons class="gateway-logo" [icon]="'gateway-markets'"
+                [width]="'calc(250px + (310 - 250) * ((100vw - 1200px) / (1920 - 1200)))'"
+                [height]="'calc(100px + (120 - 100) * ((100vw - 1200px) / (1920 - 1200)))'"></app-svg-icons>
+        </div>
+
+        <div class="select-service" style="height: 470px;">
+            <!-- SH CAPITAL  style="height: 440px;" -->
+            <div style="margin: 8% auto;">
+                <label class="heading"> {{'Online Services' |translate }}</label>
+                <div class="flex-across">
+                    <div class="service" [routerLink]="['/login/client']" routerLinkActive="router-link-active"
+                        (click)="portalTabs=1" *ngIf="showPortals.includes('CLIENT')">
+                        <div class="glass-service">
+                            <img class="service-img" [src]="'http://'+domainURL+'/assets/client.png'">
+                            <!-- <img class="service-img" [src]="isProd?'assets/client.png':'./../../../../assets/client.png'"> -->
+                        </div>
+                        <label>{{'Client Portal'|translate}}</label>
+                    </div>
+                    <div class="service" [routerLink]="['/login/rm']" routerLinkActive="router-link-active"
+                        (click)="portalTabs=2" *ngIf="showPortals.includes('RM')">
+                        <div class="glass-service">
+                            <img class="service-img" [src]="'http://'+domainURL+'/assets/rm.png'">
+                            <!-- <img class="service-img" [src]="isProd?'assets/rm.png':'./../../../../assets/rm.png'"> -->
+                        </div>
+                        <label>{{'RM Portal'|translate}}</label>
+                    </div>
+                    <div class="service" [routerLink]="['/login/admin']" routerLinkActive="router-link-active"
+                        (click)="portalTabs=3" *ngIf="showPortals.includes('ADMIN')">
+                        <div class="glass-service">
+                            <img class="service-img" [src]="'http://'+domainURL+'/assets/admin.png'">
+                            <!-- <img class="service-img" [src]="isProd?'assets/admin.png':'./../../../../assets/admin.png'"> -->
+                        </div>
+                        <label>{{'Admin Portal'|translate}}</label>
+                    </div>
+                    <div class="service" [routerLink]="['/login/dealer']" routerLinkActive="router-link-active"
+                        (click)="portalTabs=3" *ngIf="showPortals.includes('DEALER')">
+                        <div class="glass-service">
+                            <img class="service-img" [src]="'http://'+domainURL+'/assets/admin.png'">
+                            <!-- <img class="service-img" [src]="isProd?'assets/admin.png':'./../../../../assets/admin.png'"> -->
+                        </div>
+                        <label>{{'Dealer Portal'|translate}}</label>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!-- SH CAPITAL -->
+        <div class="logos-div" style="text-align: center;" *ngIf="CompanyLogo === 'SHC'">
+            <div style="display: flex; justify-content: flex-end;">
+                <div class="stanhope-logo"></div>
+            </div>
+            <div class="vl"></div>
+            <div>
+                <p class="website-link">{{'This platform is powered by'| translate}}</p>
+                <div class="finiq-logo-bottom"></div>
+            </div>
+        </div>
+
+
+        <!-- GATEWAY MARKETS -->
+        <div class="logos-div-gateway" style="text-align: center;" *ngIf="CompanyLogo === 'GWM'">
+            <div>
+                <p class="website-link">{{'This platform is powered by'| translate}}</p>
+                <div class="finiq-logo-bottom"></div>
+            </div>
+        </div>
+
+        <div class="copyright">
+            <p>{{'2022 © FinIQ Consulting Pte. Ltd. All Rights Reserved' | translate}}.</p>
+        </div>
+    </div>
+
+</div>
+<!-- </div> -->

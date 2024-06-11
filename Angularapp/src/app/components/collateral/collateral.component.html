@@ -1,0 +1,23 @@
+<div *ngIf="IsBackButtonEnabled" class="page-navigation" [ngClass]=''>
+
+  <div class="page-title">
+    <app-svg-icons class="back-button" [icon]="'back-button'" [width]="'30'" [height]="'30'" [fill]="'var(--headers)'"
+      (click)="commonApi.back()"></app-svg-icons>
+    <div>Credit Monitoring</div>
+  </div>
+</div>
+
+<div class="collateral-component">
+
+  <div *ngIf="!IsBackButtonEnabled" class="page-title">
+    <app-svg-icons class="back-button" [icon]="'back-button'" [width]="'30'" [height]="'30'" [fill]="'var(--headers)'"
+      (click)="commonApi.back()"></app-svg-icons>
+    <div>Credit Monitoring</div>
+    <div>
+      <app-svg-icons (click)="refresh()" [icon]="'refresh'" [width]="'26'" [height]="'26'">
+      </app-svg-icons>
+    </div>
+  </div>
+  <!-- <app-customer-margin-report></app-customer-margin-report> -->
+  <app-global-margin-report></app-global-margin-report>
+</div>

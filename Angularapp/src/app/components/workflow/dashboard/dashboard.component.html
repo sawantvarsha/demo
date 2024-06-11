@@ -1,0 +1,192 @@
+<div class="dashboard-component">
+  <div class="page-title module">
+    Dashboard
+  </div>
+  <div class="popuptab1" *ngIf="portfoliopopflag">
+    <div class="content-header">
+        <div class="content-header-name">
+            <span>Portfolio Details</span></div>
+        <div class="closebtn" (click)="showdetailsPopUp(false,0)">X</div>
+    </div>
+    <div class="content">
+        <div class="subcontent">
+            <div class="FundName"><span>{{portfolioDetails[0].longName}}</span></div>
+            <div class="containerFundDetails" style="color: #7d4a15">
+                <div class=""><span>{{this.cfs.FormatNumberr(portfolioDetails[0].CurrentMarketValue)}}</span></div>
+                <div class=""><span>1,000,000.00</span></div>
+                <div class=""><span>{{portfolioDetails[0].SpotBidQuote}}</span></div>
+                <div class=""><span>{{this.cfs.FormatNumberr(portfolioDetails[0].CEHD_Available_Qty)}}</span></div>
+                <div class=""><span>1,250,00.00</span></div>
+                <div class=""><span>1,250,00.00</span></div>
+            </div>
+            <div class="containerFundDetails" style="color: darkgray">
+                <div class=""><span>Current Value</span></div>
+                <div class=""><span>Invested</span></div>
+                <div class=""><span>NAV as on <br> 15-07-2020</span></div>
+                <div class=""><span>Balance Units</span></div>
+                <div class=""><span>Absolute Returns</span></div>
+                <div class=""><span>Annualise Return</span></div>
+            </div>
+        </div>
+        
+    </div>
+</div>
+  <div class="content-container" *ngIf="showPortfolio" [ngClass]="{'maincontainer-opacity':portfoliopopflag}">
+    <div class="data-container">
+      <div class="header">
+        <div class="header-text">
+          Portfolio Valuation
+        </div>
+        <hr>
+        <div *ngIf="tab1Error === '' && data">
+          <div class="medium">USD
+            <span class="large">{{this.convert(this.totalHoldings)}}</span>
+          </div>
+          <div class="small">
+            {{this.cfs.FormatNumberr(totalHoldings)}}&nbsp; (All Portfolios)
+          </div>
+          <hr class="line">
+          <div class="chartArea">
+            <google-chart #chart [type]="type" [data]="data" [options]="options"
+              (select)="SelectPieChartSlice($event);">
+            </google-chart>
+          </div>
+
+          <div class="gridTable">
+
+            <span class="tablehead">Portfolio</span>
+            <span class="tablehead">Value</span>
+            <span class="tablehead"></span>
+
+          </div>
+          <div class="gridTable" *ngFor="let arr of holdings;let i=index">
+
+            <span>{{folioName[i]}}</span>
+            <span class="right">USD &nbsp;{{this.cfs.FormatNumberr(holdings[i])}}</span>
+            <span class="center"><img src="../../../assets/correct.png" width="15px" height="15px"
+                (click)="showdetailsPopUp(true,i)"></span>
+          </div>
+
+        </div>
+        <div class="error" *ngIf="tab1Error !== ''">{{tab1Error}}</div>
+      </div>
+    </div>
+    <div class="data-container">
+      <div class="header">
+        <div class="header-text">
+          Portfolio Performance
+        </div>
+        <hr>
+        <div *ngIf="tab2Error === ''">
+        <div class="">
+          
+            <google-chart #chart [title]="areaTitle" [type]="areaType" [data]="performance" [options]="areaOptions">
+            </google-chart>
+          </div>
+          
+     
+        <div class="performance-table">
+          <div class="table-title">Invesetd</div>
+          <div class="table-title">PnL</div>
+          <div class="table-title">Return</div>
+          <div class="table-title">Total AUM</div>
+          <div class="table-content">{{custPortfolioPerformance["Invested"][0]}}</div>
+          <div class="table-content">{{this.cfs.FormatNumberr(custPortfolioPerformance["PnL"][0])}}</div>
+          <div class="table-content">{{this.cfs.FormatNumberr(custPortfolioPerformance["Return"][0])}}</div>
+          <div class="table-content">{{this.cfs.FormatNumberr(custPortfolioPerformance['TotalAUM'][0])}}</div>
+
+        </div>
+      </div>
+      <div class="error" *ngIf="tab2Error !== ''">{{tab2Error}}</div>
+      </div>
+    </div>
+    <div class="data-container">
+      <div class="header">
+        <div class="header-text">
+          Asset Allocation
+        </div>
+        <hr>
+        <div *ngIf="SecurityHoldings && tab3Error===''">
+          <div class="assetdetails center">
+            Asset Allocation - {{cusotmerName}} {{currency}} Portfolio (very high return)
+          </div>
+          <div class="chartArea">
+            <google-chart #chart [type]="assetType" [data]="SecurityHoldings" [options]="assetOptions">
+            </google-chart>
+          </div>
+          <div class="assetdetails">
+
+            <div class="medium">USD
+              <span class="large">{{this.convert(this.assetTotal)}}</span>
+            </div>
+            <div class="medium">
+              {{this.cfs.FormatNumberr(assetTotal)}}
+            </div>
+          </div>
+        </div>
+        <div class="error" *ngIf="tab3Error !== ''">{{tab3Error}}</div>
+      </div>
+    </div>
+    <div class="data-container"> 
+      <div class="header">
+        <div class="header-text">
+          Cash Holding
+        </div>
+        <hr>
+        <div class="tableCenter">
+          <div class="holdingTable">
+
+            <span class="tablehead">Currency</span>
+            <span class="tablehead">Cash Balance</span>
+
+          </div>
+          <div class="holdingTable" *ngFor="let item of CashHoldings">
+
+            <span class="center">{{item.CEHDC_Currency}}</span>
+            <span class="right">{{this.cfs.FormatNumberr(item.CEHDC_Available_Amt)}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="data-container">
+      <div class="header">
+        <div class="header-text">
+          PnL by Portfolio
+        </div>
+        <hr>
+        <div class="buttonspace">
+          <button class="button bestbtn" [ngClass]="{'active-bestbtn':isBestperf}" (click)="togglebestworst('best')">Best
+              5</button>
+          <button class="button bestbtn" [ngClass]="{'active-bestbtn':!isBestperf}" (click)="togglebestworst('worst')">Worst
+              5</button>
+
+      </div>
+      <div class="chartArea" *ngIf="isBestperf">
+          <div *ngIf="tab5Error === ''">
+              <google-chart #chart [type]="pnlbestType" [data]="pnlbestdata" [options]="pnlbestoptions">
+              </google-chart>
+              
+          </div>
+          <div class="error" *ngIf="tab5Error !== ''">{{tab5Error}}</div>
+      </div>
+
+
+      <div class="chartArea" *ngIf="!isBestperf">
+          <div *ngIf="tab5Error === ''">
+              <google-chart #chart [type]="pnlbestType" [data]="pnlworstdata" [options]="pnlbestoptions">
+              </google-chart>
+          </div>
+          <div class="error" *ngIf="tab5Error !== ''">{{tab5Error}}</div>
+      </div>
+      </div>
+    </div> 
+    <div class="data-container">
+      <div class="header">
+        <div class="header-text">
+          Latest Transaction
+        </div>
+        <hr>
+      </div>
+    </div>
+  </div>
+</div>

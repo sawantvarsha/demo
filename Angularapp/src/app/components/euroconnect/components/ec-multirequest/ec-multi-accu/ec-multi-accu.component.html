@@ -1,0 +1,593 @@
+<div class="main-grid-container" style="padding-top: 0px !important">
+  <div class="row"></div>
+  <div class="main-grid-item">
+    <!-- box-container class Added by SandipA @05-Apr-2023 -->
+    <div class="box-container SaveReqs-Table order-box multiPricerDiv" #holdingsContainer>
+      <div>
+        <div class="product-tabs">
+          <div class="multiPayoffList">
+            <ul>
+              <!-- <ng-template ngFor let-i="index" let-payoff [ngForOf]="this.apifunctions.payOffList">
+                  <li routerLink="{{payoff.multiRoute}}" routerLinkActive="active-link" *ngIf="payoff.display">
+                      
+                      <a class="tab" [ngClass]="ProductName === payoff.multiProductName ?  'activePayOff' : 'disabledtabs'">{{payoff.displayName}}</a>
+                  </li>
+              </ng-template> Anubhav 05-01-2023-->
+              <!-- <li routerLink="/MultiPhoenix" routerLinkActive="active-link">
+                    <a class="tab" class="disabledtabs">Autocall</a>
+                </li>
+                <li routerLink="/MultiBRC" routerLinkActive="active-link">
+                  <a class="tab" class="disabledtabs">Reverse Convertible</a>
+                </li>
+                <li routerLink="/MultiParticipation" routerLinkActive="active-link">
+                  <a class="tab" class="disabledtabs">Participation</a>
+                </li>
+                <li routerLink="/MultiCredit" routerLinkActive="active-link">
+                  <a class="tab" class="disabledtabs">Credit Tranche</a>
+                </li>
+                <li routerLink="/MultiEarlyRedemption" routerLinkActive="active-link">
+                  <a class="tab" class="disabledtabs">Autocallable</a>
+                </li>
+                <li routerLink="/MultiYieldEnhancement" routerLinkActive="active-link">
+                  <a class="tab" class="disabledtabs">Yield Enhancement</a>
+                </li>
+                <li routerLink="/MultiDiscountCertificates" routerLinkActive="active-link">
+                  <a class="tab" class="disabledtabs">Discount Certificates</a>
+                </li>
+                <li routerLink="/MultiAccu" routerLinkActive="active-link">
+                  <a class="tab" class="active">Accumulator</a>
+                </li>
+                <li routerLink="/MultiDecu" routerLinkActive="active-link">
+                  <a class="tab" class="disabledtabs">Decumulator</a>
+                </li> -->
+            </ul>
+          </div>
+
+          <div class="innergrid" style="display: block;display: none;">
+		  <!-- Display none done by Sandip A || 21-Mar-2023 -->
+            <label class="pageHeader">Accumulator Multi
+              Pricer</label>
+            <hr width="100%" class="productHeaderhr">
+          </div>
+          <!-- padding bottom added by SandipA @05-04-23 -->
+          <div class="innergrid" style="padding-bottom: 32px;">
+            <label style="margin-right: 23px;display: none;" class="portfolio-label">My Portfolios</label>
+<!-- Display none done by Sandip A || 21-Mar-2023 -->
+            <!-- <select [(ngModel)]="portfolio" (change)="portfolioChange('Owner')">
+              <option value=""></option>
+              <option *ngFor="let arr of portfolioIdArr" value="{{ arr.P_ID }}">
+                {{ arr.P_Name }}
+              </option>
+            </select> -->
+
+            <button style="margin-right: 46px; min-width: 148px;display: none;" class="button" (click)="Delete()" [disabled]="
+                portfolio === '' || priceBtnActive === 'N' || isPortfolioShared
+              ">
+              <!-- <img src="{{ asseturl }}delete.png" alt="" style="filter: invert(100%); width: 21px" /> -->
+              <app-svg-icons [icon]="'delete'" [width]="'15'" [height]="'15'">
+              </app-svg-icons>
+              Delete Portfolio
+            </button>
+            <!-- <label class="portfolio-label">Portfolio Name</label> -->
+
+            <input type="text" style="max-width: 16em !important;display: none;" [(ngModel)]="PortFolioName" (blur)="reset()" />
+
+            <div class="btn-group" (clickOutside)="saveoptionflag = false" style="display: none;">
+              <button type="button" class="btn button save-btn" tabindex="36" [disabled]="priceBtnActive === 'N'"
+                (click)="generateXML(true)">
+                <img src="{{ asseturl }}save.png" alt="" style="width: 21px" />
+                Save Portfolio
+              </button>
+              <button type="button" (click)="saveOptions()" class="btn button dropdown-toggle dropdown-toggle-split"
+                style="height: 35px !important; font-size: 13px !important" data-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="false" [disabled]="priceBtnActive === 'N'">
+                <span class="sr-only">Toggle Dropdown</span>
+              </button>
+              <div class="ddl" style="top: 45px; right: 0px" *ngIf="saveoptionflag">
+                <div style="float: left; padding-left: 5px" *ngIf="portfolio !== '' && accessRight !== 'VIEW'">
+                  <mat-icon style="
+                      width: 25px !important;
+                      height: 25px !important;
+                      margin: 3px 5px 3px 10px;
+                      font-size: 24px !important;
+                    ">
+                    save_alt</mat-icon>
+                </div>
+                <div class="ddlitem" role="menuitem" style="padding-top: 5px" id="divupdateportfolio"
+                  (click)="generateXML(false)" *ngIf="portfolio !== '' && accessRight !== 'VIEW'">
+                  Update portfolio
+                </div>
+                <div style="float: left; padding-left: 5px">
+                  <mat-icon style="
+                      width: 25px !important;
+                      height: 25px !important;
+                      margin: 3px 5px 3px 10px;
+                      font-size: 24px !important;
+                    ">
+                    save</mat-icon>
+                </div>
+                <div class="ddlitem" role="menuitem" style="padding-top: 5px" id="divsaveportfolio"
+                  (click)="generateXML(true)">
+                  Save New
+                </div>
+                <div style="float: left; padding-left: 5px" *ngIf="accessRight !== 'VIEW'">
+                  <mat-icon style="
+                      width: 25px !important;
+                      height: 25px !important;
+                      margin: 3px 5px 3px 10px;
+                      font-size: 24px !important;
+                    ">
+                    share</mat-icon>
+                </div>
+                <div class="ddlitem" role="menuitem" style="padding-top: 5px" (click)="showsaveSharePopup()"
+                  *ngIf="accessRight !== 'VIEW'">
+                  Save and Share
+                </div>
+              </div>
+            </div>
+
+            
+
+          <div class="innergrid" style="margin-top: 10px">
+              <!-- <label class="portfolio-label">Shared Portfolios</label>
+
+            <select [(ngModel)]="portfolio" (change)="portfolioChange('Shared')">
+              <option value=""></option>
+              <option *ngFor="let arr of sharedportfolioArr" value="{{ arr.P_ID }}">
+                {{ arr.P_Name }}
+              </option>
+            </select>
+
+            <!-- Modified width of button || PriyaL || 28Apr2022 ||Assigned by Pranav D. -->
+            <span style="position: relative; display: inline-block" (clickOutside)="addFlag = false">
+              <button style="
+                  margin: 0px;
+                  margin-right: 10px;
+                  height: 35px;
+                  width: 70px;
+                  min-width: 70px;
+                " class="button" (click)="addOptions()">
+                Add
+              </button>
+              <div class="ddl" *ngIf="addFlag" (click)="addFlag = false">
+                <div *ngIf="multiPhoenixArr && multiPhoenixArr.length > 0" class="ddlitem" role="menuitem"
+                  (click)="cloneRow()">
+                  <img src="{{ asseturl }}clone.png" alt="" style="
+                      filter: invert(50%);
+                      width: 23px;
+                      margin: 0px 8px 0px 0px;
+                    " />
+                  <!-- Modified label of clone action || PriyaL || 04May2022 || as asked by Milind Sir -->
+                  <!-- <label style="cursor: pointer;">Clone</label> -->
+                  <label style="cursor: pointer">Clone Last Row</label>
+                </div>
+                <div class="ddlitem" role="menuitem" (click)="addNewRow(undefined)">
+                  <img src="{{ asseturl }}addnew.png" alt="" style="
+                      filter: invert(50%);
+                      width: 23px;
+                      margin: 0px 8px 0px 0px;
+                    " />
+                  <!-- Modified label of clone action || PriyaL || 04May2022 || as asked by Milind Sir -->
+                  <!-- <label style="cursor: pointer;">Add
+                    New</label> -->
+                  <label style="cursor: pointer">Add New Row</label>
+                </div>
+              </div>
+            </span>
+            <!-- <button class="button" (click)="Price()">Price</button> -->
+            <div class="btn-group" style="margin: 0px; margin-right: 10px; height: 35px"
+              (clickOutside)="priceoptionflag = false">
+              <button type="button" class="btn button" style="
+                  width: 69px;
+                  min-width: 69px;
+                  height: 35px !important;
+                  font-size: 13px;
+                  margin-left: -11px;
+                " (click)="Price()" [disabled]="priceBtnActive === 'N'">
+                Price
+              </button>
+              <!-- <button type="button" (click)="priceOptions()" class="btn button dropdown-toggle dropdown-toggle-split"
+              style="height: 35px !important; font-size: 14px !important;" data-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="false" [disabled]="priceBtnActive === 'N'">
+                <span class="sr-only">Toggle Dropdown</span>
+              </button>
+              <div class="ddl" style="top:45px;" *ngIf="priceoptionflag">
+                <div style="float: left;padding-left: 5px;">
+                  <mat-icon
+                  style="width:25px !important;height:25px !important;margin: 3px 5px 3px 10px;font-size: 24px!important;font-family: 'Material Icons' !important;">
+
+                    schedule</mat-icon>
+                </div>
+                <div class="ddlitem" style="padding-top: 5px;" (click)="showSchedulePopup()">Schedule Price</div>
+              </div> -->
+            </div>
+
+            <!-- <label *ngIf="allBooksData.length>1">On behalf of</label> 
+
+
+            <select *ngIf="allBooksData.length>1" [(ngModel)]="onBehalfOf" tabindex="" (change)="onbehalfChange();">
+
+              <option *ngFor="let bookData of allBooksData;let i = index" [value]="bookData.BookCode">
+                {{bookData.BookName }}
+              </option>
+
+
+          </select>  -->
+<!--ErrorMsg shifted down by SandipA @27-Mar-2023 -->
+            <div class="switch-flex">
+              <!--filter: invert changed by SandipA @30-Mar-2023 -->
+              <img src="{{ asseturl }}Layouttype.png" alt="" style="filter: invert(50%); width: 30px;vertical-align: top;" />
+
+              <mat-slide-toggle (change)="EcCommon.changeLayout(); getToggleData($event)" [checked]="toggleCheck"
+                [disabled]="toggleDisabledFlag"></mat-slide-toggle>
+              <img src="{{ asseturl }}Layouttype.png" alt="" style="
+                  filter: invert(50%);
+                  width: 30px;
+                  transform: rotate(90deg); vertical-align: top;" />
+            </div>
+
+            <div *ngIf="ErrorMsg !== ''">
+              <label style="color: #ff4545 !important; white-space: pre-line">{{
+                ErrorMsg
+                }}</label>
+            </div>
+            <div *ngIf="successMsg !== ''">
+              <label style="color: #128f2d !important">{{ successMsg }}</label>
+            </div>
+          </div>
+          </div>
+ 
+        </div>
+
+        <!-- <div class="innergrid">
+             
+        
+           
+        </div> -->
+      </div>
+
+      <div class="tablephx" *ngIf="!EcCommon.getLayout()" id="HorizontalLayout">
+        <table id="table1">
+          <tr>
+            <!-- <th class="deleteCol sticky-col first-col"></th> -->
+            <th style="min-width: 100px !important" class="sticky-col first-col">
+              Result
+            </th>
+            <!-- width changed by SandipA || 04-Apr-2023 -->
+            <th class="th-large" style="width: 185px !important;">Underlying</th>
+
+            <!-- <ng-container *ngIf="ProductName!=='Accumulator';  then oldProd; else AccDecProd">
+              </ng-container> -->
+
+            <!-- <ng-template #oldProd> -->
+            <!-- <th rowspan="2">Format</th>
+            <th rowspan="2">Solve For</th>
+            <th rowspan="2">Price (%) /<br>Issue Price (%)</th>
+            <th rowspan="2">Ccy /<br>Size</th>
+            <th colspan="2">Dates</th>
+            <th colspan="2">Barrier</th>
+            <th colspan="3">Autocall</th>
+            <th colspan="4">Coupon</th>
+            <th colspan="2">Funding</th> -->
+            <!-- </ng-template> -->
+
+            <!-- <ng-template #AccDecProd> -->
+            <th class="th-small">Solve For</th>
+            <th class="th-small">Daily no. of <br />Shares</th>
+            <th class="th-small">Estd. Notional /<br />Tenor</th>
+            <!-- <th >Tenor</th> -->
+            <th class="th-small">Strike (%)</th>
+            <th class="th-small">Upfront (%)</th>
+            <th class="th-medium" style="width: 152px;"><!-- width Added by SandipA || 05-Apr-2023 -->
+              KO % of Initial /<br />
+              KO Sttl. Type
+            </th>
+            <!-- <th >KO Sttl. Type</th> -->
+            <!-- <th >2x Gearing <br/> Leverage</th> -->
+            <th class="th-medium" style="width: 152px;">Frequency /<br />Leverage</th><!-- width Added by SandipA || 05-Apr-2023 -->
+            <!-- <th >Frequency</th> -->
+            <th class="th-medium" style="width: 152px;">Guarantee</th><!-- width Added by SandipA || 05-Apr-2023 -->
+            <!-- </ng-template> -->
+          </tr>
+          <!-- <tr class="trheadergeight"> -->
+
+          <!-- <ng-container *ngIf="ProductName!=='Accumulator';  then oldProd1; else AccDecProd1">
+              </ng-container> -->
+
+          <!-- <ng-template #oldProd1> -->
+          <!-- <th>Strike Date /<br> Payment Date </th>
+            <th>Tenor<img src="{{asseturl}}info.jpg" class="info">
+              <div class="infodiv">
+                <span class="infoNote" style="white-space: initial;width: 260px;">
+                  In case you require the exact Maturity or Final Observation Date, please do not hesitate to request a
+                  Termsheet.
+                </span>
+              </div>
+            </th>
+            <th>Strike (%) /<br>Leverage</th>
+            <th>Barrier Type /<br>Barrier Level (%)</th>
+            <th>Freq. /<br>Trigger(%)</th>
+            <th>Stepdown (%)/<br>Non-Call
+              <img src="{{asseturl}}info.jpg" class="info">
+              <div class="infodiv">
+                <span class="infoNote" style="white-space: initial;">
+                  Autocall from Noncall + 1 period.
+                </span>
+              </div>
+            </th>
+            <th>ER Cpn Type /<br>Coupon (%)</th>
+            <th>Type /<br>Memory Pds.</th>
+            <th>Trigger (%) /<br>Frequency</th>
+            <th>Coupon (%) /<br>Obs.</th>
+            <th style="min-width: 100px !important;">Alt. Coupon (%)
+                <img src="{{asseturl}}info.jpg" class="info">
+                <div class="infodiv">
+                  <span class="infoNote">
+                    Coupon paid if product is not
+                    redeemed.
+                  </span>
+                </div>
+
+            </th>
+            <th>Funding Type /<br>Freq.</th>
+            <th>Index Rate /<br>Spread (%)</th> -->
+          <!-- </ng-template> -->
+          <!-- <ng-template #AccDecProd1> -->
+          <!-- </ng-template> -->
+          <!-- </tr> -->
+          <!-- <tr> -->
+          <app-ec-submultirequest id="submitrequest{{ rowIndex }}"
+            *ngFor="let row of multiPhoenixArr; let rowIndex = index" [shares]="shares" [ReceivedCCY]="ReceivedCCY"
+            [ComponentIndex]="rowIndex" [ProductName]="ProductName" [DisplayProductName]="DisplayProductName"
+            [data]="row" [data1]="clone" [length1]="multiPhoenixArr.length" [mappedformatlist]="mappedformatlist"
+            (errorMsgChanged)="errorMsgChangedHandler($event)" (scheduleMsgChanged)="scheduleMsgChangedHandler($event)">
+          </app-ec-submultirequest>
+          <!-- </tr> -->
+        </table>
+      </div>
+      <div class="verticalTableGrid" *ngIf="EcCommon.getLayout()" id="VerticalLayout">
+        <div style="width: 235px; ">
+          <!-- <div class="submultiDivHeader "></div> -->
+          <div class="submultiDivHeader" style="height: 150px">Result</div>
+          <!-- Underlying height changed by SandipA @03-Apr-2023  -->
+          <div class="submultiDivHeader" style="height: 170px">Underlying</div>
+          <div class="submultiDivHeader">Solve For</div>
+          <div class="submultiDivHeader">Daily no.of Shares</div>
+          <div class="submultiDivHeader">Estd. Notional</div>
+          <!-- (USD)  -->
+          <div class="submultiDivHeader">Tenor</div>
+          <div class="submultiDivHeader">Strike (%)</div>
+          <div class="submultiDivHeader">Upfront (%)</div>
+          <div class="submultiDivHeader">KO % of Initial</div>
+          <div class="submultiDivHeader">KO Sttl. Type</div>
+          <div class="submultiDivHeader">Leverage</div>
+          <!-- <div class="submultiDivHeader">Frequency /<br/> Leverage</div> -->
+          <div class="submultiDivHeader">Frequency</div>
+          <div class="submultiDivHeader">Guarantee</div>
+
+          <!-- <div class="headerDiv">
+            <div class="submultiDivHeader" style="height: 100%;">Dates</div>
+            <div class="subHeaderDiv">
+              <div class="submultiDivHeader">Strike Date</div>
+              <div class="submultiDivHeader">Payment Date</div>
+              <div class="submultiDivHeader">Tenor<img src="{{asseturl}}info.jpg" class="info">
+                <div class="infodiv">
+                  <span class="infoNote" style="white-space: initial;width: 260px;">
+                    In case you require the exact Maturity or Final Observation Date, please do not hesitate to request
+                    a
+                    Termsheet.
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div> -->
+          <!-- <div class="headerDiv">
+            <div class="submultiDivHeader" style="height: 100%;">Barrier</div>
+            <div class="subHeaderDiv">
+              <div class="submultiDivHeader">Strike (%) </div>
+              <div class="submultiDivHeader">Leverage </div>
+              <div class="submultiDivHeader">Barrier Type </div>
+              <div class="submultiDivHeader">Barrier Level (%)</div>
+            </div>
+          </div>
+
+          <div class="headerDiv">
+            <div class="submultiDivHeader" style="height: 100%;">Autocall</div>
+            <div class="subHeaderDiv">
+              <div class="submultiDivHeader">Freq. </div>
+              <div class="submultiDivHeader">Trigger(%) </div>
+              <div class="submultiDivHeader">Stepdown (%) </div>
+              <div class="submultiDivHeader">Non-Call
+                <img src="{{asseturl}}info.jpg" class="info">
+                <div class="infodiv">
+                  <span class="infoNote" style="white-space: initial;">
+                    Autocall from Noncall + 1 period.
+                  </span>
+                </div>
+              </div>
+              <div class="submultiDivHeader">ER Cpn Type </div>
+              <div class="submultiDivHeader">Coupon (%)</div>
+            </div>
+          </div>
+          <div class="headerDiv">
+            <div class="submultiDivHeader" style="height: 100%;">Coupon</div>
+            <div class="subHeaderDiv">
+              <div class="submultiDivHeader">Type </div>
+              <div class="submultiDivHeader">Memory Pds.</div>
+              <div class="submultiDivHeader">Trigger (%)</div>
+              <div class="submultiDivHeader">Frequency</div>
+              <div class="submultiDivHeader">Coupon (%) </div>
+              <div class="submultiDivHeader">Obs.</div>
+              <div class="submultiDivHeader"><span> Alt. Coupon (%)
+                  <img src="{{asseturl}}info.jpg" class="info">
+                  <div class="infodiv">
+                    <span class="infoNote">
+                      Coupon paid if product is not
+                      redeemed.
+                    </span>
+                  </div>
+                </span>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="headerDiv">
+            <div class="submultiDivHeader" style="height: 100%;">Funding</div>
+            <div class="subHeaderDiv">
+              <div class="submultiDivHeader">Type </div>
+              <div class="submultiDivHeader">Freq.</div>
+              <div class="submultiDivHeader">Index Rate / Spread (%)</div>
+            </div>
+          </div> -->
+        </div>
+          <div style="display: flex; margin-left: 79px;">
+          <app-ec-vertical-submulti-new id="submitrequest{{ rowIndex }}"
+            *ngFor="let row of multiPhoenixArr; let rowIndex = index" [shares]="shares" [ReceivedCCY]="ReceivedCCY"
+            [ComponentIndex]="rowIndex" [ProductName]="ProductName" [DisplayProductName]="DisplayProductName"
+            [data]="row" [data1]="clone" [length1]="multiPhoenixArr.length"
+            (errorMsgChanged)="errorMsgChangedHandler($event)" [mappedformatlist]="mappedformatlist"
+            (scheduleMsgChanged)="scheduleMsgChangedHandler($event)" style="
+              text-align: center;
+              /*Width increse by SandipA @23-Mar-2023 */
+              /* border: 1px solid #ccc; */
+              /* padding: 0em 0.5em; */
+              max-width: 250px;
+              min-width: 250px;
+            ">
+          </app-ec-vertical-submulti-new>
+        </div>
+      </div>
+      <br /><br />
+    </div>
+  </div>
+</div>
+
+<div id="schedule" *ngIf="showSchedulePopupFlag">
+  <div class="schedulePopup">
+    <div>
+      <span style="margin-left: 10px; font-size: 20px; font-weight: 500">Pick date & time</span>
+      <div class="btnClose" style="font-weight: 700; font-size: medium; float: right" (click)="hideSchedulePopup()">
+        X
+      </div>
+    </div>
+    <div class="scheduleDiv">
+      <div class="calendar-wrapper">
+        <mat-calendar #calendar (monthSelected)="monthSelected($event)" [(selected)]="selectedDate"
+          (selectedChange)="dateChanged()" [minDate]="todayDate"></mat-calendar>
+      </div>
+      <div>
+        <input type="text" style="
+            max-width: 240px !important;
+            margin: 20px 0px 0px 20px !important;
+          " class="scheduleInput" [(ngModel)]="inputDate" value="{{ selectedDate | date: 'dd-MMM-yyyy' }}"
+          disabled /><br />
+        <!-- <input type="text" style="max-width: 240px !important;margin: 20px 0px 0px 20px !important;" 
+        class="scheduleInput" [(ngModel)]="inputTime" value="{{selectedDate | date:'hh:mm a'}}"> -->
+        <input type="time" class="scheduleInput" style="
+            border: none;
+            width: 100%;
+            color: #676765;
+            font-size: 14px !important;
+          " [(ngModel)]="inputTime" value="{{ inputTime }}" />
+      </div>
+    </div>
+    <div class="scheduleBtnGrid">
+      <div>
+        <span style="
+            color: #ff4545 !important;
+            font-size: 14px !important;
+            white-space: pre-line;
+          " *ngIf="ErrorMsg !== ''">{{ ErrorMsg }}</span>
+        <span class="successMsg" *ngIf="scheduleMsg !== ''">{{
+          scheduleMsg
+          }}</span>
+      </div>
+      <div>
+        <button class="button" (click)="hideSchedulePopup()">Cancel</button>
+        <button class="button" (click)="scheduleSend()">Schedule Send</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="saveShare" *ngIf="showsaveSharePopupFlag">
+  <div class="savesharePopup">
+    <div style="text-align: center; margin-bottom: 20px">
+      <span style="margin-left: 10px; font-size: 14px; font-weight: 500">Share with Colleagues and Groups</span>
+    </div>
+    <div style="text-align: center; margin-bottom: 20px">
+      <!-- <input type="text" placeholder="Please enter user ID or client group" class="longText saveShareInput">  -->
+      <input type="text" placeholder="Please enter user ID or client group" value="{{ userName }}"
+        class="saveShareInput" style="text-align: left; max-width: 100% !important" [(ngModel)]="userName"
+        maxlength="10" (keypress)="ChangeIndex($event); showSuggestions = true"
+        (keydown.enter)="selectShare($event); userflag = false" (keydown.backspace)="backKeyPress($event)"
+        (keydown.delete)="backKeyPress($event)" (keydown.tab)="userflag = false" (keydown.ArrowUp)="
+          selectedBIndex = EcCommon.moveUpSelection1(
+            $event,
+            selectedBIndex
+          )
+        " (keydown.ArrowDown)="
+          selectedBIndex = EcCommon.moveDownSelection1(
+            $event,
+            selectedBIndex
+          )
+        " tabindex="5" Id="txtUserGroup" />
+      <div class="SelectorBox" *ngIf="userflag && showSuggestions" (clickOutside)="userflag = false">
+        <a *ngFor="let user of users | searchUserGroup: userName; let i = index" (keypress)="ChangeIndex($event)"
+          (keydown.enter)="selectShare($event)">
+          <div *ngIf="user" [attr.data-share]="user.Code" (click)="showUnderlying($event, user)"
+            [ngClass]="{ HoverSuggestion: i === selectedBIndex }">
+            <span>{{ user.Name }}</span>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <div class="userListDiv" *ngFor="let u of userBasket; let i = index">
+      <button class="btnDel" (click)="deleteUserfromList(i)" [disabled]="isPortfolioShared && !u.NewAddFlag">
+        <!-- <img src="{{ asseturl }}delete.png" width="30px" style="filter: invert(50%); cursor: pointer" title="Delete" /> -->
+        <app-svg-icons [icon]="'delete'" [width]="'20'" [height]="'20'">
+        </app-svg-icons>
+      </button>
+      <div style="padding-top: 5px">
+        <span style="
+            margin-left: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #02559fc2;
+          ">{{ u.Name }}</span>
+      </div>
+      <div>
+        <select id="list{{ i }}" style="width: max-content !important" (change)="changeAccessofUserGroup($event, i)"
+          [attr.selected]="u.Access" [disabled]="isPortfolioShared && !u.NewAddFlag">
+          <!-- <option  Value=''></option> -->
+          <option *ngIf="
+              ((u.Type === 'USER' || u.Type === 'User') &&
+                !isPortfolioShared) ||
+              (isPortfolioShared && !u.NewAddFlag)
+            " [ngValue]="u.Access" [attr.selected]="u.Access === 'EDIT' ? true : null">
+            EDIT
+          </option>
+          <option [ngValue]="u.Access" [attr.selected]="u.Access === 'VIEW' ? true : null">
+            VIEW
+          </option>
+        </select>
+      </div>
+    </div>
+
+    <div style="text-align: center">
+      <span style="margin-left: 10px; font-size: 12px; font-weight: 500">Owner:</span>
+      <span style="
+          margin-left: 10px;
+          font-size: 12px;
+          font-weight: 500;
+          color: #02559fc2;
+        ">{{ portfolioowner }}</span>
+    </div>
+    <div style="text-align: center">
+      <button class="button" (click)="hidesaveSharePopup()">Cancel</button>
+      <button class="button" (click)="sharePortfolio()">Share</button>
+    </div>
+  </div>
+</div>

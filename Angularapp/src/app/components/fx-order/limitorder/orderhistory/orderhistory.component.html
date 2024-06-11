@@ -1,0 +1,71 @@
+<div class="filters" style="display: flex;">
+    <!-- <div class="record-count" *ngIf="workflowRecords.length">
+    {{workflowRecords.length}}/{{workflowRecords[0].my_TotalRows}}
+  </div> -->
+    <select class="selectImage" (change)="filterdata('OrderType')" [(ngModel)]="orderType">
+    <!-- <option value="">All</option> -->
+    <!-- <option value="Stop-Loss">Stop Loss</option> -->
+    <option value="Limit">Limit</option>
+  </select>
+    <select class="selectImage" (change)="filterdata('Status')" [(ngModel)]="status">
+    <option value="">All</option>
+    <option value="Filled">Filled</option>
+    <option value="Order Placed">Order Placed</option>
+  </select>
+    <div class="date-container">
+        <app-calender-control id="FromDate" [defaultDate]="TransFromDate" [label]="'From'" (selectedDate)="changeDate('from', $event)">
+        </app-calender-control>
+    </div>
+    <div class="date-container">
+        <app-calender-control [defaultDate]="TransToDate" [label]="'To'" (selectedDate)="changeDate('to', $event)">
+        </app-calender-control>
+    </div>
+    <!-- <div class="appearance">
+    <div class="lbl-appearance">Appearance</div>
+    <div class="rows-count">
+      <div [class.Submitbtn]="Appearance=='10'" (click)="Appearance = '10';ApplyFilters();">10</div>
+      <div [class.Submitbtn]="Appearance=='20'" (click)="Appearance = '20';ApplyFilters();">20</div>
+      <div [class.Submitbtn]="Appearance=='30'" (click)="Appearance = '30';ApplyFilters();">30</div>
+    </div>
+  </div> -->
+    <div class="download-controls">
+        <div class="download-btn" (click)="captureScreen()">
+            <img src="{{assetURL}}/pdf.png" class="imgclass">
+            <label (click)="captureScreen()">PDF</label>
+        </div>
+        <div class="download-btn" (click)="exportexcel()">
+            <img src="{{assetURL}}/pdf.png" class="imgclass">
+            <label>CSV</label>
+        </div>
+    </div>
+</div>
+<div class="errormsg" *ngIf="errorMsg">{{errorMsg}}</div>
+
+<div class="records">
+    <table class="table table-striped" id="excel-table">
+        <thead>
+            <tr>
+                <th class="center"> Transaction Date and Time </th>
+                <th class="center"> Order ID </th>
+                <th class="center"> Direction </th>
+                <th class="center"> Currency Pair</th>
+
+                <th class="center"> Expiry Type </th>
+                <th class="center"> Credit Currency </th>
+                <th class="center"> Billing Currency </th>
+                <th class="center"> Order Amount </th>
+                <th class="center"> Rate </th>
+                <th class="center"> Order Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <app-single-row style="display: table-row;" *ngFor="let record of workflowRecords; let i = index" [record]="record" [Index]="i" [precision]="record.Precision"></app-single-row>
+        </tbody>
+    </table>
+    <div *ngIf="loading">
+        <img src="{{assetURL}}/loading_dots.gif" alt="" style="height: 2em;margin-left: 3em;">
+    </div>
+    <div *ngIf="validaionmsg !== ''" style="padding-left: 3em;">
+        {{validaionmsg}}
+    </div>
+</div>

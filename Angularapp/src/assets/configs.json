@@ -1,0 +1,23 @@
+{
+  "apiBaseUrl": "https://sit-finiqlcm.test-1finiq.com/FinIQAPIGateway/api/",  
+  "authUrl": "https://sit-finiqlcm.test-1finiq.com/FinIQAPIGateway/api/",
+  "hostedAppName": "/",
+  "pgmessage": "funds/message",
+  "pgfunds": "payments/addfunds",
+  "pgpayments": "funds/payments",
+  "marginpledgemessage": "pledge/message",
+  "marginpledge": "depository/pledgesecurities",
+  "dbyear": "2023",
+  "logo": "FINIQ",
+  "isBanner": true,
+  "isAmbigous": true,
+  "isBannerGradient": true,
+  "ipAddress": "localhost",
+  "BankBaseCCy":"USD",
+  "CSP_Company_Logo" : "client",
+  "newsImgResourcePath": "https://sit-finiqlcm.test-1finiq.com/FinIQWebApp/News_Twitter/FinIQNewsImage/",
+  "isHashingEnabled": true,
+  "hkey": "C1PFxPgKepndcdBCqU6yYODCDlSw0W2v",
+  "sessionIdle": 3600,
+  "idlePopupCountdown": 10
+}

@@ -1,0 +1,185 @@
+$assetPath: "https://52.187.114.119";
+$duration: 100s;
+
+#stockTicker {
+    width: calc(100vw);
+    height: 40px;
+    top: 56px;
+    right: 0px;
+    background-color: var(--ticker-bg);
+    position: fixed;
+    white-space: nowrap;
+    overflow: hidden;
+    box-sizing: border-box;
+    box-shadow: 0px 0px 5px 2px #00000013;
+    display: flex;
+    z-index: 90;
+}
+
+.moving-ticker {
+    height: 40px;
+}
+
+.vhLine {
+    border-right: 1px solid rgb(190, 190, 190);
+    height: 30px;
+    margin: auto 10px;
+}
+
+.up-trend {
+    background-image: url(#{$assetPath}/assets/up.png);
+    background-size: contain;
+    width: 12px;
+    height: 12px;
+    margin: auto 4px;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.down-trend {
+    background-image: url(#{$assetPath}/assets/down.png);
+    background-size: contain;
+    width: 12px;
+    height: 12px;
+    margin: auto 4px;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.ticker2 {
+    animation: tickerTape 30s cubic-bezier(0.4, 0, 1, 1) infinite;
+    animation-delay: 7.5s !important;
+}
+#stockTicker div.moving-ticker {
+    margin: 0;
+    display: flex;
+    // padding-left: 100%;
+    // animation: tickerTape 30s cubic-bezier(0.4, 0, 1, 1) infinite;
+    -webkit-animation-iteration-count: infinite;
+    animation-iteration-count: infinite;
+    -webkit-animation-timing-function: linear;
+    animation-timing-function: linear;
+    -webkit-animation-name: ticker;
+    animation-name: ticker;
+    -webkit-animation-duration: $duration;
+    animation-duration: $duration;
+    justify-content: center;
+    align-items: center;
+}
+
+#stockTicker div.moving-ticker-2 {
+    margin: 0;
+    display: flex;
+    // padding-left: 100%;
+    // animation: tickerTape 30s cubic-bezier(0.4, 0, 1, 1) infinite;
+    -webkit-animation-iteration-count: infinite;
+    animation-iteration-count: infinite;
+    -webkit-animation-timing-function: linear;
+    animation-timing-function: linear;
+    -webkit-animation-name: ticker;
+    animation-name: ticker;
+    -webkit-animation-duration: $duration;
+    animation-duration: $duration;
+}
+@keyframes tickerTape {
+    0% {
+        transform: translate(0, 0);
+    }
+    100% {
+        transform: translate(-100%, 0);
+    }
+}
+@keyframes tickerTape {
+    0% {
+        transform: translate(0, 0);
+    }
+    100% {
+        transform: translate(0%, 0);
+    }
+}
+
+@-webkit-keyframes ticker {
+    0% {
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+        visibility: visible;
+    }
+
+    100% {
+        -webkit-transform: translate3d(-100%, 0, 0);
+        transform: translate3d(-100%, 0, 0);
+    }
+}
+
+@keyframes ticker {
+    0% {
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+        visibility: visible;
+    }
+
+    100% {
+        -webkit-transform: translate3d(-100%, 0, 0);
+        transform: translate3d(-100%, 0, 0);
+    }
+}
+
+// #stockTicker div.moving-ticker:hover,
+// #stockTicker div.moving-ticker-2:hover {
+//     -webkit-animation-play-state: paused;
+//     -moz-animation-play-state: paused;
+//     -o-animation-play-state: paused;
+//     animation-play-state: paused;
+//     cursor: pointer;
+// }
+
+#stockTicker:hover {
+    cursor: pointer !important;
+}
+.moving-ticker-paused {
+    -webkit-animation-play-state: paused !important;
+    -moz-animation-play-state: paused !important;
+    -o-animation-play-state: paused !important;
+    animation-play-state: paused !important;
+    cursor: pointer !important;
+}
+
+.moving-ticker-2-paused {
+    -webkit-animation-play-state: paused !important;
+    -moz-animation-play-state: paused !important;
+    -o-animation-play-state: paused !important;
+    animation-play-state: paused !important;
+    cursor: pointer !important;
+}
+#stockTicker:hover .moving-ticker {
+    -webkit-animation-play-state: paused;
+    -moz-animation-play-state: paused;
+    -o-animation-play-state: paused;
+    animation-play-state: paused;
+    cursor: pointer;
+}
+
+#stockTicker:hover .moving-ticker-2 {
+    -webkit-animation-play-state: paused;
+    -moz-animation-play-state: paused;
+    -o-animation-play-state: paused;
+    animation-play-state: paused;
+    cursor: pointer;
+}
+
+.triangle-up {
+    width: 0;
+    height: 0;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-bottom: 14px solid var(--green);
+    margin: auto 4px;
+}
+
+.triangle-down {
+    width: 0;
+    height: 0;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-top: 14px solid var(--red);
+    margin: auto 4px;
+}

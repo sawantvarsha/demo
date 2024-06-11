@@ -1,0 +1,247 @@
+// .AuthorizeUserClass {
+//   display: flex;
+//   background-color: var(--main-bg-color);
+//   flex-direction: column;
+//   font-size: 15px;
+//   width: 85vw;
+// }
+
+:host {
+  position: absolute;
+  top: 0px;
+  left: 232.5px;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+}
+.authorize-component {
+  display: flex;
+  background-color: var(--main-bg-color);
+  flex-direction: column;
+  font-size: 15px;
+  width: calc(100% - 50px);
+}
+.container {
+  margin-left: 20px;
+  overflow-x: scroll;
+  width: calc(100%);
+}
+
+.filters {
+  display: grid;
+  row-gap: 10px;
+  -moz-column-gap: 20px;
+  column-gap: 20px;
+  padding: 5px 0px 10px 0px;
+  letter-spacing: 0.72px;
+  border-radius: 10px;
+  margin-left: 5px;
+  background-color: white;
+  box-shadow: var(--box-shadow-thin);
+  transition: 0.3s;
+  background: var(--containers);
+  margin-left: 20px !important;
+  margin-bottom: 24px;
+  border-radius: 4px;
+  margin: 0px 2px;
+  margin-bottom: 10px;
+  width: 55em;
+}
+
+.filter-element {
+  display: grid;
+  grid-template-columns: 10% 25% 15% auto;
+  align-items: baseline;
+}
+
+.text {
+  display: flex;
+  align-items: center;
+}
+
+.right-col {
+  display: grid;
+  margin-top: 5px;
+  grid-template-columns: 40% 10% 50%;
+  margin-left: 10px;
+  align-items: baseline;
+}
+
+.reload {
+  text-align: center;
+}
+
+.btn {
+  margin-inline: 10px;
+  width: 80%;
+}
+
+.blotter-data {
+  display: grid;
+  grid-template-columns: 15% 15% auto;
+  column-gap: 1%;
+  padding-left: 1%;
+}
+
+td {
+  min-width: 30px;
+}
+
+input {
+  width: auto;
+}
+
+.fixed-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  height: 2em;
+}
+
+/* Just common table stuff. Really. */
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+.table-div {
+  box-shadow: var(--box-shadow-thin);
+  background-color: white;
+  transition: 0.3s;
+  background: var(--containers);
+  letter-spacing: 0.72px;
+  border-radius: 10px;
+  margin: 3px 20px;
+  width: 55em;
+  padding: 10px;
+  // overflow-y: scroll;
+  // height: 53em;
+  height: calc(72vh - 1em);
+}
+
+.sub-div {
+  display: grid;
+  grid-template-columns: 100px 150px 100px 250px;
+  align-items: baseline;
+  box-shadow: var(--box-shadow-thin);
+  background-color: white;
+  transition: 0.3s;
+  background: var(--containers);
+  padding: 20px;
+  letter-spacing: 0.72px;
+  border-radius: 10px;
+  margin: 3px 20px;
+  width: 55em;
+  justify-items: flex-start;
+  grid-column-gap: 10px;
+}
+
+td {
+  font-size: 12px;
+}
+
+.maxwidth200 {
+  max-width: 180px !important;
+  min-width: 180px !important;
+  white-space: pre-line;
+}
+
+.maxwidth100 {
+  max-width: 100px !important;
+  min-width: 100px !important;
+}
+
+.maxwidth50 {
+  max-width: 50px !important;
+  min-width: 50px !important;
+}
+
+.checkbox {
+  height: 20px !important;
+}
+
+/*
+thead {
+    width: calc(100% - 1em);
+} */
+.authorize-user-table > thead > tr {
+  display: grid;
+  grid-template-columns: 5em repeat(2, 1fr);
+  align-items: center;
+}
+.authorize-user-table > tbody > tr {
+  display: grid;
+  grid-template-columns: 5em repeat(2, 1fr);
+  align-items: center;
+}
+.authorize-user-table > tbody {
+  overflow-x: scroll;
+  display: block;
+  height: 32vw;
+}
+
+.authorize-user-table {
+  // border-collapse: collapse;
+  table-layout: fixed;
+  width: 100%;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  table-layout: auto;
+  border-spacing: 0.2em 0.2em;
+}
+
+.authorize-user-table tr {
+  // display: block;
+  height: 1em;
+}
+
+.authorize-user-table {
+  td,
+  th {
+    padding: 0px 8px !important;
+    margin: 0px !important;
+    border-radius: 2px;
+    color: var(--text-color);
+    white-space: nowrap;
+  }
+}
+
+input[type="checkbox"] {
+  border-radius: 4px;
+  border: 1px solid var(--btn-border);
+  background-color: var(--input-bg);
+  width: 15px;
+  color: var(--text);
+  height: 35px;
+  text-align: left;
+  padding: 5px;
+}
+
+.widthauto {
+  width: auto;
+}
+
+.width40 {
+  width: 40px;
+}
+
+.width50 {
+  width: 50px;
+}
+
+.width100 {
+  width: 100px;
+}
+
+.width150 {
+  width: 150px;
+}
+
+.width200 {
+  width: 200px;
+}
+
+.txtposition {
+  width: 50px;
+  text-align: right;
+  height: 25px;
+}

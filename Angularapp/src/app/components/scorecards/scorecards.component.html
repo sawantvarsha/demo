@@ -1,0 +1,21 @@
+<div class="page-navigation" [ngClass]="">
+    <app-svg-icons *ngIf="!IsLandingPage" class="back-button" [icon]="'back-button'" [width]="'40'" [height]="'40'"
+      [fill]="'var(--headers)'" (click)="closeProduct()"></app-svg-icons>
+    <div class="page-title">{{ pageTitle }}</div>
+  </div>
+  
+  <div class="main-container" *ngIf="IsLandingPage">
+    <div class="sub-container">
+      <ng-container *ngFor="let page of subpages">
+        <div class="cards-container" *ngIf="page.display">
+          <div class="card" (click)="eqchangeProduct(page.displayName)">
+            <app-svg-icons [icon]="page.displayName" [width]="'100'" [height]="'100'"></app-svg-icons>
+            <span class="card-header">{{page.displayName}}</span>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+  <div class="tabs-container" *ngIf="!IsLandingPage">
+    <router-outlet></router-outlet>
+  </div>

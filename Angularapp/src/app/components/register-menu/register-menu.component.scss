@@ -1,0 +1,189 @@
+:host{
+  overflow: hidden;
+}
+.register-component {
+  display: flex;
+  background-color: var(--main-bg-color);
+  flex-direction: column;
+  font-size: 15px;
+  width: calc(100% - 50px);
+}
+.container {
+  margin-left: 20px;
+  // overflow-x: scroll;
+  width: calc(100%);
+}
+
+.content-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin-left: 20px;
+  overflow-x: scroll;
+  width: calc(70%);
+  // width: calc(100%);
+  .container1 {
+    grid-column: 1;
+  }
+  .container2 {
+    grid-column: 2;
+  }
+}
+
+.fixed-table {
+  // overflow: auto;
+  height: 100%;
+}
+.fixed-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  height: 35px;
+  // background-color: var(--table-header-bg);
+  color: var(--table-header-text);
+}
+.configure-menu-table > thead > tr {
+  display: grid;
+  grid-template-columns: 5em 5em repeat(2, 1fr) 15em 5em;
+  align-items: center;
+}
+.configure-menu-table > tbody > tr {
+  display: grid;
+  grid-template-columns: 5em 5em repeat(2, 1fr) 15em 5em;
+  align-items: center;
+}
+.configure-menu-table > tbody {
+  overflow-x: scroll;
+  display: block;
+  height: 35vw;
+}
+
+/* Just common table stuff. Really. */
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.table-div {
+  box-shadow: var(--box-shadow-thin);
+  background-color: white;
+  transition: 0.3s;
+  background: var(--containers);
+  letter-spacing: 0.72px;
+  border-radius: 10px;
+  margin: 3px 20px;
+  width: 65em;
+  padding: 10px;
+  // overflow-y: scroll;
+  height: calc(78vh - 1em);
+}
+.sub-div {
+  display: grid;
+  grid-template-columns: 100px 150px 100px 8em 1em 250px;
+  align-items: center;
+  box-shadow: var(--box-shadow-thin);
+  background-color: white;
+  transition: 0.3s;
+  background: var(--containers);
+  padding: 20px;
+  letter-spacing: 0.72px;
+  border-radius: 10px;
+  margin: 3px 20px;
+  width: 65em;
+  justify-items: flex-start;
+  grid-column-gap: 10px;
+}
+
+td {
+  font-size: 12px;
+}
+.maxwidth200 {
+  max-width: 180px !important;
+  min-width: 180px !important;
+  white-space: pre-line;
+}
+.maxwidth100 {
+  max-width: 100px !important;
+  min-width: 100px !important;
+}
+.maxwidth50 {
+  max-width: 50px !important;
+  min-width: 50px !important;
+}
+
+.checkbox {
+  height: 20px !important;
+}
+
+/*
+thead {
+    width: calc(100% - 1em);
+} */
+
+.configure-menu-table {
+  // border-collapse: collapse;
+  table-layout: fixed;
+  width: 100%;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  table-layout: auto;
+  border-spacing: 0.2em 0.2em;
+}
+// .configure-menu-table thead,
+// .configure-menu-table tbody {
+//   // display: block;
+// }
+.configure-menu-table tr {
+  // display: block;
+  height: 1em;
+}
+.configure-menu-table {
+  td {
+    padding: 0px 8px !important;
+    margin: 0px !important;
+    border-radius: 2px;
+    color: var(--text-color);
+    white-space: nowrap;
+  }
+}
+input[type="checkbox"] {
+  border-radius: 4px;
+  border: 1px solid var(--btn-border);
+  background-color: var(--input-bg);
+  width: 15px;
+  color: var(--text);
+  height: 35px;
+  text-align: left;
+  padding: 5px;
+}
+.widthauto {
+  width: auto;
+}
+.width40 {
+  width: 40px;
+}
+.width50 {
+  width: 50px;
+}
+.width100 {
+  width: 100px;
+}
+.width150 {
+  width: 150px;
+}
+.width200 {
+  width: 200px;
+}
+.txtmenu,
+.txtsubmenu {
+  width: 100%;
+  text-align: left;
+  height: 25px;
+}
+.txtposition {
+  width: 100%;
+  text-align: right;
+  height: 25px;
+}
+.actions {
+  cursor: pointer;
+}

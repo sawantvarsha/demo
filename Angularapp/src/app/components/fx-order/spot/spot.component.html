@@ -1,0 +1,356 @@
+<div class="page-title">
+    Spot
+</div>
+<div class="spotComponent">
+    <!--*ngIf="LoadingSpotFlag"-->
+
+    <div class="row-80-20">
+       
+        <!-- <div class="blotter-div">
+            <span (click)="scrollWin();" class="spot-blotterView"> View Order Blotter</span>
+        </div> -->
+    </div>
+    <div class="main-container" *ngIf="LoadingSpotFlag">
+        <div class="content-container">
+            <div class="spot-container">
+                <div class="label-div">
+                    <label>Product</label>
+                </div>
+                <div>
+                    <label class="disabledlbl">Spot</label>
+                </div>
+                <div class="label-div">
+                    <label>Tenor</label>
+                </div>
+                <div>
+                    <select [(ngModel)]="Tenor" (change)="Tenor_Changed($event);ValueChanged();this.Spread = null;">
+                        <option value="TOD">TOD</option>
+                        <option value="TOM">TOM</option>
+                        <option value="Spot">Spot</option>
+                    </select>
+                </div>
+                <div class="label-div"><label>Customer Buy</label></div>
+                <div>
+                    <select [(ngModel)]="CustomerBuyCurrency"
+                        (change)="ValueChanged();fnCustomerBuyCurrency($event);this.ClearAll();">
+                        <option *ngFor="let c of CurrencyList" (selected)="c === CustomerBuyCurrency" [value]="c">
+                            {{ c }}
+                        </option>
+                    </select>
+                </div>
+
+                <div class="label-div"><label>Buy Amount</label></div>
+                <div>
+                    <input id="buynotional" type="text" [(ngModel)]="CustomerBuyAmount" onCopy="return false"
+                        onDrag="return false" onDrop="return false" onPaste="return false"
+                        (change)="CustomerBuyAmount = this.commonfunctions.NotionalChangeSFK($event,Asset1_DecimalAmount); this.BuyAmountChanged($event);this.ClearAll();ValueChanged();"
+                        (focus)="this.commonfunctions.UnformatNumber($event)"
+                        (blur)="this.commonfunctions.FormatNumberSFK($event,this.Asset1_DecimalAmount)"
+                        (keypress)="this.commonfunctions.NotionalValidate($event)" />
+                </div>
+
+                <div class="label-div"><label>Customer Sell</label></div>
+                <div>
+                    <select [(ngModel)]="CustomerSellCurrency"
+                        (change)="fnCustomerSellCurrency($event);this.ClearAll();ValueChanged();">
+                        <option *ngFor="let c of CurrencyListS" (selected)="c === CustomerBuyCurrency" [value]="c">
+                            {{ c }}
+                        </option>
+                    </select>
+                </div>
+
+                <div class="label-div"><label>Sell Amount</label></div>
+                <div>
+                    <input id="sellnotional" type="text" [(ngModel)]="CustomerSellAmount" onCopy="return false"
+                        onDrag="return false" onDrop="return false" onPaste="return false"
+                        (change)="CustomerSellAmount = this.commonfunctions.NotionalChangeSFK($event,Asset2_DecimalAmount); this.SellAmountChanged($event); this.ClearAll();ValueChanged();"
+                        (focus)="this.commonfunctions.UnformatNumber($event)"
+                        (blur)="this.commonfunctions.FormatNumberSFK($event,Asset2_DecimalAmount)"
+                        (keypress)="this.commonfunctions.NotionalValidate($event)" />
+                </div>
+
+                <div class="label-div">
+                    <label>Price Provider</label>
+                </div>
+                <div>
+                    <select [(ngModel)]="PriceProvider"
+                        (change)="PriceProviderChanged($event);this.ClearAll();ValueChanged();">
+                        <option value="BNP,Citi,JPM,OCBC,UBS">Best Reply</option>
+                        <option value="BNP">BNP</option>
+                        <option value="Citi">Citi</option>
+                        <option value="JPM">JPM</option>
+                        <option value="OCBC">OCBC</option>
+                        <option value="UBS">UBS</option>
+                    </select>
+                </div>
+
+                <div class="label-div">
+                    <label class="disabledlbl">Trade Date</label>
+                </div>
+                <div>
+                    <!-- <div class="col-lg-4 col-md-6 col-sm-6 col-xs-6"><input type="text" value={{TradeDate}} disabled class="dates" /></div> -->
+                    <input type="text" value="{{TradeDate }}" onCopy=" return false " onDrag="return false "
+                        onDrop="return false " onPaste="return false " disabled class="dates" />
+                </div>
+                <div class="label-div"><label class="disabledlbl">Bank Rate</label></div>
+                <div>
+                    <!-- <input type="text" disabled value="{{BestPrice | number:'1.2-2'}}" -->
+                    <input type="text" disabled value="{{BestPrice}}" onCopy="return false" onDrag="return false"
+                        onDrop="return false" onPaste="return false"
+                        (change)="this.SellAmountChanged($event); this.commonfunctions.NotionalChange($event);"
+                        (focus)="commonfunctions.UnformatNumber($event)" (blur)="commonfunctions.FormatNumber($event)"
+                        (keypress)="this.commonfunctions.NotionalValidate($event)" />
+                </div>
+                <div class="label-div">
+                    <label class="disabledlbl">Value Date</label>
+                </div>
+                <div>
+                    <!-- <div class="col-lg-4 col-md-6 col-sm-6 col-xs-6"><input type="text" value={{ValueDate}} disabled class="dates" /></div> -->
+                    <input type="text" onCopy="return false" onDrag="return false" onDrop="return false"
+                        onPaste="return false" value="{{ValueDate }}" disabled class="dates" *ngIf="ValueDate" />
+                    <img src="http://finiqmbappnsk2683.cloudapp.net/FinIQ_All_In_One/assets/loading_dots.gif"
+                        height="50px" width="50px" style="margin-left: 62px; margin-top: -20px; margin-bottom: 0px;"
+                        *ngIf="!ValueDate">
+                </div>
+
+
+                <div *ngIf="this.Tenor !== 'Spot'" class="label-div"><label class="disabledlbl">Spot Rate</label></div>
+                <div *ngIf="this.Tenor !== 'Spot'">
+                    <!-- <input type="text" disabled value="{{BestPrice | number:'1.2-2'}}" -->
+                    <input *ngIf="PricingLoadingFlag" onCopy="return false" onDrag="return false" onDrop="return false"
+                        onPaste="return false" type="text" disabled value="{{LiveSpotrate}}" />
+                </div>
+                <div class="label-div" *ngIf="this.Tenor !== 'Spot'">
+                    <label class="disabledlbl">Swap Points</label>
+                </div>
+                <div *ngIf="this.Tenor !== 'Spot'">
+                    <!-- <div class="col-lg-4 col-md-6 col-sm-6 col-xs-6"><input type="text" value={{ValueDate}} disabled class="dates" /></div> -->
+                    <input *ngIf="PricingLoadingFlag" type="text" onCopy="return false" onDrag="return false"
+                        onDrop="return false" onPaste="return false" disabled value="{{LiveSwapPoints}}" />
+                </div>
+
+                <div class="class-radioButton label-div">
+                    <input type="radio" value="true" style="margin-left: -0.5em;;" onCopy="return false"
+                        onDrag="return false" onDrop="return false" onPaste="return false" name="mode"
+                        [(ngModel)]="RadioButtonSelected" (click)="SpreadTriggered()">
+                    <!-- <label>&nbsp; Spread (Pips)</label> -->
+                    <label *ngIf="this.RadioButtonSelected === 'true'">Spread (Pips) </label>
+                    <label class="disabledlbl" *ngIf="this.RadioButtonSelected !== 'true'">Spread (Pips) </label>
+                </div>
+                <div>
+                    <input *ngIf="this.RadioButtonSelected === 'true'" type="text" onCopy="return false"
+                        onDrag="return false" onDrop="return false" onPaste="return false"
+                        [(ngModel)]="SpreadUnconverted" (change)="this.SpreadRatechanged($event);"
+                        (keypress)="this.commonfunctions.InputNumbersOnlyWithoutDecforSpreadSFK($event)"
+                        (blur)="this.commonfunctions.validateSpreadRateSFK($event, Ccy1AmountDecimal)" />
+                    <input disabled class="disabledlbl" *ngIf="this.RadioButtonSelected !== 'true'"
+                        value="{{SpreadUnconverted}}" type="text" onCopy="return false" onDrag="return false"
+                        onDrop="return false" onPaste="return false" (change)="this.SpreadRatechanged($event);"
+                        (keypress)="this.commonfunctions.InputNumbersOnlyWithoutDecforSpreadSFK($event);" />
+                </div>
+
+
+                <div class="label-div"><label>Margin Type</label></div>
+                <div class="margin-class">
+                    <select [(ngModel)]="MarginType" (change)="MarginTypeChanged($event);ValueChanged();">
+                        <option value="fx" selected>FX</option>
+                        <option value="marginnew">Margin new</option>
+                    </select>
+                    <input type="checkbox" onCopy="return false" onDrag="return false" onDrop="return false"
+                        onPaste="return false" [(ngModel)]="IsStraightToExecution"><label
+                        style="margin-left: 5px;">STE</label>
+                </div>
+
+                <div class="class-radioButton label-div">
+                    <input type="radio" value="false" onCopy="return false" onDrag="return false" onDrop="return false"
+                        onPaste="return false" style="margin-left: -0.5em;" name="mode"
+                        [(ngModel)]="RadioButtonSelected" (click)="CustomerRateTriggered()">
+
+                    <label *ngIf="this.RadioButtonSelected === 'false'">Customer Rate </label>
+                    <label class="disabledlbl" *ngIf="this.RadioButtonSelected !== 'false'">Customer Rate </label>
+                </div>
+                <div>
+                    <input *ngIf="this.RadioButtonSelected === 'false' " onCopy="return false" onDrag="return false"
+                        onDrop="return false" onPaste="return false" type="text" [(ngModel)]="CustomerRate"
+                        (change)="this.CustomerRateChanged($event)"
+                        (keypress)="this.commonfunctions.InputNumbersOnlyWithoutDecforSpreadSFK($event)" />
+                    <input disabled class="disabledlbl" onCopy="return false" onDrag="return false"
+                        onDrop="return false" onPaste="return false" *ngIf="this.RadioButtonSelected !== 'false'"
+                        type="text" value="{{CustomerRate}}"
+                        (keypress)="this.commonfunctions.InputNumbersOnlyWithoutDecforSpreadSFK($event)" />
+                </div>
+
+                <div class="label-div">
+                    <label class="disabledlbl">Revenue
+                        ({{CustomerSellCurrency}})</label>
+                </div>
+
+                <div>
+                    <input type="text" disabled value="{{CalRevenue | number:'1.2-2'}}" onCopy="return false"
+                        onDrag="return false" onDrop="return false" onPaste="return false"
+                        (change)="this.SellAmountChanged($event); this.commonfunctions.NotionalChange($event);"
+                        (focus)="commonfunctions.UnformatNumber($event)" (blur)="commonfunctions.FormatNumber($event)"
+                        (keypress)="this.commonfunctions.NotionalValidate($event)" />
+                </div>
+            </div>
+
+
+            <div class="row-4" style="padding-top:1em !important;">
+                <div id="orderDivSpot" class="col-12"></div>
+            </div>
+
+            <div class="row-4-equal">
+                <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12" style="margin-top: 35px;" *ngIf="BestPrice">
+                    <div style="border: 1px solid rgb(202, 190, 178); border-radius: 5px;padding: 10px;">
+                        <div class="row-5-5" style="padding: 10px 0px !important; margin: 0px;">
+                            <div class="col-6">
+                                <h5>Best Reply &nbsp;: : </h5>
+                            </div>
+                            <div class="col-6" style="font-size: 15px;" *ngIf="PricingLoadingFlag">
+                                <div class="row" style="padding-left: 5px !important; text-align: right;display: flex;">
+                                    <div id="firstDot" style="text-align:center">
+                                        <span class="dot"></span>
+                                    </div>
+                                    <div id="secondDot" style="text-align:center">
+                                        <span class="dot"></span>
+                                    </div>
+                                    <div id="thirdDot" style="text-align:center">
+                                        <span class="dot"></span>
+                                    </div>
+                                    <div id="fourthDot" style="text-align:center">
+                                        <span class="dot"></span>
+                                    </div>
+                                    <div id="fifthDot" style="text-align:center">
+                                        <span class="dot"></span>
+                                    </div>
+                                    <div id="sixthDot" style="text-align:center">
+                                        <span class="dot"></span>
+                                    </div>
+                                    <div id="seventhDot" style="text-align:center">
+                                        <span class="dot"></span>
+                                    </div>
+                                    <span class="counter" style="float: right !important;right: 0">{{counter}}
+                                        secs</span>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row-5-5" style="padding: 0px !important;margin: 0px;">
+                            <div class="col-6">
+                                <span class="bestreply" style="color:dimgray;text-align:left;">{{PriceProviderA}}</span>
+                            </div>
+                            <div class="col-6" style="text-align: right">
+                                <span class="bestreply"> <span class="bestPriceStyle"> {{BestPrice}}</span></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12" style="margin-top: 35px;"
+                    *ngIf="loadflag && !BestPrice">
+                    <img src="http://finiqmbappnsk2683.cloudapp.net/FinIQ_All_In_One/assets/loading_dots.gif"
+                        height="100px" width="100px" style="  margin-top: -20px" *ngIf="loadflag">
+                </div>
+                <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12" style="margin-top: 35px;"
+                    *ngIf="!BestPrice && !loadflag"></div>
+                <div class="col-1" style="margin-top: 35px;"></div>
+                <div class="col-lg-4 col-md-6 col-sm-6 col-xs-6 button-grid" style="text-align: center;">
+                    <button class="button btn button-class" (click)="QuoteForBestPrice();"
+                        [disabled]="BestPrice && loadflag || GoForPrice() || Errormsg !==''">Price</button>
+                    <!-- <button class="button" (click)="ClearAll();DefaultValues();">Clear</button> -->
+                    <button class="button btn button-class"
+                        (click)="StopTimer();this.PriceProviderArray = []">Clear</button>
+                    <button class="button btn"
+                        (click)="ResetTimer();BookDeal(this.PriceProviderId,this.PriceProviderA);"
+                        [disabled]="Errormsg !==''" *ngIf="BestPrice" [disabled]="TradeReferenceID">Trade</button>
+                    <!-- <label style="visibility: hidden">{{Errormsg}}</label> -->
+                </div>
+
+                <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12" style="margin-top: 35px;" *ngIf="Errormsg!==''">
+                    <label class="successMsg">{{Errormsg}}</label>
+                </div>
+
+                <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12 note " style="margin-top: 35px; padding-left: 30px;"
+                    *ngIf="TradeReferenceID">
+
+                    <h4>Order Details</h4>
+
+                    <ul
+                        style="list-style-image: url('http://finiqmbappnsk2683.cloudapp.net/RAIN_FX_v1.1/assets/Icon feather-check-circle.png'); line-height: 20px; margin-top: 15px; padding-left: 40px;">
+                        <li>
+                            <h5 class="stickyNoteText">Order placed successfully with counterparty {{counterparty}}.
+                            </h5>
+                        </li>
+                        <li>
+                            <h5 class="stickyNoteText">Order ID: {{TradeReferenceID}} </h5>
+                        </li>
+                    </ul>
+                    <h6 class="stickyNoteText" style="padding-left: 17px;">Order saved at <br>{{BookingDateTime}}</h6>
+                </div>
+
+                <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12" style="margin-top: 35px;" *ngIf="TradeReferenceIDFlag && Errormsg === '' ">
+                    <img src="http://finiqmbappnsk2683.cloudapp.net/FinIQ_All_In_One/assets/loading_dots.gif" style="margin-top: -20px" height="100px" width="100px">
+                </div>
+            </div>
+
+            <div class="row-lp-list" *ngIf="this.PriceProviderArray.length>0 ">
+                <div class="lpname" *ngFor="let sortedPrice of this.PriceProviderArray">
+                    <h6> {{sortedPrice.PriceProviderCode}}</h6>
+                    <h5 style="color: var(--btn-bg)">
+                        <span id="PriceProvider_{{this.SessionID}}_{{sortedPrice.PriceProviderId}}">-</span>
+                    </h5>
+                    <br>
+                    <button class="bookBtn" (click)="ResetTimer();
+                    BookDeal(sortedPrice.PriceProviderId,sortedPrice.PriceProviderCode);">Trade</button>
+                </div>
+            </div>
+
+            <!-- <div #Blotter class="row" *ngIf="OrderBlotterVisibility">
+                <div class="col-12">
+                    <table style="width: 100%;font-size: 13px;">
+                        <tr>
+                            <th>Deal No</th>
+                            <th>Customer/Counterparty</th>
+                            <th>Buy</th>
+                            <th>Buy amount</th>
+                            <th>Sell</th>
+                            <th>Sell amount</th>
+                            <th>Cover rate</th>
+                            <th>Deal rate</th>
+                            <th>Trade date</th>
+                            <th>Value date</th>
+                            <th>Ccy pair</th>
+                            <th>Leg type</th>
+                        </tr>
+                        <tr *ngFor="let arr of OrderBlotterArray">
+                            <td style="text-align: center;">{{arr.Deal_No}}</td>
+                            <td style="text-align: left;">{{arr.Cust_Name }}</td>
+                            <td style="text-align: center;">{{arr.Deposit_Ccy}}</td>
+                            <td style="text-align: right;">
+                                {{this.FormatNumberwithoutevent(arr.Ccy1_Amt | number:'1.2-2')}}
+                            </td>
+                            <td style="text-align: center;">{{arr.Alternate_Ccy}}</td>
+                            <td style="text-align: right;">
+                                {{this.FormatNumberwithoutevent(arr.Ccy2_Amt| number:'1.2-2')}}
+                            </td>
+                            <td style="text-align: right;">{{arr.Mkt_Fwd| number:'1.4-4' }}</td>
+                            <td style="text-align: right;">{{arr.Deal_Rate| number:'1.4-4' }}</td>
+                            <td style="text-align: center;">{{this.FormatDateAsFNQSTD(arr.Trade_Date)}}</td>
+                            <td style="text-align: center;">{{this.FormatDateAsFNQSTD(arr.Maturity_Date)}}</td>
+                            <td style="text-align: center;">{{arr.Deal_Pair}}</td>
+                            <td style="text-align: left;">{{arr.Deal_Facing_Type}}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12" *ngIf="!OrderBlotterVisibility && LoadingBlotter">
+                <img src="http://finiqmbappnsk2683.cloudapp.net/FinIQ_All_In_One/assets/loading_dots.gif" height="100px"
+                    width="100px" style="margin-top: -20px">
+            </div> -->
+        </div>
+    </div>
+
+    <div class="main-container" *ngIf="!LoadingSpotFlag">
+        <img src="http://finiqmbappnsk2683.cloudapp.net/FinIQ_All_In_One/assets/loading_dots.gif" height="100px"
+            width="100px" style="  margin-top: -20px">
+    </div>

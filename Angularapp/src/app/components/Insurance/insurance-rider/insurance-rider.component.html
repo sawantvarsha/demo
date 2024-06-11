@@ -1,0 +1,106 @@
+<div class="new-rider-grid">
+    <div class="flex-grid">
+        <div class="label-grid">
+            <app-svg-icons class="" [icon]="'accident-icon'" [width]="'30'" [height]="'30'">
+            </app-svg-icons>
+            <label class="yellow fs20">{{benefitCode.RiderPlanName}}</label>
+        </div>
+        <div class="content-container">
+            <label class="offcolor large">Benefits</label>
+            <label>If you have an accident that results in your death during the term of the rider, the Rider Sum
+                Assured will be paid to your nominee</label>
+        </div>
+
+        <div class="content-container">
+            <div class="label-grid">
+                <app-svg-icons [icon]="'insurance-details'" [width]="'25'" [height]="'25'">
+                </app-svg-icons>
+                <label class="box-header">Rider at a Glance</label>
+            </div>
+            <div class="flex-grid">
+                <div class="new-flex">
+                    <div></div>
+                    <label class="offcolor large">Min/Max Age at Entry</label>
+                    <div></div>
+                    <label>18/55 Years</label>
+                </div>
+
+                <div class="new-flex">
+                    <div></div>
+                    <label class="offcolor large">Max Cover Ceasing Age</label>
+                    <div></div>
+                    <label>65 Years</label>
+                </div>
+
+                <div class="new-flex">
+                    <div></div>
+                    <label class="offcolor large">Term of the Rider</label>
+                    <div></div>
+                    <label>Same as the base policy, subject to maximum cover ceasing age mentioned above</label>
+                </div>
+
+                <div class="new-flex">
+                    <div></div>
+                    <label class="offcolor large">Rider Sum Assured</label>
+                    <div></div>
+                    <label>Equal to the Sum Assured of the base policy, subject to maximum of INR 50 Lacs</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-container">
+            <label class="offcolor large">Charges</label>
+            <label>The charge is independent of age and is INR 45 p.a. per INR 1 lac of rider sum assured. This charge
+                is guranteed for term of the contract.</label>
+        </div>
+
+        <div class="content-container">
+            <label class="offcolor large">Terms</label>
+            <div class="label-grid">
+                <app-svg-icons [icon]="'pdf'" [width]="'30'" [height]="'30'"></app-svg-icons>
+                <label>Click here to download terms and conditions PDF</label>
+
+
+            </div>
+        </div>
+    </div>
+
+    <div class="flex-grid">
+        <div class="label-grid">
+            <!-- <app-svg-icons class="" [icon]="'accident-icon'" [width]="'30'" [height]="'30'">
+            </app-svg-icons> -->
+            <label class="yellow fs20">Rider Details</label>
+        </div>
+
+        <div class="rider-popup">
+            <label class="headers">Policy No</label>
+            <input type="text " class="" value="{{policyNo}}" />
+
+            <label class="headers">Unique Rider Identifier</label>
+            <input type="text " class="" value="{{benefitCode.UniqueRiderIdentifier}}" />
+
+            <label class="headers">Benefit Code</label>
+            <input type="text " class="" value="{{benefitCode.BenefitCode}}" />
+
+            <label class="headers">Rider Premium Term</label>
+            <input type="text " class="right" value="{{benefitCode.RiderPremiumTerm}}" />
+
+            <label class="headers">Rider Sum Assured</label>
+            <input type="text " class="right" value="{{benefitCode.SumAssured | number: '1.2-2'}}" />
+
+            <label class="headers">Total Extra Premium</label>
+            <input type="text " class="right" value="{{benefitCode.TotalExtraPremium | number: '1.2-2'}}" />
+
+            <label class="headers">Commencement Date</label>
+            <input type="text " class="align-center" value="{{benefitCode.CommencementDate}}" />
+
+            <label class="headers">Payment Method</label>
+            <input type="text " class="" value="{{benefitCode.PaymentMethod}}" />
+
+            <label></label>
+            <button class="button">Add Rider</button>
+        </div>
+
+    </div>
+
+</div>

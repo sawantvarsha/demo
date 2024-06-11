@@ -1,0 +1,119 @@
+
+<div class="insideCard-gridview">
+    <div class="cls-td">
+        <label>Product</label>
+    </div>
+    <div class="">
+        <label class="productName">
+            FX Option
+        </label>
+    </div>
+    <div>
+        <div class="">
+            <select>
+                <option>Vanilla</option>
+                <option>Knock-In</option>
+                <option>Knock-Out</option>
+                <option>Reverse Knock-In</option>
+                <option>Reverse Knock-Out</option>
+                <option>European Reverse Knock-In</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="cls-td">
+        <label>Pair</label>
+    </div>
+    <div class="">
+        <select [(ngModel)]="selectedCcy" (change)="changeCcypairFXOption($event)">
+            <option *ngFor = "let curr of currList">
+                <!-- EUR - USD -->{{curr}}
+            </option>
+        </select>
+    </div>
+    <div class="cls-td">
+        <label>{{bidFXO | number: '1.1-4'}}/{{askFXO | number: '1.1-4'}}</label>
+    </div>
+
+    <div class="cls-td">
+        <label>Notional</label>
+    </div>
+    <div>
+        <input type = "text" value="1,000,000.00" class="InputClass"/>
+    </div>
+    <div></div>
+
+    <div class="cls-td">
+        <label>Tenor</label>
+    </div>
+    <div>
+        <select [(ngModel)]="tenorFXO" (change)="changeTenorFXO($event)">
+            <!-- <option>3M</option>
+            <option>6M</option>
+            <option>1Y</option>
+            <option>2Y</option> -->
+            <option *ngFor = "let t of tenor">
+                {{t}}
+            </option>
+        </select>
+    </div>
+    <div class="cls-td">
+        <label>{{MaturityDate}}</label>
+    </div>
+
+    <div class="cls-td">
+        <label>Client</label>
+    </div> 
+    <label class="switch">
+      <input type="checkbox" id="togBtn">
+      <div class="slider round">
+       <span class="on buy">Buy</span>
+       <span class="off sell">Sell</span>
+      </div>
+    </label>
+      
+    <label class="switch">
+        <input type="checkbox" id="togBtn">
+        <div class="slider round">
+         <span class="on buy">Call</span>
+         <span class="off sell">Put</span>
+        </div>
+    </label>
+
+    <div class="cls-td">
+        <label>Strike/Barrier</label>
+    </div>
+    <div>
+        <input type = "text" value={{this.bidFXO}} class="InputClass"/>
+    </div>
+    <div>
+        <input type = "text" value="" class="InputClass"/>
+    </div>
+   
+    <!-- <div class="row-merge"></div> -->
+   
+</div>
+
+<div class="pricingTile">
+    <div class="pricing-div">
+        <div>
+
+        </div>
+        <div></div>
+        <div>
+            <button class="btn-price">Best Price</button>
+        </div>
+        <div>
+            <button class="btn-price">Book Request</button>
+        </div>
+        <!-- <div>
+            <button class="btn-price">Order</button>
+        </div> -->
+    </div>   
+
+    <div class="pricing-card">
+        <div>
+
+        </div>
+    </div>
+</div> 

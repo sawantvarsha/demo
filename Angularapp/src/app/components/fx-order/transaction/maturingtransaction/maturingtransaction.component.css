@@ -1,0 +1,58 @@
+@import url('../spotforwardblotter/spotforwardblotter.component.css');
+.contain {
+    width: 86%;
+}
+
+.mainDiv {
+    /* margin-left: 5%;
+    margin-right: 5%; */
+    width: 100%;
+    padding: 15px;
+}
+
+#cdk-overlay-0 {
+    top: 0px;
+}
+
+.tofilterdiv {
+    margin-left: 0.5em;
+}
+
+.tolabel {
+    padding-left: 1em !important;
+}
+
+.rfbtn {
+    margin-left: 0em;
+}
+
+@media screen and (max-width: 991px) {
+    .datefilter {
+        width: 12em;
+    }
+    .tofilterdiv {
+        margin-left: -1em !important;
+    }
+    .tolabel {
+        padding-left: 0em !important;
+    }
+    .resclass {
+        padding-bottom: 1em;
+    }
+    .rfbtn {
+        margin-left: 1.5em !important;
+    }
+    .mainDiv {
+        width: 100%;
+    }
+}
+
+@media screen and (min-width: 1713px) {
+    .rightspace {
+        padding-right: 2em !important;
+    }
+}
+
+table {
+    width: 100% !important;
+}

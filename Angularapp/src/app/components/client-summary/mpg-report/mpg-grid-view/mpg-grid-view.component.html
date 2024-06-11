@@ -1,0 +1,20 @@
+<div class="main-component">
+    <div class="page-title">
+        MPG Report
+    </div>
+
+    <div [ngClass]="{
+        'main-grid0': expandedParent.isMPG && expandedParent.isFilter && expandedParent.isMenu,
+        'main-grid1':expandedParent.isMPG && !expandedParent.isFilter && !expandedParent.isMenu,
+        'main-grid2': expandedParent.isMPG && !expandedParent.isFilter && expandedParent.isMenu,
+        'main-grid3': expandedParent.isMPG && expandedParent.isFilter && !expandedParent.isMenu
+       }" >
+       <!-- <div> -->
+        <div></div>
+        <app-sidenav-drawer [expanded]=expandedParent (expandedChange)="changeLayout($event)"></app-sidenav-drawer>
+        <app-mpg-grid [leftMenuExpanded]="expandedParent.isMenu" [expanded]=expandedParent (expandedChange)="changeLayout($event)" ></app-mpg-grid>
+        <app-filters [expanded]=expandedParent (expandedChange)="changeLayout($event)"></app-filters>
+        <div></div>
+    </div>
+</div>
+

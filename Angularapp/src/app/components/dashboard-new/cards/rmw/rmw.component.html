@@ -1,0 +1,798 @@
+<div class="row" style="padding: 0em !important;margin-right: 0px;margin-left: 0px;">
+    <div class="headerDiv" style="margin-top:2%">
+        <div></div>
+        <div style="margin: 10px auto;">
+            <div style="margin:10px auto;text-align: center;" (clickOutside)="this.classApplied = false;">
+                <div class="searchInnerDiv">
+                    <img style="width:15px;height:15px;margin-left:5px; margin-top:6px;" src="{{asseturl}}search.png">
+
+                    <!-- <svg focusable="false" height="24px" viewBox="0 0 24 24" width="24px" style=" margin-left: 5px;"><path d="M20.49,19l-5.73-5.73C15.53,12.2,16,10.91,16,9.5C16,5.91,13.09,3,9.5,3S3,5.91,3,9.5C3,13.09,5.91,16,9.5,16 c1.41,0,2.7-0.47,3.77-1.24L19,20.49L20.49,19z M5,9.5C5,7.01,7.01,5,9.5,5S14,7.01,14,9.5S11.99,14,9.5,14S5,11.99,5,9.5z"></path><path d="M0,0h24v24H0V0z" fill="none"></path></svg> -->
+                    <input [(ngModel)]="search" type="text" placeholder="Search" name="search" class="txtSearch" (click)="this.classApplied = false;" (keydown.enter)="txtSearch()">
+                    <svg style="margin-top:3px" (click)="showsearchPopup()" focusable="false" height="24px" viewBox="0 0 24 24" width="24px">
+                        <path d="M7 10l5 5 5-5z" fill="var(--text)"></path>
+                        <path d="M0 0h24v24H0z" fill="none"></path>
+                    </svg>
+
+                </div>
+
+                <div id="searchPopup" *ngIf="classApplied" [ngClass]="'rmwSearchPopup'">
+                    <div class="searchPopupDiv1">
+                        <div>
+                            <div class="searchDivLeft">Template</div>
+                            <select [(ngModel)]="template" (change)="templateChange();">
+                                <option value="">All</option>
+                                <option value="AutocallablePhoenix">Autocallable Phoenix</option>
+                                <option value="ReverseConvertible">Reverse Convertible</option>
+                                <option value="Participation">Participation</option>
+
+                                <option value="CreditTranche">CreditTranche</option>
+                                <option value="DailyRangeAccrual">DRA Autocall</option>
+                                <!-- BEN added by Pranav D 4-Apr-2022 -->
+                                <!-- <option value="BonusEnhancedNote">Bonus Enhanced Note</option> -->
+                            </select>
+                        </div>
+                        <div>
+                            <div class="searchDivLeft">Product Name</div>
+                            <input type="text" name="productfilter" id="productfilter" [(ngModel)]="productfilter">
+
+                        </div>
+                        <div>
+                            <div class="searchDivLeft">Currency</div>
+                            <select [(ngModel)]="ddlNoteCcy">
+                                <option value="All">All</option>
+                                <!-- <option *ngFor="let c of CCY" (selected)="c === UnderlyingCurrency" [value]="c.Ccy">
+                                    {{ c.Ccy }}</option> -->
+                            </select>
+                        </div>
+
+                        <div>
+                            <div class="searchDivLeft">Public List</div>
+                            <!-- <input type="text" name="publicList" id="publicList" [(ngModel)]="publicList"> -->
+                            <select [(ngModel)]="publicList" (change)="listChange()" [disabled]="publicFlag || popupFlag">
+                                <option value="">All</option>
+                                <option *ngFor="let f of publicListArr" [value]="f.PF_Folder_Name">
+                                    {{ f.PF_Folder_Name }}</option>
+                            </select>
+                        </div>
+                        <div>
+                            <div class="searchDivLeft">Private List</div>
+                            <!-- <input type="text" name="privateList" id="privateList" [(ngModel)]="privateList"> -->
+                            <select [(ngModel)]="privateList" (change)="listChange()" [disabled]="privateFlag || popupFlag">
+                                <option value="">All</option>
+                                <option *ngFor="let f of folderlist" [value]="f.PF_Folder_Name">
+                                    {{ f.PF_Folder_Name }}</option>
+                            </select>
+                        </div>
+                        <div>
+                            <div class="searchDivLeft">ISIN</div>
+                            <input type="text" name="filterISIN" id="filterISIN" [(ngModel)]="filterISIN">
+                        </div>
+
+                        <!-- <div>
+                        </div> -->
+                       
+                    </div>
+                    <div class ="search-popup-btn">
+                        <div style="text-align:right;">
+                            <input type="button" class="btnPrice" (click)="applyFilter();hidefilter();" value="Apply">
+                        </div>
+                        <div style="text-align:left;">
+                            <input type="button" class="btnPrice" (click)="Clear()" value="Clear">
+                        </div>
+                    </div>
+
+
+                </div>
+
+            </div>
+        </div>
+        <div style="margin: 10px auto;">
+            <mat-paginator (page)="onPageChange($event)" [pageIndex]="pageIndex" [length]="totalcount" [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 25, 100]">
+            </mat-paginator>
+        </div>
+    </div>
+
+</div>
+<div style="overflow-x: hidden; overflow-y: hidden;">
+    <div *ngFor="let d of currentItemsToShow; let i=index" [ngClass]="this.popupFlag ? 'productGridPopup': 'productGrid'">
+        <div class="templateDiv" *ngIf="d.Template_Code === 'EQC_Europe'">Autocallable</div>
+        <div class="templateDiv" *ngIf="d.Template_Code === 'YieldEnhancement'" style="background-color:#6897b2d6;">
+            Yield Enhancement</div>
+        <div class="templateDiv" *ngIf="d.Template_Code === 'CustomStrategy'" style="background-color:#6897b2d6;">
+            Custom Strategy</div>
+        <div class="templateDiv" *ngIf="d.Template_Code === 'Participation'" style="width:12%;background-color:#566c7abf;">Participation</div>
+        <div class="templateDiv" *ngIf="d.Template_Code === 'ACC'" style="width:12%;background-color:#6fb3b8;">
+            Accumulator</div>
+        <div class="templateDiv" style="width:12%;background-color: #34a6af;" *ngIf="d.Template_Code === 'DAC'">
+            Decumulator</div>
+        <!-- BEN added by Pranav D BBVACLI-162 4-Apr-2022 -->
+        <!-- <div class="templateDiv" style="width:12%;background-color: #34a6af;" *ngIf="d.Template_Code === 'BonusEnhancedNote'">
+            Bonus Enhanced Note</div> -->
+        <!-- Template_Code added by Pranav D BBVACLI-162 4-Apr-2022 -->
+        <!-- || d.Template_Code === 'BonusEnhancedNote' -->
+        <div id="bond" class="box-container" style="margin-bottom: 15px;" *ngIf="d.Template_Code === 'EQC_Europe' || d.Template_Code === 'YieldEnhancement' || d.Template_Code === 'Participation' || d.Template_Code === 'ACC' || d.Template_Code === 'DAC' ">
+            <div class="outergrid" *ngIf="d.Template_Code === 'EQC_Europe'">
+                <div class="inner-table-title">
+                    <div class="rmwdiv" [routerLink]="['/Autocall',{RFQ_ID:d.EP_ER_QuoteRequestId}]" routerLinkActive="active-link"> Equity Autocall {{d.TenorAUP}} {{d.CurrencyAUP}} : {{d.FirstUnderlyingCode1AUP}}{{d.SecondUnderlyingCode1AUP!=='' ? ',' : ''}} {{d.SecondUnderlyingCode1AUP}}{{d.ThirdUnderlyingCode1AUP!=='' ? ',' : ''}} {{d.ThirdUnderlyingCode1AUP}}{{d.FourthUnderlyingCode1AUP!==''
+                        ? ',' : ''}} {{d.FourthUnderlyingCode1AUP}}{{d.FifthUnderlyingCode1AUP!=='' ? ',' : ''}} {{d.FifthUnderlyingCode1AUP}}{{d.sixthUnderlyingCode1AUP!=='' ? ',' : ''}} {{d.sixthUnderlyingCode1AUP}}
+                    </div>
+                    <label class="rmwtableheader" style="text-align: left; border-bottom: none;" *ngIf="d.Template_Code === 'EQC_Europe'">
+                        <span class="rmwtableheader" style="border-bottom: none;">Format: </span><span
+                            class="rmwtabledata">{{d.FormatAUP}}&nbsp;</span>
+                        <span class="rmwtableheader" style="border-bottom: none;">Price: </span><span
+                            class="rmwtabledata">{{d.InputInterBankPriceAUP}}&nbsp;</span>
+                    </label>
+                    <label class="rmwtableheader" *ngIf="d.Template_Code === 'EQC_Europe'" style="text-align: left;border-bottom: none;">
+                        <span class="rmwtableheader" style="border-bottom: none;">Total Issue Size: </span><span
+                            class="rmwtabledata">{{d.NotionalAmountAUP | number}}&nbsp;</span>
+                        <br /><span class="rmwtableheader" style="border-bottom: none;">Issue Price: </span><span
+                            class="rmwtabledata">{{d.InputIssuePricePercentAUP}}&nbsp;</span>
+                    </label>
+
+
+                </div>
+                <div class="ProductDetailsGridPhx">
+                    <div class="upperHeader">
+                        <label class="rmwtableheader">Barrier</label>
+                        <div class="lowerHeaderwith3col">
+                            <div class="inner-table">
+                                <label class="rmwtableheader">Strike</label>
+                                <label class="rmwtabledata">{{d.StrikeAUP}}</label>
+                            </div>
+                            <div class="inner-table">
+                                <label class="rmwtableheader">Leverage</label>
+                                <label class="rmwtabledata">{{d.ComputedLeverageAUP}}</label>
+                            </div>
+                            <div class="inner-table">
+                                <label class="rmwtableheader">Level</label>
+                                <label class="rmwtabledata">{{d.BarrierLevelAUP}}</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="upperHeader">
+                        <label class="rmwtableheader">Autocall</label>
+                        <div class="lowerHeaderwith5col">
+                            <div class="inner-table">
+                                <label class="rmwtableheader">Freq.</label>
+                                <label class="rmwtabledata">{{d.StaticKOFrequencyAUP}}</label>
+                            </div>
+                            <div class="inner-table">
+                                <label class="rmwtableheader">Trigger</label>
+                                <label class="rmwtabledata">{{d.AutocallTriggerAUP}}</label>
+                            </div>
+                            <div class="inner-table">
+                                <label class="rmwtableheader">Stepdown</label>
+                                <label class="rmwtabledata">{{d.InputKOStepdownAUP}}</label>
+                            </div>
+                            <div class="inner-table">
+                                <label class="rmwtableheader">Non-Call</label>
+                                <label class="rmwtabledata">{{d.StaticNonCallPeriodAUP}}</label>
+                            </div>
+                            <div class="inner-table">
+                                <label class="rmwtableheader">ER Coupon</label>
+                                <label class="rmwtabledata">{{d.AutocallCouponAUP}}</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="upperHeader">
+                        <label class="rmwtableheader">Coupon</label>
+                        <div class="lowerHeaderwith5col">
+                            <div class="inner-table">
+                                <label class="rmwtableheader">Type</label>
+                                <label class="rmwtabledata">{{d.StaticERCouponTypeAUP}}</label>
+                            </div>
+                            <div class="inner-table">
+                                <label class="rmwtableheader">Memory<br />Pds</label>
+                                <label class="rmwtabledata">{{d.MemoryPeriodAUP}}</label>
+                            </div>
+                            <div class="inner-table">
+                                <label class="rmwtableheader">Trigger</label>
+                                <label class="rmwtabledata">{{d.CouponTriggerAUP}}</label>
+                            </div>
+                            <div class="inner-table">
+                                <label class="rmwtableheader">Coupon</label>
+                                <label class="rmwtabledata">{{d.CouponAUP}}</label>
+                            </div>
+                            <div class="inner-table">
+                                <label class="rmwtableheader">Alt<br />Coupon</label>
+                                <label class="rmwtabledata">{{d.ComputedAlternateCouponPercentAUP}}</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="upperHeader">
+                        <label class="rmwtableheader">Dates</label>
+                        <div class="lowerHeaderwith2col">
+                            <div class="inner-table">
+                                <label class="rmwtableheader">Strike</label>
+                                <label class="rmwtabledata">{{cfs.formatSlashDate(d.ComputedStrikeDateTextAUP)}}</label>
+                            </div>
+                            <div class="inner-table">
+                                <label class="rmwtableheader">Payment</label>
+                                <label class="rmwtabledata">{{cfs.formatSlashDate(d.ComputedSettlementDateTextAUP)}}</label>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="upperHeader">
+                        <label class="rmwtableheader">Funding</label>
+                        <div class="lowerHeaderwith3col">
+                            <div class="inner-table">
+                                <label class="rmwtableheader">Fund Type</label>
+                                <label class="rmwtabledata">{{d.StaticFundingTypeAUP}}</label>
+                            </div>
+                            <div class="inner-table">
+                                <label class="rmwtableheader">Fund Freq.</label>
+                                <label class="rmwtabledata">{{d.StaticFundingFrequencyAUP}}</label>
+                            </div>
+                            <div class="inner-table">
+                                <label class="rmwtableheader">Rate / Spread</label>
+                                <label class="rmwtabledata">{{d.IndexRate_SpreadAUP}}</label>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+
+
+                </div>
+
+            </div>
+            <div class="outergrid" *ngIf="d.Template_Code === 'ReverseConvertible'">
+                <div class="inner-table-title">
+                    <div class="rmwdiv" [routerLink]="['/ReverseConvertible',{RFQ_ID:d.EP_ER_QuoteRequestId}]" routerLinkActive="active-link"> Equity Reverse Convertible {{d.ComputedPayoffSoftTenorRC}} {{d.InputSettlementCurrencyRC}} : {{d.FirstUnderlyingCode1RC}}{{d.SecondUnderlyingCode1RC!=='' ? ',' : ''}} {{d.SecondUnderlyingCode1RC}}{{d.ThirdUnderlyingCode1RC!=='' ? ','
+                        : ''}} {{d.ThirdUnderlyingCode1RC}}{{d.FourthUnderlyingCode1RC!=='' ? ',' : ''}} {{d.FourthUnderlyingCode1RC}}{{d.FifthUnderlyingCode1RC!=='' ? ',' : ''}} {{d.FifthUnderlyingCode1RC}}{{d.sixthUnderlyingCode1RC!=='' ? ',' : ''}}
+                        {{d.sixthUnderlyingCode1RC}}
+                    </div>
+                    <label class="rmwtableheader" style="text-align: left; border-bottom: none;" *ngIf="d.Template_Code === 'ReverseConvertible'">
+                        <span class="rmwtableheader" style="border-bottom: none;">Format: </span><span
+                            class="rmwtabledata">{{d.StaticFormatRC}}&nbsp;</span>
+                        <span class="rmwtableheader" style="border-bottom: none;">Price: </span><span
+                            class="rmwtabledata">{{d.PriceRC}}&nbsp;</span>
+                    </label>
+                    <label class="rmwtableheader" *ngIf="d.Template_Code === 'ReverseConvertible'" style="text-align: left;border-bottom: none;">
+                        <span class="rmwtableheader" style="border-bottom: none;">Total Issue Size: </span><span
+                            class="rmwtabledata">{{d.NotionalAmountRC | number}}&nbsp;</span>
+                        <br /><span class="rmwtableheader" style="border-bottom: none;">Issue Price: </span><span
+                            class="rmwtabledata">{{d.IssuePriceRC}}&nbsp;</span>
+                    </label>
+
+
+                </div>
+                <div class="ProductDetailsGridRC">
+                    <div class="upperHeader">
+                        <label class="rmwtableheader">Barrier</label>
+                        <div class="lowerHeaderwith3col">
+                            <div class="inner-table">
+                                <label class="rmwtableheader">Strike</label>
+                                <label class="rmwtabledata">{{d.StrikeRC}}</label>
+                            </div>
+                            <div class="inner-table">
+                                <label class="rmwtableheader">Leverage</label>
+                                <label class="rmwtabledata">{{d.LeverageRC}}</label>
+                            </div>
+                            <div class="inner-table">
+                                <label class="rmwtableheader">Level</label>
+                                <label class="rmwtabledata">{{d.BarrierLevelRC}}</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="upperHeader">
+                        <label class="rmwtableheader">Coupon</label>
+                        <div class="lowerHeaderwith4col">
+                            <div class="inner-table">
+                                <label class="rmwtableheader">Type</label>
+                                <label class="rmwtabledata">{{d.CouponTypeRC}}</label>
+                            </div>
+                            <div class="inner-table">
+                                <label class="rmwtableheader">Memory<br />Pds</label>
+                                <label class="rmwtabledata">{{d.MemoryPeriodRC}}</label>
+                            </div>
+                            <div class="inner-table">
+                                <label class="rmwtableheader">Trigger</label>
+                                <label class="rmwtabledata">{{d.CouponTriggerRC}}</label>
+                            </div>
+                            <div class="inner-table">
+                                <label class="rmwtableheader">Coupon</label>
+                                <label class="rmwtabledata">{{d.CouponRC}}</label>
+                            </div>
+                            <!-- <div class="inner-table">
+                                <label class="rmwtableheader">Alt<br />Coupon</label>
+                                <label class="rmwtabledata">{{d.AltCouponRC}}</label>
+                            </div> -->
+                        </div>
+                    </div>
+
+                    <div class="upperHeader">
+                        <label class="rmwtableheader">Dates</label>
+                        <div class="lowerHeaderwith2col">
+                            <div class="inner-table">
+                                <label class="rmwtableheader">Strike</label>
+                                <label class="rmwtabledata">{{cfs.formatSlashDate(d.StrikeDateRC)}}</label>
+                            </div>
+                            <div class="inner-table">
+                                <label class="rmwtableheader">Payment</label>
+                                <label class="rmwtabledata">{{cfs.formatSlashDate(d.PaymentDateRC)}}</label>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="upperHeader">
+                        <label class="rmwtableheader">Funding</label>
+                        <div class="lowerHeaderwith3col">
+                            <div class="inner-table">
+                                <label class="rmwtableheader">Fund Type</label>
+                                <label class="rmwtabledata">{{d.FundingTypeRC}}</label>
+                            </div>
+                            <div class="inner-table">
+                                <label class="rmwtableheader">Fund Freq.</label>
+                                <label class="rmwtabledata">{{d.FundingFreqRC}}</label>
+                            </div>
+                            <div class="inner-table">
+                                <label class="rmwtableheader">Rate / Spread</label>
+                                <label class="rmwtabledata">{{d.IndexSpreadRC}}</label>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+
+
+                </div>
+
+            </div>
+            <div class="outergrid" *ngIf="d.Template_Code === 'Participation'">
+                <div class="inner-table-title">
+                    <div class="rmwdiv" [routerLink]="['/Participation',{RFQ_ID:d.EP_ER_QuoteRequestId}]" routerLinkActive="active-link"> Equity Participation {{d.ComputedPayoffSoftTenor}} {{d.InputSettlementCurrency}} : {{d.InputUnderlyingCSV}}</div>
+                    <label class="rmwtableheader" style="text-align: left; border-bottom: none;" *ngIf="d.Template_Code === 'Participation'">
+                        <span class="rmwtableheader" style="border-bottom: none;">Format: </span><span
+                            class="rmwtabledata">{{d.StaticFormat}}&nbsp;</span>
+                        <span class="rmwtableheader" style="border-bottom: none;">Price: </span><span
+                            class="rmwtabledata">{{d.InputIssuePricePercent}}&nbsp;</span>
+                    </label>
+                    <label class="rmwtableheader" *ngIf="d.Template_Code === 'Participation'" style="text-align: left;border-bottom: none;">
+                        <span class="rmwtableheader" style="border-bottom: none;">Total Issue Size: </span><span
+                            class="rmwtabledata">{{d.InputRequestedSize | number}}&nbsp;</span>
+                        <br /><span class="rmwtableheader" style="border-bottom: none;">Issue Price: </span><span
+                            class="rmwtabledata">{{d.InputIssuePricePercent}}&nbsp;</span>
+                    </label>
+
+
+                </div>
+                <div class="ProductDetailsGridParticipation">
+
+                    <div class="upperHeader">
+                        <label class="rmwtableheader">Upside</label>
+                        <div class="lowerHeaderwith6col">
+                            <div class="inner-table">
+                                <label class="rmwtableheader">Strike</label>
+                                <label class="rmwtabledata">{{d.InputStrikePercent}}</label>
+                            </div>
+                            <div class="inner-table">
+                                <label class="rmwtableheader">Gearing</label>
+                                <label class="rmwtabledata">{{d.UpsideParticipationPercent}}</label>
+                            </div>
+                            <div class="inner-table">
+                                <label class="rmwtableheader">Upper<br />Strike</label>
+                                <label class="rmwtabledata">{{d.UpsideParticipationCapPercent}}</label>
+                            </div>
+                            <div class="inner-table">
+                                <label class="rmwtableheader">Min<br />Coupon</label>
+                                <label class="rmwtabledata">{{d.InputMinimumCouponPercentPA}}</label>
+                            </div>
+                            <div class="inner-table">
+                                <label class="rmwtableheader">Barrier<br />Level</label>
+                                <label class="rmwtabledata">{{d.InitialInputKOBarrierPercent}}</label>
+                            </div>
+                            <div class="inner-table">
+                                <label class="rmwtableheader">Rebate</label>
+                                <label class="rmwtabledata">{{d.InputRebatePercent}}</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="upperHeader">
+                        <label class="rmwtableheader">Downside</label>
+                        <div class="lowerHeaderwith4col">
+                            <div class="inner-table">
+                                <label class="rmwtableheader">Strike</label>
+                                <label class="rmwtabledata">{{d.InputDownsideStrikePercent}}</label>
+                            </div>
+                            <div class="inner-table">
+                                <label class="rmwtableheader">Lower<br />Strike</label>
+                                <label class="rmwtabledata">{{d.DownsideParticipationCapPercent}}</label>
+                            </div>
+                            <div class="inner-table">
+                                <label class="rmwtableheader">Leverage</label>
+                                <label class="rmwtabledata">{{d.DownsideParticipationPercent}}</label>
+                            </div>
+                            <div class="inner-table">
+                                <label class="rmwtableheader">Barrier<br />Level</label>
+                                <label class="rmwtabledata">{{d.InitialInputKIBarrierPercent}}</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="upperHeader">
+                        <label class="rmwtableheader">Guaranteed Coupon</label>
+                        <div class="lowerHeaderwith4col">
+                            <div class="inner-table">
+                                <label class="rmwtableheader">Captial<br />Guaranteed</label>
+                                <label class="rmwtabledata">{{d.DownsideCapitalProtectionPercent}}</label>
+                            </div>
+                            <div class="inner-table">
+                                <label class="rmwtableheader">Coupon</label>
+                                <label class="rmwtabledata">{{d.EmailGCCoupon}}</label>
+                            </div>
+                            <div class="inner-table">
+                                <label class="rmwtableheader">Coupon<br />Freq.</label>
+                                <label class="rmwtabledata">{{d.EmailGCFrequency}}</label>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                    <div class="upperHeader">
+                        <label class="rmwtableheader">Dates</label>
+                        <div class="lowerHeaderwith2col">
+                            <div class="inner-table">
+                                <label class="rmwtableheader">Strike</label>
+                                <label class="rmwtabledata">{{cfs.formatSlashDate(d.ComputedStrikeDateText)}}</label>
+                            </div>
+                            <div class="inner-table">
+                                <label class="rmwtableheader">Payment</label>
+                                <label class="rmwtabledata">{{cfs.formatSlashDate(d.ComputedSettlementDateTextPPN)}}</label>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="upperHeader">
+                        <label class="rmwtableheader">Funding</label>
+                        <div class="lowerHeaderwith3col">
+                            <div class="inner-table">
+                                <label class="rmwtableheader">Fund<br />Type</label>
+                                <label class="rmwtabledata">{{d.StaticFundingType}}</label>
+                            </div>
+                            <div class="inner-table">
+                                <label class="rmwtableheader">Fund<br />Freq.</label>
+                                <label class="rmwtabledata">{{d.StaticFundingFrequency}}</label>
+                            </div>
+                            <div class="inner-table">
+                                <label class="rmwtableheader">Rate / <br />Spread</label>
+                                <label class="rmwtabledata">{{d.EP_FundingRate}}</label>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+            <div class="outergrid" *ngIf="d.Template_Code === 'CreditTranche'">
+                <div class="inner-table-title">
+                    <div class="rmwdiv" [routerLink]="['/credittranche',{RFQ_ID:d.EP_ER_QuoteRequestId}]" routerLinkActive="active-link">Credit Tranche {{d.ComputedTenorValueCT}} {{d.InputSettlementCurrencyCT}} : {{d.InputCreditIndexTrancheCT}}</div>
+                    <label class="rmwtableheader" style="text-align: left; border-bottom: none;" *ngIf="d.Template_Code === 'CreditTranche'">
+                        <span class="rmwtableheader" style="border-bottom: none;">Format: </span><span
+                            class="rmwtabledata">{{d.FormatCT}}&nbsp;</span>
+                        <span class="rmwtableheader" style="border-bottom: none;">Reoffer: </span><span
+                            class="rmwtabledata">{{d.ReofferCT}}&nbsp;</span>
+                    </label>
+                    <label class="rmwtableheader" *ngIf="d.Template_Code === 'CreditTranche'" style="text-align: left;border-bottom: none;">
+                        <span class="rmwtableheader" style="border-bottom: none;">Total Issue Size: </span><span
+                            class="rmwtabledata">{{d.InputRFQNotionalAmountCT | number}}&nbsp;</span>
+                        <br /><span class="rmwtableheader" style="border-bottom: none;">Issue Price: </span><span
+                            class="rmwtabledata">{{d.InputInterBankPriceCT}}&nbsp;</span>
+                    </label>
+
+
+                </div>
+                <div class="ProductDetailsGridCredit">
+
+
+                    <div class="upperHeader">
+                        <label class="rmwtableheader"> </label>
+                        <div class="lowerHeaderwith4col">
+                            <div class="inner-table">
+                                <label class="rmwtableheader">Attach</label>
+                                <label class="rmwtabledata">{{d.InputCreditAttachmentPercentCT}}</label>
+                            </div>
+                            <div class="inner-table">
+                                <label class="rmwtableheader">Detach</label>
+                                <label class="rmwtabledata">{{d.InputCreditDettachmentPercentCT}}</label>
+                            </div>
+                            <div class="inner-table">
+                                <label class="rmwtableheader">Issue Date</label>
+                                <label class="rmwtabledata">{{d.InputIssueDateCT | date:'dd-MMM-yyyy'}}</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="upperHeader">
+                        <label class="rmwtableheader">Coupon</label>
+                        <div class="lowerHeaderwith4col">
+                            <div class="inner-table">
+                                <label class="rmwtableheader">Coupon Type</label>
+                                <label class="rmwtabledata">{{d.StaticCouponTypeCT}}</label>
+                            </div>
+                            <div class="inner-table">
+                                <label class="rmwtableheader">Coupon Freq.</label>
+                                <label class="rmwtabledata">{{d.InputFixedCouponFrequencyCT}}</label>
+                            </div>
+                            <div class="inner-table">
+                                <label class="rmwtableheader">Coupon Basis</label>
+                                <label class="rmwtabledata">{{d.InputCouponDayBasisCT}}</label>
+                            </div>
+                            <div class="inner-table">
+                                <label class="rmwtableheader">Coupon/Spread</label>
+                                <label class="rmwtabledata">{{d.CouponSpreadCT}}</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="upperHeader">
+                        <label class="rmwtableheader">Funding</label>
+                        <div class="lowerHeaderwith3col">
+                            <div class="inner-table">
+                                <label class="rmwtableheader">Fund Type</label>
+                                <label class="rmwtabledata">{{d.StaticFundingTypeCT}}</label>
+                            </div>
+                            <div class="inner-table">
+                                <label class="rmwtableheader">Fund Freq.</label>
+                                <label class="rmwtabledata">{{d.StaticFundingFrequencyCT}}</label>
+                            </div>
+                            <div class="inner-table">
+                                <label class="rmwtableheader">Rate / Spread</label>
+                                <label class="rmwtabledata">{{d.InputFundingRateSpreadCT}}</label>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+            </div>
+            <div class="outergrid" *ngIf="d.Template_Code === 'DailyRangeAccrual'">
+                <div class="inner-table-title">
+                    <div class="rmwdiv" [routerLink]="['/DRAAutoCall',{RFQ_ID:d.EP_ER_QuoteRequestId}]" routerLinkActive="active-link"> Equity DRA Autocall {{d.TenorDRA}} {{d.CurrencyDRA}} : {{d.FirstUnderlyingCode1DRA}}{{d.SecondUnderlyingCode1DRA!=='' ? ',' : ''}} {{d.SecondUnderlyingCode1DRA}}{{d.ThirdUnderlyingCode1DRA!=='' ? ',' : ''}} {{d.ThirdUnderlyingCode1DRA}}{{d.FourthUnderlyingCode1DRA!==''
+                        ? ',' : ''}} {{d.FourthUnderlyingCode1DRA}}{{d.FifthUnderlyingCode1DRA!=='' ? ',' : ''}} {{d.FifthUnderlyingCode1DRA}}{{d.sixthUnderlyingCode1DRA!=='' ? ',' : ''}} {{d.sixthUnderlyingCode1DRA}}
+                    </div>
+                    <label class="rmwtableheader" style="text-align: left; border-bottom: none;" *ngIf="d.Template_Code === 'DailyRangeAccrual'">
+                        <span class="rmwtableheader" style="border-bottom: none;">Format: </span><span
+                            class="rmwtabledata">{{d.FormatDRA}}&nbsp;</span>
+                        <span class="rmwtableheader" style="border-bottom: none;">Price: </span><span
+                            class="rmwtabledata">{{d.InputInterBankPriceDRA}}&nbsp;</span>
+                    </label>
+                    <label class="rmwtableheader" *ngIf="d.Template_Code === 'DailyRangeAccrual'" style="text-align: left;border-bottom: none;">
+                        <span class="rmwtableheader" style="border-bottom: none;">Total Issue Size: </span><span
+                            class="rmwtabledata">{{d.NotionalAmountDRA | number}}&nbsp;</span>
+                        <br /><span class="rmwtableheader" style="border-bottom: none;">Issue Price: </span><span
+                            class="rmwtabledata">{{d.InputIssuePricePercentDRA}}&nbsp;</span>
+                    </label>
+
+
+                </div>
+                <div class="ProductDetailsGridPhx">
+                    <div class="upperHeader">
+                        <label class="rmwtableheader">Barrier</label>
+                        <div class="lowerHeaderwith3col">
+                            <div class="inner-table">
+                                <label class="rmwtableheader">Strike</label>
+                                <label class="rmwtabledata">{{d.StrikeDRA}}</label>
+                            </div>
+                            <div class="inner-table">
+                                <label class="rmwtableheader">Leverage</label>
+                                <label class="rmwtabledata">{{d.ComputedLeverageDRA}}</label>
+                            </div>
+                            <div class="inner-table">
+                                <label class="rmwtableheader">Level</label>
+                                <label class="rmwtabledata">{{d.BarrierLevelDRA}}</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="upperHeader">
+                        <label class="rmwtableheader">Autocall</label>
+                        <div class="lowerHeaderwith5col">
+                            <div class="inner-table">
+                                <label class="rmwtableheader">Freq.</label>
+                                <label class="rmwtabledata">{{d.StaticKOFrequencyDRA}}</label>
+                            </div>
+                            <div class="inner-table">
+                                <label class="rmwtableheader">Trigger</label>
+                                <label class="rmwtabledata">{{d.AutocallTriggerDRA}}</label>
+                            </div>
+                            <div class="inner-table">
+                                <label class="rmwtableheader">Stepdown</label>
+                                <label class="rmwtabledata">{{d.InputKOStepdownDRA}}</label>
+                            </div>
+                            <div class="inner-table">
+                                <label class="rmwtableheader">Non-Call</label>
+                                <label class="rmwtabledata">{{d.StaticNonCallPeriodDRA}}</label>
+                            </div>
+                            <div class="inner-table">
+                                <label class="rmwtableheader">ER Coupon</label>
+                                <label class="rmwtabledata">{{d.AutocallCouponDRA}}</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="upperHeader">
+                        <label class="rmwtableheader">Coupon</label>
+                        <div class="lowerHeaderwith3col">
+                            <!-- <div class="inner-table">
+                                <label class="rmwtableheader">Type</label>
+                                <label class="rmwtabledata">{{d.StaticERCouponTypeDRA}}</label>
+                            </div> -->
+                            <!-- <div class="inner-table">
+                                <label class="rmwtableheader">Memory<br />Pds</label>
+                                <label class="rmwtabledata">{{d.MemoryPeriodDRA}}</label>
+                            </div> -->
+                            <div class="inner-table">
+                                <label class="rmwtableheader">Trigger</label>
+                                <label class="rmwtabledata">{{d.CouponTriggerDRA}}</label>
+                            </div>
+                            <div class="inner-table">
+                                <label class="rmwtableheader">Coupon</label>
+                                <label class="rmwtabledata">{{d.CouponDRA}}</label>
+                            </div>
+                            <div class="inner-table">
+                                <label class="rmwtableheader">Alt<br />Coupon</label>
+                                <label class="rmwtabledata">{{d.ComputedAlternateCouponPercentDRA}}</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="upperHeader">
+                        <label class="rmwtableheader">Dates</label>
+                        <div class="lowerHeaderwith2col">
+                            <div class="inner-table">
+                                <label class="rmwtableheader">Strike</label>
+                                <label class="rmwtabledata">{{cfs.formatSlashDate(d.ComputedStrikeDateTextDRA)}}</label>
+                            </div>
+                            <div class="inner-table">
+                                <label class="rmwtableheader">Payment</label>
+                                <label class="rmwtabledata">{{cfs.formatSlashDate(d.ComputedSettlementDateTextDRA)}}</label>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="upperHeader">
+                        <label class="rmwtableheader">Funding</label>
+                        <div class="lowerHeaderwith3col">
+                            <div class="inner-table">
+                                <label class="rmwtableheader">Fund Type</label>
+                                <label class="rmwtabledata">{{d.StaticFundingTypeDRA}}</label>
+                            </div>
+                            <div class="inner-table">
+                                <label class="rmwtableheader">Fund Freq.</label>
+                                <label class="rmwtabledata">{{d.StaticFundingFrequencyDRA}}</label>
+                            </div>
+                            <div class="inner-table">
+                                <label class="rmwtableheader">Rate / Spread</label>
+                                <label class="rmwtabledata">{{d.IndexRate_SpreadDRA}}</label>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+
+
+                </div>
+
+            </div>
+            <!-- BEN added 4-Apr-2022 Pranv D BBVACLI-162 -->
+            <!-- <div class="outergrid" *ngIf="d.Template_Code === 'BonusEnhancedNote'">
+                <div class="inner-table-title">
+                    <div class="rmwdiv" [routerLink]="['/BonusEnhancedNote',{RFQ_ID:d.EP_ER_QuoteRequestId}]" routerLinkActive="active-link"> Bonus Enhanced Note {{d.ComputedPayoffSoftTenorBEN}} {{d.InputSettlementCurrencyBEN}} : {{d.InputUnderlyingCSVBEN}}</div>
+                    <label class="rmwtableheader" style="text-align: left; border-bottom: none;" *ngIf="d.Template_Code === 'BonusEnhancedNote'">
+                        <span class="rmwtableheader" style="border-bottom: none;">Format: </span><span
+                            class="rmwtabledata">{{d.StaticFormatBEN}}&nbsp;</span>
+                    </label>
+                    <label class="rmwtableheader" *ngIf="d.Template_Code === 'BonusEnhancedNote'" style="text-align: left;border-bottom: none;">
+                        <span class="rmwtableheader" style="border-bottom: none;">Total Issue Size: </span><span
+                            class="rmwtabledata">{{d.InputRequestedSizeBEN | number}}&nbsp;</span>
+                    </label>
+
+
+                </div> -->
+            <!-- START : Bonus section added by Pranav D BBVACLI-162 4-Apr-2022 -->
+            <!-- <div class="ProductDetailsGridBEN">
+
+                    <div class="upperHeader">
+                        <label class="rmwtableheader">Bonus Enhance Note</label>
+                        <div class="lowerHeaderwith7col">
+                            <div class="inner-table">
+                                <label class="rmwtableheader">Bonus</label>
+                                <label class="rmwtabledata">{{d.InputStrikePercent}}</label>
+                            </div>
+                            <div class="inner-table">
+                                <label class="rmwtableheader">Gearing (%)</label>
+                                <label class="rmwtabledata">{{d.UpsideParticipationPercentBEN}}</label>
+                            </div>
+                            <div class="inner-table">
+                                <label class="rmwtableheader">Upfront (%)</label>
+                                <label class="rmwtabledata">{{d.EP_FundingRate}}</label>
+                            </div>
+                            <div class="inner-table">
+                                <label class="rmwtableheader">Bonus Barrier <br/>Level</label>
+                                <label class="rmwtabledata">{{d.UpsideParticipationPercentBEN}}</label>
+                            </div>
+                        </div>
+                    </div> -->
+
+            <!-- <div class="upperHeader">
+                        <label class="rmwtableheader">Downside</label>
+                        <div class="lowerHeaderwith4col">
+                            <div class="inner-table">
+                                <label class="rmwtableheader">Strike</label>
+                                <label class="rmwtabledata">{{d.InputDownsideStrikePercent}}</label>
+                            </div>
+                            <div class="inner-table">
+                                <label class="rmwtableheader">Leveraged</label>
+                                <label class="rmwtabledata">{{d.DownsideParticipationCapPercent}}</label>
+                            </div>
+                            <div class="inner-table">
+                                <label class="rmwtableheader">KI Barrier Type</label>
+                                <label class="rmwtabledata">{{d.DownsideParticipationPercent}}</label>
+                            </div>
+                            <div class="inner-table">
+                                <label class="rmwtableheader">Barrier<br />Level</label>
+                                <label class="rmwtabledata">{{d.InitialInputKIBarrierPercent}}</label>
+                            </div>
+                        </div>
+                    </div> -->
+
+            <!-- <div class="upperHeader">
+                        <label class="rmwtableheader">Guaranteed Coupon</label>
+                        <div class="lowerHeaderwith4col">
+                            <div class="inner-table">
+                                <label class="rmwtableheader">Captial<br />Guaranteed</label>
+                                <label class="rmwtabledata">{{d.DownsideCapitalProtectionPercent}}</label>
+                            </div>
+                            <div class="inner-table">
+                                <label class="rmwtableheader">Coupon</label>
+                                <label class="rmwtabledata">{{d.EmailGCCoupon}}</label>
+                            </div>
+                            <div class="inner-table">
+                                <label class="rmwtableheader">Coupon<br />Freq.</label>
+                                <label class="rmwtabledata">{{d.EmailGCFrequency}}</label>
+                            </div>
+
+                        </div>
+                    </div> -->
+
+
+            <!-- <div class="upperHeader">
+                        <label class="rmwtableheader">Dates</label>
+                        <div class="lowerHeaderwith2col">
+                            <div class="inner-table">
+                                <label class="rmwtableheader">Strike</label>
+                                <label class="rmwtabledata">{{cfs.formatSlashDate(d.ComputedStrikeDateText)}}</label>
+                            </div>
+                            <div class="inner-table">
+                                <label class="rmwtableheader">Payment</label>
+                                <label class="rmwtabledata">{{cfs.formatSlashDate(d.ComputedSettlementDateTextPPN)}}</label>
+                            </div>
+
+                        </div>
+                    </div> -->
+
+            <!-- </div> -->
+            <!-- END : Bonus section added by Pranav D BBVACLI-162 4-Apr-2022 -->
+            <!-- </div> -->
+
+        </div>
+    </div>
+</div>
+
+<div style="margin: 0px 4%">
+</div>

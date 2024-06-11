@@ -1,0 +1,137 @@
+<div class="workflowblotter-component">
+    <div class="page-title">Limit & Exposure Repor</div>
+    <div class="table1">
+      <div class="head">a) Exposure with Margin </div>
+   
+    <button style="width: 100px;" >Check</button>
+  
+    <div class="content-container">
+      <table>
+        <thead>
+          <tr>
+            <th class="maxwidth100">Facility Type</th>
+            <th class="maxwidth200">Limit Allocated (in Base Ccy)</th>
+            <th class="maxwidth70">Limit Type</th>
+            <th class="maxwidth300">Exposure Code | Deal Description</th>
+            <th class="minwidth100">Deal Reference Number</th>
+            <th class="maxwidth100">Exposure Ccy</th>
+            <th class="maxwidth200">Consumed Limit (Exposure in Trade Ccy)</th>
+            <th class="maxwidth100">FX Rate</th>          
+            <th class="maxwidth200">Consumed Limit (Exposure in Base Ccy)</th> 
+            <th class="maxwidth200">Available/Excess Limit (in Base Ccy)</th>
+            <th class="maxwidth200">Initial Margin Needed (in Base Ccy)</th>
+            <th class="maxwidth200">MTM (in Base Ccy)</th>
+            <th class="maxwidth200">Netted Amount (in Base Ccy)</th>
+            <th class="maxwidth200">Total Collateral Required (in Base Ccy)</th>
+          </tr>          
+        </thead>     
+        <tbody>
+          <tr *ngFor="let arr of blotter">          
+            <td >{{arr.Limit}}</td>
+          </tr>
+        </tbody>
+      </table> 
+        </div>
+    </div>
+
+    <!-- <div class="table1" style="margin-top: 20px;">
+      <div class="head">b) Credit Facilities without Margin</div>   
+      <div class="content-container">
+        <table>
+          <thead>
+            <tr>
+              <th class="maxwidth100">Facility Type</th>
+              <th class="maxwidth200">Limit Allocated/ Clean Portion (in Base Ccy)</th>
+              <th class="maxwidth70">Limit Type</th>
+              <th class="maxwidth300">Exposure Code | Deal Description</th>
+              <th class="minwidth100">Deal Reference Number</th>
+              <th class="maxwidth100">Exposure Ccy</th>
+              <th class="maxwidth200">Consumed Limit (Exposure in Trade Ccy)</th>
+              <th class="maxwidth100">FX Rate</th>          
+              <th class="maxwidth200">Consumed Limit (Exposure in Base Ccy)</th> 
+              <th class="maxwidth200">Available/Excess Limit (in Base Ccy)</th>
+              <th class="maxwidth200">Initial Margin Needed (in Base Ccy)</th>
+              <th class="maxwidth200">MTM (in Base Ccy)</th>
+              <th class="maxwidth200">Netted Amount (in Base Ccy)</th>
+              <th class="maxwidth200">Total Collateral Required (in Base Ccy)</th>
+            </tr>
+            
+          </thead>
+       
+          <tbody>
+            <tr *ngFor="let arr of CreditFacilityWithNonMarginDetails">
+              
+              <td class="center maxwidth100">abc</td>
+              <td class="maxwidth200">{{arr.CleanLimit}}</td>
+              <td class="maxwidth70 ">{{arr.Limit_Source}}</td>
+              <td class="maxwidth300 ">{{arr.ExposureDescription}}</td>
+              <td class="minwidth100">{{arr.Reference}}</td>
+              <td class="center maxwidth100 ">{{arr.Ccy}}</td>
+              <td class="right maxwidth200">{{arr.ExposureOrigCcy}}</td>
+              <td class="right maxwidth100" >{{arr.FXRate}}</td>    
+              <td class="center maxwidth200">{{arr.LimitUsed }}</td>
+              <td class="center maxwidth200">{{arr.AvailableLimit_dup}}</td>    
+              <td class="maxwidth200" >{{arr.TotExposure}}</td>       
+              <td class="center maxwidth200">{{arr.MTMAfterCollOpt_HKD }}</td>
+              <td class="center maxwidth200">{{arr.Exposure}}</td>    
+              <td class="maxwidth200" >{{arr.MarginCollateralRequired_NonLiq}}</td>  
+            </tr>
+          </tbody>
+        </table> 
+          </div>
+      </div>
+
+      <div class="table1" style="margin-top: 20px;">
+        <div class="head">Portfolio with Liquid Collateral (to support Credit Facilities with Margin and without Margin)</div>   
+        <div class="content-container">
+          <table>
+            <thead>
+              <tr>
+                <th class="maxwidth100">Collateral Type</th>
+                <th class="maxwidth70">Coll Source</th>
+                <th class="maxwidth100">Stock Code / Coll. Ref</th>
+                <th class="maxwidth200">Collateral Name: Deal description</th>
+                <th class="maxwidth100">Unit</th>
+                <th class="maxwidth100">Unit Held for Covered Call / DQ</th>
+                <th class="maxwidth70">Trade Ccy</th>
+                <th class="maxwidth200">Market Price (Trade Ccy)</th>          
+                <th class="maxwidth200">Market Value (Trade Ccy)</th> 
+                <th class="maxwidth100">FX Rate</th>
+                <th class="maxwidth200">Market Value</th>
+                <th class="maxwidth100">Lending Ratio(%)</th>
+                <th class="maxwidth200">Value after Lending Ratios</th>
+                <th class="maxwidth200">Value after Concentration Rules</th>
+                <th class="maxwidth100">Weighting (%)</th>
+                <th class="maxwidth100">Conc. Rule ID</th>
+              </tr>
+              
+            </thead>
+         
+            <tbody>
+              <tr *ngFor="let arr of PortfolioWithLiquidCollateral">
+                
+                <td class="center maxwidth100">{{arr.CollateralType}}</td>
+                <td class="maxwidth100">test</td>
+                <td class="maxwidth120 ">{{arr.StockCode}}</td>
+                <td class="maxwidth120 ">{{arr.CollateralName}}</td>
+                <td class="minwidth600">{{arr.AmountUnit}}</td>
+                <td class="center maxwidth100 ">{{arr.UnitHeldforCoveredCallDQ}}</td>
+                <td class="right maxwidth150">{{arr.Ccy}}</td>
+                <td class="right maxwidth120" >{{arr.MarketPrice}}</td>    
+                <td class="center maxwidth100">{{arr.MarketValue }}</td>
+                <td class="center maxwidth100">{{arr.FXRate}}</td>    
+                <td class="maxwidth200" >{{arr.MarketValueHKD}}</td>       
+                <td class="center maxwidth100">{{arr.LendingRatio }}</td>
+                <td class="center maxwidth100">{{arr.ValueafterLendingRatioHKD}}</td>    
+                <td class="maxwidth200" >{{arr.ValueafterConcRulesHKD}}</td> 
+                <td class="center maxwidth100">{{arr.Weighting}}</td>    
+                <td class="maxwidth200" >{{arr.IL_Conc_Last_Updated_Rule_ID}}</td>  
+              </tr>
+            </tbody>
+          </table> 
+            </div>
+        </div> -->
+  </div>
+
+
+

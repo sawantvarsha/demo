@@ -1,0 +1,49 @@
+.expanded-details {
+    display: grid;
+    background-color: whitesmoke;
+}
+
+@media only screen and (max-width: 1199px) {
+    .expanded-details {
+        grid-template-columns: 1fr 3fr;
+    }
+    app-margin-ratio,
+    app-collateral-details {
+        grid-row: 1;
+    }
+    app-limit-utilization {
+        grid-row: 2;
+        grid-column: span 2;
+    }
+}
+
+@media only screen and (min-width: 1200px) {
+    .expanded-details {
+        grid-template-columns: 1fr 3fr;
+    }
+    app-margin-ratio,
+    app-collateral-details {
+        grid-row: 1;
+    }
+    app-limit-utilization {
+        grid-row: 2;
+        grid-column: span 2;
+    }
+}
+
+@media only screen and (min-width: 1509px) {
+    .expanded-details {
+        grid-template-columns: 15% 43% 11% 30%
+    }
+    app-margin-ratio,
+    app-limit-utilization,
+    app-collateral-details {
+        grid-row: 1;
+    }
+}
+
+app-margin-ratio,
+app-limit-utilization,
+app-collateral-details {
+    padding: 10px;
+}

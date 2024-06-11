@@ -1,0 +1,45 @@
+<div class="container">
+    <div class="flex-right">
+        <app-svg-icons [icon]="'xls'" [width]="'20px'" [height]="'29px'" style="margin-top: -50px;" (click)="exportToExcel()"></app-svg-icons>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Event</th>
+                <th>Ccy/ Asset</th>
+                <th>Amount/Quantity</th>
+                <th>Party Type</th>
+                <th>Party ID</th>
+                <th>Party Code</th>
+                <th>Trade ID</th>
+            </tr>
+        </thead>
+        <tbody *ngIf="paymentHistoryData.length > 0">
+            <tr *ngFor="
+          let data of paymentHistoryData
+            | paginate: { itemsPerPage: recordsPerPage, currentPage: q }
+        ">
+                <td class="centerAlign">{{ data.Date | date: "dd-MMM-yyyy" }}</td>
+                <td>{{ data.Event }}</td>
+                <td class="centerAlign">{{ data.Ccy_Asset }}</td>
+                <td class="rightAlign">{{ data.Amount_Qty | number: "1.2-2" }}</td>
+                <td>{{ data.Party_Type }}</td>
+                <td class="rightAlign">{{ data.Party_ID }}</td>
+                <td class="centerAlign">{{ data.Customer_Name }}</td>
+                <td class="rightAlign">{{ data.Note_Deal_Id }}</td>
+            </tr>
+        </tbody>
+        <tbody *ngIf="paymentHistoryData.length === 0">
+            <tr>
+                <td colspan="99">No Records Found</td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="flex-row">
+        <div class="pagination">
+            <pagination-controls *ngIf="paymentHistoryData?.length > 0" (pageChange)="q = $event" class="pageFont">
+            </pagination-controls>
+        </div>
+    </div>
+</div>

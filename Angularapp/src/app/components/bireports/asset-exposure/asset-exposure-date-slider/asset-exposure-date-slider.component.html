@@ -1,0 +1,37 @@
+<div class="row">
+    <button class="btn-date" (click)="changeSlider(2)">Y</button>
+    <button class="btn-date" (click)="changeSlider(1)">Q</button>
+    <button class="btn-date" (click)="changeSlider(0)">M</button>
+</div>
+
+<ng-container [ngSwitch]="dateType">
+<ng-container *ngSwitchCase="0">
+  <div class="custom-slider">
+    <div class="custom-slider-label">
+      <div *ngFor="let month of monthArray">{{month.month}} {{month.year}}</div>
+    </div>
+      <ngx-slider [(value)]="valueMonth" [(highValue)]="highValueMonth" [options]="options1" #selector1 (userChange)="sliderChange(selector1,'month')"></ngx-slider>
+  </div>
+</ng-container>
+<ng-container *ngSwitchCase="1">
+  <div class="custom-slider">
+    <div class="custom-slider-label">
+      <div *ngFor="let quarter of quarterArray">
+        {{quarter['quarter']}} {{quarter['year']}}</div>
+    </div>
+      <ngx-slider [(value)]="valueQuarter" [(highValue)]="highValueQuarter" [options]="options2" #selector2 (userChange)="sliderChange(selector2,'quarter')"></ngx-slider>
+  </div>
+</ng-container>
+<ng-container *ngSwitchCase="2">
+  <div class="custom-slider">
+    <div class="custom-slider-label">
+      <div *ngFor="let Year of yearArray">
+        {{Year}}</div>
+    </div>
+      <ngx-slider [(value)]="valueYear" [(highValue)]="highValueYear" [options]="options3" #selector3 (userChange)="sliderChange(selector3,'year')"></ngx-slider>
+  </div>
+</ng-container>
+</ng-container>
+
+
+

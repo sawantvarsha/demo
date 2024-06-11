@@ -1,0 +1,628 @@
+<div class="margin-grid-container">
+  <div></div>
+  <div class="portfolio-header">
+    <div class="margin-actions" [ngStyle]="{'grid-template-columns': Mode !== 'Client' ? '1fr 3em 1.5em 1.5em auto': ''}">
+      <app-svg-icons *ngIf="Mode === 'Client'"
+        class="back-button"
+        [icon]="'back-button'"
+        [width]="'30'"
+        [height]="'30'"
+        [fill]="'var(--headers)'"
+        (click)="back()"
+      ></app-svg-icons>
+      <div>
+        <span class="portfolio-name">{{ authApi.UserName }}</span>
+        <span class="portfolio-name">|</span>
+        <span class="portfolio-id">{{ custDetails?.CustomerID }}</span>
+      </div>
+      <input type="button" class="revaluate-icon" (click)="revaluate()" />
+      <!-- <input type="button" class="refresh-icon" (click)="refreshPage()"> -->
+      <app-svg-icons
+        (click)="getCreditSummaryReport()"
+        [icon]="'pdf'"
+        [width]="'26'"
+        [height]="'26'"
+      ></app-svg-icons>
+      <app-svg-icons
+        (click)="refreshPage()"
+        [icon]="'refresh'"
+        [width]="'26'"
+        [height]="'26'"
+      ></app-svg-icons>
+      <label for="" *ngIf="isRevaluating">{{ revalMsg }}</label>
+      <label for="" *ngIf="isDownloading">{{ message }}</label>
+    </div>
+
+    <div class="margin-actions-ccy">
+      <!-- <div class="ccy">
+        <span>Lending Currency</span>
+        &nbsp;
+        <span>USD</span>
+      </div> -->
+
+      <!-- <input type="button" class="excel-icon"> -->
+    </div>
+  </div>
+  <div></div>
+  <div></div>
+  <div class="main-grid-item" id="parent">
+    <div class="box-container details-box">
+      <div class="details-grid">
+        <div class="header">Limit Utilization</div>
+        <div class="limit-ut-body inner-grid">
+          <div class="limit-ut-chart">
+            <!-- <google-chart [data]="limitChartData" [columns]="limitChartColumn" [options]="limitChartOptions"
+              [type]="limitChartDataType" [width]="250" [height]="200"></google-chart> -->
+            <div id="chart">
+              <apx-chart
+                [series]="limitChartOptions.series"
+                [chart]="limitChartOptions.chart"
+                [plotOptions]="limitChartOptions.plotOptions"
+                [labels]="limitChartOptions.labels"
+                [colors]="limitChartOptions.colors"
+              ></apx-chart>
+              <div class="hollow-value">
+                <span>{{ utilizedLimitPercentage }}%</span>
+                <span>Utilized</span>
+              </div>
+            </div>
+          </div>
+          <div class="body">
+            <div class="content">
+              <span class="title">Approved Limit</span>
+              <span class="value">{{
+                approvedLimit === "" ? "-" : (approvedLimit | number: "1.2-2")
+              }}</span>
+            </div>
+            <div class="content">
+              <span class="title">Limit Utilized</span>
+              <span class="value">{{
+                utilizedLimit === "" ? "-" : (utilizedLimit | number: "1.2-2")
+              }}</span>
+            </div>
+            <div class="content">
+              <span class="title">Available Limit</span>
+              <span class="value">{{
+                availableLimit === "" ? "-" : (availableLimit | number: "1.2-2")
+              }}</span>
+            </div>
+            <div class="content">
+              <span class="title">Limit Status</span>
+              <span class="value success" *ngIf="statusLimit === 'Normal'">{{
+                statusLimit || "---"
+              }}</span>
+              <span
+                class="value limit-alert"
+                *ngIf="statusLimit !== 'Normal'"
+                >{{ statusLimit || "---" }}</span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="details-grid">
+        <div class="header">Margin Status</div>
+        <div class="inner-grid">
+          <div class="margin-chart">
+            <!-- <google-chart class="margin-chart-div" [data]="marginChartData" [columns]="marginChartColumn"
+              [options]="marginChartOptions" [type]="marginChartDataType"></google-chart> -->
+            <div id="chart">
+              <apx-chart
+                [series]="marginChartOptions.series"
+                [chart]="marginChartOptions.chart"
+                [plotOptions]="marginChartOptions.plotOptions"
+                [labels]="marginChartOptions.labels"
+                [colors]="marginChartOptions.colors"
+              ></apx-chart>
+              <div class="hollow-value">
+                <span>{{ marginRatio }}%</span>
+                <span>Margin Ratio</span>
+              </div>
+            </div>
+          </div>
+          <div class="body">
+            <div class="content">
+              <span class="title">Loanable Amount</span>
+              <span class="value">{{
+                totalLoanAmount === ""
+                  ? "-"
+                  : (totalLoanAmount | number: "1.2-2")
+              }}</span>
+            </div>
+            <div class="content">
+              <span class="title">Total Exposure</span>
+              <span class="value">{{
+                totalExposure === "" ? "-" : (totalExposure | number: "1.2-2")
+              }}</span>
+            </div>
+            <div class="content">
+              <span class="title">Drawdown Available</span>
+              <span class="value">{{
+                availableDrawdown === ""
+                  ? "-"
+                  : (availableDrawdown | number: "1.2-2")
+              }}</span>
+            </div>
+            <div class="content">
+              <span class="title">Margin Status</span>
+              <span class="value success" *ngIf="marginStatus === 'Normal'">{{
+                marginStatus || "---"
+              }}</span>
+              <span
+                class="value margin-alert"
+                *ngIf="marginStatus !== 'Normal'"
+                >{{ marginStatus || "---" }}</span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="details-grid">
+        <div class="header">Collateral Details</div>
+        <div class="inner-grid">
+          <div class="collateral-details-chart">
+            <!-- <google-chart class="collateral-details-div" [data]="collateralDetailsData"
+              [columns]="collateralDetailsColumn" [options]="collateralDetailsOptions"
+              [type]="collateralDetailsDataType"></google-chart> -->
+            <div id="chart">
+              <apx-chart
+                [series]="collateralChartOptions.series"
+                [chart]="collateralChartOptions.chart"
+                [plotOptions]="collateralChartOptions.plotOptions"
+                [labels]="collateralChartOptions.labels"
+                [dataLabels]="collateralChartOptions.dataLabels"
+                [legend]="collateralChartOptions.legend"
+                [stroke]="collateralChartOptions.stroke"
+                [responsive]="collateralChartOptions.responsive"
+                [colors]="collateralChartOptions.colors"
+                [noData]="collateralChartOptions.noData"
+                [tooltip]="collateralChartOptions.tooltip"
+              ></apx-chart>
+            </div>
+          </div>
+          <div class="body">
+            <div class="content" *ngFor="let legend of collateralDetailsData">
+              <div class="title">
+                <div
+                  class="square"
+                  [ngStyle]="{ 'background-color': legend.color }"
+                ></div>
+                <span> {{ legend.CollateralType }}</span>
+              </div>
+              <span class="value" *ngIf="legend.Amount !== ''">{{
+                legend.Amount | number: "1.2-2" || "-"
+              }}</span>
+            </div>
+            <!-- <div class="content">
+              <span class="title">Total Loan Amount</span>
+              <span class="value" *ngIf="totalLoanAmount!==''">{{totalLoanAmount | number:'1.2-2'|| '-'}}</span>
+              <span class="value" *ngIf="totalLoanAmount===''">-</span>
+            </div> -->
+          </div>
+        </div>
+      </div>
+      <div class="details-grid">
+        <div class="header">Exposure Details</div>
+        <div class="inner-grid">
+          <div class="collateral-details-chart">
+            <!-- <google-chart class="collateral-details-div" [data]="collateralDetailsData"
+              [columns]="collateralDetailsColumn" [options]="collateralDetailsOptions"
+              [type]="collateralDetailsDataType"></google-chart> -->
+            <div id="chart">
+              <apx-chart
+                [series]="exposureChartOptions.series"
+                [chart]="exposureChartOptions.chart"
+                [plotOptions]="exposureChartOptions.plotOptions"
+                [labels]="exposureChartOptions.labels"
+                [dataLabels]="exposureChartOptions.dataLabels"
+                [legend]="exposureChartOptions.legend"
+                [stroke]="exposureChartOptions.stroke"
+                [responsive]="exposureChartOptions.responsive"
+                [colors]="exposureChartOptions.colors"
+                [noData]="exposureChartOptions.noData"
+                [tooltip]="exposureChartOptions.tooltip"
+              ></apx-chart>
+            </div>
+          </div>
+          <div class="body">
+            <div class="content" *ngFor="let legend of exposureDetailsData">
+              <div class="title">
+                <div
+                  class="square"
+                  [ngStyle]="{ 'background-color': legend.color }"
+                ></div>
+                <span> {{ legend.exposureType }}</span>
+              </div>
+              <span class="value" *ngIf="legend.Amount !== ''">{{
+                legend.Amount | number: "1.2-2" || "-"
+              }}</span>
+            </div>
+            <!-- <div class="content">
+              <span class="title">Total Loan Amount</span>
+              <span class="value" *ngIf="totalLoanAmount!==''">{{totalLoanAmount | number:'1.2-2'|| '-'}}</span>
+              <span class="value" *ngIf="totalLoanAmount===''">-</span>
+            </div> -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- <div class="margin-blotter-container">
+      <div class="box-container">
+
+
+        <div class="assets-content">
+          <div class="assets-header">
+            <span class="header-text">Assets</span>
+            <div class="assets-total">
+              <label for="">Total Loanable</label>
+              <span class="success">{{totalLoanableAssets | number:'1.2-2'}} </span>
+              <div>
+                <input type="button" class="excel-icon" (click)="exportToExcel('Assets')">
+              </div>
+            </div>
+
+          </div>
+          <div class="assets-table">
+            <table>
+              <thead>
+                <th *ngFor="let item of assetsTableKeyVal" [ngStyle]="{'justify-content':item.justify}">
+                  <span> {{item.colName}}</span>
+                  <span class="material-icons" [ngClass]="{'rotate': item.isAsc}"
+                    (click)="filterBy(item.keyName,assetsArr,assetsTableKeyVal);">arrow_drop_down</span>
+                </th>
+
+              </thead>
+              <tbody class="assets-table-body-container" *ngIf="assetsArr.length>0">
+                <tr *ngFor="let item of assetsArr" class="assets-table-body">
+                  <td class="align-left">{{item.CollateralType}}</td>
+                  <td class="align-left text-content-overflow">{{item.StockCode || '-'}}</td>
+                  <td class="align-left" [title]="item.CollateralName" class="collateral-name">
+                    {{item.CollateralName}}
+                  </td>
+                  <td class="align-right">{{item.MarketValue | number:'1.2-2'}}</td>
+                  <td class="align-right">{{item.MarketPrice | number:'1.2-2'}}</td>
+                  <td class="align-right">{{1000000 | number:'1.2-2'}}</td>
+                  <td class="align-right">{{item.ValueafterLendingRatioHKD | number:'1.2-2'}}</td>
+                  <td class="align-right">{{item.ValueafterLendingRatioHKD * item.FXRate | number:'1.2-2'}}</td>
+                </tr>
+              </tbody>
+              <tbody *ngIf="assetsArr.length===0" class="assets-table-body-container">
+                <tr>
+                  <td colspan="99">No records found.</td>
+                </tr>
+              </tbody>
+
+            </table>
+
+          </div>
+        </div>
+
+
+
+      </div>
+
+      <div class="box-container">
+        <div class="liabilities-content">
+          <div class="liabilities-header">
+            <span class="header-text">Liabilities</span>
+            <div class="liabilities-total">
+              <label for="">Total Loan</label>
+              <span class="margin-alert">{{totalLoanLiabilities | number:'1.2-2'}} </span>
+              <div>
+                <input type="button" class="excel-icon" (click)="exportToExcel('Liabilities')">
+              </div>
+            </div>
+
+          </div>
+          <div class="liabilities-table">
+            <table>
+              <thead>
+
+                <th *ngFor="let item of liabilitiesTableKeyVal">
+                  <span> {{item.colName}}</span>
+                  <span class="material-icons" [ngClass]="{'rotate': item.isAsc}"
+                    (click)="filterBy(item.keyName,liabilitiesArr,liabilitiesTableKeyVal);">arrow_drop_down</span>
+
+                </th>
+
+              </thead>
+              <tbody class="liabilities-table-body-container">
+                <tr *ngFor="let item of liabilitiesArr " class="liabilities-table-body">
+                  <td class="align-left">{{item.ExposureDescription}}</td>
+
+                  <td class="align-right">{{item.ExposureOrigCcy | number:'1.2-2'}}</td>
+                  <td class="align-right">{{item.ExposureOrigCcy * item.FXRate| number:'1.2-2'}}</td>
+                </tr>
+              </tbody>
+
+            </table>
+          </div>
+
+        </div>
+      </div>
+    </div> -->
+
+    <!-- temp -->
+    <div
+      class="margin-blotter-container"
+      style="display: grid; grid-template-columns: 1.5fr 1fr"
+    >
+      <div class="box-container">
+        <div class="assets-content">
+          <div class="assets-header">
+            <span class="header-text">Assets</span>
+            <div class="assets-total">
+              <label for="">Total Loanable</label>
+              <span class="success"
+                >{{ totalLoanableAssets | number: "1.2-2" }}
+              </span>
+              <div>
+                <app-svg-icons
+                  icon="{{ 'xls' }}"
+                  (click)="exportToExcel('Assets')"
+                ></app-svg-icons>
+                <!-- <input type="button" class="excel-icon" (click)="exportToExcel('Assets')"> -->
+              </div>
+            </div>
+          </div>
+          <div class="assets-table">
+            <table>
+              <thead>
+                <tr>
+                  <th
+                    *ngFor="let item of assetsTableKeyVal"
+                    [ngStyle]="{
+                      'justify-content': item.justify,
+                      display: 'flex',
+                      'align-items': 'center'
+                    }"
+                  >
+                    <span
+                      class="material-icons"
+                      [ngClass]="{ rotate: item.isAsc }"
+                      (click)="
+                        filterBy(item.keyName, assetsArr, assetsTableKeyVal)
+                      "
+                      *ngIf="item.isFilter && item.justify === 'flex-end'"
+                      >arrow_drop_down</span
+                    >
+                    <span [innerHTML]="item.colName"></span>
+                    <span
+                      class="material-icons"
+                      [ngClass]="{ rotate: item.isAsc }"
+                      (click)="
+                        filterBy(item.keyName, assetsArr, assetsTableKeyVal)
+                      "
+                      *ngIf="item.isFilter && item.justify !== 'flex-end'"
+                      >arrow_drop_down</span
+                    >
+                  </th>
+                </tr>
+              </thead>
+              <tbody
+                *ngIf="assetsArr.length > 0"
+                class="assets-table-body-container"
+              >
+                <tr *ngFor="let item of assetsArr" class="assets-table-body">
+                  <td style="display: flex" class="justify-left" [title]="item.CollateralName" class="collateral-name">
+                    <div class="asset-type-header" [ngStyle]="{ color: item.color }">
+                      {{ item.CollateralType }}
+                    </div>
+                    <div class="collateral-name-div">
+                      {{ item.CollateralName }} ({{ item.StockCode || "-" }})
+                    </div>
+                    <!-- <div class="asset-code-container">
+                      <div class="asset-code"> Asset Code:</div>
+                      <div> {{item.StockCode || '-'}} </div>
+                    </div> -->
+                  </td>
+                  <td style="display: flex" class="justify-center">
+                    <div>{{ item.Ccy }}</div>
+                  </td>
+                  <td style="display: flex" class="justify-right" [title]="item.AmountUnit" >
+                    <div>
+                      {{ item.AmountUnit === 0 ? "-" : (item.AmountUnit | number: "1.2-2") }}
+                    </div>
+                  </td>
+                  <td style="display: flex" class="justify-right">
+                    <div>
+                      {{
+                        item.MarketPrice === 0
+                          ? "-"
+                          : (item.MarketPrice | number: "1.2-2")
+                      }}
+                    </div>
+                  </td>
+                  <td style="display: flex" class="justify-right">
+                    <div>
+                      {{
+                        item.MarketValue === 0
+                          ? "-"
+                          : (item.MarketValue | number: "1.2-2")
+                      }}
+                    </div>
+                  </td>
+                  <td style="display: flex" class="justify-right">
+                    <div>{{ item.LendingRatio }}</div>
+                  </td>
+                  <td style="display: flex" class="justify-right">
+                    <div>
+                      {{
+                        item.LoanableTradeCcy === 0
+                          ? "-"
+                          : (item.LoanableTradeCcy | number: "1.2-2")
+                      }}
+                    </div>
+                  </td>
+                  <td class="double-decker-row">
+                    <div class="double-decker-row-1">
+                      <span>Rate: </span>
+                      <span style="color: var(--heading-label)">{{
+                        item.FXRate
+                      }}</span>
+                    </div>
+                    <div class="double-decker-row-2">
+                      {{
+                        item.ValueafterConcRulesHKD === 0
+                          ? "-"
+                          : (item.ValueafterConcRulesHKD | number: "1.2-2")
+                      }}
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+              <tbody
+                *ngIf="assetsArr.length === 0"
+                class="assets-table-body-container"
+              >
+                <tr>
+                  <td colspan="99">No records found.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="box-container">
+        <div class="liabilities-content">
+          <div class="liabilities-header">
+            <span class="header-text">Liabilities</span>
+            <div class="liabilities-total">
+              <label for="">Total Loan</label>
+              <span class="margin-alert"
+                >{{ totalLoanLiabilities | number: "1.2-2" }}
+              </span>
+              <div>
+                <app-svg-icons
+                  icon="{{ 'xls' }}"
+                  (click)="exportToExcel('Liabilities')"
+                ></app-svg-icons>
+                <!-- <input type="button" class="excel-icon" (click)="exportToExcel('Liabilities')"> -->
+              </div>
+            </div>
+          </div>
+          <div class="liabilities-table">
+            <table>
+              <thead>
+                <tr>
+                  <th
+                    *ngFor="let item of liabilitiesTableKeyVal"
+                    [ngStyle]="{
+                      'justify-content': item.justify,
+                      display: 'flex',
+                      'align-items': 'center'
+                    }"
+                  >
+                    <span
+                      class="material-icons"
+                      [ngClass]="{ rotate: item.isAsc }"
+                      (click)="
+                        filterBy(
+                          item.keyName,
+                          liabilitiesArr,
+                          liabilitiesTableKeyVal
+                        )
+                      "
+                      *ngIf="item.isFilter && item.justify === 'flex-end'"
+                      >arrow_drop_down</span
+                    >
+                    <span [innerHTML]="item.colName"> </span>
+                    <span
+                      class="material-icons"
+                      [ngClass]="{ rotate: item.isAsc }"
+                      (click)="
+                        filterBy(
+                          item.keyName,
+                          liabilitiesArr,
+                          liabilitiesTableKeyVal
+                        )
+                      "
+                      *ngIf="item.isFilter && item.justify !== 'flex-end'"
+                      >arrow_drop_down</span
+                    >
+                  </th>
+                </tr>
+              </thead>
+              <tbody
+                class="liabilities-table-body-container"
+                *ngIf="liabilitiesArr.length > 0"
+              >
+                <tr
+                  *ngFor="let item of liabilitiesArr"
+                  class="liabilities-table-body"
+                >
+                  <td style="display: flex">
+                    <div
+                      style="
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: left;
+                        text-align: left;
+                      "
+                      class="liabilities-name"
+                    >
+                      <div
+                        class="liabilities-type-header"
+                        [ngStyle]="{ color: item.color }"
+                      >
+                        {{ item.ExposureDescription }}
+                      </div>
+                      <!-- <div>BUY AUD - USD Worth </div> -->
+                      <div class="liabilities-name-div">
+                        <!-- <span style="color: var(--heading-label);">Exposure Code: </span> -->
+                        {{ item.Reference }}
+                      </div>
+                    </div>
+                  </td>
+                  <td style="display: flex" class="justify-center">
+                    {{ item.Ccy }}
+                  </td>
+                  <td style="display: flex" class="justify-right">
+                    {{
+                      item.ExposureTradeCcy === 0
+                        ? "-"
+                        : (item.ExposureTradeCcy | number: "1.2-2")
+                    }}
+                  </td>
+                  <!-- <td style="display:flex;" class="justify-right">{{item.ExpoAmt===0?'-':item.ExpoAmt |
+                    number:'1.2-2'}}</td> -->
+                  <td style="display: flex" class="justify-right">
+                    <!-- {{item.ExposureInBaseCcy===0?'-':item.ExposureInBaseCcy| number:'1.2-2'}} -->
+                    <div class="double-decker-row">
+                      <div class="double-decker-row-1">
+                        <span>Rate: </span>
+                        <span style="color: var(--heading-label)">{{
+                          item.FXRate
+                        }}</span>
+                      </div>
+                      <div class="double-decker-row-2">
+                        {{
+                          item.ExposureInBaseCcy === 0
+                            ? "-"
+                            : (item.ExposureInBaseCcy | number: "1.2-2")
+                        }}
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+              <tbody
+                *ngIf="liabilitiesArr.length === 0"
+                class="liabilities-table-body-container"
+              >
+                <tr>
+                  <td colspan="99">No records found.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div></div>
+</div>

@@ -1,0 +1,7 @@
+<div>
+    <select [(ngModel)]="selectedCard">
+        <option value=""></option>
+        <option *ngFor="let i of hiddenCards" value = "{{i}}">{{i}}</option>
+    </select>
+    <button class="button" (click)="addCard()"> Add </button>
+</div>

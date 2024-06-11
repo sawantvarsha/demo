@@ -1,0 +1,20 @@
+<div class="mainContainer" id="mainContainer">
+    <div class="headerRow">
+        <div class="header">
+            Historical Data
+        </div>
+        <div class="header pair">
+            {{SelectedCcyPair}}
+        </div>
+        <div class="tenorBtncontainer">
+            <div class="tenorBtn" [ngClass]="{selectedTenorBtn: (selectedTenor=='12')}" (click)="getTenor(12)">1Y</div>
+            <div class="tenorBtn" [ngClass]="{selectedTenorBtn: (selectedTenor=='6')}" (click)="getTenor(6)">6M</div>
+            <div class="tenorBtn" [ngClass]="{selectedTenorBtn: (selectedTenor=='3')}" (click)="getTenor(3)">3M</div>
+        </div>
+    </div>
+    <hr class="header-line">
+    <div class="graphContainer" id="graphContainer">
+
+    </div>
+
+</div>

@@ -1,0 +1,65 @@
+<!-- <div>
+    <div class="product-title">{{productDetails.Product_Name}}</div>
+    <div class="product-issuername">{{productDetails.Issuer_Name}} | 
+    <span class="heading">Currency</span> {{productDetails.Currency}} |
+    <span class="heading">ISIN</span> {{productDetails.ISIN}}
+    </div> 
+</div> -->
+
+<div class="stress-test-topbar">
+        <label class="">Current Spot</label>
+        <input type="text" [(ngModel)]="current_spot" disabled/>
+        <label class="">Current Vol.</label>
+        <input type="text" [(ngModel)]="current_vol" disabled/>
+        <label>Spot Change(%)</label>
+        <input type = "text" [(ngModel)]="spotPercChange"/>
+        <label>Vol Change(%)</label>
+        <input type="text" [(ngModel)]="volPercChange"/>
+        <button class="button" (click)="load()">Load</button>
+</div>
+<div *ngIf="dataFlag == true">
+    <div class="loader-container" *ngIf = "stressTestResponse.length == 0 ">
+        <div class="">
+            <div class="multi-ripple">
+              <div></div>
+              <div></div>
+            </div>
+        </div>
+    </div>
+    <table *ngIf = "stressTestResponse.length > 0 ">
+        <thead>
+            <th>Asset</th>
+            <th>Strike</th>
+            <th>Spot Change(%)</th>
+            <th>Vol Change(%)</th>
+            <th>Spot</th>
+            <th>Vol</th>
+            <th>Price</th>
+        </thead>
+        <tbody>
+            <tr *ngFor = "let res of stressTestResponse">
+                <td class="align-center">
+                    {{res.Asset}}
+                </td>
+                <td class="align-center">
+                    {{res.Strike}}
+                </td>
+                <td class="align-right">
+                    {{res.Spot_x0020_Change_x0028__x0025__x0029_}}
+                </td>
+                <td class="align-right">
+                    {{res.Vol_x0020_Change_x0028__x0025__x0029_}}
+                </td>
+                <td class="align-right">
+                    {{res.Spot }}
+                </td>
+                <td class="align-right">
+                    {{res.Vol }}
+                </td>
+                <td class="align-right">
+                    {{res.Price }}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

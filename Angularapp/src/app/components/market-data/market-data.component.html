@@ -1,0 +1,673 @@
+<!-- 
+<div>
+    <div class="Main_container_grid">
+
+        <div class="Left_sub_grid">
+            <div class="Share_search_grid">
+                <div class="header-text">Share Market Data</div>
+                <div class = "search-share-wrapper" (clickOutside)="onClickedOutside($event)">
+                    <div class="search_Div">
+                        <app-svg-icons class="" icon="{{'icon-search'}}" [width]="'20'" [height]="'20'">
+                        </app-svg-icons>
+                        <input type="search" placeholder="Search Security" (click) = "showShareListPopup = true" (keydown)="changeIndex($event)" (input) = "searchShare($event)">
+                    </div>
+                    <ng-container *ngIf = "showShareListPopup">
+                        <div class="search-popup" id="panel-dropdown">
+                            <div *ngFor = "let share of shareList; let i = index;" class="flex-searchcard" [ngClass]="{HoverSuggestion: i === selectedIndex}" (keydown)="changeIndex($event)">
+                                <div (click) = "selectShare(share)">{{share.Code}}</div> 
+                             </div>
+                        </div>
+                    </ng-container>
+                </div>
+               
+            </div>
+    
+            <div class="card Share_Info">
+                <div class="top-flex">
+                    <div>
+                        <div class="Share_text font-family">{{shareLongName}}</div>
+                        <div>
+                            <span class="Sub_header font-family">Ticker</span><span class="sub-Value font-family">{{shareName}}</span>
+                            <span class="VerticalBar">|</span> 
+                            <span class="Sub_header font-family">Currency</span><span class="sub-Value font-family">{{selectedCurrency}}</span>
+                            <span class="VerticalBar">|</span> 
+                            <span class="Sub_header font-family">Exchange</span><span class="sub-Value font-family">NASDAQ</span></div>
+                    </div>
+                    <div class="spot_flex">
+                        <div class="Spot-Value font-family">{{prevClose | number :'1.0-2' }}</div>
+                        <div class="spot font-family">Spot</div>
+                    </div>
+                    
+                </div>
+        
+                <div class="pricingchart-wrapper">
+                    <app-underlying-linechart [chartInput]="Pricedata" [showXLableFlag] = "'false'"  *ngIf = "pricingChartFlag"></app-underlying-linechart>
+
+                    <div  class="flx-dates">
+                        <div *ngFor = "let dates of unique_pricingXaxis">
+                            <span>{{dates}}</span> 
+                         </div>
+                    </div>
+                   
+                </div>
+    
+            </div>
+    
+            <div class="Second_sub_left">
+                <div class="card">
+                    <div class="Card_inner_Grid">
+                        <div class="flex-shares-correlation">
+                            <div>
+                                <div class="Second_sub_header">
+                                    Correlations
+                                </div>
+                                <div class="border"></div>
+                            </div>
+                            <div class="flex-share-plot">
+                                <button class = "button" (click) = "clearCorrelationShare()">Clear</button>
+                                <button class = "button" (click) = "PlotCorrelation()">Plot</button>
+                                <select class="select-corelation" (change) = "addSharesCorrelation($event)">
+                                    <option *ngFor = "let shares of unique_correlationShare">
+                                        {{shares.Underlying2}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div>
+                
+                                <div *ngIf = "flag_correlation">
+                                    <app-column-chart  [height]="250"
+                                    [name]="'Correlation'"
+                                    [title]="''" [_graphdata]="correlation_chart_data"></app-column-chart>
+                                </div>
+                          
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="Card_inner_Grid">
+                        <div>
+                            <div class="Second_sub_header">
+                               {{interestRateChart}}
+                            </div>
+                            <div class="border_Interest"></div>
+                        </div>
+                  
+
+                      <app-underlying-linechart [chartInput]="interestRate"  [showXLableFlag] = "'true'" *ngIf = "optionRateFlag"></app-underlying-linechart>
+               
+                    </div>
+
+                </div>
+    
+            </div>
+    
+        </div>
+    
+        <div class="Left_sub_grid">
+            <div></div>
+            <div class="card">
+                <div class="current_grid">
+                    <div class="Card_inner_Grid_over">
+                        <div>
+                            <div class="Second_sub_header">
+                                Overview
+                            </div>
+                            <div class="border_Overview"></div>
+                        </div>
+                        <div class="OverViewContents">
+                            <div class="OverviewSubContents">
+                                <div>YTD Chng %</div>
+                                <div class="oveviewValue" *ngIf="YTDChng != ''">{{YTDChng | number :'1.0-2' }}</div>
+                            </div>
+                            <div class="OverviewSubContents">
+                                <div>MTD Chng %</div>
+                                <div class="oveviewValue" *ngIf="MTDChng != ''">{{MTDChng | number :'1.0-2' }}</div>
+                            </div>
+                            <div class="OverviewSubContents">
+                                <div>1 Year Chng %</div>
+                                <div class="oveviewValue" *ngIf="YearChng != ''">{{YearChng | number :'1.0-2'}}</div>
+                            </div>
+
+                            <div class="range_grid">
+                                <div class="range-labels">
+                                    <span class="range-label"> Low</span>
+                                    <span class="range-label"> High</span>
+                                </div>
+                                <div class="range-bar-wrapper">
+                                    <div #rangePointer class="range-pointer"></div>
+                                    <div class="range-bar"></div>
+                                </div>
+                                <div class="range-values">
+                                    <span class="range-value num">{{_priceLow | number: '1.2-2'}}</span>
+                                    <span class="range-value num">{{_priceHigh | number: '1.2-2'}}</span>
+                                </div>
+                            </div>
+                         
+                            <div class="current_vol_annualized">
+                                <div class="Card_inner_Grid_over">
+                                    <div class="Second_sub_header">
+                                        <label>Current Vol. Annualized</label>
+                                        <div class="border_CurrentVol"></div> 
+                                    </div>
+                                  
+
+                                    <div>
+                                        <div class="data_vol">
+                                            <div class="Vol_annual">
+                                                <span>{{D20 | number :'0.0-2'}}</span>
+                                                <span>{{D60 | number :'0.0-2'}}</span>
+                                                <span>{{D250 | number :'1.0-2'}}</span>
+                                            </div>
+                                            <div class="Vol_annual Vol_color">
+                                                <span>20D</span>
+                                                <span>60D</span>
+                                                <span>250D</span>
+                                            </div>
+                                        </div>
+                                       </div>
+                                </div>
+                           
+                             
+                            </div>
+                       
+                        </div>
+                    </div>
+                </div>
+             
+            </div>
+            <div class="card">
+                <div>
+                    <div>
+                        <div class="Second_sub_header">
+                            Volatility
+                        </div>
+                        <div class="border_Volatility"></div>
+                    </div>
+                   <div>
+                    <div id="myDiv" style="margin-top: -56px">
+                    </div>
+                   </div>
+                </div>
+            </div>
+        </div>
+    
+      
+    </div>
+    
+    <div class="volatilitygrid">
+        <div class="card">
+            <div class="Card_inner_Grid">
+                <div>
+                    <div class="Second_sub_header">
+                        Volatility
+                    </div>
+                    <div class="border_Volatility"></div>
+                </div>
+                <div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Underlying</th>
+                                <th>Tenor</th>
+                                <th>Trading Days</th>
+                                <th>Pillar 1 (60%)</th>
+                                <th>Pillar 2 (80%)</th>
+                                <th>Pillar 3 (90%)</th>
+                                <th>Pillar 4 (95%)</th>
+                                <th>Pillar 5 (97.5%)</th>
+                                <th>Pillar 6 (100ATM)</th>
+                                <th>Pillar 7 (102.5%)</th>
+                                <th>Pillar 8 (105%)</th>
+                                <th>Pillar 9 (110%)</th>
+                                <th>Pillar 10 (120%)</th>
+                                <th>Pillar 11 (130%)</th>
+                                <th>Pillar 12 (150%)</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let Val of VolatilityData">
+                                <td>{{Val.Underlying}}</td>
+                                <td>{{Val.Tenor}}</td>
+                                <td>{{Val.TradingDays}}</td>
+                                <td>{{Val.Pillar_1 | number :'0.0-2'}}</td>
+                                <td>{{Val.Pillar_2 | number :'0.0-2'}}</td>
+                                <td>{{Val.Pillar_3 | number :'0.0-2'}}</td>
+                                <td>{{Val.Pillar_4 | number :'0.0-2'}}</td>
+                                <td>{{Val.Pillar_5 | number :'0.0-2'}}</td>
+                                <td>{{Val.Pillar_6 | number :'0.0-2'}}</td>
+                                <td>{{Val.Pillar_7 | number :'0.0-2'}}</td>
+                                <td>{{Val.Pillar_8 | number :'0.0-2'}}</td>
+                                <td>{{Val.Pillar_9 | number :'0.0-2'}}</td>
+                                <td>{{Val.Pillar_10 | number :'0.0-2'}}</td>
+                                <td>{{Val.Pillar_11 | number :'0.0-2'}}</td>
+                                <td>{{Val.Pillar_12 | number :'0.0-2'}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+ 
+
+
+
+ -->
+
+<div class="page-navigation page-nav-margin">
+  <app-svg-icons
+    class="back-button"
+    [icon]="'back-button'"
+    [width]="'40'"
+    [height]="'40'"
+    [fill]="'var(--headers)'"
+    (click)="back()"
+  ></app-svg-icons>
+  <div class="header-search-wrapper">
+    <div class="page-title share-title-page">Share Market Data</div>
+    <div
+      class="search-share-wrapper"
+      (clickOutside)="onClickedOutside($event, '')"
+    >
+      <div class="search_Div">
+        <app-svg-icons
+          class=""
+          icon="{{ 'icon-search' }}"
+          [width]="'20'"
+          [height]="'20'"
+        >
+        </app-svg-icons>
+        <input
+          type="search"
+          placeholder="Search Security"
+          (click)="showShareListPopup = true"
+          (keydown.enter)="changeIndex($event)"
+          (keydown.arrowup)="changeIndex($event)"
+          (keydown.arrowdown)="changeIndex($event)"
+          (keydown.backspace)="clear(); showShareListPopup = true"
+          (input)="searchShare($event)"
+          value="{{ shareName }}"
+        />
+      </div>
+      <ng-container *ngIf="showShareListPopup">
+        <div
+          class="search-popup"
+          id="panel-dropdown"
+          *ngIf="shareList?.length != 0"
+        >
+          <div
+            *ngFor="let share of shareList; let i = index"
+            class="flex-searchcard"
+            [ngClass]="{ HoverSuggestion: i === selectedIndex }"
+            (keydown)="changeIndex($event)"
+          >
+            <div (click)="selectShare(share)">
+              {{ share?.Code }} | {{ share?.LongName }}
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>
+
+<div class="grid-sharemarket">
+  <div class="card-sharemarket pricing-card">
+    <div class="top-flex">
+      <div>
+        <div class="Share_text font-family">{{ shareLongName }}</div>
+        <div>
+          <span class="Sub_header font-family">Ticker</span
+          ><span class="sub-Value font-family">{{ shareName }}</span>
+          <span class="VerticalBar">|</span>
+          <span class="Sub_header font-family">Currency</span
+          ><span class="sub-Value font-family">{{ selectedCurrency }}</span>
+          <span class="VerticalBar"></span>
+          <!-- <span></span><span></span> -->
+          <span class="Sub_header font-family"></span
+          ><span class="sub-Value font-family"></span>
+        </div>
+      </div>
+      <div class="spot_flex">
+        <!-- <div class="Spot-Value font-family">
+          {{ prevClose | number: "1.0-2" }}
+        </div>
+        <div class="spot font-family">Spot</div> -->
+      </div>
+    </div>
+
+    <div class="pricingchart-wrapper">
+      <div class="" *ngIf="!pricingChartFlag && errorMsg == ''">
+        <div class="loader-marketdata">
+          <div class="multi-ripple">
+            <div></div>
+            <div></div>
+          </div>
+        </div>
+      </div>
+      <div class="error error-pricingchart" *ngIf="errorMsg != ''">
+        {{ errorMsg }}
+      </div>
+
+      <app-area-chart
+        [graphdataprice]="Pricedata"
+        [showXLableFlag]="'false'"
+        [name] = "area"
+        *ngIf="pricingChartFlag"
+      ></app-area-chart>
+      <!-- <div class="flx-dates-marketdata" *ngIf="pricingChartFlag">
+        <div *ngFor="let dates of unique_pricingXaxis">
+          <span>{{ dates }}</span>
+        </div>
+      </div> -->
+    </div>
+  </div>
+  <div class="card-sharemarket">
+    <div class="card">
+      <div class="current_grid">
+        <div class="Card_inner_Grid_over">
+          <div>
+            <div class="Second_sub_header">Overview</div>
+            <div class="border_Overview"></div>
+          </div>
+          <div class="OverViewContents">
+            <div class="OverviewSubContents">
+              <div>YTD Chng %</div>
+              <div class="oveviewValue overviewFont" *ngIf="YTDChng != ''">
+                {{ YTDChng | number: "1.0-2" }}
+              </div>
+            </div>
+            <div class="OverviewSubContents">
+              <div>MTD Chng %</div>
+              <div class="oveviewValue overviewFont" *ngIf="MTDChng != ''">
+                {{ MTDChng | number: "1.0-2" }}
+              </div>
+            </div>
+            <div class="OverviewSubContents">
+              <div>1 Year Chng %</div>
+              <div class="oveviewValue overviewFont" *ngIf="YearChng != ''">
+                {{ YearChng | number: "1.0-2" }}
+              </div>
+            </div>
+
+            <div class="range_grid">
+              <div class="range-labels">
+                <span class="range-label"> Low</span>
+                <span class="range-label"> High</span>
+              </div>
+              <div class="range-bar-wrapper">
+                <div #rangePointer class="range-pointer"></div>
+                <div class="range-bar"></div>
+              </div>
+              <div class="range-values">
+                <span class="range-value num overviewFont">{{
+                  _priceLow | number: "1.2-2"
+                }}</span>
+                <span class="range-value num overviewFont">{{
+                  _priceHigh | number: "1.2-2"
+                }}</span>
+              </div>
+            </div>
+
+            <div class="current_vol_annualized">
+              <div class="Card_inner_Grid_over">
+                <div class="Second_sub_header">
+                  <label>Current Vol. Annualized</label>
+                  <div class="border_CurrentVol"></div>
+                </div>
+
+                <div>
+                  <div class="data_vol">
+                    <div class="Vol_annual">
+                      <span class="overviewFont">{{ D20 | number: "0.0-2" }}</span>
+                      <span class="overviewFont">{{ D60 | number: "0.0-2" }}</span>
+                      <span class="overviewFont">{{ D250 | number: "1.0-2" }}</span>
+                    </div>
+                    <div class="Vol_annual Vol_color">
+                      <span>20D</span>
+                      <span>60D</span>
+                      <span>250D</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card-sharemarket">
+    <div class="card">
+      <div class="Card_inner_Grid">
+        <div class="flex-shares-correlation">
+          <div>
+            <div class="Second_sub_header">Correlations</div>
+            <div class="border"></div>
+          </div>
+          <div
+            class="flex-share-plot"
+            (clickOutside)="onClickedOutside($event, 'Cor')"
+          >
+            <div class="search-share-wrapper" class="multiselect_input">
+              <div
+                class="search_Div"
+                (click)="showShareListMultiselectPopup = true; "
+              >
+                <app-svg-icons
+                  class=""
+                  icon="{{ 'icon-search' }}"
+                  [width]="'20'"
+                  [height]="'20'"
+                >
+                </app-svg-icons>
+                <div class="tooltip">
+                  <input type="search" [(ngModel)]="multishare" class="input_search" />
+                  <span class="tooltiptext" *ngIf="multishare !== ''">{{multishare}}</span>
+                </div>
+                 
+                
+              </div>
+              <ng-container *ngIf="showShareListMultiselectPopup">
+                <div class="Search_correlation_popup">
+                  <div
+                    *ngFor="
+                      let shares of unique_correlationShare;
+                      let i = index
+                    "
+                    class="flex-searchcard"
+                  >
+                    <div class="Multiselect_flex">
+                      <input
+                        type="checkbox"
+                        class="Multiselect_Checkbox"
+                        (click)="getIndex($event, shares.Underlying2)"
+                        [checked]="
+                          correlation_shares.includes(shares.Underlying2)
+                        "
+                      />
+                      <span>{{ shares.Underlying2 }}</span>
+                    </div>
+                  </div>
+                </div>
+              </ng-container>
+            </div>
+            <button class="button btn-clear" (click)="clearCorrelationShare()">
+              Clear
+            </button>
+            <button class="button btn-plot" (click)="PlotCorrelation()">
+              Plot
+            </button>
+            <!-- <select class="select-corelation" (change) = "addSharesCorrelation($event)">
+                            <option *ngFor = "let shares of unique_correlationShare">
+                                {{shares.Underlying2}}
+                            </option>
+                        </select> -->
+
+            <!-- <div class="UnderlyingSearch">
+    <div id="CustomerNameList" class="SelectorBox" (clickOutside)="onClickedOutside($event)">
+      <a #CustomerNamesList *ngFor="
+          let customer of unique_correlationShare
+          let i = index
+        " (keypress)="ChangeIndex($event)">
+  
+        <div *ngIf="customer" (click)="addSharesCorrelation(customer)"
+          (keydown.enter)="addSharesCorrelation(customer)" [ngClass]="{ HoverSuggestion: i === selectedIndex }">
+          <span> {{shares.Underlying2}}</span>
+        </div>
+  
+      </a>
+    </div>
+  </div> -->
+          </div>
+        </div>
+        <div>
+          <div class="" *ngIf="!flag_correlation">
+            <div class="loader-marketdata">
+              <div class="multi-ripple">
+                <div></div>
+                <div></div>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="flag_correlation">
+            <app-column-chart
+              [height]="250"
+              [name]="'Correlation'"
+              [title]="''"
+              [_graphdata]="correlation_chart_data"
+            ></app-column-chart>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card-sharemarket">
+    <div class="card">
+      <div class="Card_inner_Grid">
+        <div>
+          <div class="Second_sub_header">
+            {{ interestRateChart }}
+          </div>
+          <div class="border_Interest"></div>
+        </div>
+        <div class="" *ngIf="!optionRateFlag && interestRateError == ''">
+          <div class="loader-marketdata">
+            <div class="multi-ripple">
+              <div></div>
+              <div></div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="interestRateError != ''">{{ interestRateError }}</div>
+        <app-underlying-linechart
+          [chartInput]="interestRate"
+          [showXLableFlag]="'true'"
+          *ngIf="optionRateFlag"
+        ></app-underlying-linechart>
+      </div>
+    </div>
+  </div>
+  <div class="card-sharemarket">
+    <div class="card">
+      <div>
+        <div>
+          <div class="Second_sub_header">Volatility</div>
+          <div class="border_Volatility"></div>
+        </div>
+        <div>
+          <!-- <div *ngIf="!volatilityFlag && volatilityError == ''">
+            <div class="loader-marketdata">
+              <div class="multi-ripple">
+                <div></div>
+                <div></div>
+              </div>
+            </div>
+          </div> -->
+          <div class="error error-pricingchart" *ngIf="volatilityError != ''">
+            {{ volatilityError }}
+          </div>
+          <div>
+            <!-- <div id="myDiv" style="margin-top: -56px"> 
+                    </div>-->
+            <plotly-plot
+              [data]="graph.data"
+              [layout]="graph.layout"
+              [config]="graph.config"
+            ></plotly-plot>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card-sharemarket vol-card-grid">
+    <div class="card">
+      <div class="Card_inner_Grid">
+        <div>
+          <div class="Second_sub_header">Volatility</div>
+          <div class="border_Volatility"></div>
+        </div>
+        <div>
+          <table>
+            <thead>
+              <tr>
+                <th>Underlying</th>
+                <th>Tenor</th>
+                <th>Trading Days</th>
+                <th>Pillar 1 <br> (60%)</th>
+                <th>Pillar 2 <br> (80%)</th>
+                <th>Pillar 3 <br>(90%)</th>
+                <th>Pillar 4 <br> (95%)</th>
+                <th>Pillar 5 <br> (97.5%)</th>
+                <th>Pillar 6 (100ATM)</th>
+                <th>Pillar 7 (102.5%)</th>
+                <th>Pillar 8 <br> (105%)</th>
+                <th>Pillar 9 <br> (110%)</th>
+                <th>Pillar 10 (120%)</th>
+                <th>Pillar 11 (130%)</th>
+                <th>Pillar 12 (150%)</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <div *ngIf="!volatilityFlag && volatilityError == ''">
+                <div class="loader-marketdata">
+                  <div class="multi-ripple">
+                    <div></div>
+                    <div></div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="error error-pricingchart"
+                *ngIf="volatilityError != ''"
+              >
+                {{ volatilityError }}
+              </div>
+              <tr *ngFor="let Val of VolatilityData">
+                <td>{{ Val.Underlying }}</td>
+                <td>{{ Val.Tenor }}</td>
+                <td>{{ Val.TradingDays }}</td>
+                <td>{{ Val.Pillar_1 | number: "0.0-2" }}</td>
+                <td>{{ Val.Pillar_2 | number: "0.0-2" }}</td>
+                <td>{{ Val.Pillar_3 | number: "0.0-2" }}</td>
+                <td>{{ Val.Pillar_4 | number: "0.0-2" }}</td>
+                <td>{{ Val.Pillar_5 | number: "0.0-2" }}</td>
+                <td>{{ Val.Pillar_6 | number: "0.0-2" }}</td>
+                <td>{{ Val.Pillar_7 | number: "0.0-2" }}</td>
+                <td>{{ Val.Pillar_8 | number: "0.0-2" }}</td>
+                <td>{{ Val.Pillar_9 | number: "0.0-2" }}</td>
+                <td>{{ Val.Pillar_10 | number: "0.0-2" }}</td>
+                <td>{{ Val.Pillar_11 | number: "0.0-2" }}</td>
+                <td>{{ Val.Pillar_12 | number: "0.0-2" }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

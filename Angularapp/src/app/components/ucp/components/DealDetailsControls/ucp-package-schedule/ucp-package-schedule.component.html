@@ -1,0 +1,189 @@
+<div style="height: 987px;">
+    <table style="width: 700px;">
+        <tr>
+            <td style="vertical-align: top; width: 5%; padding: 0px 13px 0px 0px;">
+                <button class="ucp-btn-text-clr" mat-raised-button matTooltip="Refresh" (click)="reload()">
+                    <mat-icon>refresh</mat-icon>
+                </button>
+            </td>
+            <td style="vertical-align: top; width: 5%; padding: 0px 13px 0px 0px;">
+                <button class="ucp-btn-text-clr" mat-raised-button matTooltip="Save" (click)="save()">
+                    <mat-icon>save</mat-icon>
+                </button>
+            </td>
+            <td style="vertical-align: top; width: 20%; padding: 0px 13px 0px 0px;">
+                <button class="ucp-btn-text-clr" mat-raised-button matTooltip="Export Summary" (click)="exportSummary()">Export Summary</button>
+            </td>
+            <td style="vertical-align: top; width: 20%; padding: 0px 13px 0px 0px;">
+                <button class="ucp-btn-text-clr" mat-raised-button matTooltip="View Schedule" [hidden]="!blnViewSchedule" (click)="viewSchedules()">View Schedule</button>
+            </td>
+            <td style="vertical-align: top; width: 20%; padding: 0px 13px 0px 0px;">
+                <button class="ucp-btn-text-clr" mat-raised-button matTooltip="Hide Schedule" [hidden]="blnViewSchedule" (click)="hideSchedules()">Hide Schedule</button>
+            </td>
+            <td style="vertical-align: top; width: 35%; padding: 0px 13px 0px 0px;">
+                <input #fileUpload disabled class="ucp-btn-text-clr" style="width: 255px;" (change)="onImportClick($event)" type="file"  multiple="multiple" accept=".xlsx"  />
+            </td>
+            <td style="vertical-align: top; width: 5%; padding: 0px 13px 0px 0px; cursor: not-allowed !important;">
+                <button disabled mat-raised-button matTooltip="Export" style="cursor: not-allowed !important; background: var(--disabled) !important;" (click)="exportAsXLSX()">
+                    <mat-icon>download</mat-icon>
+                </button>
+            </td>
+        </tr>
+    </table>
+    <!-- <div class="padding-bottom-10px">
+        <button mat-raised-button matTooltip="Refresh" (click)="reload()">
+            <mat-icon>refresh</mat-icon>
+        </button>
+        &nbsp;
+        <button mat-raised-button matTooltip="Save" (click)="save()">
+            <mat-icon>save</mat-icon>
+        </button>
+        &nbsp;
+        <button mat-raised-button matTooltip="Export Summary" (click)="exportSummary()">Export Summary</button>
+        &nbsp;
+        <button mat-raised-button matTooltip="View Schedule" [hidden]="!blnViewSchedule" (click)="viewSchedules()">View Schedule</button>
+        <button mat-raised-button matTooltip="Hide Schedule" [hidden]="blnViewSchedule" (click)="hideSchedules()">Hide Schedule</button>
+        &nbsp;
+        <input #fileUpload (change)="onImportClick($event)" type="file"  multiple="multiple" accept=".xlsx"  />
+        &nbsp;
+        <button mat-raised-button matTooltip="Export" (click)="exportAsXLSX()">
+            <mat-icon class="export-button-color export-icon-alignment" svgIcon="Export_All"></mat-icon>
+        </button>
+    </div> -->
+
+    <app-loader *ngIf="this.loader" style="position: absolute;margin-left: 40%; z-index: 99;"></app-loader>
+    <div class="overlay_grey" *ngIf="this.loader"></div>
+    <label style="color: red;">{{lblErrorMsg}}</label>
+    <label style="color: green;">{{ lblCount }}</label>
+
+    <table id="divGrid" style="width: 1500px;">
+        <tr>
+            <td style="display: block;margin: 0px !important;padding: 12px 0px 0px 0px !important;width: 907px;">
+                <div id="packageSchedule" style="padding-bottom: 50px;" [hidden]="hideScheduleDiv" class="mat-elevation-z8">
+                    <table id="dgvPackagedSchedule"  mat-table [dataSource]="dsPackageSchedule">
+                
+                        <!-- Period -->
+                        <ng-container matColumnDef="upS_Period">
+                            <th mat-header-cell *matHeaderCellDef class="width_100px centered-cell">Period</th>
+                            <td class="text-center centered-cell ucp-opposite" mat-cell *matCellDef="let element; let i = index">
+                                <span class="lnk-btn txt-blue cursor-pointer" (click)="viewScheduleForSelectPeriod(i)"> {{
+                                    element.upS_Period }} </span>
+                            </td>
+                        </ng-container>
+                
+                        <!-- Period Start Date -->
+                        <ng-container matColumnDef="StartDate">
+                            <th mat-header-cell *matHeaderCellDef class="width_150px centered-cell">Period Start Date</th>
+                            <td class="text-center centered-cell ucp-opposite" mat-cell *matCellDef="let element">
+                                <!-- <app-date-picker [width]="'90%'" [input]="element.StartDate" [disabled]="element.StartDate.readOnly"
+                                    [value]="element.StartDate.value"></app-date-picker> -->
+                                    {{element.StartDate.value}}
+                            </td>
+                        </ng-container>
+                
+                        <!-- Period End Date -->
+                        <ng-container matColumnDef="EndDate">
+                            <th mat-header-cell *matHeaderCellDef class="width_150px centered-cell">Period End Date</th>
+                            <td class="text-center centered-cell ucp-opposite" mat-cell *matCellDef="let element">
+                                <!-- <app-date-picker [width]="'90%'" [input]="element.EndDate" [disabled]="element.EndDate.readOnly"
+                                    [value]="element.EndDate.value"></app-date-picker> -->
+                                    {{element.EndDate.value}}
+                            </td>
+                        </ng-container>
+                
+                        <!-- Settlement Date -->
+                        <ng-container matColumnDef="SettlementDate">
+                            <th mat-header-cell *matHeaderCellDef class="width_150px centered-cell">Settlement Date</th>
+                            <td class="text-center centered-cell ucp-opposite" mat-cell *matCellDef="let element">
+                                <!-- <app-date-picker [width]="'90%'" [input]="element.SettlementDate" [disabled]="element.SettlementDate.readOnly"
+                                    [value]="element.SettlementDate.value"></app-date-picker> -->
+                                    {{element.SettlementDate.value}}
+                            </td>
+                        </ng-container>
+                
+                        <!-- No of Business Days -->
+                        <ng-container matColumnDef="upS_No_business_Days">
+                            <th mat-header-cell *matHeaderCellDef class="width_100px centered-cell">No of Business Days</th>
+                            <td class="text-center centered-cell ucp-opposite" mat-cell *matCellDef="let element"> {{ element.upS_No_business_Days }} </td>
+                        </ng-container>
+                
+                        <!-- View Schedule -->
+                        <ng-container matColumnDef="select">
+                            <th mat-header-cell *matHeaderCellDef class="width_150px centered-cell">View Schedule</th>
+                            <td class="text-center centered-cell" mat-cell *matCellDef="let element; let i = index">
+                                <span class="lnk-btn txt-blue cursor-pointer" (click)="viewScheduleForSelectPeriod(i)">View Schedule</span>
+                            </td>
+                        </ng-container>
+                
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        
+                    </table>
+                </div>
+            </td>
+            <td style="margin: 0px !important;padding: 12px 0px 70px 0px !important; width: 500px; vertical-align: top;">
+                <div id="scheduleDetails" [hidden]="hideDetails" class="mat-elevation-z8 padding-top-16">
+                    <table id="dgvScheduleDetails" mat-table [dataSource]="dsScheduleDetails">
+                
+                        <!-- Delete -->
+                        <ng-container matColumnDef="select">
+                            <th mat-header-cell *matHeaderCellDef class="width_75px centered-cell"></th>
+                            <td class="text-center centered-cell ucp-opposite" mat-cell *matCellDef="let element">
+                                <mat-icon class="mat-icon-size txt-blue cursor-pointer" matTooltipClass="ucp-tooltip" matTooltip="Delete"
+                                matTooltipPosition="right" (click)="deleteRecord(element)">delete</mat-icon>
+                                <!-- <span class="lnk-btn txt-blue cursor-pointer" (click)="deleteRecord(element)">Delete</span> -->
+                            </td>
+                        </ng-container>
+        
+                        <!-- Sr No -->
+                        <ng-container matColumnDef="sR_No">
+                            <th mat-header-cell *matHeaderCellDef class="width_75px centered-cell">Sr No</th>
+                            <td class="text-center centered-cell ucp-opposite" mat-cell *matCellDef="let i = index">
+                                <span>{{ i + 1 }}</span>
+                            </td>
+                        </ng-container>
+                
+                        <!-- Fixing Date -->
+                        <ng-container matColumnDef="Fixing">
+                            <th mat-header-cell *matHeaderCellDef class="width_150px centered-cell">Fixing Date</th>
+                            <td class="text-center centered-cell ucp-opposite" mat-cell *matCellDef="let element">
+                                <!-- <app-date-picker [width]="'90%'" [input]="element.Fixing" [disabled]="element.Fixing.readOnly"
+                                    [value]="element.Fixing.value"></app-date-picker> -->
+                                    {{element.Fixing.value}}
+                            </td>
+                        </ng-container>
+                
+                        <!-- Settlement Date -->
+                        <ng-container matColumnDef="Settlement">
+                            <th style="padding-right: 0px;" mat-header-cell *matHeaderCellDef class="width_150px centered-cell">Settlement Date</th>
+                            <td style="padding-right: 0px;" class="text-center centered-cell ucp-opposite" mat-cell *matCellDef="let element">
+                                <!-- <app-date-picker [width]="'90%'" [input]="element.Settlement" [disabled]="element.Settlement.readOnly"
+                                    [value]="element.Settlement.value"></app-date-picker> -->
+                                    {{element.Settlement.value}}
+                            </td>
+                        </ng-container>
+                
+                        <tr mat-header-row *matHeaderRowDef="detailColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: detailColumns;"></tr>
+        
+                    </table>
+                    <!-- <table style="width: 571px;">
+                        <tr>
+                            <td align="left" style="padding: 5px 0px 0px 0px;">
+                                <span class="common-font rows-per-page font-size-14">Rows Per Page</span>
+                            <input class="common-font rows-per-page-input font-size-14" [(ngModel)]="pageSizeVal" #items type="text"
+                                (keyup.enter)="rowsperpage(items.value)" [ngModelOptions]="{standalone: true}"
+                                (blur)=rowsperpage(items.value)>
+                            </td>
+                            <td align="right" style="padding: 2px 0px 0px 0px;">
+                                <mat-paginator class="common-font font-size-14" [pageSize]="pageSizeVal" showFirstLastButtons></mat-paginator>
+                            </td>
+                        </tr>
+                      </table> -->
+                </div>
+            </td>
+        </tr>
+    </table>
+    
+    
+</div>

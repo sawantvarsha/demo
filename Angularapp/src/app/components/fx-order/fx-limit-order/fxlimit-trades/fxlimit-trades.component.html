@@ -1,0 +1,127 @@
+<div class="tradesContainer">
+    <div class="header">
+        <div>{{Title}}</div>
+        <div class="errmsg" *ngIf="errormsgFlag">{{errormsg}}</div>
+        <label for="">From Date:</label>
+        <div class="Label">
+            <input type="date" name="fromdate" id="fromdate" class="fromdate" tabindex="16" min="2000-01-01" [(ngModel)]="fromdate" (change)="changeFromDate()">
+            <span id="Label">{{fromdate| date:'dd-MMM-yyyy'}}</span>
+        </div>
+        <label for="">To Date:</label>
+        <div class="Label">
+            <input type="date" name="todate" id="todate" class="input-dob" tabindex="16" min="2000-01-01" [(ngModel)]="todate" (change)="changeFromDate()">
+            <span id="Label">{{todate| date:'dd-MMM-yyyy'}}</span>
+        </div>
+        <app-svg-icons class="refresh" [icon]="'refresh'" [width]="'30'" [height]="'30'" (click)="refresh()"></app-svg-icons>
+    </div>
+    <hr>
+    <div class="tradesTable">
+        <table>
+            <thead>
+                <!-- <tr>
+                    <th>Date and Time</th>
+                    <th>Order ID</th>
+                    <th *ngIf="Title !='Open Trades'">Deal No</th>
+                    <th>Invoice No</th>
+                    <th>Order</th>
+                    <th>Direction</th>
+                    <th>Pair</th>
+                    <th>Amount1</th>
+                    <th>Amount2</th>
+                    <th>Rate</th>
+                    <th *ngIf="Title =='Open Trades'">SL</th>
+                    <th *ngIf="Title =='Open Trades'">TP</th>
+                </tr> -->
+
+                <tr>
+                    <th>Date and Time</th>
+                    <th>Deal No</th>
+                    <th>Customer Name</th>
+                    <th>Direction</th>
+                    <th>CCY Pair</th>
+                    <th>Nominal</th>
+                    <th>Price</th>
+                    <th>Counter Value</th>
+                    <th>Value Date</th>
+                    <th>Maturity Date</th>
+                    <th>Status</th>
+                    <th></th>
+                </tr>
+
+            </thead>
+
+            <tbody *ngIf="!tradeLoader">
+                <!-- <tr *ngFor="let item of TradesData">
+                    <td *ngIf="Title =='Open Trades'" class="aligncenter">{{EpochToDate(item.Order_Created_At)}}</td>
+                    <td *ngIf="Title !='Open Trades'" class="aligncenter">{{item.Trade_Date}}</td>
+                    <td class="aligncenter">{{item.OrderID}}</td>
+                    <td *ngIf="Title !='Open Trades'" class="alignright">{{item.Deal_No}}</td>
+                    <td class="alignright">{{item.Remark?item.Remark:'-'}}</td>
+                    <td *ngIf="Title =='Open Trades'">{{item.ExecutionType}}</td>
+                    <td *ngIf="Title !='Open Trades'">{{item.Deal_Type}}</td>
+                    <td *ngIf="Title =='Open Trades'" class="aligncenter">{{item.Direction}}</td>
+                    <td *ngIf="Title !='Open Trades'" class="aligncenter">{{item.Deal_Dir == 'B'? 'Buy' : 'Sell'}}</td>
+                    <td *ngIf="Title =='Open Trades'" class="aligncenter">{{item.Pair}}</td>
+                    <td *ngIf="Title !='Open Trades'">{{item.Deal_Pair}}</td>
+                    <td *ngIf="Title =='Open Trades'" class="alignright">{{item.Amount1 | number: '.2'}}</td>
+                    <td *ngIf="Title !='Open Trades'" class="alignright">{{item.Ccy1_Amt | number: '.2'}}</td>
+                    <td *ngIf="Title =='Open Trades'" class="alignright">{{item.Amount2 | number: '.2'}}</td>
+                    <td *ngIf="Title !='Open Trades'" class="alignright">{{item.Ccy2_Amt | number: '.2'}}</td>
+                    <td *ngIf="Title =='Open Trades'" class="alignright">{{item.Target_Rate | number: '.2'}}</td>
+                    <td *ngIf="Title !='Open Trades'" class="alignright">{{item.Deal_Rate | number: '.2'}}</td>
+
+                    <td *ngIf="Title =='Open Trades'">
+                        <div class="btn">
+                            {{item.SL>0?item.SL:'SL'}}
+                        </div>
+                    </td>
+                    <td *ngIf="Title =='Open Trades'">
+                        <div class="btn">
+                            {{item.TP>0?item.TP:'TP'}}
+                        </div>
+                    </td>
+                    <td *ngIf="Title =='Open Trades'">
+                        <div class="btn">
+                            EXIT
+                        </div>
+                    </td>
+                </tr> -->
+
+                <tr *ngFor="let record of TradesData; let i=index" class="highlight-row">
+                    <td class="aligncenter">{{formatStringtoDate(record.Trade_x0020_Date)}}, {{record.OrderTime}}</td>
+                    <td class="alignright">{{record.TI_DealNo}}</td>
+                    <td style="white-space: pre-wrap">{{record.TI_LastModified_By}}</td>
+                    <td class="aligncenter">{{record.Direction}}</td>
+                    <td class="aligncenter">{{record.Ccy_Pair==='USD-IDR'?'USD - IDR':record.Ccy_Pair}}</td>
+                    <td class="alignright">{{record.OrderAmount | number:'1.2'}}</td>
+                    <td class="alignright">{{record.Order_Rate | number}}</td>
+                    <td class="alignright">{{record.OrderAmount*record.Order_Rate | number:'1.2'}}</td>
+                    <td class="aligncenter">{{formatStringtoDate(record.Trade_x0020_Date)}}</td>
+                    <td class="aligncenter">
+                        {{formatStringtoDate(record.OrderExpiryDate)==='01-Jan-1970'?'-':formatStringtoDate(record.OrderExpiryDate) }}</td>
+                    <td [ngClass]="record.Status==='Cancelled'?{'red': true}:{'green': true}">{{record.Status}}</td>
+                    <td class="aligncenter">
+                        <app-svg-icons class="settings" [icon]="'settings'" [width]="'15'" [height]="'15'"></app-svg-icons>
+                    </td>
+                </tr>
+
+
+
+            </tbody>
+        </table>
+        <div *ngIf="tradeLoader" class="dotloader">
+            <app-loader></app-loader>
+        </div>
+
+        <div *ngIf="!tradeLoader && (TradesData?.length==0)" class="dotloader">
+            <!---->
+            <div class="msg">
+                {{noTradesMsg}}
+            </div>
+            <app-svg-icons *ngIf="!tradeLoader" [icon]="'no-data-found'" [width]="'100'" [height]="'100'" style="margin: auto; margin-left: 44%; margin-top: -25px;">
+            </app-svg-icons>
+
+
+        </div>
+    </div>
+</div>

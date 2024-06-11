@@ -1,0 +1,96 @@
+
+<div class="insideCard-gridview">
+    <div class="cls-td">
+        <label>Product</label>
+    </div>
+    <div class="">
+        <label class="productName">
+            FI BOND
+        </label>
+    </div>
+    <div>
+        <div class="">
+            <input type="text" value="CITI 4.2% 28/02/2024" class="InputClass">
+        </div>
+    </div>
+
+    <div class="cls-td">
+        <label>ISIN/ Issuer</label>
+    </div>
+    <div class="cls-td">
+        <label>XS4645834765</label>
+    </div>
+    <div class="cls-td">
+        <label>Citigroup Global Markets <br> Funding Luxembourg S.C.A. <br> (CGMFL) (CITI) </label>
+    </div>
+
+    <div class="cls-td">
+        <label>Contract Amt</label>
+    </div>
+    <div>
+        <input type = "text" value="2,000,000.00" class="InputClass"/>
+    </div>
+    <div class="cls-td">
+        <label>USD</label>
+    </div>
+
+    <div class="cls-td">
+        <label>Coupon / Maturity</label>
+    </div>
+    <div>
+        <input type = "text" value="4.2" class="InputClass couponDiv"/>%
+    </div>
+    <div class="cls-td">
+        <label>28-Feb-2024</label>
+    </div>
+
+    <div *ngIf="orderFlag" class="overlay">
+        <div class="page-content-container-popup">
+                <div class="popup-label">FI Bond: Order Placed Successfully with Order ID</div>
+                <div class="popup-btns">
+                    <button class="button" style="margin-left: 10px;margin-right: 10px;" (click)="yesToggle()">OK</button>
+                    <button class="button" (click)="cancel_popup()">Go To Blotter</button>
+                </div>            
+        </div>        
+    </div>
+
+    <div class="cls-td">
+        <label>Client</label>
+    </div>
+    <label class="switch">
+        <input type="checkbox" id="togBtn">
+        <div class="slider round">
+         <span class="on buy">Buy</span>
+         <span class="off sell">Sell</span>
+        </div>
+    </label>
+    <div>
+       
+    </div>
+   
+
+    <div class="row-merge">   
+    </div>    
+
+</div>
+
+<div class="pricingTile">
+    <div class="pricing-div">
+        <div>
+
+        </div>
+        <div></div>
+        <div>
+            <button class="btn-price">Best Price</button>
+        </div>
+        <div>
+            <button class="btn-price" (click)=bookRequest()>Book Request</button>
+        </div>
+    </div>   
+
+    <div class="pricing-card">
+        <div>
+
+        </div>
+    </div>
+</div> 

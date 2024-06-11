@@ -1,0 +1,60 @@
+// .Card{
+//     min-height: 220px;
+//     height: 100%;
+//     background-color: #adadad;
+//     border-radius: 10px;
+//     .card-header{
+//         font-size: 17px;
+//         color: white;
+//         font-family: var(--font-primary);
+//         padding: 5px 0px 0px 5px;
+//     }
+// }
+
+.card-content {
+  margin: 10px 0px;
+  padding: 10px 0px;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+.card-header {
+  padding: 1px 0px 10px 0px;
+  font-size: 20px;
+  font-weight: 500;
+  border-bottom: 1px solid var(--border);
+}
+.card {
+  background: var(--containers) 0% 0% no-repeat padding-box;
+  box-shadow: 0px 0px 3px #0000002e;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  padding: 10px;
+  // min-width: 384px;
+  // max-width: 384px;
+}
+
+.example-custom-placeholder {
+  background: #ccc;
+  border: dotted 3px #999;
+  min-height: 60px;
+  margin: 10px;
+  padding: 2px;
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.emptyCard {
+  background-color: var(--bg-color);
+  min-height: 200px;
+  border: 1px dashed gray;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  cursor: none;
+  pointer-events: none;
+}
+
+.card-bottom {
+  display: flex;
+  padding: 0px 10px;
+  justify-content: flex-end;
+}

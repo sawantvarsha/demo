@@ -1,0 +1,130 @@
+<div class="pledgeContainer">
+    <div class="pledge-row-1-3" *ngIf="this.PageMode !== 0">
+        <label>Customer</label>
+        <app-customer-search (sendCustomerDetails)="fnGetCustomerDetails($event)"
+            (selectedCustomerValue)="selectedCustomer($event)" tabindex="1"></app-customer-search>
+    </div>
+    <div class="pledge-row-1-3">
+        <label>Underlying</label>
+        <div>
+            <input type="text" placeholder="Search Underlying" [(ngModel)]="PledgePageData.Underlying.Value"
+                [disabled]="PledgePageData.Underlying.IsDisable"
+                (keydown.enter)="selectPledgeOnEnter($event); showUnderlyings = false"
+                (keydown.ArrowUp)="selectedBIndex = com.moveUpSelection($event, selectedBIndex)"
+                (keydown.ArrowDown)="selectedBIndex = com.moveDownSelection($event, selectedBIndex)"
+                (keypress)="IsUnderlyingSelected = false;selectedBIndex = 0; showUnderlyings = true; " tabindex="2">
+            <div class="top UnderlyingSearch" *ngIf="PledgePageData.Underlying.Value !== '' && showUnderlyings">
+                <div class="SelectorBox">
+                    <a *ngFor="let b of (PledgeData | search: PledgePageData.Underlying.Value: 'longName' ); let i = index"
+                        (keypress)="ChangeIndex($event)">
+                        <div *ngIf="b" [attr.data-PledgeUnderlying]="b['longName']" (click)="selectPledgeOnClick(b)"
+                            (keydown.enter)="selectPledgeOnEnter($event)"
+                            [ngClass]="{'HoverSuggestion': (i === selectedBIndex)}">
+                            <label>{{b['longName']}}</label>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="pledge-row-4-4" style="margin-top: 20px;">
+        <label>Security Code</label>
+        <input type="text" [(ngModel)]="PledgePageData.SecurityCode.Value" class="left-text" value="US542236226123"
+            [disabled]="PledgePageData.SecurityCode.IsDisable">
+        <label>Currency</label>
+        <input type="text" [(ngModel)]="PledgePageData.PledgeCurrency.Value" class="left-text"
+            [disabled]="PledgePageData.PledgeCurrency.IsDisable">
+    </div>
+    <div class="pledge-row-4-4">
+        <label>Transaction Name</label>
+        <select [(ngModel)]="PledgePageData.TransactionName.Value"
+            [disabled]="PledgePageData.TransactionName.IsDisable">
+            <option [value]="PledgePageData.TransactionName.Value" selected>{{PledgePageData.TransactionName.Value}}
+            </option>
+        </select>
+        <label>Available Quantity</label>
+        <input type="text" class="right-text" [(ngModel)]="PledgePageData.AvailableQuantity.Value" value="15,000.00"
+            [disabled]="PledgePageData.AvailableQuantity.IsDisable">
+    </div>
+    <div class="pledge-row-4-4">
+        <label>Trade Date</label>
+        <div>
+            <input type="date" class="input-dob center-text" [attr.data-date]="PledgePageData.TradeDate.Value"
+                placeholder="dd-mm-yyyy" data-date-format="DD-MMM-YYYY" value="" min="1997-01-01" max="2030-12-31"
+                [(ngModel)]="PledgePageData.TradeDate.Value" tabindex="6"
+                (change)="selectDate('TradeDate',PledgePageData.TradeDate.Value )"
+                [disabled]="PledgePageData.TradeDate.IsDisable">
+        </div>
+        <label>Security Price</label>
+        <input type="text" class="right-text" [(ngModel)]="PledgePageData.SecurityPrice.Value" value="98.1400"
+            [disabled]="PledgePageData.SecurityPrice.IsDisable">
+    </div>
+    <div class="pledge-row-4-4">
+        <label>Settlement Date</label>
+        <div style="margin-top: 0px !important; width: auto !important;">
+            <input type="date" class="input-dob center-text" [attr.data-date]="PledgePageData.SettlementDate.Value"
+                placeholder="dd-mm-yyyy" data-date-format="DD-MMM-YYYY" value="" min="1997-01-01" max="2030-12-31"
+                [(ngModel)]="PledgePageData.SettlementDate.Value" [disabled]="PledgePageData.SettlementDate.IsDisable"
+                tabindex="6" (change)="selectDate('SettlementDate',PledgePageData.SettlementDate.Value )">
+        </div>
+        <label>Pledge Quantity</label>
+        <input type="text" class="right-text" [(ngModel)]="PledgePageData.PledgeQuantity.Value"
+            [disabled]="PledgePageData.PledgeQuantity.IsDisable" (focus)="com.UnformatNumber($event)"
+            (blur)="com.FormatNumber($event)"
+            (change)="PledgePageData.PledgeQuantity.Value = com.NotionalChange($event);"
+            (keypress)=" com.NotionalValidate($event)">
+    </div>
+    <div class="pledge-row-4-4" *ngIf="showdetails">
+        <label>Customer</label>
+        <input type="text" class="left-text" [(ngModel)]="PledgePageData.CustomerName.Value"
+            value="APR CUSTOMER 103|32712" [disabled]="PledgePageData.CustomerName.IsDisable">
+        <label>Account Currency</label>
+        <input type="text" class="center-text" [(ngModel)]="PledgePageData.PledgeCurrency.Value[0]"
+         disabled>
+        <!-- <select [(ngModel)]="PledgePageData.CustomerAccCcy.Value" [disabled]="PledgePageData.CustomerAccCcy.IsDisable">
+            <option *ngFor="let item of CurrencyList" [value]="item">
+                {{item}}
+            </option>
+        </select> -->
+    </div>
+    <div class="pledge-row-4-4" *ngIf="showdetails">
+        <label>Portfolio</label>
+        <select [(ngModel)]="PledgePageData.Portfolio.Value" [disabled]="PledgePageData.Portfolio.IsDisable"
+            (change)="fnChangePortfolio();">
+            <option *ngFor="let item of PortfolioList" [value]="item.FacDesc" >
+                {{item.FacDesc}}
+            </option>
+        </select>
+        <label>Account number</label>
+        <select [(ngModel)]="PledgePageData.AccountNumber.Value" [disabled]="PledgePageData.AccountNumber.IsDisable"
+            (change)="fnAccChange();">
+            <option *ngFor="let item of AccountList" [value]="item.Param1" >
+                <span>{{item.Param1}}</span>
+            </option>
+        </select>
+    </div>
+    <div class="buttons-row">
+        <div class="Submitbtn">
+            <div class="link moredetails" (click)="fntoggleShowDetails()"><u>{{txtshowdetails}}</u></div>
+            <button class="button"
+                [disabled]="(PledgePageData.Underlying.Value === '' && showUnderlyings === false) || IsUnderlyingSelected !== true || OrderBookingInProgress === true"
+                (click)="fnOrderPlacement();">Submit</button>
+
+        </div>
+        <div class="Clearbtn">
+            <button class="button" (click)="fnClearbtn();">Clear</button>
+            <!-- *ngIf="OrderBookingInProgress" -->
+            <div *ngIf="OrderBookingInProgress">
+                <img style="margin-left: 30px" ;
+                    [src]="isProd?'assets/loading_dots.gif':'../../assets/loading_dots.gif'" height="35px" width="35px">
+            </div>
+            <!-- <div id="snackbar" style="line-height: 45px">
+                <div *ngIf="ErrorMsg">{{ this.ErrorMsg }}</div>
+            </div> -->
+        </div>
+    </div>
+    <div class="msgAlert">
+        <div *ngIf="ErrorMsg">{{this.ErrorMsg}}</div>
+    </div>
+
+</div>

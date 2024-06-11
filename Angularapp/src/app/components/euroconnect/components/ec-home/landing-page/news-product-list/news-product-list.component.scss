@@ -1,0 +1,129 @@
+// Changes added by Mayuri D. on 06-July-2022.
+
+.productCardDiv {
+    display: grid;
+    /* grid-template-columns: 1fr 1fr; */
+    grid-template-columns: repeat(auto-fill, minmax(185px, 1fr));
+    /* margin: 0px 4%; */
+    overflow-y: auto;
+    max-height: 112px !important;
+    text-align: justify;
+    row-gap: 8px;
+    column-gap: 8px;
+    padding: 15px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    /* box-shadow: inset 0 0 1px 1px rgba(0, 25, 40, 0.2);
+    margin-left: 10px;
+    margin-right: 10px; */
+}
+
+.box-container {
+    /* height: 25% !important; */
+    background-color: var(--sub-container);
+    /* box-shadow: 0 0 0.1875rem 1px rgba(0, 25, 40, 0.2); */
+    border-radius: 5px;
+    opacity: 1;
+    /* width: 85% !important; */
+    /* z-index: 100; */
+    /* margin-top: 2%; */
+    /* margin-bottom: 5%; */
+    /* margin-left: 2%; */
+    padding: 5px !important;
+    height: auto;
+    /* overflow-y: scroll; */
+    position: relative;
+    cursor: pointer;
+}
+
+.box-container:hover {
+    box-shadow: 0 0 0.1875rem 0.2px rgba(0, 25, 40, 0.2);
+    cursor: pointer;
+    position: relative;
+}
+
+.inner-table-title {
+    display: grid;
+    grid-template-columns: auto auto;
+    position: relative;
+    justify-content: center;
+    gap: 6px;
+    width: fit-content;
+}
+
+.rmwdiv {
+    color: var(--header);
+    font-size: 11px !important;
+    text-align: left;
+    cursor: pointer;
+    /* width: 200px; */
+}
+
+.rmwtableheader {
+    text-align: center;
+    border-bottom: 1px solid lightgrey;
+    font-size: 12px;
+    font-weight: 400;
+    text-transform: uppercase;
+    margin-bottom: auto;
+    color: var(--grey);
+    font-family: var(--font-family) !important;
+}
+
+.rmwtabledata {
+    text-align: center;
+    font-size: 12px;
+    margin: 5px;
+    color: #000000;
+    font-weight: 600;
+    text-transform: none;
+    font-family: var(--font-family) !important;
+}
+
+.subproductIcon {
+    cursor: pointer;
+    font-size: 16px !important;
+    color: var(--header);
+    position: inherit;
+    border: 2px solid #808080;
+    border-radius: 50%;
+    padding-top: 11px;
+    /* font-family: var(--font-family) !important; */
+}
+
+.linksPopUp {
+    background-color: var(--container);
+    box-shadow: var(--container-shadow) !important;
+    border: 1px solid #606060;
+    border-radius: 8px;
+    padding: 4px 8px;
+    position: absolute;
+    z-index: 2;
+    width: 112px !important;
+    max-height: 50px;
+    top: 0px;
+    /* overflow-y: auto; */
+    /* top: 5px;
+    left: 50%; */
+}
+
+a {
+    color: var(--link);
+    /* text-decoration: none; */
+    background-color: transparent;
+}
+
+
+// optional for Mat Icons   
+mat-icon {
+    background-repeat: no-repeat;
+    display: inline-block;
+    fill: currentColor;
+    height: 77px !important;
+    width: 77px !important;
+} 
+
+.material-icons {
+    font-family: 'Material Icons' !important;
+  }
+

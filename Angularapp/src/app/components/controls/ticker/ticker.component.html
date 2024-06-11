@@ -1,0 +1,26 @@
+<div id="stockTicker" (click)="tickerPausePlay()">
+    <div class="moving-ticker" [ngClass]="{'moving-ticker-paused':isTickerPaused}">
+        <div style="display: flex;align-items: center; justify-content: space-between;"
+            *ngFor="let item of marketWatch">
+            <span class="securityCode">{{item[0].Misc2}} ({{item[0].Misc1}})</span>
+            <span class="latestPrice" *ngIf="item[0].SpotBidQuote==='0'">NA</span>
+            <span class="latestPrice" *ngIf="item[0].SpotBidQuote!=='0'">{{item[0].SpotBidQuote}}</span>
+            <div [ngClass]="{'triangle-up':item[1] === true , 'triangle-down' : item[1] === false}"></div>
+            <span class="performance" [ngStyle]="{'color':item[1] ? 'var(--green)' : 'var(--red)' }">{{item[0].Change |
+                number:'1.2-2'}}</span>
+            <div class="vhLine"></div>
+        </div>
+    </div>
+    <div class="moving-ticker-2" [ngClass]="{'moving-ticker-2-paused':isTickerPaused}" *ngIf="marketWatch.length>4">
+        <div style="display: flex;align-items: center; justify-content: space-between;"
+            *ngFor="let item of marketWatch">
+            <span class="securityCode">{{item[0].Misc2}} ({{item[0].Misc1}})</span>
+            <span class="latestPrice" *ngIf="item[0].SpotBidQuote==='0'">NA</span>
+            <span class="latestPrice" *ngIf="item[0].SpotBidQuote!=='0'">{{item[0].SpotBidQuote}}</span>
+            <div [ngClass]="{'triangle-up':item[1] === true , 'triangle-down' : item[1] === false}"></div>
+            <span class="performance" [ngStyle]="{'color':item[1] ? 'var(--green)' : 'red' }">{{item[0].Change |
+                number:'1.2-2'}}</span>
+            <div class="vhLine"></div>
+        </div>
+    </div>
+</div>

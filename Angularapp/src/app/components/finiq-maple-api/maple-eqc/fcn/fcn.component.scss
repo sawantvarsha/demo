@@ -1,0 +1,263 @@
+$assetPath: "http://40.65.134.77";
+
+.insideCard-gridview{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    
+    margin:10px;
+    color : peachpuff !important;
+    font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande", "Lucida Sans", verdana, sans-serif, verdana !important;
+    font-size: 13px;
+    gap:10px;
+}
+
+.productName{
+    font-size: 26px;
+}
+
+.cls-td{
+    vertical-align: middle !important;
+    padding: 10px 6px;
+}
+select{
+    background-color: #232323 !important;
+    padding: 3px 5px 5px 5px;
+    border-radius: 5px;
+    color : peachpuff !important;
+    border:none !important;
+    -webkit-appearance: auto !important;
+    background-image: none !important;
+    height: 30px;
+    width:90% !important;
+}
+
+.select-tenor{
+    background-color: #232323 !important;
+    padding: 3px 5px 5px 5px;
+    border-radius: 5px;
+    color : peachpuff !important;
+    border:none !important;
+    width: 65px !important;
+    height: 30px;
+}
+.InputClass{
+ 
+    border-radius: 5px;
+    padding: 3px 5px 5px 5px;
+    text-align: right;
+    outline: none !important;
+    color : peachpuff !important;
+    background-color: #232323 !important;
+    height: 30px !important;
+    border-radius: 5px;
+    width:90% !important;
+   
+}
+
+.InputWidth{
+    width:80% !important;
+}
+
+.InputWidth100{
+    width:100% !important;
+}
+.btn-price{
+   
+    background-color: #0e0e0e !important;
+    color: peachpuff !important;
+    width: 100px !important;
+    margin-right: 0px !important;
+   
+    box-shadow: 1px 1px 1px #333333;
+    border: solid 0px #2c2c2c;
+    cursor: pointer;
+    padding-top: 6px;
+    padding-bottom: 8px;
+    border-radius:  5px;
+
+}
+
+.pricing-div{
+    display: grid;
+    grid-template-columns: 1.8fr 1fr 1fr 1fr;
+    gap:10px;
+    margin: 0px 10px;
+}
+.pricing-card{
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-clip: border-box;
+    border: 1px solid rgba(0,0,0,.125);
+    border-radius: .25rem;
+    height: 80px;
+    margin-top: 10px;
+    background-color: #0000008f;
+    margin: 10px;
+}
+
+.gridView-2{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5px;
+}
+
+.underlying{
+    grid-column: 2/ span 2;
+}
+
+.pricingTile{
+    margin-top:25px;
+}
+
+
+.share-popup{
+    margin:10px;
+    padding:10px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    background-image: url(#{$assetPath}/assets/App_Resorces/bg17-min.jpg) !important;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-color: #252525;
+    padding: 2px;
+    position: absolute;
+    z-index: 999;
+    box-shadow: 3px 4px 4px #1d1d1d;
+    border-radius: 5px;
+    // display: none;
+    font-size: 12px;
+    color: #ababab;
+    border: 1px solid #101010;
+    BORDER-COLLAPSE: collapse;
+}
+
+.pair:hover{
+    float: left;
+    margin: 5px;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    box-shadow: 1px 1px #717070;
+    width: 200px;
+    text-align: center;
+    color: peachpuff !important;
+}
+.pair{
+    float: left;
+    margin: 5px;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    box-shadow: 1px 1px #3a3a3a;
+    width: 200px;
+    text-align: center;
+    color: peachpuff !important;
+}
+
+.pair-amt{
+    float: left;
+    margin: 5px;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    box-shadow: 1px 1px #3a3a3a;
+    width: 88px;
+    text-align: center;
+    color: peachpuff !important;
+}
+
+.pair-amt:hover{
+    float: left;
+    margin: 5px;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    box-shadow: 1px 1px #717070;
+    width: 88px;
+    text-align: center;
+    color: peachpuff !important;
+}
+
+
+
+.left{
+    text-align: left;
+}
+
+.searchShare{
+    padding: 5px;
+    border-radius: 5px;
+    width: 164px;
+    background-color: #080808;
+    border: 1px solid #3f3f3f;
+    color: peachpuff !important;
+}
+
+.Searchshare-popup{
+    position:absolute;
+    top: 135px;
+    left: 130px;
+    box-shadow: 3px 4px 4px #1d1d1d;
+    border-radius: 5px;
+}
+
+.sharelistpopup{
+    position:absolute;
+    top: 170px;
+    left: 130px;
+    border-radius: 5px;
+    box-shadow: 3px 4px 4px black !important;
+    background-color: #d9d9d9 !important;
+    border: 0px solid #939393;
+    color: peachpuff !important;
+    background-image: url(#{$assetPath}/assets/App_Resorces/bg17-min.jpg);
+    padding:10px;
+    width: 400px;
+    max-height: 400px;
+    height: auto;
+    overflow: scroll;
+    
+}
+
+.sharelist{
+    font-size: 15px;
+    margin: 0;
+    cursor: pointer;
+    padding: 5px;
+    
+    // list-style-image: url(data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7)
+}
+.sharelist:hover{
+    font-size: 15px;
+    margin: 0;
+    cursor: pointer;
+    padding: 5px;
+    background-color: #d9d9d9 ;
+    color: black;
+    font-family: Montserrat !important;
+    // list-style-image: url(data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7)
+}
+
+
+.PerPaddingLeft{
+    padding-left: 5px;
+}
+
+.shareListName{
+    padding: 5px;
+    font-size: 12px;
+    border: 1px solid #2f2f2f;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 2px;
+    position: relative;
+    top:4px;
+}
+
+.shareInputFCN{
+    background-color: transparent;
+    width:fit-content;
+}

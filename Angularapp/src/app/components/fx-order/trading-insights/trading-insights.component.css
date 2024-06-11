@@ -1,0 +1,111 @@
+ label{
+    color: var(--fontcolor);
+ }
+ 
+
+.mid{
+   padding: 0;
+    margin: auto 0;
+}
+.fontsize{
+   font-size: 1em;
+}
+@media screen and (max-width:1700px){
+   .fontsize{
+      font-size: 0.9em;
+   }
+}
+.spreadtxt{
+   width: 9em;
+   border: #d9d9d9 1px solid;
+   text-align: right;
+   padding-right: 0.2em;
+   color: var(--fontcolor);
+   font-size: 0.95em;
+}
+.paddingfilter{
+   padding: 0em;
+}
+.paddingfilterprod{
+  margin-left: 1em;
+}
+.paddingfiltergraph{
+   margin-left: 3em;
+   padding-left: 1em;
+}
+.graphcontrol{
+   margin-left: -1em;
+}
+@media screen and (max-width: 991px) {
+   .resclass{
+   padding-bottom: 1em !important;
+   }
+   .paddingfilter{
+      padding: 1em;
+   }
+   .paddingfilterprod{
+      margin-left: 0em;
+    }
+    .paddingfiltergraph{
+      margin-left: 0em;
+      padding-left: 1em;
+   }
+   .widthfilter{
+      width: 13em !important;
+   }
+   .paddingfilterts{
+      padding-left: 1em;
+   }
+   .graphcontrol{
+      margin-left: 0em;
+   }
+}
+@media screen and (max-width: 370px) {
+   .contain{
+     width: 95%;
+     padding-right: 0.5em !important;
+     padding-left: 0.5em !important;
+ }
+ }
+
+ .dateFilter {
+   display: grid;
+   grid-template-columns: 7% 10% 5% 10% 6% 10% 10% 10% 6% 16%;
+   -moz-column-gap: 10px;
+   column-gap: 10px;
+   align-items: center;
+   text-align: center;
+   margin-left: 2%;
+}
+.label {
+   margin-left: 20px;
+}
+
+.filters {
+  /* // display: grid;
+  // grid-template-columns: 1fr 1fr;
+  // margin-left: 10px;
+  // align-items: center; */
+
+  display: grid;
+  /* grid-template-columns: 1fr 1fr 1fr; */
+  row-gap: 10px;
+  -moz-column-gap: 20px;
+  column-gap: 20px;
+  padding: 10px 0px 10px 0px;
+  letter-spacing: 0.72px;
+  border-radius: 10px;
+  margin-left: 5px;
+  /* width: 10px; */
+  background-color: white;
+  /* padding-bottom: 15px; */
+  box-shadow: var(--box-shadow-thin);
+  transition: 0.3s;
+  background: var(--containers);
+
+  margin-bottom: 24px;
+  border-radius: 4px;
+  margin: 0px 40px;
+  /* height: 10px; */
+  margin-bottom: 10px;
+}

@@ -1,0 +1,641 @@
+.EventWatchWrapper {
+    padding: 0 0 0 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.SearchWrapperEW {
+    display: flex;
+    align-items: center;
+    // gap: 800px;
+}
+
+.MonthsWrapperEW {
+    display: flex;
+    align-items: center;
+    // gap: 325px;
+}
+
+.paginationEW{
+    position: absolute;
+    right: 4%;
+}
+
+.SearchBoxEW, .paginationEW {
+    display: flex;
+    align-items: center;
+}
+
+.SearchButtonsEW {
+    display: flex;    
+    align-items: center;
+    // gap: 15px;
+    position: absolute;
+    right: 4%;
+}
+
+.SearchButtonsEW > input[type="button"] {
+    background-color: var(--btn-bg);
+    color: var(--btn-text) !important;
+    width: 80px;
+    text-align: center;
+}
+
+.MonthsArrEW {
+    display: flex;
+    align-items: center;
+}
+
+.EventsDataEW {
+    width: calc(100% - 0px);
+    height: calc(100vh - 260px);
+    overflow: scroll;
+}
+
+.EventsDataEW table thead,
+.EventsDataEW table thead tr,
+.EventsDataEW table thead tr th {
+    position: sticky;
+    position: -webkit-sticky;
+    top: 0;
+    z-index: 1;
+    border-bottom: 0px !important;
+    background-color: var(--table-header-bg);
+    color: var(--heading-label);
+}
+
+.EventsDataEW::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.EventsDataEW::-webkit-scrollbar-corner {
+    background-color: transparent;
+}
+
+.filter-grid{
+    grid-template-columns: auto 25px;
+    display: grid;
+    position: relative;
+}
+.filterbox{
+    padding: 6px;
+    position: absolute;
+    background-color: var(--containers);
+    border-radius: 4px;
+    box-shadow: 0px 0px 2px 1px rgb(66 66 66 / 20%);
+    width: auto;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    margin-right: 0px;
+    top: 37px;
+    right: 0;
+}
+
+.filter-search{
+    margin-right: 0px;
+    width: 8em;
+}
+.filterlabelNew{
+    /* font-weight: 500; */
+     display: grid;
+    grid-template-columns: 20px auto;
+    gap: 10px;
+    cursor: pointer;
+    border-radius: 4px;
+    color: var(--dropdown-text);
+    text-align: left; 
+    /* height: 25px; */
+    /* padding: 4px 5px 4px 0px; */
+}
+
+.filterlabel label{
+    cursor: pointer;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    line-height: 20px;
+    padding: 2px;
+}
+.filterlabelNew label{
+    cursor: pointer;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    line-height: 20px;
+    padding: 2px;
+}
+
+.filterlabelNew:hover
+ {
+    
+    
+        /* background-color: #0056b3; */
+
+    
+    /* filter:  invert(100%) sepia(100%) saturate(0%) hue-rotate(259deg) brightness(106%) contrast(101%) !important; */
+    background-color: var(--btn-bg) !important;
+    
+    /* filter: color(blue); */
+    /* -webkit-filter: grayscale(1) invert(1);
+    filter: grayscale(1) invert(1); */
+    /* color: black !important; */
+}
+
+
+.filterlabel:hover
+ {
+    // background-color: #c0c0c0;
+    color: var(--dropdown-hover-text);
+    
+        /* background-color: #0056b3; */
+
+    
+    /* filter:  invert(100%) sepia(100%) saturate(0%) hue-rotate(259deg) brightness(106%) contrast(101%) !important; */
+    background-color: var(--btn-bg) !important;
+    // color: white !important;
+   
+}
+
+#gvIndexMaster > thead > tr > th {
+    min-width: 80px; 
+}
+
+#gvIndexMaster > tbody > tr > td:first-child {
+    text-align: left !important;
+}
+
+
+#gvIndexMaster > tbody > tr > td {
+    text-align: left;
+}
+
+#gvIndexMaster > tbody > tr {
+    border-bottom: solid 1px var(--input-bg);
+}
+
+#gvIndexMaster > tbody > tr > td:nth-child(1), #gvIndexMaster > thead > tr > th:nth-child(1) {
+    position: sticky;
+    left: 0;
+    //z-index: 2;
+}
+
+#gvIndexMaster > thead > tr > th:nth-child(1){
+    z-index: 999;
+    padding: 5px;
+    min-width: 110px;
+}
+
+#gvIndexMaster > tbody > tr > td:nth-child(1) {
+    background-color: var(--main-bg-color);
+}
+
+/* Common CSS - Fast Front End Pages 06-Dec-2022 - Runal T. */
+
+.thWidth {
+    width: 10px !important;
+}
+
+#tblSaveClose input#btnSave, input#btnClose {
+    width: 80px;
+}
+
+div#tbl_SSI {
+    background-color: #ffffff;
+    padding: 0px;
+    box-shadow: 0px 0px 6px 0px #c5c5c5;
+}
+
+div#tbl_SSI td, div#tbl_SSI th, div#tbl_SSI table, div#tbl_SSI div {
+    padding: 5px 5px;
+    overflow: auto !important;
+}
+
+.element {
+    align-items: center;
+    background-color: #afd275;
+    box-shadow: 12px 12px 16px 0 rgba(0, 0, 0, 0.25), -8px -8px 12px 0 rgba(255, 255, 255, 0.3);
+    border-radius: 50px;
+    display: flex;
+    height: 100px;
+    justify-content: center;
+    margin: 4rem;
+    width: 100px;
+}
+
+.element2 {
+    align-items: center;
+    background-color: #afd275;
+    border-radius: 50px;
+    display: flex;
+    height: 100px;
+    justify-content: center;
+    margin: 4rem;
+    width: 100px;
+}
+
+.element-1 {
+    box-shadow: 12px 12px 16px 0 rgba(0, 0, 0, 0.25), -8px -8px 12px 0 rgba(255, 255, 255, 0.3);
+}
+
+.element-2 {
+    box-shadow: 12px 12px 16px 0 rgba(255, 255, 255, 0.3) inset, -8px -8px 12px 0 rgba(0, 0, 0, .25) inset;
+}
+
+.ui-datepicker-trigger {
+    width: 20px;
+    height: 20px;
+    background-repeat: no-repeat !important;
+    background-position: center center !important;
+    background-attachment: scroll !important;
+    border-style: none;
+    padding: 0px !important;
+    vertical-align: middle;
+    opacity: 1 !important;
+    // background-image: url(../App_Resources/button.gif) !important;
+    background-color: #FFF;
+    margin: 0px 2px;
+}
+
+.ui-datepicker-trigger:disabled {
+    opacity: 0.6 !important;
+}
+
+.lblError {
+    padding: 10px;
+}
+
+.Grid td .btnResend {
+    display: block;
+    width: 36px;
+    height: 24px;
+    // background-image: url(../App_Resources/resend.png);
+    background-repeat: no-repeat;
+    background-attachment: scroll;
+    background-size: 50%;
+    background-position: center;
+    border-style: none;
+}
+
+.Grid td .btnResend:not(:disabled) {
+    cursor: pointer;
+}
+
+.Grid td .btnResend:disabled {
+    cursor: no-drop;
+}
+
+.GridHeader, .GridItem > td:first-child {
+    font-size: 14px !important;
+    font-weight: 550 !important;
+    /* color: #696969 !important; */
+}
+
+.GridHeader > th > label {
+    background: transparent;
+    cursor: pointer;
+}
+
+.GridHeader, .GridHeader > th {
+    padding: 8px 5px;
+    z-index: 2;
+    cursor: pointer;
+}
+
+.GridItem > td.firstColumn {
+    padding: 2px 10px !important;
+    position: sticky;
+    left: -2px;
+    z-index: 1;
+    box-shadow: none;
+    min-width: 140px;
+}
+
+.GridItem > td.secondcolumn {
+    padding: 2px 10px !important;
+    position: sticky;
+    z-index: 1;
+    box-shadow: none;
+    min-width: 75px;
+    left: 158px;
+}
+
+.GridItem > td.ccycolumn {
+    min-width: 40px;
+    text-align: center;
+    left: 158px;
+}
+
+.GridItem > td.thirdcolumn {
+    left: 218px;
+}
+
+.GridHeader, .GridHeader > th label, .GridItem > td:first-child, .GridItem > td:first-child label {
+    font-size: 14px !important;
+    white-space: nowrap;
+}
+
+.h1 {
+    margin: 7px;
+    margin-left: -2px;
+    font-size: 23px !important;
+}
+
+.monthlink {
+    font-size: 25px;
+    margin-left: 160;
+    padding-bottom: 10px;
+}
+
+.bluecolor {
+    font-size: 15px;
+    padding: 5px;
+    color: rgb(8, 0, 253);
+}
+
+.lbl {
+    font-size: inherit;
+}
+
+.Grid tr.GridItem:nth-child(even), tr.GridItem:nth-child(even) {
+    background-color: transparent;
+}
+
+.Grid tr.GridItem:nth-child(odd), tr.GridItem:nth-child(odd) {
+    background-color: transparent;
+}
+
+.pageNo {
+    width: 35px !important;
+    text-align: center;
+}
+
+.txtYear {
+    width: 50px !important;
+    vertical-align: middle;
+    line-height: 14px;
+    padding: 5px;
+    text-align: center;
+}
+
+ul.filterMonth {
+    min-width: 578px;
+    height: 28px;
+    display: block;
+    cursor: pointer;
+    list-style: none;
+    list-style-position: inside;
+    margin: 5px -8px;
+    padding: 0px;
+    float: left;
+    margin-left: 0px;
+}
+
+ul.filterMonth li {
+    padding: 5px 2px;
+    margin: 2px;
+    margin-right: 10px;
+    float: left;
+    width: 40px;
+    text-align: center;
+    font-size: 14px;
+}
+
+ul.filterMonth li.active {
+    border: solid 1px var(--btn-bg);
+}
+
+.lblLinkprev, .lbllinkNext {
+    font-size: 40px !important;
+    color: var(--text) !important;
+    cursor: pointer !important;
+    margin-right: -5px;
+    margin-left: -5px;
+    margin-top: 1px;
+}
+
+.lblLinkprev::before {
+    content: "\25C2";
+}
+
+.lbllinkNext::after {
+    content: "\25B8";
+}
+
+.sortdown{
+    padding-left: 7px;
+    font-size: 14px !important;
+    text-decoration: underline;
+    margin: auto -20px;
+    color: #0368b6 !important;
+    display: inline-block;
+    cursor: pointer !important;
+    background-color: transparent !important;
+    border: none;
+    // background-image: url("../App_Resources/Sort_Down.png") !important;
+    background-repeat: no-repeat !important;
+    background-size: 13px !important;
+    width: 32px !important;
+    padding: 5px 0px;
+    float: right;
+}
+
+.sortup{
+    padding-left: 7px;
+    font-size: 14px !important;
+    text-decoration: underline;
+    margin: auto -20px;
+    color: #0368b6 !important;
+    display: inline-block;
+    cursor: pointer !important;
+    background-color: transparent !important;
+    border: none;
+    // background-image: url("../App_Resources/Sort_Up.png") !important;
+    background-repeat: no-repeat !important;
+    background-size: 13px !important;
+    width: 32px !important;
+    padding: 5px 0px;
+    float: right;
+}
+
+.btnLoadIM {
+    width: 80px;
+}
+
+input.btnLoadIM, .btn, .btn:hover {
+    margin-right: 10px;
+    text-align: center !important;
+    border: none !important;
+    border-collapse: collapse !important;
+    box-sizing: border-box !important;
+    padding: 8px 8px !important;
+    border-radius: 5px !important;
+    line-height: 12px;
+}
+
+.GridItem > td {
+    padding: 5px 5px !important;
+    min-width: 60px;
+    position: relative;
+    background-color: inherit;
+    opacity: 1;
+}
+
+.GridItem > td > label {
+    width: 95%;
+    display: inline-block;
+}
+
+.GridItem > td.firstColumn > label {
+    width: 80%;
+    display: inline-block;
+    padding-left: 5px;
+}
+
+.GridItem > td.firstColumn > .chk[type="checkbox"] {
+    float: left;
+    margin-top: 4px;
+}
+
+.GridItem > td.firstColumn > .sum[type="checkbox"] {
+    float: left;
+}
+
+table.Grid {
+    display: table !important;
+    border-collapse: separate;
+    margin-left: 0;
+    border-spacing: 1px;
+}
+
+.rightAlign {
+    text-align: right !important;
+    padding: 0px 5px;
+}
+
+.productName {
+    text-align: left !important;
+    min-width: 250px;
+    white-space: nowrap;
+}
+
+.freeze {
+    position: sticky;
+}
+
+.freezeTH, td.firstColumn {
+    width: 386px !important;
+    max-width: 553px !important;
+    left: 0px;
+}
+
+.additionalpopup {
+    display: block;
+    position: fixed;
+    height: auto;
+    background-color: #FFF;
+    width: auto;
+    white-space: nowrap;
+    padding: 10px;
+    color: inherit;
+    border-radius: 5px;
+    box-shadow: 2px 2px 2px 2px #5d5a5a;
+    top: 8% !important;
+    left: 42% !important;
+    z-index: 9999;
+}
+
+.btnClosepopup {
+    position: absolute;
+    top: 0.5%;
+    left: 96%;
+    width: 25px;
+    cursor: pointer;
+    height: 25px;
+}
+
+input[type="text"].indexSearch {
+    background-repeat: no-repeat;
+    background-size: 18px;
+    background-position: 130px center;
+    // background-image: url(../App_Resources/SearchMB.png);
+    // background-color: Transparent;
+    margin-left: 5px;
+}
+
+table.Grid {
+    display: table !important;
+}
+
+.radio-container {
+    box-sizing: border-box;
+    font-family: ‘Open Sans’, sans-serif;
+    font-size: 13px;
+    line-height: 30px;
+    margin: 0;
+    outline: 0;
+    overflow: hidden;
+    padding: 0;
+}
+
+.radio-container input {
+    box-sizing: border-box;
+    margin: 0;
+    outline: 0;
+    padding: 0;
+    position: relative;
+    top: 9px;
+    vertical-align: top;
+}
+
+#btnHide {
+    box-sizing: border-box;
+    margin-left: 5px;
+    margin-right: 5px;
+    outline: 0;
+    padding: 0;
+    position: relative;
+    // top: 14px;
+    vertical-align: top;
+    width: auto;
+}
+
+#btnunchk {
+    box-sizing: border-box;
+    margin-left: 8px;
+    outline: 0;
+    padding: 0;
+    position: relative;
+    top: 14px;
+    vertical-align: top;
+}
+
+.Grid td input[type='text'] {
+    max-width: 60px;
+}
+
+#divgvIndexMaster {
+    height: 72vh;
+    width: 97vw;
+    overflow: auto;
+    display: none;
+}
+
+ul.filterMonth li {
+    background: var(--input-bg) 0% 0% no-repeat padding-box;
+}
+
+.pageload-overlay {
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    background-color: var(--overlay-bg);
+    transition: opacity 500ms;
+    visibility: visible;
+    opacity: 1;
+    z-index: 100;
+    width: auto;
+    height: auto;
+}

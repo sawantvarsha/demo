@@ -1,0 +1,64 @@
+<!-- <div class="overlay">
+    <div class="page-content-container-popup">
+        <div class="tabs tabs-pages">
+            <div class="tab-active">
+                <label>Greeks</label>
+                <app-svg-icons class="closebtn" [icon]="'cancel-icon'" [width]="'15'" [height]="'15'" [fill]="'var(--icons)'"></app-svg-icons>
+            </div>
+        </div>
+        <div class="popup-Subheading"></div>
+        <div class="greeks-table">
+            <table>                
+                <thead>
+                    <th>Model</th>
+                    <th>Geek Type</th>
+                    <th>IBMN.N</th>
+                    <th>AAPL.OQ</th>
+                </thead>
+                <tbody>
+                    <tr *ngFor = "let items of greekTable">
+                        <td class="align-left">{{items.model}}</td>
+                        <td class="align-left">{{items.greekType}}</td>
+                        <td class="align-right">{{items.ibmn}}</td>
+                        <td class="align-right">{{items.aapl}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div> -->
+<!-- <div *ngIf="dataFlag == true">
+    <div class="loader-container">
+        <div class="">
+            <div class="multi-ripple">
+              <div></div>
+              <div></div>
+            </div>
+        </div>
+    </div>
+</div> -->
+<div>
+    <div class="popup-Subheading" *ngIf="greeksFlag == true"></div>
+    <div class="greeks-table" *ngIf="greeksFlag == true">
+        <table >                
+            <thead>
+                <th>Model</th>
+                <th>Geek Type</th>
+                <th>IBMN.N</th>
+                <th>AAPL.OQ</th>
+            </thead>
+            <tbody>
+                <tr *ngFor = "let items of greekTable">
+                    <td class="align-left">{{items.model}}</td>
+                    <td class="align-left">{{items.greekType}}</td>
+                    <td class="align-right">{{items.ibmn}}</td>
+                    <td class="align-right">{{items.aapl}}</td>
+                </tr>
+            </tbody>        
+        </table>
+    </div>
+
+    <div *ngIf="greeksFlag == false" class="errorMsg">
+        No data found
+    </div>
+</div>

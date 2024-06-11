@@ -1,0 +1,969 @@
+#orderTranslationDiv {
+  height: auto;
+  width: 100%;
+  margin-top: 10px;
+  padding: 0px 0px 0px 0px;
+  font-size: 12px;
+}
+
+.contentcontainer {
+  height: 50%;
+  width: 90%;
+  background-color: var(--content-cotainer);
+  margin-left: 1%;
+  margin-right: auto;
+  text-align: center;
+  margin-bottom: 20px;
+  border-radius: 4px;
+  overflow: auto;
+}
+
+.btn {
+  border: none;
+  background-color: inherit;
+  padding: 14px 28px;
+  font-size: 16px;
+  cursor: pointer;
+  display: inline-block;
+  border-radius: 15px;
+}
+
+.btn:hover {
+  background: var(--btn-hover);
+}
+
+.periodAndParentDiv {
+  display: grid;
+  grid-template-columns: 20% auto;
+  align-items: baseline;
+  gap: 2%;
+}
+
+/* Customize the label (the container) */
+
+.container {
+  position: relative;
+  padding-left: 35px;
+  /* padding-right: 15px;
+    margin-bottom: 12px; */
+  cursor: pointer;
+  font-size: 16px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Hide the browser's default radio button */
+
+.container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+/* Create a custom radio button */
+
+.checkmark {
+  position: absolute;
+  top: 5 !important;
+  left: 0;
+  height: 15px;
+  width: 15px;
+  background-color: #d8d8d8;
+  border-radius: 50%;
+}
+
+/* On mouse-over, add a grey background color */
+
+.container:hover input ~ .checkmark {
+  background-color: #ccc;
+}
+
+/* When the radio button is checked, add a blue background */
+
+.container input:checked ~ .checkmark {
+  background-color: #2196f3;
+}
+
+/* Create the indicator (the dot/circle - hidden when not checked) */
+
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the indicator (dot/circle) when checked */
+
+.container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the indicator (dot/circle) */
+
+.container .checkmark:after {
+  top: 4px;
+  left: 4px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--containers);
+}
+
+/* toggle in label designing */
+
+.toggle {
+  position: relative;
+  display: inline-block;
+  width: 66px;
+  height: 25px;
+  border-radius: 30px;
+  background-color: #ccc;
+  border: 2px solid var(--portfolio-toggle);
+}
+
+/* After slide changes */
+
+.toggle:after {
+  content: "";
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background-color: white;
+  border: 2px solid var(--portfolio-toggle);
+  top: 3px;
+  left: 3px;
+  transition: all 0.5s;
+}
+
+/* Checkbox cheked effect */
+
+.checkbox:checked + .toggle::after {
+  left: 45px;
+}
+
+/* Checkbox cheked toggle label bg color */
+
+.checkbox:checked + .toggle {
+  background-color: var(--nav-header);
+}
+
+/* Checkbox vanished */
+
+.checkbox {
+  display: none;
+}
+
+/* styles for tab */
+
+.tab {
+  overflow: hidden;
+}
+
+/* Style the buttons inside the tab */
+
+.tab button {
+  background-color: inherit;
+  float: left;
+  outline: none;
+  cursor: pointer;
+  transition: 0.3s;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom: none;
+  padding-bottom: 5px;
+  color: black;
+  margin-right: 1px;
+  height: 30px !important;
+}
+
+/* Change background color of buttons on hover */
+
+.activeTab {
+  border-bottom: 2px solid #000000 !important;
+  /* font-weight: 500; */
+  color: #000000 !important;
+  /* rgb(84, 146, 139) */
+}
+
+/*.tab button:hover {
+     background-color: #ddd;
+  } */
+
+/* Create an active/current tablink class */
+
+.tab button.active {
+  background-color: #b87333;
+}
+
+/* Style the tab content */
+
+#tabbtn {
+  min-width: 100px !important;
+  margin-right: 3px;
+  margin-left: 3px;
+}
+
+#dynamic_tabs {
+  margin-left: 0px;
+  border-bottom: 1px solid #d3d3d3;
+}
+
+/* style for tab ends here */
+
+/* tab div styles */
+
+#tabdiv {
+  padding: 2px 20px 17px 20px;
+  padding-top: 0px;
+  margin-right: 20px;
+  border: 1px solid #d3d3d3;
+  margin-left: 20px;
+  background-color: #ffffff;
+}
+
+:focus {
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+thead {
+  width: calc(100% - 1em);
+  /* scrollbar is average 1em/16px width, remove it from thead width */
+}
+
+td {
+  /* background-color: #fff; */
+  color: var(--td);
+  font-weight: 500;
+  margin: 5px !important;
+  padding: 7px 15px;
+  border-radius: 2px;
+  /* text-align: center; */
+  font-size: 14px;
+  /* font:14px Montserrat;  */
+}
+
+th {
+  background-color: var(--table-header-text);
+  margin: 5px !important;
+  padding: 7px 15px;
+  border-radius: 2px;
+  text-align: center;
+  color: var(--table-header-text);
+  /* font-weight: 500; */
+}
+
+.dateTD {
+  min-width: 122px;
+}
+
+.prd {
+  min-width: 170px;
+}
+
+tr:nth-child(odd) {
+  background-color: var(--tr-odd);
+}
+
+tr:nth-child(even) {
+  background-color: var(--tr-even);
+}
+
+tr:nth-child(odd):hover {
+  background-color: var(--tr-odd-hover);
+}
+
+tr:hover {
+  background-color: var(--tr-even-hover);
+}
+
+hr {
+  border: 0;
+  height: 1px;
+  background-image: var(--hr);
+}
+
+.slider {
+  padding-top: 30px;
+  margin-left: 2%;
+  width: 97%;
+}
+
+.sliderDaily {
+  padding-top: 30px;
+  margin-left: 12%;
+  width: 74%;
+}
+
+.sliderLastWeek {
+  padding-top: 30px;
+  margin-left: 17%;
+  width: 66%;
+}
+
+.sliderLastWeekFeb {
+  padding-top: 30px;
+  margin-left: 31%;
+  width: 38%;
+}
+
+.sliderWeekly {
+  padding-top: 30px;
+  margin-left: 30%;
+  width: 35%;
+}
+
+.box {
+  margin: 5%;
+  border-radius: 5px;
+  transform: scale(1.02, 1.02);
+  box-shadow: 0 0 11px rgba(33, 33, 33, 0.2);
+  min-width: 1100px;
+  /* background: #e1edf7; */
+}
+
+/* Scale up the box */
+
+.box:hover {
+  /* transform: scale(1, 1); */
+  box-shadow: 0 0 5px rgba(102, 100, 100, 0.2);
+}
+
+/* Fade in the pseudo-element with the bigger shadow */
+
+.box:hover::after {
+  opacity: 1;
+}
+
+h1 {
+  color: var(--title-h1);
+  /* font: 14px Montserrat; */
+  font-size: 35px;
+  font-weight: normal;
+  line-height: 48px;
+  margin: 0;
+  /* text-align: center; */
+  padding-left: 38%;
+  padding-top: 20px;
+}
+
+.graphContainer {
+  /* height: 50%;
+  width: 76%; */
+  height: auto;
+  width: auto;
+  background-color: var(--content-cotainer);
+  margin-left: auto;
+  margin-right: auto;
+  /* border: 1px solid #d3d3d3; */
+  /* border-radius: 5px; */
+  /* box-shadow: 0px 5px 5px 0px #ccc; */
+  /* margin-right: 30px; */
+  /* margin-left: 15%; */
+  text-align: center;
+  /* margin-top: 10px; */
+  margin-bottom: 20px;
+  /* overflow-y: scroll; */
+  overflow: none;
+  border-radius: 4px;
+  /* padding-top: 13px; */
+}
+
+.matLabelText {
+  color: var(--matLabelText);
+}
+
+::ng-deep .mat-primary .mat-option.mat-selected:not(.mat-option-disabled) {
+  color: var(--mattab-text) !important;
+}
+
+::ng-deep .mat-tab-label .mat-tab-label-content {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  white-space: nowrap;
+  color: var(--mattab-text);
+}
+
+::ng-deep .mat-tab-header-pagination-chevron {
+  border-color: var(--mattab-text-chevron) !important;
+}
+
+::ng-deep
+  .mat-tab-header-pagination-disabled
+  .mat-tab-header-pagination-chevron {
+  border-color: var(--mattab-text-chevron-disabled) !important;
+}
+
+::ng-deep .mat-badge-content {
+  color: #fff;
+  background: var(--main-orange);
+}
+
+::ng-deep .mat-primary .mat-pseudo-checkbox-checked,
+.mat-primary .mat-pseudo-checkbox-indeterminate {
+  background: var(--main-orange);
+}
+
+::ng-deep .mat-button.mat-primary,
+.mat-icon-button.mat-primary,
+.mat-stroked-button.mat-primary {
+  color: var(--main-orange);
+}
+
+::ng-deep .mat-button.mat-primary .mat-button-focus-overlay,
+.mat-icon-button.mat-primary .mat-button-focus-overlay,
+.mat-stroked-button.mat-primary .mat-button-focus-overlay {
+  background-color: var(--main-orange);
+}
+
+::ng-deep .mat-button.mat-primary .mat-button-focus-overlay,
+.mat-icon-button.mat-primary .mat-button-focus-overlay,
+.mat-stroked-button.mat-primary .mat-button-focus-overlay {
+  background-color: var(--main-orange);
+}
+
+::ng-deep .mat-fab.mat-primary,
+.mat-flat-button.mat-primary,
+.mat-mini-fab.mat-primary,
+.mat-raised-button.mat-primary {
+  background-color: var(--main-orange);
+}
+
+::ng-deep .mat-checkbox-checked.mat-primary .mat-checkbox-background,
+.mat-checkbox-indeterminate.mat-primary .mat-checkbox-background {
+  background-color: var(--main-orange);
+}
+
+::ng-deep
+  .mat-checkbox-checked:not(.mat-checkbox-disabled).mat-primary
+  .mat-ripple-element,
+.mat-checkbox:active:not(.mat-checkbox-disabled).mat-primary
+  .mat-ripple-element {
+  background: var(--main-orange);
+}
+
+::ng-deep .mat-chip.mat-standard-chip.mat-chip-selected.mat-primary {
+  background-color: var(--main-orange);
+  color: #fff;
+}
+
+::ng-deep .mat-calendar-body-selected {
+  background-color: var(--main-orange);
+  color: #fff;
+}
+
+::ng-deep .mat-datepicker-toggle-active {
+  color: var(--main-orange);
+}
+
+::ng-deep .mat-form-field.mat-focused .mat-form-field-label {
+  color: var(--main-orange);
+}
+
+::ng-deep .mat-form-field.mat-focused .mat-form-field-ripple {
+  background-color: var(--main-orange);
+}
+
+::ng-deep
+  .mat-form-field-type-mat-native-select.mat-focused:not(.mat-form-field-invalid)
+  .mat-form-field-infix::after {
+  color: var(--main-orange);
+}
+
+::ng-deep
+  .mat-form-field-appearance-outline.mat-focused
+  .mat-form-field-outline-thick {
+  color: var(--main-orange);
+}
+
+::ng-deep .mat-icon.mat-primary {
+  color: var(--main-orange);
+}
+
+::ng-deep .mat-input-element {
+  caret-color: var(--main-orange);
+}
+
+::ng-deep .mat-progress-bar-fill::after {
+  background-color: var(--main-orange);
+}
+
+::ng-deep .mat-progress-spinner circle,
+.mat-spinner circle {
+  stroke: var(--main-orange);
+}
+
+::ng-deep
+  .mat-radio-button.mat-primary.mat-radio-checked
+  .mat-radio-outer-circle {
+  border-color: var(--main-orange);
+}
+
+::ng-deep .mat-radio-button.mat-primary .mat-radio-inner-circle,
+.mat-radio-button.mat-primary
+  .mat-radio-ripple
+  .mat-ripple-element:not(.mat-radio-persistent-ripple),
+.mat-radio-button.mat-primary.mat-radio-checked .mat-radio-persistent-ripple,
+.mat-radio-button.mat-primary:active .mat-radio-persistent-ripple {
+  background-color: var(--main-orange);
+}
+
+::ng-deep .mat-form-field.mat-focused.mat-primary .mat-select-arrow {
+  color: var(--main-orange);
+}
+
+::ng-deep .mat-slide-toggle.mat-primary.mat-checked .mat-slide-toggle-thumb {
+  background-color: var(--main-orange);
+}
+
+::ng-deep .mat-slide-toggle.mat-primary.mat-checked .mat-ripple-element {
+  background-color: var(--main-orange);
+}
+
+::ng-deep .mat-primary .mat-slider-thumb,
+.mat-primary .mat-slider-thumb-label,
+.mat-primary .mat-slider-track-fill {
+  background-color: var(--main-orange);
+}
+
+::ng-deep .mat-step-header .mat-step-icon-selected,
+.mat-step-header .mat-step-icon-state-done,
+.mat-step-header .mat-step-icon-state-edit {
+  background-color: var(--main-orange);
+  color: #fff;
+}
+
+::ng-deep .mat-tab-group.mat-primary .mat-ink-bar,
+.mat-tab-nav-bar.mat-primary .mat-ink-bar {
+  background-color: var(--main-orange);
+}
+
+::ng-deep .mat-tab-group.mat-background-primary .mat-tab-header,
+.mat-tab-group.mat-background-primary .mat-tab-header-pagination,
+.mat-tab-group.mat-background-primary .mat-tab-links,
+.mat-tab-nav-bar.mat-background-primary .mat-tab-header,
+.mat-tab-nav-bar.mat-background-primary .mat-tab-header-pagination,
+.mat-tab-nav-bar.mat-background-primary .mat-tab-links {
+  background-color: var(--main-orange);
+}
+
+::ng-deep .mat-toolbar.mat-primary {
+  background: var(--main-orange);
+  color: #fff;
+}
+
+::ng-deep .mat-primary .mat-option.mat-selected:not(.mat-option-disabled) {
+  color: var(--main-orange) !important;
+}
+
+::ng-deep .mat-option {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+  line-height: 48px;
+  height: 48px;
+  padding: 0 16px;
+  text-align: left;
+  text-decoration: none;
+  max-width: 100%;
+  position: relative;
+  cursor: pointer;
+  outline: 0;
+  display: flex;
+  flex-direction: row;
+  max-width: 100%;
+  box-sizing: border-box;
+  align-items: center;
+  -webkit-tap-highlight-color: transparent;
+  background-color: var(--mat-option-BG);
+}
+
+::ng-deep .mat-option:focus:not(.mat-option-disabled),
+.mat-option:hover:not(.mat-option-disabled) {
+  background: var(--mat-option-hover);
+}
+
+::ng-deep .mat-select-panel .mat-option.mat-selected:not(.mat-option-multiple) {
+  background: var(--mat-option-selected);
+}
+
+::ng-deep .mat-tab-header,
+.mat-tab-nav-bar {
+  border-bottom: var(--mat-navbar-border);
+}
+
+/* ::ng-deep .mat-tab-labels > .mat-tab-label:first-child {
+        display: none;
+      } */
+
+/* -------------------POPUP--------------------- */
+
+.popupMainDiv {
+  transition: width 2s;
+  height: auto;
+  /* width: 315px; */
+  width: auto;
+  border: 1px solid var(--popupmaindiv-border);
+  background-color: var(--popupmaindiv-bc);
+  /* background-color: rgb(239, 239, 248); */
+  visibility: visible;
+  top: 98px;
+  left: 49.2%;
+  transform-origin: top;
+  position: absolute;
+  z-index: 1001;
+  -moz-opacity: 0.8;
+  opacity: 1;
+  border-radius: 0.3em;
+  box-shadow: 3px 5px 10px rgba(136, 136, 136, 0.4);
+  margin: 0px !important;
+  padding: 0px !important;
+}
+
+.acc {
+  padding-top: 1em;
+  cursor: pointer;
+  font-size: 19px;
+  color: rgb(204, 7, 7);
+  letter-spacing: 2px;
+  position: relative;
+}
+
+.row {
+  padding: 2em 1em 0em 5em !important;
+}
+
+.calTable {
+  max-width: 100%;
+  border-collapse: separate;
+  border-spacing: 0.5em 0.5em;
+  padding-left: 12px !important;
+  padding-right: 11px !important;
+  padding-top: 0px;
+  padding-bottom: 12px;
+  /* padding-top: 15px; */
+  /* padding-bottom: 20px; */
+  /* padding-left: 35px; */
+  /* font-size: 20px */
+  /* font: 15px Montserrat; */
+  /* padding-left: 15%; */
+}
+
+.calTable tr {
+  background-color: #fdfdfd;
+}
+
+.calTable td {
+  border-radius: 5px;
+  color: var(--calTable-td);
+  background-color: var(--calTable-td-bc);
+}
+
+.calTable tr:hover {
+  background-color: #fdfdfd;
+  cursor: pointer;
+}
+
+.calTable td:hover {
+  background-color: var(--table-header-bg);
+  color: white;
+  transform: scale(1.1, 1.1);
+  /* box-shadow: 1px 1px 5px rgba(104, 150, 248, 0.2); */
+}
+
+.calTopText {
+  /* font: 15px Montserrat; */
+  font-size: 17px;
+  font-weight: 500;
+  padding-left: 5%;
+  padding-top: 4%;
+  color: var(--calTopText);
+}
+
+.calTopText:hover {
+  color: var(--calTopText-hover);
+  cursor: pointer;
+}
+
+.calLine {
+  /* background-image: linear-gradient(90deg, rgb(101, 113, 218),rgb(140, 149, 236),rgb(204, 227, 238)); */
+  background-image: var(--calLine);
+  border: 0;
+  height: 1px;
+  padding-top: 0%;
+  align-self: center;
+}
+
+.close {
+  font-size: 20px;
+  padding-left: 94%;
+  width: 100% !important;
+  color: grey;
+  cursor: pointer;
+}
+
+@media screen and (min-width: 150px) and (max-width: 1650px) {
+  .imgbtn {
+    padding-left: 55px;
+    opacity: 0.5;
+  }
+  ::ng-deep .mat-form-field-infix {
+    width: 100px;
+  }
+}
+
+.errorMessage {
+  /* font: 20px Montserrat; */
+  color: grey;
+  padding-top: 4%;
+}
+
+.errorSubMessage {
+  /* font: 15px Montserrat; */
+  color: grey;
+}
+
+label {
+  /* font: 14px Montserrat; */
+  margin-left: 3.5em;
+}
+
+.inputText:hover {
+  box-shadow: 0px 2px 7px rgba(136, 136, 136, 0.4);
+}
+
+.inputText {
+  border: none !important;
+  background-color: rgb(238, 238, 238);
+  padding-top: 0.275em;
+  padding-bottom: 0.275em;
+  width: 18%;
+  color: #676765;
+  border-radius: 0.2em;
+  /* height: 28px; */
+  /* padding-right: 0.5em; */
+  margin-top: 20px;
+  background: var(--inputBG);
+  box-shadow: var(--inputBGShadow);
+  /* height: 100%; */
+}
+
+.inputText_Search {
+  float: left;
+  /* margin-left: 12.5em; */
+  text-align: center;
+  /* width: 65%; */
+  /* min-width: 10em; */
+  /* margin-right: 0.5em; */
+}
+
+.inputText_pageCount {
+  /* margin-right: 232.5px; */
+  max-width: 10em;
+  margin-right: 0em;
+  margin-left: 0.5em;
+  text-align: center;
+}
+
+.pageCount {
+  white-space: nowrap;
+  /* font: 14px Montserrat; */
+  height: 85%;
+  float: right;
+  color: #7d7d74;
+}
+
+.loadingIcon {
+  width: auto;
+  height: 120px;
+}
+
+.recordsTable {
+  width: 99.1%;
+  /* min-width: 100%; */
+  border-collapse: separate;
+  border-spacing: 0.3em 0.3em;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  /* padding-left: 35px; */
+  /* font-size: 20px */
+  /* font: 15px Montserrat; */
+}
+
+.recordsTable_horizontal {
+  width: 99.1%;
+  /* min-width: 100%; */
+  border-collapse: separate;
+  border-spacing: 0.3em 0.3em;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  /* padding-left: 35px; */
+  /* font-size: 20px */
+  /* font: 15px Montserrat; */
+}
+
+.inputDiv {
+  /* margin-left: auto;
+  margin-right: 11em; */
+  /* margin-left: 0.6%;
+  margin-right: 13.4em; */
+  width: 77.5%;
+  margin-left: 12%;
+}
+
+.exportImage {
+  float: left;
+  margin-top: 20px;
+  height: 38px;
+  width: auto;
+  cursor: pointer;
+  padding-bottom: 0px;
+  padding-left: 10px;
+}
+
+::ng-deep .ngx-pagination {
+  float: left;
+}
+
+::ng-deep .ngx-pagination .current {
+  background: var(--pagination-current-tab) !important;
+  border-radius: 6px;
+}
+
+::ng-deep .ngx-pagination a:hover,
+.ngx-pagination button:hover {
+  background: var(--pagination-hover) !important;
+  border-radius: 5px;
+}
+
+::ng-deep .ngx-pagination a,
+.ngx-pagination button {
+  cursor: pointer;
+  color: #7d7d74 !important;
+}
+
+::ng-deep .mat-select-value {
+  color: var(--mattab-select-value);
+}
+
+::ng-deep .mat-form-field-appearance-legacy .mat-form-field-underline {
+  bottom: 1.25em;
+  background-color: var(--selectPeriod-Border-Bottom);
+}
+
+.logoImage {
+  width: 8%;
+  /* height: 100%; */
+  padding: 0.5em 0em 0.3em 0.3em;
+  margin-left: 1em;
+  /* float: left; */
+}
+
+.titleHR {
+  /* background-image: var(--titleLine); */
+  border: 0;
+  height: 1px;
+  margin-top: 1%;
+  margin-left: 25%;
+}
+
+.mainContainer {
+  box-shadow: var(--mainContainer-shadow);
+  /* margin-left: 5%; */
+  /* margin-right: 5%; */
+  /* padding-left: 15px;
+  padding-right: 15px; */
+  margin-bottom: 1%;
+  /* margin-top: 1%; */
+  border-radius: 5px;
+  padding-bottom: 2%;
+  background: var(--mainContainerBG);
+  border: var(--container-border);
+  /* overflow: hidden; */
+  overflow: scroll;
+}
+
+.pageFont {
+  /* font: 14px Montserrat; */
+}
+
+.graph {
+  float: right;
+  margin-top: -5.4%;
+  margin-right: 3.5%;
+  /* height: 32px; */
+  padding: 5px;
+  cursor: pointer;
+}
+
+.settings {
+  float: right;
+  margin-top: -5.4%;
+  margin-right: 0.5%;
+  /* height: 32px; */
+  padding: 5px;
+  margin-left: 20px;
+  cursor: pointer;
+}
+
+.settings:hover,
+.graph:hover {
+  background-color: var(--settings-hover);
+  border-radius: 20px;
+  /* box-shadow: -3px -2px 8px rgba(228, 190, 132, 0.4); */
+  /* background-color: #565554; */
+}
+
+.themeSelector {
+  /* font: 14px Montserrat; */
+  transition: width 2s;
+  color: rgb(124, 98, 77);
+  /* color: rgb(125, 165, 201); */
+  /* height: 11%; */
+  /* width: 8%; */
+  border: 1px solid var(--themeSelector-border);
+  background-color: rgb(247, 249, 249);
+  visibility: visible;
+  top: 67px;
+  left: 90.2%;
+  transform-origin: top;
+  position: absolute;
+  z-index: 1001;
+  -moz-opacity: 0.8;
+  opacity: 1;
+  border-radius: 0.3em;
+  box-shadow: 3px 5px 10px rgba(136, 136, 136, 0.4);
+  margin: 0px !important;
+  padding: 0px !important;
+  text-align: -webkit-center;
+  width: auto;
+  height: auto;
+}
+
+.themeTable {
+  text-align: -webkit-center;
+  width: auto;
+  border-spacing: 0px;
+}
+
+.themeTableRow {
+  background-color: var(--theme-dropdown) !important;
+}
+
+.themeTableRow :hover {
+  background-color: var(--theme-dropdown-hover) !important;
+}
+
+.viewAlloc {
+  display: grid;
+  grid-template-columns: 69% 11% 10%;
+  align-items: center;
+}

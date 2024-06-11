@@ -1,0 +1,878 @@
+app-ec-submultirequest-er {//Anubhav 05-01-2023
+    display: table-row !important;
+}
+
+
+/* #SubmultirequestComponent{
+    display: table-row;
+} */
+
+table {
+    border-collapse: separate;
+    border-spacing: 0.2em 0.2em;
+    font-size: 16px !important;
+    background-color: #fff;
+}
+
+tr {
+    border-bottom: 1px solid black !important;
+}
+
+td,
+th {
+    width: max-content;
+    padding: 5px;
+    /* min-width: 9em; */
+}
+
+td {
+    margin: 10px !important;
+    border-radius: 2px;
+    text-align: center;
+    padding: 4px;
+    border: 1px solid var(--border) !important;
+    /* vertical-align: middle;*/
+    height: 117px !important;
+    font-size: 12px;
+    white-space: normal;
+    vertical-align: middle;
+}
+
+tr:nth-child(even) {
+    background-color: #f5f5f548;
+}
+
+tr:nth-child(odd) {
+    // background-color: #3c3c3c !important;
+}
+
+tr:hover {
+    // background-color: #bbbbbb21;
+}
+
+select {
+    //padding-left: 0 !important;
+    padding: 0.275em 0px 0.275em 0px !important;
+    text-align-last: center !important;
+}
+
+select {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    -webkit-appearance: button;
+    -moz-appearance: none;
+    background-image: none !important;
+    background-position: none;
+    background-size: 0;
+    background-repeat: initial;
+}
+
+input[type="text"],
+select,
+input[type=date],
+input[type=number] {
+    margin-left: 0 ;
+    margin-right: 0 !important;
+    min-width: 8em ;
+    width: 100%;
+    max-width: none ;
+    
+    // background-color: #fff !important;
+    border-radius: 0 !important;
+    // color : gray !important;
+    vertical-align: middle;
+    //border-bottom commented and margin-bottom added by SandipA @23-Mar-2023
+    //border-bottom: 1px solid var(--border) !important;
+    //border: 1px solid var(--border);
+    border: solid 1px var(--btn-border);
+    margin-bottom: 3px;
+}
+
+input[type="text"] {
+    /* max-width: 9em !important; */
+    //Added by SandipA @24-Mar-2023 
+    text-align: right;
+}
+
+input[type=number] {
+    text-align: center;
+}
+
+input[type=date] {
+    max-width: 9em ;
+}
+
+select {
+    /* width: 160px !important; */
+}
+
+input[type=date] {
+    text-align: left;
+    width: 70%;
+    margin-bottom: 1px;
+}
+
+:focus {
+    /* box-shadow: 2px 2px 2px 1px rgba(131, 131, 131, 0.6); */
+    box-shadow: 1px 1px 1px 1px rgba(131, 131, 131, 0.6);
+    outline: none !important;
+}
+
+.multiReq {
+    margin-top: 0.4%;
+    min-width: 1700px;
+}
+
+.paymentdateTxt {
+    text-align: center;
+}
+
+/* th,
+tr,
+td {
+    font-size: 16px !important;
+} */
+
+.trheadergeight {
+    height: 60px;
+}
+
+button {
+    border: none;
+    outline: none;
+}
+
+
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: fixed;
+    background-color: #f1f1f1;
+    min-width: 160px;
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 6px 8px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {
+    background-color: #ddd;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown:hover .dropbtn:hover {
+    background-color: #1a3863;
+}
+
+.pageTitle {
+    margin-top: 3.7%;
+}
+
+.fontSize {
+    font-size: 16px !important;
+}
+
+// HSBCECCLI-27 : Change Height and Width of underlying search results on Bulk Pricer for both payoffs | 09-Aug-2023
+.SelectorBox>a {
+    line-height: 2em;
+}
+.SelectorBox>a>div {
+    padding-left: 0.5em;
+}
+//Added by AdilP || FIN1EURINT-584 || 29-08-2023
+.SelectorBox>a>div:hover {
+    background: var(--dropdown-hover);
+    color: var(--dropdown-hover-text);
+}
+.SelectorBox::-webkit-scrollbar {
+    width: 7px !important;// Added by SandipA for HSBCECCLI-27 || 08-Aug-23
+}
+.SelectorBox {
+    height: auto;
+    max-height: 16em;
+    margin-left: 0 !important;
+    padding-left: 2px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    position: absolute;
+    float: left;
+    z-index: 20;
+    // border-left: 1px solid #ccc;
+    // border-right: 1px solid #ccc;
+    // border-bottom: 1px ridge #ccc;
+    cursor: pointer;
+    border: none !important;
+    background-color:var(--input-bg);
+    padding-top: 0.275em;
+    padding-bottom: 0.275em;
+    margin-top: 0.4em;
+    color: var(--dropdown-text);
+    border-radius: 0.3em;
+    text-align: left;
+    font-size: 1em;
+    width: 32em;
+    font-family: var(--font-family) !important;
+    border:1px solid var(--btn-border) !important;
+}
+// HSBCECCLI-27 : Change Height and Width of underlying search results on Bulk Pricer for both payoffs | 09-Aug-2023
+
+// .sharebasket {
+//     background:var(--input-bg);
+//     background-size: 100% 100%;
+//     background-position-x: center;
+//     background-position-y: center;
+//     background-repeat: no-repeat;
+//     height: 2em;
+//     min-width: 6.5em;
+//     vertical-align: middle;
+//     // color: white;
+//     color: var(--btn-bg);
+//     text-align: center;
+//     font-size: 12px !important;
+//     border-radius: 3px;
+//     cursor: pointer;
+//     margin: 0.5em 0.3em 0.2em 0.3em;
+//     font-weight: 500;
+//     font-size: 12px !important;
+// }
+.sharebasket {
+    background-color: var(--input-bg);
+    color: var(--text);
+    background-size: 100% 100%;
+    background-position-x: center;
+    background-position-y: center;
+    background-repeat: no-repeat;
+    height: 2em;
+    min-width: 5em;
+    vertical-align: middle;
+    // color: white;
+    text-align: center;
+    border-radius: 0.1em;
+    cursor: pointer;
+    margin: 0 0;
+    border: none;
+    font-weight: 500;
+    font-family: var(--font-family) !important;
+}
+
+.longText {
+    min-width: 16em !important;
+    /* width: 320px !important; */
+    max-width: 20em !important;
+}
+
+.deleteCol {
+    width: 55px !important;
+    min-width: 55px !important;
+    max-width: 55px !important;
+    border: none !important;
+    background-color: var(--table-header-bg)!important;
+}
+
+.tenorBox {
+    width: 25% !important;
+    min-width: 3em !important;
+    padding-left: 5px !important;
+    padding-right: 5px !important;
+}
+
+.adTxt {
+    width: 30% !important;
+    min-width: 3em !important;
+}
+
+.sticky-col {
+    position: sticky;
+    // position: -webkit-sticky;
+    background-color: var(--containers);
+    z-index: 1;
+}
+
+.third-col {
+    left: 190px
+}
+
+input:disabled,
+select:disabled {
+    // background-color: #f3f3f3 !important;
+}
+
+.infoNote {
+    margin-left: 0.5em !important;
+    margin-top: -3.5em !important;
+}
+
+.triggerTable {
+    /* background-color: #fff !important;
+    box-shadow: 0px 2px 7px rgba(136, 136, 136, 0.4) !important;
+    border: 1px solid #ccc !important;
+    border-radius: 8px !important;
+    padding: 10px !important;
+    position: absolute !important;
+    z-index: 2 !important;
+    width: auto !important;
+    max-height: 400px !important;
+    overflow-y: auto !important;
+     */
+    background-color: #fff !important;
+    box-shadow: 0px 2px 7px rgba(136, 136, 136, 0.4) !important;
+    border: 1px solid #ccc !important;
+    border-radius: 8px !important;
+    padding: 10px !important;
+    position: absolute !important;
+    z-index: 2 !important;
+    width: auto !important;
+    max-height: 200px !important;
+    overflow-y: auto !important;
+    top: -170px;
+    left: 20px;
+}
+
+.TSlink {
+    text-decoration: underline;
+}
+
+.TSlink {
+    text-decoration: underline;
+    color: #4180c3;
+    cursor: pointer;
+    /* line-height: 13px; */
+}
+
+.TSlink:hover {
+    color: #0056b3;
+    text-decoration: underline;
+}
+
+.tdRight {
+    text-align: right !important;
+}
+
+.popuptr:nth-child(odd) {
+    background-color: #d6d6d67c !important;
+}
+
+.popuptr:hover {
+    background-color: #bbbbbbce !important;
+}
+
+.popuptr:nth-child(odd):hover {
+    background-color: #bbbbbbce !important;
+}
+
+.popuptd,
+.popupth {
+    width: auto !important;
+    padding: 5px !important;
+}
+
+.popupth {
+    background-color: #6c757d !important;
+    color: #ffffff !important;
+    font-weight: 500 !important;
+    margin: 5px !important;
+    padding: 5px 15px !important;
+    border-radius: 2px !important;
+    text-align: center !important;
+}
+
+.popuptd {
+    background-color: rgba(243, 241, 241, 0.425) !important;
+    margin: 10px !important;
+    padding: 5px 5px !important;
+    border-radius: 2px !important;
+    /* text-align: left !important; */
+    color: #343a40 !important;
+}
+
+.menu-container ul {
+    padding: 0px;
+    margin: 0px;
+    border: 1px solid black;
+    background-color: gray;
+}
+
+.menu-container ul:hover {
+    position: absolute;
+    margin-top: -10px;
+    width: calc((100% - 40px) / 5);
+}
+
+.menu-container ul li {
+    display: none;
+    list-style-image: none;
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+}
+
+.menu-container ul:hover li {
+    color: red;
+    display: block;
+    margin-bottom: 0px;
+}
+
+.multiReplyList {
+    font-size: 26px !important;
+    color: grey;
+    font-weight: 500;
+}
+
+.tdalignCenter {
+    vertical-align: middle;
+    width: 142px;
+}
+
+h6,
+.h6 {
+    font-size: 13px;
+}
+
+:host{display: contents; }
+// Added by SandipA for input:active @30-Mar-2023
+textarea:active, textarea:focus, select:active, input:active, select:focus, input:focus{
+    border: solid 1px var(--light-gray) !important;
+    
+}
+
+input[type="date"]::-webkit-datetime-edit {
+  display: block !important;
+  padding-left: 3px !important;
+}
+.dateLabel {
+    position: relative;
+    // margin-left: 4px !important; 
+    // width: 117px !important;
+    // max-width: 117px !important;
+    // min-width: 117px !important;
+    color-scheme: var(--calendar-bg-theme);
+    span {
+      position: absolute;
+      left: 22px;
+      top: 10px;
+      font-size: 13px
+    }
+}
+
+.issueDate{
+
+    width: 59px !important;
+    padding-right: 8px;
+    text-align: left;
+    padding-left: 32px;
+    
+}
+
+.topleftcorner{
+    position: absolute;
+    top: 3px;
+    left: 3px;
+}
+// Tooltip to display all fields in clear and full view
+.topleftsecond{
+    position: absolute;
+    top: 3px;
+    left: 24px;
+}
+
+.topcorner{
+    position: absolute;
+    top: 1px;
+    right: 5px;
+}
+//Added by SandipA for share selection in underlying section || 25-Apr-2023 ||START
+.row-grid-1{
+    display: flex;
+    flex-wrap: wrap;
+    max-width: fit-content;
+    gap: 6px;
+}
+
+.shareName {
+    background-color: transparent;
+    color: var(--btn-bg);
+    border: none;
+    outline: none;
+    padding: 0 4px;
+}
+
+.cancel-icon{
+    padding: 6px 4px;
+}
+//Added by SandipA for share selection in underlying section || 25-Apr-2023 ||END
+//Added by SandipA for FIN1EURINT-121 || 03-May-2023 ||START
+.infoMulti {
+    width: 18px;
+    height: 18px;
+    -webkit-filter: invert(50%);
+    filter: invert(50%);
+    cursor: pointer;
+    margin: auto;
+    margin-top: 2px;// Changed by Varsha G ||29-Mar-2023
+  }
+  .infodivMulti {
+    height: 0;
+    display: none;
+    position: relative;
+  }
+  .infoMulti + .infodivMulti {
+    display: inline-block;
+    position: absolute;
+    margin-top: 18px;
+    margin-left: -8px;
+  }
+  .infoNote {
+    background-color: var(--infoNote-bg-color);//Changed by Varsha G || 03-Apr-2023
+    box-shadow: 0 2px 7px var(--container-shadow) !important;
+    border: 1px solid var(--infoNote-border);//Changed by Varsha G || 03-Apr-2023
+    border-radius: 8px;
+    padding: 10px;
+    position: absolute;
+    z-index: 2;
+    width: 150px;
+    /* max-height: 200px; */
+    /* display: none; */
+    margin-left: 1em;
+  }
+  .infoNote {
+    display: inline-block;
+  }
+  //Added by SandipA for FIN1EURINT-121 || 03-May-2023 ||END
+//START || Added by SandipA for FIN1EURINT-301 || 09-May-2023
+  .loadingImg {
+    margin: 40vh auto;
+    width: 150px;
+}
+.loading {
+    pointer-events: none !important;
+    position: fixed;
+    cursor: not-allowed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 2050;
+    background-color: #ffffff77;
+    text-align: center;
+    opacity: 1;
+}
+.col-12 {
+    flex: 0 0 100%;
+    max-width: 100%;
+}
+//END || Added by SandipA for FIN1EURINT-301 || 09-May-2023
+
+.price-with-loader{
+    margin-left: 2em;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    position: absolute;
+    right: 18px;
+    top: 60px;
+}
+
+.priceall-loader{
+    padding: 0.5em 0em 0em 0.5em !important;
+}
+
+.row {
+    padding: 0.5em 1em 0 1em !important;
+}
+
+.pageload-overlay {
+    position: fixed;
+    top: 114px;
+    bottom: 0;
+    left: 268px;
+    right: 0;
+    background-color: var(--overlay-bg);
+    transition: opacity 500ms;
+    visibility: visible;
+    opacity: 1;
+    z-index: 100;
+    width: auto;
+    height: auto;
+}
+
+// Inline CSS to class converted by SandipA @11-July-2023 
+.result{
+    min-width: 12em !important;
+}
+.cursor{
+    cursor: pointer; 
+}
+.allLP-price{
+    white-space: initial; 
+    width: 200px;
+    height: 150px !important;
+    overflow: auto;
+    transform: translate(168px, -50px);
+}
+.allLP-table{
+    height: 10px !important;
+}
+.loading-dots{
+    margin-top: -5px;
+    margin: auto;
+}
+.best-price1{
+    font-size: 18px;
+    font-weight: bold;
+    color: var(--active);
+}
+.best-price2{
+    color: var(--header);
+    font-size: 18px;
+    font-family:var(--font-family); 
+    font-weight: normal;
+}
+.rfq{
+    white-space: nowrap;
+    font-weight: normal;
+}
+.text-align{
+    text-align: center;
+}
+.ajax-loader{
+    width: 15px; 
+    height: 15px;
+}
+.successMsg{
+    font-size: 13px;
+    color: var(--green);
+}
+.errorMsg{
+    color: #ff4545 !important;
+    white-space: pre-line;
+}
+.sharePopup{
+    text-align: left !important;
+    min-width: 7em !important;
+}
+.display{
+    display: flex;
+}
+.selectedShare{
+    padding-right: 0 !important;   
+}
+.white-space{
+    white-space: nowrap;
+}
+.width{
+    width:7.5em !important; 
+    min-width: 7.5em !important
+}
+.datePopup{
+    // margin-left: 5px  !important; 
+    // width: 135px !important;
+    // max-width: 135px !important;
+    // min-width: 110px !important; 
+    margin-top: 0 !important;
+    padding: 0px !important;
+}
+.width1{
+    width: 82px;
+}
+.set-date{
+    // margin-left: 5px !important; 
+    // width: 135px !important;
+    // max-width: 135px !important;
+    // min-width: 110px !important; 
+    margin-top: 0 !important;
+    padding: 0px !important;
+    padding-left: 8px !important;
+    padding-top: 1px !important;
+}
+.customTenor{
+    margin-left: 5px !important; 
+    width: 135px !important;
+    max-width: 135px !important;
+    min-width: 110px !important;
+}
+.position{
+    position: relative;
+}
+.cpn-pa{
+    white-space: initial;
+    width: 200px;
+}
+.width2{
+    width:100% 
+}
+.width3{
+    width: 10em !important;
+}
+.funding-section{
+    min-width: 6em !important; 
+    width:87% !important;
+}
+
+//  Columns rearrangement and width resize to avoid scrollbar
+#table1{
+    width: auto;
+}
+.colminwidth{
+    min-width: fit-content;
+}
+.colwid95{
+    width: 95px !important;
+    min-width: 95px !important;
+}
+.colwid90{
+    width: 90px !important;
+    min-width: 90px !important;
+}
+.colwid105{
+    width: 105px !important;
+    min-width: 105px !important;
+}
+.colwid110{
+    width: 110px !important;
+    min-width: 110px !important;
+}
+.colwid120{
+    width: 120px !important;
+    min-width: 120px !important;
+}
+.shareInput{
+    text-align: left !important;
+}
+
+//Added by Adilp
+@media screen and (max-width: 1800px) and (min-width: 1550px) {
+    .pageload-overlay{
+        left: 233px;
+        right: 15px;
+    }
+}
+
+@media screen and (max-width: 1550px) and (min-width: 700px) {
+
+    .pageload-overlay{
+        left: 250px;
+    }
+}
+
+// Tooltip to display all fields in clear and full view
+.fullViewDiv{
+    display: none;
+    position: relative;
+}
+
+.fullView + .fullViewDiv{
+    display: block;
+    position: fixed;
+    // top: 135px;
+    bottom: 110px;
+    left: 170px;
+    width: 550px !important;
+    z-index: 999;
+    background-color: transparent;
+    height: fit-content;
+    overflow: auto;
+    box-shadow: 2px 2px 16px 0px #000;
+}
+
+.fullViewTbl {
+    white-space: normal;
+    /* overflow: auto; */
+    /* transform: translate(168px, -50px); */
+    /* z-index: 999; */
+    /* position: fixed; */
+    /* width: auto; */
+    background-color: var(--infoNote-bg-color);
+    padding: 10px;
+    border-radius: 3px;
+}
+
+.fullViewTbl > tr{
+    height: 10px !important;
+    width: fit-content;
+    /* word-wrap: break-word; */
+    /* min-width: 10px !important; */
+    /* max-width: 10px !important; */
+    background-color: inherit;
+}
+
+.fullViewTbl > tr > td{
+    
+    height: 10px !important;
+    width: 120px !important;
+    /* word-wrap: break-word; */
+    /* min-width: 10px !important; */
+    /* max-width: 10px !important; */
+    
+    word-break: break-word;
+    
+}
+
+.fullViewTbl > tr > td:nth-child(odd){
+    background-color: #61616148 !important;
+    width: fit-content !important;
+    text-align: left;
+}
+.fullViewTbl > tr > td:nth-child(even){
+    background-color: var(--infoNote-bg-color);
+}
+
+input[type=date]::-webkit-calendar-picker-indicator { 
+    right: 2px !important;
+    top: 8px !important;
+}
+
+// HSBCECCLI-56 : Custom Autocall Changes in Bulk Pricer || 31-Aug-2023
+.customBarrier{
+    transform: none !important;
+    top: -100px;
+    left: 2.5vw;
+    height: 195px !important;
+    width: auto;
+    min-width: fit-content;
+    padding-top: 0px !important;
+}
+
+.customBarrier > tr > th {
+    border-bottom: 0px !important;
+    // background-color: var(--table-header-bg);
+    color: var(--table-th);
+    font-weight: 500;
+    font-size: 13px;
+}
+
+.customBarrier > tr > td:nth-child(1){
+    background-color: var(--table-header-bg) !important;
+}
+.customBarrier > tr > td:nth-child(2){
+    background-color: var(--infoNote-bg-color);
+    padding: 0px !important;
+    border: 0px !important;
+}
+.customBarrier > tr {
+    background-color: transparent !important;
+}
+.customBarrier > tr > td:nth-child(2) > input[type="text"]{
+    margin-bottom: 0px !important;
+    min-width: 80px !important;
+    height: 30px !important;
+}
+// HSBCECCLI-56 : Custom Autocall Changes in Bulk Pricer || 07-Sep-2023
+.customBarrierPopup{
+    position: relative;
+    width: fit-content;
+    left: 42%;
+}

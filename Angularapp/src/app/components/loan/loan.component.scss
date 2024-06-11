@@ -1,0 +1,104 @@
+.neworderentryComponent {
+  display: flex;
+  height: 100vh;
+  width: 85vw;
+  flex-direction: column;
+  font-size: 15px;
+
+  .main-container {
+    display: flex;
+    margin-left: 40px;
+    flex-direction: column;
+    background-color: var(--containers);
+    letter-spacing: 0.72px;
+    border-radius: 4px;
+    width: 80%;
+    box-shadow: var(--box-shadow-thin);
+    // height: 80vh;
+    // padding: 20px;
+
+    .tabs-pages {
+      display: flex;
+      justify-content: space-around;
+      font-size: 15px;
+      margin-bottom: 10px;
+      height: 50px;
+      gap: var(--tab-gap);
+      .tabs {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        cursor: pointer;
+        border-bottom: 1px solid var(--border);
+        text-decoration: underline;
+        text-underline-offset: 4px;
+        font-weight: 400;
+        box-shadow: var(--neumorphic-up);
+      }
+      .tabs:hover {
+        border-bottom: 2px solid var(--border);
+      }
+      .tab-active {
+        font-weight: 500;
+        border-bottom: 2px solid var(--active) !important;
+        box-shadow: var(--neumorphic-down);
+      }
+    }
+  }
+}
+.main-container:hover {
+  box-shadow: var(--box-shadow-hovered) !important;
+}
+
+@media only screen and (max-width: 600px) {
+  .neworderentryComponent {
+    display: flex;
+    height: 100vh;
+    width: 85vw;
+    flex-direction: column;
+    font-size: 15px;
+
+    .main-container {
+      display: flex;
+      margin-left: 20px;
+      flex-direction: column;
+      background-color: white;
+      letter-spacing: 0.72px;
+      border-radius: 4px;
+      width: 100%;
+      box-shadow: var(--box-shadow-thin);
+      // height: 80vh;
+      // padding: 20px;
+
+      .tabs-pages {
+        display: contents;
+        justify-content: space-around;
+        font-size: 15px;
+        margin-bottom: 10px;
+        height: 50px;
+        gap: var(--tab-gap);
+        .tabs {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            cursor: pointer;
+            border-bottom: 1px solid var(--border);
+            text-decoration: underline;
+            text-underline-offset: 4px;
+            font-weight: 400;
+            box-shadow: var(--neumorphic-up);
+}
+        .tabs:hover {
+          border-bottom: 2px solid var(--border);
+        }
+        .tab-active {
+          font-weight: 500;
+          border-bottom: 2px solid var(--active) !important;
+          box-shadow: var(--neumorphic-down);
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,8 @@
+<div *ngFor="let item of ProductCards">
+    <ng-container [ngSwitch]='item.name'>
+        <ng-template [ngSwitchCase]="'AQ'" *ngIf="item.activeYN">
+            <app-aq [ViewMode]="ViewMode">
+            </app-aq>
+        </ng-template>
+    </ng-container>
+</div>

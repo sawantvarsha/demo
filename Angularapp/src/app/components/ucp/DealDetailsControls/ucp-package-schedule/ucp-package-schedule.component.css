@@ -1,0 +1,22 @@
+
+.overlay_grey {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    height: 250%;
+    width: 250%;
+    z-index: 1;
+    background-color: #cececea2;
+  }
+
+  .loader{
+    position: absolute;
+    margin-left: 40%; 
+    z-index: 99;
+  }
+
+  tr{
+    height: 55px !important;
+  }

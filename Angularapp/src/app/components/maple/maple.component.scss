@@ -1,0 +1,4044 @@
+$assetPath:"/.";
+
+body,
+.navIcon {
+  // background-color: #FFB033 !important;
+  background-color: var(--nav-btn-bg) !important; 
+}
+table#mainContent {
+  border-collapse: separate;
+  padding: 0px 5px 5px 5px;
+  background-color: transparent;
+}
+
+.lblTemplate {
+  color: #c9aca4 !important;
+}
+
+@media screen and (max-width: 768px) {
+  #tbod {
+    display: flex;
+    margin: 0px 0%;
+  }
+}
+
+.sorting {
+  /* box-shadow: 5px 4px 3px #000; */
+  /* border-radius: 14px; */
+  /* padding: 5px; */
+  /* margin: 7px; */
+  /* float: left; */
+  /* width: 485px; */
+
+  box-shadow: 5px 4px 3px #000;
+  border-radius: 25px;
+  padding: 5px 0px 0px 0px;
+  width: 500px; /* Changed for New UI || LGTGTWINT-980 || Chaitanya M || 03 Feb 2023*/
+  display: inline-block !important;
+  margin: 7px;
+}
+
+
+.sidenav,
+.btn:hover,
+.popup,
+.btn {
+  // background-image: url(#{$assetPath}/assets/App_Resorces/bg17-min.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-color: #eeeeee;
+}
+td.sorting{
+  background-color: var(--Tilebg-color-ip); //Added for backgrounf to be black. |  LGTGTWINT-687 | 13 feb 2023
+}
+.bgImagesSel {
+  border: 1px solid #5f5f5f;
+  height: 100px;
+  width: 100px;
+  margin: 10px;
+  display: inline-block;
+  background-size: 100px 100px;
+}
+
+#bgImagesDiv {
+  width: 627px;
+  padding: 10px;
+  right: 7.6%;
+  top: 33%;
+  z-index: 99999;
+  position: fixed;
+  height: 518px;
+  overflow: auto;
+}
+.btn:disabled {
+  color: #000 !important; 
+}
+
+.btn,
+.container input:checked ~ .checkmark,
+.checkmark:hover,
+.checkmark:after,
+.container:hover input ~ .checkmark {
+  background-color: var(--switch-bg-sell) !important; //added by PoojaW
+}
+
+.card,
+.MainTable,
+.MainTable td:first-child,
+.anchorTag,
+.ddlShares,
+.ddl,
+.ddlTenor,
+select,
+.anchorTag,
+.sidenav a,
+.sidenav span,
+.sidenav label,
+.inputClass,
+.inputClassChanges, //  Chaitanya M 16-March-2023 || Added for LGTGTWINT-1721 || Changing 'Solve for' shouldn't reset other parameters to the default value.
+td,
+.btn,
+.btn:hover,
+.switch-input:checked + .switch-label,
+.switch-label,
+tr .banksNameRow td:first-child,
+.pricesRow td,
+tr .pricesRow td:first-child,
+.sidenav,
+#mytemplates,
+.popup {
+  color:var(--text)!important; //added by PoojaW
+}
+
+.card,
+.MainTable,
+.MainTable td:first-child,
+.anchorTag {
+  background-color: transparent !important;
+}
+
+.ddlShares,
+.ddl,
+.ddlTenor,
+.inputClass,
+.inputClassChanges, //  Chaitanya M 16-March-2023 || Added for LGTGTWINT-1721 || Changing 'Solve for' shouldn't reset other parameters to the default value.
+.switch,
+.btn:hover,
+.checkmark,
+#mainContent > input[type="text"][disabled],
+.checkmark {
+  background-color: var(--select-bg-ip) !important; //added by PoojaW
+  box-shadow: none; //added by PoojaW
+}
+
+.pricerTable,
+.banksNameRow td,
+.pricesRow td,
+.btn,
+.btn:hover,
+.ddlShares,
+.ddl,
+.ddlTenor,
+select,
+.inputClass,
+.inputClassChanges,//  Chaitanya M 16-March-2023 || Added for LGTGTWINT-1721 || Changing 'Solve for' shouldn't reset other parameters to the default value.
+.switch,
+#mainContent > input[type="text"][disabled],
+.container input:checked ~ .checkmark,
+.checkmark:hover,
+.checkmark:after,
+.container:hover input ~ .checkmark,
+.checkmark,
+.popup {
+  border: solid 0px #2c2c2c;
+  border-collapse: collapse;
+  background-color: var(--pricer-tbl-bg) !important; // Added by PoojaW
+
+}
+
+//NEW UI changes 08 feb 2023
+.pricesRow td,
+.banksNameRow td{
+  background-color: var(--pricer-grid-bg-ip) !important;
+}
+
+.container {
+  padding: 0px !important;
+}
+
+.ddlShares,
+.ddl,
+.ddlTenor ,select{
+  padding: 5px;
+  border-radius: 5px; //LGTCLI-185
+  width: 110px; /* Changed for New UI || LGTGTWINT-980 || Chaitanya M || 03 Feb 2023*/
+  padding-left: 10px; //LGTCLI-185
+}
+
+ 
+/* Side Nav */
+
+.container {
+  display: block;
+  position: relative;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 15px;
+  line-height: 20px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  color: grey;
+}
+/* Hide the browser's default checkbox */
+
+
+
+#ALLProduct label {
+  padding: 5px;
+  line-height: 20px;
+}
+/* Create a custom checkbox */
+
+.checkmark {
+  position: relative;
+  top: 0;
+  left: 0;
+  height: 20px;
+  width: 20px;
+  padding: 10px;
+  float: left;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+/* Show the checkmark when checked */
+
+.container input:checked ~ .checkmark:after {
+  display: block;
+}
+/* Style the checkmark/indicator */
+
+.container .checkmark:after {
+  left: 9px;
+  top: 5px;
+  width: 5px;
+  height: 10px;
+  border: solid var(--border-chk); //Added by PoojaW
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+#CurrentTemplate {
+  border: solid 1px #a1a1a1 !important;
+  background-color: transparent;
+  padding: 5px;
+  color: #ababab !important;
+  border-radius: 5px;
+}
+/*Added by AniruddhaJ Start*/
+
+.lblUniformFont {
+  font-size: 18px !important; //LGTGTWINT-945 Edit template not working properly for maple instant pricer
+  color: var(--text)!important;  //Added by PoojaW
+}
+
+.bgImage {
+  height: 200px;
+  width: 200px;
+  position: absolute;
+  top: 30px;
+  left: 30px;
+}
+
+.cadb_product {
+  vertical-align: top;
+  padding-left: 10px; //LGTGTWINT-1096
+  color: var(--text) !important; //Added By PoojaW
+}
+
+#templateList {
+  padding: 10px;
+  padding-left: 0px;
+  background-color: transparent;
+  cursor: pointer;
+  height: 695px;
+  overflow-x: scroll;;
+}
+
+#mytemplates {
+  font-size: 15px;
+  margin-top: 10px;
+  cursor: pointer !important;
+  text-align: center;
+  font-size: 25px !important;
+  // color: #fff !important; Commented for CSS issue. || Chaitanya M || 28 March 2023
+}
+
+.userInfo {
+  background-color: #fdfdfd;
+  box-shadow: 1px 1px #cacaca;
+  display: none;
+}
+
+.userTemplateInfo td {
+  padding: 10px;
+  color: #0086bb;
+}
+
+.hiddenProductName {
+  display: none;
+}
+
+#ALLProductDiv {
+  font-size: 15px;
+  margin-top: 10px;
+  color: #0086bb;
+  margin-left: 5px;
+  cursor: pointer !important;
+}
+
+#ALLProduct {
+  display: none;
+  padding: 10px;
+}
+
+.templateName {
+  font-size: 13px;
+  color: #ababab;
+  background-color: #000000 !important;
+  padding: 10px;
+  margin-top: 5px;
+  border-radius: 5px;
+  border: 1px solid #2b2b2b;
+}
+
+i {
+  border: solid #636363;
+  border-width: 0 3px 3px 0;
+  display: inline-block;
+  padding: 3px;
+  /* margin-left: 50px; */
+}
+
+i {
+  float: right !important;
+}
+
+.up {
+  transform: rotate(-135deg);
+  -webkit-transform: rotate(-135deg);
+}
+
+.down {
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+}
+
+.right {
+  transform: rotate(-45deg);
+  -webkit-transform: rotate(-45deg);
+  margin-top: 4px;
+}
+
+.left {
+  transform: rotate(135deg);
+  -webkit-transform: rotate(135deg);
+}
+
+.removable > td {
+        cursor: default;
+   
+    box-shadow: 0px 0px 0px 0px var(--icon-header);;
+    border: 5px solid var(--icon-header);
+    
+    }
+    div.card {
+  cursor: move;
+}
+
+.lblTemplate {
+  font-size: 20px;
+  color: #ffffff !important;
+  white-space: nowrap;
+}
+
+div.templateName:hover {
+  font-size: 13px;
+  color: #ababab;
+  background-color: #252525 !important;
+  padding: 10px;
+  margin-top: 5px;
+  border-radius: 5px;
+  border: 1px solid #333;
+}
+
+#hiddenCurrentTemplate {
+  display: none !important;
+}
+
+// .removableCard {
+//   animation: shake 0.7s;
+//   animation-iteration-count: infinite;
+//   background: url("../../../assets/Instant-Pricer/App_Resorces/Blue/iconRemove.png") no-repeat
+//     center 50px;
+//   cursor: pointer !important;
+//   opacity: 0.8;
+// }
+
+.bgImage {
+  height: 200px;
+  width: 200px;
+  position: absolute;
+  top: 95px;
+  left: 126px;
+  z-index: 99;
+  opacity: 0.5;
+}
+/*End*/
+
+.navIcon {
+  padding: 5px;
+  border: 0px solid #ddd;
+  position: sticky; //Added by RizwanS
+  top: 0px;
+        z-index: 99;  
+  width: 100%;
+  // box-shadow: 4px 4px 6px #000;
+  height: 65px !important; //Fixed height for nav bar
+  // background-image: url(#{$assetPath}/assets/App_Resorces/bg17-min.jpg);
+}
+
+.navIcon input {
+  background-color: transparent;
+}
+
+#CurrentTemplate[disabled] {
+  border: solid 0px #a7a6a6 !important;
+  opacity: 1;
+  background-color: transparent;
+  padding: 5px;
+  color: #aa7a57 !important;
+  border-radius: 5px;
+  border-collapse: collapse;
+}
+
+.bar1,
+.bar2,
+.bar3 {
+  width: 25px;
+  height: 3px;
+  background-color: #000;
+  margin: 4px 0;
+  transition: 0.4s;
+}
+
+.pricesRow td {
+  font-size: 17px !important;
+  font-weight: normal;
+  text-align: center;
+  height: 36px;
+  width: 61px;
+}
+
+select:disabled {
+  background: var(--select-disabled) !important; /*added by PoojaW*/ 
+  outline: none !important;
+  opacity: 0.65;
+}
+
+.MainTable {
+  background-color: #252525;
+  font-size: 13px;
+  height: auto;
+  white-space: nowrap;
+  border-radius: 5px;
+}
+//  Chaitanya M 16-March-2023 || Added for LGTGTWINT-1721 || Changing 'Solve for' shouldn't reset other parameters to the default value.
+.inputClass,
+.inputClassChanges{
+  width: 110px; /* Changed for New UI || LGTGTWINT-980 || Chaitanya M || 03 Feb 2023*/
+  border-radius: 5px; //LGTCLI-185
+  padding: 5px;
+  text-align: right;
+  outline: none !important;
+  padding-left: 10px; //LGTGTWINT-1096
+  // background-color: var(--input-bg) !important;
+}
+
+.MainTable td {
+  padding: 5px !important;
+  border-collapse: collapse;
+  color: #ffffff;
+  border: none;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.btn,
+.btn:hover {
+  font-size: 13px !important;
+  outline: none !important;
+  cursor: pointer;
+
+  border: var(--btn-bg);
+  box-shadow: var(--neumorphic-up);
+  background-color: var(--icon-active) !important; //Added by PoojaW
+  color: var(--btn-color) !important; /*added by PoojaW*/
+
+  border-radius: 5px; //LGTCLI-185
+}
+
+.btn {
+  outline: none !important;
+  cursor: pointer;
+
+}
+
+// Added for hover effect similar to single pricer screen buttons | LGTGTWINT-1423 | Chaitanya M | 15 Feb 2023 
+.btn:hover {
+  box-shadow: var(--box-shadow);
+  background-color: var(--btn-hover-bg) !important;
+  color: var(--btn-text)!important;
+  font-weight: inherit !important;
+  transform: translateY(-1px);
+}
+ .btn:disabled {
+  box-shadow: var(--neumorphic-disabled);
+  cursor: not-allowed!important; 
+  color: var(--disabled-text)!important;
+  min-width: 40px;
+}
+
+#mainContent > input[type="text"][disabled] {
+  outline: none !important;
+  opacity: 0.65;
+}
+
+.btn.disabled,
+.btn:disabled:hover {
+  cursor: not-allowed;
+ //  background-color: #e69f2e  !important;  
+  // background-color: var(--btn-pricegrid-disabled-ip) !important;  //NEW UI changes 08 feb 2023
+}
+
+.btn:disabled{//NEW UI changes 08 feb 2023
+  // background-color: var(--btn-pricegrid-disabled-ip) !important; 
+  // color: var(--btn-disabled-text-ip) !important;
+  // opacity: 1 !important;
+}
+
+.banksNameRow td {
+  font-size: 18px;
+  border-collapse: collapse;
+  text-align: center;
+  padding: 5px;
+}
+
+.pricesRow td {
+  font-size: 17px !important;
+  font-weight: normal;
+  text-align: center;
+  height: 36px;
+  width: 61px;
+}
+
+.productName {
+  font-size: 26px;
+  position: absolute;
+  top: -30px;
+  z-index: 1000000;
+  width: 306px; /* Changed for New UI || LGTGTWINT-980 || Chaitanya M || 03 Feb 2023*/
+  background-color:var(--product-bg);  //added by PoojaW
+  border-radius: 8px 8px 8px 8px;
+  text-align: center;
+  left: 81px;
+  padding: 10px;
+  height: 56px;
+  /* box-shadow: 0px 2px 4px 0px #595757; */
+  border: none !important;
+  line-height: 42px;
+  // border-right: 1px solid #FFB033!important;
+  // border-bottom: 1px solid #FFB033!important;
+  // border-left: 1px solid #FFB033!important;
+
+}
+
+.productNameBack{
+  z-index: 99;
+  height: 52px;
+  top: -22px;
+   
+    
+}
+
+.ddlShares {
+  text-align: left !important;
+}
+
+::-webkit-scrollbar {
+  width: 5px !important;
+  height: 5px !important;
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent;
+  -webkit-border-radius: 5px;
+  border-radius: 15px;
+}
+
+::-webkit-scrollbar-thumb {
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  background: var(--scroll-bg-color); //added by PoojaW
+}
+
+.loader {
+  
+    position: absolute;
+    top: 0px;
+    width: 65px;
+    height: 65px;
+    
+}// LGTGTWINT-687 - Instant Pricing: Consolidated UI issues.
+
+.per {
+  font-size: 10px;
+  margin-left: 3px;
+}
+
+.inputClass:focus,
+.inputClassChanges:focus, //  Chaitanya M 16-March-2023 || Added for LGTGTWINT-1721 || Changing 'Solve for' shouldn't reset other parameters to the default value.
+.ddl:focus,
+option:focus {
+  outline: none !important;
+}
+
+option {
+  border: none;
+  background-color:var(--option-bg); //added by PoojaW
+  color:var(--text); //Added by PoojaW
+}
+
+.ddlCategory {
+  width: 110%;
+  color: #252525;
+  text-align: left;
+  background-color: #3a3838;
+  border: 0px;
+}
+
+.ddlCategory:focus {
+  border: none;
+  outline-style: none !important;
+  outline-color: transparent;
+  box-shadow: none;
+  border-width: 0;
+}
+
+.lblError {
+  position: absolute !important;
+  left: 18%;
+  color: #f81818;
+  padding: 20px;
+  background-color: #f7f7f7;
+  border-radius: 5px;
+  height: 70px;
+  box-shadow: 2px 2px #7a7373;
+}
+
+.box {
+  overflow: hidden;
+  z-index: 9999;
+  position: fixed;
+  right: 0px;
+  top: 50px;
+}
+
+.box-inner {
+  width: 250px;
+  background: #040404;
+  padding: 10px;
+  color: #b3b3b3;
+  font-size: 15px;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.8);
+  /*url('http://i.stack.imgur.com/FhHRx.gif') 50% 50% no-repeat;*/
+}
+/* When the body has the loading class, we turn
+   the scrollbar off with overflow:hidden */
+
+body.loading .modal {
+  overflow: hidden;
+}
+/* Anytime the body has the loading class, our
+   modal element will be visible */
+
+body.loading .modal {
+  display: block;
+}
+
+.chartDiv {
+  width: 400px;
+  height: 260px;
+  margin: 20px 0px 0px 30px;
+  display: flex;
+}
+
+.ui-menu {
+  list-style: none;
+  padding: 5px;
+  margin: 0;
+  font-weight: bold !important;
+  background-color: #f5f5f5;
+  border-radius: 4px !important;
+}
+
+.ui-state-active,
+.ui-widget-content .ui-state-active,
+.ui-widget-header .ui-state-active,
+a.ui-button:active,
+.ui-button:active,
+.ui-button.ui-state-active:hover {
+  border: 1px solid #c9c9c9;
+  
+  background-color: var(--header-bg) !important;  //added by PoojaW
+  /* font-weight: bold !important; */
+  
+  color: var(--text); //added by PoojaW
+}
+
+.CtlType {
+  padding: 0px 0px 5px 5px !important;
+}
+
+img {
+  height: 30px;
+  width: 35px;
+}
+/* Added */
+
+.container-fluid {
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+  background-color: #e5e5e5;
+}
+
+.MainTable td {
+  /* padding: 8px; */
+  padding: 6px;
+  border-collapse: collapse;
+  color: #ffffff;
+  border: none;
+  // vertical-align: -webkit-baseline-middle;
+}
+
+
+.MainTable {
+  background-color: #252525;
+  font-size: 13px;
+  height: auto;
+  white-space: nowrap;
+}
+
+.MainTable td:first-child {
+  font-weight: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.pricerTable td {
+  min-width: 85px;
+  max-width: 120px;
+}
+
+.secondrow {
+  padding-top: 0px;
+  margin-top: -14px;
+}
+
+.pricerTable {
+  width: 100% !important;
+  /* padding-left: 15px;
+        padding-right: 15px; */
+  box-shadow: 0px 0px 11px #2a2a2a;
+  border-radius:10px !important ; //LGTCLI-185
+}
+
+.pricesRow td:last-child {
+  border-right: none;
+}
+
+.pricesRow td {
+  font-size: 17px !important;
+  font-weight: normal;
+  background-color: transparent;
+  text-align: center;
+  height: 36px;
+  width: 61px;
+}
+
+.col-sm-3 {
+  padding-right: 1px !important;
+  padding-left: 1px !important;
+}
+
+.btnTD {
+  width: 100%;
+
+}
+
+
+
+.noPadding {
+  padding: 0px 52px 0px 0px !important; //LGTGTWINT-687 Consolidated UI issues.
+  float: right;
+  margin: 0px 0px 5px 0px !important;
+}
+
+.Divshadow {
+  width: 468px !important; //LGTCLI-185 // Changed for New UI || LGTGTWINT-980 || Chaitanya M || 04 Feb 2023
+  overflow-y: hidden;
+  border: 0px solid #3a3a3a;
+  border-radius: 10px; //LGTCLI-185
+}
+
+.height31 {
+  height: 31px;
+}
+/* Added By Bhavya M  */
+
+label {
+  -webkit-perspective: 1000px;
+  perspective: 1000px;
+  -webkit-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+  display: block;
+  cursor: pointer;
+}
+
+.card {
+  -webkit-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+  -webkit-transition: all 600ms;
+  transition: all 600ms;
+  background-color: #252525;
+  border: 0px solid rgba(0, 0, 0, 0.125);
+  border-radius: 0px !important;
+}
+
+.card div {
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+.card .back {
+  -webkit-transform: rotateX(180deg);
+  transform: rotateX(180deg);
+  display: none;
+}
+
+label:hover .card {
+  box-shadow: 0 20px 20px rgba(50, 50, 50, 0.19);
+}
+
+input[type="checkbox"] {
+  display: none;
+}
+
+:checked + .card {
+  display: block;
+}
+
+label:hover :checked + .card {
+  box-shadow: 0 20px 20px rgba(255, 255, 255, 0.2);
+}
+
+.smallDiv {
+  height: 535px; //* Changed for New UI || LGTGTWINT-980 || Chaitanya M || 03 Feb 2023 || SolveFor Changes | LGTGTWINT-2382 | Chaitanya M | 22 Aug 2023
+  overflow: scroll;
+  overflow-y: hidden !important;
+  overflow-x: hidden ; //* Removed unwanted scroll on priicng grid || LGTGTWINT-2129 || Chaitanya M || 25 Jul 2023
+  border-radius: 20px 20px 0px 0px;
+}
+
+
+label {
+  display: inline !important;
+}
+/* End */
+/* Added By Rizwans For Toggle */
+
+.switch {
+  position: relative;
+  height: 27px;
+  background: transparent;
+  border-radius: 5px;
+  transform: scale(1);
+}
+
+.switch-label {
+  position: relative;
+  z-index: 2;
+  float: left;
+  width: 50%;
+  font-size: 11px;
+  opacity: 0.75;
+  text-align: center;
+  cursor: pointer;
+  padding: 5px;
+  white-space: nowrap;
+}
+
+.switch-label:active {
+  font-weight: bold;
+}
+
+.switch-label-off {
+  /* padding-left: 22px !important; */
+       font-size: 14px;
+  text-align: center;
+        color: var(--text) !important; //added by PoojaW
+}
+
+.switch-label-on {
+  /* padding-left: 35px !important; */
+  font-size: 14px;
+  text-align: center;
+        color: var(--text) !important; //Added by PoojaW
+        /*background-color: var(--pricer-tbl-bg);  //Added by PoojaW */
+} 
+
+.switch-input {
+  display: none;
+}
+
+.switch-input:checked + .switch-label {
+  -webkit-transition: 0.07s ease-out;
+  -moz-transition: 0.07s ease-out;
+  -ms-transition: 0.07s ease-out;
+  -o-transition: 0.07s ease-out;
+  transition: 0.07s ease-out;
+  -webkit-transition-property: color, text-shadow;
+  -moz-transition-property: color, text-shadow;
+  -ms-transition-property: color, text-shadow;
+  -o-transition-property: color, text-shadow;
+  transition-property: color, text-shadow;
+}
+
+.switch-input:checked + .switch-label-on ~ .switch-selection {
+  left: 50%;
+}
+
+.switch-selection {
+  position: absolute;
+  z-index: 1;
+  top: 0px;
+  left: 0px;
+  display: block;
+        width: 50%;
+        height: 100%;
+  border-radius: 3px;
+  -webkit-transition: left 0.07s ease-out;
+  -moz-transition: left 0.07s ease-out;
+  -ms-transition: left 0.07s ease-out;
+  -o-transition: left 0.07s ease-out;
+  transition: left 0.07s ease-out;
+}
+
+.switch-selection{
+  background-color: var(--icon-active) !important;
+  color: var(--btn-text) ;
+}
+.switch{
+  background-color: var(--input-bg) !important; 
+}
+
+.switch-input:checked + .switch-label{
+  font-size: 13px !important;
+  font-weight: bold;
+  color: var(--rfqtextFXD-ip) !important; //added by Chaitanya M | 25-jan-2023
+}
+
+
+/* End */
+
+.AlignRight {
+  margin-right: 10px;
+  float: right;
+  position: relative;
+}
+
+.AlignCenter {
+  text-align: center;
+  margin-top: 50px !important;
+  // margin-bottom: -10px;  //LGTCLI-185
+}
+/* PopUPCSS */
+
+.ui-widget-header,
+.ui-state-default,
+.ui-button {
+  background: #525252;
+  border: 1px solid #484848;
+  color: #f9f9f9;
+  /* font-weight: bold; */
+
+  background-color: var(--header-bg) !important;  //added by PoojaW
+  color: #bdbdbd !important;
+  font-size: 13px !important;
+}
+
+.ui-datepicker-week-end {
+  font-size: 13px !important;
+}
+
+#OrderPlaced {
+  color: var(--orderDetailsmsg);
+  padding: 10px;
+  display: block;
+  white-space: normal;
+}
+
+#OrderPlacedAll {
+  color: #636363;
+  padding: 10px;
+  display: block;
+}
+.booktradepopup {
+  display: none;
+  
+  background-color: var(--span-bg); //Added by PoojaW
+  padding: 7px 15px 20px;
+  position: absolute;
+  z-index: 11;
+ 
+  box-shadow: var(--shadow-head) 3px 4px 4px; //Added by PoojaW
+  border: 1px solid var(--nav-btn-bg) !important;
+  border-radius: 5px;
+  font-size: 12px;
+  color: rgb(171, 171, 171);
+  border-collapse: collapse;
+  /* left: 4%; */
+  width: 313px;
+  /* height: 135px; */
+  min-height: auto;
+  margin-top: 150px !important;
+  margin-left: 70px !important;
+}
+
+.ui-widget.ui-widget-content {
+  box-shadow: 3px 4px 4px black !important;
+
+  background-color: #252525;
+  background-color: var(--option-bg); //Added by PoojaW
+  border: none;
+}
+
+.ui-menu {
+  list-style: none;
+  padding: 5px;
+  margin: 0;
+  font-weight: bold !important;
+  overflow-y: scroll !important;
+  overflow-x: hidden !important;
+  height: 250px !important;
+  white-space: nowrap !important;
+  z-index: 999 !important;
+  box-shadow: 1px 1px #ddd !important;
+  border-radius: 5px !important;
+  font-size: 12px;
+  color: var(--text) !important;  //Changed for New UI || LGTGTWINT-980 || Chaitanya M || 27 Feb 2023 
+}
+
+#ui-id-2 {
+  overflow-y: scroll !important;
+  overflow-x: hidden !important;
+  max-height: 250px !important;
+  white-space: nowrap !important;  
+  background-color: var(--select-bg-ip) !important; //Changed for New UI || LGTGTWINT-980 || Chaitanya M || 27 Feb 2023 
+  padding: 5px !important;
+  z-index: 999 !important;  
+  box-shadow: 3px 4px 4px var(--shadow-head) ; //Added by PoojaW
+  border-radius: 5px !important;
+  border: 1px solid #101010;
+  font-size: 12px;
+  z-index: 999;
+  color: var(--text);  //Changed for New UI || LGTGTWINT-980 || Chaitanya M || 27 Feb 2023 
+  border-collapse: collapse;
+}
+
+#ui-id-3 {
+  overflow-y: scroll !important;
+  overflow-x: hidden !important;
+  max-height: 250px !important;
+  white-space: nowrap !important;
+  background-color: var(--select-bg-ip) !important; //Changed for New UI || LGTGTWINT-980 || Chaitanya M || 27 Feb 2023 
+  padding: 5px !important;
+  z-index: 999 !important;
+  font-size: 12px;
+  z-index: 999;
+  color: var(--text) !important;  //Changed for New UI || LGTGTWINT-980 || Chaitanya M || 27 Feb 2023 
+  border-collapse: collapse;
+}
+
+#ui-id-4 {
+  max-height: 250px !important;
+  overflow-y: scroll !important;
+  overflow-x: hidden !important;
+  white-space: nowrap !important;
+  background-color: var(--select-bg-ip) !important; //Changed for New UI || LGTGTWINT-980 || Chaitanya M || 27 Feb 2023 
+  padding: 5px !important;
+  z-index: 999 !important;
+  box-shadow: 3px 4px 4px #1d1d1d;
+  border-radius: 5px !important;
+  border: 1px solid #101010;
+  font-size: 12px;
+  z-index: 999;
+  color: var(--text) !important;  //Changed for New UI || LGTGTWINT-980 || Chaitanya M || 27 Feb 2023 
+  border-collapse: collapse;
+}
+
+#ui-id-5 {
+  max-height: 250px !important;
+  overflow-y: scroll !important;
+  overflow-x: hidden !important;
+  white-space: nowrap !important;
+  background-color: var(--select-bg-ip) !important; //Changed for New UI || LGTGTWINT-980 || Chaitanya M || 27 Feb 2023 
+  padding: 5px !important;
+  z-index: 999 !important;
+  box-shadow: 3px 4px 4px #1d1d1d;
+  border-radius: 5px !important;
+  border: 1px solid #101010;
+  font-size: 12px;
+  z-index: 999;
+  color: var(--text) !important;  //Changed for New UI || LGTGTWINT-980 || Chaitanya M || 27 Feb 2023 
+  border-collapse: collapse;
+}
+
+.dotimg {
+  padding: 1px;
+  opacity: 0.8;
+}
+
+.dotimg:active {
+  transition: 0.4s;
+  -webkit-transition: 0.4s;
+  -moz-transition: 0.4s;
+  -ms-transition: 0.4s;
+  -o-transition: 0.4s;
+  -webkit-transform: rotate(360deg);
+  -moz-transform: rotate(360deg);
+  -o-transform: rotate(360deg);
+  -ms-transform: rotate(360deg);
+  transform: rotate(360deg);
+}
+
+.button {
+  width: 30px;
+  height: 30px;
+  border: none;
+}
+
+.button:hover {
+  background-color: #ffffff70;
+}
+
+.required {
+  position: fixed;
+  display: none;
+  width: 10px;
+  height: 10px;
+  z-index: 99;
+}
+
+.Divshadow:hover {
+  cursor: -webkit-grab;
+  cursor: grab;
+}
+
+.navbutton {
+  cursor: pointer;
+  width: 25px;
+  height: 25px;
+  background-color: transparent;
+  border: none;
+  color: #ababab;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  visibility: hidden;
+  font-size: 12px;
+  margin: 4px 2px;
+  z-index: 999;
+  display: none;
+}
+
+.sorting:hover .navbutton {
+  animation: 1s fadeIn;
+  animation-fill-mode: forwards;
+  display: none;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    visibility: visible;
+    opacity: 1;
+  }
+}
+
+.navbutton:hover {
+  background-color: #000;
+  border-radius: 50%;
+}
+
+.button5 {
+  border-radius: 50%;
+}
+
+input {
+  font-size: 12px !important;
+}
+
+.anchorTag {
+  padding-right: 5px;
+  padding-bottom: 5px;
+}
+/* Control Popup CSS:: Aniruddha */
+
+.popup {
+  background-color: var(--popup-bk); //added by PoojaW
+  padding: 2px;
+  position: absolute;
+  z-index: 999;
+  box-shadow: 3px 4px 4px var(--popup-box-shadow); //Added by PoojaW
+  border-radius: 5px; //LGTCLI-185
+  display: none;
+  font-size: 12px;
+  color: #ababab;
+  border: 1px solid var(--popup-border); //Added by PoojaW
+  border-collapse: collapse;
+  display: none;
+}
+
+.pairs {
+  float: left;
+  margin: 5px;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 5px; //LGTCLI-185
+  box-shadow: 1px 1px var(--pair-box-shadow); //Added by PoojaW
+  width: 88px;
+  text-align: center;
+}
+
+.pairs:hover {
+  float: left;
+  margin: 5px;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 5px; //LGTCLI-185
+  box-shadow: 1px 1px #717070;
+  width: 88px;
+  text-align: center;
+}
+
+.tblControl {
+  margin: 8px;
+}
+
+.baskets {
+  float: left;
+  margin: 5px;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 5px; //LGTCLI-185
+  box-shadow: 1px 1px #3a3a3a;
+  width: 241px;
+  text-align: center;
+}
+
+.baskets:hover {
+  float: left;
+  margin: 5px;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 5px; //LGTCLI-185
+  box-shadow: 1px 1px #717070;
+  width: 241px;
+  text-align: center;
+}
+
+a:link,
+a {
+  cursor: pointer;
+}
+
+#moreChoicespopup {
+  display: none;
+  top: 211px;
+  left: 461px;
+  background-color: #f1f1f1;
+  padding: 25px;
+  position: absolute;
+  z-index: 9999;
+}
+/* END */
+
+.NoBorder {
+  border: none !important;
+}
+/* Glow CSS Added By RizwanS        */
+
+.pricesRow td {
+  padding: 0px !important;
+}
+/* Red Glow */
+
+.GlowPrice_Red {
+  font-size: 15px;
+  text-align: center;
+  text-decoration: none;
+  -webkit-animation: glowing_8 500ms infinite;
+  -moz-animation: glowing_8 500ms infinite;
+  -o-animation: glowing_8 500ms infinite;
+  animation: glowing_8 500ms infinite;
+  font-weight: 600 !important;
+}
+
+@-webkit-keyframes glowing_8 {
+  100% {
+    color: #735b23;
+  }
+  50% {
+    color: #735b23;
+  }
+  0% {
+    color: #ffffff;
+  }
+}
+
+.LineC {
+  color: #a9a4a4 !important;
+}
+
+.zoom {
+  position: fixed;
+  top: 62% !important;
+  left: 50% !important;
+  z-index: 999;
+  box-shadow: 3px 3px 3px 3px black;
+}
+
+//[START] Added by Rohit T. | LGTCLI-347
+
+@media only screen and (min-width: 1200px) and (max-width: 1440px) {
+  .zoomIn {
+    transform: scale(0.85) translate(-50%, -68%); 
+  }
+}
+
+@media only screen and (min-width: 1440px) and (max-width: 1600px) {
+  .zoomIn {
+    transform: scale(0.95) translate(-50%, -59%); 
+  }
+}
+
+@media only screen and (min-width: 1600px) and (max-width: 1920px) {
+  .zoomIn {
+    transform: scale(1.0) translate(-46%, -58%); 
+  }
+}
+
+@media only screen and (min-width: 1920px) {
+  .zoomIn {
+    transform: scale(1.20) translate(-50%, -50%);
+  }
+}
+
+//[END] Added by Rohit T. | LGTCLI-347 
+
+.zoomOut {
+  zoom: 100%;
+}
+
+@media only screen and (max-width: 900px) {
+  .zoomIn {
+    transform: scale(1);
+  }
+  .zoom {
+    position: fixed;
+    top: 15% !important;
+    left: 1% !important;
+    z-index: 999;
+    box-shadow: 3px 3px 3px 3px black;
+  }
+  .popup {
+    width: auto !important;
+  }
+}
+
+#depositOrderDetails table tr td {
+  border: 1px solid #3a3a3a !important;
+}
+
+.change .bar1 {
+  -webkit-transform: rotate(-45deg) translate(-9px, 2px);
+  transform: rotate(-45deg) translate(-9px, 2px);
+}
+
+.change .bar2 {
+  opacity: 0;
+}
+
+.change .bar3 {
+  -webkit-transform: rotate(45deg) translate(-8px, -2px);
+  transform: rotate(45deg) translate(-8px, -2px);
+}
+
+.sidenav {
+  box-shadow: 2px 2px 2px #000;
+  background-position: bottom;
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 9999;
+  /* top: 130px; */
+  background-color: #fbfbfb;
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 10px;
+  background: #2222;
+  backdrop-filter: saturate(270%) blur(10px);
+  top: 121px;
+}
+
+.sidenav a {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 20px;
+  display: block;
+  transition: 0.2s;
+}
+
+.sidenav a:hover {
+  color: #f1f1f1;
+}
+
+.sidenav .closebtn {
+  position: absolute;
+  top: 0;
+  right: 5px;
+  font-size: 36px;
+}
+
+@media screen and (max-height: 450px) {
+  .sidenav {
+    padding-top: 15px;
+  }
+  .sidenav a {
+    font-size: 18px;
+  }
+}
+
+#tab-container {
+  color: whitesmoke;
+}
+
+#CommonPairs_ID,
+#CommonShares_ID,
+#CommonAmount {
+  background-color: #080808;
+  border: 1px solid #3f3f3f;
+  color: #ffffff!important;
+}
+
+.ui-widget.ui-widget-content {
+  
+  background-color: var(--option-bg); //added by PoojaW
+  border: 0px solid #939393;
+  
+  color: var(--text); //Added by PoojaW
+  // background-image: url(#{$assetPath}/assets/App_Resorces/bg17-min.jpg);
+}
+/* Side Nav End */
+/* END */
+
+/* CSS for clear icon in input field || Tina K || 10-Dec-2019 */
+input[type="search"]::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  display: block;
+  width: 8px;
+  height: 8px;
+  background: -webkit-linear-gradient(
+      -45deg,
+      transparent 0%,
+      transparent 46%,
+      #ababab 46%,
+      #ababab 56%,
+      transparent 56%,
+      transparent 100%
+    ),
+    -webkit-linear-gradient(45deg, transparent 0%, transparent 46%, #ababaa 46%, #ababaa
+          56%, transparent 56%, transparent 100%);
+
+  transition: all 0.3s ease;
+  padding-right: 4px;
+  margin-left: 4px;
+  z-index: 999;
+}
+/*END*/
+.sharesListName,
+.sharesListNameELI {
+  // border: 1px solid #292929 !important;
+}
+/* Added for UI Issues || RizwanS || 06-Jan-2020 */
+.ui-button:hover {
+  border: none;
+  background-color: #c9c9c9;
+  /* font-weight: normal; */
+  color: #000;
+}
+
+.ui-button {
+  border: none;
+  color: #000;
+  text-decoration: none;
+  background-color: #c9c9c9;
+  font-size: 15px !important;
+
+}
+
+.ui-button:focus {
+  border: none;
+  color: #000000;
+  text-decoration: none;
+  background-color: #c9c9c9;
+  font-size: 15px !important;
+  font-family: Montserrat !important;
+}
+
+.ui-widget-content {
+  border: none;
+ 
+  background: var(--option-bg); //added by PoojaW
+
+  color:var(--text); //Added by PoojaW
+  // background-image: url(#{$assetPath}/assets/App_Resorces/bg17-min.jpg);
+}
+
+.ui-dialog .ui-dialog-buttonpane button {
+  margin: 0.5em 0.4em 0.5em 5px !important;
+}
+
+#myFile {
+  border: 1px solid #b5b5b5 !important;
+  margin-left: 38px !important;
+}
+
+.modal-footer {
+  border-top: 1px solid 1px solid #b5b5b5 !important;
+}
+#lblinfo_upload {
+  color: green !important;
+}
+
+.modal-content {
+  background-color: #252525 !important;
+  color: #ababab !important;
+}
+.modal-header {
+  border-bottom: 1px solid #3a3939 !important;
+  border-top-left-radius: 0 !important;
+  border-top-right-radius: 0 !important;
+}
+#myFile {
+  border: 1px solid #3a3939 !important;
+  margin-left: 38px !important;
+}
+
+.inputClass[disabled] {
+  // background: var(--input-disabled) !important;  //added by PoojaW
+  color: var(--btn-disabled-text-ip) !important;
+  //pointer-events: none !important; //LGTGTWINT-1740 || ChaitanyaM || 24 May 2023
+  //opacity: 0.5;
+}
+
+.DivOverlayall {
+  width: 484px !important;
+  height: 530px !important; //LGTGTWINT-2129 | Chaitanya M | 13 June 2023
+  background: none !important;
+}
+
+div.templateName {
+  display: inherit !important;
+  position: relative !important;
+  color: #f5f5f5 !important;
+}
+
+div.templateName:after {
+  content: "" !important;
+  position: absolute !important;
+  width: 100% !important;
+  transform: scaleX(0) !important;
+  height: 2px !important;
+  bottom: 0 !important;
+  left: 0;
+  /* background-color: #d4af37 !important; */
+  background: linear-gradient(
+    to bottom,
+    #cfc09f 22%,
+    #634f2c 24%,
+    #cfc09f 26%,
+    #cfc09f 27%,
+    #ffecb3 40%,
+    #3a2c0f 78%
+  );
+  transform-origin: bottom left !important;
+  transition: transform 0.25s ease-out !important;
+}
+
+div.templateName:hover:after {
+  transform: scaleX(1) !important;
+  transform-origin: bottom left !important;
+}
+
+/* END */
+
+/*Added By RizwanS form JIRA -INT1FIN47-324 / 12 Jan 2022*/
+
+.fnqGridHeader {
+  background-color: #0b0807;
+}
+
+table.EstPrice tr td {
+  border: 1px solid #000;
+}
+
+/*END*/
+
+/* Added by Atharva - Timers - START */
+.pricesBorder {
+  border-style: dashed;
+  border-color: greenyellow;
+  border-image: initial;
+}
+
+.timersRow td {
+  min-width: 72px;
+  max-width: 120px;
+  padding: 0px;
+  font-weight: normal;
+  font-size: 12px;
+  text-align: center;
+  height: 36px;
+  width: 61px;
+  border-collapse: collapse;
+  background-color: #0000008f;
+  //background-color: var(--pricer-tbl-bg); //added by PoojaW
+  background-color: var(--pricer-grid-bg-ip) !important; //NEW UI changes 08 feb 2023
+  color: var(--pricer-text) !important; //Added by PoojaW
+}
+
+/* END */
+
+/* .card>div.front { */
+/* overflow: hidden; */
+/* } */
+
+.CashEQTable td:first-child {
+  min-width: 145px !important;
+  max-width: 145px !important;
+}
+
+.CashEQTable td:nth-child(2),
+.CashEQTable td:nth-child(3) {
+  max-width: 145px !important;
+  min-width: 145px !important;
+}
+#OrderPlacedAll {
+  color: #85ca9e;
+  padding: 10px;
+  display: block;
+  white-space: normal;
+}
+
+.pricerTableCashFX td {
+  min-width: 90px;
+}
+
+.aqDqDdl:focus {
+  outline: -webkit-focus-ring-color auto 0px !important;
+}
+
+#tbod {
+  display: inline-table;
+}
+
+
+#CurrentTemplate[disabled] {
+  border: solid 1px #3a2d2d !important;
+  opacity: 1;
+  background-color: #ddd;
+  padding: 5px;
+  color: #a97958 !important;
+  border-radius: 5px;
+}
+
+.lblTemplate {
+  font-size: 20px;
+  color: #ffffff;
+}
+
+.btn {
+  width: 120px !important;
+  margin-right: 0px !important;
+}
+
+.hiddenPanelCntrls {
+  display: none;
+}
+
+.switch {
+  width: 129px;
+}
+
+.MainTable td td {
+  padding: 0px !important;
+}
+
+.navTable > tbody > tr > td img {
+  vertical-align: top !important;
+  cursor: pointer;
+}
+
+.priceCard {
+  min-height: 135px !important;
+  padding: 0px !important;
+  /* margin-bottom: -12px; */
+}
+
+/* .pricerTD {
+  padding: 9px !important;
+} */
+
+
+
+#DivOverlay {
+  width: 100%;
+  // height: 300%;
+  position: absolute;
+  z-index: 99;
+  background-color: #333;
+  opacity: 0.5;
+  top: -5px;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+}
+
+/* Start: LGTGTWINT-1826 | Chaitanya M | 07 Aug 2023 */
+
+#OverlayBody {
+  width: 100%;
+  height: 300%;
+  position: absolute;
+  z-index: 999;
+  background-color: #333;
+  opacity: 0.025;
+  top: -5px;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+}
+/* End: LGTGTWINT-1826 | Chaitanya M | 07 Aug 2023 */
+
+.DivOverlayall {
+  width: 478px;
+  height: 460px;
+  position: absolute;
+  background-color: #333;
+  opacity: 0.5;
+  border-radius: 8px;
+  /* top: -5px; */
+  display: none;
+  /* justify-content: center; */
+  /* align-items: center; */
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+
+
+.spinner > div {
+  /* margin-left: 10px;
+  margin-bottom: 10px;
+  width: 18px;
+  height: 18px;
+  border-radius: 100%;
+  display: inline-block;
+  animation: sk-bouncedelay 1.6s infinite ease-in-out both; */
+
+  margin-left: 10px;
+  margin-bottom: 10px;
+  width: 10px;
+  height: 10px;
+  border-radius: 100%;
+  display: inline-block;
+  animation: sk-bouncedelay 1.6s infinite ease-in-out both;
+}
+
+.spinner .bounce1 {
+  -webkit-animation-delay: -0.4s;
+  animation-delay: -0.4s;
+  background-color: #ce9a6b;
+}
+
+.spinner .bounce2 {
+  -webkit-animation-delay: -0.2s;
+  animation-delay: -0.2s;
+  background-color: #ce9a6b;
+}
+
+.spinner .bounce3 {
+  -webkit-animation-delay: -0.1s;
+  animation-delay: -0.1s;
+  background-color: #ce9a6b;
+}
+
+.spinner .bounce4 {
+  background-color: #ce9a6b;
+}
+
+@-webkit-keyframes sk-bouncedelay {
+  0%,
+  80%,
+  100% {
+    -webkit-transform: scale(0);
+  }
+  40% {
+    -webkit-transform: scale(1);
+  }
+}
+
+@keyframes sk-bouncedelay {
+  0%,
+  80%,
+  100% {
+    -webkit-transform: scale(0);
+    transform: scale(0);
+  }
+  40% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
+}
+
+@keyframes Gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+/*------------PRELOADING END------------ */
+
+#CommonPairs_ID,
+#CommonShares_ID,
+#CommonAmount {
+  padding: 5px;
+  border-radius: 5px;
+  width: 164px;
+}
+
+.ValidateFieldCSS {
+  border: 1px solid #b34b3b !important;
+}
+
+.reportsimg {
+  width: 30px;
+}
+/* Login */
+
+.container-login {
+  width: 100%;
+  min-height: 100vh;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  padding: 15px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  position: relative;
+  z-index: 1;
+}
+
+.limiter {
+  width: 100%;
+  margin: 0 auto;
+}
+
+.wrap-login {
+  width: 350px;
+  border-radius: 10px;
+  overflow: hidden;
+  background: 0 0;
+  margin-left: 10%;
+  padding: 10px;
+}
+
+.p-b-50 {
+  padding-bottom: 50px;
+}
+
+.p-t-30 {
+  padding-top: 30px;
+}
+
+.login-form-title {
+
+  font-size: 28px;
+  color: #fff;
+  line-height: 1.2;
+  text-align: center;
+  text-transform: uppercase;
+  display: block;
+}
+
+.p-b-41 {
+  padding-bottom: 41px;
+}
+
+.login-form {
+  width: 100%;
+  border-radius: 10px;
+  background-color: #212121ad;
+}
+
+.p-b-33 {
+  padding-bottom: 33px;
+}
+
+.p-t-5 {
+  padding-top: 5px;
+}
+
+.validate-input {
+  position: relative;
+}
+
+.wrap-input {
+  width: 100%;
+  position: relative;
+  padding-top: 20px;
+}
+
+.borderBox {
+  border-bottom: 1px solid #514336;
+  width: 70%;
+  margin-left: 50px;
+}
+
+.input {
+
+  font-size: 20px;
+  color: #be8e64;
+  line-height: 1.2;
+  display: block;
+  width: 100%;
+  height: 50px;
+  background: 0 0;
+  padding: 0 10px 0 80px;
+  -webkit-transition: all 0.4s;
+  -o-transition: all 0.4s;
+  -moz-transition: all 0.4s;
+  transition: all 0.4s;
+  outline: none;
+  border: none;
+}
+
+.focus-input {
+  position: absolute;
+  display: block;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+
+.container-login-form-btn {
+  width: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.m-t-32 {
+  margin-top: 32px;
+}
+
+.login-form-btn:hover {
+  background-color: transparent;
+}
+
+.buttonLogin:hover {
+  cursor: pointer;
+}
+
+.buttonLogin:focus {
+  outline: 1px dotted;
+  outline: 5px auto -webkit-focus-ring-color;
+}
+
+.login-form-btn {
+
+  font-size: 18px;
+  color: #fbdcc1;
+  line-height: 1.2;
+  text-transform: uppercase;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 20px;
+  min-width: 160px;
+  height: 42px;
+  border-radius: 21px;
+  background: -webkit-linear-gradient(
+    left,
+    #ce9a6b,
+    #84654a,
+    #504235
+  ) !important;
+  position: relative;
+  z-index: 1;
+  -webkit-transition: all 0.4s;
+  -o-transition: all 0.4s;
+  -moz-transition: all 0.4s;
+  transition: all 0.4s;
+}
+
+.buttonLogin {
+  outline: none !important;
+  border: none;
+  background: 0 0;
+}
+
+[type="reset"],
+[type="submit"],
+button,
+html [type="button"] {
+  -webkit-appearance: button;
+}
+
+.buttonLogin,
+select {
+  text-transform: none;
+  text-overflow: ellipsis !important;
+  padding-right: 13px;
+}
+
+.buttonLogin,
+input {
+  overflow: visible;
+}
+
+.buttonLogin,
+input,
+optgroup,
+select,
+textarea {
+  margin: 0;
+  font-size: inherit;
+  line-height: inherit;
+  background-color: var(--select-bg) !important;
+}
+
+.padding-five {
+  padding: 5px;
+}
+
+.clear-graph {
+  width: 30px;
+  height: 30px;
+  float: right;
+}
+
+.canvas-style {
+  height: 260px;
+  width: 400px;
+}
+
+.pricer-style {
+  padding-left: 30px !important;
+  display: none;
+}
+
+.name-width {
+  width: 319px;
+}
+
+.height-in-ELI {
+  height: 54px;
+}
+
+.width-one-hundred-seventy {
+  width: 170px;
+}
+
+.width-ninety-four {
+  width: 94px;
+}
+
+.width-one-hundred-forty {
+  width: 135px;
+}
+
+.width-four-six-four {
+  max-width: 464px;
+}
+
+.margin-left-minus-forty {
+  margin-left: -40px;
+}
+
+.height-six-two {
+  height: 62px;
+}
+
+.width-hundred {
+  width: 100px;
+}
+
+.padding-bottom-twenty {
+  padding-bottom: 20px;
+}
+
+.padding-ten {
+  padding: 10px;
+}
+
+.width-four-five {
+  width: 455px !important;
+}
+
+.width-hundred-per-cent {
+  width: 100%;
+}
+
+.width-one-five-zero {
+  width: 150px;
+}
+
+.mf1 {
+  display: none;
+  position: absolute;
+  left: 200px;
+  top: 20px;
+}
+
+.mf2 {
+  width: 618px;
+  height: 800px;
+}
+
+.deopsit-one {
+  width: 30px;
+  height: 30px;
+  float: right;
+  margin-bottom: 5px;
+}
+
+.deposit-two {
+  height: 300px;
+  display: inline-flex;
+  overflow: scroll;
+  width: 100%;
+}
+
+.deposit-three {
+  display: table;
+  text-align: center;
+  color: #ababab;
+  margin: 5px;
+  font-size: 12px;
+}
+
+.font-size-fifteen {
+  font-size: 15px;
+}
+
+.filter {
+  filter: blur(5px);
+  pointer-events: none !important;  //Added by Rizwan S | LGTGTWINT-1516 Instant Pricing: Screen should freeze and no action should be allowed until the popup is closed | 20 Mr 2023
+}
+/******** Global CSS End ******/
+/********************** Back Div Tabs *********************/
+
+h2 {
+  color: #ababab;
+}
+
+.tablabel {
+  position: relative;
+  display: inline-block;
+  padding: 10px 10px 10px;
+  border: 1px solid transparent;
+  border-bottom: 0;
+  cursor: pointer;
+  font-weight: 300;
+  color: whitesmoke;
+  font-size: 12px;
+  margin-left: 7px;
+  box-shadow: inset 0px 5px 10px -2px black;
+  border-top-left-radius: 7px;
+  border-top-right-radius: 7px;
+}
+
+.tablabel:hover {
+  color: #a97958;
+}
+
+.tab-panels {
+  margin-top: 6px;
+  border: 0px;
+  border-top: 1px solid;
+  border-image: linear-gradient(
+    to right,
+    rgb(124, 93, 71),
+    rgb(58, 123, 213, 0)
+  );
+  border-image-slice: 1;
+}
+
+.tabset {
+  margin-top: 10px;
+  max-width: 65em;
+}
+/************* Back Div Tabs END *************/
+
+.depositblotter {
+  height: 300px;
+  display: inline-flex;
+  overflow: scroll;
+  width: 100%;
+}
+
+.deposittable {
+  display: table;
+  width: 100%;
+  text-align: center;
+  color: #ababab;
+  margin: 5px;
+  font-size: 12px;
+  border-spacing: 10px;
+}
+
+.selectedTab {
+  border-color: #a97958;
+  border-bottom: 1px solid #252525;
+}
+
+
+.buttonsTD {
+  display: inline-table;
+}
+.btnTD td {
+
+  padding: 0px !important;
+  margin: 0px !important;
+  padding-left: 5px !important;
+
+}
+/*To Fetch error from console and highlight hidden span || Tina K || 16-Sep-2019 */
+
+.hiddenSpan {
+  display: none;
+}
+/*End*/
+
+
+
+#SettingPanel {
+  display: block;
+  width: 180px;
+  height: max-content;
+  padding: 10px;
+  right: 0px;
+  top: 60px;
+  z-index: 9999;
+  position: fixed;
+  /* box-shadow: 2px 2px 2px #000; */
+  background-color: none;
+  /* color: #fff; */
+  font-size: 11px;
+  line-height: 18px;
+  float: right;
+}
+
+.EQCOpt {
+  position: absolute;
+  width: 120px;
+  background-color: var(--tile-bg); //added by PoojaW
+  padding: 5px;
+  z-index: 111;
+  font-size: 11px;
+  line-height: 18px;
+  margin-top: 149px;
+  margin-left: 60px;
+  cursor: pointer;
+  box-shadow: 0 0 10px #000;
+  border-radius: 5px; //LGTCLI-185
+}
+
+.EQCOpt li {
+  list-style-type: none;
+  padding: 5px;
+  /* text-align: center; */
+}
+
+.EQCOpt li:hover {
+  background-color: var(--containers); //Added by PoojaW
+}
+
+/* Start : LGTGTCLI-447 | added by Chaitanya M | IP "Clone/Add New" Dropdown Highlight Box To Use Rounded Edge | 01 Aug 2023 */
+
+.FXDOpt {
+  position: absolute;
+  width: 63px;
+  background-color: var(--tile-bg); //added by PoojaW
+  padding: 5px;
+  z-index: 111;
+  font-size: 11px;
+  line-height: 18px;
+  margin-top: 149px;
+  margin-left: 60px;
+  cursor: pointer;
+  box-shadow: 0 0 10px #000;
+  border-radius: 5px; //LGTCLI-185
+}
+
+.FXDOpt li {
+  list-style-type: none;
+  padding: 5px;
+  /* text-align: center; */
+}
+
+.FXDOpt li:hover {
+  // background-color: var(--input-disabled); //Added by PoojaW
+  border-radius: 5px;
+ 
+}
+.FXDOpt :hover{
+  display: flex;
+}
+
+/* End:  LGTGTCLI-447 | added by Chaitanya M | IP "Clone/Add New" Dropdown Highlight Box To Use Rounded Edge | 01 Aug 2023 */
+ 
+@media screen and (max-width: 768px) {
+  .hiddenPanelCntrls {
+    display: block;
+    padding: 0px 30px;
+    white-space: nowrap;
+  }
+  #SettingPanel {
+    left: 25%;
+    top: 25%;
+  }
+  .hideOnSmallScreen {
+    display: none;
+  }
+}
+
+#SettingPanel ul {
+  margin: 0px;
+  padding: 2px;
+  width: 100%;
+  display: inline-block;
+}
+
+#SettingPanel li {
+  display: block;
+  width: 100%;
+  padding: 30px;
+  box-shadow: 2px 2px 2px #000;
+  background-color: #484747;
+  color: #fff;
+  font-size: 11px;
+  margin: 2px;
+  list-style-position: outside;
+  list-style: none;
+  float: left;
+  text-align: center;
+}
+
+.banksNameRow td {
+  font-size: 13px !important;
+}
+
+.pricesRow td {
+  font-size: 15px !important;
+}
+
+.pricerTable td {
+  min-width: 72px !important;
+}
+
+.container {
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 22px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  color: grey;
+}
+
+.container {
+  width: 100%;
+  padding-right: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.ui-widget.ui-widget-content {
+  box-shadow: 3px 4px 4px black !important;
+}
+.ui-state-default {
+  border: 1px solid #252525 !important;
+  background: #252525 !important;
+  font-weight: normal !important;
+  color: #ababab !important;
+}
+
+.ui-widget-header,
+.ui-state-default {
+  /* display: none !important; */
+ 
+  background: var(--header-bg); //added  by PoojaW
+  border: 1px solid var(--popup-border-bg); //added by PoojaW
+  color: #ababab;
+  font-weight: bold;
+}
+
+.ui-dialog .ui-dialog-content {
+  position: relative;
+  border: 0;
+  padding: 0.5em 1em;
+  background: none;
+  overflow: auto;
+}
+
+.container {
+  font-size: 22px !important;
+}
+
+.uploadwrapper {
+  display: inline-block;
+}
+
+.btnUpload {
+  top: 13px;
+  position: absolute;
+}
+
+#myFile {
+  margin-left: 29px;
+  width: 300px;
+}
+
+#lblinfo_upload {
+  margin-left: 5px;
+  margin-left: 5px;
+  font-size: 15px;
+}
+.smallDiv {
+  height: 535px !important; // Changed for New UI || LGTGTWINT-980 || Chaitanya M || 03 Feb 2023 || SolveFor Changes | LGTGTWINT-2382 | Chaitanya M | 22 Aug 2023*/
+  padding-left: 3px;
+  /* overflow: scroll; */
+  /* overflow-y: hidden !important; */
+}
+
+/*
+input[type='file'].hoverCntrl {
+  box-shadow: 1px 1px #717070 !important;
+}
+
+input[type='file'].upload-btn-wrapper {
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+}
+
+input[type='file'].btn {
+  border: 2px solid gray;
+  color: gray;
+  background-color: white;
+  padding: 8px 20px;
+  border-radius: 8px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.upload-btn-wrapper input[type=file] {
+  font-size: 100px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+}
+*/
+/* booktradepopup css*/
+
+.required {
+  position: fixed;
+  display: none;
+  width: 10px;
+  height: 10px;
+  z-index: 99;
+}
+
+/* Added By AniruddhaJ Start  */
+
+.dropdown-menu {
+  width: auto;
+  position: absolute;
+  transform: translate3d(0px, 33px, 0px);
+  top: 0px;
+  padding: 8px;
+  color: #808080 !important;
+  left: 0px;
+  background-color: inherit;
+  will-change: transform;
+}
+
+div[aria-describedby="dialogSelect"] {
+  min-width: 610px !important;
+}
+
+.pricerTableCashFX {
+  width: 100%;
+}
+
+
+
+.Instructiontext {
+  font-size: 15px;
+  color: #b59f95;
+  text-align: center;
+}
+
+.tblDialog td {
+  padding: 5px;
+}
+
+.CADBBasicPrototype {
+  display: none !important;
+  position: relative;
+  cursor: move;
+}
+
+
+
+.loaderDivMain {
+  position: absolute;
+  top: 47%;
+  left: 47%;
+  z-index: 999;
+}
+
+.shareNameCntrlFCNELI {
+  width: 60px;
+  border: 0px solid #2f2f2f !important;
+}
+
+.sharesListName,
+.sharesListNameELI {
+  padding: 5px;
+  font-size: 12px;
+  // border: 1px solid #2f2f2f;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-left: 2px;
+}
+.TDwrapStyle {
+  white-space: normal !important;
+  font-size: smaller !important;
+}
+
+/* Added For Import/Export popup */
+
+.modal-backdrop {
+  z-index: 0 !important;
+}
+.modal {
+  background: #0000007d 100% 100% no-repeat;
+}
+
+
+/*  END */
+
+td.widgetsTD {
+  width: 50%;
+}
+
+.imgsaveUnderlyings {
+  height: 25px;
+  width: 25px;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.per {
+  font-size: 12px !important;
+}
+.ddlCNSDFREQ {
+  width: 121px !important;
+  float: right;
+}
+
+.temppopupTD {
+  vertical-align: top;
+}
+
+.temppopupTD tr td label {
+  vertical-align: middle;
+}
+
+/* Added by rizwanS for checkbox css chnages for FCI payoff  */
+
+.chkboxcustome {
+  left: -1px !important;
+  top: 9px !important;
+  height: 10px !important;
+  width: 5px !important;
+  padding: 5px !important;
+}
+
+.container .chkboxcustome:after {
+  left: 5px !important;
+  top: -2px !important;
+}
+.basketsPopup {
+  width: 60px !important;
+  border: 0px solid #2f2f2f !important;
+}
+
+#MAPLEACTBL ul {
+  display: block;
+  width: fit-content;
+  height: fit-content;
+  min-width: 100%;
+  list-style-position: inside;
+  min-height: 100%;
+  margin: 15px;
+  padding: 0px;
+}
+
+#MAPLEACTBL ul li {
+  list-style: none;
+  float: left;
+  min-width: 230px;
+  margin: 0px;
+  padding: 5px;
+  white-space: nowrap;
+}
+.selectAllTD {
+  padding-left: 10px !important;
+}
+/* END */
+
+.DefaultOverLayer {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  z-index: 9999;
+  background: linear-gradient(
+    -45deg,
+    #383f44,
+    #101111,
+    #4c3a32,
+    #313538,
+    #735746
+  );
+  background-size: 400% 400%;
+  animation: Gradient 7s ease infinite;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.MapleOverLayer {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  z-index: 9999;
+  /* background-size: 400% 400%; */
+  /* animation: Gradient 7s ease infinite; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: url(#{$assetPath}/assets/Instant-Pricer/App_Resorces/maple1.jpg) !important;
+  background-repeat: no-repeat;
+  background-size: 100%;
+}
+
+
+.MaplecenterOverLay {
+  background-color: black;
+  padding: 30px;
+  border-radius: 5px;
+  box-shadow: 4px 2px 3px 1px #424242;
+}
+
+/*Added By RizwanS form JIRA -INT1FIN47-324 / 12 Jan 2022*/
+
+table.EstPrice tr td {
+  padding: 10px !important;
+  font-size: 15px;
+}
+
+td.estValues span {
+  font-size: 15px;
+}
+
+.EstPrice {
+  margin: 0 auto;
+}
+
+.estValues {
+  text-align: right;
+  font-weight: bold;
+}
+
+/*END*/
+
+/* Added For Maple Access Control Popup UI  / 01 March 2022 */
+
+#MAPLEACTBL {
+  padding: 0;
+  margin: 10;
+  border-left: none;
+  border-right: none;
+  text-align: left;
+  border-collapse: separate;
+  border-spacing: 0 2px;
+}
+
+#MAPLEACTBL ul {
+  display: block;
+  min-width: 100%;
+  list-style-position: inside;
+  /* min-height: 100%; */
+  margin: 0px;
+  padding: 0px;
+  overflow-x: scroll;
+}
+
+#MAPLEACTBL ul li {
+  list-style: none;
+  float: left;
+  min-width: 230px;
+  margin: 0px;
+  padding: 5px;
+  white-space: nowrap;
+  overflow-x: scroll;
+  list-style: none !important;
+}
+#MAPLEACTBL li {
+  list-style: none !important;
+}
+
+.wip {
+  background-image: url(#{$assetPath}/assets/Instant-Pricer/App_Resorces/Spinner-1s-200px-unscreen.gif) !important;
+  background-repeat: no-repeat !important;
+  background-attachment: scroll !important;
+  background-size: 30px 30px !important;
+  background-position: 98% center !important;
+}
+
+/* Chaitanya */
+.OverlayDiv {
+  width: 478px;
+  height: 532px;
+  position: absolute;
+  z-index: 990;
+  // background-color: #bdbbbb;
+  background-image: url(#{$assetPath}/assets/Instant-Pricer/App_Resorces/Backgrounds/horse_loader.gif);
+  background-repeat: no-repeat;
+  background-position-x: center;
+  background-position-y: center;
+  border-radius: 8px;
+  opacity: 0.5;
+  display: none;
+}
+/* Chaitanya */
+.NewTileBorder {
+  box-shadow: wheat 4px 6px 6px;
+}
+/* END */
+
+.priceButton {
+  background: transparent;
+  box-shadow: none;
+  color: inherit;
+  border: none;
+}
+
+.err {
+  display: block;
+  padding: 10px;
+  margin-left: 22px;
+  margin-right: 10px;
+  white-space: normal;
+}
+
+.box-inner {
+  width: 200px;
+  background: inherit;//var(--box-inner-bg); //Added by PoojaW
+  padding: 10px;
+  color: #b3b3b3;
+  font-size: 15px;
+  border-radius: 5px;
+  text-align: center;
+  margin-left: 45px;
+  margin-top: 1px;
+}
+
+.errorbox {
+  position: absolute;
+  /* display: block; */
+  width: 0px;
+  //z-index: 999;
+  background-color: var(--input-bg); //added by PoojaW
+  box-shadow: var(--shadow-head) 3px 4px 4px; //Added by PoojaW
+  border:1px solid var(--nav-btn-bg) !important; //Added by RizwanS
+  border-radius: 8px;
+  /* margin: 2px; */
+  margin-top: 150px !important;
+  margin-left: 75px !important;
+  padding: 8px;
+  font-size: 15px;
+  /* transition: all .5s ease-in-out;  */
+  height: auto;
+  text-align: center;
+  z-index: 11; // Commented for overlay on top of the errorbox | LGTGTWINT-1642 | Chaitanya M | 11 May 2023
+}
+/* END */
+
+/* Added by Atharva - Timers - START */
+.priceButton {
+  background: transparent;
+  box-shadow: none;
+  color: inherit;
+  border: none;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.priceButton:disabled:hover {
+  cursor: not-allowed;
+}
+
+.priceButton:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.fxdTimer {
+  font-size: 15px;
+  text-align: center;
+}
+
+td.timerTD span {
+  font-size: 20px;
+  font-weight: 500;
+  color: #d9d9d9;
+}
+
+/* END */
+
+/* added by vanshika */
+.priceBackground {
+  background: linear-gradient(130deg, #6e72551f, #96704ba3, #21233521);
+  background-size: 400% 400%;
+  // animation: Gradient 2s ease infinite;
+}
+
+.orderPopUP td {
+  font-size: 14px !important;
+  padding: 10px;
+  width: 146px;
+}
+
+.ui-dialog-buttonset {
+  padding-left: 8vw !important;
+  /*     float: left !important; */
+  white-space: nowrap;
+}
+.ui-dialog-buttonset button {
+  background-color: #0e0e0e !important;
+}
+.ui-widget .ui-widget {
+  font-size: 14px !important;
+}
+.ui-dialog .ui-dialog-title {
+  font-size: 15px;
+  float: left;
+  margin: 0.1em 0;
+  white-space: nowrap;
+  width: 90%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.tblRMDetails1
+{
+min-width: 30vw;
+}
+.tblRMDetails td {
+  border: none;
+  font-size: 14px;
+}
+.tblRMDetails1 td {
+  border: none;
+  font-size: 14px;
+  padding: 5px;
+}
+.tblRMDetails1 td:nth-child(3) {
+  text-align: left;
+  padding-left: 25px;
+}
+.tblRMDetails1 td:nth-child(4) {
+  text-align: right;
+}
+
+table.tblRMDetails tr td{
+
+  text-align: center !important;  //LGTGTWINT-544 Instant Pricing: Headers to be center aligned on order confirmation popup. || 13 Dec 2022
+
+}
+
+
+
+.switch-label-on , switch-label-off{
+  font-size: 12px !important;
+}
+app-maple {
+  width: 95vw !important;
+  height: 100vh !important;
+  margin-left: -85px !important;
+}
+
+table {
+  border-collapse: unset !important;
+  font-size: 13px !important;
+}
+
+input[type="date"] {
+  position: absolute;
+}
+input[type="checkbox"] {
+  height: 20px;
+}
+
+.txtLeftAlign {
+  text-align: left !important;
+}
+
+
+
+.orderConfirmPopUpEQC {
+  position: fixed; //LGTGTWINT-1284 | 24 Feb 2023
+  background: var(--containers); //Added by PoojaW
+  border-radius: 5px; //LGTCLI-185
+  // padding: 23px; ////LGTCLI-185    
+  top: 50% !important;//LGTGTWINT-1284 | 24 Feb 2023
+  left: 50% !important; //LGTGTWINT-1284 | 24 Feb 2023
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 10px 1px var(--crudShadow); //LGTCLI-185
+  z-index: 999;
+  cursor: move;
+  border: 1px solid var(--popup-border); //added by PoojaW
+}
+
+div#buttonDetails {
+  margin: 10px;
+}
+
+.switchT input {
+  position: absolute;
+  opacity: 0;
+}
+
+/**
+ * 1. Adjust this to size
+ */
+
+.switchT {
+  display: inline-block;
+  font-size: 20px; /* 1 */
+  height: 1em;
+  width: 2em;
+  background: #bdb9a6;
+  border-radius: 1em;
+}
+
+.switchT div {
+  height: 1em;
+  width: 1em;
+  border-radius: 1em;
+  background: #fff;
+  box-shadow: 0 0.1em 0.3em rgba(0, 0, 0, 0.3);
+  -webkit-transition: all 300ms;
+  -moz-transition: all 300ms;
+  transition: all 300ms;
+}
+
+.switchT input:checked + div {
+  -webkit-transform: translate3d(100%, 0, 0);
+  -moz-transform: translate3d(100%, 0, 0);
+  transform: translate3d(100%, 0, 0);
+}
+
+#EQProdLoader {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: 997;
+  background-color: #333;
+  opacity: 0.5;
+  bottom: 2%;
+  right: 7%;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+}
+
+#EQProdLoader_1 {
+  top: 50vh;
+  left: 46vw;
+  position: absolute;
+}
+
+// Added By RizwanS for RFQ ID UI Asked by VivekJ.
+
+.Rfq_id_style {
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.FXDRfqidpnl {
+  position: fixed;
+  top: -19px;
+  left: 50px;
+  background-color: #222;
+  vertical-align: top;
+  padding: 5px;
+  border-radius: 5px; //LGTCLI-185
+  display: none !important;
+}
+
+.S_TOGGLE{
+  width: 13vw !important;
+  min-width: 250px;
+  height: 100% !important;
+  padding-top: 5px ;
+}
+.TDSUIT{
+  padding-top: 15px;
+}
+.txtBoxUnderlying{
+  width: 239px !important;
+}
+.email_POPUP {
+  display: none;
+}
+table.emailTable {
+  font-size: 13px;
+  width: 11vw;
+}
+.trSpecifyReason {
+  display: none;
+}
+input[type="radio"][disabled]{
+cursor: not-allowed !important;
+}
+label[disabled]{
+  cursor: not-allowed !important;
+}
+.ddlLimitLevel{
+width: 125px !important;
+}
+.productNameHeader {
+  font-size: 15px;
+  padding: 10px;
+  background-color: var(--containers); //added by PoojaW
+  color: var(--text); /*added by PoojaW*/
+  text-align: center;
+}
+.tdFeatures{
+  display: none;
+
+}
+/*added by PoojaW*/
+.payOff_Features{
+background-color: var(--ELN-bg);
+width:40px;
+padding:15px;
+}
+
+// Added by RizwanS for client UI changes || 09 Nov 2022
+
+.client-logo{
+
+  display: none !important; //LGTCLI-290 LGT Logo to be Shifted on Main Header Bar
+  position: absolute;
+  left: 88%;
+  height: 55px;
+  width: 60px;
+  top: 5px;
+
+}
+
+tr{
+
+  height: 0px !important;
+
+}
+
+
+.frqddl{
+
+  position: absolute;
+  top: 42px;
+  left: 160px;
+  background-color: inherit !important;
+  color: #fff !important;
+  z-index:9999 !important;
+  outline: -webkit-focus-ring-color auto 0px !important;
+  border: none !important;
+  width: 160px;
+  font-size: 15px;
+  // font-weight: 600;
+  text-align: center; //* Changed for New UI || LGTGTWINT-980 || Chaitanya M || 03 Feb 2023*/
+  -webkit-appearance: none !important;
+  // appearance: auto;
+  // background-image: none;  //LGTGTWINT-687 - dropdown is hidden behind the label || 06 Jan 2022
+  //LGTGTWINT-1183 - Instant Pricing: UI issues for all payoffs
+}
+
+// select {
+
+//   background-image: linear-gradient(45deg, transparent 50%, white 50%), linear-gradient(135deg, white 50%, transparent 50%), linear-gradient(to right, transparent, transparent) !important;
+// }
+
+
+
+.filterCss{
+  // margin-left: 20px !important;
+  cursor: pointer;
+    height: 20px;
+    width: 25px;
+    filter: var(--filter-maple);
+    
+}
+
+.filterCss:hover {
+  cursor: pointer;
+  height: 20px;
+  width: 25px;
+}
+
+.pricerTD{
+
+  padding: 5px 10px 10px 10px !important; //LGTCLI-185
+  // padding-left: 10px !important;
+  border-collapse: collapse;
+}
+
+// }
+
+.headerTR{
+
+  background-color: var(--icon-header);
+  height: 88px !important;
+  position: absolute;
+  width: 496px; //* Changed for New UI || LGTGTWINT-980 || Chaitanya M || 03 Feb 2023*/
+  padding: 0px;
+  margin: 0px !important;
+  top: -10px;
+  border-radius: 25px 25px 0px 0px;
+  left: -3px;
+  z-index: -111;
+
+}
+
+.smallDiv {
+  background-color: var(--containers); //Added by PoojaW
+  z-index: -111;
+  // border-radius: 25px 25px 0px 0px;
+}
+.priceCard{
+  background-color: var(--containers); //Added by PoojaW
+  border-radius: 0px 0px 20px 20px !important;
+}
+
+.userDetails{
+
+      /* float: right !important; */
+    /* display: block !important; */
+    position: absolute;
+    left: 82%;
+    /* height: 58px; */
+    width: 60px;
+    top: 23px;
+}
+
+.actions-dropdown{
+  position: absolute;
+  display: none;
+  flex-direction: column !important;
+  gap: 10px;
+  background-color: var(--action-drawer);
+  border-radius: 25px;
+  top: -2px;
+  padding: 10px;
+  left: -4px;
+  cursor: pointer;
+  z-index: -1111;
+  border: 1px solid var(--action-drawer-border);
+  img{
+    width: 24px;
+    height: 24px;
+    
+  }
+  img:hover{
+      background-color: var(--nav-btn-bg);
+      // border-radius:15px ; // LGTCLI-391 Instant Pricer FX Contract Summary Pop Up | Chaitanya M | 17 Apr 2023 
+     
+  }
+  .filterCss:hover{
+  margin-left: -4px;
+      
+  }
+}
+
+.action-button{
+  width: 28px;
+  height: 28px;
+  position: relative;
+  margin-left: 15px;
+
+}
+
+.action-button:hover .actions-dropdown{
+  display: flex;
+  transition: max-height 0.7s ease-in; 
+}
+.action-button{
+
+  background-color: var(--action-drawer);
+    padding: 10px 0px 0px 6px;
+    height: 37px;
+    width: 37px;
+    border-radius: 25px;
+    z-index: 9999;
+
+}
+
+// Added by Rohit T || 30 march 2023
+.EQCsmallDiv .action-button {
+  margin-left: 3px !important;
+}
+//End
+
+.actions-dropdown img:first-child {
+  margin-top: 30px;
+}
+
+// EQC Payoff's client Specific UI Changes || 18 Nov 2022 ||
+
+.EQTdheight{
+
+  height: 25px;
+}
+
+.EQCsmallDiv{
+
+  height: 535px !important; // SolveFor Changes | LGTGTWINT-2382 | Chaitanya M | 22 Aug 2023
+  padding-left: 15px !important;
+
+}
+
+.EQCTileTD{
+  cursor: default;
+  box-shadow: 0px 0px 0px 0px var(--icon-header) !important;
+  border: 5px solid var(--icon-header) !important;
+  background: #000 !important;
+}
+
+.headerTREQC{
+
+  background-color: var(--icon-header) !important;
+  height: 88px !important;
+  position: absolute;
+  width: 493px; //* Changed for New UI || LGTGTWINT-980 || Chaitanya M || 04 Feb 2023*/
+  padding: 0px;
+  margin: 0px !important;
+  top: -10px;
+  border-radius: 25px 25px 0px 0px;
+  left: -2px;
+  z-index: -111;
+}
+
+.productNameBackEQC{
+
+  z-index: 99;
+  height: 52px;
+  top: -22px;
+  box-shadow: 0px 1px 1px 1pxvar(--icon-header) !important;
+
+}
+
+.EQCAQDQddl{
+
+  position: absolute;
+  top: 5px;
+  left: 4px;
+  z-index: 1111 !important;
+
+}
+
+.aqDqDdl{
+  border: none !important;
+  padding: 0px !important;
+  background-position: calc(100% - 20px) calc(0.8em), calc(100% - 16px) calc(0.8em), 100% 0;
+  background-color:   var(--aqdq-bg) !important; //added by PoojaW
+  border-radius: 0px 0px 8px 8px;
+}
+// Removed by Taran || 13th-NOV-2023
+// .fxddll{
+
+//   color:#000 !important ;
+  
+//   }
+
+.fxddll option{
+
+background-color: #000 !important;
+color:#fff !important ;
+
+}
+
+
+// END
+
+
+.orderinfopopup{
+
+  width: 100px !important;
+  margin-right: 12px !important;
+
+}
+
+//Added by Rizwans || LGTGTWINT-945 Edit template not working properly for maple instant pricer
+
+.crudPopup{
+  display: none;
+  position: fixed;  //Added by RizwanS
+  z-index: 999;
+  background: var(--containers); /*added by PoojaW*/
+  left: 50%;  //LGTCLI-185
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: min-content;
+  border-radius: 5px; //LGTCLI-185
+  padding: 10px;
+  box-shadow: 0 0 10px 1px var(--crudShadow);  /*added by PoojaW*/
+}
+
+.close:not(:disabled):not(.disabled):focus, .close:not(:disabled):not(.disabled):hover {
+  color: #acacac !important; //LGTCLI-185
+
+
+}
+
+.close {
+  color:#acacac;
+  float: right;
+  font-size: 30px;
+  font-weight: 100 !important; //LGTCLI-185
+  margin-top: -14px;
+  
+  
+}
+
+.deleteTemppopup{
+
+  display: none;
+  position: fixed; //Added by Rizwan
+  z-index: 999;
+  background: var(--containers); /*added by PoojaW*/
+  left: 50%;  //LGTCLI-185
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: min-content;
+  white-space: nowrap;
+  padding: 0px 5px 25px 10px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px 1px var(--crudShadow); /*added by PoojaW*/
+}
+
+// END
+
+// LGTGTWINT-1080 Instant Pricing: Tenor Type missing in Tenor field on order popup for all payoffs
+
+.txtRightAlign{
+  text-align:right;
+}
+
+// END
+
+input:active, input:focus{
+
+  border: none !important;
+}
+
+
+//LGTGTWINT-1124 Instant Pricing: Validation stickiness issue on order popup for all payoffs
+
+.orderpopupErrorMsg {
+  color: #CB2C30;
+  text-align: center;
+  margin: 0px;
+  padding: 5px 5px 0px 5px;
+  height: 31px;
+  white-space: normal;
+  font-weight: bold;
+}
+
+// END
+
+//Info Message Template Dialog Box - Runal
+#booktradecashx{
+  display: none;
+  position: fixed; //Added by RizwanS
+  z-index: 999;
+  background: var(--dialogboxbgIP); // added by chaitanya m
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+  width: auto;
+  white-space: nowrap;
+  padding: 0px 5px 25px 10px;
+  border-radius:5px;
+  box-shadow: 0 0 10px 1px var(--shdwdialogboxbgIP);
+  font-size:15px;
+}
+
+.productbottomline{
+
+  background-color: var(--orderHeader-bottomline-color-IP);
+  height: 2px !important;
+  padding: 0px;
+
+}
+
+.orderConfirmPopUpEQC table tr td{
+
+  padding: 8px 8px 0px 8px;
+
+}
+
+//LGTCLI-185
+
+.deleteTempText{
+  padding-left: 10px ;
+}
+
+.ui-icon-alert {
+  background-position: 0px -143px !important;
+}
+
+// END
+
+//NEW UI FXD Changes
+.toggleBtn{
+width: 110px;
+height: 35px;
+}
+
+
+// LGTCLI-283 - Instant Pricer FX Pop Up for Route to Dealer
+.remarkPopupFXD {
+  display: none;
+  background-color: var(--span-bg); 
+  padding: 7px 15px 20px;
+  position: absolute;
+  z-index: 994;
+  box-shadow: var(--shadow-head) 3px 4px 4px; 
+  border-radius: 5px;
+  font-size: 12px;
+  color: rgb(171, 171, 171);
+  border-collapse: collapse;
+  width: 313px;
+  min-height: auto;
+  margin-top: 150px !important;
+  margin-left: 70px !important;
+  border:1px solid var(--nav-btn-bg) !important;
+}
+
+.remarkValidation{
+  height: 20px;
+  text-align: center;
+  height: 35px;
+
+}
+
+.commonErrorMsg{
+  
+  color: red !important;
+  font-weight:500;
+
+}
+// END
+
+.themebtn{
+  filter: var(--action-icon-maple);
+}
+
+.themebtn:hover{
+  background-color: transparent !important; 
+  filter: var(--action-icon-maple-hover);
+}
+
+.ccytoggle{
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+// Added for LGTGTWINT-1462 'Mail All' functionality | Chaitanya M | 23 Feb 2023
+.btnfilter{
+  filter: var(--btnfilter_IP);
+}
+
+
+//LGTGTWINT-1512 | 28 Feb 2023
+
+.orderinputFiled{
+  width: 13vw !important;
+  min-width: 250px;
+}
+
+.orderddlFiled{
+ width: 13vw !important;
+ min-width: 250px;
+}
+
+.limitInput{
+  width: 120px;
+}
+
+.limitStockddl{
+
+  margin-right: 5px;
+  width: 123px;
+
+}
+
+.innderOrderDetails{ // LGTGTWINT-1586 Instant Pricing: Scroll bar to be added for order confirmation popup
+  max-height: calc(100vh - 265px);
+  overflow-y: auto;
+  overflow-x: auto;
+  height: fit-content;
+}
+
+
+// LGTGTWINT-1605 Instant Pricer : Text colour of Underlying names to be based on Advisory flag (Green for Yes, Red for No) | 03 March 2023
+
+.advYes{
+  color: var(--advYes) !important;
+}
+.advNo{
+  color: var(--advNo) !important;
+}
+
+// Added By RizwanS || LGTGTWINT-1709- LGT Logo to be added on the Instant Pricer tiles for all FXD products and EQ -AQ DQ || 13 Mar 2023
+
+.client-logo-class-IP-FXD {
+ //background-image:url(#{$assetPath}/assets/Instant-Pricer/App_Resorces/client-logo-Blue-IP.png) !important; 
+ background-repeat: no-repeat;
+  background-size: 70%;
+  background-position: center;
+  width: 60px;
+  height: 60px;
+}
+
+.client-logo-class-IP-EQC {
+ //background-image:url(#{$assetPath}/assets/Instant-Pricer/App_Resorces/client-logo-white-IP.png) !important;  // Commented for Dev pack as disccused with Abhilash B || 08 May 2023 
+  background-repeat: no-repeat;
+  background-size: 70%;
+  background-position: center;
+  width: 60px;
+  height: 60px;
+}
+
+.client_logoIP {
+  position: fixed;
+  top: -17px;
+  left: 405px;
+  vertical-align: top;
+  padding: 5px;
+  border-radius: 5px;
+  // display: none !important;
+ 
+ }//LGTGTWINT-1709 - END
+ 
+ //  Chaitanya M 16-March-2023 || Added for LGTGTWINT-1721 || Changing 'Solve for' shouldn't reset other parameters to the default value.
+.inputClassChanges[disabled] {
+  // background: var(--input-disabled) !important;   
+  color: transparent !important;
+  pointer-events: none; // LGTGTWINT-2021 || Chaitanya M 23-May-2023
+  //opacity: 0.5;
+}
+
+
+ //LGTGTWINT-1710 Sharing of Instant Pricer Portfolios across users | Chaitanya M | 16 March 2023 
+ //Start 
+ // START - Changes Done by Rohit T with discussion with Karan G  | 30 March 2023
+ table.protfolio-tbl-IP{
+  height: 40px;
+ }
+
+ table.protfolio-tbl-IP tr {
+  display: flex;
+  gap: 0px;
+  border-radius: 4px;
+  height: 40px !important;
+  background-color: var(--icon-active);
+}
+
+table.protfolio-tbl-IP tr td {
+  margin: 0px !important;
+}
+
+.protfolio-tbl-IP tr td{
+  padding: 0px !important;
+}
+
+.protfolio-tbl-IP tr td:first-child button{
+  border-radius: 4px 0px 0px 4px;
+}
+
+.protfolio-tbl-IP tr td:last-child button{
+  border-radius: 0px 4px 4px 0px;
+}
+
+.Portfolio-details-IP{ 
+  position:fixed;
+  right:1%;
+}
+
+
+// .btn-group{
+  
+//   background-color: var(--icon-active); 
+//   color: white;  
+//   padding: 10px 30px;  
+//   cursor: pointer; 
+//   float: left;  
+//   border: none !important;
+// }
+ 
+// .btn-group-active
+// { 
+//   color: var(--sidebar-li-text-active) !important;
+//   background-color: var(--templatenamebghover-IP) !important;
+//   font-weight: inherit!important;
+//   border-top:1px solid var(--icon-active) !important ;
+// }
+
+ .btn-group{
+  
+  background-color: var(--icon-active); 
+  color: var(--btn-color);  
+  padding: 10px 30px;  
+  cursor: pointer; 
+  float: left;  
+  border: none !important;
+}
+ 
+.btn-group-active
+{ 
+  color: var(--btn-disabled-text-ip)!important;
+  background-color: var(--btn-pricegrid-disabled-ip)!important;
+  font-weight: inherit!important;
+  border-radius: 4px !important;
+  // border-top:1px solid var(--icon-active) !important ;
+}
+//END
+
+.templateName-active{
+  color: #000 !important;
+  background-color: var(--btn-pricegrid-disabled-ip) !important;
+  font-weight: inherit!important;
+}
+
+.protfolio-tbl-IP tr td{
+  padding: 0px !important;
+}
+
+.btn-group:focus {
+  outline: 0px dotted  !important;
+  outline: none;
+ // border-top:1px solid var(--icon-active) !important ; //Changes Done by Rohit T with discussion with Karan G  | 30 March 2023
+  // border-radius: 5px;
+}
+
+//End
+
+//LGTGTWINT-1740 || RFQ ID on Instant Pricer || Chaitanya M | 20 March 2023
+
+.Rfq_id_styleEQC {
+  font-size: 15px;
+ color: var(--rfqtextEQC-ip) !important; //RFQ ID to be in Black font for EQC tiles Ref:LGTCLI-365 | Chaitanya M | 21 March 2023
+}
+
+.Rfq_id_styleFXD {
+  font-size: 15px;
+  color: var(--rfqtextFXD-ip) !important; //RFQ ID to be in Black font for FXD tiles Ref:LGTCLI-365 | Chaitanya M | 21 March 2023
+}
+//End
+
+// Added for LGTCLI-348 FX Tiles Buy Sell Toggle UI Follow Single Pricer | Chaitanya M | 29 March 2023
+.BuyDropdown{
+  background-color : var(--Buy_DirectionFXD-ip) !important;
+  color: #ffffff !important;
+  border: none !important;
+}
+//End
+// Added for LGTCLI-348 FX Tiles Buy Sell Toggle UI Follow Single Pricer | Chaitanya M | 29 March 2023
+.SellDropdown{
+  background-color: var(--Sell_DirectionFXD-ip) !important;
+  color: #ffffff !important;
+  border: none !important;
+}
+//End
+
+
+// LGTCLI-391 Instant Pricer FX Contract Summary Pop Up | Chaitanya M | 17 Apr 2023
+//Start
+.SummaryFXD{
+  display: none;
+  background-color: var(--span-bg);
+  padding: 7px 15px 20px;
+  position: absolute;
+  z-index: 1;
+  box-shadow: var(--shadow-head) 3px 4px 4px;
+  border-radius: 5px;
+  font-size: 12px;
+  color: var(--text);
+  border-collapse: collapse;
+  width: 450px;
+  min-height: auto;
+  margin-top: 90px !important;
+  margin-left: 20px !important;
+  border: 1px solid var(--nav-btn-bg) !important;
+  white-space: pre-wrap;
+}
+//End
+
+// LGTCLI-391 Instant Pricer FX Contract Summary Pop Up | Chaitanya M | 17 Apr 2023
+//Start
+.summarybottomline{
+
+  height: 5px !important;
+  padding: 0px;
+
+}
+//ENd
+// LGTCLI-391 Instant Pricer FX Contract Summary Pop Up | Chaitanya M | 17 Apr 2023
+//Start
+.SummaryNameHeader {
+  font-size: 18px;
+  border-bottom: 1px solid var(--nav-btn-bg) !important;
+  padding: 10px;
+  color: var(--text);  
+  text-align: center;
+}
+//End
+
+//LGTCLI-380 Instant Pricer Email All Successful Notification | Chaitanya M | 19 April 2023
+.snackbar-inner {
+  width: 350px;
+  background: var(--containers);
+  padding: 10px;
+  color:var(--text)!important;
+  font-size: 16px;
+  border-radius: 5px;
+  text-align: left;
+  margin-left: 42px;
+  margin-top: 2px;
+  height: 85px; // LGTCLI-399 || Chaitanya M | 15 May 2023
+}
+.snackbar {
+  overflow: hidden;
+  z-index: 9999;
+  position: fixed;
+  right: 0px;
+  top: 105px; // LGTCLI-399 || Chaitanya M | 15 May 2023
+}
+
+.SnackbarHeader {
+  font-size: 16px;
+  // border-bottom: 1px solid var(--nav-btn-bg) !important;
+  padding-bottom: 5px;
+  color: var(--text);  
+  text-align: left;
+}
+
+.snackbarbottomline{
+
+  background-color: var(--text);
+  height: 1px !important;
+  padding: 0px;
+  margin-bottom: 5px;
+
+}
+//End
+
+//LGTGTWINT-2110 | Chaitanya M | 13 June 2023
+//start
+.base-timer { 
+  height: 32px;
+}
+.base-timer__label { 
+  width: 32px;
+  height: 32px;
+  top: 0;
+  display: flex;
+  // align-items: center;
+  // justify-content: center;
+  font-size: 16px;
+  color : var(--Sell_DirectionFXD-ip)
+}
+
+.Showtimer {
+  display: block !important;
+}
+// Changed by Chaitanya N | 25 July 2023 
+.SHowSOlveFor{
+  display: none !important;
+}
+// ENd
+
+// Added by RizwanS | 25 July 2023 
+.showHedgePanel{
+  display: none !important;
+}
+.showhideCustomspot{
+  display: none !important;
+}
+.CustomeSpotHideShow{
+  display: none !important;
+}
+// ENd
+
+
+
+// RizwanS || LGTGTWINT-2378 Show volsurf, spot history and IR as a shortcut from Maple FXD || 20 Oct 2023
+
+.marketDataPopUpFXD {
+  position: fixed; 
+  background: var(--containers); 
+  border-radius: 5px; 
+  top: 50% !important;
+  left: 50% !important; 
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 10px 1px var(--crudShadow); 
+  z-index: 999;
+  border: 1px solid var(--popup-border); 
+}
+
+.marketDataPopUpFXD table tr td{
+
+  padding: 8px 8px 0px 8px;
+
+}
+
+.productNameHeaderFXD {
+  font-size: 15px;
+  padding: 10px;
+  background-color: var(--containers); 
+  color: var(--text); 
+  text-align: center;
+}
+
+.productbottomlineFXD{
+
+  background-color: var(--orderHeader-bottomline-color-IP);
+  height: 2px !important;
+  padding: 0px;
+
+}
+
+.inndermarketDataDetails{ 
+  max-height: calc(100vh - 265px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: fit-content;
+}
+
+.tblmktDataDetails1
+{
+min-width: 53vw;
+}
+
+.tblmktDataDetails1 td {
+  border: none;
+  font-size: 14px;
+  padding: 5px !important;
+  vertical-align: top;
+}
+.tblmktDataDetails1 td:nth-child(3) {
+  text-align: left;
+  padding-left: 25px;
+}
+.tblmktDataDetails1 td:nth-child(4) {
+  text-align: right;
+}
+
+.fxdSepeater{
+  height: 1px; 
+  background-color: var(--fxdSepeater-bg);
+  padding: 0px !important;
+}
+
+.tblmarketData tr th{
+
+  color: var(--table-header-text) !important; 
+  border-bottom: solid 0px var(--table-header-text) !important; 
+  padding-bottom: 0px !important; 
+  margin-bottom: 0px !important; 
+  font-weight: 500 !important; 
+  border: 1px solid var(--fxdSepeater-bg);
+  background-color: var(--fxdSepeater-bg);
+  font-size: 11px !important;
+  padding: 5px !important;
+
+}
+
+
+.tblmarketData{
+  border: 1px solid var(--fxdSepeater-bg);
+  padding: 0px;
+  font-size: 11px !important;
+}
+
+.tblmarketData tr td{
+  font-size: 11px !important;
+
+}
+
+.tblmarketData tr td{
+  font-size: 11px !important;
+text-align: center !important;
+}
+
+
+.fxcanvas {
+  max-width: 600px !important;
+  height: 350px !important;
+}
+
+h5.lblmkt {
+  color: var(--text) !important;
+  font-size: 18px;
+}
+
+// ------------------------------------END--------------------------------------------//
+
+
+// .ddl{
+//   position: relative;
+// }
+option{
+  color: var(--text) !important;
+}
+
+.custDateCss{
+    margin-left: -80px;
+    margin-top: -5px;
+}
+
+::-webkit-calendar-picker-indicator {
+  filter: var(--calendar-icon-filter) !important;
+}
+// Added by LalitG@14May2024 || HSBCFXEINT-94 || START
+.resetpriceIP{
+ 
+  width: 20px !important;
+  height: 20px !important;
+  vertical-align: middle;
+  cursor: pointer;
+  margin-left: 12px;
+  filter: var(--action-icon-maple);
+
+}
+
+.resetpriceIP:hover{
+
+background-color: transparent !important;
+filter: var(--action-icon-maple-hover);
+
+} 
+// Added by LalitG@14May2024 || HSBCFXEINT-94 || END

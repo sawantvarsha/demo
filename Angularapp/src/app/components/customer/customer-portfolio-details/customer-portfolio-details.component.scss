@@ -1,0 +1,444 @@
+:host {
+    // position: absolute;
+    right: 0;
+    bottom: 0;
+    background: var(--main-bg-color);
+    margin-top: 90px !important;
+    padding-bottom: 6em !important;
+}
+
+.portfolio-container {
+    // box-shadow: var(--box-shadow-thin);
+    // background-color: var(--containers);
+    transition: 0.3s;
+    padding: 5px;
+    // margin-left: 40px;
+    margin: 0px 0px 0px 15px;
+}
+
+.CI-maindata-outer {
+    // display: grid;
+    // grid-template-columns: 80%;
+    // grid-template-rows: repeat(auto, 50px);
+    .portfoliocard {
+        position: relative;
+    }
+    .verticle-tab {
+        float: right;
+        .dotunselected {
+            height: 15px;
+            width: 15px;
+            background-color: #bbb;
+            border-radius: 50%;
+            display: flex;
+            margin: 20%;
+        }
+        .dotselected {
+            height: 15px;
+            width: 15px;
+            background-color: var(--green);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            margin: 20%;
+        }
+    }
+    .verticle-tabcontent {
+        // float: right;
+        // overflow: scroll;
+        .CI-card {
+            .CI-card-header {
+                color: var(--label);
+                padding: 10px 10px;
+                font-size: 20px;
+                text-align: start;
+                height: 2em;
+            }
+            .CI-card-content {
+                display: grid;
+                // grid-template-columns: 1.5fr 1fr;
+                grid-template-columns: 0.8fr 1fr; // Modified by Uddesh on 24 May 2022 asked by Rohit T
+                box-shadow: var(--box-shadow-thin);
+                margin-right: 1%;
+                transition: 0.3s;
+                // padding: 10px;
+                padding: 23px 30px 10px 30px; // Modified by Uddesh on 24 May 2022 asked by Rohit T
+                background-color: var(--containers);
+                border-radius: 5px;
+                margin-left: 20px;
+                overflow-x: scroll;
+                // width: fit-content;
+                // width: 72vw;
+                width: 65vw; // Modified by Uddesh on 24 May 2022 asked by Rohit T
+                column-gap: 30px;
+                .CI-rowcontent {
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                    // grid-gap: 1% 5%;
+                    grid-gap: 0px 5%; // Modified by Uddesh on 24 May 2022 asked by Rohit T
+                    // padding: 0px 0px 5px 0px;
+                    padding: 0px 0px 10px 0px; // Modified by Uddesh on 24 May 2022 asked by Rohit T
+                    .content {
+                        width: 100%;
+                    }
+                }
+                .CI-rowbutton {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    flex-direction: row;
+                }
+            }
+            .new-portfolio-card-container {
+                display: flex;
+                // grid-template-columns: 45% 55%;
+                justify-content: center;
+                transition: 0.3s;
+                padding: 10px;
+                border-radius: 5px;
+                margin: 0px 10px 10px;
+                overflow-x: scroll;
+                .CI-rowcontent {
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                    grid-gap: 1% 5%;
+                    padding: 0px 0px 8px 0px;
+                    .content {
+                        width: 100%;
+                    }
+                }
+                .CI-rowbutton {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    flex-direction: row;
+                }
+            }
+            .CI-card-content:hover {
+                box-shadow: var(--box-shadow-hovered);
+            }
+        }
+        .Summary-card {
+            box-shadow: var(--box-shadow-thin);
+            transition: 0.3s;
+            border-radius: 4px;
+            padding: 0px !important;
+            background: var(--containers);
+            .Summary-card-header {
+                color: var(--label);
+                height: 70px;
+                font-size: 22px;
+                text-align: start;
+                padding: 0% 5%;
+                font-weight: 500;
+            }
+            .Summary-card-content {
+                .Summary-rowcontent {
+                    display: grid;
+                    grid-template-columns: 1fr 1.5fr;
+                    padding: 0.5% 5%;
+                    .content {
+                        width: 100%;
+                    }
+                }
+            }
+        }
+    }
+    .verticle-tabcontent::-webkit-scrollbar {
+        display: none;
+    }
+    .verticle-tabcontent {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+}
+
+.btnPortfolio {
+    margin-right: 15px;
+    float: right;
+}
+
+.lbl {
+    font-size: 15px;
+    line-height: 26px;
+    text-align: initial;
+    color: var(--table-header-text);
+    margin-bottom: -2px; // Modified by Uddesh on 24 May 2022 asked by Rohit T
+}
+
+label {
+    margin-top: 0.1em;
+    margin-bottom: 0.1em;
+}
+
+.new-portfolio-card-input-paramters {
+    width: 30vw !important;
+}
+
+.chartDiv {
+    display: grid;
+    grid-template-rows: 20% 80%;
+    // height: 45vh;
+    height: 39vh; // Modified by Uddesh on 24 May 2022 asked by Rohit T
+    .portfolioActionbtn {
+        display: flex;
+        justify-content: flex-end;
+        column-gap: 10px;
+        flex-direction: row;
+    }
+    .chartArea {
+        height: auto;
+        width: auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        .alignchart {
+            display: flex;
+            justify-content: center;
+        }
+    }
+}
+
+.newportfoliochartDiv {
+    width: 35vw !important;
+}
+
+.closebtn {
+    display: flex;
+    justify-content: flex-end;
+    border-radius: 2px;
+    font-size: 18px;
+    color: var(--text);
+    font-weight: 800;
+    float: right;
+    text-align: right;
+    margin: 5px 10px;
+    cursor: pointer;
+}
+
+.overlay {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(20px);
+    z-index: 100;
+}
+
+.loader-container {
+    display: flex;
+    justify-content: center;
+    height: 75vh;
+    align-items: center;
+}
+
+$bg: #f3f8fa;
+$white: #fff;
+$black: var(--inline-label);
+@mixin transition($property: all, $duration: 0.45s, $ease: cubic-bezier(0.65, 0, 0.076, 1)) {
+    transition: $property $duration $ease;
+}
+
+* {
+    box-sizing: border-box;
+    &::before,
+    &::after {
+        box-sizing: border-box;
+    }
+}
+
+.addPortfoliobtn {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    outline: none;
+    border: 0;
+    vertical-align: middle;
+    text-decoration: none;
+    background: transparent;
+    padding: 0;
+    font-size: inherit;
+    font-family: inherit;
+    margin: 15px 20px !important;
+    &.add-portfolio {
+        width: 13rem;
+        height: auto;
+        .circle {
+            @include transition(all, 0.45s, cubic-bezier(0.65, 0, 0.076, 1));
+            position: relative;
+            margin: 0;
+            width: 3rem;
+            height: 3rem;
+            background: $black;
+            border-radius: 1.625rem;
+            .icon {
+                @include transition(all, 0.45s, cubic-bezier(0.65, 0, 0.076, 1));
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                margin: auto;
+                background: $white;
+                &.arrow {
+                    @include transition(all, 0.45s, cubic-bezier(0.65, 0, 0.076, 1));
+                    left: 0.625rem;
+                    width: 1.125rem;
+                    height: 0.125rem;
+                    background: none;
+                    &::before {
+                        position: absolute;
+                        content: "";
+                        top: -0.25rem;
+                        right: 0.0625rem;
+                        width: 0.625rem;
+                        height: 0.625rem;
+                        border-top: 0.125rem solid #fff;
+                        border-right: 0.125rem solid #fff;
+                        transform: rotate(45deg);
+                    }
+                }
+            }
+        }
+        .button-text {
+            @include transition(all, 0.45s, cubic-bezier(0.65, 0, 0.076, 1));
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            padding: 0.75rem 0;
+            margin: 0 0 0 1.85rem;
+            color: $black;
+            font-weight: 500;
+            line-height: 1.6;
+            text-align: center;
+            text-transform: uppercase;
+        }
+    }
+    &:hover {
+        .circle {
+            width: 100%;
+            .icon {
+                &.arrow {
+                    background: $white;
+                    transform: translate(1rem, 0);
+                }
+            }
+        }
+        .button-text {
+            color: $white;
+        }
+    }
+}
+
+.container-background-color {
+    box-shadow: var(--box-shadow-thin);
+    background-color: var(--containers);
+    margin: 0px 40px;
+}
+
+.button-row {
+    display: flex;
+    justify-content: center;
+    column-gap: 20px;
+    // margin: 15px 0px 0px;
+    align-items: baseline;
+}
+
+.error-message-style {
+    font-size: 15px;
+    color: var(--disabled-text);
+}
+
+.container-overlay-new-portfolio {
+    // padding-bottom: 20px !important;
+    width: auto;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0px 0px 10px 1px var(--gray);
+    background: var(--containers);
+}
+
+.viewMoreandCreateSubaccount {
+    display: flex;
+    align-items: center;
+    column-gap: 20px;
+    margin-top: 10px;
+    .lbl,
+    input {
+        cursor: pointer;
+    }
+}
+
+.SubAccount-Main {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 45px;
+    .row {
+        display: grid;
+        width: 100%;
+        grid-template-rows: 1fr 1fr auto;
+    }
+}
+
+.btn-row {
+    display: flex;
+    justify-content: center;
+    column-gap: 10px;
+    margin-top: 15px;
+}
+
+.lbl {
+    font-size: 15px;
+    line-height: 26px;
+    text-align: initial;
+    color: var(--table-header-text);
+    // margin-top: 0.5em;
+}
+
+.view-sub-account {
+    display: flex;
+    flex-direction: column;
+    width: 35vw;
+    .sub-account-row {
+        display: grid;
+        grid-template-columns: 25px 1fr 1fr;
+    }
+}
+
+.close-icon {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+}
+
+.password-strength {
+    display: flex;
+    justify-content: center;
+    margin: 5px 1px;
+    height: 20px;
+}
+
+.error-message {
+    display: flex;
+    justify-content: center;
+    // margin: 5px 1px;
+    height: 20px;
+}
+
+@media screen and (max-width: 1600px) {
+    .CI-maindata-outer .verticle-tabcontent .CI-card .CI-card-content {
+        width: 70vw;
+    }
+}
+
+@media screen and (max-width: 1440px) {
+    .CI-maindata-outer .verticle-tabcontent .CI-card .CI-card-content {
+        width: 75vw !important;
+    }
+}

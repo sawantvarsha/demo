@@ -1,0 +1,284 @@
+:host {
+    // overflow: hidden !important;
+}
+.rebalance-component {
+    // height: 45em;
+    // height: calc(100vh - 230px);
+    overflow-y: scroll;
+}
+.content {
+    display: flex; //Changes done by Alolika G on 10-02-2022
+    flex-direction: column;
+    overflow-y: scroll;
+    scrollbar-width: 5px;
+    height: 90%;
+    /* margin: 10px 0px; */
+    padding: 0 10px 0px 40px;
+}
+
+.details-grid {
+    background: var(--containers);
+    border-radius: 4px;
+    box-shadow: var(--box-shadow-thin);
+    padding: 0px 20px;
+}
+
+.chartlayout {
+    // border: solid 1px var(--border);
+    position: relative;
+    background: var(--containers);
+    /* border: solid 1px var(--border); */
+    border-radius: 4px;
+    box-shadow: var(--box-shadow-thin);
+    padding: 20px;
+}
+
+.imgClass {
+    cursor: pointer;
+    margin: 5px;
+}
+
+.fundname {
+    color: var(--content);
+    font-size: 15px;
+    align-items: center;
+    display: flex;
+    gap: 10px;
+}
+
+.outerdiv {
+    display: grid;
+    grid-template-columns: 65% 340px;
+    padding-bottom: 15px;
+    padding-top: 10px;
+    gap: 20px;
+    border-bottom: 1px solid var(--border);
+}
+
+.outerdivExpanded {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    padding-bottom: 15px;
+    padding-top: 10px;
+    /* grid-gap: 0%; */
+    gap: 20px;
+    border-bottom: 1px solid var(--border);
+}
+
+.close {
+    display: flex;
+    /* align-items: center; */
+    justify-content: flex-end;
+    /* height: 20px; */
+    /* width: 25px; */
+    border-radius: 2px;
+    font-size: 18px;
+    color: white;
+    font-weight: 800;
+    float: right;
+    text-align: right;
+    margin: 10px;
+    position: absolute;
+    right: 12px;
+    z-index: 99;
+    transform: rotate(-90deg);
+}
+
+.chart {
+    display: grid;
+    width: 100%;
+    grid-template-columns: 1fr 1fr;
+    /* margin: 10px; */
+    text-align: center;
+    // padding: 2%;
+    padding: 0px 10px 0px 10px;
+    /* margin-left: 5%; */
+}
+
+.chartArea1 {
+    // padding-left: 5%;
+    text-align: -webkit-center;
+}
+
+.subcontent {
+    // padding: 0px 15px 10px 15px;
+    // margin-top: 20px;
+    margin: 15px 0px;
+    border-bottom: 1px solid var(--border);
+}
+
+.containerFundDetails {
+    display: grid;
+    // grid-template-columns:5% 18% 18%  15% 15% auto;
+    grid-template-columns: 30px 1fr 1fr 1fr 1fr 1fr 1fr;
+    width: 100%;
+    margin-top: 5px;
+    color: var(--off-color);
+}
+.containerFundDetailsExpanded {
+    display: grid;
+    grid-template-columns: 30px 1.3fr 1.3fr 1.1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    width: 100%;
+    margin-top: 5px;
+    color: var(--off-color);
+}
+
+.btngrid {
+    display: flex;
+    justify-content: space-between;
+    // grid-template-columns:  1fr 1fr 1fr 1fr;
+    align-content: center;
+    column-gap: 5px;
+    align-items: center;
+}
+
+.btnBuy {
+    // background-color: #0f9d55;
+    border: 1px solid #0f9d55;
+    color: #0f9d55 !important;
+    background-color: transparent;
+    font-size: 12px;
+}
+
+// .btnBuy:hover {
+//     // color: black;
+//     // background-color: #11b161;
+//     // border: solid 1px darkgray;
+// }
+
+.btnSell {
+    // background-color: #d23f31;
+    border: 1px solid #d23f31;
+    color: #d23f31 !important;
+    background-color: transparent;
+    font-size: 12px;
+}
+
+// .btnSell:hover {
+//     // color: black;
+//     // background-color: #eb4739;
+//     // border: solid 1px darkgray;
+//     // border: solid 1px var(--disabled);
+// }
+
+.btnPledge {
+    // background-color: #ffb100;
+    border: 1px solid #ffb100;
+    color: #ffb100 !important;
+    background-color: transparent;
+    font-size: 12px;
+}
+
+.btnSwitchFund {
+    // background-color: #ffb100;
+    border: 1px solid #0077ff;
+    color: #0077ff !important;
+    background-color: transparent;
+    font-size: 12px;
+}
+
+.historydiv {
+    background-color: var(--content-header);
+    position: relative;
+    margin: 20px;
+}
+.containerholdinghistoryDetails {
+    width: 200px;
+    font-size: 15px;
+    margin-left: 10px;
+    color: var(--text);
+    text-align: left;
+}
+.holdinghistorypopuptab {
+    position: absolute;
+    border: 1px solid var(--containers);
+    border-radius: 5px;
+    background-color: var(--containers);
+    z-index: 99999;
+    height: 50%;
+    width: 50%;
+    top: 50%;
+    left: 57%;
+    transform: translate(-50%, -50%);
+}
+.btngrid2 {
+    display: none;
+}
+@media screen and (max-width: 1440px) {
+    .popuptab1 {
+        position: absolute;
+        border: 1px solid var(--containers);
+        border-radius: 5px;
+        background-color: var(--containers);
+        z-index: 99999;
+        height: 60%;
+        width: 58%;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+    .outerdiv {
+        display: grid;
+        grid-template-columns: 70% 30%;
+        padding-bottom: 10px;
+        padding-top: 10px;
+    }
+}
+
+@media screen and (max-width: 1280px) {
+    .popuptab1 {
+        position: absolute;
+        border: 1px solid var(--containers);
+        border-radius: 5px;
+        background-color: var(--containers);
+        z-index: 99999;
+        height: 60%;
+        width: 58%;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+    .btnBuy,
+    .btnPledge,
+    .btnSell {
+        border-width: 2px;
+        border-radius: 50%;
+    }
+    .btngrid {
+        display: none;
+    }
+    .btngrid2 {
+        display: flex;
+        gap: 8px;
+    }
+    .outerdiv {
+        display: grid;
+        grid-template-columns: 85% 15%;
+        padding-bottom: 10px;
+        padding-top: 10px;
+    }
+}
+
+//Changes done by Alolika G on 10-02-2022
+.expand-icon {
+    margin-right: 5px;
+    /* margin-top: 10px; */
+    margin: 15px 0px;
+    /* display: flex; */
+    /* float: right; */
+    align-self: self-end;
+    display: grid;
+}
+
+.box-header{
+    color: var(--off-color);
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 24px;
+    border-bottom: 2px solid var(--icon-active);
+    padding-bottom: 5px;
+    width: -webkit-fit-content;
+    width: -moz-fit-content;
+    width: fit-content;
+    margin-bottom: 8px;
+}

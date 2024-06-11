@@ -1,0 +1,87 @@
+<!-- <div class="topnav-bar">
+nav bar
+</div> -->
+<div class="maple-gridview-main"> 
+
+    <div class="sidebar">
+        <div>
+            <img src="../../../assets/App_Resorces/finiq_logo.png" class="finIQ-logo" >
+        </div>
+        <div class = "center">
+           <label>  [Private Banking: Maple1] </label>
+        </div>
+
+        <div class="myTemplate">
+            <label class="lbl-template">My Templates</label>
+            <img src = "../../../assets/App_Resorces/orignal/edit-icon.png" class="edit-icon" (click) = "createTemplate()" />
+        </div>
+        <div class="template-list">
+            <div class="template-name" *ngFor = "let template of templateList" (click) = "selectedTemplate(template, i)">  
+                <label>{{template}}</label>
+            </div>
+       
+        </div>
+        
+    </div>
+
+     <div class="cls-products" *ngIf = "Default_template === 'EQC' && !templateFlag" >
+        <app-maple-eqc> 
+        </app-maple-eqc>
+    </div>
+  
+    <div class="maple-gridview"  >
+        <div *ngFor = "let new of newTemplate; let i = index"  >
+         
+              <div class="Dark-grass cardView"  *ngIf = "new === 'ELN'">
+                <app-eln> 
+                </app-eln>
+              </div>  
+              <div class="Dark-blue cardView"  *ngIf = "new === 'DRA'">
+                <app-dra> 
+                </app-dra>
+              </div> 
+              <div class="Dark-cacao cardView"  *ngIf = "new === 'FCN'">
+                <app-fcn> 
+                </app-fcn>
+              </div> 
+              <div class="Dark-purpleFlash cardView"  *ngIf = "new === 'BEN'">
+                <app-ben> 
+                </app-ben>
+              </div> 
+              <div class="Dark-Vermillion cardView"  *ngIf = "new === 'AQDQ'">
+                <app-aqdqmaple> 
+                </app-aqdqmaple>
+              </div> 
+              <div class="Dark-Verde cardView"  *ngIf = "new === 'Option'">
+                <app-option> 
+                </app-option>
+              </div> 
+              <div class="Dark-Aluminio cardView"  *ngIf = "new === 'Phoenix'">
+                <app-phoenix> 
+                </app-phoenix>
+              </div> 
+
+        
+        </div>
+    </div>
+
+    <div *ngIf = "templateFlag" class = "template-cls">
+        <div class= "createTemp-div">
+            <div class = "create-edit"> Create / Edit Template</div>
+            <img src = "../../../assets/App_Resorces/Silver/closePop.png" class="close-icon" (click) = "templateFlag = !templateFlag" />
+        </div>
+
+        <div style="margin-top:10px;">
+            <span class="temp-lbl">Template Name</span>
+            <input type="text" class="templateName-cls" [(ngModel)] = "templateName" />
+            <button class="btn-save" (click) = "saveTemplate()">Save</button>
+        </div>
+        <div class="component-div">
+            <div *ngFor = "let comp of ArrayOfComponents; let i = index" class="ary-comp">
+                <input type = "checkbox" class="template-checkbox" (click) = "selectedTemplateList(comp, i)" /> <label> {{comp}} </label>
+             </div>
+        </div>
+       
+    </div>
+  
+</div>

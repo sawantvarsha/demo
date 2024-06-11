@@ -1,0 +1,108 @@
+<div class="page-navigation" [ngClass]="">
+  <app-svg-icons *ngIf="!IsLandingPage" class="back-button" [icon]="'back-button'" [width]="'40'" [height]="'40'"
+    [fill]="'var(--headers)'" (click)="closeProduct()"></app-svg-icons>
+  <div *ngIf="!IsLandingPage" class="page-title">{{ pageTitle }}</div>
+</div>
+
+<div class="main-container" *ngIf="IsLandingPage">
+  <div class="sub-container">
+    <ng-container *ngFor="let payoff of Echome.payOffList">
+      <div class="cards-container" *ngIf="payoff.display">
+        <div class="card" (click)="eqchangeProduct(payoff.displayName, 'click')">
+          <app-svg-icons [icon]="payoff.displayName" [width]="'100'" [height]="'100'"></app-svg-icons>
+          <span class="card-header">{{payoff.displayName}}</span>
+        </div>
+      </div>
+  
+<div class="pageload-overlay" *ngIf="pageloadflag">
+        <div>
+            <svg version="1.1" id="L4" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
+        y="0px" [ngStyle]="{ width:  + '25px', height:  + '25px' }"
+        class="pageLoadSvg" viewBox="0 0 100 100" enable-background="new 0 0 0 0"
+        xml:space="preserve">
+        <circle stroke="#a1a1a1" cx="55" cy="23" r="1.4" stroke-width="0.1" fill="var(--icon-active-bg)">
+            <animate attributeName="opacity" dur="2s" values="0;1;0" repeatCount="indefinite" begin="0.1" />
+        </circle>
+        <circle stroke="#a1a1a1" cx="55" cy="23" r="1.5" stroke-width="0.1" fill="var(--icon-active-bg)">
+            <animate attributeName="opacity" dur="2s" values="0;1;0" repeatCount="indefinite" begin="0.1" />
+        </circle>
+        </svg>
+        </div>
+      </div>
+      <!-- Added by Jyoti S || 21-Jul-2023 -->
+  </ng-container>
+  </div>
+</div>
+<div class="tabs-container" *ngIf="!IsLandingPage">
+  <div *ngIf="subpages.length > 0">
+    <div class="tabs-pages">
+      <ng-container *ngFor="let item of subpages">
+        <div class="tabs" *ngIf="item.displayYN === true" [ngClass]="{ 'tab-active': item.ActiveYN }"
+          (click)="eqchangeProduct(item.Name, 'click')">
+          {{ item.Name }}
+        </div>
+      </ng-container>
+    </div>
+    <div *ngFor="let item of subpages">
+      <ng-container [ngSwitch]="item.Name">
+
+        <!-- Autocallable -->
+        <ng-template [ngSwitchCase]="'Autocallable'" *ngIf="item.ActiveYN">
+          <app-early-redemption>
+          </app-early-redemption>
+        </ng-template>
+        <!-- Yeild Enhancement -->
+        <ng-template [ngSwitchCase]="'Yield Enhancement'" *ngIf="item.ActiveYN">
+          <app-yield-enhancement>
+          </app-yield-enhancement>
+        </ng-template>
+        <ng-template [ngSwitchCase]="'Custom Strategy'" *ngIf="item.ActiveYN">
+          <app-custom-strategy>
+          </app-custom-strategy>
+        </ng-template>
+        <ng-template [ngSwitchCase]="'Participation'" *ngIf="item.ActiveYN">
+          <app-ec-participation>
+          </app-ec-participation>
+        </ng-template>
+        <!-- Accumulator -->
+        <ng-template [ngSwitchCase]="'Accumulator'" *ngIf="item.ActiveYN">
+          <app-ec-accumulator>
+          </app-ec-accumulator>
+        </ng-template>
+        <ng-template [ngSwitchCase]="'Decumulator'" *ngIf="item.ActiveYN">
+          <app-decumulator>
+          </app-decumulator>
+        </ng-template>
+        <!-- Credit Linked Note - Added by Apurva --> 
+        <ng-template [ngSwitchCase]="'Credit Linked Note'" *ngIf="item.ActiveYN">
+          <app-credit-linked-note>
+          </app-credit-linked-note>
+        </ng-template>
+        <!-- Steepener Component Added by SandipA @23-Oct-23 -->
+        <ng-template [ngSwitchCase]="'Steepener'" *ngIf="item.ActiveYN">
+          <app-steepener>
+          </app-steepener>
+          </ng-template>
+		<ng-template [ngSwitchCase]="'Caps & Floors'" *ngIf="item.ActiveYN">
+          <app-ec-caps-floors>
+          </app-ec-caps-floors>
+        </ng-template>
+        <!-- Credit Tranche - Added by Apurva --> 
+      <ng-template [ngSwitchCase]="'Credit Tranche'" *ngIf="item.ActiveYN">
+        <app-credit-tranche>
+        </app-credit-tranche>
+      </ng-template>
+        <!-- Dual Currency Note - Added by Apurva --> 
+        <ng-template [ngSwitchCase]="'Dual Currency Note'" *ngIf="item.ActiveYN">
+          <app-dual-currency-note>
+          </app-dual-currency-note>
+        </ng-template>
+      </ng-container>
+      
+    </div>
+  </div>
+
+  
+</div>
+
+<!-- routerLink="/Participation"  (click)="redirectto()"-->

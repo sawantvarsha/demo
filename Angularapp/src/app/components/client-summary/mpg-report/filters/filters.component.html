@@ -1,0 +1,56 @@
+<mat-sidenav-container>
+    <mat-sidenav mode="side" opened>
+        <div class="col-12 sidebar-background">
+            <!-- <div style="padding:20px;"> -->
+            <div style="    display: flex;
+            align-items: baseline; flex-direction: column; gap: 10px; padding: 0px 10px 12px 10px;">
+            <div style="display: flex; flex-direction: row; justify-content: space-between;     width: -webkit-fill-available;">
+                <label *ngIf="showFilter" class="header-text">Filters</label>
+                <app-svg-icons [icon]="'arrow-right'" (click)="toggleFilter()"  *ngIf="showFilter" [width]="'25'" [height]="'25'"></app-svg-icons>
+                <app-svg-icons [icon]="'filter-search'" (click)="toggleFilter()" *ngIf="!showFilter" [width]="'25'" [height]="'25'"></app-svg-icons>
+            </div>
+                
+                <input *ngIf="showFilter" type="text" [(ngModel)]="txtFilterSearch" placeholder="Search" class="search" (keydown.enter)="onKeydownFilter()">
+            </div>
+
+            <!-- <div> -->
+            <!-- <input type="checkbox"  checked="true" (click)="chkBoxClick('All')"> All -->
+            <!-- <div class="product-list" style="padding: 10px; height: 77vh; overflow-y: scroll;"> -->
+            <div *ngIf="showFilter" class="product-list" style="height: calc(100vh - 275px); overflow-y: scroll; padding: 10px 12px;">
+                <div class="filter-div" style="width: 100%; height:30px;" (click)="allClick()" [class.activefilter]="!toggle">
+                    <label style="margin-left: 30px; line-height: 30px;" *ngIf="BlotterDataColumnHeader && BlotterDataColumnHeader.length>0"> All </label>
+                </div>
+
+                <ng-template ngFor let-ii="index" let-headerItem [ngForOf]="BlotterDataColumnHeader">
+                    <!-- <div *ngIf="ii==0"> -->
+                    <div *ngIf="ii < 1">
+                        <!-- <ng-template ngIf="ii === 0" > -->
+                        <!-- <input type="checkbox" [checked]="headerItem[1]" (click)="chkBoxClick(headerItem,headerItem[1])"> -->
+                        <div [class.activefilter]="toggle" class="filter-div" (click)="chkBoxClick(headerItem,headerItem[1])" style="display: grid; grid-template-columns: 30px auto; cursor: pointer; height: 30px;">
+                            <!-- <img *ngIf="headerItem[0] !== 'All'" [class.icon-transform]="classApplied" src="assets/down.png" style="margin: auto; width: 14px; height: 8px;"> -->
+                            <app-svg-icons [class.icon-transform]="!classApplied" *ngIf="headerItem[0] !== 'All'" [icon]="'arrow'" [width]="'15'" [height]="'15'" style="margin: 7px auto;"></app-svg-icons>
+                            <label style="line-height: 30px;margin-bottom:0px">
+                  <!-- {{replaceChar(headerItem[0])}} -->
+                  {{this.apifunction.mapHeader(replaceChar(headerItem[0]))}} 
+                </label>
+                        </div>
+
+                        <div *ngIf="headerItem[1] &&  headerItem[0] !== 'All'">
+                            <!-- <div *ngFor="let headerItemData of headerColumnData; "> -->
+                            <!-- <div style="margin-left: 20px;" *ngFor="let headerItemData of headerColumnData | slice: 1 | filter: txtFilterSearch "> -->
+                            <div class="checkbox-label" *ngFor="let headerItemData of headerColumnData | filter: txtFilterSearch ">
+                                <input type="checkbox" style="margin-left: 15px;" [checked]="headerItemData[1]" (click)="chkBoxClickStage2(headerItemData, $event,headerItemData[1])">
+                                <label>{{headerItemData[0]}}</label>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </ng-template>
+
+            </div>
+
+            <!-- </div> -->
+        </div>
+    </mat-sidenav>
+</mat-sidenav-container>

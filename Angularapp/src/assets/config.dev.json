@@ -1,0 +1,10 @@
+{
+  "interfaceURL": "52.187.114.119",
+  "FXPricingURL": "52.187.114.119",
+  "FXOrderCCY": "CSP_FX_CCY",
+  "FormName": "Customer Risk Profile Assessment",
+  "FormOldNewFlag": "Old",
+  "FormTimeOut": 15,
+  "ClientFormName": "Client Investment Risk Profile",
+  "isDemo": false
+}

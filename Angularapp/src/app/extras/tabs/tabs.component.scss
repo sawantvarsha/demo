@@ -1,0 +1,104 @@
+:host {
+  // display: flex;
+  // width: 100%;
+  min-height: 34px; //change on 5 April 2022 by Ashwini H.
+  max-height: calc(1.4em + 5px);
+  overflow: hidden;
+  width: 100%;
+  background: #EFEFEF 0% 0% no-repeat padding-box;
+  border-radius: 4px;
+}
+
+.wrapper {
+  display: flex;
+  flex-wrap: nowrap;
+  position: relative;
+  width: -webkit-fill-available;
+  justify-content: space-around;
+  height: 34px;
+  border-radius: 3px;//var(--border-radius);
+  background: var(--tabs-bg) 0% 0% no-repeat padding-box;
+}
+
+.Visited_tab {
+  color: var(--tabs-active-text);
+  // letter-spacing: 0.5px;   commented on 30 March 2022
+}
+
+.tabHeaders {
+  text-align: center;
+  z-index: 99;
+  white-space: nowrap;
+  cursor: pointer;
+  border-radius: var(--border-radius);
+  // padding: 0 0.8em;
+  pointer-events: all;
+  line-height: 34px;
+  // text-transform: capitalize;
+  font-weight: var(--normal);
+  color: var(--label-color);
+  padding-bottom: 6px;
+
+  &:first-child {
+    padding-left: 0;
+  }
+
+  &:nth-last-child(2) {
+    padding-right: 0;
+  }
+}
+
+.tabHeaders_uppercase {
+  text-transform: uppercase;
+}
+
+//added by anjali
+.tabHeaders_camelcase {
+  color: var(--gray);
+  font-weight: var(--normal);
+  letter-spacing: 0.2px;
+  font-size: var(--14);
+  width: -webkit-fill-available;
+}
+
+.tabHeaders_lowercase {
+  text-transform: lowercase;
+}
+
+//added by Anjali T on 16mar
+/* Commented by MohanP */
+
+// .tabHeaders:hover {
+//     color: var(--blue-color-line);
+//     font-weight: 400;
+// }
+
+.marker {
+  position: absolute;
+  top: calc(100% + 0px);
+  left: 0px;
+  transition: left 300ms ease-in-out;
+}
+
+.marker::after {
+  content: "";
+  position: absolute;
+  height: 30px;
+  width: 100%;
+  height: 28px;
+  width: 95%;
+  left: 2.5%;
+  background: var(--tabs-active)0% 0% no-repeat padding-box;
+  top: -31px;
+  z-index: 9;
+  border-radius: 3px;//var(--border-radius);
+}
+span{
+  display: contents;
+}
+
+/* Commented by MohanP */
+// .Visited_tab
+// {
+//     color : var(--blue-color-line)
+// }

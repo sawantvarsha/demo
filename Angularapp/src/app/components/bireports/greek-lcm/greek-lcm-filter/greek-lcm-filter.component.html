@@ -1,0 +1,34 @@
+<div class="greek-lcm-filter-container">
+    <div style="display: flex;justify-content: center;align-items: center;margin-bottom: 70px;">
+        <div style="width:100%">
+
+            <div style=" font-family: 'Roboto';  font-size: 20px; padding-top: 20px;font-family: 'Roboto'; color: rgb(180, 180, 180);margin-bottom: 25px" class="filterTitle">
+                KO Distance (%)</div>
+                <div style="margin-top: 12px;" class="ko-number">
+                    <input type="number" class="knumber" [value]="current_Notional_StartValue" [min]="startNotionalValue" [ngModel]="current_Notional_StartValue"
+                        [max]="endNotionalValue" class="inputBox" (change)="binder($event)" step="0.01" name="input1">
+                </div>
+                <div style="margin-top: 12px;" class="ko-number second">
+                    <input type="number" class="knumber" [value]="current_Notional_LastValue" [ngModel]="current_Notional_LastValue"
+                        [min]="startNotionalValue" [max]="endNotionalValue" class="inputBox" step="0.01" (change)="binder($event)" name="input2">
+                </div>
+                <!-- <mat-slider [min]="startNotionalValue" [max]="endNotionalValue" class="slider" step="0.01">
+                    <input [(ngModel)]="current_Notional_StartValue" matSliderStartThumb (valueChange)="binder()">
+                    <input [(ngModel)]="current_Notional_LastValue" matSliderEndThumb (valueChange)="binder()">
+                </mat-slider> -->
+                    <ng-container [ngSwitch]="display">
+                        <ng-template [ngSwitchCase]="1"><ngx-slider class="ngx-ko-dist-slider" [(value)]="current_Notional_StartValue" [(highValue)]="current_Notional_LastValue" [options]="options"  (userChange)="sliderToInputBinder()"></ngx-slider ></ng-template>
+                        <ng-template [ngSwitchCase]="2"><ngx-slider class="ngx-ko-dist-slider" [(value)]="current_Notional_StartValue" [(highValue)]="current_Notional_LastValue" [options]="options"  (userChange)="sliderToInputBinder()"></ngx-slider ></ng-template>
+                    </ng-container>
+
+        <div class="filterTitle" style="font-family: 'Roboto'; font-size: 20px;font-family: 'Roboto'; color: rgb(180, 180, 180)0);">Worst Of Underlying</div>
+            <select [(ngModel)]="selectedUnderlying" (change)="sendSelectedUnderlying(selector1.value)"
+                #selector1>
+                <option value="All">All</option>
+                <option *ngFor="let wol of IM_Fixing_SourceList;" [value]="wol">
+                    {{wol}}
+                </option>
+            </select>
+    </div>
+</div>
+</div>

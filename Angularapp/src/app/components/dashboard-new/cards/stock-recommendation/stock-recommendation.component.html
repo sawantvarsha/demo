@@ -1,0 +1,41 @@
+<!-- <label class="card-header">Saved Requests</label> -->
+
+<div class="stocks-list">
+    <div class="segment-tabs">
+        <finiq-tabs [tabHeaders]="segments" [(ngModel)]="selectedSegment" [tabCase]="tabCase" (ngModelChange)="getStockRecommendation()"></finiq-tabs>
+    </div>
+    <ul style="max-height: 350px; overflow: auto;">
+        <ng-container *ngFor="let data of stockDataToShow ; let i = index">
+        <li  >
+            <div [ngClass]=" data.AXE === 'Buy Vol'?'item-prevg':'item-prevr'">
+
+                <div class="details-container">
+                    <div class="details details-container-first-child"><span>{{data.Ticket_BBG}}</span> <span class="fullName">{{data.Stock}}</span> </div>
+                    <!-- <div class="details" [ngClass]="data.AXE === 'Buy Vol' ? 'buyVol' : 'sellVol'"></div> -->
+                    <div></div>
+                    <!-- <label>{{Action | translate}}</label> -->
+                    <div class="details">
+                        <button [ngClass]="data.AXE === 'Buy Vol' ? 'buyvol' : 'sellvol' ">
+                            <span [ngStyle]="{'color' : data.AXE === 'Buy Vol' ? 'var(--green-text)' : 'var(--red)'}">{{data.AXE}}</span> 
+                        </button>
+                    </div>
+                </div>
+
+
+            </div>
+
+            <hr class="line">
+        </li>
+    </ng-container>
+
+    </ul>
+    <div *ngIf="this.resCount>5 && selectedSegment==0">
+        <mat-paginator (page)="getPageInfo($event)" [length]="this.resCount" [pageSize]="5" hidePageSize="true"></mat-paginator>
+    </div>
+    <div *ngIf="this.resCount>5 && selectedSegment==1">
+        <mat-paginator (page)="getPageInfo($event)" [length]="this.resCount" [pageSize]="5" hidePageSize="true"></mat-paginator>
+    </div>
+    <div *ngIf="this.resCount>5 && selectedSegment==2">
+        <mat-paginator (page)="getPageInfo($event)" [length]="this.resCount" [pageSize]="5" hidePageSize="true"></mat-paginator>
+    </div>
+</div>

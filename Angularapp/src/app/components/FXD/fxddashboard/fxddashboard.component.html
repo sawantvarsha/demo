@@ -1,0 +1,274 @@
+<div>
+  <div class="page-navigation" >
+    <!-- [ngClass]="" -->
+    <!-- <app-svg-icons
+      *ngIf="!IsLandingPage"
+      class="back-button"
+      [icon]="'back-button'"
+      [width]="'40'"
+      [height]="'40'"
+      [fill]="'var(--headers)'"
+      (click)="closeProduct()"
+    ></app-svg-icons>
+    <div class="page-title">{{ pageTitle }}</div> -->
+  </div>
+  <div class="main-container" *ngIf="IsLandingPage">
+    <!-- <div class="sub-container" *ngIf="subpages.length > 0">
+      <ng-container *ngFor="let item of subpages">
+        <div class="cards-container" *ngIf="item.displayYN === true">
+          <div class="card" (click)="fnchangeProduct(item.name,'click')">
+            <app-svg-icons
+              [icon]="item.name"
+              [width]="'100'"
+              [height]="'100'"
+            ></app-svg-icons>
+            <span class="card-header">{{ item.name }}</span>
+          </div>
+        </div>
+      </ng-container>
+    </div> -->
+    <div class="sub-container" >
+      <div class="loaderdiv">
+        <div class="loader-center">
+          <div class="multi-ripple">
+            <div></div>
+            <div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+ 
+  <div class="tabs-container" *ngIf="!IsLandingPage">
+    <div *ngIf="this.SessionInvalid">
+      <div class="overlay">
+        <div class="page-content-container-popup">
+          <div class="logout-grid">
+            <div style="display: flex; justify-content: center">
+              <app-svg-icons class="" [icon]="'logout-vector'" [width]="'80'" [height]="'80'"></app-svg-icons>
+            </div>
+            <label>{{ "Session Expired" | translate }}</label>
+            <div class="btn-grid">
+              <button class="button" (click)="logout()">
+                {{ "OK" | translate }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="subpages.length > 0">
+      <div class="tabs-pages">
+        <ng-container *ngFor="let item of subpages">
+          <div
+            class="tabs"
+            *ngIf="item?.displayYN === true"
+            [ngClass]="{ 'tab-active': item.activeYN }"
+            (click)="fnchangeProduct(item.name, 'click')"
+          >
+            {{ item.name }}
+          </div>
+        </ng-container>
+      </div>
+      <!-- Product detail mapping modified by Urmila A |LGTGTWINT-1688 | 8-Mar-23 -->
+      <div *ngFor="let item of subpages">
+        <ng-container [ngSwitch]="item.name">
+          <!-- *ngIf="item.activeYN && dataFlag" -->
+          <ng-template [ngSwitchCase]="'Vanilla'" *ngIf="item.activeYN"> <!-- *ngIf="item.activeYN" added by Urmila A -->
+            <!--EntityData added by UrmilaA, 24-april-23 | LGTGTWINT-1898 -->
+            <app-vanilla
+              [Product_ID]="item.Product_Id"
+              [Product_Code]="item.product_code"
+              [Product_Name]="item.Product_Name"
+              [Template_Name]="item.Template_Name"
+              [TemplateCode]="item.Template_Code"
+              [TemplateID]="item.Template_Id"
+              [AllProdData]="AllProdData"
+              [EntityData]="EntityData"
+              [Mode]="Mode"
+              [ShowRFS]="ShowRFS"
+              [UserGroup]="UserGroup"
+              [PricingMode]="PricingMode"
+              [AppMode]="AppMode"
+              [ViewMode]="'FullPage'"
+              [InputData]="data"
+              [RFQDetailsFromBlotterYes_QueueStatus]="RFQDetailsFromBlotterYes_QueueStatus"
+            >
+            </app-vanilla>
+          </ng-template>
+          <ng-template [ngSwitchCase]="'Barrier'" *ngIf="item.activeYN">
+            <!--EntityData added by UrmilaA, 24-april-23 | LGTGTWINT-1898 -->
+              <app-barrier
+              [Product_ID]="item.Product_Id"
+              [Product_Code]="item.product_code"
+              [Product_Name]="item.Product_Name"
+              [Template_Name]="item.Template_Name"
+              [TemplateCode]="item.Template_Code"
+              [TemplateID]="item.Template_Id"
+                [AllProdData]="AllProdData"
+                [EntityData]="EntityData"
+                [Mode]="Mode"
+                [ShowRFS]="ShowRFS"
+                [UserGroup]="UserGroup"
+                [PricingMode]="PricingMode"
+                [AppMode]="AppMode"               
+                [RFQDetailsFromBlotterYes_QueueStatus]="RFQDetailsFromBlotterYes_QueueStatus"
+              >
+              </app-barrier>
+          </ng-template>
+          <!-- *ngIf="item.activeYN && dataFlag  " -->
+          <ng-template [ngSwitchCase]="'AQ/DQ'" *ngIf="item.activeYN"  >
+            <!--Modified by Urmila A | 6-Mar-23 |LGTGTWINT-1688-->
+            <!--EntityData added by UrmilaA, 24-april-23 | LGTGTWINT-1898 -->
+            <app-aqdq
+              [Product_ID]="item[0]?.Product_Name === 'AQ' && item[0]?.displayYN ? item[0]?.Product_Id : item[1]?.Product_Id"
+              [Product_Code]="item[0]?.Product_Name === 'AQ' && item[0]?.displayYN ? item[0]?.product_code : item[1]?.product_code"
+              [Product_Name]="item[0]?.Product_Name === 'AQ' && item[0]?.displayYN ?  item[0]?.Product_Name : item[1]?.Product_Name"
+              [Template_Name]="item[0]?.Product_Name === 'AQ' && item[0]?.displayYN ? item[0]?.Template_Name : item[1]?.Template_Name"
+              [TemplateCode]="item[0]?.Product_Name === 'AQ' && item[0]?.displayYN ? item[0]?.Template_Code : item[1]?.Template_Code"
+              [TemplateID]="item[0]?.Product_Name === 'AQ' && item[0]?.displayYN ? item[0]?.Template_Id : item[1]?.Template_Id"
+              [AllProdData]="AllProdData"
+              [ShowRFS]="ShowRFS"
+              [EntityData]="EntityData"
+              [Mode]="Mode"
+             
+              [UserGroup]="UserGroup"
+              [PricingMode]="PricingMode"
+              [AppMode]="AppMode"
+              [ViewMode]="'FullPage'"
+              [InputData]="data"
+              [isAQPresent]="isAQPresent" [isDQPresent]="isDQPresent"
+              [RFQDetailsFromBlotterYes_QueueStatus]="RFQDetailsFromBlotterYes_QueueStatus"
+            ></app-aqdq>
+          </ng-template>         
+          <!-- *ngIf="item.activeYN && dataFlag" -->
+          <ng-template [ngSwitchCase]="'TRF'"   *ngIf="item.activeYN" >
+             <!-- Modified by Urmila A | 6-Mar-23  -->
+             <!--EntityData added by UrmilaA, 24-april-23 | LGTGTWINT-1898 -->
+            <app-trf
+              [Product_ID]=" item[0]?.product_code === 'TEKO' && item[0]?.displayYN ? item[0]?.Product_Id : item[1]?.Product_Id "
+              [Product_Code]="item[0]?.product_code === 'TEKO' && item[0]?.displayYN ?  item[0]?.product_code : item[1]?.product_code"
+              [Product_Name]="item[0]?.product_code === 'TEKO' && item[0]?.displayYN ?  item[0]?.Product_Name : item[1]?.Product_Name"
+              [Template_Name]="item[0]?.product_code === 'TEKO' && item[0]?.displayYN ?  item[0]?.Template_Name : item[1]?.Template_Name"
+              [TemplateCode]="item[0]?.product_code === 'TEKO' && item[0]?.displayYN ?  item[0]?.Template_Code : item[1]?.Template_Code"
+              [TemplateID]="item[0]?.product_code === 'TEKO' && item[0]?.displayYN ?  item[0]?.Template_Id :  item[1]?.Template_Id"
+              [AllProdData]="AllProdData"
+              [ShowRFS]="ShowRFS"
+              [EntityData]="EntityData"
+              [Mode]="Mode"
+              [UserGroup]="UserGroup"
+              [PricingMode]="PricingMode"
+              [AppMode]="'FullPage'"
+              [InputData]="data"
+              [isTRFbuyPresent]="isTRFbuyPresent" [isTRFsellPresent]="isTRFsellPresent"
+              [RFQDetailsFromBlotterYes_QueueStatus]="RFQDetailsFromBlotterYes_QueueStatus"
+            ></app-trf>
+          </ng-template>
+          <!-- *ngIf="item.activeYN && dataFlag" removed by Urmila -->
+          <ng-template [ngSwitchCase]="'Pivot'" *ngIf="item.activeYN"  >
+            <!--Modified by Urmila A | 20-feb-23  -->
+            <!--EntityData added by UrmilaA, 24-april-23 | LGTGTWINT-1898 -->
+            <app-pivot
+            [Product_ID]="item.Product_Id"
+              [Product_Code]="item.product_code"
+              [Product_Name]="item.Product_Name"
+              [Template_Name]="item.Template_Name"
+              [TemplateCode]="item.Template_Code"
+            [TemplateID]="item.Template_Id"
+              [AllProdData]="AllProdData"
+              [EntityData]="EntityData" 
+              [Mode]="Mode"
+              [ShowRFS]="ShowRFS"
+              [UserGroup]="UserGroup"
+              [PricingMode]="PricingMode"
+              [AppMode]="'FullPage'"
+              [InputData]="data"
+              [RFQDetailsFromBlotterYes_QueueStatus]="RFQDetailsFromBlotterYes_QueueStatus"
+            >
+            </app-pivot>
+          </ng-template>
+
+      <!--- START--- Added changes by Mayuri D. on 12-Apr-2023 | As discussed with Karan G. and Sandhya R. -->
+          <ng-template [ngSwitchCase]="'Strategies'" *ngIf="item.activeYN && dataFlag">
+             <!--EntityData added by UrmilaA, 25-april-23 | LGTGTWINT-1898 -->
+            <app-strategy
+              [Product_ID]=" item[0]?.product_code === 'STRANGLE' && item[0]?.displayYN ? item[0]?.Product_Id : item[1]?.Product_Id "
+              [Product_Code]="item[0]?.product_code === 'STRANGLE' && item[0]?.displayYN ?  item[0]?.product_code : item[1]?.product_code"
+              [Product_Name]="item[0]?.product_code === 'STRANGLE' && item[0]?.displayYN ?  item[0]?.Product_Name : item[1]?.Product_Name"
+              [Template_Name]="item[0]?.product_code === 'STRANGLE' && item[0]?.displayYN ?  item[0]?.Template_Name : item[1]?.Template_Name"
+              [TemplateCode]="item[0]?.product_code === 'STRANGLE' && item[0]?.displayYN ?  item[0]?.Template_Code : item[1]?.Template_Code"
+              [TemplateID]="item[0]?.product_code === 'STRANGLE' && item[0]?.displayYN ?  item[0]?.Template_Id :  item[1]?.Template_Id"
+              [Mode]="Mode"
+              [ShowRFS]="ShowRFS"
+              [UserGroup]="UserGroup"
+              [PricingMode]="PricingMode"
+              [AppMode]="AppMode"
+              [ViewMode]="'FullPage'"
+              [InputData]="data"
+              [AllProdData]="AllProdData"
+              [EntityData]="EntityData"
+              [StrategySubtype]="StrategySubtype" 
+              [RFQDetailsFromBlotterYes_QueueStatus]="RFQDetailsFromBlotterYes_QueueStatus">
+           
+            </app-strategy>
+          </ng-template>
+          
+      <!--- END--- Added changes by Mayuri D. on 12-Apr-2023 | As discussed with Karan G. and Sandhya R. -->    
+
+
+      <!-- Enabled DCI for Demo pack, By UrmilaA | 17-July-23 | start -->
+        <!-- <ng-template [ngSwitchCase]="'DCI'" *ngIf="item.activeYN && dataFlag">
+            <app-dci
+              [Product_ID]="item.Product_Id"
+              [Product_Code]="item.product_code"
+              [Product_Name]="item.Product_Name"
+              [Template_Name]="item.Template_Name"
+              [TemplateCode]="item.Template_Code"
+              [TemplateID]="item.Template_Id"
+              [Mode]="Mode"
+              [ShowRFS]="ShowRFS"
+              [UserGroup]="UserGroup"
+              [PricingMode]="PricingMode"
+              [AppMode]="AppMode"
+              [ViewMode]="'FullPage'"
+              [InputData]="data"
+              [AllProdData]="AllProdData"
+              [EntityData]="EntityData"
+              [RFQDetailsFromBlotterYes_QueueStatus]="RFQDetailsFromBlotterYes_QueueStatus"
+            ></app-dci>
+          </ng-template> -->
+
+      <!-- Enabled DCI for Demo pack, By UrmilaA | 17-July-23 | ends -->
+
+         <!-- 
+          <ng-template [ngSwitchCase]="'Digital'" *ngIf="item.activeYN && dataFlag">
+            <app-digital
+              [Product_ID]="item.Product_Id"
+              [Product_Code]="item.product_code"
+              [Product_Name]="item.Product_Name"
+              [Template_Name]="item.Template_Name"
+              [TemplateCode]="item.Template_Code"
+              [TemplateID]="item.Template_Id"
+              [Mode]="Mode"
+              [UserGroup]="UserGroup"
+              [PricingMode]="PricingMode"
+              [AppMode]="AppMode"
+            ></app-digital>
+          </ng-template> -->
+        </ng-container>
+      </div>
+    </div>
+  
+    <div *ngIf="subpages.length === 0">
+      <div class="loaderdiv">
+        <div class="loader-center">
+          <div class="multi-ripple">
+            <div></div>
+            <div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+ <app-notifications></app-notifications>
+</div>

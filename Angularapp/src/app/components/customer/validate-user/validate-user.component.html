@@ -1,0 +1,1773 @@
+<div class="validateusercomponent">
+  <div class="timeline-outer" *ngIf="showTimeLine">
+    <ul class="timeline stack-top">
+      <li id="tabbasicInfo" class="tablinks active-tl" (click)="openTabs('basicInfo')">
+        1. Basic Details
+      </li>
+      <li id="tabaccountInfo" class="tablinks" [ngClass]="{ 'active-tl': isAccountCreated }">
+        2. Summary
+      </li>
+      <li id="tabaccountCreated" class="tablinks" [ngClass]="{ 'active-tl': isAccountCreated }">
+        3. Account Created Successfully
+      </li>
+      <li id="tabacompleteKYC" class="tablinks" [ngClass]="{ 'active-tl': isAccountCreated }"
+        (click)="openTabs('completeKYC')">
+        4. Complete {{clientFormName}}
+      </li>
+    </ul>
+  </div>
+
+  <div *ngIf="SelectedTab === 'basicInfo'">
+    <div *ngIf="pageMode !== 1">
+      <div class="page-title" *ngIf="pageMode !== 1">My Profile</div>
+      <div class="editProfilediv">
+        <!-- <div *ngIf="this.userType.toLowerCase() === 'rm'" style="width: 70%">
+
+          <input
+            type="text"
+            [tabindex]="1"
+            placeholder="Search"
+            [(ngModel)]="selectedCustomer"
+            (keydown.enter)="showSuggestions = false"
+            (keydown.ArrowUp)="
+              selectedCustomerIndex = cfs.moveUpSelection(
+                $event,
+                selectedCustomerIndex
+              )
+            "
+            (keydown.ArrowDown)="
+              selectedCustomerIndex = cfs.moveDownSelection(
+                $event,
+                selectedCustomerIndex
+              )
+            "
+            (keypress)="showSuggestions = true"
+          />
+          <div
+            class="UnderlyingSearch"
+            *ngIf="selectedCustomer && showSuggestions"
+          >
+            <div
+              id="CustomerNameList"
+              class="SelectorBox"
+              (clickOutside)="onClickedOutside($event)"
+            >
+              <a
+                #CustomerNamesList
+                *ngFor="
+                  let customer of customersOfRMArray
+                    | search: selectedCustomer:'CustomerName';
+                  let i = index
+                "
+                (keypress)="ChangeIndex($event)"
+              >
+                <div
+                  *ngIf="customer"
+                  [attr.data-mf]="customer"
+                  (click)="selectCustomer(customer)"
+                  (keydown.enter)="selectCustomer(customer)"
+                  [ngClass]="{ HoverSuggestion: i === selectedCustomerIndex }"
+                >
+                  <span>{{ customer.CustomerName }}</span>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div> -->
+        <div class="fund-message-row" style="    display: grid;
+        grid-template-columns: 10% auto;">
+          <!-- grid-template-columns: 10% 10% 10% auto; -->
+          <!-- <button class="button" *ngIf="editProfileflag  " (click)="EditProfile()"> -->
+          <button class="button" *ngIf="!['Reject','Verify','ref'].includes(buttonAction)" (click)="EditProfile()"> Edit
+            Profile</button>
+          <!-- <button class="button" *ngIf="!editProfileflag" (click)="editProfileflag = true;SelectedTab = 'basicInfo';pageMode = 2 ">View Profile</button> -->
+          <!-- </div>
+            <div class="editProfilediv"> -->
+          <button class="button" *ngIf="editProfileflag && (buttonAction === 'Verify')" (click)="VerifyProfile()">Verify
+            Profile</button>
+          <button class="button" *ngIf="editProfileflag && (buttonAction === 'Reject')" (click)="RejectProfile()">Reject
+            Profile</button>
+          <div *ngIf="pageMode === 2" style="padding-left: 30px">{{ msg }}</div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="pageMode === 1">
+      <div class="page-title" *ngIf="userType.toLowerCase() === 'client'">Create Profile</div>
+      <div class="page-title" *ngIf="userType.toLowerCase() === 'rm'">Create Client Profile</div>
+    </div>
+    <div class="BI-maindata-outer" id="basicInfo" *ngIf="!IsLoading" style="overflow: scroll">
+      <div class="verticle-tabcontent" style="overflow: scroll; height: 100%">
+        <div *ngIf="ReadOnlyMode" style="text-align: center">
+          <div class="BI-card" *ngIf="pageMode === 1 && this.userType.toLowerCase() === 'rm'">
+            <div class="BI-card-header">User Profile</div>
+            <div class="BI-card-content" style="margin-bottom: 20px">
+              <div class="BI-rowcontent1 loginCard">
+                <div class="loginCardelement">
+                  <input type="text" class="form-control username" placeholder="Username" id="uname" required="required"
+                    [(ngModel)]="username1" [ngClass]="{ 'input-error': isError || isDuplicateUser }" autocomplete="off"
+                    (change)="checkDuplicateUser()" />
+                  <div class="show-password">
+                    <span><img *ngIf="!isDuplicateUser" [src]="
+                          isProd
+                            ? 'assets/correct.png'
+                            : '../../../assets/correct.png'
+                        " style="width: 20px; height: 20px" alt="" /></span>
+                    <span><img *ngIf="isDuplicateUser" [src]="
+                          isProd
+                            ? 'assets/wrong.png'
+                            : '../../../assets/wrong.png'
+                        " style="width: 20px; height: 20px" alt="" /></span>
+                  </div>
+                </div>
+                <div class="loginCardelement">
+                  <input type="text" class="form-control username" placeholder="Email address" value=""
+                    required="required" [(ngModel)]="emailid1" [ngClass]="{ 'input-error': isError }"
+                    autocomplete="off" />
+
+                  <!-- <input type="text" placeholder="Email address" /> -->
+                </div>
+                <div class="loginCardelement">
+                  <div>
+                    <input [type]="isPasswordText ? 'text' : 'password'" class="form-control" placeholder="Password"
+                      required="required" autocomplete="off" [ngClass]="{ 'input-error': isError }"
+                      [(ngModel)]="password1" [disabled]="isDuplicateUser" />
+                    <div class="loginCardelement">
+                      <app-password-strength-bar *ngIf="password1 && !confirmPassword1" [passwordToCheck]="password1"
+                        [barLabel]="barLabel">
+                      </app-password-strength-bar>
+                    </div>
+                  </div>
+
+                  <div class="show-password" (click)="isPasswordText = !isPasswordText">
+                    <span><img *ngIf="isPasswordText" [src]="
+                          isProd ? 'assets/eye.png' : '../../../assets/eye.png'
+                        " style="width: 20px; height: 20px" alt="" /></span>
+                    <span><img *ngIf="!isPasswordText" [src]="
+                          isProd
+                            ? 'assets/visibility.png'
+                            : '../../../assets/visibility.png'
+                        " style="width: 20px; height: 20px" alt="" /></span>
+                  </div>
+                </div>
+                <!-- <input type="password" class="form-control password" placeholder="Password" id="pwd" required="required"
+                                                [(ngModel)]="password" [ngClass]="{'input-error': isError}" autocomplete="off"> -->
+                <div class="loginCardelement">
+                  <input [type]="isConfirmPasswordText ? 'text' : 'password'" class="form-control password"
+                    placeholder="Confirm password" required="required" autocomplete="off"
+                    [ngClass]="{ 'input-error': isError }" [(ngModel)]="confirmPassword1"
+                    [disabled]="isDuplicateUser" />
+
+                  <div class="show-password" (click)="isConfirmPasswordText = !isConfirmPasswordText">
+                    <span><img *ngIf="isConfirmPasswordText" [src]="
+                          isProd ? 'assets/eye.png' : '../../../assets/eye.png'
+                        " style="width: 20px; height: 20px" alt="" /></span>
+                    <span><img *ngIf="!isConfirmPasswordText" [src]="
+                          isProd
+                            ? 'assets/visibility.png'
+                            : '../../../assets/visibility.png'
+                        " style="width: 20px; height: 20px" alt="" /></span>
+                  </div>
+                </div>
+                <!-- <input type="password" class="form-control password" placeholder="Confirm password" required="required"
+                                                [(ngModel)]="confirmPassword" [ngClass]="{'input-error': isError}" autocomplete="off"> -->
+                <!-- <div class="form-group">
+                                                    <button type="submit" class="button" (click)="register()"
+                                                      [disabled]="isDuplicateUser">Submit</button>
+                                                  </div>-->
+
+                <p class="error-message" style="margin-bottom: 0px" *ngIf="isError">
+                  {{ ErrorMsg }}
+                </p>
+                <p class="success-message" style="margin-bottom: 0px" *ngIf="isSuccess" [innerHTML]="SuccessMsg"></p>
+              </div>
+            </div>
+          </div>
+
+          <div class="BI-card">
+            <div class="BI-card-header" style="padding-top: 0px">
+              Personal Details
+            </div>
+            <div class="BI-card-content">
+              <div class="BI-rowcontent">
+                <div class="lbl">
+                  <label for="Name" class="lbl" *ngIf="BasicInfoNew.Name.visibility">
+                    *Name
+                  </label>
+                </div>
+                <div class="div"></div>
+                <div class="">
+                  <input type="text" name="CustomerName" class="txt" tabindex="1" id="CustomerName"
+                    [(ngModel)]="BasicInfoNew.Name.value" *ngIf="BasicInfoNew.Name.visibility"
+                    (change)="BasicInfoFormFillingStatus()" [disabled]="!ReadOnlyMode" />
+                </div>
+              </div>
+              <div class="BI-rowcontent">
+                <div class="lbl">
+                  <label for="Block/House No" class="lbl" *ngIf="BasicInfoNew.BlockHouseNo.visibility">
+                    Block/House No
+                  </label>
+                </div>
+                <div class="lbl">
+                  <label for="Street Name" class="lbl" *ngIf="BasicInfoNew.StreetName.visibility">
+                    Street Name
+                  </label>
+                </div>
+                <div class="">
+                  <input type="text" name="BlockHouseNo" class="txt" tabindex="2" id="BlockHouseNo"
+                    [(ngModel)]="BasicInfoNew.BlockHouseNo.value" *ngIf="BasicInfoNew.BlockHouseNo.visibility"
+                    (change)="BasicInfoFormFillingStatus()" [disabled]="!ReadOnlyMode" />
+                </div>
+                <div class="">
+                  <input type="text" name="StreetName" class="txt" tabindex="3" id="StreetName"
+                    [(ngModel)]="BasicInfoNew.StreetName.value" *ngIf="BasicInfoNew.StreetName.visibility"
+                    (change)="BasicInfoFormFillingStatus()" [disabled]="!ReadOnlyMode" />
+                </div>
+              </div>
+              <div class="BI-rowcontent">
+                <div class="lbl">
+                  <label for="City" class="lbl" *ngIf="BasicInfoNew.City.visibility">
+                    City</label>
+                </div>
+                <div class="lbl">
+                  <label for="State" class="lbl" *ngIf="BasicInfoNew.State.visibility">
+                    State</label>
+                </div>
+                <div class="" style="display: flex; line-height: 40px">
+                  <input type="text" name="City" id="City" tabindex="4" class="txt" maxlength="15"
+                    [(ngModel)]="BasicInfoNew.City.value" *ngIf="BasicInfoNew.City.visibility"
+                    (keydown)="cfs.isalpha($event)" (change)="BasicInfoFormFillingStatus()"
+                    [disabled]="!ReadOnlyMode" />
+                </div>
+                <div class="lbl verticleCenter">
+                  <input type="text" name="State" id="State" tabindex="5" class="txt" maxlength="15"
+                    [(ngModel)]="BasicInfoNew.State.value" *ngIf="BasicInfoNew.State.visibility"
+                    (keydown)="cfs.isalpha($event)" (change)="BasicInfoFormFillingStatus()"
+                    [disabled]="!ReadOnlyMode" />
+                </div>
+              </div>
+              <div class="BI-rowcontent">
+                <div class="lbl">
+                  <label for="Country" class="lbl" *ngIf="BasicInfoNew.Country.visibility">
+                    Country</label>
+                </div>
+                <div class="lbl">
+                  <label for="PostalCode" class="lbl" *ngIf="BasicInfoNew.PostalCode.visibility">
+                    Postal Code</label>
+                </div>
+                <div class="">
+                  <select name="Country" id="Country" class="txt" tabindex="6" [(ngModel)]="BasicInfoNew.Country.value"
+                    *ngIf="BasicInfoNew.Country.visibility" (change)="BasicInfoFormFillingStatus()"
+                    [disabled]="!ReadOnlyMode">
+                    <option *ngFor="let item of countryNames" [value]="item.Code">
+                      {{ item.Code }}
+                    </option>
+                  </select>
+                </div>
+                <div class="">
+                  <input type="text" name="Postal Code" id="Postal Code" class="txt" maxlength="15" tabindex="7"
+                    [(ngModel)]="BasicInfoNew.PostalCode.value" *ngIf="BasicInfoNew.PostalCode.visibility"
+                    (keydown)="cfs.isAlphaNumeric($event)" (change)="BasicInfoFormFillingStatus()"
+                    [disabled]="!ReadOnlyMode" />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="BI-card">
+            <div class="BI-card-header">Contact Info</div>
+            <div class="BI-card-content">
+              <div class="BI-rowcontent">
+                <div class="lbl">
+                  <label for="IdentificationNo" class="lbl" *ngIf="BasicInfoNew.HomePhoneNumber.visibility">
+                    Home Phone Number
+                  </label>
+                </div>
+
+                <div class="lbl">
+                  <label for="IdentificationNo" class="lbl" *ngIf="BasicInfoNew.OfficePhoneNumber.visibility">
+                    Office Phone Number
+                  </label>
+                </div>
+                <div class="">
+                  <input type="text" name="HomePhoneNumber" id="HomePhoneNumber" class="txt" tabindex="8"
+                    [(ngModel)]="BasicInfoNew.HomePhoneNumber.value" *ngIf="BasicInfoNew.HomePhoneNumber.visibility"
+                    (change)="BasicInfoFormFillingStatus()" (keypress)="cfs.isvalidContactNo($event)"
+                    [disabled]="!ReadOnlyMode" />
+                </div>
+                <div class="">
+                  <input type="text" name="OfficePhoneNumber" id="OfficePhoneNumber" class="txt" tabindex="9"
+                    [(ngModel)]="BasicInfoNew.OfficePhoneNumber.value" *ngIf="BasicInfoNew.OfficePhoneNumber.visibility"
+                    (change)="BasicInfoFormFillingStatus()" (keypress)="cfs.isvalidContactNo($event)"
+                    [disabled]="!ReadOnlyMode" />
+                </div>
+              </div>
+              <div class="BI-rowcontent">
+                <div class="lbl">
+                  <label for="DOB" class="lbl" *ngIf="BasicInfoNew.FaxNumber.visibility">
+                    Fax No</label>
+                </div>
+
+                <div class="lbl">
+                  <label for="Email" class="lbl" *ngIf="BasicInfoNew.Email.visibility">
+                    Email
+                  </label>
+                </div>
+                <div class="">
+                  <input type="text" name="FaxNumber" id="FaxNumber" class="txt" tabindex="10"
+                    [(ngModel)]="BasicInfoNew.FaxNumber.value" *ngIf="BasicInfoNew.FaxNumber.visibility"
+                    (change)="BasicInfoFormFillingStatus()" (keypress)="cfs.isvalidContactNo($event)"
+                    [disabled]="!ReadOnlyMode" />
+                </div>
+                <div class="">
+                  <input type="email" name="email" id="email" class="txt" tabindex="11"
+                    [(ngModel)]="BasicInfoNew.Email.value" *ngIf="BasicInfoNew.Email.visibility"
+                    (change)="BasicInfoFormFillingStatus()" [disabled]="!ReadOnlyMode" />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="BI-card">
+            <div class="BI-card-header">Identification Details</div>
+            <div class="BI-card-content">
+              <div class="BI-rowcontent">
+                <div class="lbl">
+                  <label for="IdentificationNo" class="lbl" *ngIf="BasicInfoNew.CIF.visibility">
+                    * CIF
+                  </label>
+                </div>
+                <div class="div"></div>
+                <div class="">
+                  <input type="text" name="cif" id="cif" class="txt" tabindex="12" [(ngModel)]="BasicInfoNew.CIF.value"
+                    *ngIf="BasicInfoNew.CIF.visibility" (change)="BasicInfoFormFillingStatus()"
+                    (keypress)="cfs.isNumber($event)" [disabled]="!ReadOnlyMode" />
+                </div>
+              </div>
+              <div class="BI-rowcontent">
+                <div class="lbl">
+                  <label for="DOB" class="lbl" *ngIf="BasicInfoNew.CustomerIDType.visibility">
+                    Customer ID Type</label>
+                </div>
+
+                <div class="lbl">
+                  <label for="Nationality" class="lbl" *ngIf="BasicInfoNew.CustomerIDNumber.visibility">
+                    Customer ID No</label>
+                </div>
+                <div class="">
+                  <select name="CustomerType" id="CustomerType" class="txt" tabindex="13"
+                    [(ngModel)]="BasicInfoNew.CustomerIDType.value" *ngIf="BasicInfoNew.CustomerIDType.visibility"
+                    (change)="BasicInfoFormFillingStatus()" [disabled]="!ReadOnlyMode">
+                    <option *ngFor="let item of customerTypes" [value]="item">
+                      {{ item }}
+                    </option>
+                  </select>
+                </div>
+                <div class="">
+                  <input type="text" name="CustomerIDNumber" id="CustomerIDNumber" class="txt" tabindex="14"
+                    [(ngModel)]="BasicInfoNew.CustomerIDNumber.value" *ngIf="BasicInfoNew.CustomerIDNumber.visibility"
+                    (change)="BasicInfoFormFillingStatus()" placeholder="Enter Customer ID No"
+                    (keypress)="cfs.isAlphaNumeric($event)" [disabled]="!ReadOnlyMode" />
+                </div>
+              </div>
+              <div class="BI-rowcontent">
+                <div class="lbl">
+                  <label for="DOB" class="lbl" *ngIf="BasicInfoNew.AlternateDocID.visibility">
+                    Alternate Doc ID</label>
+                </div>
+
+                <div class="lbl">
+                  <label for="DOB" class="lbl" *ngIf="BasicInfoNew.DateOfBirth.visibility">* Date of Birth</label>
+                </div>
+                <div class="">
+                  <input type="text" name="AlternateDocID" id="AlternateDocID" class="txt" tabindex="15"
+                    [(ngModel)]="BasicInfoNew.AlternateDocID.value" *ngIf="BasicInfoNew.AlternateDocID.visibility"
+                    (change)="BasicInfoFormFillingStatus()" (keypress)="cfs.isAlphaNumeric($event)"
+                    [disabled]="!ReadOnlyMode" />
+
+                  <!-- <select name="AlternateDocID" id="AlternateDocID" class="txt" tabindex="15" [(ngModel)]="BasicInfoNew.AlternateDocID.value" *ngIf="BasicInfoNew.AlternateDocID.visibility" (change)="BasicInfoFormFillingStatus();" [disabled]="!ReadOnlyMode">
+                                    <option *ngFor="let item of dd_ALternateDocID" [value]="item">{{item}}
+                                    </option>
+                                </select> -->
+                </div>
+                <div class="">
+                  <input type="date" name="DOB" id="DOB" class="txt input-dob"
+                    [attr.data-date]="BasicInfoNew.DateOfBirth.value" data-date-format="DD-MMM-YYYY" tabindex="16"
+                    [(ngModel)]="BasicInfoNew.DateOfBirth.value" *ngIf="BasicInfoNew.DateOfBirth.visibility" (change)="
+                      selectDateOfBirth(BasicInfoNew.DateOfBirth.value);
+                      BasicInfoFormFillingStatus()
+                    " min="1950-01-01" max="2000-01-01" [disabled]="!ReadOnlyMode" />
+                </div>
+              </div>
+              <div class="BI-rowcontent">
+                <div class="lbl">
+                  <label for="DOB" class="lbl" *ngIf="BasicInfoNew.CountryResidence.visibility">
+                    * Country Residence</label>
+                </div>
+
+                <div class="lbl">
+                  <label for="Nationality" class="lbl" *ngIf="BasicInfoNew.Nationality.visibility">Nationality</label>
+                </div>
+                <div class="">
+                  <select name="CountryResidence" id="CountryResidence" tabindex="17" class="txt"
+                    [(ngModel)]="BasicInfoNew.CountryResidence.value" *ngIf="BasicInfoNew.CountryResidence.visibility"
+                    (change)="BasicInfoFormFillingStatus()" [disabled]="!ReadOnlyMode">
+                    <option *ngFor="let item of countryNames" [value]="item">
+                      {{ item.Code }}
+                    </option>
+                  </select>
+                </div>
+                <div class="">
+                  <select name="Nationality" id="Nationality" tabindex="18" class="txt"
+                    [(ngModel)]="BasicInfoNew.Nationality.value" *ngIf="BasicInfoNew.Nationality.visibility"
+                    (change)="BasicInfoFormFillingStatus()" [disabled]="!ReadOnlyMode">
+                    <option *ngFor="let item of countryNames" [value]="item">
+                      {{ item.Code }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="BI-card">
+            <div class="BI-card-header">Investor Details</div>
+            <div class="BI-card-content">
+              <div class="BI-rowcontent">
+                <div class="lbl">
+                  <label for="CustomerType" class="lbl" *ngIf="BasicInfo.CustomerType.visibility">* Customer
+                    Type</label>
+                </div>
+
+                <div class="lbl">
+                  <label for="CustomerSegment" class="lbl" *ngIf="BasicInfoNew.CustomerSegment.visibility">Customer
+                    Segment</label>
+                </div>
+                <div class="">
+                  <select name="CustomerType" id="CustomerType" class="txt" tabindex="19"
+                    [(ngModel)]="BasicInfoNew.CustomerType.value" *ngIf="BasicInfoNew.CustomerType.visibility"
+                    (change)="BasicInfoFormFillingStatus()" [disabled]="!ReadOnlyMode">
+                    <option *ngFor="let item of dd_CustomerType" [value]="item">
+                      {{ item.Code }}
+                    </option>
+                  </select>
+                </div>
+                <div class="">
+                  <select name="CustomerSegment" id="CustomerSegment" class="txt" tabindex="20"
+                    [(ngModel)]="BasicInfoNew.CustomerSegment.value" *ngIf="BasicInfoNew.CustomerSegment.visibility"
+                    (change)="BasicInfoFormFillingStatus()" [disabled]="!ReadOnlyMode">
+                    <option *ngFor="let item of dd_customerSegment" [value]="item">
+                      {{ item }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="BI-rowcontent">
+                <div class="lbl">
+                  <label for="Category" class="lbl" *ngIf="BasicInfoNew.Category.visibility">
+                    Category
+                  </label>
+                </div>
+
+                <div class="lbl">
+                  <label for="ProfessionalInvestor" class="lbl" *ngIf="BasicInfoNew.ProfessionalInvestor.visibility">
+                    Professional Investor
+                  </label>
+                </div>
+                <div class="">
+                  <select name="Category" id="Category" class="txt" tabindex="21"
+                    [(ngModel)]="BasicInfoNew.Category.value" *ngIf="BasicInfoNew.Category.visibility"
+                    (change)="BasicInfoFormFillingStatus()" [disabled]="!ReadOnlyMode">
+                    <option *ngFor="let item of dd_Category" [value]="item">
+                      {{ item }}
+                    </option>
+                  </select>
+                </div>
+                <div class="">
+                  <select name="ProfessionalInvestor" id="ProfessionalInvestor" tabindex="22" class="txt"
+                    [(ngModel)]="BasicInfoNew.ProfessionalInvestor.value"
+                    *ngIf="BasicInfoNew.ProfessionalInvestor.visibility" (change)="BasicInfoFormFillingStatus()"
+                    [disabled]="!ReadOnlyMode">
+                    <option *ngFor="let item of dd_ProfessionalInvestor" [value]="item">
+                      {{ item }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="BI-rowcontent">
+                <div class="lbl">
+                  <label for="LastKYCDoneOn" class="lbl" *ngIf="BasicInfoNew.LastKYCDoneOn.visibility">
+                    Last CIPR Done on
+                  </label>
+                </div>
+                <div class="lbl">
+                  <label for="NextKYCDueon" class="lbl" *ngIf="BasicInfoNew.PEPFlag.visibility">
+                    * PEP Flag
+                  </label>
+                </div>
+                <div class="">
+                  <input type="date" name="lastKYCDoneon" id="lastKYCDoneon" class="txt input-dob"
+                    [attr.data-date]="BasicInfoNew.LastKYCDoneOn.value" data-date-format="DD-MMM-YYYY" tabindex="23"
+                    [(ngModel)]="BasicInfoNew.LastKYCDoneOn.value" *ngIf="BasicInfoNew.LastKYCDoneOn.visibility"
+                    (change)="
+                      selectLastKYCDoneOn(BasicInfoNew.LastKYCDoneOn.value);
+                      BasicInfoFormFillingStatus()
+                    " min="2020-01-01" max="2030-01-01" [disabled]="!ReadOnlyMode" />
+                </div>
+                <div class="">
+                  <select name="PEPFlag" id="PEPFlag" class="txt" tabindex="24" [(ngModel)]="BasicInfoNew.PEPFlag.value"
+                    *ngIf="BasicInfoNew.PEPFlag.visibility" (change)="BasicInfoFormFillingStatus()"
+                    [disabled]="!ReadOnlyMode">
+                    <option *ngFor="let item of dd_PEPFlag" [value]="item">
+                      {{ item }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- //AnujaD || DocUpload || Start -->
+          <div class="BI-card">
+            <div class="BI-card-header">Document Upload</div>
+            <div class="BI-card-content">
+              <div class="BI-rowcontent">
+                <div class="btnGrid" style="text-align: left">
+                  <button class="button btn" value="Buy" (click)="uploadDoc()">
+                    Upload
+                  </button>
+                  <button class="button btn" value="View" (click)="selectFunctionDD()">
+                    Add
+                  </button>
+                </div>
+              </div>
+              <div class="BI-rowcontent">
+                <div class="">
+                  <div *ngFor="let file of fileChosen; let i = index" style="grid-column: 1" style="margin-top: 25px">
+                    <div *ngIf="!file">
+                      <div class="form-group filegrid">
+                        <div style="margin-top: 20px">{{ i + 1 }}.</div>
+
+                        <div class="gridEvent">
+                          <div style="font-size: 12px; text-align: left">
+                            <label>Event</label>
+                          </div>
+                          <select name="docUploadDD" id="docUploadDD" class="txt" (change)="eventChange($event, i)"
+                            [disabled]="!ReadOnlyMode">
+                            <option *ngFor="let docUpload of dropDownList" [value]="docUpload">
+                              {{ docUpload }}
+                            </option>
+                          </select>
+                        </div>
+                        <input type="file" id="file" style="margin-top: 15px !important; margin-left: 15px"
+                          class="custom-file-input" (change)="fileSelectionFunction($event, i)" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="" style="margin-top: 25px">
+                  <h3 class="textnewentry" style="font-weight: 400">
+                    {{ DocumentMessage }}
+                  </h3>
+                </div>
+              </div>
+            </div>
+          </div>
+          <input class="button" style="margin: 20px" type="button" tabindex="42" *ngIf="ReadOnlyMode && pageMode === 1"
+            (click)="SubmitBasicInfo(); register(); saveDetails('Insert')" value="Confirm" />
+          <input class="button" type="button" tabindex="42" *ngIf="!ReadOnlyMode && pageMode === 1"
+            (click)="PrevBasicInfo()" value="Prev" />
+          <button class="button" *ngIf="!editProfileflag && pageMode !== 1" style="margin: 20px"
+            (click)="saveDetails('Update')">
+            Confirm
+          </button>
+          <button class="button" *ngIf="!editProfileflag && pageMode !== 1" style="margin: 20px"
+            (click)="CancelEditProfile()">
+            Cancel
+          </button>
+          <p class="error-message" style="margin-bottom: 0px" *ngIf="isError">
+            {{ ErrorMsg }}
+          </p>
+          <p class="success-message" style="margin-bottom: 0px" *ngIf="isSuccess" [innerHTML]="SuccessMsg"></p>
+        </div>
+
+        <div *ngIf="!ReadOnlyMode " style="text-align: center">
+          <div class="page-title" *ngIf="pageMode === 1" style="text-align: start">
+            Summary
+          </div>
+          <div class="Summary-card">
+            <div *ngFor="let summaryElement of Summary">
+              <div class="Summary-card-header" *ngIf="summaryElement.dataType === 'SectionHeader'">
+                <div class="Summary-card-header-label">
+                  {{ summaryElement.sectionHeader }}
+                </div>
+                <hr class="header-line" />
+              </div>
+
+              <div class="Summary-card-content" *ngIf="summaryElement.dataType === 'SectionValue'">
+                <div class="Summary-rowcontent">
+                  <div class="lbl">
+                    <label for="Name" class="lbl">
+                      {{ summaryElement.key }}
+                    </label>
+                  </div>
+                  <div class="lbl">
+                    <label for="Name" class="lbl" *ngIf="summaryElement.key !== 'Last Login time'">
+                      {{ summaryElement.value }}
+                    </label>
+                    <label for="Name" class="lbl" *ngIf="summaryElement.key === 'Last Login time'">
+                      {{ summaryElement.value | date: "dd-MMM-yyyy hh:mm a" }}
+                    </label>
+
+                    <button *ngIf="summaryElement.key === 'Password'" class="button chngPassword"
+                      value="Change Password" (click)="passwordOverride()" routerLinkActive="router-link-active">
+                      Change Password
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div *ngIf="summaryElement.sectionHeader === 'Documents Information'">
+                <table style="margin-left: 50px">
+                  <thead>
+                    <th></th>
+                    <th>Event Code</th>
+                    <th>File Name</th>
+                    <th></th>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let data of documents; let k = index">
+                      <td>{{ k + 1 }}</td>
+                      <td>{{ data.Event_Code }}</td>
+                      <td>{{ data.Document_Output_Path }}</td>
+                      <td (click)="showFile(data.DGT_ID)" style="color: var(--off-color)">
+                        <u>show</u>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <!-- <div class="Summary-card" *ngIf="CustomerID === ''">
+            Unable to load Profile.
+          </div> -->
+          <input class="button" style="background-color: var(--headers); margin-top: 1%" type="button" tabindex="42"
+            *ngIf="!ReadOnlyMode && pageMode === 1" (click)="PrevBasicInfo()" value="Previous" />
+          <input class="button" style="
+              background-color: var(--headers);
+              margin-top: 1%;
+              margin-left: 20px;
+            " type="button" tabindex="42" *ngIf="!ReadOnlyMode && pageMode === 1" (click)="FinalSubmitBasicInfo()"
+            value="Submit" />
+        </div>
+        <div id="snackbar" class="AI-rowButton" *ngIf="ErrorMessage" style="color: white; line-height: 45px">
+          {{ ErrorMessage }}
+        </div>
+      </div>
+      <div class="verticle-tab" *ngIf="pageMode === 1">
+        <div class="progress-timeline">
+          <div class="form-container4060">
+            <div class="dot-text">Personal Details</div>
+            <div id="dotpersonalDetails" class="dotunselected"></div>
+          </div>
+          <div class="form-container4060">
+            <div class="dot-text">Contact Info</div>
+            <div id="dotcontactInfo" class="dotunselected"></div>
+          </div>
+
+          <div class="form-container4060">
+            <div class="dot-text">Identification Details</div>
+            <div id="dotidentificationDetails" class="dotunselected"></div>
+          </div>
+          <div class="form-container4060">
+            <div class="dot-text">Investor Details</div>
+            <div id="dotinvestorDetails" class="dotunselected"></div>
+          </div>
+          <!-- <div class="form-container4060">
+                    <div class="dot-text">
+                        Portfolio Details
+                    </div>
+                    <div id='dotportfolioDetails' class="dotunselected"></div>
+                </div>
+                <div class="form-container4060">
+                    <div class="dot-text">
+                        Account Info
+                    </div>
+                    <div id='dotaccountInfo' class="dotunselected"></div>
+                </div> -->
+        </div>
+      </div>
+    </div>
+    <div class="loaderdiv" *ngIf="IsLoading">
+      <img [src]="
+          isProd ? 'assets/loading_dots.gif' : '../../assets/loading_dots.gif'
+        " height="100px" width="100px" />
+    </div>
+  </div>
+
+  <div class="AI-maindata-outer" id="accountInfo" *ngIf="SelectedTab === 'accountInfo' && ReadOnlyMode && !IsLoading">
+    <div class="AI-rowcontent">
+      <div class="lbl">
+        <label for="BSB" class="lbl">* BSB/Branch Code</label>
+      </div>
+      <div style="display: flex">
+        <input type="text" name="BSB" id="BSB" class="txt" value="BSB" maxlength="6" *ngIf="AccountInfo.BSB.visibility"
+          [(ngModel)]="AccountInfo.BSB.value" (keypress)="cfs.isNumber($event)" placeholder="Enter 6 digit code"
+          [disabled]="!ReadOnlyMode" (change)="getBSBCDetails()" />
+        <label for="BSB" class="lbl" style="line-height: inherit" *ngIf="bankName !== ''">({{ bankName }})</label>
+      </div>
+    </div>
+    <div class="AI-rowcontent">
+      <div class="lbl">
+        <label for="Account_Number" class="lbl">Account No</label>
+      </div>
+      <input type="text" name="Account_Number" id="Account_Number" class="txt"
+        *ngIf="AccountInfo.Account_Number.visibility" [(ngModel)]="AccountInfo.Account_Number.value"
+        (keypress)="cfs.isNumber($event)" placeholder="Account number" [disabled]="!ReadOnlyMode" />
+    </div>
+    <div class="AI-rowcontent">
+      <div class="lbl">
+        <label for="Account_Name" class="lbl">Account Name</label>
+      </div>
+      <input type="text" name="Account_Name" id="Account_Name" class="txt" *ngIf="AccountInfo.Account_Name.visibility"
+        [(ngModel)]="AccountInfo.Account_Name.value" (keypress)="cfs.isAlphaNumeric($event)" placeholder="Account name"
+        [disabled]="!ReadOnlyMode" />
+    </div>
+    <div class="AI-rowcontent">
+      <div class="lbl">
+        <label for="Payment_Frequency" class="lbl">Payment Frequency</label>
+      </div>
+      <select name="Payment_Frequency" id="Payment_Frequency" class="txt"
+        [(ngModel)]="AccountInfo.Payment_Frequency.value" *ngIf="AccountInfo.Payment_Frequency.visibility"
+        [disabled]="!ReadOnlyMode">
+        <option *ngFor="let item of paymentFrequency" [value]="item">
+          {{ item }}
+        </option>
+      </select>
+    </div>
+    <div class="AI-rowcontent">
+      <div class="lbl">
+        <label for="Deposite_currency" class="lbl">Currency</label>
+      </div>
+      <select name="Deposite_currency" id="Deposite_currency" class="txt" [(ngModel)]="AccountInfo.Currency.value"
+        *ngIf="AccountInfo.Currency.visibility" [disabled]="!ReadOnlyMode">
+        <option *ngFor="let item of CurrencyList" [value]="item">
+          {{ item }}
+        </option>
+      </select>
+    </div>
+    <div class="AI-rowcontent">
+      <div class="lbl">
+        <label for="DepositAmount" class="lbl">Deposit Amount</label>
+      </div>
+      <input type="text" style="text-align: right" name="DepositAmount" id="DepositAmount" class="txt"
+        *ngIf="AccountInfo.Deposit_Amount.visibility" onCopy="return false" onDrag="return false" onDrop="return false"
+        onPaste="return false" placeholder="Enter Deposit amount" [disabled]="!ReadOnlyMode"
+        [(ngModel)]="AccountInfo.Deposit_Amount.value"
+        (change)="AccountInfo.Deposit_Amount.value = cfs.NotionalChange($event)" (focus)="cfs.UnformatNumber($event)"
+        (blur)="cfs.FormatNumberKetan($event)" (keypress)="cfs.NotionalValidate($event)" />
+    </div>
+    <div class="AI-rowButton">
+      <input class="button" type="button" value="Validate" *ngIf="SelectedTab !== 'accountInfo'" />
+      <input class="button" style="margin-left: 20px" type="button" value="Previous" (click)="openTabs('basicInfo')"
+        *ngIf="ReadOnlyMode" [disabled]="!ReadOnlyMode" />
+      <input class="button" style="margin-left: 20px" type="button" value="Skip" (click)="saveDetails('Insert')"
+        *ngIf="ReadOnlyMode" [disabled]="!ReadOnlyMode" />
+      <input class="button" style="margin-left: 20px" type="button" value="Next" (click)="validateAccountInfo()"
+        *ngIf="ReadOnlyMode" [disabled]="!ReadOnlyMode" />
+    </div>
+    <!-- <div id="snackbar" *ngIf="Accountpagemessage" style="line-height: 45px;">
+            {{Accountpagemessage}}
+        </div> -->
+  </div>
+
+  <div id="accountInfoReadmode" *ngIf="SelectedTab === 'accountInfo' && !ReadOnlyMode" style="height: auto !important">
+    <!-- Accounts header text -->
+    <div class="page-title">Accounts Details</div>
+    <div class="account-container" *ngIf="!IsLoading">
+      <div *ngIf="totalaccounts.length > 0" class="account-deatails-grid" id="accountInfo">
+        <div class="AI-rowcontent">
+          <div class="lbl" style="text-align: left; padding-left: 5px">
+            <label for="Account_Number" class="lbl">Account No</label>
+          </div>
+        </div>
+        <div class="AI-rowcontent">
+          <div class="lbl" style="text-align: left; padding-left: 5px">
+            <label for="Account_Name" class="lbl">Account Name</label>
+          </div>
+        </div>
+        <div class="AI-rowcontent">
+          <div class="lbl" style="text-align: left; padding-left: 5px">
+            <label for="Account_Balance" class="lbl">Account Balance</label>
+          </div>
+        </div>
+        <div class="AI-rowcontent">
+          <div class="lbl" style="text-align: left; padding-left: 5px">
+            <label for="Portfolio" class="lbl">Portfolio</label>
+          </div>
+        </div>
+        <div class="AI-rowcontent">
+          <div class="lbl" style="text-align: left; padding-left: 5px">
+            <label for="Deposite_currency" class="lbl">Currency</label>
+          </div>
+        </div>
+        <div class="AI-rowcontent">
+          <div class="lbl" style="text-align: left; padding-left: 5px">
+            <label for="BSB" class="lbl">* BSB/Branch Code</label>
+          </div>
+        </div>
+        <div class="AI-rowcontent">
+          <div class="lbl" style="text-align: left; padding-left: 5px">
+            <label for="Account_Number" class="lbl">Bank Name</label>
+          </div>
+        </div>
+      </div>
+      <!-- Accounts list -->
+      <div *ngIf="totalaccounts.length > 0">
+        <div class="account-deatails-grid" id="accountInfo" *ngFor="let account of totalaccounts; let i = index">
+
+          <div class="AI-rowcontent">
+            <div style="display: flex; height: 100%">
+              <input type="text" name="Account_Number" id="Account_Number" class="txt"
+                style="padding-left: 10px; padding-right: 0; height: 100%" [(ngModel)]="account.Account_Number.value"
+                (keypress)="cfs.isNumber($event)" placeholder="Account number" [disabled]="
+                  !account.Account_Number.visibility ||
+                  account.createdSuccessfully === 'true' ||
+                  account.bankName === ''
+                " />
+            </div>
+          </div>
+
+          <div class="AI-rowcontent">
+            <div style="display: flex; height: 100%">
+              <input type="text" name="Account_Name" id="Account_Name" class="txt"
+                style="padding-left: 10px; padding-right: 0; height: 100%" [(ngModel)]="account.AccountName.value"
+                (keypress)="cfs.isAlphaNumeric($event)" placeholder="Account name" [disabled]="
+                  !account.AccountName.visibility ||
+                  account.createdSuccessfully === 'true' ||
+                  account.bankName === ''
+                " />
+            </div>
+          </div>
+          <div class="AI-rowcontent">
+            <div style="display: flex; height: 100%">
+              <input type="text" name="Account_Balance" id="Account_Balance" class="txt"
+                style="padding-right: 10px; height: 100%; text-align: right;" [(ngModel)]="account.Account_Balance.value"
+                (keypress)="cfs.isAlphaNumeric($event)" placeholder="Account Balance" [disabled]="
+                  !account.Account_Balance.visibility ||
+                  account.createdSuccessfully === 'true' ||
+                  account.Account_Balance === ''
+                " />
+            </div>
+          </div>
+          <div class="AI-rowcontent" *ngIf="account.Portfolio.visibility">
+            <div style="display: flex; height: 100%">
+              <select name="Portfolio" id="Portfolio" class="txt" style="
+                  padding-left: 10px;
+                  padding-right: 0;
+                  height: 100%;
+                  margin-left: 5px;
+                  margin-right: 5px;
+                " [(ngModel)]="account.PortfolioName.value" [disabled]="
+                  !account.PortfolioName.visibility ||
+                  account.createdSuccessfully === 'true' ||
+                  account.bankName === ''
+                ">
+                <option *ngFor="let item of totalPortfolio" [value]="item.fascDesc.value" selected="">
+                  {{ item.fascDesc.value }}
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="AI-rowcontent" *ngIf="!account.Portfolio.visibility">
+            <div style="display: flex; height: 100%">
+              <input type="text" name="Portfolio" id="Portfolio" class="txt"
+                style="padding-left: 10px; padding-right: 0; height: 100%" [(ngModel)]="account.Portfolio.value"
+                [disabled]="
+                  !account.Portfolio.visibility ||
+                  account.createdSuccessfully === 'true' ||
+                  account.bankName === ''
+                " />
+            </div>
+          </div>
+          <!-- <div class="AI-rowcontent" >
+            <div style="display: flex; height: 100%">
+              <select name="Portfolio" id="Portfolio" class="txt" style="
+                  padding-left: 10px;
+                  padding-right: 0;
+                  height: 100%;
+                  margin-left: 5px;
+                  margin-right: 5px;
+                " [(ngModel)]="account.PortfolioName.value" [disabled]="
+                  !account.PortfolioName.visibility ||
+                  account.createdSuccessfully === 'true' ||
+                  account.bankName === ''
+                ">
+                <option *ngFor="let item of totalPortfolio" [value]="item.fascDesc.value">
+                  {{ item.fascDesc.value }}
+                </option>
+              </select>
+            </div>
+          </div> -->
+          <div class="AI-rowcontent">
+            <div style="display: flex; height: 100%">
+              <select name="Deposite_currency" id="Deposite_currency" class="txt" style="
+                  padding-left: 10px;
+                  padding-right: 0;
+                  height: 100%;
+                  margin-left: 5px;
+                  margin-right: 5px;
+                " [(ngModel)]="account.Currency.value" [disabled]="
+                  !account.Currency.visibility ||
+                  account.createdSuccessfully === 'true' ||
+                  account.bankName === ''
+                ">
+                <option *ngFor="let item of CurrencyList" [value]="item">
+                  {{ item }}
+                </option>
+              </select>
+            </div>
+          </div>
+
+          <div class="AI-rowcontent">
+            <div style="display: flex; height: 100%">
+              <input type="text" name="BSB" id="BSB" class="txt" value="BSB" maxlength="6" [value]="account.BSB.value"
+                (keypress)="cfs.isNumber($event)" placeholder="Enter 6 digit code" [disabled]="
+                  !account.BSB.visibility ||
+                  account.createdSuccessfully === 'true'
+                " (change)="getValueInput($event, i)" style="padding-left: 10px; padding-right: 0; height: 100%" />
+            </div>
+          </div>
+          <div class="AI-rowcontent">
+            <div style="display: flex; height: 100%">
+              <input type="text" name="BSB" id="BSB" class="txt"
+                style="padding-left: 10px; padding-right: 0; height: 100%" [(ngModel)]="account.bankName.value"
+                placeholder="Bank name" [disabled]="
+                  !account.bankName.visibility ||
+                  account.createdSuccessfully === 'true' ||
+                  account.bankName === ''" />
+              <!-- <label for="BSB" class="lbl" style="line-height: inherit;" *ngIf="account.bankName !== '' && account.BSB !== ''">({{account.bankName}})</label> -->
+              <!-- <label for="BSB" class="lbl" style="line-height: inherit;" *ngIf="account.ErrorMessage !== ''">({{account.ErrorMessage}})</label> -->
+            </div>
+          </div>
+
+          <div class="AI-rowButton" style="display: inline-flex">
+            <input class="button" style="margin: 0; margin-right: 5px; margin-left: 5px" type="button" value="Submit"
+              (click)="createAccount(account)" *ngIf="account.createdSuccessfully !== 'true' && !ReadOnlyMode"
+              [disabled]="account.bankName === ''" />
+            <input class="button" style="margin: 0; margin-right: 5px; margin-left: 5px" type="button" value="Remove"
+              (click)="removeAccount(i)" *ngIf="account.createdSuccessfully !== 'true' && !ReadOnlyMode" />
+            <!-- <input class="button" style="
+                margin: 0;
+                margin-right: 5px;
+                margin-left: 5px;
+                min-width: 9.5em;
+                width: 210px;
+              " type="button" value="Transfer Funds" (click)="TransferAmount(i)" routerLink="/cashdeposit"
+              *ngIf="account.createdSuccessfully !== '' && !ReadOnlyMode" /> -->
+            <input class="button" style="
+                margin: 0;
+                margin-right: 5px;
+                margin-left: 5px;
+                min-width: 9.5em;
+                width: 210px;
+              " type="button" value="Transfer Funds" (click)="TransferAmount(i); CashDepositOverlayflag = true"
+              *ngIf="account.createdSuccessfully !== '' && !ReadOnlyMode" />
+
+            <input class="button" style="
+                margin: 0;
+                margin-right: 5px;
+                margin-left: 5px;
+                min-width: 9.5em;
+                width: 210px;
+              " type="button" value="Fixed Deposit" (click)="TransferAmount(i); FixedDepositOverlayflag = true"
+              *ngIf="account.createdSuccessfully !== '' && !ReadOnlyMode" />
+          </div>
+          <!-- </div> -->
+        </div>
+      </div>
+      <!-- No Accounts Found -->
+      <div *ngIf="totalaccounts.length === 0" style="padding: 15px 5px;">
+        <div class="textnewentry">No Account found.</div>
+      </div>
+
+      <div class="AI-rowButton" style="display: flex; justify-content: flex-start; padding: 15px 5px">
+        <input class="button" type="button" value="Validate" *ngIf="SelectedTab !== 'accountInfo'" />
+        <!-- <input class="button " style="margin-left: 20px;" type="button" value="Previous" (click)="openTabs('basicInfo')" *ngIf="!ReadOnlyMode" [disabled]="ReadOnlyMode">
+                <input class="button " style="margin-left: 20px;" type="button" value="Skip" (click)="saveDetails()" *ngIf="!ReadOnlyMode" [disabled]="ReadOnlyMode">
+                <input class="button " style="margin-left: 20px;" type="button" value="Next" (click)="validateAccountInfo()" *ngIf="!ReadOnlyMode" [disabled]="ReadOnlyMode"> -->
+        <!-- <input class="button" style="margin-left: 20px; margin-top: 10px" type="button" value="Add"
+          (click)="addAccount()" [disabled]="ReadOnlyMode" /> -->
+        <img style="max-height: 2em;cursor: pointer;" [src]="isProd ? 'assets/plus.png' : '../../assets/plus.png'" (click)="addAccount();">
+      </div>
+    </div>
+    <!-- <div class="AI-rowButton" *ngIf="Accountpagemessage !== ''" style="line-height: 45px;">
+            {{Accountpagemessage}}
+        </div> -->
+    <div id="snackbar" style="line-height: 45px" *ngIf="!IsLoading">
+      <div *ngIf="Accountpagemessage">{{ Accountpagemessage }}</div>
+    </div>
+    <div class="loaderdiv" *ngIf="IsLoading">
+      <img [src]="isProd ? 'assets/loading_dots.gif' : '../../assets/loading_dots.gif'
+        " height="100px" width="100px" />
+    </div>
+  </div>
+
+  <div class="ACS-maindata-outer" id="accountCreated" *ngIf="SelectedTab === 'accountCreated'">
+    <div *ngIf="NotteMasterID !== '' && !LoaderFlag && !IsLoading" style="
+        box-shadow: 0 1px 8px 0 rgba(0, 0, 0, 0.2);
+        transition: 0.3s;
+        padding: 20px;
+        background-color: white;
+        margin: 20px;
+        height: fit-content;
+        overflow: scroll;
+      ">
+      <!-- Account created Successfully -->
+      <div class="AI-rowcontent">
+        <h3 class="textnewentry" style="font-weight: 400">
+          {{ AccountMessage }}
+        </h3>
+      </div>
+      <div class="AI-rowcontent" *ngIf="Message">
+        <h5 class="textnewentry" style="margin-bottom: 6%; font-weight: 400">
+          <!-- <div class="col-sm-12 col-md-8 col-xs-12 Message" > -->
+          {{ Message }}
+          <!-- </div> -->
+        </h5>
+      </div>
+      <div class="AI-rowcontent">
+        <label for="CustomerType" style="text-align: center !important; font-size: 17px; padding: 0" class="lbl">Check
+          your email and follow the instructions to verify the
+          account.</label>
+      </div>
+      <div class="AI-rowcontent">
+        <label for="CustomerType" class="lbl emailID"> {{ EmailID }} </label>
+      </div>
+      <div class="AI-rowcontent">
+        <!-- <input class="button " style="margin-left: 20px;" type="button" value="Previous" (click)="openTabs('accountInfo')" *ngIf="ReadOnlyMode"> -->
+        <input class="button btncompletekyc" type="button" value="Complete Your {{clientFormName}}"
+          (click)="openTabs('completeKYC')" *ngIf="ReadOnlyMode" />
+      </div>
+    </div>
+    <div *ngIf="NotteMasterID === '' && !LoaderFlag && !IsLoading" style="
+        box-shadow: 0 1px 8px 0 rgba(0, 0, 0, 0.2);
+        transition: 0.3s;
+        padding: 20px;
+        background-color: white;
+        margin: 20px;
+        height: fit-content;
+        overflow: scroll;
+      ">
+      <!-- Account not created Successfully -->
+      <div class="AI-rowcontent">
+        <h3 class="textnewentry" style="font-weight: 100">
+          Failed: Error ouccured while creating account.
+        </h3>
+      </div>
+    </div>
+    <div *ngIf="NotteMasterID === '' && LoaderFlag && !IsLoading" style="
+        box-shadow: 0 1px 8px 0 rgba(0, 0, 0, 0.2);
+        transition: 0.3s;
+        padding: 20px;
+        background-color: white;
+        margin: 20px;
+        height: fit-content;
+        overflow: scroll;
+      ">
+      <!-- Account not created Successfully -->
+      <div class="AI-rowcontent">
+        <h3 class="textnewentry" style="font-weight: 100">Loading...</h3>
+      </div>
+    </div>
+    <div class="loaderdiv" *ngIf="IsLoading">
+      <img [src]="
+          isProd ? 'assets/loading_dots.gif' : '../../assets/loading_dots.gif'
+        " height="100px" width="100px" />
+    </div>
+  </div>
+
+  <div class="CK-maindata-outer" id="completeKYC" *ngIf="SelectedTab === 'completeKYC'">
+    <div class="CK-questiondata" *ngIf="!resultKYC">
+      <div class="CK-rowcontent">
+        <div class="page-title">Update {{clientFormName}}</div>
+        <br />
+      </div>
+
+      <div class="CK-rowoptions" *ngIf="!IsLoading">
+        <div class="form-container100" *ngFor="let item of quationsList; let i = index">
+          <div class="questiondiv">
+            <div class="KYC-card">
+              <label class="KYC-card-header" for="CustomerType" style="
+                  text-align: center !important;
+                  padding: 0;
+                  font-size: 17px;
+                  color: var(--off-color);
+                " class="lbl">{{ i + 1 }}. &nbsp;{{ item.quation }}</label>
+              <div class="form-container2080 KYC-card-content" *ngFor="let option of item.optionsList; let i = index"
+                style="margin-left: 1%">
+                <input type="radio" [id]="'option' + i + item.Question_NO" style="
+                    align-self: center;
+                    display: inline-flex;
+                    margin: 0;
+                    margin-left: auto;
+                    height: 13px;
+                  " name="{{ item.Question_NO }}" [value]="option" [(ngModel)]="item.answer" />
+
+                <label [for]="'option' + i + item.Question_NO" style="
+                    text-align: left !important;
+                    font-size: 17px;
+                    margin: 0 !important;
+                    padding-left: 10px;
+                  " class="lbl">{{ option }}</label>
+              </div>
+              <div class="question-count">
+                {{ i + 1 }} of {{ quationsList.length }}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="buttonsdiv">
+          <!-- <input class="button " *ngIf="i === 0" style="margin-left: 20px;" type="button" value="Previous" (click)="openTabs('accountCreated')">
+                    <input class="button " *ngIf="i > 0 " style="margin-left: 20px;" type="button" value="Previous" (click)="viewPrevQuestion()">
+                    <button id="button" class="button " *ngIf="!showLastbtn && ReadOnlyMode" style="margin-left: 20px;" (click)="ChangeQuation(i)">Next</button> -->
+          <button style="margin-left: 20px" class="button" (click)="IsValidKYCAnswers(target)">
+            Submit
+          </button>
+          <div class="loaderdiv" *ngIf="ErrorMessage" style="padding-left: 20px;">
+            {{ ErrorMessage }}
+          </div>
+        </div>
+      </div>
+      <div class="loaderdiv" *ngIf="IsLoading">
+        <img [src]="
+            isProd ? 'assets/loading_dots.gif' : '../../assets/loading_dots.gif'
+          " height="100px" width="100px" />
+      </div>
+      <!-- <div class="CK-rowcontent">
+                <input class="button" type="button" value="Next">
+            </div> -->
+    </div>
+    <div class="CKSuccess" *ngIf="resultKYC && !IsLoading">
+      <div *ngIf="RiskRatingGenerated">
+        <!-- <div class="textnewentry">Based on your responses, you have been recognized as a</div> -->
+        <!-- <h5 class="textnewentry" style=" font-size: 30px !important;" *ngIf="totalRiskRating">
+                    You are <h3> {{customerType[totalRiskRating]}} </h3> investor </h5> -->
+        <div class="div" style="background: var(--sidebar-bg); width: 100%">
+          <div class="RR-card-Header">
+            <div class="RR-circle" *ngIf="KYCRiskRatingReponse !== null">
+              <div class="RR-circle-content" style="margin: auto">
+                <div class="RR-circle-content-line-1">You are</div>
+                <div class="RR-circle-content-line-2">
+                  <h3 style="padding: 10px 0px; font-size: 25px">
+                    {{ KYCRiskRatingReponse.RiskRatingDetails[0].Avg_Value }}
+                  </h3>
+                </div>
+                <div class="RR-circle-content-line-3">investor</div>
+              </div>
+            </div>
+            <div style="
+                text-align: start;
+                display: inline;
+                margin: auto;
+                width: -webkit-fill-available;
+                padding-right: 20%;
+                color: white;
+              ">
+              <h3 style="padding: 10px 0px; font-size: 25px">
+                {{ KYCRiskRatingReponse.RiskRatingDetails[0].Avg_Value }}
+              </h3>
+              <div class="textnewentry">
+                You seek high returns on total accumulated wealth in your portfolio using mid to high-risk products in
+                mid or long term horizon.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-container5050" style="margin: 1%; padding: 0px 8%; text-align: center; width: 80%">
+          <div class="div">
+            <h4 style="text-align: start; margin: 0; padding: 10px 0px">
+              Recommendations
+            </h4>
+            <div class="lbl">
+              <label for="Name" class="lbl" *ngIf="BasicInfoNew.Name.visibility">
+                You should consider investing in:
+              </label>
+            </div>
+            <div class="lbl">
+              <label for="Name" class="lbl" *ngIf="BasicInfoNew.Name.visibility">
+                <span class="checkmark">&#10004;</span> Mutual Funds.
+              </label>
+            </div>
+            <div class="lbl">
+              <label for="Name" class="lbl" *ngIf="BasicInfoNew.Name.visibility">
+                <span class="checkmark">&#10004;</span> Shares.
+              </label>
+            </div>
+            <div class="lbl">
+              <label for="Name" class="lbl" *ngIf="BasicInfoNew.Name.visibility">
+                <span class="checkmark">&#10004;</span> Equity-linked Notes.
+              </label>
+            </div>
+            <div class="lbl">
+              <label for="Name" class="lbl" *ngIf="BasicInfoNew.Name.visibility">
+                <span class="checkmark">&#10004;</span> Dual Currency
+                Investments.
+              </label>
+            </div>
+          </div>
+          <!-- <div class="scorenumber" style="margin: auto;margin-top: 5%;margin-bottom: 5%;" *ngIf="totalRiskRating"> -->
+          <div class="div" style="margin: auto">
+            <!-- <div class="textnewentry">CRR</div> -->
+            <div class="scorenumber">
+              <!-- {{totalRiskRating}} -->
+              {{ KYCRiskRatingReponse.RiskRatingDetails[0].RiskRating }}
+            </div>
+            <div class="textnewentry" style="font-weight: bold; margin-top: 15%; color: grey">
+              CRR
+            </div>
+          </div>
+        </div>
+
+        <!-- <div style="color: var(--beige);font-size: 20px;cursor: pointer;" (click)="redirectToHome()"><u>Home</u>
+                </div> -->
+      </div>
+      <div *ngIf="!RiskRatingGenerated">
+        <div class="textnewentry">
+          Error occured while generating Risk Rating.
+        </div>
+      </div>
+      <!-- Charts section -->
+      <div class="legend-section">
+        <svg width="30" height="12" style="margin-top: 5px">
+          <rect x="0" y="0" width="30" height="12" style="fill: #F09639" />
+        </svg>
+        <div class="legend-label">Cash</div>
+        <svg width="30" height="12" style="margin-top: 5px">
+          <rect x="0" y="0" width="30" height="12" style="fill: #F0654B" />
+        </svg>
+        <div class="legend-label">Equities</div>
+        <svg width="30" height="12" style="margin-top: 5px">
+          <rect x="0" y="0" width="30" height="12" style="fill: #09B39C" />
+        </svg>
+        <div class="legend-label">Fixed Income</div>
+        <svg width="30" height="12" style="margin-top: 5px">
+          <rect x="0" y="0" width="30" height="12" style="fill: #5173B8" />
+        </svg>
+        <div class="legend-label">Mutual Funds</div>
+      </div>
+      <div class="form-container2525" *ngIf="AllChartsData.length > 0"
+        style="border: 1px solid #cbcbcb; padding: 1.2%; margin-top: 2.5%">
+        <div class="div" *ngFor="let chart of AllChartsData" style="margin: auto">
+          <google-chart #chart [type]="type" [data]="chart.data" [options]="options">
+          </google-chart>
+          <h6 style="text-align: center; margin: 0; padding-top: 5%">
+            {{ chart.chartName }}
+          </h6>
+        </div>
+      </div>
+    </div>
+
+    <!-- <div *ngIf="ErrorMessage !== ''">
+            <h5 class="textnewentry" style=" font-size: 30px !important;">{{ErrorMessage}}</h5>
+        </div> -->
+  </div>
+  <div class="CK-maindata-outer" id="viewKYC" *ngIf="SelectedTab === 'viewKYC' && !IsLoading">
+    <!-- <div *ngIf="ViewKYC" style="width: 100%; margin-left: 5px">
+      <div class="VKYC-card" *ngIf="CustomerID !== '' && CustomerID !== null">
+        <div class="page-title">
+          View {{clientFormName}} Details
+        </div>
+        <div *ngIf="pageMode === 5" style="padding-left: 40px">{{ msg }}</div>
+        <div class="CKSuccess" *ngIf="AvgCPRADetails !== ''">
+          <div>
+            <div class="div" style="background: var(--sidebar-bg); width: 100%">
+              <div class="RR-card-Header">
+                <div class="RR-circle">
+                  <div class="RR-circle-content" style="margin: auto">
+                    <div class="RR-circle-content-line-1">You are</div>
+                    <div class="RR-circle-content-line-2">
+                      <h3 style="
+                          padding: 10px 0px;
+                          color: #6c8a9e;
+                          font-size: 20px;
+                        ">
+                        {{ AvgCPRADetails }}
+                      </h3>
+                    </div>
+                    <div class="RR-circle-content-line-3">investor</div>
+                  </div>
+                </div>
+                <div style="
+                    text-align: start;
+                    display: inline;
+                    margin: auto;
+                    width: -webkit-fill-available;
+                    padding-right: 20%;
+                    color: white;
+                  ">
+                  <h3 style="padding: 10px 0px;  font-size: 25px">
+                    {{ AvgCPRADetails }}
+                  </h3>
+                  <div class="textnewentry">
+                    You seek high returns on total accumulated wealth in your
+                    portfolio using mid to high-risk products in mid or long
+                    term horizon.
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-container5050" style="
+                margin: 1%;
+                padding: 0px 8%;
+                text-align: center;
+                width: 80%;
+              ">
+              <div class="div">
+                <h4 style="text-align: start; margin: 0; padding: 10px 0px">
+                  Recommendations
+                </h4>
+                <div class="lbl">
+                  <label for="Name" class="lbl" *ngIf="BasicInfoNew.Name.visibility">
+                    You should consider investing in:
+                  </label>
+                </div>
+                <div class="lbl">
+                  <label for="Name" class="lbl" *ngIf="BasicInfoNew.Name.visibility">
+                    <span class="checkmark">&#10004;</span> Mutual Funds.
+                  </label>
+                </div>
+                <div class="lbl">
+                  <label for="Name" class="lbl" *ngIf="BasicInfoNew.Name.visibility">
+                    <span class="checkmark">&#10004;</span> Shares.
+                  </label>
+                </div>
+                <div class="lbl">
+                  <label for="Name" class="lbl" *ngIf="BasicInfoNew.Name.visibility">
+                    <span class="checkmark">&#10004;</span> Equity-linked Notes.
+                  </label>
+                </div>
+                <div class="lbl">
+                  <label for="Name" class="lbl" *ngIf="BasicInfoNew.Name.visibility">
+                    <span class="checkmark">&#10004;</span> Dual Currency
+                    Investments.
+                  </label>
+                </div>
+              </div>
+              <div class="div" style="margin: auto">
+                
+                <div class="scorenumber">
+                  
+                  {{ this.RiskRating || '1' }}
+                </div>
+                <div class="textnewentry" style="font-weight: bold; margin-top: 15%; color: grey">
+                  CRR
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="legend-section">
+            <div *ngFor="let legend of chartColorsLegends" style="width: fit-content;display: flex;">
+              <svg width="30" height="12" style="margin-top: 5px">
+                <rect x="0" y="0" width="30" height="12" [ngStyle]="{'fill':legend.color}" />
+              </svg>
+              <div class="legend-label">{{legend.label}}</div>
+            </div>
+          </div>
+          <div class="form-container2525" style="border: 1px solid #cbcbcb; padding: 1.2%; margin-top: 2.5%">
+            <div class="div" *ngFor="let chart of CPRAGraph" style="margin: auto">
+              <google-chart #chart [type]="type" [data]="chart.data" [options]="options">
+              </google-chart>
+              <h6 style="text-align: center; margin: 0; padding-top: 5%">
+                {{ chart.chartName }}
+              </h6>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="!IsLoading">
+          <div *ngFor="
+              let viewKYCQuestionsAnswersElement of viewKYCQuestionsAnswers
+            " style="margin-top: 5px">
+            <div class="VKYC-card-content" *ngIf="viewKYCQuestionsAnswersElement.dataType === 'SectionValue'">
+              <div class="VKYC-rowcontent">
+                <div class="lbl">
+                  <label for="Name" class="lbl">
+                    Q.{{ viewKYCQuestionsAnswersElement.QuestionNumber }} &nbsp;
+                    {{ viewKYCQuestionsAnswersElement.key }}
+                  </label>
+                </div>
+                <div class="VKYC-card-answer">
+                  <label for="Name" class="lbl"> A: </label>
+                  <label for="Name" class="lbl">
+                    {{ viewKYCQuestionsAnswersElement.value }}
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="viewKYCQuestionsAnswers.length === 0 && !IsLoading" style="text-align: start; padding: 10px 45px">
+          Please Update {{clientFormName}}.
+        </div>
+        <div class="loaderdiv" *ngIf="IsLoading">
+          <img [src]="
+              isProd
+                ? 'assets/loading_dots.gif'
+                : '../../assets/loading_dots.gif'
+            " height="100px" width="100px" />
+        </div>
+      </div>
+      <div class="VKYC-card" *ngIf="CustomerID === '' || CustomerID === null">
+        Please Update {{clientFormName}}.
+      </div>
+      <input type="button" *ngIf="!ReadOnlyMode && pageMode === 1" (click)="FinalSubmitBasicInfo()" value="Submit" />
+      <input type="button" *ngIf="!ReadOnlyMode && pageMode === 1" (click)="PrevBasicInfo()" value="Prev" />
+    </div> -->
+  </div>
+  <!-- newly added -->
+  <!-- chitra start on 21-July-2020 -->
+  <div class="CI-maindata-outer" id="portfolioInfo" *ngIf="SelectedTab === 'portfolioInfo' && !ReadOnlyMode">
+    <div class="verticle-tabcontent">
+      <div class="page-title" *ngIf="pageMode !== 1">Portfolio Details</div>
+      <div *ngIf="!ReadOnlyMode" style="text-align: center">
+        <!-- Afternoon : removed = from cond -->
+
+        <input class="button btnPortfolio" type="button" value="New Portfolio" (click)="addPortfolioTile()"
+          *ngIf="addPortVisibility === true" />
+        <input class="button btnPortfolio" style="background-color: lightgrey; color: #62696e" type="button"
+          value="New Portfolio" *ngIf="addPortVisibility === false" />
+        <div *ngIf="totalPortfolio.length > 0" id="portfolioInfo">
+          <div *ngFor="let account of totalPortfolio; let i = index">
+            <!-- {{account.star.value}} -->
+            <div *ngIf="account.LimitPosted.value !== '0.00'">
+              <div class="CI-card" id="card{{ i }}">
+                <div class="CI-card-header" style="padding-left: 20px">
+                  {{ totalPortfolio[i].PortfolioName.value }}
+                  <!-- <div class = "add-port-icon" >
+
+                            </div> -->
+                </div>
+
+                <div class="CI-card-content" style="margin-bottom: 10px" name="portfoliocard">
+                  <div>
+                    <div class="CI-rowcontent">
+                      <div class="lbl">
+                        <label for="Name" class="lbl" *ngIf="account.PortfolioName.visibility">
+                          {{ account.star.value }} Portfolio Name
+                        </label>
+                      </div>
+
+                      <div class="lbl">
+                        <label for="InvestmentObjective" class="lbl" *ngIf="account.InvestmentObjective.visibility">
+                          Investment Objective
+                        </label>
+                      </div>
+                      <div class="">
+                        <input type="text" name="PortfolioName" class="txt" tabindex="27" id="PortfolioName{{ i }}"
+                          [(ngModel)]="account.PortfolioName.value" *ngIf="account.PortfolioName.visibility"
+                          placeholder="Enter Portfolio Name" (change)="BasicInfoFormFillingStatus()" [disabled]="
+                            account.removeVisibility.visibility === false
+                              ? true
+                              : false
+                          " />
+                      </div>
+                      <div class="">
+                        <select name="InvestmentObjective" id="InvestmentObjective{{ i }}" class="txt" tabindex="28"
+                          [(ngModel)]="account.InvestmentObjective.value" placeholder="Enter Investment Objective"
+                          *ngIf="account.InvestmentObjective.visibility" (change)="BasicInfoFormFillingStatus()"
+                          [disabled]="
+                            account.removeVisibility.visibility === false
+                              ? true
+                              : false
+                          ">
+                          <option *ngFor="let item of dd_InvestmentObjective" [value]="item">
+                            {{ item }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="CI-rowcontent">
+                      <div class="lbl">
+                        <label for="StreetName" class="lbl" *ngIf="account.PortfolioType.visibility">
+                          {{ account.star.value }} Portfolio Type
+                        </label>
+                      </div>
+
+                      <div class="lbl">
+                        <label for="State" class="lbl" *ngIf="account.AutoPledge.visibility">
+                          AutoPledge</label>
+                      </div>
+                      <div class="">
+                        <select name="PortfolioType" id="PortfolioType{{ i }}" class="txt" tabindex="29"
+                          [(ngModel)]="account.PortfolioType.value" placeholder="Enter Portfolio Type"
+                          *ngIf="account.PortfolioType.visibility" (change)="
+                            BasicInfoFormFillingStatus();
+                            changeFascDesc($event, i)
+                          " [disabled]="
+                            account.removeVisibility.visibility === false
+                              ? true
+                              : false
+                          ">
+                          <option *ngFor="let item of dd_PortfolioType" [value]="item">
+                            {{ item }}
+                          </option>
+                        </select>
+                      </div>
+                      <div class="lbl verticleCenter">
+                        <select name="AutoPledge" id="AutoPledge{{ i }}" class="txt" tabindex="30"
+                          [(ngModel)]="account.AutoPledge.value" placeholder="Enter Auto Pledge"
+                          *ngIf="account.AutoPledge.visibility" (change)="BasicInfoFormFillingStatus()" [disabled]="
+                            account.removeVisibility.visibility === false
+                              ? true
+                              : false
+                          ">
+                          <option *ngFor="let item of dd_AutoPledge" [value]="item">
+                            {{ item }}
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="CI-rowcontent">
+                      <div class="lbl">
+                        <label for="CapitalCurrency" class="lbl" *ngIf="account.CapitalCurrency.visibility">
+                          {{ account.star.value }} Capital Currency</label>
+                      </div>
+
+                      <div class="lbl">
+                        <label for="CapitalPosted" class="lbl" *ngIf="account.CapitalPosted.visibility">
+                          Capital Posted</label>
+                      </div>
+                      <div class="" style="display: flex; line-height: 40px">
+                        <select name="CapitalCurrency" id="CapitalCurrency{{ i }}" class="txt" tabindex="31"
+                          [(ngModel)]="account.CapitalCurrency.value" placeholder="Enter Capital Currency"
+                          *ngIf="account.CapitalCurrency.visibility" (change)="BasicInfoFormFillingStatus()" [disabled]="
+                            account.removeVisibility.visibility === false
+                              ? true
+                              : false
+                          ">
+                          <option *ngFor="let item of dd_CapitalCurrency" [value]="item">
+                            {{ item }}
+                          </option>
+                        </select>
+                      </div>
+                      <div class="" style="display: flex; line-height: 40px">
+                        <!-- <input type="text" name="CapitalPosted" class="txt" tabindex="2" id="CapitalPosted" [(ngModel)]="BasicInfoNew.CapitalPosted.value" *ngIf="BasicInfoNew.CapitalPosted.visibility" (change)="BasicInfoFormFillingStatus();" (keypress)="cfs.isalpha($event)"> -->
+
+                        <input type="text" style="text-align: right" name="CapitalPosted" tabindex="32"
+                          id="CapitalPosted{{ i }}" class="txt" [(ngModel)]="account.CapitalPosted.value"
+                          placeholder="Enter Capital Posted" *ngIf="account.CapitalPosted.visibility"
+                          onCopy="return false" onDrag="return false" onDrop="return false" onPaste="return false"
+                          [disabled]="
+                            account.removeVisibility.visibility === false
+                              ? true
+                              : false
+                          " (change)="
+                            account.CapitalPosted.value = cfs.NotionalChange(
+                              $event
+                            );
+                            BasicInfoFormFillingStatus()
+                          " (focus)="cfs.UnformatNumber($event)" (blur)="cfs.FormatNumberKetan($event)"
+                          (keypress)="cfs.NotionalValidate($event)" />
+                      </div>
+                    </div>
+                    <div class="CI-rowcontent">
+                      <div class="lbl">
+                        <label for="LimitCurrency" class="lbl" *ngIf="account.LimitCurrency.visibility">
+                          {{ account.star.value }} Limit Currency</label>
+                      </div>
+
+                      <div class="lbl">
+                        <label for="LimitPosted" class="lbl" *ngIf="account.LimitPosted.visibility">
+                          {{ account.star.value }} Limit Posted</label>
+                      </div>
+                      <div class="" style="display: flex; line-height: 40px">
+                        <select name="LimitCurrency" id="LimitCurrency{{ i }}" class="txt" tabindex="33"
+                          [(ngModel)]="account.LimitCurrency.value" placeholder="Enter Limit Currency"
+                          *ngIf="account.LimitCurrency.visibility" (change)="BasicInfoFormFillingStatus()"
+                          (keypress)="cfs.isalpha($event)" [disabled]="
+                            account.removeVisibility.visibility === false
+                              ? true
+                              : false
+                          ">
+                          <option *ngFor="let item of dd_LimitCurrency" [value]="item">
+                            {{ item }}
+                          </option>
+                        </select>
+                      </div>
+                      <div style="display: flex; line-height: 40px">
+                        <!-- <input type="text" name="LimitPosted" class="txt" tabindex="2" id="LimitPosted" [(ngModel)]="BasicInfoNew.LimitPosted.value" *ngIf="BasicInfoNew.LimitPosted.visibility" (change)="BasicInfoFormFillingStatus();" (keypress)="cfs.isalpha($event)" [disabled]="!ReadOnlyMode"> -->
+
+                        <input type="text" style="text-align: right" name="LimitPosted" tabindex="34"
+                          id="LimitPosted{{ i }}" class="txt" [(ngModel)]="account.LimitPosted.value"
+                          *ngIf="account.LimitPosted.visibility" onCopy="return false" onDrag="return false"
+                          onDrop="return false" onPaste="return false" [disabled]="
+                            account.removeVisibility.visibility === false
+                              ? true
+                              : false
+                          " placeholder="Enter Limit Posted" (change)="
+                            account.LimitPosted.value = cfs.NotionalChange(
+                              $event
+                            );
+                            BasicInfoFormFillingStatus()
+                          " (focus)="cfs.UnformatNumber($event)" (blur)="cfs.FormatNumberKetan($event)"
+                          (keypress)="cfs.NotionalValidate($event)" />
+                      </div>
+                    </div>
+                    <div class="CI-rowcontent">
+                      <div class="lbl">
+                        <label for="LimitCurrency" class="lbl" *ngIf="account.LimitCurrency.visibility">
+                          Facility Code</label>
+                      </div>
+
+                      <div class="lbl">
+                        <label for="LimitPosted" class="lbl" *ngIf="account.LimitPosted.visibility">
+                          Risk Profile</label>
+                      </div>
+                      <div class="" style="display: flex; line-height: 40px">
+                        <input type="text" name="CapitalPosted" tabindex="32" id="CapitalPosted{{ i }}" class="txt"
+                          [(ngModel)]="account.fascDesc.value" *ngIf="account.fascDesc.visibility" onCopy="return false"
+                          onDrag="return false" onDrop="return false" onPaste="return false" [disabled]="true" />
+                      </div>
+                      <div style="display: flex; line-height: 40px">
+                        <!-- <input type="text" name="LimitPosted" class="txt" tabindex="2" id="LimitPosted" [(ngModel)]="BasicInfoNew.LimitPosted.value" *ngIf="BasicInfoNew.LimitPosted.visibility" (change)="BasicInfoFormFillingStatus();" (keypress)="cfs.isalpha($event)" [disabled]="!ReadOnlyMode"> -->
+                        <input name="RiskProfile" id="RiskProfile{{ i }}" class="txt" tabindex="33"
+                          [(ngModel)]="account.RiskProfile.value" *ngIf="account.RiskProfile.visibility"
+                          (change)="BasicInfoFormFillingStatus()" (keypress)="cfs.isalpha($event)" disabled="false" />
+                        <!-- <option [value]="RiskProfile"> {{RiskProfile}}</option> -->
+                        <!-- <option *ngFor="let item of dd_RiskProfile" [value]="item">{{item}}
+                                                </option> -->
+                      </div>
+                    </div>
+                    <div class="CI-rowcontent">
+                      <div class="lbl">
+                        <label for="Goal" class="lbl" *ngIf="account.Goal.visibility">
+                          Goal</label>
+                      </div>
+
+                      <div class="lbl">
+                        <label for="TargetGoal" class="lbl" *ngIf="account.TargetGoal.visibility">
+                          Target Goal</label>
+                      </div>
+                      <div class="" style="display: flex; line-height: 40px">
+                        <input type="text" name="Goal" tabindex="32" class="txt" [(ngModel)]="account.Goal.value"
+                          *ngIf="account.Goal.visibility" onCopy="return false" onDrag="return false"
+                          onDrop="return false" onPaste="return false" disabled="true" />
+                      </div>
+                      <div style="display: flex; line-height: 40px">
+                        <input name="TargetGoal" class="txt" style="text-align: right" tabindex="33"
+                          [(ngModel)]="account.TargetGoal.value" *ngIf="account.TargetGoal.visibility"
+                          disabled="true" />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div id="chartDiv" class="chartDiv" style="padding: 5px 0px">
+                    <div class="portfolioActionbtn">
+                      <input class="button" style="width: auto;" type="button" value="Financial Planning"
+                        (click)="FinancialPlanningOverlayflag= true; fnSelectedIndex(i);"
+                        *ngIf="account.removeVisibility.visibility === false" />
+                      <input class="button" type="button" value="Edit" (click)="editPortfolioTile(i)"
+                        *ngIf="account.removeVisibility.visibility === false" />
+                    </div>
+
+                    <div class="chartArea" *ngIf="account.removeVisibility.visibility === false">
+                      <div class="center">
+                        <label for="Name" *ngIf="account.removeVisibility.visibility === false">
+                          Portfolio Allocation
+                        </label>
+                      </div>
+                      <!-- style="margin-right: 15px;" -->
+                      <div class="alignchart" *ngIf="account.ChartData?.length > 0">
+                        <google-chart #chart [type]="type_port_details" [data]="account.ChartData"
+                          [options]="options_port_details" (select)="SelectPieChartSlice($event)" style="margin: 0">
+                        </google-chart>
+                      </div>
+                      <div class="alignchart" *ngIf="account.ChartData?.length === 0">
+                        <p>No Data found</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+                    <button class="button" style="margin-left: 20px; margin-top: 20px" type="button" value="Save"
+                      (click)="savePortfolioTile(i)" *ngIf="account.removeVisibility.visibility === true">
+                      Save
+                    </button>
+                    <button class="button" value="Cancel" style="margin-left: 20px; margin-top: 20px"
+                      *ngIf="account.removeVisibility.visibility === true" (click)="removePortfolioTile(i)">
+                      Cancel
+                    </button>
+                  </div>
+                  <div class="AI-rowcontent" *ngIf="account.msg.visibility">
+                    {{ account.msg.value }}
+                  </div>
+                  <!-- <input class="button" style="margin-left: 20px; margin-top: 20px;" type="button"
+                                    value="Add" (click)="addPortfolioTile()" *ngIf="i===0">  -->
+                  <div class="AI-rowcontent" *ngIf="account.Message.visibility">
+                    <h5 class="textnewentry" style="margin-bottom: 6%">
+                      <!-- <div class="col-sm-12 col-md-8 col-xs-12 Message" > -->
+                      {{ account.Message.value }}
+                      <!-- </div> -->
+                    </h5>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- portfolio card ends -->
+        </div>
+        <div *ngIf="totalPortfolio.length === 0" style="padding: 2%" id="chartDiv">
+          <div class="textnewentry">No Portfolio found.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- <div class="verticle-tabcontent" style="overflow: scroll; height: 100; margin: 35px 35px 35px 0px;">
+
+            <div *ngIf="tab1Error === '' && portfolioData">
+
+                <div *ngFor="let account of totalPortfolio;let i= index">
+                    <div class="CI-card-header">
+
+                    </div>
+                    <div class="CI-card-content" style="margin-bottom: 10px;" name="portfoliocard">
+                        <div class="CI-rowcontent" style="grid-template-columns: 1fr;">
+                            <div class="lbl" style="text-align: center; margin: 0px 100px 0px 0px;">
+                                <label for="Name" class="lbl">
+                                    Portfolio Allocation
+                                </label>
+
+
+                            </div>
+                        </div>
+                        <div class="CI-rowcontent" style="padding-left: 0px;grid-template-columns: 1fr;">
+                            <div class="chartArea" *ngIf="account.removeVisibility.visibility === false">
+                                <google-chart #chart [type]="type" [data]="data[i]" [options]="options"
+                                    (select)="SelectPieChartSlice($event);" style=" margin: 0">
+                                </google-chart>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                </div>
+            </div>
+        </div> -->
+  </div>
+
+  <!-- chitra end on 21-jul-2020 -->
+</div>
+<div class="overlay" *ngIf="isChangePassword">
+  <app-password-override (cancelPasswordOverride)="overrideCancelled()" [IUSERID]="userID"></app-password-override>
+</div>
+<div class="overlay" *ngIf="FinancialPlanningOverlayflag">
+  <app-financial-planning [pageMode]="1" (GoalData)="fnSelectedPortfolioForFinancialPlanning($event)">
+  </app-financial-planning>
+</div>
+<div class="overlay" *ngIf="FixedDepositOverlayflag">
+  <app-fixeddeposit [pageMode]="1" (ClosePopUp)="fnFixedDeposit($event)"> </app-fixeddeposit>
+</div>
+<div class="overlay" *ngIf="CashDepositOverlayflag">
+  <app-cashdeposit [pageMode]="1" (ClosePopUp)="fnCashDeposit($event)"> </app-cashdeposit>
+</div>

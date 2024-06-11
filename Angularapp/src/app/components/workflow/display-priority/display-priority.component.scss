@@ -1,0 +1,108 @@
+.container {
+    position: absolute;
+    background: var(--containers);
+    min-height: 400px;
+    width: 415px;
+    box-shadow: 0 0 10px 1px var(--gray);
+    height: fit-content;
+}
+
+.content {
+    padding: 15px;
+    height: inherit;
+}
+
+.center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -moz-transform: translateX(-50%) translateY(-50%);
+    -webkit-transform: translateX(-50%) translateY(-50%);
+    transform: translateX(-50%) translateY(-50%);
+}
+
+.header {
+    display: grid;
+    grid-template-columns: 22fr 1fr;
+    grid-gap: 14px;
+    gap: 14px;
+    align-items: center;
+}
+
+.inline-flex {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+input[type="checkbox"] {
+    width: 14px;
+    height: 14px;
+}
+
+table{
+    margin-top: 7%;
+}
+
+.commonchk{
+    margin-left: 9px;
+}
+
+.actions{
+    width: 57px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+th{
+    white-space: nowrap;
+}
+
+tr{
+    height: 37px !important;
+}
+
+td{
+    margin: 0px !important; 
+}
+
+input[type="text"]{
+    width: 50px;
+}
+
+
+button{
+    font-size: 12px;
+}
+
+.pagination-btn{
+    text-decoration: underline;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.pagination{
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.pagination > input{
+    text-align: center;
+}
+
+.pagination-container {
+    margin-top: 20px;
+    border-top: 1px solid var(--table-header-text);
+}
+
+.msg{
+    height:18px;
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: flex-start;
+    margin-top: 5px;
+}

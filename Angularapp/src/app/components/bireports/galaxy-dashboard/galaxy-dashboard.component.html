@@ -1,0 +1,67 @@
+<!-- <div>
+    <div class="doughnut-chart-currency-component">
+        <canvas id="c0" style="height:350px;width: 400px;margin-left: 100px;margin-top: 30px; background-color: black;"></canvas>
+    </div>
+    <div class="doughnut-chart-currency-component">
+        <canvas id="c1" style="height:350px;width: 400px;margin-left: 100px;margin-top: 30px; background-color: black;"></canvas>
+    </div>
+    <div class="doughnut-chart-currency-component">
+        <canvas id="c2" style="height:350px;width: 400px;margin-left: 100px;margin-top: 30px; background-color: black;"></canvas>
+    </div>
+    <div class="doughnut-chart-currency-component">
+        <canvas id="c3" style="height:350px;width: 400px;margin-left: 100px;margin-top: 30px; background-color: black;"></canvas>
+    </div>
+
+</div> -->
+
+<!-- <div class="grid-container">
+    <div class="grid-item" *ngFor="let chartObj of charts" style="height:360px">
+        <p style="color: rgba(180, 180, 180, 1.0); text-align: left;">{{chartObj.chart.title}}</p>
+       
+        <canvas *ngIf="chartObj.type=='bubble'" id="{{chartObj.id}}" style="background-color: black; justify-self: center;"></canvas>  
+    </div>
+  </div> -->
+
+
+  <div>
+    <button class="button-group" (click)="refresh()">
+        <span class="material-icons">refresh</span>
+      </button>
+</div>
+  <div class="grid-container">
+    
+    <div class="grid-item" *ngFor="let chartObj of charts" style="height:360px" >
+    <div style="display: flex; justify-content: space-between;">
+        <p class="header">{{chartObj.chartData.title}}</p>
+        
+        <div >
+            <button class="button-group" (click)="delete(chartObj.chartId)">
+              <span class="material-icons">close</span>
+            </button>
+        </div>
+    </div>
+    <div>
+        <p class="subHeader">{{chartObj.chartData.inputString}}</p>
+    </div>
+
+        <ng-container [ngSwitch]="chartObj.chartType">
+            <ng-template [ngSwitchCase]="'doughnut'">
+                <canvas id="{{chartObj.chartId}}" style="height:250px;width: 350px;    background-color: rgb(15,15,15); justify-self: center;" (dblclick)="navigate(chartObj.chartType,chartObj.chartData.id,chartObj.chartId)"></canvas> 
+            </ng-template>
+            <ng-template [ngSwitchCase]="'treemap'">
+                <div class="treemap-div">
+                    <canvas id="{{chartObj.chartId}}" style="   background-color: rgb(15,15,15); justify-self: center;" class="tree"  (dblclick)="navigate(chartObj.chartType,chartObj.chartData.id,chartObj.chartId)"></canvas> 
+                </div>
+            </ng-template>
+            <ng-template [ngSwitchCase]="'bubble'">
+                <canvas class="canvasBubble" id="{{chartObj.chartId}}" style="   background-color: rgb(15,15,15); justify-self: center; " (dblclick)="navigate(chartObj.chartType,chartObj.chartData.id,chartObj.chartId)"></canvas> 
+            </ng-template>
+            <ng-template [ngSwitchCase]="'bar'">
+                <canvas id="{{chartObj.chartId}}" style="height:300px;width: 470px;    background-color: rgb(15,15,15); justify-self: center;" (dblclick)="navigate(chartObj.chartType,chartObj.chartData.id,chartObj.chartId)"></canvas> 
+            </ng-template>
+        </ng-container>
+        <div class="dateContainer">
+            <p style="color: rgba(180, 180, 180, 1.0);">{{chartObj.chartData.date}}</p>
+        </div>     
+    </div>
+  </div>

@@ -1,0 +1,37 @@
+<div class="overlay">
+  <div class="orderplacementpopup">
+    <div class="div cirp-header">
+      <div class="RR-card-Header">
+        <div class="RR-circle">
+          <div class="RR-circle-content" style="margin: auto">
+            <div class="RR-circle-content-line-1">Order placed</div>
+            <div class="RR-circle-content-line-2">
+              <h3 style="padding: 3px 0px; color: var(--active); font-size: 25px">
+                <!-- #6c8a9e -->
+                Successfully.
+              </h3>
+            </div>
+            <!-- <div class="RR-circle-content-line-3"></div> -->
+          </div>
+        </div>
+        <div class="FXD-col-orderplacement">
+          <div class="stickyNoteText" style="font-weight: 500;color: var(--off-color);padding: 20px 0px;">Order Details</div>
+          <div class="order-details">
+            <!-- <div class="stickyNoteText">Order placed successfully.</div> -->
+            <div class="start-notes">
+              <span class="dot"></span>
+              <div style="font-weight: 500;">Order ID: {{ Orderplace }}</div>
+            </div>
+            <div class="start-notes">
+              <span class="dot"></span>
+              <div style="font-weight: 500;">Deal No: {{ DealNo }}</div>
+            </div>
+            <div class="stickyNoteText">Order saved at {{ orderTime }}</div>
+            <div class="button-panel"> <button class="button" (click)="fnCloseOrderPopUp()">OK</button></div> 
+          </div>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

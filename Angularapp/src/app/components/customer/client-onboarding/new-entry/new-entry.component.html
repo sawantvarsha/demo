@@ -1,0 +1,254 @@
+<div class="container-fluid contentdiv">
+    <div class="row" style="padding-top:1em !important;">
+          <div class="col-xl-6 col-lg-12 col-sm-12 col-md-12 col-xs-12 textnewentry" style="padding:0;">
+                <label class="title">Client Scoring</label>
+                <hr class="product-underline" width="100%"
+                      style="border: 0; height:1px; margin-left: 0px; margin-top: 0px;">
+          </div>
+    </div>
+    <div class="row">
+          <div class="col-xl-6 col-lg-12 col-sm-12 col-md-12 col-xs-12 no-padding">
+                <div class="form-container">
+                      <h3 class="textnewentry" style="color: grey">Basic Details</h3>
+                      <label for="CustomerType" class="lbl" *ngIf="BasicInfo.CustomerType.visibility">Customer
+                            Type</label>
+                      <select name="CustomerType" id="CustomerType" class="txt"
+                            [(ngModel)]="BasicInfo.CustomerType.value" *ngIf="BasicInfo.CustomerType.visibility"
+                            (change)="changeCustomerType()">
+                            <option *ngFor="let item of customerTypes" [value]="item.Code">{{item.Code}}</option>
+                      </select>
+                      <!-- <label for="FinIQRefNo" class="lbl" *ngIf="BasicInfo.FinIQRefNo.visibility">FinIQ Ref No.</label>
+      <input type="text" name="FinIQRefNo" id="FinIQRefNo" class="txt" [(ngModel)]="BasicInfo.FinIQRefNo.value"
+        *ngIf="BasicInfo.FinIQRefNo.visibility"> -->
+
+
+                      <label for="CustomerName" class="lbl" *ngIf="BasicInfo.CustomerName.visibility">Customer
+                            Name</label>
+
+                      <textarea name="CustomerName" id="CustomerName" cols="30" rows="2"
+                            [(ngModel)]="BasicInfo.CustomerName.value"
+                            *ngIf="BasicInfo.CustomerName.visibility"></textarea>
+
+
+
+                      <label for="EmailId" class="lbl" *ngIf="BasicInfo.EmailId.visibility">Email Id</label>
+                      <input type="text" name="EmailId" id="EmailId" class="txt" [(ngModel)]="BasicInfo.EmailId.value"
+                            *ngIf="BasicInfo.EmailId.visibility">
+
+                      <label for="FATCACRS" class="lbl" *ngIf="BasicInfo.FATCACRS.visibility">FATCA / CRS
+                            Relavant</label>
+                      <select name="FATCACRA" id="FATCACRS" class="txt" [(ngModel)]="BasicInfo.FATCACRS.value"
+                            *ngIf="BasicInfo.FATCACRS.visibility">
+                            <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+                      </select>
+
+                      <label for="PEP" class="lbl" *ngIf="BasicInfo.PEP.visibility">PEP</label>
+                      <select name="PEP" id="PEP" class="txt" [(ngModel)]="BasicInfo.PEP.value"
+                            *ngIf="BasicInfo.PEP.visibility">
+                            <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+                      </select>
+
+                      <label for="OnboardingStartDate" class="lbl"
+                            *ngIf="BasicInfo.OnboardingStartDate.visibility">Onboarding Start
+                            Date</label>
+                      <input type="date" name="OnboardingStartDate" id="OnboardingStartDate" class="txt"
+                            [(ngModel)]="BasicInfo.OnboardingStartDate.value"
+                            *ngIf="BasicInfo.OnboardingStartDate.visibility">
+
+                      <label for="AnnualReviewDate" class="lbl" *ngIf="BasicInfo.AnnualReviewDate.visibility">Annual
+                            Review
+                            Date</label>
+                      <input type="date" name="AnnualReviewDate" id="AnnualReviewDate" class="txt"
+                            [(ngModel)]="BasicInfo.AnnualReviewDate.value"
+                            *ngIf="BasicInfo.AnnualReviewDate.visibility">
+                </div>
+          </div>
+          <div class="col-6 col-xl-6 col-lg-12 col-sm-12 col-md-12 col-xs-12 no-padding">
+                <div class="form-container">
+                      <h3 class="textnewentry textpaddingmobile" style="color: grey">{{BasicInfo.CustomerType.value}}
+                      </h3>
+
+                      <label for="IdentificationType" class="lbl"
+                            *ngIf="IndividualCustomers.IdentificationType.visibility">Identification Type</label>
+                      <select name="IdentificationType" id="IdentificationType" class="txt"
+                            [(ngModel)]="IndividualCustomers.IdentificationType.value"
+                            *ngIf="IndividualCustomers.IdentificationType.visibility"
+                            (change)="changeIdentificationType()">
+                            <option *ngFor="let item of identificationTypes" [value]="item.Code">{{item.Code}}
+                            </option>
+                      </select>
+
+                      <label for="IdentificationNo" class="lbl"
+                            *ngIf="IndividualCustomers.IdentificationNo.visibility">Identification
+                            Number</label>
+                      <input type="text" name="IdentificationNo" id="IdentificationNo" class="txt"
+                            [(ngModel)]="IndividualCustomers.IdentificationNo.value"
+                            *ngIf="IndividualCustomers.IdentificationNo.visibility">
+
+                      <label for="SecondaryIdNo" class="lbl"
+                            *ngIf="IndividualCustomers.SecondaryIdNo.visibility">Secondary Id
+                            No.</label>
+                      <input type="text" name="SecondaryIdNo" id="SecondaryIdNo" class="txt"
+                            [(ngModel)]="IndividualCustomers.SecondaryIdNo.value"
+                            *ngIf="IndividualCustomers.SecondaryIdNo.visibility">
+
+                      <label for="DOB" class="lbl" *ngIf="IndividualCustomers.DOB.visibility">Date of Birth</label>
+                      <input type="date" name="DOB" id="DOB" class="txt" [(ngModel)]="IndividualCustomers.DOB.value"
+                            *ngIf="IndividualCustomers.DOB.visibility">
+
+                      <label for="Nationality" class="lbl"
+                            *ngIf="IndividualCustomers.Nationality.visibility">Nationality</label>
+                      <select name="Nationality" id="Nationality" class="txt"
+                            [(ngModel)]="IndividualCustomers.Nationality.value"
+                            *ngIf="IndividualCustomers.Nationality.visibility">
+                            <option *ngFor="let item of countryNames" [value]="item.Code">{{item.Code}}</option>
+                      </select>
+
+                      <label for="BirthCountry" class="lbl" *ngIf="IndividualCustomers.BirthCountry.visibility">Birth
+                            Country</label>
+                      <select name="BirthCountry" id="BirthCountry" class="txt"
+                            [(ngModel)]="IndividualCustomers.BirthCountry.value"
+                            *ngIf="IndividualCustomers.BirthCountry.visibility">
+                            <option *ngFor="let item of countryNames" [value]="item.Code">{{item.Code}}</option>
+                      </select>
+
+                      <label for="ResidenceCountry" class="lbl"
+                            *ngIf="IndividualCustomers.ResidenceCountry.visibility">Residence
+                            Country</label>
+                      <select name="ResidenceCountry" id="ResidenceCountry" class="txt"
+                            [(ngModel)]="IndividualCustomers.ResidenceCountry.value"
+                            *ngIf="IndividualCustomers.ResidenceCountry.visibility">
+                            <option *ngFor="let item of countryNames" [value]="item.Code">{{item.Code}}</option>
+                      </select>
+
+
+                      <label for="LegalEntityType" class="lbl"
+                            *ngIf="IndividualCustomers.LegalEntityType.visibility">Legal Entity
+                            Type</label>
+                      <select name="LegalEntityType" id="LegalEntityType" class="txt"
+                            [(ngModel)]="IndividualCustomers.LegalEntityType.value"
+                            *ngIf="IndividualCustomers.LegalEntityType.visibility">
+                            <option *ngFor="let item of legalEntties" [value]="item.Code">{{item.Code}}</option>
+                      </select>
+
+                      <label for="CRLicenseNo" class="lbl" *ngIf="IndividualCustomers.CRLicenseNo.visibility">CR /
+                            License
+                            Number</label>
+                      <input type="text" name="CRLicenseNo" id="CRLicenseNo" class="txt"
+                            [(ngModel)]="IndividualCustomers.CRLicenseNo.value"
+                            *ngIf="IndividualCustomers.CRLicenseNo.visibility">
+
+                      <label for="IncorporationCountry" class="lbl"
+                            *ngIf="IndividualCustomers.IncorporationCountry.visibility">Country of
+                            Incorporation</label>
+                      <select name="IncorporationCountry" id="IncorporationCountry" class="txt"
+                            [(ngModel)]="IndividualCustomers.IncorporationCountry.value"
+                            *ngIf="IndividualCustomers.IncorporationCountry.visibility">
+                            <option *ngFor="let item of countryNames" [value]="item.Code">{{item.Code}}</option>
+                      </select>
+
+                      <label for="RegistrationCountry" class="lbl"
+                            *ngIf="IndividualCustomers.RegistrationCountry.visibility">Country
+                            of Registration</label>
+                      <select name="RegistrationCountry" id="RegistrationCountry" class="txt"
+                            [(ngModel)]="IndividualCustomers.RegistrationCountry.value"
+                            *ngIf="IndividualCustomers.RegistrationCountry.visibility">
+                            <option *ngFor="let item of countryNames" [value]="item.Code">{{item.Code}}</option>
+                      </select>
+                </div>
+          </div>
+    </div>
+    <div class="row col-12">
+          <div class="col-12 col-xl-12 col-lg-12 col-sm-12 col-md-12 col-xs-12 no-padding">
+                <h3 class="textnewentry" style="color: grey">Documents Required</h3>
+          </div>
+          <div class="col-12 col-xl-6 col-lg-6 col-sm-12 col-md-12 col-xs-12 no-padding">
+                <div class="form-container">
+                      <label for="BankStatement" class="lbl" *ngIf="DocumentsRequired.BankStatement.visibility">Bank
+                            Statement</label>
+                      <select name="BankStatement" id="BankStatement" class="txt"
+                            [(ngModel)]="DocumentsRequired.BankStatement.value"
+                            *ngIf="DocumentsRequired.BankStatement.visibility">
+                            <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+                      </select>
+
+                      <label for="IncomeSource" class="lbl" *ngIf="DocumentsRequired.IncomeSource.visibility">Source
+                            of Income</label>
+                      <select name="IncomeSource" id="IncomeSource" class="txt"
+                            [(ngModel)]="DocumentsRequired.IncomeSource.value"
+                            *ngIf="DocumentsRequired.IncomeSource.visibility">
+                            <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+                      </select>
+
+                      <label for="FATCACRSForm" class="lbl" *ngIf="DocumentsRequired.FATCACRSForm.visibility">FATCA /
+                            CRS Self Cert
+                            Form</label>
+                      <select name="FATCACRSForm" id="FATCACRSForm" class="txt"
+                            [(ngModel)]="DocumentsRequired.FATCACRSForm.value"
+                            *ngIf="DocumentsRequired.FATCACRSForm.visibility">
+                            <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+                      </select>
+
+
+
+                      <label for="AccOpenTC" class="lbl" *ngIf="DocumentsRequired.AccOpenTC.visibility">Account
+                            Opening T&C</label>
+                      <select name="AccOpenTC" id="AccOpenTC" class="txt"
+                            [(ngModel)]="DocumentsRequired.AccOpenTC.value"
+                            *ngIf="DocumentsRequired.AccOpenTC.visibility">
+                            <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+                      </select>
+                </div>
+          </div>
+          <div class="col-6 col-xl-6 col-lg-12 col-sm-12 col-md-12 col-xs-12 no-padding">
+                <div class="form-container">
+
+                      <label for="BankRefLetter" class="lbl" *ngIf="DocumentsRequired.BankRefLetter.visibility">Bank
+                            Reference
+                            Letter</label>
+                      <select name="BankRefLetter" id="BankRefLetter" class="txt"
+                            [(ngModel)]="DocumentsRequired.BankRefLetter.value"
+                            *ngIf="DocumentsRequired.BankRefLetter.visibility">
+                            <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+                      </select>
+
+                      <label for="BeneficialShareholder" class="lbl"
+                            *ngIf="DocumentsRequired.BeneficialShareholder.visibility">Beneficial Major
+                            Shareholder</label>
+                      <select name="BeneficialShareholder" id="BeneficialShareholder" class="txt"
+                            [(ngModel)]="DocumentsRequired.BeneficialShareholder.value"
+                            *ngIf="DocumentsRequired.BeneficialShareholder.visibility">
+                            <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+                      </select>
+
+                      <label for="COICOC" class="lbl" *ngIf="DocumentsRequired.COICOC.visibility">COI / COC
+                            Registration</label>
+                      <select name="COICOC" id="COICOC" class="txt" [(ngModel)]="DocumentsRequired.COICOC.value"
+                            *ngIf="DocumentsRequired.COICOC.visibility">
+                            <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+                      </select>
+
+
+                </div>
+          </div>
+
+          <div class="row col-12"></div>
+          <div class="row col-xl-12 col-lg-12 no-padding">
+                <div class="col-sm-4 col-md-4 col-xl-12" style="margin-bottom: 25px;">
+                      <input type="button" value="Save" class="btn" (click)="saveDetails()">
+                </div>
+                <div class="col-sm-8 col-md-8 col-xs-12 Message" *ngIf="Message">
+                      {{Message}}
+                </div>
+          </div>
+    </div>
+</div>

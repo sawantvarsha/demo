@@ -1,0 +1,646 @@
+<div class="CI-maindata-outer">
+    <div class="verticle-tabcontent">
+        <div class="page-title">Portfolio Details</div>
+        <div class="portfolio-container"
+            [ngClass]="totalPortfolio.length > 0 ? 'portfolio-container' : 'portfolio-container container-background-color'"
+            *ngIf="!LoadingFlag">
+
+            <div *ngIf="totalPortfolio.length === 0" style="display: flex; justify-content: left; padding: 15px 20px">
+                <div class="textnewentry">No Portfolio found.</div>
+            </div>
+            <div class="addPortfoliobtn add-portfolio" *ngIf="DisplayYNAddPortfolio" (click)="fnaddPortfolioTile();">
+                <div class="circle">
+                    <span class="icon arrow"></span>
+                </div>
+                <p class="button-text">Add Portfolio</p>
+            </div>
+
+            <div *ngIf="totalPortfolio.length > 0">
+                <div *ngFor="let account of totalPortfolio; let i = index">
+                    <div *ngIf="account.LimitPosted.value !== '0.00' ">
+                        <div class="CI-card" id="card{{ i }}">
+                            <div class="CI-card-header" style="padding-left: 20px">
+                                {{ totalPortfolio[i].PortfolioName.value }}
+                            </div>
+
+                            <div class="CI-card-content" style="margin-bottom: 10px" name="portfoliocard">
+                                <div>
+                                    <div class="CI-rowcontent">
+                                        <div class="lbl">
+                                            <label for="Name" class="lbl" *ngIf="account.PortfolioName.visibility">
+                                                <span class="impFields"> {{ account.star.value }} </span> Portfolio Name
+                                            </label>
+                                        </div>
+
+                                        <div class="lbl">
+                                            <label for="InvestmentObjective" class="lbl"
+                                                *ngIf="account.InvestmentObjective.visibility">
+                                                Investment Objective
+                                            </label>
+                                        </div>
+                                        <div>
+                                            <input type="text" name="PortfolioName" class="txt" tabindex="27"
+                                                id="PortfolioName{{ i }}" [(ngModel)]="account.PortfolioName.value"
+                                                *ngIf="account.PortfolioName.visibility"
+                                                placeholder="Enter Portfolio Name"
+                                                [disabled]="account.removeVisibility.visibility === false? true: false" />
+                                        </div>
+                                        <div>
+                                            <select name="InvestmentObjective" id="InvestmentObjective{{ i }}"
+                                                class="txt" tabindex="28"
+                                                [(ngModel)]="account.InvestmentObjective.value"
+                                                placeholder="Enter Investment Objective"
+                                                *ngIf="account.InvestmentObjective.visibility"
+                                                [disabled]="account.removeVisibility.visibility === false? true: false">
+                                                <option *ngFor="let item of dd_InvestmentObjective" [value]="item">
+                                                    {{ item }}
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="CI-rowcontent">
+                                        <div class="lbl">
+                                            <label for="StreetName" class="lbl"
+                                                *ngIf="account.PortfolioType.visibility">
+                                                <span class="impFields"> {{ account.star.value }} </span> Portfolio Type
+                                            </label>
+                                        </div>
+
+                                        <div class="lbl">
+                                            <label for="State" class="lbl" *ngIf="account.AutoPledge.visibility">
+                                                AutoPledge</label>
+                                        </div>
+                                        <div>
+                                            <select name="PortfolioType" id="PortfolioType{{ i }}" class="txt"
+                                                tabindex="29" [(ngModel)]="account.PortfolioType.value"
+                                                placeholder="Enter Portfolio Type"
+                                                *ngIf="account.PortfolioType.visibility"
+                                                (change)="fnchangeFascDesc($event, i)"
+                                                [disabled]="account.removeVisibility.visibility === false? true: false">
+                                                <option *ngFor="let item of dd_PortfolioType" [value]="item">
+                                                    {{ item }}
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <div class="lbl verticleCenter">
+                                            <select name="AutoPledge" id="AutoPledge{{ i }}" class="txt" tabindex="30"
+                                                [(ngModel)]="account.AutoPledge.value" placeholder="Enter Auto Pledge"
+                                                *ngIf="account.AutoPledge.visibility"
+                                                [disabled]="account.removeVisibility.visibility === false ? true : false">
+                                                <option *ngFor="let item of dd_AutoPledge" [value]="item">
+                                                    {{ item }}
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="CI-rowcontent">
+                                        <div class="lbl">
+                                            <label for="CapitalCurrency" class="lbl"
+                                                *ngIf="account.CapitalCurrency.visibility">
+                                                <span class="impFields"> {{ account.star.value }} </span> Capital
+                                                Currency</label>
+                                        </div>
+
+                                        <div class="lbl">
+                                            <label for="CapitalPosted" class="lbl"
+                                                *ngIf="account.CapitalPosted.visibility">
+                                                Capital Posted</label>
+                                        </div>
+                                        <div style="display: flex; line-height: 40px">
+                                            <select name="CapitalCurrency" id="CapitalCurrency{{ i }}" class="txt"
+                                                tabindex="31" [(ngModel)]="account.CapitalCurrency.value"
+                                                placeholder="Enter Capital Currency"
+                                                *ngIf="account.CapitalCurrency.visibility"
+                                                [disabled]="account.removeVisibility.visibility === false ? true : false">
+                                                <option *ngFor="let item of dd_CapitalCurrency" [value]="item">
+                                                    {{ item }}
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <div style="display: flex; line-height: 40px">
+                                            <input type="text" style="text-align: right" name="CapitalPosted"
+                                                tabindex="32" id="CapitalPosted{{ i }}" class="txt"
+                                                [(ngModel)]="account.CapitalPosted.value"
+                                                placeholder="Enter Capital Posted"
+                                                *ngIf="account.CapitalPosted.visibility" onCopy="return false"
+                                                onDrag="return false" onDrop="return false" onPaste="return false"
+                                                [disabled]="account.removeVisibility.visibility === false? true: false"
+                                                (change)="account.CapitalPosted.value = CustCfs.NotionalChange($event);"
+                                                (focus)="CustCfs.UnformatNumber($event)"
+                                                (blur)="CustCfs.FormatNumberKetan($event)"
+                                                (keypress)="CustCfs.NotionalValidate($event)" />
+                                        </div>
+                                    </div>
+                                    <div class="CI-rowcontent">
+                                        <div class="lbl">
+                                            <label for="LimitCurrency" class="lbl"
+                                                *ngIf="account.LimitCurrency.visibility">
+                                                <span class="impFields"> {{ account.star.value }} </span> Limit
+                                                Currency</label>
+                                        </div>
+
+                                        <div class="lbl">
+                                            <label for="LimitPosted" class="lbl" *ngIf="account.LimitPosted.visibility">
+                                                <span class="impFields"> {{ account.star.value }} </span> Limit
+                                                Posted</label>
+                                        </div>
+                                        <div style="display: flex; line-height: 40px">
+                                            <select name="LimitCurrency" id="LimitCurrency{{ i }}" class="txt"
+                                                tabindex="33" [(ngModel)]="account.LimitCurrency.value"
+                                                placeholder="Enter Limit Currency"
+                                                *ngIf="account.LimitCurrency.visibility"
+                                                (keypress)="CustCfs.isalpha($event)"
+                                                [disabled]="account.removeVisibility.visibility === false? true: false">
+                                                <option *ngFor="let item of dd_LimitCurrency" [value]="item">
+                                                    {{ item }}
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <div style="display: flex; line-height: 40px">
+                                            <input type="text" style="text-align: right" name="LimitPosted"
+                                                tabindex="34" id="LimitPosted{{ i }}" class="txt"
+                                                [(ngModel)]="account.LimitPosted.value"
+                                                *ngIf="account.LimitPosted.visibility" onCopy="return false"
+                                                onDrag="return false" onDrop="return false" onPaste="return false"
+                                                [disabled]="account.removeVisibility.visibility === false? true: false"
+                                                placeholder="Enter Limit Posted"
+                                                (change)="account.LimitPosted.value = CustCfs.NotionalChange($event);"
+                                                (focus)="CustCfs.UnformatNumber($event)"
+                                                (blur)="CustCfs.FormatNumberKetan($event)"
+                                                (keypress)="CustCfs.NotionalValidate($event)" />
+                                        </div>
+                                    </div>
+                                    <div class="CI-rowcontent">
+                                        <div class="lbl">
+                                            <label for="LimitCurrency" class="lbl"
+                                                *ngIf="account.LimitCurrency.visibility">
+                                                Facility Code</label>
+                                        </div>
+
+                                        <div class="lbl">
+                                            <label for="LimitPosted" class="lbl" *ngIf="account.LimitPosted.visibility">
+                                                Risk Profile</label>
+                                        </div>
+                                        <div style="display: flex; line-height: 40px">
+                                            <input type="text" name="fascDesc" tabindex="32" id="fascDesc{{ i }}"
+                                                class="txt" [(ngModel)]="account.fascDesc.value"
+                                                *ngIf="account.fascDesc.visibility" onCopy="return false"
+                                                onDrag="return false" onDrop="return false" onPaste="return false"
+                                                [disabled]="true" />
+                                        </div>
+                                        <div style="display: flex; line-height: 40px">
+                                            <input name="RiskProfile" id="RiskProfile{{ i }}" class="txt" tabindex="33"
+                                                [(ngModel)]="account.RiskProfile.value"
+                                                *ngIf="account.RiskProfile.visibility"
+                                                (keypress)="CustCfs.isalpha($event)" disabled="false" />
+                                        </div>
+                                    </div>
+                                    <div class="CI-rowcontent">
+                                        <div class="lbl">
+                                            <label for="Goal" class="lbl" *ngIf="account.Goal.visibility">
+                                                Goal</label>
+                                        </div>
+
+                                        <div class="lbl">
+                                            <label for="TargetGoal" class="lbl" *ngIf="account.TargetGoal.visibility">
+                                                Target Goal</label>
+                                        </div>
+                                        <div style="display: flex; line-height: 40px">
+                                            <input type="text" name="Goal" tabindex="32" class="txt"
+                                                [(ngModel)]="account.Goal.value" *ngIf="account.Goal.visibility"
+                                                onCopy="return false" onDrag="return false" onDrop="return false"
+                                                onPaste="return false" disabled="true" />
+                                        </div>
+                                        <div style="display: flex; line-height: 40px">
+                                            <input name="TargetGoal" class="txt" style="text-align: right" tabindex="33"
+                                                [(ngModel)]="account.TargetGoal.value"
+                                                *ngIf="account.TargetGoal.visibility" disabled="true" />
+                                        </div>
+                                    </div>
+                                    <div class="CI-rowcontent">
+                                        <div class="viewMoreandCreateSubaccount">
+                                            <div style="display: flex; align-items: center; column-gap: 5px;">
+                                                <input style="width: 17px;" type="checkbox" disabled
+                                                    [(ngModel)]="account.CreateSubAccount.value" />
+                                                <label class="lbl">Sub Account</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="CI-rowcontent">
+                                        <app-customer-sub-account [Mode]='1' [CreateSubAccFlag]="CreateSubAccount"
+                                            [PortfolioID]="account.fascDesc.value"
+                                            [NoteMasterId]="this.homeapi.NoteMasterID" [index]="i"
+                                            (CancelCreateAccount)="fnCloseCreateSubAccount($event)"
+                                            (IsPortforlioHavingSubAccount)="fnSetSubAccountCreatedOrNot($event)">
+                                        </app-customer-sub-account>
+                                    </div>
+                                </div>
+
+                                <div class="chartDiv" style="padding: 5px 0px">
+                                    <div class="portfolioActionbtn">
+                                        <input class="button" style="width: auto;" type="button"
+                                            value="Financial Planning"
+                                            (click)="FinancialPlanningOverlayflag = true; fnSelectedIndex(i);"
+                                            *ngIf="account.removeVisibility.visibility === false && DisplayYNFinancialPlanning" />
+                                        <input class="button" type="button" value="Edit"
+                                            (click)="fneditPortfolioTile(i)"
+                                            *ngIf="account.removeVisibility.visibility === false && DisplayYNEditPortfolio" />
+                                    </div>
+                                    <div class="chartArea" *ngIf="account.removeVisibility.visibility === false">
+                                        <div class="center" style="width: 92% !important"
+                                            *ngIf="account.ChartData?.length > 0">
+                                            <span class="dot"></span>
+                                            <label style="padding-left: 10px;" for="Name"
+                                                *ngIf="account.removeVisibility.visibility === false">
+                                                Portfolio Allocation
+                                            </label>
+                                        </div>
+                                        <div class="alignchart" *ngIf="account.ChartData?.length > 0">
+                                            <app-pie-chart [legendHeight]="200" [width]="450" [legendVisible]=true [labelsVisible]=false
+                                                [graphdata]="account.ChartData">
+                                            </app-pie-chart>
+                                            <!--Modified by Uddesh on 24 May 2022 asked by Rohit T -->
+                                            <!-- <google-chart #chart [type]="type_port_details" [data]="account.ChartData"
+                                                [options]="options_port_details"
+                                                (select)="fnSelectPieChartSlice($event)" style="margin: 0">
+                                            </google-chart> -->
+
+                                        </div>
+
+                                        <div class="alignchart" *ngIf="account.ChartData?.length === 0">
+                                            <p>No Data found</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="button-row" *ngIf="account.removeVisibility.visibility === true">
+                                    <button class="button" (click)="fnsavePortfolioTile(account, i)">
+                                        Save
+                                    </button>
+                                    <button class="button" (click)="fnremovePortfolioTile(i)">
+                                        Cancel
+                                    </button>
+                                    <div class="AI-rowcontent">
+                                        <div class="error-message-style" *ngIf="account.msg.visibility">{{
+                                            account.msg.value }}</div>
+                                    </div>
+                                </div>
+
+                                <div class="AI-rowcontent" *ngIf="account.Message.visibility">
+                                    <h5 class="textnewentry" style="margin-bottom: 6%">
+                                        {{ account.Message.value }}
+                                    </h5>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="totalPortfolio.length === 0 && !LoadingFlag"
+            style="margin-left: 50%; transform: translate(-50%,-40%);">
+            <!-- <app-svg-icons [icon]="'no-data-found'" [width]="'300'" [height]="'300'" style="margin: auto;">
+            </app-svg-icons> -->
+        </div>
+        <div class="loader-container" *ngIf="LoadingFlag">
+            <div class="loader-center">
+                <div class="multi-ripple">
+                    <div></div>
+                    <div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="overlay" *ngIf="FinancialPlanningOverlayflag">
+    <div style="    position: relative;
+    top: 7%;
+    left: 2%;">
+        <app-svg-icons class="back-button" [icon]="'back-button'" [width]="'40'" [height]="'40'"
+            [fill]="'var(--headers)'" (click)="FinancialPlanningOverlayflag = false"></app-svg-icons>
+
+
+    </div>
+    <app-financial-planning [pageMode]="1" (GoalData)="fnSelectedPortfolioForFinancialPlanning($event)">
+    </app-financial-planning>
+</div>
+
+<div class="overlay CI-maindata-outer" *ngIf="addNewPortfolioflag">
+    <div class="verticle-tabcontent" *ngFor="let account of totalPortfolio; let i = index">
+        <div class="container-overlay-new-portfolio"
+            *ngIf="totalPortfolio[totalPortfolio.length-1].LimitPosted.value !== '0.00' && i === (totalPortfolio.length - 1)">
+            <div class="CI-card" id="card{{ i }}">
+                <div style="display: flex; justify-content: flex-end;">
+                    <div class="close-icon" (click)="closeChart()">
+                        <app-svg-icons [icon]="'cancel-icon'" [width]="'18'" [height]="'18'"
+                            (click)="fnremovePortfolioTile(i)"></app-svg-icons>
+                    </div>
+                    <!-- <div class="closebtn" >X</div> -->
+                </div>
+                <div class="CI-card-header" style="padding-left: 20px">
+                    {{ totalPortfolio[i].PortfolioName.value }}
+                </div>
+                <div class="new-portfolio-card-container" name="portfoliocard">
+                    <div class="new-portfolio-card-input-paramters">
+                        <div class="CI-rowcontent">
+                            <div class="lbl">
+                                <label for="Name" class="lbl" *ngIf="account.PortfolioName.visibility">
+                                    <span class="impFields"> {{ account.star.value }} </span> Portfolio Name
+                                </label>
+                            </div>
+
+                            <div class="lbl">
+                                <label for="InvestmentObjective" class="lbl"
+                                    *ngIf="account.InvestmentObjective.visibility">
+                                    Investment Objective
+                                </label>
+                            </div>
+                            <div>
+                                <input type="text" name="PortfolioName" class="txt" id="PortfolioNameNewPortfolio"
+                                    [tabindex]="1" [(ngModel)]="account.PortfolioName.value"
+                                    *ngIf="account.PortfolioName.visibility" placeholder="Enter Portfolio Name"
+                                    [disabled]="account.removeVisibility.visibility === false? true: false"
+                                    (keypress)="resetError(account)" />
+                            </div>
+                            <div>
+                                <select name="InvestmentObjective" id="InvestmentObjective{{ i }}" class="txt"
+                                    (change)="resetError(account)" [tabindex]="2"
+                                    [(ngModel)]="account.InvestmentObjective.value"
+                                    placeholder="Enter Investment Objective"
+                                    *ngIf="account.InvestmentObjective.visibility"
+                                    [disabled]="account.removeVisibility.visibility === false? true: false">
+                                    <option *ngFor="let item of dd_InvestmentObjective" [value]="item">
+                                        {{ item }}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="CI-rowcontent">
+                            <div class="lbl">
+                                <label for="StreetName" class="lbl" *ngIf="account.PortfolioType.visibility">
+                                    <span class="impFields"> {{ account.star.value }} </span> Portfolio Type
+                                </label>
+                            </div>
+
+                            <div class="lbl">
+                                <label for="State" class="lbl" *ngIf="account.AutoPledge.visibility">
+                                    AutoPledge</label>
+                            </div>
+                            <div>
+                                <select name="PortfolioType" id="PortfolioType{{ i }}" class="txt" [tabindex]="3"
+                                    [(ngModel)]="account.PortfolioType.value" placeholder="Enter Portfolio Type"
+                                    *ngIf="account.PortfolioType.visibility"
+                                    (change)="fnchangeFascDesc($event, i);resetError(account)"
+                                    [disabled]="account.removeVisibility.visibility === false? true: false">
+                                    <option *ngFor="let item of dd_PortfolioType" [value]="item">
+                                        {{ item }}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="lbl verticleCenter">
+                                <select name="AutoPledge" id="AutoPledge{{ i }}" class="txt" [tabindex]="4"
+                                    (change)="resetError(account)" [(ngModel)]="account.AutoPledge.value"
+                                    placeholder="Enter Auto Pledge" *ngIf="account.AutoPledge.visibility"
+                                    [disabled]="account.removeVisibility.visibility === false ? true : false">
+                                    <option *ngFor="let item of dd_AutoPledge" [value]="item">
+                                        {{ item }}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="CI-rowcontent">
+                            <div class="lbl">
+                                <label for="CapitalCurrency" class="lbl" *ngIf="account.CapitalCurrency.visibility">
+                                    <span class="impFields"> {{ account.star.value }} </span> Capital Currency</label>
+                            </div>
+
+                            <div class="lbl">
+                                <label for="CapitalPosted" class="lbl" *ngIf="account.CapitalPosted.visibility">
+                                    Capital Posted</label>
+                            </div>
+                            <div style="display: flex; line-height: 40px">
+                                <select name="CapitalCurrency" id="CapitalCurrencyNewPortfolio" class="txt"
+                                    (change)="resetError(account)" [tabindex]="4"
+                                    [(ngModel)]="account.CapitalCurrency.value" placeholder="Enter Capital Currency"
+                                    *ngIf="account.CapitalCurrency.visibility"
+                                    [disabled]="account.removeVisibility.visibility === false ? true : false">
+                                    <option *ngFor="let item of dd_CapitalCurrency" [value]="item">
+                                        {{ item }}
+                                    </option>
+                                </select>
+                            </div>
+                            <div style="display: flex; line-height: 40px">
+                                <input type="text" style="text-align: right" name="CapitalPosted" [tabindex]="5"
+                                    id="CapitalPostedNewPortfolio" class="txt" [(ngModel)]="account.CapitalPosted.value"
+                                    placeholder="Enter Capital Posted" *ngIf="account.CapitalPosted.visibility"
+                                    onCopy="return false" onDrag="return false" onDrop="return false"
+                                    onPaste="return false"
+                                    [disabled]="account.removeVisibility.visibility === false? true: false"
+                                    (change)="account.CapitalPosted.value = CustCfs.NotionalChange($event);"
+                                    (focus)="CustCfs.UnformatNumber($event);CustCfs.SelectFullText($event);"
+                                    (blur)="CustCfs.FormatNumberKetan($event)"
+                                    (keypress)="CustCfs.NotionalValidate($event);resetError(account)" />
+                            </div>
+                        </div>
+                        <div class="CI-rowcontent">
+                            <div class="lbl">
+                                <label for="LimitCurrency" class="lbl" *ngIf="account.LimitCurrency.visibility">
+                                    <span class="impFields"> {{ account.star.value }} </span> Limit Currency</label>
+                            </div>
+
+                            <div class="lbl">
+                                <label for="LimitPosted" class="lbl" *ngIf="account.LimitPosted.visibility">
+                                    <span class="impFields"> {{ account.star.value }} </span> Limit Posted</label>
+                            </div>
+                            <div style="display: flex; line-height: 40px">
+                                <select name="LimitCurrency" id="LimitCurrencyNewPortfolio" class="txt" [tabindex]="6"
+                                    (change)="resetError(account)" [(ngModel)]="account.LimitCurrency.value"
+                                    placeholder="Enter Limit Currency" *ngIf="account.LimitCurrency.visibility"
+                                    (keypress)="CustCfs.isalpha($event)"
+                                    [disabled]="account.removeVisibility.visibility === false? true: false">
+                                    <option *ngFor="let item of dd_LimitCurrency" [value]="item">
+                                        {{ item }}
+                                    </option>
+                                </select>
+                            </div>
+                            <div style="display: flex; line-height: 40px">
+                                <input type="text" style="text-align: right" name="LimitPosted" [tabindex]="7"
+                                    id="LimitPostedNewPortfolio" class="txt" [(ngModel)]="account.LimitPosted.value"
+                                    *ngIf="account.LimitPosted.visibility" onCopy="return false" onDrag="return false"
+                                    onDrop="return false" onPaste="return false"
+                                    [disabled]="account.removeVisibility.visibility === false? true: false"
+                                    placeholder="Enter Limit Posted"
+                                    (change)="account.LimitPosted.value = CustCfs.NotionalChange($event);"
+                                    (focus)="CustCfs.UnformatNumber($event);CustCfs.SelectFullText($event);"
+                                    (blur)="CustCfs.FormatNumberKetan($event)"
+                                    (keypress)="CustCfs.NotionalValidate($event);resetError(account)" />
+                            </div>
+                        </div>
+                        <div class="CI-rowcontent">
+                            <div class="lbl">
+                                <label for="LimitCurrency" class="lbl" *ngIf="account.LimitCurrency.visibility">
+                                    Facility Code</label>
+                            </div>
+
+                            <div class="lbl">
+                                <label for="LimitPosted" class="lbl" *ngIf="account.LimitPosted.visibility">
+                                    Risk Profile</label>
+                            </div>
+                            <div style="display: flex; line-height: 40px">
+                                <input type="text" name="FacilityCode" id="FacilityCodeNewPortfolio" class="txt"
+                                    [tabindex]="8" [(ngModel)]="account.fascDesc.value"
+                                    *ngIf="account.fascDesc.visibility" onCopy="return false" onDrag="return false"
+                                    onDrop="return false" onPaste="return false" [disabled]="true"
+                                    (keypress)="resetError(account)" />
+                            </div>
+                            <div style="display: flex; line-height: 40px">
+                                <input name="RiskProfile" id="RiskProfileNewPortfolio" class="txt"
+                                    (keypress)="resetError(account)" [(ngModel)]="account.RiskProfile.value"
+                                    *ngIf="account.RiskProfile.visibility" (keypress)="CustCfs.isalpha($event)"
+                                    disabled="false" />
+                            </div>
+                        </div>
+                        <div class="CI-rowcontent">
+                            <div class="lbl">
+                                <label for="Goal" class="lbl" *ngIf="account.Goal.visibility">
+                                    Goal</label>
+                            </div>
+
+                            <div class="lbl">
+                                <label for="TargetGoal" class="lbl" *ngIf="account.TargetGoal.visibility">
+                                    Target Goal</label>
+                            </div>
+                            <div style="display: flex; line-height: 40px">
+                                <input type="text" name="Goal" class="txt" [(ngModel)]="account.Goal.value"
+                                    (keypress)="resetError(account)" [tabindex]="9" *ngIf="account.Goal.visibility"
+                                    onCopy="return false" onDrag="return false" onDrop="return false"
+                                    onPaste="return false" disabled="true" />
+                            </div>
+                            <div style="display: flex; line-height: 40px">
+                                <input name="TargetGoal" class="txt" style="text-align: right" [tabindex]="10"
+                                    (keypress)="resetError(account)" [(ngModel)]="account.TargetGoal.value"
+                                    *ngIf="account.TargetGoal.visibility" disabled="true" />
+                            </div>
+                        </div>
+                        <div class="CI-rowcontent">
+                            <div class="viewMoreandCreateSubaccount">
+                                <div style="display: flex; align-items: center; column-gap: 5px;"
+                                    (click)="fnToggleCustomerOnboarding(index)">
+                                    <input style="width: 17px;" type="checkbox" [tabindex]="11"
+                                        [id]="'create_sub_acc_check'" name="create_sub_acc_check"
+                                        [(ngModel)]="account.CreateSubAccount.value"
+                                        (click)="fnToggleCustomerOnboarding(index)" />
+                                    <label for="create_sub_acc_check" class="lbl">Create Sub Account</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div *ngIf="account.CreateSubAccount.value">
+                            <form>
+                                <div class="SubAccount-Main">
+                                    <div class="row" *ngFor="let item of account.SubAccountForm; let p =index">
+                                        <label class="lbl"><span class="impFields"
+                                                *ngIf="item.isRequired">*</span>{{item.controlName}}</label>
+                                        <input [type]="item.controlType" [(ngModel)]="item.selectedValue"
+                                            [tabindex]="20+p" placeholder="Enter {{item.controlName}}"
+                                            [ngModelOptions]="{standalone: true}" autocomplete="false"
+                                            (keypress)="resetError(account)">
+
+                                        <!-- <app-password-strength-bar
+                                        *ngIf="item.controlName === 'Password' && item.selectedValue !== ''"
+                                        [passwordToCheck]="item.selectedValue" [barLabel]="barLabel">
+                                    </app-password-strength-bar> -->
+                                        <!-- <div>
+                                        <small
+                                            *ngIf="item.controlName === 'Confirm Password' && item.selectedValue ===  account.SubAccountForm[2].selectedValue && item.selectedValue.length > 0"
+                                            style="margin: 5px;margin-top: 0px;color: var(--table-header-text);font-style: italic;">Password
+                                            Matched</small>
+                                    </div> -->
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="password-strength" *ngIf="account.CreateSubAccount.value">
+
+                            <app-password-strength-bar [passwordToCheck]="account.SubAccountForm[2].selectedValue"
+                                *ngIf="account.SubAccountForm[2].selectedValue !== '' && account.SubAccountForm[3].selectedValue === '' && !account.CreateSubAccount.isError"
+                                [barLabel]="barLabel">
+                            </app-password-strength-bar>
+                            <div>
+                                <small
+                                    *ngIf="account.SubAccountForm[3].selectedValue ===  account.SubAccountForm[2].selectedValue && account.SubAccountForm[3].selectedValue !== ''"
+                                    style="margin: 5px;margin-top: 0px;color: var(--green);font-style: italic;">Password
+                                    Matched</small>
+                                <small *ngIf="account.CreateSubAccount.isError"
+                                    style="margin: 5px;margin-top: 0px;color: var(--red);font-style: italic;">{{account.CreateSubAccount.errorMsg}}</small>
+
+                            </div>
+                        </div>
+                        <div class="error-message">
+                            <small *ngIf="account.msg.visibility"
+                                style="margin: 5px;margin-top: 0px;color: var(--red);font-style: italic;">{{account.msg.value}}</small>
+                            <!-- <div class="AI-rowcontent" *ngIf="account.msg.visibility">
+                                {{ account.msg.value }}
+                            </div>
+                            <div class="AI-rowcontent" *ngIf="account.Message.visibility">
+                                <h5 class="textnewentry" style="margin-bottom: 6%">
+                                    {{ account.Message.value }}
+                                </h5>
+                            </div> -->
+                        </div>
+                        <div class="button-row" *ngIf="account.removeVisibility.visibility === true">
+                            <button class="button" value="Save"
+                                (click)="fnsavePortfolioTile(account,i); resetError(account)" [tabindex]="25">
+                                Save
+                            </button>
+                            <button class="button" value="Cancel" (click)="fnremovePortfolioTile(i)" [tabindex]="26">
+                                Cancel
+                            </button>
+
+                        </div>
+                    </div>
+                    <div class="chartDiv newportfoliochartDiv" *ngIf="account.removeVisibility.visibility === false">
+                        <div class="portfolioActionbtn" *ngIf="account.removeVisibility.visibility === false">
+                            <input class="button" style="width: auto;" type="button" value="Financial Planning"
+                                (click)="FinancialPlanningOverlayflag = true; fnSelectedIndex(i);" />
+                            <input class="button" type="button" value="Edit" (click)="fneditPortfolioTile(i)" />
+                            <input class="button" type="button" value="Cancel" (click)="fnremovePortfolioTile(i)" />
+                        </div>
+                        <div class="chartArea" *ngIf="account.removeVisibility.visibility === false">
+                            <div class="center" style="width: 92% !important" *ngIf="account.ChartData?.length > 0">
+                                <span class="dot"></span>
+                                <label style="padding-left: 10px;" for="Name"
+                                    *ngIf="account.removeVisibility.visibility === false">
+                                    Portfolio Allocation
+                                </label>
+                            </div>
+                            <div class="alignchart" *ngIf="account.ChartData?.length > 0">
+                                <google-chart #chart [type]="type_port_details" [data]="account.ChartData"
+                                    [options]="options_port_details" (select)="fnSelectPieChartSlice($event)"
+                                    style="margin: 0">
+                                </google-chart>
+                            </div>
+
+                            <div class="alignchart" *ngIf="account.ChartData?.length === 0">
+                                <p>No Data found</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- <div class="AI-rowcontent" *ngIf="account.msg.visibility">
+                        {{ account.msg.value }}
+                    </div>
+                    <div class="AI-rowcontent" *ngIf="account.Message.visibility">
+                        <h5 class="textnewentry" style="margin-bottom: 6%">
+                            {{ account.Message.value }}
+                        </h5>
+                    </div> -->
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>

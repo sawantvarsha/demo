@@ -1,0 +1,19 @@
+.bg {
+  background-color: transparent;
+  border: none;
+  color: navajowhite;
+}
+
+.btnPtr {
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.btnPtr:hover{
+  filter: grayscale(0.5) brightness(1.5);
+}
+
+.closebtn-position {
+  display: flex;
+  justify-content: flex-end;
+}

@@ -1,0 +1,957 @@
+<!-- Created by Apurva K || 18-Jul-2023 -->
+<div class="parentContainer">
+<div *ngIf="loader" class="pageOverlay">
+  <div class="loader-center">
+    <div class="multi-ripple">
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+</div>
+<!-- <div class="main-grid-container" style="padding-top: 0px !important;"> -->
+<div class="main-grid-container"  [ngClass]="{'scrollCSS':showFilterDropdown}">
+  <div class="main-grid-item">
+      <div class="wfblotterClass">
+          <div class="pageHeader">
+            {{"SP Event Calendar"| translate}}
+          </div>
+          
+          <div class="searchbarDiv">
+            <div style="line-height: 17px;font-size: 13px; font-family: var(--font-family) !important;align-self: center;margin-bottom: 2px;">
+              {{"View" | translate}} 
+      </div>
+      <div class="shares-search-box" (clickOutside)="showDropdown=false" >
+          <div class="input-field">
+
+                  <input  type="text" placeholder="{{'View' | translate}}" [(ngModel)]="viewName" (focus)="selectView()"
+              (keyup)="showDropdown=true;filterViews()" (keyup.arrowup)="changeSearchIndex('UP')" (keyup.enter)="showDropdown=false;"
+                  (keyup.arrowdown)="changeSearchIndex('DOWN')" (keyup.backspace)="onBackspaceKeyUp()"style="min-width:100px" >
+              <app-svg-icons class="drop-icon" [icon]="'arrow-drop-down'" style="justify-content: center;" [width]="'8'" [height]="'8'" (click)="showDropdown=!showDropdown;filterViews()">
+              </app-svg-icons>
+              
+          </div>
+              <div class="shares-list" *ngIf="showDropdown">
+                  <ul>
+                      <li *ngFor="let view of backUpList"  style="display: flex; justify-content: space-between; align-items: center;" >
+                              <span (click)="viewName=view;GetPortfolio_View_Details();showDropdown=false;" style="width:-webkit-fill-available ;">{{view | translate}}</span>
+                          <span><app-svg-icons class="deleteIcon" [icon]="'delete'"  [width]="'13'" [height]="'13'"  (click)="DeletePortfolio_View_Details(view);showDropdown=false"></app-svg-icons>
+                          </span>
+                      </li>   
+                  </ul>
+              </div>
+      </div>
+      <div class="btn-group btnSaveMargin dropdown" (clickOutside)="saveoptionflag = false">
+        <button type="button" class="btn btn_Save"  tabindex="50" (click)="SavePortfolio_View_Details()" >{{ "Save" | translate }}</button>
+        <button type="button"  class="sidebutton btnSaveNShare save-view-btn" (click)="saveoptionflag=!saveoptionflag">
+            <app-svg-icons class="arrow-drop-icon" [icon]="'arrow-drop-down'" style="justify-content: center; fill: var(--btn-txt);" [width]="'8'" [height]="'8'" >
+            </app-svg-icons>
+        </button>
+        <div *ngIf="(saveoptionflag)" class="dropdown-content" >
+                <button type="button" class="btn btn_Save update"  tabindex="50" (click)="UpdatePortfolio_View_Details() ;saveoptionflag = false" >
+                <span><app-svg-icons [icon]="'update-icon'" [width]="'15'" [height]="'15'" class="update-icon"></app-svg-icons></span>
+                <span>{{ "Update" | translate }}</span>
+            </button>
+        </div>
+    </div>
+            <div class="header-icons">
+              <app-svg-icons (click)="showFilterDropdown=!showFilterDropdown" [icon]="'filter-icon'" [width]="'22'" [height]="'22'"
+                          [fill]="'var(--input-icon)'" style="margin-top: 5px;"></app-svg-icons>
+                          <app-svg-icons  [icon]="'refresh'" (click)="refresh()" [width]="'28'" [height]="'28'"  ></app-svg-icons>
+          </div>
+        </div>
+      </div>
+      <hr *ngIf="showFilterDropdown==false" width="100%" class="productHeaderhr">
+  </div>
+
+   <!-- Filters Start -->
+  <div *ngIf="showFilterDropdown==true" class="filterDiv">
+    <div class="filterMainDiv">
+        <div class="labelRowContainer" >
+            <div  style="align-self: center;" class="filterTH alignLeft labelDivWidth labelFilerBlock">
+                <span>{{"Client Filters:"| translate}}</span>
+                <span class="link eachRowFilter " (click)="clearClient()" >{{"Clear Filters"| translate}}</span>
+            </div>
+            <div class="clientFilterDiv">
+
+              <!-- <div> <input type="text" placeholder="Group" [(ngModel)]="selectedGroup"  (keyup)="FilterForAll($event)" class="filterIputs"></div> -->
+              <app-custom-dropdown-multi-select [options]="groupArr" [backupOptions]="groupArr" [(ngModel)]="selectedGroup" [displayText2]=" groupArr?.length === 1 ? groupArr[0]['value'] : 'Group'| translate" [pricerType]="'dropdownSearch'" [isRefreshed]="clearClientFilter" (selectOptionsEmitter)="clientFilterData($event)" [ngClass]="{ 'disabled': groupArr.length <= 1 }" >
+              </app-custom-dropdown-multi-select>
+
+               <!-- <div><input type="text" placeholder="Client" [(ngModel)]="selectedClient" (keyup)="FilterForAll($event)" class="filterIputs"></div> -->
+               <app-custom-dropdown-multi-select [options]="clientArr" [backupOptions]="clientArr" [(ngModel)]="selectedClient" [displayText2]="'Client'| translate"  [pricerType]="'dropdownSearch'" [isRefreshed]="clearClientFilter" (selectOptionsEmitter)="clientFilterData($event)" >
+              </app-custom-dropdown-multi-select>
+
+                    <!-- <div><input type="text" placeholder="Internal Ref./J" [(ngModel)]="selectedIntRef" (keyup)="FilterForAll($event)" class="filterIputs"></div> -->
+                    <app-custom-dropdown-multi-select [options]="intRefArr" [backupOptions]="intRefArr" [(ngModel)]="selectedIntRef" [displayText2]="'Internal Ref./J'| translate"  [pricerType]="'dropdownSearch'" [isRefreshed]="clearClientFilter" (selectOptionsEmitter)="clientFilterData($event)" >
+                    </app-custom-dropdown-multi-select>
+
+                    <!-- <div><input type="text" placeholder="Type" [(ngModel)]="selectedType" (keyup)="FilterForAll($event)" class="filterIputs"></div> -->
+                    <app-custom-dropdown-multi-select [options]="typeArr" [backupOptions]="typeArr" [(ngModel)]="selectedType" [displayText2]="'Type'| translate"  [pricerType]="'dropdownSearch'" [isRefreshed]="clearClientFilter" (selectOptionsEmitter)="clientFilterData($event)" >
+                    </app-custom-dropdown-multi-select>
+
+
+                    <!-- <div><input type="text" placeholder="Tutela" [(ngModel)]="selectedTutela" (keyup)="FilterForAll($event)"  class="filterIputs"></div> -->
+                     <app-custom-dropdown-multi-select [options]="tutelaArr" [backupOptions]="tutelaArr" [(ngModel)]="tutelaArr?.length === 1 ? tutelaArr[0]['value'] : selectedTutela" [displayText2]=" tutelaArr?.length === 1 ? tutelaArr[0]['value'] : 'Tutela'| translate"  [pricerType]="'dropdownSearch'" [isRefreshed]="clearClientFilter" (selectOptionsEmitter)="clientFilterData($event)" [ngClass]="{ 'disabled': tutelaArr.length <= 1 }" >
+                    </app-custom-dropdown-multi-select>
+
+                    <!-- <div><input type="text" placeholder="Subtutela" [(ngModel)]="selectedSubtutela" (keyup)="FilterForAll($event)" class="filterIputs"></div> -->
+                    <app-custom-dropdown-multi-select [options]="subtutelaArr" [backupOptions]="subtutelaArr" [(ngModel)]="selectedSubtutela" [displayText2]="'Subtutela'| translate"  [pricerType]="'dropdownSearch'" [isRefreshed]="clearClientFilter" (selectOptionsEmitter)="clientFilterData($event)" >
+                    </app-custom-dropdown-multi-select>
+
+                    <!-- <div><input type="text" placeholder="Branch" [(ngModel)]="selectedBranch" (keyup)="FilterForAll($event)" class="filterIputs"></div> -->
+                    <app-custom-dropdown-multi-select [options]="branchArr" [backupOptions]="branchArr" [(ngModel)]="selectedBranch" [displayText2]="'Branch'| translate"  [pricerType]="'dropdownSearch'" [isRefreshed]="clearClientFilter" (selectOptionsEmitter)="clientFilterData($event)" >
+                    </app-custom-dropdown-multi-select>
+
+                    <!-- <div><input type="text" placeholder="Territory" [(ngModel)]="selectedTerritory" (keyup)="FilterForAll($event)" class="filterIputs"></div> -->
+                    <app-custom-dropdown-multi-select [options]="territoryArr" [backupOptions]="territoryArr" [(ngModel)]="selectedTerritory" [displayText2]="'Territory'| translate"  [pricerType]="'dropdownSearch'" [isRefreshed]="clearClientFilter" (selectOptionsEmitter)="clientFilterData($event)" >
+                    </app-custom-dropdown-multi-select>
+
+                    <!-- <div><input type="text" placeholder="Zone" [(ngModel)]="selectedZone" (keyup)="FilterForAll($event)" class="filterIputs"></div> -->
+                    <app-custom-dropdown-multi-select [options]="zoneArr" [backupOptions]="zoneArr" [(ngModel)]="selectedZone" [displayText2]="'Zone'| translate"  [pricerType]="'dropdownSearch'" [isRefreshed]="clearClientFilter" (selectOptionsEmitter)="clientFilterData($event)" >
+                    </app-custom-dropdown-multi-select>
+            </div>
+
+            
+
+            <div class="clearFilter">
+              <!-- <span class="link " (click)="copyText(this.external.toString())" >Copy External</span> -->
+              <button class="button" (click)="copyText(this.external.toString())">{{"Copy External" | translate}}</button>
+          </div>
+        </div>
+        <div class="labelRowContainer">
+            <div class="filterTH labelDivWidth labelFilerBlock">
+                <span>{{"Product Filters:"| translate}}</span>
+                <span class="link eachRowFilter " (click)="clearProduct()" >{{ "Clear Filters" | translate}}</span>
+            </div>
+            <div class="productFilterDiv">
+
+                <div class="columnContainer">
+                    <!-- <input type="text" placeholder="Format" (keyup)="FilterForAll($event)"
+                    [(ngModel)]="selectedFormat" name="Group" class="filterIputs"> -->
+                    <!-- <input type="text" placeholder="Format" (keyup)="FilterForAll($event)"
+                      [(ngModel)]="selectedFormat" name="Group" class="filterIputs"> -->
+                      <!-- <select [(ngModel)]="selectedFormat"  placeholder="Format"  (change)="FilterForAll($event)"  class="filterSelect" >
+                          <option value="" disabled hidden>Format</option>
+                          <option [ngValue]="'all'">All</option>
+                          <option *ngFor="let item of formatData;" [ngValue]="item" (click)="selectedMPG=item">{{item}}</option>
+                      </select> -->
+
+                      <!-- Added by MuditB || 27-Sep-23 || Start || MultiSelect Dropdown Filter -->
+
+                      <app-custom-dropdown-multi-select [options]="formatData" 
+                          displayText2="'Format'| translate" [pricerType] = "'dropdown'"  
+                          [(ngModel)]="selectedFormat" 
+                          *ngIf="formatData?.length <= 0 || formatData=='' || formatData==undefined" disabled
+                          (selectOptionsEmitter)="AllFilter($event)">
+                      </app-custom-dropdown-multi-select>
+                      
+                      <app-custom-dropdown-multi-select [options]="formatData" 
+                          [displayText2]="'Format'| translate"  [pricerType] = "'dropdown'" [isRefreshed] = "refreshed"
+                          [(ngModel)]="selectedFormat" *ngIf="formatData?.length > 0 && formatData!='' && formatData!=undefined" 
+                          (selectOptionsEmitter)="AllFilter($event)">
+                      </app-custom-dropdown-multi-select>
+
+                     <!-- Added by MuditB || 27-Sep-23 || End || MultiSelect Dropdown Filter -->
+                  </div>
+                  <div class="columnContainer">
+                    <!-- <input type="text" placeholder="Currency" (keyup)="FilterForAll($event)"
+                   [(ngModel)]="selectedCurrency" name="Group" class="filterIputs"> -->
+                   <!-- <select [(ngModel)]="selectedCurrency"  placeholder="Currency"  (change)="FilterForAll($event)"  class="filterSelect">
+                       <option value="" disabled hidden>Currency</option>
+                       <option [ngValue]="'all'">All</option>
+                       <option *ngFor="let item of currencyData;" [ngValue]="item" (click)="selectedMPG=item">{{item}}</option>
+                   </select> -->
+
+                   <!-- Added by MuditB || 27-Sep-23 || Start || MultiSelect Dropdown Filter -->
+
+                   <app-custom-dropdown-multi-select [options]="currencyData" 
+                       [displayText2]="'Currency'| translate"    [pricerType] = "'dropdown'" [isRefreshed] = "refreshed"
+                       [(ngModel)]="selectedCurrency" 
+                       *ngIf="currencyData?.length <= 0 || currencyData=='' || currencyData==undefined" disabled
+                       (selectOptionsEmitter)="AllFilter($event)">
+                   </app-custom-dropdown-multi-select>
+                   
+                   <app-custom-dropdown-multi-select [options]="currencyData" 
+                       [displayText2]="'Currency'| translate"   [pricerType] = "'dropdown'"  [isRefreshed] = "refreshed"
+                       [(ngModel)]="selectedCurrency" *ngIf="currencyData?.length > 0 && currencyData!='' && currencyData!=undefined" 
+                       (selectOptionsEmitter)="AllFilter($event)">
+                   </app-custom-dropdown-multi-select>
+
+                   <!-- Added by MuditB || 27-Sep-23 || End || MultiSelect Dropdown Filter -->
+               </div>
+               <div class="columnContainer"> <!-- <input type="text" placeholder="Product Type" name="Group" class="filterIputs"> -->
+                <!-- <select  placeholder="Product Type" (change)="openMPGs($event)"  class="filterSelect">
+                    <option value="" disabled selected>Product Type</option>
+                    <option [ngValue]="i" (click)="selectedMPG=item" >Autocallable </option>
+                    <option [ngValue]="i" (click)="selectedMPG=item" >Digital </option>
+                    <option [ngValue]="i" (click)="selectedMPG=item" >European Digital </option>
+                    <option [ngValue]="i" (click)="selectedMPG=item" >Reverse Convertible </option>
+                    <option [ngValue]="i" (click)="selectedMPG=item" >Vanilla Option </option>
+                    <option [ngValue]="i" (click)="selectedMPG=item" >Issuer Callable </option>
+                    <option [ngValue]="i" (click)="selectedMPG=item" >Double Tranche(*)</option>
+
+                </select> -->
+
+                <!-- <select [(ngModel)]="selectedPType"  placeholder="Product Type"  (change)="FilterForAll($event)"  class="filterSelect">
+                    <option value="" disabled hidden>Product Type</option>
+                    <option [ngValue]="'all'">All</option>
+                    <option *ngFor="let item of productTypeData;" [ngValue]="item" (click)="selectedMPG=item">{{item}}</option>
+                </select> -->
+                
+                <!-- Added by MuditB || 27-Sep-23 || Start || MultiSelect Dropdown Filter -->
+
+                <app-custom-dropdown-multi-select [options]="productTypeData" 
+                    [displayText2]="'Product Type'| translate"  [pricerType] = "'dropdown'" [isRefreshed] = "refreshed"
+                    [(ngModel)]="selectedPType" 
+                    *ngIf="productTypeData?.length <= 0 || productTypeData=='' || productTypeData==undefined" disabled
+                    (selectOptionsEmitter)="AllFilter($event)">
+                </app-custom-dropdown-multi-select>
+                
+                <app-custom-dropdown-multi-select [options]="productTypeData" 
+                    [displayText2]="'Product Type'| translate"   [pricerType] = "'dropdown'" [isRefreshed] = "refreshed"
+                    [(ngModel)]="selectedPType" *ngIf="productTypeData?.length > 0 && productTypeData!='' && productTypeData!=undefined" 
+                    (selectOptionsEmitter)="AllFilter($event)">
+                </app-custom-dropdown-multi-select>
+
+                <!-- Added by MuditB || 27-Sep-23 || End || MultiSelect Dropdown Filter -->
+            </div>
+                <!-- <div> <input type="text" placeholder="Cap. At Risk"  [(ngModel)]="selectedCapAtRisk" name="Group" class="filterIputs" (keyup)="FilterForAll($event)"></div> -->
+                <div class="columnContainer">
+                     <input type="text" [placeholder]="'Underlying' | translate" name="Group" class="filterIputs" style="width:195px !important" [(ngModel)]="selectedUnderlying" (keyup)="AllFilter($event)">
+                </div>
+
+                <div class="toggleDiv">
+                    <div class="toggleLabels ">{{"Incl. Basket:"| translate}}</div>
+                    <div class="togglePos">
+                        <mat-slide-toggle (change)="checkInBasketToggle($event)" class="slide-toggle"
+                        [checked]="inBasketCheck"></mat-slide-toggle> <!--[checked]="inBasketCheck"-->
+                    </div>
+                </div>
+
+                <div class="columnContainer"> <!-- <input type="text" placeholder="U/L Type" name="Group" class="filterIputs"> -->
+                  <!-- <select [(ngModel)]="selectedULType"  placeholder="U/L Type"  (change)="FilterForAll($event)"  class="filterSelect">
+                      <option value="" disabled hidden>U/L Type</option>
+                      <option [ngValue]="'all'">All</option>
+                      <option *ngFor="let item of ulTypeData;" [ngValue]="item" (click)="selectedMPG=item">{{item}}</option>
+                  </select> -->
+                  
+                  <!-- Added by MuditB || 27-Sep-23 || Start || MultiSelect Dropdown Filter -->
+
+                  <app-custom-dropdown-multi-select [options]="ulTypeData" 
+                      [displayText2]="'U/L Type'| translate"   [pricerType] = "'dropdown'"  [isRefreshed] = "refreshed"
+                      [displayText2]="'U/L Type' | translate"   [pricerType] = "'dropdown'"  [isRefreshed] = "refreshed"
+                      [(ngModel)]="selectedULType" 
+                      *ngIf="ulTypeData?.length <= 0 || ulTypeData=='' || ulTypeData==undefined" disabled
+                      (selectOptionsEmitter)="AllFilter($event)">
+                  </app-custom-dropdown-multi-select>
+                  
+                  <app-custom-dropdown-multi-select [options]="ulTypeData" 
+                      [displayText2]="'U/L Type'| translate"  [pricerType] = "'dropdown'"  [isRefreshed] = "refreshed"
+                      [(ngModel)]="selectedULType" *ngIf="ulTypeData?.length > 0 && ulTypeData!='' && ulTypeData!=undefined" 
+                      (selectOptionsEmitter)="AllFilter($event)">
+                  </app-custom-dropdown-multi-select>
+
+                  <!-- Added by MuditB || 27-Sep-23 || End || MultiSelect Dropdown Filter -->
+              </div>
+                <div class="toggleDiv" style="width: unset;">
+                    <div class="toggleLabels">{{ "Live" | translate}}</div>
+                    <div class="togglePos">
+                        <mat-slide-toggle (change)="checkLiveToggle($event);AllFilter($event);notificationFilter()" [checked]="LiveCheck"  class="slide-toggle"
+                        ></mat-slide-toggle>
+                    </div>
+                </div>
+
+                <div class="toggleDiv"  style="width: unset;">
+                    <div class="toggleLabels">{{"Dead" | translate}}</div>
+                    <div class="togglePos">
+                        <mat-slide-toggle (change)="checkDeadToggle($event);AllFilter($event);notificationFilter()" [checked]="DeadCheck"  class="slide-toggle"
+                        ></mat-slide-toggle>
+                    </div>
+                </div>
+
+
+                <!-- <div class="columnContainer">
+                    <div class="clearFilter">
+                        <span class="link " (click)="refresh()" >Clear all Filters</span>
+                    </div>
+                </div> -->
+                <!-- <div class="toggleDiv">
+                    <div class="toggleLabels">Live</div>
+                    <div class="togglePos"><mat-slide-toggle (change)="commonfunctions.changeLayout(); getToggleData($event)" [checked]="toggleCheck"  class="slide-toggle"
+                        [disabled]="toggleDisabledFlag"></mat-slide-toggle></div>
+                </div> -->
+            </div>
+        </div>
+
+        <div class="labelRowContainer" >
+            <div style="    margin-top: 25px;" class="filterTH labelDivWidth labelFilerBlock">
+                <span> {{"Product Specs:"}}</span>
+                <span class="link eachRowFilter " (click)="clearProductSpecs()" >{{"Clear Filters"| translate}}</span>
+            </div>
+
+            <div class="productSpecsDiv">
+
+                <div class="columnContainer">
+                    <div class="filterLabels">
+                        {{"Issue Date"| translate}}
+                    </div>
+                    <div [ngClass]="{ 'showFilter': showSDate,'hideFilter': (!showSDate) }" style="position: relative;">
+                        <input type="date" class="input-dob filterIputs" [(ngModel)]="StartDate" value="StartDate"
+                            (change)="selectDate(StartDate); AllFilter($event)" #SDateField id="SDate" >
+                        <span *ngIf="StartDate === '' || StartDate === undefined" class="sDatePlaceHolder">{{"From Date"| translate}}</span>
+                        <span *ngIf="StartDate !== '' && StartDate !== undefined" class="sDate">{{StartDateDisplay| translate}}</span>
+                    </div>
+                    <div [ngClass]="{ 'showFilter': showSDate,'hideFilter': (!showSDate) }" style="position: relative;">
+                        <input type="date" class="input-dob filterIputs" [(ngModel)]="EndDate" value="EndDate"
+                            (change)="selectEndDate(EndDate); AllFilter($event)" #SDateField id="SDate" >
+                        <span *ngIf="EndDate === '' || EndDate === undefined" class="sDatePlaceHolder">{{"To Date"| translate}}</span>
+                        <span *ngIf="EndDate !== '' && EndDate !== undefined" class="sDate">{{EndDateDisplay| translate}}</span>
+                    </div>
+                </div>
+                <div class="alignBottom columnContainer">
+                    <div class="filterLabels">
+                        {{"Maturity in"| translate}}
+                    </div>
+                    <div class="daysLabel">
+                        <input type="text" placeholder="x" name="Group" class="daysInput filterIputs right1" [(ngModel)]="selectedMaturityIn" (keyup)="AllFilter($event)">
+                    </div>
+                    <div>
+                        <span class="daysSuffix">&nbsp;{{"days"| translate}}</span>
+                    </div>
+
+                </div>
+                <div class="alignBottom columnContainer">
+                    <div class="filterLabels">
+                        {{"Observation in" | translate}}
+                    </div>
+                    <div class="daysLabel">
+                        <input type="text" placeholder="x" name="Group" class="daysInput filterIputs right1" [(ngModel)]="selectedObservationIn" (keyup)="AllFilter($event)">
+                    </div>
+                    <div>
+                        <span class="daysSuffix">&nbsp;{{"days" | translate}}</span>
+                    </div>
+
+
+                </div>
+                <!-- <div class="alignBottom">
+                    <div class="filterLabels">
+                        AC in
+                    </div>
+                    <div class="daysLabel">
+                        <input type="text" placeholder="x" name="Group" class="filterIputs" [(ngModel)]="selectedACIn" (keyup)="FilterForAll($event)">
+                        <span style="margin-right: 0.5em !important; font-size: 13px; font-family: var(--font-family) !important; text-align: end;">&nbsp;days</span>
+                    </div>
+                </div> -->
+
+                <!-- Added by MuditB || 30-Aug-23 || Start -->
+                <div class="alignBottom columnContainer">
+                    <div class="filterLabels">
+                        {{"Cancel Date in"| translate}}
+                    </div>
+                    <div class="daysLabel">
+                        <input type="text" placeholder="x" name="Group" class="daysInput filterIputs" [(ngModel)]="selectedCancelDateIn" (keyup)="AllFilter($event)">
+                    </div>
+                    <div>
+                        <span class="daysSuffix">&nbsp;{{"days" | translate}}</span>
+                    </div>
+                </div>
+                <div class="alignBottom sliderPosition columnContainer">
+                    <div class="filterLabels">
+                        {{"Capital At Risk:"| translate}}
+                    </div>
+                    <div style="display:flex; gap:1em;">
+                        <div  class="ki-number">
+                            <input type="number" class="knumber"  placeholder="{{startCapAtRiskValue}} %"
+                                [min]="startCapAtRiskValue"
+                                [max]="endCapAtRiskValue"
+                                (change)="binder($event);selectedCapAtRisk=true; AllFilter($event)"class="inputBox"  step="0.01" name="CapAtRisk-input1"
+                                [(value)]="current_CapAtRisk_StartValue"><!--[value]="current_CancelProb_StartValue"-->
+                        </div>
+                        <div  class="ki-number second">
+                            <input type="number" class="knumber"  placeholder="{{endCapAtRiskValue}} %"
+                                [min]="startCapAtRiskValue"
+                                [max]="endCapAtRiskValue"
+                                (change)="binder($event);selectedCapAtRisk=true; AllFilter($event)"class="inputBox" step="0.01"  name="CapAtRisk-input2"
+                                [(value)]="current_CapAtRisk_LastValue"> <!--[value]="current_CancelProb_LastValue"-->
+                        </div>
+                    </div>
+                    <ng-container  [ngSwitch]="display">
+                        <ng-template [ngSwitchCase]="1"><ngx-slider class="ngx-mtm-slider cancelProbSlider" [(value)]="current_CapAtRisk_StartValue" [(highValue)]="current_CapAtRisk_LastValue"
+                            [options]="options1"
+                            (userChangeEnd)="selectedCapAtRisk=true; AllFilter($event)" ></ngx-slider ></ng-template>
+                        <ng-template [ngSwitchCase]="2"><ngx-slider class="ngx-mtm-slider cancelProbSlider" [(value)]="current_CapAtRisk_StartValue" [(highValue)]="current_CapAtRisk_LastValue"
+                            [options]="options1"
+                            (userChangeEnd)="selectedCapAtRisk=true; AllFilter($event)" ></ngx-slider ></ng-template>
+                    </ng-container>
+                </div>
+                <div class="alignBottom sliderPosition columnContainer">
+                    <div class="filterLabels">
+                        {{"Cancel Probability in:"| translate}}
+                    </div>
+                    <div style="display:flex; gap:1em;">
+                        <div  class="ki-number">
+                            <input type="number" class="knumber"  placeholder="{{startCancelProbValue}} %"
+                                [min]="startCancelProbValue"
+                                [max]="endCancelProbValue"
+                                (change)="binder($event);selectedCancelProb=true; AllFilter($event)" class="inputBox" step="0.01" name="CancelProb-input1"
+                                [(value)]="current_CancelProb_StartValue" ><!--[value]="current_CancelProb_StartValue"-->
+                        </div>
+                        <div  class="ki-number second">
+                            <input type="number" class="knumber"  placeholder="{{endCancelProbValue}}%"
+                                [min]="startCancelProbValue"
+                                [max]="endCancelProbValue"
+                                (change)="binder($event);selectedCancelProb=true; AllFilter($event)" class="inputBox" step="0.01"  name="CancelProb-input2"
+                                [(value)]="current_CancelProb_LastValue"> <!--[value]="current_CancelProb_LastValue"-->
+                        </div>
+                    </div>
+                    <ng-container  [ngSwitch]="display">
+                        <ng-template [ngSwitchCase]="1"><ngx-slider class="ngx-mtm-slider cancelProbSlider" [(value)]="current_CancelProb_StartValue" [(highValue)]="current_CancelProb_LastValue"
+                            [options]="options2"
+                            (userChangeEnd)="selectedCancelProb=true; AllFilter($event)"></ngx-slider ></ng-template>
+                        <ng-template [ngSwitchCase]="2"><ngx-slider class="ngx-mtm-slider cancelProbSlider" [(value)]="current_CancelProb_StartValue" [(highValue)]="current_CancelProb_LastValue"
+                            [options]="options2"
+                            (userChangeEnd)="selectedCancelProb=true; AllFilter($event)"></ngx-slider ></ng-template>
+                    </ng-container>
+                </div>
+                <div class="alignBottom sliderPosition columnContainer">
+                    <div class="filterLabels">
+                      {{'Protection Distance:' | translate}}
+                    </div>
+                    <div style="display:flex; gap:1em;">
+                        <div  class="ki-number">
+                            <input type="number" class="knumber"  placeholder="{{startBarrierDValue}} %"
+                                [min]="startBarrierDValue"
+                                [max]="endBarrierDValue" class="inputBox"
+                                (change)="binder($event);selectedBarDist=true; AllFilter($event)" step="0.01" name="BarrierD-input1"
+                                [(value)]="current_BarrierD_StartValue"
+
+                                ><!--[value]="current_BarrierD_StartValue"-->
+                                <!-- <span>%</span> -->
+                        </div>
+                        <div  class="ki-number second">
+                            <input type="number" class="knumber"  placeholder="{{endBarrierDValue}} %"
+                                [min]="startBarrierDValue"
+                                [max]="endBarrierDValue" class="inputBox"
+                                (change)="binder($event); selectedBarDist=true;AllFilter($event)" step="0.01" name="BarrierD-input2"
+                                [(value)]="current_BarrierD_LastValue"
+
+                                > <!--[value]="current_BarrierD_LastValue"-->
+                        </div>
+                    </div>
+                    <ng-container  [ngSwitch]="display">
+                        <ng-template [ngSwitchCase]="1"><ngx-slider class="ngx-mtm-slider cancelProbSlider" [(value)]="current_BarrierD_StartValue" [(highValue)]="current_BarrierD_LastValue"
+                            [options]="options3"
+                            (userChangeEnd)="selectedBarDist=true; AllFilter($event)"
+                            ></ngx-slider ></ng-template>
+                        <ng-template [ngSwitchCase]="2"><ngx-slider class="ngx-mtm-slider cancelProbSlider" [(value)]="current_BarrierD_StartValue" [(highValue)]="current_BarrierD_LastValue"
+                            [options]="options3" (userChangeEnd)="selectedBarDist=true; AllFilter($event)"
+                            ></ngx-slider ></ng-template>
+                    </ng-container>
+                </div>
+                <div class="alignBottom sliderPosition columnContainer">
+                    <div class="filterLabels">
+                        {{"Indicative Valuation:"| translate}}
+                    </div>
+                    <div style="display:flex; gap:1em;">
+                      <div  class="ki-number">
+                          <input [ngClass]="{'highlight-border': startIndValValue!=current_IndVal_StartValue}" type="number" class="knumber"  placeholder="{{startIndValValue}} %"
+                              [min]="startIndValValue"
+                              [max]="endIndValValue" class="inputBox" 
+                              (change)="binder($event) ;selectedIndVal=true; AllFilter($event)" step="0.01" name="IndVal-input1"  
+                              [(value)]="current_IndVal_StartValue"><!--[value]="current_IndVal_StartValue"-->
+                      </div>
+                      <div  class="ki-number second">
+                          <input [ngClass]="{'highlight-border': endIndValValue!=current_IndVal_LastValue}" type="number" class="knumber" placeholder="{{endIndValValue}} %"
+                              [min]="startIndValValue" 
+                              [max]="endIndValValue" class="inputBox"  
+                              (change)="binder($event) ;selectedIndVal=true; AllFilter($event)" step="0.01" name="IndVal-input2"  
+                              [(value)]="current_IndVal_LastValue"><!--[value]="current_IndVal_LastValue"-->
+                      </div>
+                  </div>
+                  <ng-container  [ngSwitch]="display">
+                    <ng-template [ngSwitchCase]="1"><ngx-slider class="ngx-mtm-slider cancelProbSlider" [(value)]="current_IndVal_StartValue" [(highValue)]="current_IndVal_LastValue" 
+                        [options]="options4"  
+                        (userChangeEnd)="selectedIndVal=true; AllFilter($event)"></ngx-slider ></ng-template>
+                    <ng-template [ngSwitchCase]="2"><ngx-slider class="ngx-mtm-slider cancelProbSlider" [(value)]="current_IndVal_StartValue" [(highValue)]="current_IndVal_LastValue" 
+                        [options]="options4" 
+                        (userChangeEnd)="selectedIndVal=true; AllFilter($event)"></ngx-slider ></ng-template>
+                </ng-container>
+                </div>
+               
+                <!-- Added by MuditB || 30-Aug-23 || End -->
+
+                <!-- <div>
+                    <div style="line-height: 17px; margin-right: 0.5em !important; font-size: 13px; font-family: var(--font-family) !important;margin-left: 14px;">
+                        AC prob >
+                    </div>
+                    <div>
+                        <span style="margin-right: 0.5em !important; font-size: 13px; font-family: var(--font-family) !important;">±</span>
+                        <input type="text" placeholder="xx.xx %" name="Group" class="filterIputs">
+                    </div>
+                </div>
+                <div>
+                    <div class="filterLabels">
+                        KI in Range
+                    </div>
+                    <div>
+                        <input type="text" placeholder="xx.xx %" name="Group" class="filterIputs">
+                    </div>
+                </div> -->
+                <!-- <div>
+                    <div class="filterLabels">
+                        Sort By
+                    </div>
+                    <div>
+
+
+                        <select  placeholder="Product Type" (change)="openMPGs($event)"  class="filterSelect">
+
+                            <option [ngValue]="i" (click)="selectedMPG=item" >Start Date </option>
+                            <option [ngValue]="i" (click)="selectedMPG=item" >AC Prob </option>
+                            <option [ngValue]="i" (click)="selectedMPG=item" >Obs near to far</option>
+                            <option [ngValue]="i" (click)="selectedMPG=item" >Maturity near to far </option>
+                            <option [ngValue]="i" (click)="selectedMPG=item" >KI near to far</option>
+
+                        </select>
+                    </div>
+                </div> -->
+                <!-- <td> <input type="text" placeholder="Subtutela" name="Group" class="filterIputs"></td> -->
+            </div>
+        </div>
+
+        <!-- Changes as discussed with Nitish K ||11-Oct-2023 -->
+        <div  class="labelRowContainer" >
+          <div class="filterTH labelDivWidth labelFilerBlock">
+            <span class="link eachRowFilter " (click)="refresh()" >{{"Clear All Filters" | translate}}</span>
+          </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filters end -->
+
+
+  <div class="container">
+      <div class="Calendar">
+        <!-- <div>
+
+          <div class="flexDisplay margin10">
+              <label style="line-height: 38px;margin-right: 0.5em !important;">Client</label>
+              <input id="txtShare" placeholder="Search RFQ"
+                          style="text-align: left;margin-left: 2.6em !important;margin-bottom: 0.1em !important;"
+                          tabindex="5" type="text">
+                 <img _ngcontent-oet-c7="" style="width:20px;height:20px;margin: 10px 10px 0px 10px"
+                  src="{{asseturl}}search.png">
+                </div>
+        </div> -->
+        <div class="box-calendar tilecolor">
+            <div class="content-container" style="margin-right: 10px">
+              <!-- Added by Jyoti S || 17-Aug-2023 -->
+               <div class="flex-container">
+                <div  *ngFor="let item of colorPalletLabelArr">
+                  <span style="width: 8px; height: 8px; padding: 8px; display: block; float: left; margin-right: 5px;border-radius: 50%;" [style.background-color]=item.color></span>
+                  <label style="float: left;display: block;">{{item.Title| translate}}</label>
+                </div> <!-- Changes done by Jyoti S || 11-Oct-2023 -->
+              </div>
+              <div class="flexDisplayColumm ">
+
+                <div class="calendarControlsContainer">
+                  <div style="width: 43%; padding-left: 5px;">
+                    <!-- <label style="line-height: 38px;margin-right: 0.5em !important;">Event Type</label> -->
+                    <!-- <select class="selectEvent" [(ngModel)]="eventType" (change)="getNotifications();getEventCount()">
+                    <select class="selectEvent" [(ngModel)]="eventType" (change)="getEventCount()">
+                      <option value="" disabled selected hidden style="color: gray;">Select Event Type</option>
+                      <option value="All">All</option>
+                      <option *ngFor="let e of eventTypeArr" [value]="e.value">
+                        {{e.value}}
+                    </option>
+                    </select> -->
+                    
+
+                  <app-custom-dropdown-multi-select [options]="eventTypeArr" 
+                  [displayText2]="'Select Event Type'| translate"  [pricerType] = "'dropdown'"
+                  [(ngModel)]="eventType" (selectOptionsEmitter)="eventCountFilter()" *ngIf="eventTypeArr?.length > 0 && eventTypeArr!='' && eventTypeArr!=undefined">
+                  </app-custom-dropdown-multi-select> 
+
+                  </div>
+                  <div class="year-dropdown" style="gap: 18px;">
+                      <div><button class="btnCalendarControls" (click)="prevMonth()">
+                        &lt;
+                      </button>
+                      </div>
+                    <div class="calendarTopTextContainer">
+                      <span class="calendarTopText" ngDefaultControl>{{Months[selectedMonth]| translate}}</span>
+                      <span (click)="hideYearDropdown()" style="cursor: pointer;" class="calendarTopText" name="activeYear" ngDefaultControl>{{
+                        selectedYear | translate
+                        }}</span>
+                    </div>
+                    <div>
+                      <button class="btnCalendarControls" (click)="nextMonth()">
+                        &gt;
+                      </button>
+                    </div>
+                    <div *ngIf="calenderLoader" class="calenderOverlay">
+                      <!-- <div *ngIf="calenderLoader"> -->
+                          <div class="loader-centerCal">
+                            <div class="multi-rippleCal">
+                              <div></div>
+                              <div></div>
+                            </div>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="year-dropdown"></div>
+                <div class="year-dropdown" *ngIf='showYearDropdown'>
+                      <div class="year-row">
+                        <div>
+                          <button class="btnCalendarControls" (click)="goToPreviousYear()">
+                           &lt;
+                            </button>
+                        </div>
+                        <div style="display: flex;gap: 12px;">
+                          <ng-container *ngFor="let year of yearRange; let i = index">
+                            <div
+                              class="year-option"
+                              (click)="changeYear(year)"
+                              [ngClass]="{ 'selected': currentDateYear === year }">
+                              {{ year | translate}}
+                            </div>
+                          </ng-container>
+                        </div>
+                          <div><button class="btnCalendarControls" (click)="goToNextYear()">
+                            &gt;
+                          </button></div>
+                      </div>
+                  </div>
+              </div>
+
+                <div class="calendarDatesContainer">
+                  <div class="days" *ngFor="let i of Days; let day = index">
+                    {{  i | translate }}
+                  </div>
+                  <!-- //Changes done by Jyoti S || to reduce slow rendering issue in SP Event Calendar || 06-Nov-2023 || START -->
+                  <div class="dates"  #dateId *ngFor="let i of counts; let j = index" [ngClass]="{
+                      'blankDate': i.DateNumber === 0,
+                      'dates-active1': todayDate === i.DateNumber && this.Months[todayMonth] == this.Months[i.month],
+                      'dates-deactivate': i.month != selectedMonth}">
+                      <div class="date-number" *ngIf="i.DateNumber !== 0" (click)="getNotificationsPopUp({Date:i.DateNumber,Month:i.month,Year:selectedYear,EventType:''});notificationsPopUp=true;" >{{ i.DateNumber }}</div>
+                      <div class="eventCount">
+                        <ng-container *ngFor="let event of i.events;" >
+                            <span class="pendingCount event-details countBg" *ngIf="event.Count !== 0"  [style.background-color]= event.Color 
+                            [ngStyle]="{'font-size' : ( event.Count > 99) ? '0.72em' : '0.75em'}" 
+                            style="cursor: pointer;color: white;"
+                            (click)="getNotificationsPopUp({Date:i.DateNumber,Month:i.month,Year:selectedYear,EventType:event.EventName});notificationsPopUp=true;">
+                            {{ event.Count| translate}}</span>
+                        </ng-container>
+                      </div>
+                      <!-- //Changes done by Jyoti S || to reduce slow rendering issue in SP Event Calendar || 06-Nov-2023 || END -->
+                  </div>
+                  <div *ngIf="notificationsPopUp" class="overlay notifyDiv">
+                    <div class="blocker" (click)="notificationsPopUp=false;"></div>
+                    <div *ngIf="notificationsPopUp" class="notificationsPopUp">
+                      
+                      <div class="notificationDiv">
+                        <div style="left: 0;">
+                          <span>{{"Notifications"| translate}}({{notificatonPopUpArr.length}})</span>
+                          <button class="button" (click)="copyNotificationExternal()">{{ "Copy External" | translate}}</button>
+                          <button class="button" (click)="copyNotificationISIN()">{{ "Copy ISIN" | translate}}</button>
+                          <span style="color: var(--text)" *ngIf="showSuccessMessage"> {{showMessageXML| translate}}</span>
+                        </div>
+                        <div class="closeDiv">
+                          <app-svg-icons [icon]="'close-icon'" [width]="'25'" [height]="'25'" (click)="notificationsPopUp=false;">
+                            </app-svg-icons>
+                          </div>
+                      </div>
+                      <div>
+                        <div class="notificationPopUpTable">
+                          <table>
+                            <thead>
+                              <tr>
+                                  <th>{{ "Date" | translate }}</th>
+                                  <th>{{ "Event" | translate }}</th>
+                                  <th>{{ "Product" | translate}}</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr *ngFor="let a of notificatonPopUpArr">
+                                  <td>{{a.EventDate | date: "dd-MMM-yyyy" | translate}}</td>
+                                  <td>{{a.EventName | translate}}</td>
+                                  <td>{{a.ProductName | translate}}</td>
+                                </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                      </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+
+
+          </div>
+          <!-- <div class="flex-container">
+            <div  *ngFor="let item of colorPalletLabelArr">
+              <span style="width: 8px; height: 8px; padding: 8px; display: block; float: left; margin-right: 5px;border-radius: 50%;" [style.background-color]=item.color></span>
+              <label style="float: left;display: block;">{{item.Title}}</label>
+            </div>
+          </div> -->
+
+            <div class="box-notification ">
+              <div class="notifications tilecolor flexDisplay">
+                  <app-custom-dropdown-multi-select [widthInput]="FilterWidthInputValue" [options]="eventTypeArr" style="width: 42% !important;"
+                  [displayText2]="'Filter By Event Type'"  [pricerType] = "'dropdown'"
+                  [(ngModel)]="eventTypeNotification" *ngIf="eventTypeArr?.length > 0 && eventTypeArr!='' && eventTypeArr!=undefined"
+                  (selectOptionsEmitter)="getFilterwiseNotifications()">
+                  </app-custom-dropdown-multi-select> 
+                  <!-- <select class="selectEvent" [(ngModel)]="eventTypeNotification" (change)="getFilterwiseNotifications();" style="width: 65% !important;">
+                    <option value="" disabled selected hidden style="color: gray;">Select Event Type</option>
+                    <option value="All">All</option>
+                    <option *ngFor="let e of eventTypeArr" [value]="e.value">
+                      {{e.value}}
+                  </option>
+                  </select> -->
+                  <div style="display:flex; flex-direction: row; justify-content: space-between;margin-right: 1rem" >
+                    <span class="notificationText">{{"Notifications" | translate }} ({{notificatonArr.length}})</span>
+                    <app-svg-icons [icon]="'xls'" [width]="'10'" [height]="'10'" class="exportToExcel" (click)="exportToExcel();"></app-svg-icons>
+                </div>
+              </div>
+                 <div class="notificationTable tilecolor" [ngClass]="{'notificationHeight':showFilterDropdown}">
+                   <table>
+                       <tr>
+                           <th>{{ "Date" | translate }}</th>
+                           <th>{{ "Event" | translate}}</th>
+                           <th>{{ "Product" | translate }}</th>
+                       </tr>
+                       <ng-container *ngFor="let a of notificatonArr; let i = index" >
+                       <tr *ngIf="i >= pageFirstRecord - 1 && i <= pageLastRecord - 1">
+                           <td>{{a.date | date: "dd-MMM-yyyy" | translate}}</td>
+                           <td>{{a.event | translate}}</td>
+                           <td title={{a.product}}>{{a.product | translate}}</td>
+
+                       </tr>
+                      </ng-container>
+                   </table>
+                    <!-- Added by Jyoti S || 21-Sep-2023 || START  -->
+                    <div class="custom-pagination">
+                      <div>
+                          {{pageFirstRecord | translate}}-{{pageLastRecord | translate}} {{"of" | translate}} {{noOfRecords | translate}}
+                      </div>
+                      <div *ngIf="pageFirstRecord > 1">
+                              <app-svg-icons class="arrow-img left-arrow" style="rotate: 180deg;" (click)="getPageInfo({'pageNo':pageNo-1,'pageSize':pageSize, 'reload':false,'length':noOfRecords})"
+                              [icon]="'arrow'" [width]="'15'" [height]="'15'" [fill]="'var(--btn-border)'"></app-svg-icons>
+                      </div>
+                      <div *ngIf="pageFirstRecord < noOfRecords && pageLastRecord < noOfRecords">
+                              <app-svg-icons class="arrow-img left-arrow" (click)="getPageInfo({'pageNo':pageNo+1,'pageSize':pageSize, 'reload':false,'length':noOfRecords})"
+                              [icon]="'arrow'" [width]="'15'" [height]="'15'" [fill]="'var(--btn-border)'"></app-svg-icons>
+                      </div>
+                  </div>
+              <!-- Added by Jyoti S || 21-Sep-2023 || END  -->
+
+                 </div>
+
+              </div>
+      </div>
+      <div class="Charts">
+          <div class="container1">
+              <!-- <div class="Subheadline">
+                  <h4>Summary</h4>
+              </div> -->
+              <div class="cards">
+                  <div class="tiles">
+                      <div [style.background-color]=this.colors[0] class="tile" id="tile-1" (click)="TileSelected('tile-1')"
+                       [ngClass]="{'current': selectedCard === 'tile-1'}">
+                        <div class="Card" >
+                          <div class="CardIcon"><img class="summaryIcon" src="{{asseturl}}TotalNotional.png"></div>
+                          <div class="CardTitle">{{ "Total Notional" | translate }}</div>
+                        </div>
+                        <!--Varsha G || || FSLINT-64  || 30-May-2024-->
+                        <div class="briefInfo" *ngIf="notionalCount">{{notionalCount}}&nbsp;{{this.intDashboard.currencyPreference}}</div>
+                        <div class="briefInfo" *ngIf="!notionalCount">0&nbsp;{{this.intDashboard.currencyPreference}}</div>
+                      </div>
+
+                      <div class="tile" [style.background-color]=this.colors[1] id="tile-2"
+                      (click)="TileSelected('tile-2')"
+                       [ngClass]="{'current': selectedCard === 'tile-2'}">
+                        <div class="Card">
+                          <div class="CardIcon"><img class="summaryIcon" src="{{asseturl}}TradeCount.png"></div>
+                          <div class="CardTitle">{{"Trade Count" | translate}}</div>
+                        </div>
+                        <div class="briefInfo" *ngIf="tradeCount">{{tradeCount}}</div>
+                        <div class="briefInfo" *ngIf="!tradeCount">0</div>
+                      </div>
+
+                      <div class="tile" [style.background-color]=this.colors[2] id="tile-3"
+                      (click)="TileSelected('tile-3')"
+                      [ngClass]="{'current': selectedCard === 'tile-3'}">
+                        <div class="Card">
+                          <div class="CardIcon"><img class="summaryIcon" src="{{asseturl}}Time.png"></div>
+                          <div class="CardTitle">{{"Time To Maturity(Avg)" | translate}}</div>
+                        </div>
+                        <div class="briefInfo" *ngIf="timeToMaturityCnt && nanTTMflag == 0">
+                          <div class="NotionalAmt">{{timeToMaturityCnt}}&nbsp;{{"Months"| translate}}</div>
+                        </div>
+                        <div class="briefInfo" *ngIf="!timeToMaturityCnt || nanTTMflag == 1">0&nbsp;Month</div>
+                      </div>
+
+                      <div class="tile" [style.background-color]=this.colors[3] id="tile-4"
+                      (click)="TileSelected('tile-4')"
+                      [ngClass]="{'current': selectedCard === 'tile-4'}">
+                        <div class="Card">
+                          <div class="CardIcon"><img class="summaryIcon" src="{{asseturl}}Time.png"></div>
+                          <div class="CardTitle">{{"Total MtM" | translate}}</div>
+                        </div>
+                        <!--Varsha G || || FSLINT-64  || 30-May-2024-->
+                        <div class="briefInfo" *ngIf="totalMtm">{{totalMtm}}&nbsp;{{this.intDashboard.currencyPreference| translate}}</div>
+                        <div class="briefInfo" *ngIf="!totalMtm">0&nbsp;{{this.intDashboard.currencyPreference}}</div>
+                      </div>
+
+                      <div class="tile" id="tile-5"
+                      (click)="TileSelected('tile-5')"
+                      [ngClass]="{'current': selectedCard === 'tile-5'}" *ngIf="!this.MUFlag">
+                        <div class="Card">
+                          <div class="CardIcon"><img class="summaryIcon" src="{{asseturl}}Time.png"></div>
+                          <div class="CardTitle">{{"Total MU" | translate}}</div>
+                        </div>
+                        <div class="briefInfo" *ngIf="totalMU">
+                          <!-- <div class="NotionalAmt">100K EUR</div> -->
+                        <!-- </div> -->
+                        {{totalMU}}&nbsp;{{this.intDashboard.currencyPreference| translate}}</div>
+                        <div class="briefInfo" *ngIf="!totalMU">0&nbsp;{{this.intDashboard.currencyPreference}}</div><!--Varsha G || || FSLINT-64  || 30-May-2024-->
+                      </div>
+                      <!-- <div class="tile" id="tile-4" (click)="TileSelected('tile-4')"
+                       [ngClass]="{'current': selectedCard === 'tile-4'}">
+                        <div class="Card">
+                          <div class="CardIcon"><img src="{{asseturl}}TotalNotional.png"></div>
+                          <div class="CardTitle">Total Ind. Valuation</div>
+                        </div>
+                        <div class="briefInfo">{{notionalCount}}</div>
+                      </div>
+                      <div class="tile" id="tile-5" (click)="TileSelected('tile-5')"
+                       [ngClass]="{'current': selectedCard === 'tile-5'}">
+                        <div class="Card">
+                          <div class="CardIcon"><img src="{{asseturl}}TotalNotional.png"></div>
+                          <div class="CardTitle">Total MU</div>
+                        </div>
+                        <div class="briefInfo">{{notionalCount}}</div>
+                      </div> -->
+                      <!-- Added new tiles || Jyoti S || 30-Aug-2023 -->
+                    </div>
+              </div>
+              <div class="piechart">
+                  <div *ngIf="subpages.length > 0">
+                    <div class="tabs-pages-interactive">
+                      <ng-container *ngFor="let item of subpages">
+                        <div class="tabs" *ngIf="item.displayYN === true" [ngClass]="{ 'tab-active': item.ActiveYN }"
+                          (click)="eqchangeProduct(item.Name, 'click')">
+                          {{ item.Name | translate }}
+                          <div *ngIf="(item.Name==='Aggregated Notional') && (item.ActiveYN==true)" class="helpIconDiv">
+                            <div class="tooltip bottom">
+                              <!-- <img src="../../../assets/App_Resources/App_Resources/Customer_Statement_Icon/Help_Icon.png" alt="Help icon"> -->
+                              <svg width="17" height="17" viewBox="0 0 30 30" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                                xmlns:xlink="http://www.w3.org/1999/xlink" fill="#777" stroke="#777">
+                                <g id="SVGRepo_bgCarrier" stroke-width="0" />
+                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
+                                <g id="SVGRepo_iconCarrier">
+                                  <g id="icomoon-ignore"> </g>
+                                  <path
+                                    d="M16 2.672c-7.361 0-13.328 5.967-13.328 13.328s5.967 13.328 13.328 13.328 13.328-5.967 13.328-13.328c0-7.361-5.967-13.328-13.328-13.328zM16 28.262c-6.761 0-12.262-5.5-12.262-12.262s5.5-12.262 12.262-12.262 12.262 5.5 12.262 12.262c0 6.761-5.5 12.262-12.262 12.262z"
+                                    fill="#777"> </path>
+                                  <path
+                                    d="M15.955 9.013c-2.706 0-4.217 1.672-4.236 4.322h1.176c-0.037-1.922 0.97-3.332 3.005-3.332 1.455 0 2.668 1.026 2.668 2.519 0 0.97-0.523 1.754-1.213 2.407-1.418 1.316-1.815 1.935-1.887 3.738h1.191c0.070-1.635 0.034-1.602 1.461-3.029 0.952-0.896 1.623-1.792 1.623-3.173 0-2.164-1.717-3.452-3.787-3.452z"
+                                    fill="#777"> </path>
+                                  <path
+                                    d="M16 20.799c-0.588 0-1.066 0.477-1.066 1.066 0 0.589 0.478 1.066 1.066 1.066s1.066-0.477 1.066-1.066c0-0.588-0.477-1.066-1.066-1.066z"
+                                    fill="#777"> </path>
+                                </g>
+                              </svg>
+                              <span class="tooltip-content">
+                                <p>{{"Mouse Scroll: Zoom In/Out" | translate}}</p>
+                                <p>{{"Ctrl + Mouse Scroll: Move Left/Right" | translate}}</p>
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </ng-container>
+                    </div>
+                  </div>
+                  <div *ngFor="let item of subpages">
+                      <ng-container [ngSwitch]="item.Name">
+                        <ng-template [ngSwitchCase]="'Concentration'" *ngIf="item.ActiveYN">
+                          <div class="container2">
+                              <div class="Risk ">
+                                <!-- <ng-template *ngIf="this.SectorChartData.length > 0"> -->
+                                  <div class="graphContainer">
+                                    <p class="chart-title">{{"Risk Concentration" | translate}} - {{this.measure| translate}}</p>
+                                    <canvas id="totalNotional" chart-options="options" style="height:100%;width: 100% !important;
+                                            justify-self: center;">
+                                    </canvas>
+                                  </div>
+                                <!-- </ng-template> -->
+                              </div>
+                              <div class="Underlying ">
+                                <!-- <ng-template *ngIf="this.SectorChartData.length > 0"> -->
+                                  <div class="graphContainer">
+                                    <p class="chart-title">{{"Underlying Summary" | translate}} : {{this.selectedConcentration| translate}}</p>
+                                    <canvas id="underlyings" chart-options="options" style="height:100%;width:100% !important;
+                                             justify-self: center;">
+                                    </canvas>
+                                  </div>
+                                <!-- </ng-template> -->
+                              </div>
+                                                     <!-- <div class="Issuer">
+                                                        <p style="color: #ffffff;" class="chart-title">Issuer Summary</p>
+                                                        <canvas id="issuer" style="height:450px !important;width: 450px !important;
+                                                                justify-self: center;">
+                                                        </canvas>
+                                                    </div> -->
+                          </div>
+                        </ng-template>
+                        <ng-template [ngSwitchCase]="'Aggregated Notional'" *ngIf="item.ActiveYN">
+                          <div class="container3">
+                            <div class="graph">
+                              <div class = "graphContainer">
+                                <div class="graphTop">
+                                <div [class.pinViewDiv]="true" [class.viewClicked]="this.lockView" >
+                                  <div class = "pinViewIcon" (click)="togglelockViewFlag()">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                    <path d="M4.146.146A.5.5 0 0 1 4.5 0h7a.5.5 0 0 1 .5.5c0 .68-.342 1.174-.646 1.479-.126.125-.25.224-.354.298v4.431l.078.048c.203.127.476.314.751.555C12.36 7.775 13 8.527 13 9.5a.5.5 0 0 1-.5.5h-4v4.5c0 .276-.224 1.5-.5 1.5s-.5-1.224-.5-1.5V10h-4a.5.5 0 0 1-.5-.5c0-.973.64-1.725 1.17-2.189A5.921 5.921 0 0 1 5 6.708V2.277a2.77 2.77 0 0 1-.354-.298C4.342 1.674 4 1.179 4 .5a.5.5 0 0 1 .146-.354zm1.58 1.408-.002-.001.002.001zm-.002-.001.002.001A.5.5 0 0 1 6 2v5a.5.5 0 0 1-.276.447h-.002l-.012.007-.054.03a4.922 4.922 0 0 0-.827.58c-.318.278-.585.596-.725.936h7.792c-.14-.34-.407-.658-.725-.936a4.915 4.915 0 0 0-.881-.61l-.012-.006h-.002A.5.5 0 0 1 10 7V2a.5.5 0 0 1 .295-.458 1.775 1.775 0 0 0 .351-.271c.08-.08.155-.17.214-.271H5.14c.06.1.133.191.214.271a1.78 1.78 0 0 0 .37.282z"/>
+                                    </svg>
+                                  </div>
+                                  <!-- <div class="material-icons pinViewIcon" (click)="togglelockViewFlag()">push_pin</div> -->
+                                  <div class="pinViewText" id="pinViewText" (click)="togglelockViewFlag()">{{"Lock Mode"| translate}}</div>
+                                </div>
+                              </div>
+                                <div class="AggregatedNotionalGraph">
+                                  <canvas id="chart" chart-options="options"
+                                    style="width: 100%!important;justify-self: center;" (mouseenter)="setFlag1()"(mouseleave)="setFlag0()" (wheel)="chartOnWheels($event)">
+                                  </canvas>
+                              </div>
+                            </div>
+                          </div>
+                          </div>
+                        </ng-template>
+                      </ng-container>
+                  </div>
+
+              </div>
+          </div>
+      </div>
+
+
+
+  </div>
+</div>
+</div>
+<div *ngIf="showViewStatusPopUp" class="view-status-overlay">
+  <div class="view-status-content-container-popup">
+      <app-svg-icons *ngIf="!ViewFlag" [icon]="'checked-icon'" style="justify-content: center;margin-top: 30px; " [width]="'40'" [height]="'40'" [fill]="'var(--green-bg-lg)'"></app-svg-icons>
+      <app-svg-icons *ngIf="ViewFlag && ViewStatusMsg.includes('delete')" [icon]="'delete'" style="justify-content: center;margin-top: 30px;" [width]="'35'" [height]="'35'" [fill]="'var(--red)'"></app-svg-icons>
+      
+      <div class="view-status-msg">
+          <span [style.color]="!ViewFlag? 'var(--green-bg-lg)' : 'var(--red)'" style="font-size: 1.6rem;">{{ViewStatusMsg}}</span>
+      </div>
+  </div>
+</div>

@@ -1,0 +1,45 @@
+.mainContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    height: 40vh;
+    .headerRow {
+        grid-gap: 15px;
+        gap: 15px px;
+        display: grid;
+        grid-template-columns: 1fr 1fr auto;
+        .header {
+            font-size: 20px;
+        }
+        .pair {
+            color: var(--active);
+        }
+        .tenorBtncontainer {
+            display: flex;
+            gap: 5px;
+            .tenorBtn {
+                // background-color: var(--checkbox);
+                background-color: var(--input-bg);
+                width: 40px;
+                height: 28px;
+                border-radius: 3px;
+                align-self: center;
+                font-size: 18px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                cursor: pointer;
+            }
+            .selectedTenorBtn {
+                border: 1px solid var(--active);
+            }
+        }
+    }
+    .graphContainer {
+        height: 31vh;
+        width: 100%;
+        border: 1px solid var(--theme-hover);
+        border-radius: 3px;
+        padding: 3px;
+    }
+}

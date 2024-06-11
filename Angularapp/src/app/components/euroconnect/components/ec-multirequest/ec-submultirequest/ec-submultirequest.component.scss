@@ -1,0 +1,572 @@
+app-submultirequest {
+    display: table-row !important;
+}
+
+
+/* #SubmultirequestComponent{
+    display: table-row;
+} */
+
+table {
+    border-collapse: separate;
+    border-spacing: 0.2em 0.2em;
+    font-size: 16px !important;
+    background-color: #fff;
+}
+
+tr {
+    border-bottom: 1px solid black !important;
+}
+
+td,
+th {
+    width: max-content;
+    padding: 5px;
+    /* min-width: 9em; */
+}
+td {
+    margin: 10px !important;
+    border-radius: 2px;
+    text-align: center;
+    padding: 4px;
+    border: 1px solid var(--border) !important;
+    vertical-align: middle;
+    height: 117px !important;
+    font-size: 12px;
+    white-space: normal;
+}
+
+tr:nth-child(even) {
+    background-color: #f5f5f548;
+}
+
+tr:nth-child(odd) {
+    background-color: #3c3c3c !important;
+}
+
+tr:hover {
+    // background-color: #bbbbbb21;
+}
+
+select {
+    //padding-left: 0 !important;
+    padding: 0.275em 0px 0.275em 0px !important;
+    text-align-last: center !important;
+}
+
+select {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    -webkit-appearance: button;
+    -moz-appearance: none;
+    background-image: none !important;
+    background-position: none;
+    background-size: 0;
+    background-repeat: initial;
+}
+
+input[type="text"],
+select,
+input[type=date] {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    min-width: 8em !important;
+    width: 100%;
+    max-width: none !important;
+    
+    // background-color: #fff !important;
+    border-radius: 0 !important;
+    // color : gray !important;
+    //border-bottom commented and margin-bottom added by SandipA @24-Mar-2023
+    //border-bottom: 1px solid var(--border) !important;
+    border: solid 1px var(--btn-border);
+    margin-bottom: 3px;
+}
+
+input[type="text"] {
+    /* max-width: 9em !important; */
+    //Added by SandipA @24-Mar-2023 
+    text-align: right;
+}
+
+input[type=date] {
+    max-width: 9em !important;
+}
+
+select {
+    /* width: 160px !important; */
+}
+
+input[type=date] {
+    text-align: left;
+    width: 70%;
+}
+
+:focus {
+    /* box-shadow: 2px 2px 2px 1px rgba(131, 131, 131, 0.6); */
+    box-shadow: 1px 1px 1px 1px rgba(131, 131, 131, 0.6);
+    outline: none !important;
+}
+
+.multiReq {
+    margin-top: 0.4%;
+    min-width: 1700px;
+}
+
+.paymentdateTxt {
+    text-align: center;
+}
+
+/* th,
+tr,
+td {
+    font-size: 16px !important;
+} */
+
+.trheadergeight {
+    height: 60px;
+}
+
+button {
+    border: none;
+    outline: none;
+}
+
+
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: fixed;
+    background-color: #f1f1f1;
+    min-width: 160px;
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 6px 8px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {
+    background-color: #ddd;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown:hover .dropbtn:hover {
+    background-color: #1a3863;
+}
+
+.pageTitle {
+    margin-top: 3.7%;
+}
+
+.fontSize {
+    font-size: 16px !important;
+}
+
+.SelectorBox {
+    width: 320px !important;
+    max-width: 20em;
+    position: absolute;
+}
+.SelectorBox {
+    height: auto;
+    max-height: 10em;
+    margin-left: 0 !important;
+    padding-left: 2px;
+    overflow-y: scroll;
+    position: absolute;
+    float: left;
+    z-index: 20;
+    background: white;
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    border-bottom: 1px ridge #ccc;
+    cursor: pointer;
+    border: none !important;
+    //background-color: rgb(238, 238, 238);
+    background-color: var(--select-dropdown-bg);
+    // Commented by SandipA for underlying popup @03-Apr-2023
+    // padding-top: 0.275em;
+    // padding-bottom: 0.275em;
+    margin-top: 0.4em;
+    //color: #676765;
+    color: var(--select-text);
+    border-radius: 0.3em;
+    text-align: left;
+    font-size: 1em;
+    
+    font-family: var(--font-family) !important;
+}
+//Added by AdilP || FIN1EURINT-584 || 29-08-2023
+.SelectorBox>a>div:hover {
+    background: var(--dropdown-hover);
+    color: var(--dropdown-hover-text);
+}
+
+// .sharebasket {
+//     background:var(--input-bg);
+//     background-size: 100% 100%;
+//     background-position-x: center;
+//     background-position-y: center;
+//     background-repeat: no-repeat;
+//     height: 2em;
+//     min-width: 6.5em;
+//     vertical-align: middle;
+//     color: var(--btn-bg);
+//     text-align: center;
+//     font-size: 12px !important;
+//     border-radius: 3px;
+//     cursor: pointer;
+//     margin: 0.5em 0.3em 0.2em 0.3em;
+//     font-weight: 500;
+//     font-size: 12px !important;
+// }
+.sharebasket {
+    background-color: var(--input-bg);
+    color: var(--text);
+    background-size: 100% 100%;
+    background-position-x: center;
+    background-position-y: center;
+    background-repeat: no-repeat;
+    height: 2em;
+    min-width: 5em;
+    vertical-align: middle;
+    // color: white;
+    text-align: center;
+    border-radius: 0.1em;
+    cursor: pointer;
+    margin: 0 0;
+    border: none;
+    font-weight: 500;
+    font-family: var(--font-family) !important;
+}
+
+.longText {
+    min-width: 16em !important;
+    /* width: 320px !important; */
+    max-width: 20em !important;
+}
+
+.deleteCol {
+    width: 55px !important;
+    min-width: 55px !important;
+    max-width: 55px !important;
+    border: none !important;
+    background-color: var(--table-header-bg)!important;
+}
+
+.tenorBox {
+    //width changed by SandipA @28-Mar-2023
+    // width: 25% !important;
+    width: 30% !important;
+    min-width: 3em !important;
+    padding-left: 5px !important;
+    padding-right: 5px !important;
+}
+
+.adTxt {
+    width: 30% !important;
+    min-width: 3em !important;
+}
+
+.sticky-col {
+    position: sticky;
+    // position: -webkit-sticky;
+    background-color: var(--containers);
+    z-index: 1;
+}
+
+.third-col {
+    left: 190px
+}
+
+input:disabled,
+select:disabled {
+    // background-color: #f3f3f3 !important;
+}
+
+.infoNote {
+    margin-left: 0.5em !important;
+    margin-top: -3.5em !important;
+}
+
+.triggerTable {
+    /* background-color: #fff !important;
+    box-shadow: 0px 2px 7px rgba(136, 136, 136, 0.4) !important;
+    border: 1px solid #ccc !important;
+    border-radius: 8px !important;
+    padding: 10px !important;
+    position: absolute !important;
+    z-index: 2 !important;
+    width: auto !important;
+    max-height: 400px !important;
+    overflow-y: auto !important;
+     */
+    background-color: #fff !important;
+    box-shadow: 0px 2px 7px rgba(136, 136, 136, 0.4) !important;
+    border: 1px solid #ccc !important;
+    border-radius: 8px !important;
+    padding: 10px !important;
+    position: absolute !important;
+    z-index: 2 !important;
+    width: auto !important;
+    max-height: 200px !important;
+    overflow-y: auto !important;
+    top: -170px;
+    left: 20px;
+}
+
+.TSlink {
+    text-decoration: underline;
+}
+
+.TSlink {
+    text-decoration: underline;
+    color: #4180c3;
+    cursor: pointer;
+    /* line-height: 13px; */
+}
+
+.TSlink:hover {
+    color: #0056b3;
+    text-decoration: underline;
+}
+
+.tdRight {
+    text-align: right !important;
+}
+
+.popuptr:nth-child(odd) {
+    background-color: #d6d6d67c !important;
+}
+
+.popuptr:hover {
+    background-color: #bbbbbbce !important;
+}
+
+.popuptr:nth-child(odd):hover {
+    background-color: #bbbbbbce !important;
+}
+
+.popuptd,
+.popupth {
+    width: auto !important;
+    padding: 5px !important;
+}
+
+.popupth {
+    background-color: #6c757d !important;
+    color: #ffffff !important;
+    font-weight: 500 !important;
+    margin: 5px !important;
+    padding: 5px 15px !important;
+    border-radius: 2px !important;
+    text-align: center !important;
+}
+
+.popuptd {
+    background-color: rgba(243, 241, 241, 0.425) !important;
+    margin: 10px !important;
+    padding: 5px 5px !important;
+    border-radius: 2px !important;
+    /* text-align: left !important; */
+    color: #343a40 !important;
+}
+
+.menu-container ul {
+    padding: 0px;
+    margin: 0px;
+    border: 1px solid black;
+    background-color: gray;
+}
+
+.menu-container ul:hover {
+    position: absolute;
+    margin-top: -10px;
+    width: calc((100% - 40px) / 5);
+}
+
+.menu-container ul li {
+    display: none;
+    list-style-image: none;
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+}
+
+.menu-container ul:hover li {
+    color: red;
+    display: block;
+    margin-bottom: 0px;
+}
+
+.multiReplyList {
+    font-size: 26px !important;
+    color: grey;
+    font-weight: 500;
+}
+
+.tdalignCenter {
+    vertical-align: middle;
+    //Commented by SandipA for container-expanded and collapse || 05-04-23
+    // width: 142px;
+}
+
+h6,
+.h6 {
+    font-size: 13px;
+}
+
+//Changed by SandipA @23-Mar-2023
+:host{display: table-row; }
+// Added by SandipA for input:active @30-Mar-2023
+textarea:active, textarea:focus, select:active, input:active, select:focus, input:focus{
+    border: solid 1px var(--light-gray) !important;
+    
+  }
+
+  .topleftcorner{
+    position: absolute;
+    top: 3px;
+    left: 3px;
+}
+// Added by SandipA || 20-Apr-2023
+.dateLabel {
+    position: relative;
+    margin-left: 4px !important; 
+    width: 117px !important;
+    max-width: 117px !important;
+    min-width: 117px !important;
+    color-scheme: var(--calendar-bg-theme);
+    span {
+      position: absolute;
+      left: 10px;
+      top: 10px;
+      font-size: 13px
+    }
+}
+//Added by SandipA for share selection in underlying section || 25-Apr-2023 ||START
+.row-grid-1{
+    display: flex;
+    flex-wrap: wrap;
+    max-width: fit-content;
+    gap: 6px;
+    margin: 0.5em 0.5em 0.5em 4.0em !important;
+}
+
+.shareName {
+    background-color: transparent;
+    color: var(--btn-bg);
+    border: none;
+    outline: none;
+    padding: 0 7px;
+}
+
+.cancel-icon{
+    padding: 7px;
+}
+//Added by SandipA for share selection in underlying section || 25-Apr-2023 ||END
+//Added by SandipA for FIN1EURINT-121 || 03-May-2023 ||START
+.topcorner{
+    position: absolute;
+    top: 3px;
+    right: 5px;
+}
+
+.infoMulti {
+    width: 18px;
+    height: 18px;
+    -webkit-filter: invert(50%);
+    filter: invert(50%);
+    cursor: pointer;
+    margin: auto;
+    margin-top: 8px;// Changed by Varsha G ||29-Mar-2023
+  }
+  
+  .infodivMulti {
+    height: 0;
+    display: none;
+    position: relative;
+  }
+  
+  .infoMulti + .infodivMulti {
+    display: inline-block;
+    position: absolute;
+    margin-top: 18px;
+    margin-left: -8px;
+  }
+  
+  .infoNote {
+    background-color: var(--infoNote-bg-color);//Changed by Varsha G || 03-Apr-2023
+    box-shadow: 0 2px 7px var(--container-shadow) !important;
+    border: 1px solid var(--infoNote-border);//Changed by Varsha G || 03-Apr-2023
+    border-radius: 8px;
+    padding: 10px;
+    position: absolute;
+    z-index: 2;
+    width: 150px;
+    /* max-height: 200px; */
+    /* display: none; */
+    margin-left: 1em;
+  }
+  
+  .infoNote {
+    display: inline-block;
+  }
+  //Added by SandipA for FIN1EURINT-121 || 03-May-2023 ||END
+  //START || Added by SandipA for FIN1EURINT-301 || 09-May-2023
+  .loadingImg {
+    margin: 40vh auto;
+    width: 150px;
+}
+.loading {
+    pointer-events: none !important;
+    position: fixed;
+    cursor: not-allowed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 2050;
+    background-color: #ffffff77;
+    text-align: center;
+    opacity: 1;
+}
+.col-12 {
+    flex: 0 0 100%;
+    max-width: 100%;
+}
+//END || Added by SandipA for FIN1EURINT-301 || 09-May-2023
+
+// FIN1EURINT-104 : Participation pay off addition in 1Europe
+input[type="date"]::-webkit-datetime-edit{
+    display: block !important;
+}
+
+.pageload-overlay {
+    position: fixed;
+    top: 114px;
+    bottom: 0;
+    left: 268px;
+    right: 0;
+    background-color: var(--overlay-bg);
+    transition: opacity 500ms;
+    visibility: visible;
+    opacity: 1;
+    z-index: 100;
+    width: auto;
+    height: auto;
+}

@@ -1,0 +1,834 @@
+<div
+  *ngIf="!showSidebar && this.userType !== 'NEWUSER' && !isFirstCustomerLogin"
+  class="login-background"
+>
+  <app-slideshow></app-slideshow>
+</div>
+
+<nav class="nav" *ngIf="showSidebar">
+  <!-- SH CAPITAL -->
+  <div
+    class="nav-header"
+    style="height: 56px; text-align: center; display: flex"
+    *ngIf="CompanyLogo === 'SHC'"
+  >
+    <div class="stanhope-logo"></div>
+    <div class="vhLine"></div>
+    <app-svg-icons
+      class="bluewater-logo"
+      [icon]="'blue-water-horizontal'"
+      [width]="'212'"
+      [height]="'36'"
+    >
+    </app-svg-icons>
+  </div>
+
+  <!-- GATEWAY MARKETS -->
+  <div
+    class="nav-header"
+    style="height: 56px; text-align: center; display: flex"
+    *ngIf="CompanyLogo === 'GWM'"
+  >
+    <app-svg-icons
+      class="gateway-logo"
+      [icon]="'gateway-markets-horizontal'"
+      [width]="'338'"
+      [height]="'55'"
+    >
+    </app-svg-icons>
+  </div>
+  
+  <!-- Santander Logo added by SandipA @19-Oct-23 -->
+  <!--&& conition added for FSLINT-63|| 20-May-2024|| Apurva K -->
+  <div
+    class="nav-header"
+    style="height: 56px; text-align: center; display: flex"
+    *ngIf="CompanyLogo === 'client'"
+  >
+    <app-svg-icons *ngIf="this.homeEntityId != this.logoHiddenForEntity"
+      class="gateway-logo"
+      [icon]="'client-logo'"
+      [width]="'230'"
+      [height]="'55'"
+    >
+    </app-svg-icons>
+  </div>
+
+  <!-- FINIQ -->
+  <div
+    class="nav-header"
+    style="height: 56px; text-align: center; display: flex"
+    *ngIf="CompanyLogo === 'FinIQ'"
+  >
+    <p
+      style="
+        text-align: center;
+        font-family: 'Times New Roman', Times, serif;
+        font-size: 45px;
+        color: white;
+        margin-left: 67px;
+      "
+    >
+      FinIQ
+    </p>
+  </div>
+
+  <div class="nav-container" style="height: 56px">
+    <div class="flex-spacer"></div>
+
+    <!-- <div class="openWebApp" title="Web App">
+      <a
+        href="http://52.163.118.116/FinIQWebApp/finIQAppLogin.aspx?ReturnUrl=%2ffiniqwebapp"
+        target="_blank"
+        rel="noopener noreferrer"
+        ><app-svg-icons
+          [icon]="'dealer2'"
+          [width]="20"
+          [height]="20"
+          style="padding-right: 10px"
+        ></app-svg-icons
+      ></a>
+    </div> -->
+
+    <div class="nav-bar-contents" (clickOutside)="ClosePopup($event)">
+      <!-- <div class="ccy-selector-container">
+        <span style="margin-top: 2px">
+      
+      
+          <img class="ccyFlag" [src]="
+                    
+                    
+                    './assets/Flags_Circular/' +
+                    BankBaseCCY +
+                    '.png'
+                  " alt="img" />
+        </span>
+        <label for="">
+          <span style="display: none">Bank Base CCy</span>
+          <input class="ccy ccy-selector all-copy" [value]="BankBaseCCY" [(ngModel)]="BankBaseCCY" (click)="toggleShowCcy()"
+            (keydown.ArrowUp)="
+                    selectedIndex = commonApi.moveUpSelectionCcy(
+                      $event,
+                      selectedIndex
+                    )
+                  " (keydown.ArrowDown)="
+                    selectedIndex = commonApi.moveDownSelectionCcy(
+                      $event,
+                      selectedIndex
+                    )
+                  " (keydown.enter)="changeBankBaseCCYonEnter($event)"
+            (keypress)="gotoccy($event, BankBaseCCY, selectedIndex)" />
+        </label>
+        <div *ngIf="showCcy" class="sortby">
+          <label class="setting-label">Select Currency:</label>
+          <div class="setting-grid">
+            <div class="ccy" *ngFor="let item of CurrencyList; let i = index" [ngClass]="{ ccyselected: i === selectedIndex }"
+              (click)="insertBankBaseCCY(item.Code); showCcy = !showCcy">
+              <div class="ccy-img">
+                <img class="ccyFlag" [src]="
+                          
+                         
+                          './assets/Flags_Circular/' +
+                          item.Code +
+                          '.png'
+                        " alt="ccy" />
+      
+              </div>
+              <div class="ccy-text" (click)="insertBankBaseCCY(item.Code); showCcy = !showCcy" [attr.data-MFData]="item.Code"
+                (keydown.enter)="changeBankBaseCCYonEnter(item.Code)">
+                {{ item.Code }}
+              </div>
+            </div>
+      
+          </div>
+      
+        </div>
+      </div> -->
+
+      <!-- <div *ngIf="showNotification">
+       
+        <div class="box arrow-top">
+          <span style="padding-left: 10px"> Notification </span>
+
+          <div class="notification-content">
+            <div
+              class="notificationBox arrow-bottom"
+              *ngFor="let item of notificationData"
+            >
+              {{ item.Description }}.
+            </div>
+          </div>
+        </div>
+      </div> -->
+
+      <!--Start - Added by Apurva K|| 06-Nov-2023 || FSLINT-15 -->
+      <div >
+        <span style="color:white;">
+          <span style="color:white;font-weight: 600;">
+            {{this.infromationUpdatedOnTime}}
+            <!-- {{ "Information updated on" | translate }}: -->
+          </span>
+          <!-- {{ lastUpdatedAt| date:'dd MMM y' }} at {{ lastUpdatedAt| date: 'h:mm' }}h CET -->
+          </span
+        >
+      </div>
+  <!--End - Added by Apurva K|| 06-Nov-2023 || FSLINT-15 -->
+
+      <div class="setting-box" *ngIf="showSettings">
+        <!--Start - Added by Varsha G || User currency preference || FSLINT-64 || 30-May-2024 -->
+        <div class="currency-div" *ngIf="CompanyLogo === 'client'">
+          <label class="setting-label">Set Currency:</label>
+          <select [(ngModel)] = "intDashboard.currencyPreference" (change)="CurrPreferenceChanged($event)">
+            <option *ngFor="let c of currencies" [value]="c.Ccy" [ngSelected]="c.Ccy === intDashboard.currencyPreference">{{c.Ccy}}</option>
+          </select>
+        </div>
+        <!--End - Added by Varsha G || User currency preference || FSLINT-64 || 30-May-2024 -->
+        <label class="setting-label" style="margin-left: 0px"
+          >My Preferences:</label
+        >
+        <!-- <div class="setting-flex">
+          <div class="setting-grid">
+            <label style="margin-left: 15px" for="Stanhope"
+              >Enable Ticker</label
+            >
+            <div class="switch-container">
+              <label class="switch" style="margin-top: 5px">
+                <input
+                  type="checkbox"
+                  [(ngModel)]="showTicker"
+                  (change)="toggleTicker()"
+                />
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+        </div> -->
+        <div class="setting-flex">
+          <div class="setting-grid">
+            <label style="margin-left: 15px" for="Stanhope"
+              >Enable PDF Mode</label
+            >
+            <div class="switch-container">
+              <label class="switch" style="margin-top: 5px">
+                <input
+                  type="checkbox"
+                  [(ngModel)]="showPDFMode"
+                  (change)="togglePDFMode()"
+                />
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+        <label class="setting-label">Select Language:</label>
+        <div class="setting-grid">
+          <!-- //ChitraM | 5-May-23 | FIN1EURINT-100 <div
+                    class="theme-box"
+                    *ngFor="let language of this.languages"
+                  
+                    (click)="changeLanguage(language)"
+                  >
+                  <div><label for="Stanhope">{{ language.name }}</label></div>
+                    
+                  </div> -->
+          <div 
+            class="theme-box" 
+            (click)="this.translate.use('en');" 
+            [ngClass]="{active: this.translate.currentLang === 'en'}"
+          >
+            <label for="Stanhope">English</label>
+          </div>
+          <div 
+            class="theme-box" 
+            (click)="this.translate.use('es');"
+            [ngClass]="{active: this.translate.currentLang === 'es'}"  
+          >
+            <label for="Stanhope">Spanish</label>
+          </div>
+        </div>
+
+        <label class="setting-label">Select Theme:</label>
+        <div class="setting-grid">
+          <div
+            class="theme-box"
+            (click)="changeTheme('stanhope')"
+            [ngClass]="{ active: currentTheme === 'stanhope' }"
+          >
+            <div class="stanhope-theme"></div>
+            <label for="Stanhope">Light</label>
+          </div>
+          <div
+            class="theme-box"
+            (click)="changeTheme('midnight')"
+            [ngClass]="{ active: currentTheme === 'midnight' }"
+          >
+            <div class="midnight-theme"></div>
+            <label for="Midnight">Midnight</label>
+          </div>
+          <!-- <div
+            class="theme-box"
+            (click)="changeTheme('CSP')"
+            [ngClass]="{ active: currentTheme === 'CSP' }"
+          >
+            <div class="CSP-theme"></div>
+            <label for="CSP">CSP</label>
+          </div> -->
+          <div
+            class="theme-box"
+            (click)="changeTheme('coral')"
+            [ngClass]="{ active: currentTheme === 'coral' }"
+          >
+            <div class="coral-theme"></div>
+            <label for="Coral">Coral</label>
+          </div>
+          <div
+            class="theme-box"
+            (click)="changeTheme('dark')"
+            [ngClass]="{ active: currentTheme === 'dark' }"
+          >
+            <div class="dark-theme"></div>
+            <label for="Dark">Dark</label>
+          </div>
+
+          <div
+          class="theme-box"
+          (click)="changeTheme('BankTheme_1')"
+          [ngClass]="{ active: currentTheme === 'BankTheme_1' }"
+        >
+          <div class="Bank1-theme"></div>
+          <label for="BankTheme_1">Red</label><!-- Added Santander theme name by SandipA @04-Sep-23 -->
+        </div>
+
+          <!-- <div
+            class="theme-box"
+            (click)="changeTheme('neu_light')"
+            [ngClass]="{ active: currentTheme === 'neu_light' }"
+          >
+            <div class="neu-light-theme"></div>
+            <label for="neu-light">Neu-Light</label>
+          </div>
+          <div
+            class="theme-box"
+            (click)="changeTheme('neu_dark')"
+            [ngClass]="{ active: currentTheme === 'neu_dark' }"
+          >
+            <div class="neu-dark-theme"></div>
+            <label for="neu-dark">Neu-Dark</label>
+          </div> -->
+        </div>
+
+        <label class="setting-label">Select Chart Palette:</label>
+        <div class="setting-grid">
+          <div
+            class="theme-box"
+            (click)="changePalette('pastel')"
+            [ngClass]="{ active: currentPalette === 'pastel' }"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="30"
+              height="30"
+              viewBox="0 0 30 30"
+            >
+              <g id="pastel" transform="translate(268 -731)">
+                <path
+                  id="Rectangle_368"
+                  data-name="Rectangle 368"
+                  d="M4,0H6A0,0,0,0,1,6,0V30a0,0,0,0,1,0,0H4a4,4,0,0,1-4-4V4A4,4,0,0,1,4,0Z"
+                  transform="translate(-268 731)"
+                  fill="#dfc2e4"
+                />
+                <path
+                  id="Rectangle_369"
+                  data-name="Rectangle 369"
+                  d="M0,0H2A4,4,0,0,1,6,4V26a4,4,0,0,1-4,4H0a0,0,0,0,1,0,0V0A0,0,0,0,1,0,0Z"
+                  transform="translate(-244 731)"
+                  fill="#ed7d31"
+                />
+                <rect
+                  id="Rectangle_370"
+                  data-name="Rectangle 370"
+                  width="6"
+                  height="30"
+                  transform="translate(-262 731)"
+                  fill="#fbe19f"
+                />
+                <rect
+                  id="Rectangle_371"
+                  data-name="Rectangle 371"
+                  width="6"
+                  height="30"
+                  transform="translate(-250 731)"
+                  fill="#bce4b1"
+                />
+                <rect
+                  id="Rectangle_372"
+                  data-name="Rectangle 372"
+                  width="6"
+                  height="30"
+                  transform="translate(-256 731)"
+                  fill="#9ad3f0"
+                />
+              </g>
+            </svg>
+            <label for="Pastel">Pastel</label>
+          </div>
+          <div
+            class="theme-box"
+            (click)="changePalette('vibrant')"
+            [ngClass]="{ active: currentPalette === 'vibrant' }"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="30"
+              height="30"
+              viewBox="0 0 30 30"
+            >
+              <g id="vibrant" transform="translate(268 -767)">
+                <path
+                  id="Rectangle_374"
+                  data-name="Rectangle 374"
+                  d="M4,0H6A0,0,0,0,1,6,0V30a0,0,0,0,1,0,0H4a4,4,0,0,1-4-4V4A4,4,0,0,1,4,0Z"
+                  transform="translate(-268 767)"
+                  fill="#435ebe"
+                />
+                <path
+                  id="Rectangle_375"
+                  data-name="Rectangle 375"
+                  d="M0,0H2A4,4,0,0,1,6,4V26a4,4,0,0,1-4,4H0a0,0,0,0,1,0,0V0A0,0,0,0,1,0,0Z"
+                  transform="translate(-244 767)"
+                  fill="#5ac8fa"
+                />
+                <rect
+                  id="Rectangle_376"
+                  data-name="Rectangle 376"
+                  width="6"
+                  height="30"
+                  transform="translate(-256 767)"
+                  fill="#fe9327"
+                />
+                <rect
+                  id="Rectangle_377"
+                  data-name="Rectangle 377"
+                  width="6"
+                  height="30"
+                  transform="translate(-250 767)"
+                  fill="#ffca33"
+                />
+                <rect
+                  id="Rectangle_378"
+                  data-name="Rectangle 378"
+                  width="6"
+                  height="30"
+                  transform="translate(-262 767)"
+                  fill="#06928f"
+                />
+              </g>
+            </svg>
+            <label for="Vibrant">Vibrant</label>
+          </div>
+
+          <div
+            class="theme-box"
+            (click)="changePalette('RedPallete')"
+            [ngClass]="{ active: currentPalette === 'RedPallete' }"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="30"
+              height="30"
+              viewBox="0 0 30 30"
+            >
+              <g id="RedPallete" transform="translate(268 -767)">
+                <path
+                  id="Rectangle_374"
+                  data-name="Rectangle 374"
+                  d="M4,0H6A0,0,0,0,1,6,0V30a0,0,0,0,1,0,0H4a4,4,0,0,1-4-4V4A4,4,0,0,1,4,0Z"
+                  transform="translate(-268 767)"
+                  fill="#ee1919"
+                />
+                <path
+                  id="Rectangle_375"
+                  data-name="Rectangle 375"
+                  d="M0,0H2A4,4,0,0,1,6,4V26a4,4,0,0,1-4,4H0a0,0,0,0,1,0,0V0A0,0,0,0,1,0,0Z"
+                  transform="translate(-244 767)"
+                  fill="#fee5e5"
+                />
+                <rect
+                  id="Rectangle_376"
+                  data-name="Rectangle 376"
+                  width="6"
+                  height="30"
+                  transform="translate(-256 767)"
+                  fill="#f67f7f"
+                />
+                <rect
+                  id="Rectangle_377"
+                  data-name="Rectangle 377"
+                  width="6"
+                  height="30"
+                  transform="translate(-250 767)"
+                  fill="#fab2b2"
+                />
+                <rect
+                  id="Rectangle_378"
+                  data-name="Rectangle 378"
+                  width="6"
+                  height="30"
+                  transform="translate(-262 767)"
+                  fill="#f24c4c"
+                />
+              </g>
+            </svg>
+            <label for="RedPallete">Red</label>
+          </div>
+        </div>
+
+        <label class="setting-label">Select Font:</label>
+        <div class="setting-grid">
+          <div
+            class="theme-box"
+            (click)="changeFont('opensans')"
+            [ngClass]="{ 'active-font': currentFont === 'opensans' }"
+          >
+            <label style="font-family: 'Open Sans', sans-serif" for="open_sans"
+              >Open Sans</label
+            >
+          </div>
+          <div
+            class="theme-box"
+            (click)="changeFont('biosans')"
+            [ngClass]="{ 'active-font': currentFont === 'biosans' }"
+          >
+            <label style="font-family: 'Bio Sans', sans-serif" for="bio_sans"
+              >Bio Sans</label
+            >
+          </div>
+          <div
+            class="theme-box"
+            (click)="changeFont('roboto')"
+            [ngClass]="{ 'active-font': currentFont === 'roboto' }"
+          >
+            <label style="font-family: 'Roboto', sans-serif" for="roboto"
+              >Roboto</label
+            >
+          </div>
+          <div
+            class="theme-box"
+            (click)="changeFont('montserrat')"
+            [ngClass]="{ 'active-font': currentFont === 'montserrat' }"
+          >
+            <label
+              style="font-family: 'Montserrat', sans-serif"
+              for="montserrat"
+              >Montserrat</label
+            >
+          </div>
+          <div
+            class="theme-box"
+            (click)="changeFont('client')"
+            [ngClass]="{ 'active-font': currentFont === 'client' }"
+          >
+            <label
+              style="font-family: 'Client'"
+              for="client"
+              >Default</label
+            >
+          </div>
+        </div>
+
+        <!-- <div>
+          <label for="" style="padding: 10px; margin-bottom: 0px;">Themes</label>
+          <select style="margin-bottom: 10px;" name="selectedTheme" id="selectedTheme" [(ngModel)]="selectedTheme"
+            (change)="toggleTheme()">
+            <option value="general">Light</option>
+            <option value="bbva" selected>BBVA</option>
+            <option value="dark">Dark</option>
+          </select>
+        </div>
+        <div class="profile-options" (click)="logout()">
+          <span>Logout</span>
+        </div> -->
+      </div>
+
+      <!-- SH CAPITAL -->
+      <!-- <div class="setting-box2" *ngIf="showSupport && CompanyLogo === 'SHC'">
+        <label class="headercolor">{{
+          "Tell us how can we help" | translate
+        }}</label>
+        <div class="theme-box" style="gap: 10px">
+          <app-svg-icons
+            class=""
+            style="margin: 2px 0px"
+            [icon]="'phone'"
+            [width]="'20'"
+            [height]="'20'"
+          >
+          </app-svg-icons>
+          <label class="">+971(0)4 556 2701</label>
+        </div>
+        <div class="theme-box" style="gap: 10px">
+          <app-svg-icons
+            class=""
+            style="margin: 2px 0px"
+            [icon]="'email'"
+            [width]="'20'"
+            [height]="'20'"
+          >
+          </app-svg-icons>
+          <label class="">info@sh-financial.com</label>
+        </div>
+      </div> -->
+
+      <!-- GATEWAY MARKETS -->
+      <!-- <div
+        class="setting-box2"
+        *ngIf="
+          showSupport && (CompanyLogo === 'GWM' || CompanyLogo === 'FinIQ')
+        "
+      >
+        <label class="headercolor">{{
+          "Tell us how can we help" | translate
+        }}</label>
+        <div class="theme-box" style="gap: 10px">
+          <app-svg-icons
+            class=""
+            style="margin: 2px 0px"
+            [icon]="'phone'"
+            [width]="'20'"
+            [height]="'20'"
+          >
+          </app-svg-icons>
+          <label class="">+65-6808 6460</label>
+        </div>
+        <div class="theme-box" style="gap: 10px">
+          <app-svg-icons
+            class=""
+            style="margin: 2px 0px"
+            [icon]="'email'"
+            [width]="'20'"
+            [height]="'20'"
+          >
+          </app-svg-icons>
+          <label class="">info@finiq.com</label>
+        </div>
+      </div>
+      <label class="nav-label" [routerLink]="['/CustomerSupport']">{{
+        "Support" | translate
+      }}</label>
+      <app-svg-icons
+        (click)="toggleSupport()"
+        class="support-icon"
+        [icon]="'support'"
+        [width]="'23'"
+        [height]="'23'"
+      >
+      </app-svg-icons> -->
+
+      <!-- Added on 17 Jan 2021 -->
+      <!-- <app-svg-icons (click)="showNotesPopup()" class="support-icon" [icon]="'notes'" [width]="'23'"
+        [height]="'23'">
+      </app-svg-icons> -->
+
+      <!--  Changes done by Jyoti S/ Sudarshan P || FIN1EURINT-99 -->
+      <!-- <div
+        style="position: relative"
+        [routerLink]="['/myalerts']"
+        *ngIf="this.userType !== 'ADMIN'"
+      >
+        <app-svg-icons
+          class="support-icon"
+          [fill]="'white'"
+          [icon]="'notification'"
+          [width]="'23'"
+          [height]="'23'"
+        >
+        </app-svg-icons>
+        <div class="note-count" *ngIf="this.utilitiesApi.alertCount > 0">
+          <label>{{ this.utilitiesApi.alertCount }}</label>
+        </div>
+      </div> -->
+
+      <app-svg-icons
+        (click)="toggleSettings()"
+        class="support-icon"
+        [fill]="showSettings ? 'var(--active)' : 'white'"
+        [icon]="'settings'"
+        [width]="'23'"
+        [height]="'23'"
+      >
+      </app-svg-icons>
+
+      <app-svg-icons
+        (click)="fullScreenToggle()"
+        *ngIf="!isFullScreen"
+        [icon]="'full-screen'"
+        [fill]="'white'"
+        [width]="'20'"
+        [height]="'20'"
+      >
+      </app-svg-icons>
+      <app-svg-icons
+        (click)="fullScreenToggle()"
+        *ngIf="isFullScreen"
+        [icon]="'full-screen-exit'"
+        [fill]="'white'"
+        [width]="'20'"
+        [height]="'20'"
+      >
+      </app-svg-icons>
+      <app-svg-icons
+        (click)="openLogoutPopUp()"
+        [icon]="'logout'"
+        [width]="'22'"
+        [height]="'22'"
+      >
+      </app-svg-icons>
+      <!-- Added on 17 Jan 2021 -->
+      <!-- Changed fill color from var(--active) to white || Apurva K|| 11-Dec-2023 -->
+      <app-svg-icons
+        (click)="showRightNav()"
+        [fill]="openRightNav ? 'White' : 'white'"
+        [icon]="'side-menu'"
+        [width]="'22'"
+        [height]="'22'"
+      >
+      </app-svg-icons>
+    </div>
+  </div>
+</nav>
+
+<div
+  id="route-history"
+  *ngIf="showSidebar && this.userType !== 'NEWUSER' && allowRouteHistory"
+  class="route-history"
+  [ngClass]="{ 'route-history-expanded': isMenuCollapsed }"
+>
+  <app-route-history></app-route-history>
+</div>
+
+
+<app-ticker
+  *ngIf="showSidebar && this.userType !== 'NEWUSER' && showTicker"
+></app-ticker>
+<div *ngIf="showSidebar && this.userType !== 'NEWUSER' && !ShowUCPPopUP"> <!-- Added ShowUCPPopUP condition by OnkarE on 09-Oct-2023 -->
+  <app-sidebar #appSideBar></app-sidebar>
+</div>
+
+<div
+  [ngClass]="{
+    'container-expanded': isMenuCollapsed,
+    'container-full-screen': this.showPDFMode
+  }"
+  class="container"
+>
+  <router-outlet></router-outlet>
+  <!-- <app-support></app-support> -->
+</div>
+
+<div class="overlay" *ngIf="openPopUp">
+  <div class="page-content-container-popup">
+    <div class="logout-grid">
+      <div style="display: flex; justify-content: center">
+        <app-svg-icons
+          class=""
+          [icon]="'logout-vector'"
+          [width]="'80'"
+          [height]="'80'"
+        ></app-svg-icons>
+      </div>
+      <label>{{ "Are you sure you want to logout" | translate }}?</label>
+      <div class="btn-grid">
+        <button class="button" (click)="logout()">
+          {{ "Yes" | translate }}
+        </button>
+        <button class="button" (click)="openPopUp = false">
+          {{ "No" | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
+  [ngClass]="{ 'right-nav-close': !openRightNav, 'right-nav': openRightNav }"
+  *ngIf="showSidebar"
+>
+  <div
+    [ngClass]="{ 'onticker-video-infochange': showTicker }"
+    style="width: 100%"
+  >
+    <div class="side-nav-list">
+      <!-- <div
+        class="side-nav-items"
+        [title]="'Information'"
+        [ngClass]="{ 'side-nav-item-active': openPopUpVideo }"
+      >
+        <app-svg-icons
+          (click)="showVideoPopup()"
+          *ngIf="openRightNav"
+          [fill]="openPopUpVideo ? 'var(--active)' : 'white'"
+          [icon]="'info-video'"
+          [width]="'30'"
+          [height]="'30'"
+        >
+        </app-svg-icons>
+      </div> -->
+      <!-- Commented by Adil P || 21-Jun-2023 -->
+      <div
+        class="side-nav-items"
+        [title]="'Notes'"
+        [ngClass]="{ 'side-nav-item-active': openPopupNotes }"
+      >
+        <app-svg-icons
+          (click)="showNotesPopup()"
+          *ngIf="openRightNav"
+          [fill]="openPopupNotes ? 'var(--active)' : 'white'"
+          [icon]="'notes'"
+          [width]="'30'"
+          [height]="'30'"
+        >
+        </app-svg-icons>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Added on 17 Jan 2021 -->
+
+<div
+  [ngClass]="{
+    'video-popup-box-close': !openPopUpVideo,
+    'video-popup-box': openPopUpVideo
+  }"
+  *ngIf="showSidebar"
+>
+  <div [ngClass]="{ 'onticker-video-infochange': showTicker }">
+    <app-video *ngIf="openPopUpVideo && openRightNav"></app-video>
+  </div>
+
+  <!-- <label class="nav-label more-label-expand"  [routerLink]="['/videos']" (click)= "openPopUpVideo = false">More</label> -->
+</div>
+
+<div
+  [ngClass]="{
+    'video-popup-box-close': !openPopupNotes,
+    'video-popup-box': openPopupNotes
+  }"
+  *ngIf="showSidebar"
+>
+  <div
+    class="notes-app-width"
+    [ngClass]="{ 'onticker-video-infochange': showTicker }"
+  >
+    <app-notes *ngIf="openPopupNotes && openRightNav"></app-notes>
+  </div>
+</div>
+
+<div *ngIf="idlePopup">
+  <app-generic-popup 
+    [overlay]=true 
+    [message]="'You will be logged out in ' + idleCountdown +' seconds.'" 
+    [title]="'Session Idle Warning'"
+    ></app-generic-popup>
+</div>

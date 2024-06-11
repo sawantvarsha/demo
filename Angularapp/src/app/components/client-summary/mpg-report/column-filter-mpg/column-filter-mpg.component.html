@@ -1,0 +1,10 @@
+<div class="column-filter" [ngStyle]="{ left: left }" >
+    <input type="text" name="" id="" [(ngModel)]="searchToken" [placeholder]="placeholder"  (keydown.enter)="filter()">
+
+    <app-svg-icons (click)="sort()" class="back-button" [icon]="'sort-icon'" [width]="'25'" [height]="'25'"
+        [fill]="'var(--headers)'"></app-svg-icons>
+
+    <app-svg-icons (click)="clearFilter()" [fill]="'var(--headers)'" [icon]="'trash-icon'" [width]="'15'" [height]="'15'"></app-svg-icons>
+
+    
+</div>

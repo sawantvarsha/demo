@@ -1,0 +1,98 @@
+<div class="dashboard-container" id="dashboard">
+  <div class="page-controls">
+    <label class="page-header">Welcome {{ username }}</label>
+    <div class="date-filter">
+      <div [ngClass]="{'active': selectedTab === '1W'}" (click)="getActiveTab(0)">1W</div>
+      <div [ngClass]="{'active': selectedTab === '1M'}" (click)="getActiveTab(1)">1M</div>
+      <div [ngClass]="{'active': selectedTab === '1Y'}" (click)="getActiveTab(2)">1Y</div>
+    </div>
+    <!-- <app-custom-tabs [tabHeaders]="dateFilter" [ngModel]="selectedTab" (ngModelChange)="getActiveTab($event)">
+    </app-custom-tabs> -->
+  </div>
+  <div *ngIf="WorkflowList.length > 0" class="cards-container" cdkDropListGroup>
+    <div id="column1">
+      <div cdkDropList #column1List="cdkDropList" [cdkDropListData]="column[0]"
+        [cdkDropListConnectedTo]="[column2List, column3List, column4List]" (cdkDropListDropped)="drop($event)">
+        <div *ngFor="let card of column[0]" class="cards-item" cdkDrag>
+          <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
+          <app-tile [card]="card" [ToDate]="ToDate" [FromDate]="FromDate" cdkDragHandle></app-tile>
+        </div>
+      </div>
+    </div>
+    <div id="column1">
+      <div cdkDropList #column2List="cdkDropList" [cdkDropListData]="column[1]"
+        [cdkDropListConnectedTo]="[column1List, column3List, column4List]" (cdkDropListDropped)="drop($event)">
+        <div *ngFor="let card of column[1]" class="cards-item" cdkDrag>
+          <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
+          <app-tile [card]="card" [ToDate]="ToDate" [FromDate]="FromDate" cdkDragHandle></app-tile>
+        </div>
+      </div>
+    </div>
+    <div id="column1">
+      <div cdkDropList #column3List="cdkDropList" [cdkDropListData]="column[2]"
+        [cdkDropListConnectedTo]="[column2List, column1List, column4List]" (cdkDropListDropped)="drop($event)">
+        <div *ngFor="let card of column[2]" class="cards-item" cdkDrag>
+          <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
+          <app-tile [card]="card" [ToDate]="ToDate" [FromDate]="FromDate" cdkDragHandle></app-tile>
+        </div>
+      </div>
+    </div>
+    <div id="column1">
+      <div cdkDropList #column4List="cdkDropList" [cdkDropListData]="column[3]"
+        [cdkDropListConnectedTo]="[column2List, column3List, column1List]" (cdkDropListDropped)="drop($event)">
+        <div *ngFor="let card of column[3]" class="cards-item" cdkDrag>
+          <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
+          <app-tile [card]="card" [ToDate]="ToDate" [FromDate]="FromDate" cdkDragHandle></app-tile>
+        </div>
+      </div>
+    </div>
+    <!-- <div *ngFor="let card of cards ">
+        <div id="column1">
+          <div *ngIf="card.column === 1" class="cards-item" cdkDropList cdkDropListOrientation="horizontal" [cdkDropListData]="{item:card,index:i}"
+            (cdkDropListDropped)="drop($event)">
+            <app-tile [card]="card"></app-tile>
+          </div>
+  
+        </div>
+        <div id="column2">
+          <div *ngIf="card.column === 2" class="cards-item" cdkDropList cdkDropListOrientation="horizontal" [cdkDropListData]="{item:card,index:i}"
+          (cdkDropListDropped)="drop($event)">
+          <app-tile [card]="card"></app-tile>
+        </div>
+  
+        </div>
+        <div id="column3">
+          <div *ngIf="card.column === 3" class="cards-item" cdkDropList cdkDropListOrientation="horizontal" [cdkDropListData]="{item:card,index:i}"
+          (cdkDropListDropped)="drop($event)">
+          <app-tile [card]="card"></app-tile>
+        </div>
+  
+        </div>
+        <div id="column4">
+          <div *ngIf="card.column === 4" class="cards-item" cdkDropList cdkDropListOrientation="horizontal" [cdkDropListData]="{item:card,index:i}"
+          (cdkDropListDropped)="drop($event)">
+          <app-tile [card]="card"></app-tile>
+        </div>
+  
+        </div>
+      </div> -->
+  </div>
+  <div *ngIf="WorkflowList.length === 0 && !isLoading" style="width: 100%;
+      height: 85%;
+      align-items: center;
+      display: flex;
+      justify-content: center;">
+      <div style="margin: auto;">
+        <label>No records found. Try a different filter.</label>
+      </div>
+  </div>
+  <div *ngIf="isLoading" style="width: 100%;
+      height: 85%;
+      align-items: center;
+      display: flex;
+      justify-content: center;">
+      <div style="margin: auto;">
+        <img [src]="isProd?'assets/loading_dots.gif':'../../../assets/loading_dots.gif'" height="100px" width="100px">
+      </div>
+  </div>
+</div>

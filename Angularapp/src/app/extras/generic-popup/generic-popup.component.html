@@ -1,0 +1,14 @@
+<div [ngClass]="{ 'overlay': _overlay, 'center': true, 'aboveAll': true }">
+  <div class="wrapper">
+    <div class="title" *ngIf="_title">
+      <label for="">{{ _title | translate }}</label>
+    </div>
+    <div class="message" *ngIf="_message">
+      <p>{{ _message | translate }}</p>
+    </div>
+    <div class="buttons" *ngIf="_button1 && _button2">
+      <button class="button">{{'OK' | translate}}</button>
+      <button class="button">{{'CANCEL' | translate}}</button>
+    </div>
+  </div>
+</div>

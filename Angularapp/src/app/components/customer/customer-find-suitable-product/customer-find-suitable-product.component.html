@@ -1,0 +1,33 @@
+<div class="component">
+    <div class="page-title module">
+        Find Suitable Product
+    </div>
+    <div class="main-container">
+        <div class="progress">
+            <!-- progress bar  -->
+            <div *ngFor="let bar of SampleForm; let i = index" class="progress-bar" [ngClass]="{'active': activeQuestionIndex === i, 'done': bar.answer !== ''}"></div>
+        </div>
+        <div class="inner-container" *ngFor="let item of SampleForm; let i = index">
+            <div *ngIf="activeQuestionIndex === i">
+                <div class="question">
+                    <!-- Question -->
+                    {{item.DisplayName}}
+                </div>
+                <ng-container [ngSwitch]="item.displayType">
+                    <div class="datatype " [ngClass]="{'sequential': item.displayType === 'sequential', 'quadrant':  item.displayType === 'quadrant'}">
+                        <!-- options -->
+                        <div class="option" *ngFor="let option of item.options" (click)="fnTickAnswer(i, option)"
+                            [ngStyle]="{'padding': item.displayType === 'quadrant' ? '0px' : '30px' }">
+                            <div [ngClass]="{'optionLabel': item.displayType === 'quadrant'}">
+                                <label [ngClass]="{'largetext': item.displayType === 'quadrant'}">{{option}}</label>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+            </div>
+        </div>
+        <div class="background-svg">
+            <app-svg-icons icon="{{'findYourProduct'}}"></app-svg-icons>
+        </div>
+    </div>
+</div>

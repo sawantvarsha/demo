@@ -1,0 +1,254 @@
+// Base Colors
+$shade-10: #2c3e50 !default;
+$shade-1: #d7dcdf !default;
+$shade-0: #fff !default;
+$teal: var(--icon-active) !default;
+@mixin track() {
+  /* common styles */
+}
+input {
+  &::-webkit-slider-runnable-track {
+    @include track;
+  }
+  &::-moz-range-track {
+    @include track;
+  }
+  &::-ms-track {
+    @include track;
+  }
+}
+// Range Slider
+$range-width: 100% !default;
+
+$range-handle-color: $shade-10 !default;
+$range-handle-color-hover: $teal !default;
+
+$range-track-color: $shade-1 !default;
+$range-track-height: 15px !default;
+
+$range-label-color: $shade-10 !default;
+$range-label-width: 60px !default;
+
+.slider1{
+  display: flex;
+  align-items: flex-end;
+  flex-direction: column;
+}
+
+:host {
+  margin: 0;
+  padding: 0;
+}
+.rangeslidercomponent {
+  width: 100%;
+  height: 40px;
+  display: grid;
+  gap: 20px;
+  grid-template-columns: 1fr 100px;
+  // transform: rotate(-90deg);
+
+  .slider-value {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    $primary: #11998e;
+    $secondary: #38ef7d;
+    $white: #fff;
+    $teal: teal;
+    $gray: #9b9b9b;
+    .slider-form-group {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      // padding: 15px 0 0;
+      // margin-top: 10px;
+      // width: 100px;
+      user-select: none;
+    }
+
+    .form__field {
+      font-family: inherit;
+      width: 100%;
+      border: 0;
+      // border-bottom: 2px solid $gray;
+      outline: 0;
+      font-size: 20px;
+      color: $teal;
+      padding: 7px 7px;
+      // background: transparent;
+      transition: border-color 0.2s;
+      text-align: right;
+      height: 60px;
+      margin-top: -46px;
+
+      &::placeholder {
+        color: transparent;
+      }
+
+      &:placeholder-shown ~ .form__label {
+        font-size: 1.3rem;
+        cursor: text;
+        top: 20px;
+      }
+    }
+
+    .form__label {
+      position: absolute;
+      top: 0;
+      display: block;
+      transition: 0.2s;
+      font-size: 1rem;
+      color: $gray;
+    }
+
+    .form__field {
+      ~ .form__label {
+        position: absolute;
+        top: 0;
+        display: block;
+        transition: 0.2s;
+        font-size: 1rem;
+        color: $primary;
+        font-weight: 500;
+      }
+      // padding-bottom: 6px;
+      // font-weight: 500;
+      // border-width: 3px;
+      // border-image: linear-gradient(to right, $primary, $secondary);
+      // border-image-slice: 1;
+    }
+    /* reset input */
+    .form__field {
+      &:required,
+      &:invalid {
+        box-shadow: none;
+      }
+    }
+    // input {
+    //   font-size: 50px;
+    //   font-weight: 800;
+    //   color: teal;
+    //   background: transparent;
+    //   outline: none;
+    //   border: none;
+    //   border-bottom: 1px;
+    //   width: 100px;
+    //   font-family: "Montserrat", sans-serif;
+    //   text-align: center;
+    // }
+  }
+  .slider1 {
+    display: flex;
+    align-items: center;
+    .range-slider__range {
+      -webkit-appearance: none;
+      width: 100%;
+      height: $range-track-height;
+      border-radius: 5px;
+      background: $range-track-color;
+      outline: none;
+      padding: 0;
+      margin: 0;
+      //   transform: translate(-25%, 100px) rotate(-90deg);
+
+      // Range Handle
+      &::-webkit-slider-thumb {
+        appearance: none;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background-color: var(--icon-active) !important;
+        box-shadow: 0 0 0 3px #eef1ea, 0 0 0 6px $teal;
+
+        cursor: pointer;
+        transition: background 0.15s ease-in-out;
+
+        &:hover {
+          background: $range-handle-color-hover;
+        }
+      }
+
+      &:active::-webkit-slider-thumb {
+        background: $range-handle-color-hover;
+      }
+
+      &::-moz-range-thumb {
+        width: 16px;
+        height: 16px;
+        border: 0;
+        border-radius: 50%;
+        background: $range-handle-color;
+        box-shadow: 0 0 0 3px #fff, 0 0 0 6px $teal;
+
+        cursor: pointer;
+        transition: background 0.15s ease-in-out;
+
+        &:hover {
+          background: $range-handle-color-hover;
+        }
+      }
+
+      &:active::-moz-range-thumb {
+        background: $range-handle-color-hover;
+      }
+
+      // Focus state
+      &:focus {
+        &::-webkit-slider-thumb {
+          box-shadow: 0 0 0 3px $shade-0, 0 0 0 6px $teal;
+        }
+      }
+    }
+
+    // Range Label
+    .range-slider__value {
+      display: inline-block;
+      position: relative;
+      width: $range-label-width;
+      color: $shade-0;
+      line-height: 20px;
+      text-align: center;
+      border-radius: 3px;
+      background: $range-label-color;
+      padding: 5px 10px;
+      margin-left: 8px;
+
+      &:after {
+        position: absolute;
+        top: 8px;
+        left: -7px;
+        width: 0;
+        height: 0;
+        border-top: 7px solid transparent;
+        border-right: 7px solid $range-label-color;
+        border-bottom: 7px solid transparent;
+        content: "";
+      }
+    }
+
+    // Firefox Overrides
+    ::-moz-range-track {
+      background: $range-track-color;
+      border: 0;
+    }
+
+    input::-moz-focus-inner,
+    input::-moz-focus-outer {
+      border: 0;
+    }
+  }
+}
+
+.range-flex {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  font-size: 12px;
+  width: 100%;
+  margin-top: 10px;
+  label {
+    line-height: 12px;
+  }
+}

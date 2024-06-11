@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<HighLighter>
+  <Language id="FINSPL">
+    <Category id="1" name="FINSPL">
+      <Keywords>IF,ELSE,ELSEIF</Keywords>
+      <Color>#ff903a</Color>
+    </Category>
+    <Category id="2" name="FINSPL">
+      <Keywords>Comment</Keywords>
+      <Color>#00aa66</Color>
+    </Category>
+    <Category id="3" name="FINSPL">
+      <Keywords>User Defined FrequencyActions,AtMaturityActions,ScheduleActions,DailyActions,MonthlyActions,TRADEActions,FixingActions,QuarterlyActions,FixingLeftActions,FridayActions,AnnualActions,SemiannualActions,WeeklyActions,TradeDateActions,ValueDateActions,DailyActions,IndexActions,MaturityActions</Keywords>
+      <Color>#a300a3</Color>
+    </Category>
+    <Category id="4" name="FINSPL">
+      <Keywords>Rule</Keywords>
+      <Color>MediumBlue</Color>
+    </Category>
+  <Category id="4" name="FINSPL">
+      <Keywords>tenor,if,else,elseif,dayBasis,totalTenor,initSpot_list,spot_sim,dayBasis,else:,elsif:,if:,NOT,AND,OR,premium</Keywords>
+      <Color>MediumBlue</Color>
+    </Category>
+  <Category id="5" name="FINSPL">
+      <Keywords>discounted,Math.Round,getWorstPerforming</Keywords>
+      <Color>Red</Color>
+    </Category>
+    <Category id="6" name="FINSPL">
+      <Keywords>create</Keywords>
+      <Color>Green</Color>
+    </Category>
+    <Category id="7" name="FINSPL">
+      <Keywords>INIT,EXPRESSION,PATH,PAYOFF</Keywords>
+      <Color>Purple</Color>
+    </Category>
+
+  </Language>
+</HighLighter>

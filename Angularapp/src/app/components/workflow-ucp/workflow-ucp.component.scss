@@ -1,0 +1,654 @@
+.workflow-gridview {
+  display: grid;
+  grid-template-columns: 1fr 4fr 1fr;
+  gap: 15px;
+  // height: calc(100vh - 58px);
+ padding: 20px 20px;
+  background-color: var(--containers);
+  border-radius: 4px;
+  margin: 0px 20px;
+  // padding: 20px;
+  //Added by Mitali D - 09-03-2023 - LGTGTWINT-1391
+  padding: 15px;
+  margin: 10px;
+}
+
+.page-title {
+  display: grid;
+  grid-template-columns: 2em 1fr;
+  padding: 20px 20px !important;
+  align-items: center;
+}
+
+.dynamic-workflow-gridview {
+  display: grid;
+  grid-template-columns: 4fr 1fr;
+  gap: 10px;
+  height: calc(100vh - 58px);
+}
+
+.workflowlist-cls {
+  height: calc(100vh - 295px);
+  padding: 10px 12px;
+  overflow-y: auto;
+  box-shadow: var(--box-shadow-thin);
+  border-radius: 5px;
+  min-width: 180px; //Added by Rohit T. 10-Jan-2023
+  background-color: var(--containers);
+}
+
+.header-text {
+  font-size: 20px;
+  color: var(--text) !important;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  padding-bottom: 0.1rem;
+}
+
+.list-item {
+  cursor: pointer;
+  list-style-type: none;
+  padding: 7px 10px;
+  color: var(--text);
+  font-size: 13px !important;
+  // font-family: Verdana, Geneva, Tahoma, sans-serif !important;
+  margin: 5px; //Added by Mitali D - 09-02-2023 - LGTGTWINT-1391
+}
+
+.workflowlist-header {
+  display: flex;
+  align-items: baseline;
+  flex-direction: column;
+  gap: 15px;
+  padding: 0px 0px 12px 0px;
+}
+
+// .workflow-list-div{
+//   // padding-left: 30px;
+// }
+
+.top-bar {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  column-gap: 15px;
+  width: 100%; //Commented by Mitali D  - 13-02-2023 
+  // margin-top: -5px;
+}
+
+.card {
+  height: auto;
+  border-radius: 4px;
+  padding: 15px;
+  border: none !important;
+  background: var(--containers);
+  box-shadow: var(--box-shadow-thin);
+  margin-top: 8px;
+  margin: 0px 0px 15px 0px;
+}
+
+.active {
+  background: var(--btn-bg);
+  color: var(--btn-text);
+  border-radius: 3px;
+}
+
+.list-item:hover {
+  background: var(--btn-bg);
+  color: var(--btn-text);
+  border-radius: 3px;
+}
+
+.main-blotter {
+  height: calc(100vh - 368px);
+  overflow-y: scroll;
+  padding: 1px;
+}
+
+.row-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.row-data {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.header {
+  color: var(--heading-label-workflow);
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.value {
+  font-size: 15px;
+  overflow-wrap: anywhere; //Added changes by Mayuri D. on 15-Dec-2022 | LGTGTWINT - 601
+}
+
+input[type="date"]:before {
+  top: 7px !important;
+}
+
+.selected-workflow-header {
+  // height: 37px;
+  font-size: 20px;
+  // font-weight: 400;
+  // line-height: 28px;
+  color: var(--active) !important;
+  margin-top: 0px;
+  // margin-bottom: 10px;
+  // display: flex;
+  // justify-content: space-betw
+}
+
+.succ-message-workflow {
+  color: var(--green) !important;
+  font-size: 15px;
+  margin-top: 5px;
+  margin-left: 10px;
+}
+
+.error-message-workflow {
+  color: var(--red) !important;
+  font-size: 15px;
+  margin-top: 5px;
+  margin-left: 10px;
+}
+
+.first-row {
+  grid-column: 1 / span 5; //Changed by shraddha d
+  font-size: 20px;
+  color: var(--btn-bg) !important; //Changed by Mitali D - 09-02-2023 - LGTCLI-300
+}
+
+.accordion-div {
+  text-align: right;
+  padding-right: 10px;
+  cursor: pointer;
+}
+
+.toggle-menu-icon {
+  cursor: pointer;
+  transition: transform 0.5s;
+}
+
+.rotate-toggle-menu-icon {
+  cursor: pointer;
+  transition: transform 0.5s;
+  -webkit-transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+  -o-transform: rotate(180deg);
+  transform: rotate(180deg);
+  color: var(--headers) !important;
+}
+
+.loader-container {
+  display: flex;
+  justify-content: center;
+  height: 75vh;
+  align-items: center;
+}
+
+button,
+button:hover,
+button:not([disabled]):active,
+.mat-raised-button {
+  /* border: 1px solid #1a4269; */
+  /* padding: 5px; */
+  /* background-color:#f3f0f1; SSSSS */
+  background-color: var(--background-color);
+  /* color: #ffffff; */
+  width: 40px;
+  height: 36px;
+  border-radius: 4px;
+  cursor: pointer;
+  /* box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12); */
+  /*box-shadow: 0 3px 1px -2px rgb(0 0 0 / 20%), 0 2px 2px 0 rgb(0 0 0 / 14%), 0 1px 5px 0 rgb(0 0 0 / 12%); */
+  /* box-shadow:  5px 5px 10px #e9e6e7,
+               -5px -5px 10px #fdfafb; */
+  box-sizing: border-box;
+  position: relative;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  cursor: pointer;
+  outline: none;
+  display: inline-block;
+  white-space: nowrap;
+  text-decoration: none;
+  vertical-align: middle;
+  text-align: center;
+  font: normal 15px;
+  color: var(--links);
+  border-color: white;
+  border: none;
+  text-decoration: underline;
+}
+
+.rows-per-page {
+  margin-left: 15px;
+  /* color: #8d8c8cb8; */
+  padding-right: 3px;
+}
+
+.rows-per-page-input {
+  width: 40px;
+  border: 1px solid var(--border);
+  text-align: center;
+  margin: 0px 20px;
+  box-shadow: var(--neumorphic-down);
+}
+
+.pagination-class {
+  margin-top: 15px;
+}
+
+.linkdiv {
+  position: absolute;
+  right: 15px;
+  top: 15px;
+  padding: 10px;
+  background: #202020;
+  width: max-content;
+  z-index: 9999;
+  color: var(--links);
+}
+
+.linkdiv :hover {
+  text-decoration: underline;
+}
+
+.three-dots {
+  display: flex;
+  gap: 3px;
+  cursor: pointer;
+
+  span {
+    border-radius: 50%;
+    background-color: #808080;
+    height: 8px;
+    width: 8px;
+  }
+}
+
+.FromDateLabel,
+.ToDateLabel {
+  position: relative;
+
+  span {
+    position: absolute;
+    left: 8px;
+    top: 11px;
+    font-size: 13px;
+    color: var(--input-text);
+    white-space: nowrap; //Added by Mitali D - date field distortion issue - LGTGTWINT-1391
+  }
+}
+
+.workflowGrid {
+  display: grid;
+  gap: 5px;
+}
+
+//Added by Arsh P || Start ||24-02-2022
+.btnsize {
+  width: 20px;
+  height: 15px;
+}
+
+.popup {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 3px 1px var(--gray);
+  background-color: var(--containers);
+  height: 30vw;
+  width: 75vw;
+  padding: 10px;
+}
+
+.closebtn-position {
+  display: flex;
+  justify-content: flex-end;
+}
+
+// Added by Arsh P || End
+
+.journey-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(20px);
+}
+input[type=date] {
+  margin-top: 0px;
+  width: 110px;
+  min-width: 110px; //Added by Mitali D - 13-02-2023 - LGTGTWINT-1391 - date field distortion issue
+}
+// ...START... Added Change by Mayuri D. on 21-Nov-2022 | LGTCLI-133
+.EQC_Blotter_DateFields
+{
+  display: flex;
+  flex-direction: column;
+}
+
+.EQC_Date_Flex
+{
+  display: grid;
+  grid-template-columns: 0.5fr; //1fr;
+  // gap: 19px;
+  align-items: center;
+  row-gap: 5px;
+  column-gap: 10px; //Added by Rohit T. 10-Jan-2023
+}
+
+.EQC_Date_Flex_inner
+{
+  display: grid;
+  grid-template-columns: 50px 1fr; //Added by Rohit T. 10-Jan-2023
+  // gap: 19px;
+  align-items: center;
+  row-gap: 5px;
+  padding-bottom: 10px;
+}
+
+.Date_filter
+{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  column-gap: 10px; //Added by Urmila A | 26-Dec-22 |LGTGTWINT-573
+}
+
+.date_filter_buttons
+{
+  outline: none;
+  // background-color: var(--label);;
+  color: var(--label);
+  height: 22px;
+  width: 25px;
+  text-decoration: none;
+  border-radius: 4px;
+  text-align: center;
+  padding-top: 2px;
+}
+
+.date_filter_buttons:hover
+{
+  // box-shadow : var(--box-shadow);
+  // background-color: var(--btn-hover-bg);
+  // transform: translateY(-1px);
+  cursor: pointer !important;
+}
+
+// ...END... Added Change by Mayuri D. on 21-Nov-2022 | LGTCLI-133
+
+// Added by Urmila A | for FinIQ Ref No, to convert into hyperlink | 14-Dec-22 | start
+.hyperLink{
+      color: var(--links);
+      cursor: pointer;
+}
+// Added by Urmila A | for FinIQ Ref No, to convert into hyperlink | 14-Dec-22 | end
+
+/* Added by Mitali D/Shraddha D - 04-01-2023 - LGTGTWINT-681 */
+.toggle-bar{
+    display: grid;
+    grid-template-columns: 1fr 111fr 1fr;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-bottom: 11px;
+}
+
+.noqueue-workflow-gridview{
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+  grid-gap: 10px;
+  gap: 10px;
+  height: calc(100vh - 58px);
+}
+
+.switch {
+  position: relative;
+  width: 8vw; //Changed by Mitali D - 14-02-2023 - LGTGTWINT-1391 
+  height: 33px;
+  display: block;
+  margin: auto;
+  margin-bottom: auto;
+}
+
+s
+.switch input {
+  display: none;
+}
+
+.slider.round {
+  border-radius: 3px;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--input-bg);
+  -webkit-transition: .4s;
+  transition: .4s;
+  // border: 2px solid var(--active);
+}
+
+.slider-left::before {
+  position: absolute;
+  content: "";
+  height: 100%;
+  width: 50%;
+  left: -45px;
+  bottom: 0;
+  background-color: var(--active);
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider-right::before{
+  position: absolute;
+  content: "";
+  height: 100%;
+  width: 50%;
+  left: 122px; //Changed by Mitali D - 14-02-2023 - LGTGTWINT-1391  
+  bottom: 0;
+  background-color: var(--active);
+  -webkit-transition: .4s;
+  transition: .4s;
+
+}
+
+.slider_text {
+  position: absolute;
+  transform: translate(-50%,-50%);
+  top: 50%;
+  left: 50%;
+  font-size: 10px;
+  width: 100%;
+  text-align: center;
+}
+
+.slider_text > span {
+  
+  font-size: 12px;
+  width: 50%;
+  display: block;
+  float: left;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider::before {
+  -webkit-transform: translateX(45px);
+  -ms-transform: translateX(45px);
+  transform: translateX(45px);
+}
+
+input + .slider::before {
+  -webkit-transform: translateX(-45px);
+  -ms-transform: translateX(-45px);
+  transform: translateX(-45px);
+}
+
+.slider .slider_text .on {
+  color:var(--btn-text);
+}
+
+.slider .slider_text .off {
+  color:var(--active);
+}
+
+input:checked + .slider {
+  background-color: var(--input-bg);
+}
+
+/* Added by Mitali D - 10-01-2023 - LGTGTWINT-902 */
+.only-records-gridview {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-gap: 10px;
+  grid-gap: 10px;
+  gap: 10px;
+  height: calc(100vh - 58px);
+}
+.datefilter {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  position: relative;
+  z-index: auto;
+  // top: -23px;
+}
+.Date_filter{
+  position: absolute;
+  top: -19px;
+  left: 37px;
+  width: 110px;
+  font-size: 12px;
+}
+/* Added by Mitali D - 08-02-2023 - LGTGTWINT-922 */
+.center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -moz-transform: translateX(-50%) translateY(-50%);
+  -webkit-transform: translateX(-50%) translateY(-50%);
+  transform: translateX(-50%) translateY(-50%);
+}
+.ActionBtn{
+  color: var(--links);
+  //background-color: #333333;
+  //border-radius: 5px; 
+  //padding: 9px; //Changed  by Mitali D - 09-02-2023 - LGTGTWINT-1391
+  cursor: pointer;
+}
+.ProductBorder{
+  border-bottom: thin solid var(--heading-label-workflow); //Changed by Mitali D - 09-02-2023 - LGTGTWINT-1391
+  padding-bottom: 5px; 
+}
+
+//Added by Mitali D - 09-02-2023 - LGTGTWINT-681
+.column{
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 30%; //Changed by Mitali D - 10-02-2023 - LGTGTWINT-1391
+}
+
+.inline{
+  display: inline-flex;
+  gap: 5px;
+  width: fit-content; //Changed by Mitali D - 15-02-2023 - layout change for - LGTCLI-308
+}
+
+select{
+  color:var(--input-text) !important; //Changed by Mitali D - 01-11-23
+
+}
+
+.wrap{
+  flex-wrap: wrap;
+}
+
+.fit{
+  width: fit-content !important;
+}
+
+//Added by Mitali D - 15-02-2023 - layout change for - LGTCLI-308
+.search-fields{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    max-width: 22vw;
+    gap: 15px;
+}
+
+//Added by Mitali D - 14-02-2023 - LGTGTWINT-1391 - START
+/* For 1024 Resolution */  
+@media only screen   
+and (min-device-width : 768px)   
+and (max-device-width : 1024px)  
+{ 
+  .slider-right::before{
+    position: absolute;
+    content: "";
+    height: 100%;
+    width: 50%;
+    left: 102px;
+    bottom: 0;
+    background-color: var(--active);
+    -webkit-transition: .4s;
+    transition: .4s;
+  
+  }
+}  
+
+/* For 1366 Resolution */ 
+@media only screen   
+and (min-width: 1030px)   
+and (max-width: 1366px)  
+{ 
+  .slider-right::before{
+    position: absolute;
+    content: "";
+    height: 100%;
+    width: 50%;
+    left: 102px;
+    bottom: 0;
+    background-color: var(--active);
+    -webkit-transition: .4s;
+    transition: .4s;
+  
+  }
+}  
+
+@media only screen and (max-width: 1600px) { 
+  .search-fields{
+    gap: 10px;
+  }
+  .top-bar{
+    gap: 10px;
+  }
+  input{
+    max-width: 110px;
+  }
+} 
+
+//Added by Mitali D - 14-02-2023 - LGTGTWINT-1391 - END

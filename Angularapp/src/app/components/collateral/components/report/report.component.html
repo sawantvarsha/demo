@@ -1,0 +1,248 @@
+<div class="workflowblotter-component">
+    <div class="page-title">Limit & Exposure Report</div>
+    <div class="main-container">
+        <div class="content-container">
+            <div class="tabs-pages">
+                <div class="tabs" [ngClass]="{'tab-active': this.one}" (click)="changeProduct(1)">Exposure with Margin </div>
+                <!-- <div class="tabs" [ngClass]="{'tab-active': this.two}" (click)="changeProduct(2)">Credit Facilities without Margin</div> -->
+                <div class="tabs" [ngClass]="{'tab-active': this.three}" (click)="changeProduct(3)">Collateral Details</div>
+
+            </div>
+        </div>
+        <div class="table1" *ngIf="this.one">
+            <div class="head">a) Exposure with Margin </div>
+            <div class="content-container table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="maxwidth100">Facility Type</th>
+                            <th class="maxwidth200">Limit Allocated <br> (in Base Ccy)</th>
+                            <th class="maxwidth70">Limit Type</th>
+                            <th class="maxwidth300">Exposure Code <br> Deal Description</th>
+                            <th class="maxwidth100">Deal Reference Number</th>
+                            <th class="maxwidth100">Exposure Ccy</th>
+                            <th class="maxwidth200">Consumed Limit (Exposure in Trade Ccy)</th>
+                            <th class="maxwidth100">FX Rate</th>
+                            <th class="maxwidth200">Consumed Limit (Exposure in Base Ccy)</th>
+                            <th class="maxwidth200">Available/Excess Limit (in Base Ccy)</th>
+                            <th class="maxwidth200">Initial Margin Needed (in Base Ccy)</th>
+                            <th class="maxwidth200">MTM (in Base Ccy)</th>
+                            <th class="maxwidth200">Netted Amount (in Base Ccy)</th>
+                            <th class="maxwidth200">Total Collateral Required (in Base Ccy)</th>
+                        </tr>
+                    </thead>
+                    <!-- <tbody>
+          <tr *ngFor="let arr of CreditFacility">
+            <td class="center maxwidth100"></td>    
+            <td class="maxwidth200 right">{{arr.Limit | number:'1.2-2'}}</td>           
+            <td class="maxwidth70 ">{{arr.Limit_Source}}</td>
+            <td class="maxwidth300 ">{{arr.ExposureDescription}}</td>
+            <td class="maxwidth100 center">{{arr.Reference}}</td>
+            <td class="center maxwidth100 ">{{arr.Ccy}}</td>
+            <td class="right maxwidth200 ">{{arr.ExposureOrigCcy | number:'1.2-2'}}</td>
+            <td class="right maxwidth70 " >{{arr.FXRate | number:'1.2-2'}}</td>    
+            <td class=" maxwidth200 right">{{arr.LimitUsed | number:'1.2-2'}}</td>
+            <td class=" maxwidth200 right">{{arr.AvailableLimitOrLimitExcess | number:'1.2-2'}}</td>    
+            <td class="maxwidth200 right" >{{arr.Initial_Margin | number:'1.2-2'}}</td>       
+            <td class="right maxwidth200">{{arr.FloatingPNL | number:'1.2-2'}}</td>
+            <td class="right maxwidth200">{{arr.NettedAmount| number:'1.2-2'}}</td>    
+            <td class="maxwidth200 right" >{{arr.TotalNttededAMt| number:'1.2-2'}}</td>  
+          </tr>
+        </tbody> -->
+                </table>
+                <div *ngIf="noDataFlag" class="content-container" style="margin-left: 5px;"> <span style="display: contents; margin-left: 5px;">No record Found</span> </div>
+                <div *ngIf="!noDataFlag" style="display: flex;">
+                    <div style="display: flex;">
+                        <div class="center maxwidth100 subdiv singlevalue">{{CreditFacility[0].FacilityType}} </div>
+                        <div class="maxwidth200 right subdiv singlevalue">
+                            <div class="right">
+                                {{CreditFacility[0].Limit| number:'1.2-2'}}</div>
+                        </div>
+
+                        <div class="maxwidth70 right subdiv singlevalue">{{CreditFacility[0].Limit_Source}}</div>
+                    </div>
+                    <div>
+                        <div style="display: flex;">
+
+                            <div>
+                                <div class="maxwidth300 subdiv" *ngFor="let arr of CreditFacility">{{arr.ExposureDescription}}</div>
+                            </div>
+                            <div>
+                                <div class="maxwidth100 center subdiv" *ngFor="let arr of CreditFacility">{{arr.Reference}}</div>
+                            </div>
+                            <div>
+                                <div class="center maxwidth100 subdiv" *ngFor="let arr of CreditFacility">{{arr.Ccy}}</div>
+                            </div>
+                            <div>
+                                <div class="right maxwidth200 subdiv" *ngFor="let arr of CreditFacility"> {{arr.ExposureOrigCcy | number:'1.2-2'}}</div>
+                            </div>
+                            <div>
+                                <div class="right maxwidth100 subdiv" *ngFor="let arr of CreditFacility">{{arr.FXRate | number:'1.6-6'}}</div>
+                            </div>
+                            <div>
+                                <div class=" maxwidth200 right subdiv" *ngFor="let arr of CreditFacility">{{arr.LimitUsed | number:'1.2-2'}}
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div style="display: flex;">
+                        <div class=" maxwidth200 right subdiv singlevalue">
+                            {{CreditFacility[0].AvailableLimitOrLimitExcess | number:'1.2-2'}}</div>
+                    </div>
+                    <div>
+                        <div style="display: flex;">
+                            <div>
+                                <div class="maxwidth200 right subdiv" *ngFor="let arr of CreditFacility">{{arr.Initial_Margin | number:'1.2-2'}}
+                                </div>
+                            </div>
+                            <div>
+                                <div class="right maxwidth200 subdiv" *ngFor="let arr of CreditFacility">{{arr.FloatingPNL | number:'1.2-2'}}
+                                </div>
+                            </div>
+                            <div>
+                                <div class="right maxwidth200 subdiv" *ngFor="let arr of CreditFacility">{{arr.NettedAmount| number:'1.2-2'}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="display: flex;">
+                        <div class=" maxwidth200 right subdiv singlevalue">
+                            {{totalCollateral | number:'1.2-2'}}</div>
+                    </div>
+
+                    <!--    -->
+                </div>
+                <div *ngIf="!noDataFlag" style="display: flex;">
+                    <div class="maxwidth100 subdiv">Sub Total</div>
+                    <div class="maxwidth200 subdiv"></div>
+                    <div class="maxwidth70 subdiv"></div>
+                    <div class="maxwidth300 subdiv"></div>
+                    <div class="maxwidth100 subdiv"></div>
+                    <div class="maxwidth100 subdiv"></div>
+                    <div class="maxwidth200 subdiv"></div>
+                    <div class="maxwidth100 subdiv"></div>
+                    <div class="maxwidth200 right subdiv">{{totalconsumedLimit | number:'1.2-2'}}</div>
+                    <div class="maxwidth200 right subdiv"> {{CreditFacility[0].AvailableLimitOrLimitExcess | number:'1.2-2'}}</div>
+                    <div class="maxwidth200 right subdiv">{{totalmargin | number:'1.2-2'}}</div>
+                    <div class="maxwidth200 right subdiv">{{totalMTM | number:'1.2-2'}}</div>
+                    <div class="maxwidth200 right subdiv">{{totalCollateral | number:'1.2-2'}}</div>
+                    <div class="maxwidth200 right subdiv">{{totalCollateral | number:'1.2-2'}}</div>
+                </div>
+
+            </div>
+        </div>
+        <!-- <div class="table1"  *ngIf = "this.two" >
+    <div class="head">b) Credit Facilities without Margin</div>
+    <div class="content-container">
+      <table>
+        <thead>
+          <tr>
+            <th class="maxwidth100">Facility Type</th>
+            <th class="maxwidth200">Limit Allocated/ Clean Portion (in Base Ccy)</th>
+            <th class="maxwidth70">Limit Type</th>
+            <th class="maxwidth300">Exposure Code | Deal Description</th>
+            <th class="maxwidth100">Deal Reference Number</th>
+            <th class="maxwidth100">Exposure Ccy</th>
+            <th class="maxwidth200">Consumed Limit (Exposure in Trade Ccy)</th>
+            <th class="maxwidth70">FX Rate</th>
+            <th class="maxwidth200">Consumed Limit (Exposure in Base Ccy)</th>
+            <th class="maxwidth200">Available/Excess Limit (in Base Ccy)</th>
+            <th class="maxwidth200">Initial Margin Needed (in Base Ccy)</th>
+            <th class="maxwidth200">MTM (in Base Ccy)</th>
+            <th class="maxwidth200">Netted Amount (in Base Ccy)</th>
+            <th class="maxwidth200">Total Collateral Required (in Base Ccy)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let arr of CreditFacilityNonMarginDetails">
+            <td class="center maxwidth100"></td>
+            <td class="maxwidth200 right">{{arr.CleanLimit| number:'1.2-2'}}</td>
+            <td class="maxwidth70 ">{{arr.Limit_Source}}</td>
+            <td class="maxwidth300 ">{{arr.ExposureDescription}}</td>
+            <td class="center maxwidth100">{{arr.Reference}}</td>
+            <td class="center maxwidth100 ">{{arr.Ccy}}</td>
+            <td class="right maxwidth200">{{arr.ExposureOrigCcy| number:'1.2-2'}}</td>
+            <td class="right maxwidth70">{{arr.FXRate| number:'1.2-2'}}</td>
+            <td class="right maxwidth200">{{arr.LimitUsed | number:'1.2-2'}}</td>
+            <td class="right maxwidth200">{{arr.AvailableLimit_dup| number:'1.2-2'}}</td>
+            <td class="right maxwidth200">{{arr.TotExposure| number:'1.2-2'}}</td>
+            <td class="right maxwidth200">{{arr.MTMAfterCollOpt_HKD | number:'1.2-2'}}</td>
+            <td class="right maxwidth200">{{arr.Exposure| number:'1.2-2'}}</td>
+            <td class="right maxwidth200">{{arr.MarginCollateralRequired_NonLiq| number:'1.2-2'}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div> -->
+
+        <div class="table1" *ngIf="this.three">
+            <div class="head">Collateral Details
+            </div>
+            <div class="content-container table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="maxwidth100">Collateral Type</th>
+                            <th class="maxwidth70">Coll Source</th>
+                            <th class="maxwidth100">Stock Code / Coll. Ref</th>
+                            <th class="maxwidth200">Collateral Name: Deal description</th>
+                            <th class="maxwidth100">Unit</th>
+                            <th class="maxwidth100">Unit Held for Covered Call / DQ</th>
+                            <th class="maxwidth70">Trade Ccy</th>
+                            <th class="maxwidth200">Market Price (Trade Ccy)</th>
+                            <th class="maxwidth200">Market Value (Trade Ccy)</th>
+                            <th class="maxwidth100">FX Rate</th>
+                            <th class="maxwidth200">Market Value</th>
+                            <th class="maxwidth100">Lending Ratio(%)</th>
+                            <th class="maxwidth200">Value after Lending Ratios</th>
+                            <th class="maxwidth200">Value after Concentration Rules</th>
+                            <th class="maxwidth100">Weighting (%)</th>
+                            <th class="maxwidth200">Conc. Rule ID</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr *ngFor="let arr of PortfolioLiquidCollateral">
+                            <td class="maxwidth100">{{arr.CollateralType}}</td>
+                            <td class="maxwidth70 center">{{arr.coll_source}}</td>
+                            <td class="maxwidth100 ">{{arr.StockCode}}</td>
+                            <td class="maxwidth200 ">{{arr.CollateralName}}</td>
+                            <td class="maxwidth100 right">{{arr.AmountUnit | number:'1.2-2'}}</td>
+                            <td class="right maxwidth100 ">{{arr.UnitHeldforCoveredCallDQ | number:'1.2-2'}}</td>
+                            <td class="center maxwidth70">{{arr.Ccy}}</td>
+                            <td class="right maxwidth200">{{arr.MarketPrice | number:'1.2-2'}}</td>
+                            <td class="right maxwidth200">{{arr.MarketValue | number:'1.2-2'}}</td>
+                            <td class="right maxwidth100">{{arr.FXRate | number:'1.6-6'}}</td>
+                            <td class="right maxwidth200">{{arr.MarketValueHKD| number:'1.2-2'}}</td>
+                            <td class="right maxwidth100">{{arr.LendingRatio }}</td>
+                            <td class="right maxwidth200">{{arr.ValueafterLendingRatioHKD | number:'1.2-2'}}</td>
+                            <td class="right maxwidth200">{{arr.ValueafterConcRulesHKD | number:'1.2-2'}}</td>
+                            <td class="right maxwidth100">{{arr.Weighting| number:'1.2-2'}}%</td>
+                            <td class="maxwidth200">{{arr.IL_Conc_Last_Updated_Rule_ID}}</td>
+                        </tr>
+                        <tr>
+                            <td class="maxwidth100"></td>
+                            <td class="maxwidth70 center"></td>
+                            <td class="maxwidth100 "></td>
+                            <td class="maxwidth200 "></td>
+                            <td class="maxwidth100 right"></td>
+                            <td class="right maxwidth100 "></td>
+                            <td class="center maxwidth70"></td>
+                            <td class="right maxwidth200"></td>
+                            <td class="right maxwidth200"></td>
+                            <td class="right maxwidth100">Total (A)</td>
+                            <td class="right maxwidth200">{{TotalMarketValueHKD| number:'1.2-2'}}</td>
+                            <td class="right maxwidth100"></td>
+                            <td class="right maxwidth200">{{totalValueafterLendingRatioHKD | number:'1.2-2'}}</td>
+                            <td class="right maxwidth200">{{totalValueafterConcRulesHKD| number:'1.2-2'}}</td>
+                            <td class="right maxwidth100"></td>
+                            <td class="maxwidth200"></td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

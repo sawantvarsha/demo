@@ -1,0 +1,171 @@
+<div class="clientResponseComponent">
+  <div class="page-title module">Client Onboarding</div>
+
+  <div class="main-container" *ngIf="tokens.length || showhideChartFlag">
+    <div class="row" style="margin-top: 10px; display: grid; grid-template-rows: 10% 1fr">
+      <div class="button-align">
+        <button class="button" (click)="chartDisplay()" style="width: auto; height: 30px; margin-left: 10px; padding: 4px 15px; display: flex;">
+          {{ plusMinusBtn }} <h4 class="orderlabel" style="font-size: 15px">
+            Client Onboarding ({{ clientOnboardingCount }})
+          </h4>
+        </button>
+      </div>
+      <div class="rowMargin" *ngIf="showhideChartFlag" style="width: fit-content;">
+
+        <!-- <google-chart #chart [title]="ClientOnboardingChartTitle" [type]="ClientOnboardingChartType" [data]="ClientOnboardingChartData"
+             [options]="ClientOnboardingChartOptionssilver"
+             (select)="SelectPieChartSlice($event, 'ClientOnboarding'); ClearProcessTokenMessage();">
+            </google-chart> -->
+        <google-chart id="ClientOnboardingLight" #chart1 [title]="ClientOnboardingChartTitle"
+          [type]="ClientOnboardingChartType" [data]="ClientOnboardingChartData"
+          [options]="ClientOnboardingChartOptionssilver" (ready)="graphReady('ClientOnboardingLight')" (select)="
+            SelectPieChartSlice($event, chart1, 'ClientOnboarding');
+            ClearProcessTokenMessage()
+          ">
+        </google-chart>
+      </div>
+      <!-- <div class="rowMargin" >
+                <h4 class="orderlabel">Supporting Documents ({{supportingDocumentCount}})</h4>
+                <google-chart id="SupportingDocumentsSilver" #chart2 [title]="SupportingDocumentsChartTitle"
+                    [type]="SupportingDocumentsChartType" [data]="SupportingDocumentsChartData"
+                    [options]="SupportingDocumentsChartOptionssilver" (ready)="graphReady('SupportingDocumentsSilver')"
+                    (select)="SelectPieChartSlice($event,chart2, 'SupportingDocuments'); ClearProcessTokenMessage();">
+                </google-chart>
+            </div> -->
+    </div>
+
+    <div class="row" *ngIf="loader">
+      <div class="col-10 offset-1 center loader"></div>
+    </div>
+    <div class="row" *ngIf="tokens.length">
+      <div class="col-12 selected-queue">
+        <h3>{{ selectedQueueName }}</h3>
+      </div>
+    </div>
+    <div class="row" *ngIf="processTokenMessage">
+      <!-- <div class="row"> -->
+      <div class="col-12">
+        <span class="processTokenMessage">
+          {{ processTokenMessage }}
+        </span>
+        <div class="externalLinkIcon" (click)="gotoProcessTokenQueue()"></div>
+      </div>
+    </div>
+    <div *ngIf="tokens.length">
+      <div class="secondRow" style="margin-bottom: 10px; padding: 0.2em 1em 0em 0em !important">
+        <div></div>
+        <div class="search-wrapper col-10">
+          <!-- <form>
+            <label class="textworkflow" for="search">Search: </label>
+            <input
+              type="text"
+              class="search-box"
+              [(ngModel)]="searchKey"
+              tabindex="4"
+              accesskey="S"
+              name="search"
+              id="search"
+              placeholder="FinIQ Ref No. / Customer Name"
+              (change)="searchCriteriaChanged()"
+              (keydown.enter)="searchCriteriaChanged()"
+            />
+            <button
+              class="close-icon"
+              type="reset"
+              *ngIf="searchKey"
+              (click)="clearSearchKey()"
+            ></button>
+          </form> -->
+          <form>
+            <label class="textworkflow" for="search">Filter: </label>
+            <input type="text" class="search-box" [(ngModel)]="searchKey" tabindex="4" accesskey="S" name="search"
+              id="search" placeholder="Customer Name" />
+          </form>
+        </div>
+        <div *ngIf="toggleFlag === 'light'" class="col-2 no-padding" style="margin-top: 18px" accesskey="R">
+          <img style="cursor: pointer" [src]="
+              isProd
+                ? 'assets/refresh_light.png'
+                : '../../../../assets/refresh_light.png'
+            " width="20px" (click)="this.afs.clearObservers(); OnLoadEvents()" />
+        </div>
+        <div *ngIf="toggleFlag === 'silver'" class="col-2 no-padding" style="margin-top: 18px" accesskey="R">
+          <img style="cursor: pointer" [src]="
+              isProd
+                ? 'assets/refresh_silver.png'
+                : '../../../../assets/refresh_silver.png'
+            " width="20px" (click)="this.afs.clearObservers(); OnLoadEvents()" />
+        </div>
+      </div>
+      <!-- <div class="firstRow" style="margin-bottom: 10px; padding: 0.2em 1em 0em 0em !important;">
+                <div></div>
+                <div class="textworkflow">Pending as of Today</div>
+                <div class=" textworkflow" style="display: flex;gap: 10px;">
+                    <input type="checkbox" name="closure" tabindex="3" accesskey="I" style="height: 20px;width: auto;"
+                        (change)="includeClosureCheck($event)">
+                    <span>Include Closures</span>
+                </div>
+                <div class="center">
+                    <input type="button" value="New Record" class="button" (click)="gotoNewRecordPage()">
+                </div>
+            </div> -->
+    </div>
+    <div class="row" *ngIf="tokens.length" style="width: 100%; overflow-y: auto">
+      <!-- <div class="col-xl-12 col-lg-12 col-sm-12 col-md-12 col-xs-12 rowMargin"> -->
+      <table class="rowMargin dealDetails" style="overflow-x: auto">
+        <thead>
+          <tr>
+            <th *ngIf="buttons.length > 0">
+              <div style="width: 100px">Actions</div>
+            </th>
+            <th *ngFor="let tag of tokenColumnNames">{{ tag }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="
+                let i = index;
+                let qs;
+                of: tokens | filter1: { Customer_x0020_Name: searchKey }
+              ">
+            <td *ngIf="buttons.length > 0">
+              <div style="
+                    display: flex;
+                    justify-content: space-around;
+                    column-gap: 8px;
+                  ">
+                <app-dynamic-control *ngFor="let ctrl of buttons" [controlDetails]="ctrl" [tabindex]="i + 5"
+                  [token]="qs[cfs.convertTagNames('TI_ID', 'data')]" (action)="
+                      processEvent(
+                        qs.FinIQ_x0020_Ref_x0020_No,
+                        qs.TI_ID,
+                        qs.Created_x0020_By,
+                        ctrl.Action_Button_Title,
+                        ctrl.Action_button_id
+                      )
+                    ">
+                </app-dynamic-control>
+              </div>
+            </td>
+            <td *ngFor="let tag of tokenColumnNames">
+              <span *ngIf="
+                    (tag + '').includes('FinIQ') && (tag + '').includes('Ref')
+                  " class="link" (click)="
+                    processEvent(
+                      qs.FinIQ_x0020_Ref_x0020_No,
+                      qs.TI_ID,
+                      qs.Created_x0020_By,
+                      'ref',
+                      ''
+                    )
+                  ">{{ qs[cfs.convertTagNames(tag, "data")] }}</span>
+              <span *ngIf="
+                    !(tag + '').includes('FinIQ') && !(tag + '').includes('Ref')
+                  ">{{ qs[cfs.convertTagNames(tag, "data")] }}</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <!-- </div> -->
+    </div>
+  </div>
+</div>

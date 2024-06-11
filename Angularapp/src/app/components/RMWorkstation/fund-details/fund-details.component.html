@@ -1,0 +1,377 @@
+<div class="page-title" style="display: flex; gap: 1% ;">
+    <app-svg-icons class="back-button" [icon]="'back-button'" [width]="'30'" [height]="'30'" [fill]="'var(--headers)'" (click)="clickBack()"></app-svg-icons>
+    Fund Details</div>
+<div class="page-grid" *ngIf="AllMFData">
+    <div class="box-container column-2">
+        <!--Funds Details-->
+        <div class = "buySellGrid">
+            <div>
+                <label class="fund-name">{{AllMFData.Name|| '-' }}</label>
+                <div class="details-list">
+                    <label class="heading">Fund Umbrella</label><label class="value-top">{{AllMFData.FundUmbrella|| '-' }}</label>
+                    <div class="vh-line"></div>
+                    <label class="heading">Currency</label><label class="value-top">{{AllMFData.Ccy|| '-' }}</label>
+                    <div class="vh-line"></div>
+                    <label class="heading">ISIN</label><label class="value-top">{{AllMFData.ISIN|| '-' }}</label>
+                </div>
+            </div>
+            <div class="btnGrid">
+                <button class="button btnBuy" value="Buy" (click) = "callOrderEntry('BUY')">Buy</button>
+                <button class="button btnSell" value="Sell" (click) = "callOrderEntry('SELL')">Sell</button>
+            </div>
+        </div>
+
+        <div class="details-row-3">
+            <div class="graphSection">
+                <!-- <canvas baseChart id="chart1" height="300" width="200" [chartType]="'line'" [datasets]="MFChartData" [labels]="MFChartLabels" [options]="chartOptions" [legend]="true" [colors]="Chartcolor">
+                </canvas> -->
+                <google-chart #baseChart [title]="Title" type="AreaChart" [data]="MFChartData" [options]="chartOptions" width="100%" height="100%">
+                </google-chart>
+            </div>
+            <div class="details" style="gap: 0px;border-right: solid 1px var(--border);">
+                <label class="box-header">Fund Parameters</label>
+                <div class="details-row-2">
+                    <div class="details">
+                        <label class="value">{{AllMFData.Code|| '-' }}</label>
+                        <label class="heading">Fund Code</label>
+                    </div>
+                    <div class="details">
+                        <label class="value">{{AllMFData.FundSize | number:'1.2-2'|| '0.00'}}</label>
+                        <label class="heading">Fund Size </label>
+                    </div>
+                    <div class="details">
+                        <label class="value">{{AllMFData.DealingFrequency|| '-' }}</label>
+                        <label class="heading">Dealing Frequency</label>
+                    </div>
+                    <div class="details">
+                        <label class="value">{{AllMFData.LTV | number:'1.2-2'|| '0.00' }}</label>
+                        <label class="heading">LTV</label>
+                    </div>
+                </div>
+            </div>
+            <div class="details" style="gap: 0px;">
+                <label class="box-header">Product Rating</label>
+                <!--Risk Rating-->
+                <app-svg-icons style="margin: auto" [icon]=rating [width]="'300'" [height]="'170'"></app-svg-icons>
+            </div>
+        </div>
+    </div>
+
+    <div class="box-container">
+        <!--Fund Categorization-->
+        <!-- <label class="box-header">Fund Categorization</label> -->
+        <div class="tabs-pages">
+            <div class="tabs" (click)="selectedTab= 'Fund Categorization'" [ngClass]="{'tab-active': selectedTab === 'Fund Categorization'}">Fund Categorization</div>
+            <div class="tabs" (click)="selectedTab= 'Suitability & Compliance'" [ngClass]="{'tab-active': selectedTab === 'Suitability & Compliance'}">Suitability & Compliance</div>
+        </div>
+        <div class="details-row-4" *ngIf="selectedTab === 'Fund Categorization'">
+            <div class="details">
+                <label class="value">{{AllMFData.GeoRegion|| '-' }}</label>
+                <label class="heading">Geographic Region</label>
+            </div>
+            <div class="details">
+                <label class="value">{{AllMFData.Sector|| '-' }}</label>
+                <label class="heading">Specialist sector</label>
+            </div>
+            <div class="details">
+                <label class="value">{{AllMFData.Category|| '-' }}</label>
+                <label class="heading">Category</label>
+            </div>
+            <div class="details">
+                <label class="value">{{AllMFData.AssetClass || '-'}}</label>
+                <label class="heading">Asset Class</label>
+            </div>
+            <div class="details">
+                <label class="value">{{AllMFData.ShareClass || '-' }}</label>
+                <label class="heading">Share Class</label>
+            </div>
+            <div class="details">
+                <label class="value">{{AllMFData.ShareClassClassification|| '-' }}</label>
+                <label class="heading">Share class Classification</label>
+            </div>
+            <div class="details">
+                <label class="value" *ngIf="AllMFData.OnshoreOffShoreFund === 'Y'">Onshore</label>
+                <label class="value" *ngIf="AllMFData.OnshoreOffShoreFund !== 'Y'">Offshore</label>
+                <label class="heading">Onshore/Offshore</label>
+            </div>
+            <div class="details">
+
+            </div>
+        </div>
+        <div class="details-row-4" *ngIf="selectedTab === 'Suitability & Compliance'">
+            <div class="details">
+                <label class="value">{{AllMFData.OnlyForQualifiedInvestor|| '-' }}</label>
+                <label class="heading">Only for Qualified Investor</label>
+            </div>
+            <div class="details">
+                <label class="value">{{AllMFData.RegulatoryCompliant|| '-' }}</label>
+                <label class="heading">Regulatory Compliant</label>
+            </div>
+            <div class="details">
+                <label class="value">{{AllMFData.OwnershipType|| '-' }}</label>
+                <label class="heading">Ownership Type</label>
+            </div>
+            <div class="details">
+                <label class="value">{{AllMFData.ShariahCompliant || '-'}}</label>
+                <label class="heading">Shariah Compliant?</label>
+            </div>
+            <div class="details">
+                <label class="value">{{AllMFData.RestrictedNationalities || '-' }}</label>
+                <label class="heading">Restricted Nationalities</label>
+            </div>
+            <div class="details">
+                <label class="value">{{AllMFData.SCAApprovedYN|| '-' }}</label>
+                <label class="heading">SCA Approved YN Indicator</label>
+            </div>
+            <div class="details">
+                <label class="value">{{AllMFData.SCAFundID|| '-' }}</label>
+                <label class="heading">SCA Fund ID</label>
+            </div>
+            <div class="details">
+
+            </div>
+        </div>
+    </div>
+    <div class="box-container">
+        <!--Fees & Charges-->
+        <label class="box-header">Fees & Charges</label>
+        <div class="details-row-2">
+            <div class="details">
+                <label class="value">{{AllMFData.EntryLoad || '0.0000' }}</label>
+                <label class="heading">Front End Load (%)</label>
+            </div>
+            <div class="details">
+                <label class="value">{{AllMFData.ExitLoad || '0.0000' }}</label>
+                <label class="heading">Back End Load (%)</label>
+            </div>
+            <div class="details">
+                <label class="value">{{AllMFData.SwitchingFee || '0.0000' }}</label>
+                <label class="heading">Switching Fee (%)</label>
+            </div>
+            <div class="details">
+                <label class="value">{{AllMFData.AnnualFees || '0.0000' }}</label>
+                <label class="heading">Annual Mgmt. Fee (%)</label>
+            </div>
+        </div>
+
+    </div>
+    <div class="box-container">
+        <!--Other Details-->
+        <div class="tabs-pages">
+            <div class="tabs" (click)="changeTab(0)" [ngClass]="{'tab-active': activeTab[0]===true}">Subscription Details</div>
+            <div class="tabs" (click)="changeTab(1)" [ngClass]="{'tab-active': activeTab[1]===true}">Redemption Details</div>
+            <div class="tabs" (click)="changeTab(2)" [ngClass]="{'tab-active': activeTab[2]===true}">Switching Details</div>
+            <div class="tabs" (click)="changeTab(3)" [ngClass]="{'tab-active': activeTab[3]===true}">SIP Details</div>
+        </div>
+        <div class="details-row-4" *ngIf="activeTab[0]===true" style="margin-top: 10px;">
+            <div class="details">
+                <label class="value">{{AllMFData.SubscriptionAllowed|| '-' }}</label>
+                <label class="heading">Subscription Allowed </label>
+            </div>
+            <div class="details">
+                <label class="value">{{AllMFData.Min_Inv_Amt | number:'1.2-2'|| '0.00' }}</label>
+                <label class="heading">Min Initial Amount</label>
+            </div>
+            <div class="details">
+                <label class="value">{{AllMFData.MinSubsequentAmount | number:'1.2-2'|| '0.00' }}</label>
+                <label class="heading">Min Subsequent Amount</label>
+            </div>
+            <div class="details">
+                <label class="value">{{AllMFData.AFBSubscriptionCutoff|| '-' }}</label>
+                <label class="heading">AFB Subscription Cut-off</label>
+            </div>
+        </div>
+        <div class="details-row-5" *ngIf="activeTab[1]===true" style="margin-top: 10px;">
+            <div class="details">
+                <label class="value">{{AllMFData.RedemptionAllowed|| '-' }}</label>
+                <label class="heading">Redemption Allowed</label>
+            </div>
+            <div class="details">
+                <label class="value">{{AllMFData.MinHoldingsAmount | number:'1.2-2'|| '0.00' }}</label>
+                <label class="heading">Min Holdings (amount)</label>
+            </div>
+            <div class="details">
+                <label class="value">{{AllMFData.MinHoldingsUnits | number:'1.2-2'|| '0.00' }}</label>
+                <label class="heading">Min Holdings (units)</label>
+            </div>
+            <div class="details">
+                <label class="value">{{AllMFData.MinUnitsSell | number:'1.2-2'|| '0.00'  }}</label>
+                <label class="heading">Min Units to Sell</label>
+            </div>
+            <div class="details">
+                <label class="value">{{AllMFData.AFBRedemptionCutoff|| '-' }}</label>
+                <label class="heading">AFB Redemption Cut-off</label>
+            </div>
+        </div>
+        <div class="details-row-4" *ngIf="activeTab[2]===true" style="margin-top: 10px;">
+            <div class="details">
+                <label class="value">{{AllMFData.SwitchAllowed|| '-' }}</label>
+                <label class="heading">Switch Allowed</label>
+            </div>
+            <div class="details">
+                <label class="value">{{AllMFData.MinUnitsToSwitch | number:'1.2-2'|| '0.00' }}</label>
+                <label class="heading">Min Units To Switch</label>
+            </div>
+            <div class="details">
+                <label class="value">{{AllMFData.MinAmountToSwitch | number:'1.2-2'|| '0.00' }}</label>
+                <label class="heading">Min Amount To Switch</label>
+            </div>
+        </div>
+        <div class="details-row-4" *ngIf="activeTab[3]===true" style="margin-top: 10px;">
+            <div class="details">
+                <label class="value">{{AllMFData.SIPApplicable|| '-' }}</label>
+                <label class="heading">SIP Applicable</label>
+            </div>
+            <div class="details">
+                <label class="value">{{AllMFData.SIPFrequency|| '-' }}</label>
+                <label class="heading">SIP Frequency</label>
+            </div>
+            <div class="details">
+                <label class="value">{{AllMFData.MinSIPAmount | number:'1.2-2'|| '0.00' }}</label>
+                <label class="heading">Min SIP Amount</label>
+            </div>
+            <div class="details">
+                <label class="value">{{AllMFData.MinSIPIncrementAmount | number:'1.2-2'|| '0.00' }}</label>
+                <label class="heading">Min SIP Increment Amount</label>
+            </div>
+        </div>
+    </div>
+    <div class="box-container">
+        <!--Factsheet-->
+        <label class="box-header">Factsheet</label>
+        <div class="grid-header">
+            <label></label>
+            <label>Document</label>
+            <label>View</label>
+        </div>
+        <div class="grid-data" *ngFor="let item of factsheetdata">
+            <span class="dot"></span>
+            <label>{{item.Document_Output_Path.split('\\')[3]|| '-' }}</label>
+            <div>
+                <app-svg-icons class="download" [icon]="'pdf'" [width]="'15'" [height]="'15'" (click)="showFile(item.DGT_ID, this.FactSheetNoteMasterID)"></app-svg-icons>
+            </div>
+        </div>
+        <!-- <div class="grid-data">
+            <span class="dot"></span>
+            <label>EURO STOXX 50 ETF.pdf</label>
+            <div>
+                <app-svg-icons class="download" [icon]="'pdf'" [width]="'15'" [height]="'15'"></app-svg-icons>
+            </div>
+        </div> -->
+    </div>
+
+    <div class="box-container">
+        <!--Corporate Action-->
+        <label class="box-header">Corporate Action</label>
+        <div *ngIf="corporateactions.length !== 0">
+            <div class="corporate-header active"><label>Upcoming</label>
+                <hr class="line">
+            </div>
+            <div class="grid-data-corporate">
+                <span class="dot"></span>
+                <div class="details">
+                    <label class="value">Analysts/Institutional Investor Meet /Con Call Updates</label>
+                    <label class="heading">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque egestas nisl eu ante volutpat euismod. Nam elementum ipsum libero, ut lacinia diam placerat ac..</label>
+                </div>
+                <div class="details">
+                    <label class="heading right">Announced On</label>
+                    <label class="heading right">21 Aug 2021</label>
+                </div>
+            </div>
+            <div class="grid-data-corporate">
+                <span class="dot"></span>
+                <div class="details">
+                    <label class="value">Analysts/Institutional Investor Meet /Con Call Updates</label>
+                    <label class="heading">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque egestas nisl eu ante volutpat euismod. Nam elementum ipsum libero, ut lacinia diam placerat ac..</label>
+                </div>
+                <div class="details">
+                    <label class="heading right">Announced On</label>
+                    <label class="heading right">21 Aug 2021</label>
+                </div>
+            </div>
+            <div class="corporate-header"><label>Past</label>
+                <hr class="line">
+            </div>
+            <div class="grid-data-corporate">
+                <span class="dot"></span>
+                <div class="details">
+                    <label class="value">Analysts/Institutional Investor Meet /Con Call Updates</label>
+                    <label class="heading">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque egestas nisl eu ante volutpat euismod. Nam elementum ipsum libero, ut lacinia diam placerat ac..</label>
+                </div>
+                <div class="details">
+                    <label class="heading right">Announced On</label>
+                    <label class="heading right">21 Aug 2021</label>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="corporateactions.length === 0">
+            No data found.
+        </div>
+    </div>
+    <div class="box-container">
+        <!--Important Dates-->
+        <label class="box-header">Important Dates</label>
+        <div class="timeline-row">
+            <div class="timestamp">
+                <label class="heading">Fund Inception Date</label>
+            </div>
+            <div class="milestone">
+            </div>
+            <div class="status-timeline">
+                <label class="value">{{AllMFData.InceptionDate | date :'dd-MMM-yyyy'|| '-' }}</label>
+            </div>
+            <div class="vl"></div>
+        </div>
+        <div class="timeline-row">
+            <div class="timestamp">
+                <label class="heading">Effective Start Date/Time</label>
+            </div>
+            <div class="milestone">
+            </div>
+            <div class="status-timeline">
+                <label class="value">{{AllMFData.EffectiveStartDateTime | date :'dd-MMM-yyyy hh:mm:ss'|| '-' }}</label>
+            </div>
+            <div class="vl"></div>
+        </div>
+        <div class="timeline-row">
+            <div class="timestamp">
+                <label class="heading">Effective End Date/Time</label>
+            </div>
+            <div class="milestone">
+            </div>
+            <div class="status-timeline">
+                <label class="value">{{AllMFData.EffectiveEndDateTime | date :'dd-MMM-yyyy hh:mm:ss'|| '-' }}</label>
+            </div>
+            <div class="vl"></div>
+        </div>
+        <div class="timeline-row">
+            <div class="timestamp">
+                <label class="heading">Maturity Date</label>
+            </div>
+            <div class="milestone">
+            </div>
+            <div class="status-timeline">
+                <label class="value">{{AllMFData.MaturityDate | date :'dd-MMM-yyyy'|| '-' }}</label>
+            </div>
+            <div class="vl"></div>
+        </div>
+
+    </div>
+</div>
+
+<div *ngIf="showOrderEntry" class="overlay">
+    <div class="order-entry-container page-content-container-popup">
+        <div class="recommended-products">
+            <div> <!--*ngIf="this.product === 'Fund_Setup'"-->
+                <div class="tabs tab-active">
+                    <div class="right">Funds</div>
+                    <!-- <div class="closebtn" (click)="showOrderEntry = false">X</div> -->
+                    <app-svg-icons class="closebtn" [icon]="'cancel-icon'" [width]="'15'" [height]="'15'"
+                        (click)="showOrderEntry = false">
+                    </app-svg-icons>
+                </div>
+                <app-mutualfunds [displaySearch]=true></app-mutualfunds>
+            </div>
+        </div>
+    </div>
+</div>

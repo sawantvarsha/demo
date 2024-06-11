@@ -1,0 +1,138 @@
+<!-- <label class="card-header">Marketing Material</label> -->
+<div class="container">
+    <div class="header labels">Catalog</div>
+    <div class="contentContainer">
+        <ul *ngIf = "receivedDocs.length > 0">
+            <li *ngFor="let i of receivedDocs">
+                <div (click)="toggleVideoPopup(i); openfilePreviewDiv(i)">
+                    <app-svg-icons *ngIf="i.Ext === 'pdf'" [icon]="'pdf'" [width]="'40'" [height]="'40'"></app-svg-icons>
+                    <app-svg-icons *ngIf="i.Ext !== 'pdf'" [icon]="'Export-to-Excel-icon'" [width]="'40'" [height]="'40'"></app-svg-icons>
+                    <div class="Details">
+                        <label>{{i.name}}</label>
+                    </div>
+                </div>
+                <hr class="line">
+            </li>
+        </ul>
+        <div *ngIf = "receivedDocs.length <= 0">No Data Found</div>
+    </div>
+    <!-- <div class="pageStatus">
+        <div class="tab1"></div>
+        <div class="tab2"></div>
+    </div> -->
+</div>
+<!-- popup-->
+<div class="overlay" style="display: none;">
+    <div class="popup">
+        <div class="title">
+            <label>Hindustan Petroleum Q2 Results: Profit Beats Estimates As Other Income Rises, Tax Expense
+                Falls</label>
+            <app-svg-icons [icon]="'close'" [width]="'18'" [height]="'18'"></app-svg-icons> 
+        </div>
+        <div class="popup-content">
+            <div class="news-grid">
+                <div class="news-flex">
+                    <!-- <img src="{{asseturl}}newsimage.png" width="250px" height="250px"> -->
+                    <div class="recommended-news">
+
+                    </div>
+                </div>
+                <div class="news-flex">
+                    <div class="news-text">
+
+                    </div>
+                    <div class="">
+
+                    </div>
+                    <div class="">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="popup-bottom">
+            <div class="bottom-flex">
+                <div class="news-actions">
+                    <div class="news-actions-item">
+                        <app-svg-icons [icon]="'liked'" [width]="'12'" [height]="'12'" style="margin: auto 0;">
+                        </app-svg-icons>
+                        <a>Like</a>
+                    </div>
+                    <div class="news-actions-item">
+                        <app-svg-icons [icon]="'cart'" [width]="'12'" [height]="'12'" style="margin: auto 0;">
+                        </app-svg-icons>
+                        <a>Product Details</a>
+                    </div>
+                    <div class="news-actions-item">
+                        <app-svg-icons [icon]="'contact'" [width]="'12'" [height]="'12'" style="margin: auto 0;">
+                        </app-svg-icons>
+                        <a>Contact</a>
+                    </div>
+                </div>
+            </div>
+            <div class="bottom-flex">
+                <a>Tell me more</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- <div class="overlay" *ngIf="Video_popup">
+
+    <div class="popup">
+        <div class="title">
+            <label>Structured Products Distribution Journey</label>
+            <app-svg-icons (click)="toggleVideoPopup()" [icon]="'close'" [width]="'18'" [height]="'18'"></app-svg-icons>
+        </div>
+        <div class="popup-content">
+            <pdf-viewer [src]="pdfSrc"
+              [render-text]="true"
+              [original-size]="false"
+              style="height: 775px; "
+  ></pdf-viewer>
+        </div>
+        <div class="bottom-flex">
+            <a>Download    <app-svg-icons [icon]="'download-icon'" [width]="'25'" [height]="'25'"> </app-svg-icons>
+            </a>
+        </div>
+    </div>
+</div> -->
+
+
+<div class="overlay" *ngIf="Video_popup">
+    <div class="popup">
+        <div class="title">
+            <label>Document Viewer</label>
+            <app-svg-icons [icon]="'close'" [width]="'18'" [height]="'18'" (click)="closeDocPopup()"></app-svg-icons>
+        </div>
+
+        <div class="popup-content">
+            <pdf-viewer [src]="docPath" [render-text]="true" [original-size]="false" style="height: 690px;"></pdf-viewer>
+        </div>
+        <div class="popup-bottom">
+            <div class="bottom-flex">
+                <!-- <div class="news-actions">
+                    <div class="news-actions-item">
+                        <app-svg-icons [icon]="'liked'" [width]="'12'" [height]="'12'" style="margin: auto 0;">
+                        </app-svg-icons>
+                        <a>Like</a>
+                    </div>
+                    <div class="news-actions-item">
+                        <app-svg-icons [icon]="'cart'" [width]="'12'" [height]="'12'" style="margin: auto 0;">
+                        </app-svg-icons>
+                        <a>Product Details</a>
+                    </div>
+                    <div class="news-actions-item">
+                        <app-svg-icons [icon]="'contact'" [width]="'12'" [height]="'12'" style="margin: auto 0;">
+                        </app-svg-icons>
+                        <a>Contact</a>
+                    </div>
+                </div> -->
+            </div>
+            <div class="bottom-flex">
+                <a href="{{this.docPath}}" target="_blank">Download    <app-svg-icons [icon]="'download-icon'" [width]="'18'" [height]="'18'" > </app-svg-icons>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,2561 @@
+<div class="container-fluid contentdiv">
+  <div [ngClass]="{ 'overlay ': this.viewOnly }">
+    <div [ngClass]="{ 'view-pricer-popupmodal': this.viewOnly }">
+      <div [ngClass]="{ disablePointerEvents: this.viewOnly }">
+        <div class="row pgHeaderTop">
+          <div class="col-12 title-row">
+            <label style="padding-left: 12px;" class="pageHeader">Steepener</label>
+          </div>
+        </div>
+
+        <div *ngIf="activeTab === 'Pricing'">
+          <!-- rfqID div Added by SandipA @31-Oct-23 || Start -->
+          <div class="row">
+            <div class="relPosition">
+              <div class="row divRfqId">
+                <div class="col-12 dvRfqPadding">
+                  <!-- Added by SandipA -->
+                  <h5 *ngIf="rfqID && !sendtocptyflag" class="hdrRfqId">
+                      RFQ ID : &nbsp; {{NoteMasterID}}
+                  </h5>
+
+                  <h5
+                    *ngIf="
+                      portfolioId &&
+                      portfolioId !== '' &&
+                      this.viewOnly
+                    "
+                    class="hdrRfqId"
+                  >
+                    Saved Request ID : &nbsp;
+                    {{ portfolioId }}
+                  </h5>
+
+                  <h5
+                    *ngIf="
+                      scheduledReqId &&
+                      scheduledReqId !== '' &&
+                      this.viewOnly
+                    "
+                    class="hdrRfqId"
+                  >
+                    Scheduled Request ID : &nbsp;
+                    {{ scheduledReqId }}
+                  </h5>
+
+                  <div *ngIf="ErrorMsgTop !== ''">
+                    <span class="errMsgTop">{{
+                      ErrorMsgTop
+                    }}</span>
+                  </div>
+                  <div *ngIf="infoMsg !== ''">
+                    <span class="validationErrorMsg">{{
+                      infoMsg
+                    }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- rfqID div Added by SandipA @31-Oct-23 || End -->
+          <div class="container-fluid contentdiv">
+            <div
+              [ngClass]="{ disablePointerEvents: this.viewOnly }"
+              style="
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-start;
+                gap: 25px;
+              "
+            >
+              <div class="grid-row">
+                <div class="flex-container">
+                  <div class="container" style="width: 857px">
+                    <div
+                      style="
+                        position: relative;
+                        display: flex;
+                        flex-direction: column;
+                      "
+                    >
+                      <div class="row-grid-inner">
+                        <div class="flex-column">
+                          
+                          <div class="label-row">
+                            <label class="box-header">{{
+                              "General Terms" | translate
+                            }}</label>
+                          </div>
+
+                          <!-- <div class="row-grid-2">
+                            <div
+                              style="position: relative"
+                              *ngIf="this.allBooksData.length > 1"
+                            >
+                              <label>{{ Onbehalfof | translate }}</label>
+                            </div>
+                            <div
+                              style="position: relative"
+                              *ngIf="this.allBooksData.length > 1"
+                            >
+                              <select
+                                [(ngModel)]="onBehalfOf"
+                                tabindex="1"
+                                (change)="this.reset(); onBehalfOfChange()"
+                              >
+                                <option
+                                  *ngFor="
+                                    let bookData of allBooksData;
+                                    let i = index
+                                  "
+                                  [value]="bookData.BookCode"
+                                >
+                                  {{ bookData.BookName }}
+                                </option>
+                              </select>
+                            </div>
+                          </div> -->
+
+                          <!-- On behalf of -->
+                          <div
+                            class="row-grid-2"
+                            *ngIf="this.allBooksData.length > 1"
+                          >
+                            <div class="relPosition">
+                              <label>
+                                {{ "On behalf Of" | translate }}
+                              </label>
+                            </div>
+                            <div class="relPosition">
+                              <select
+                                [(ngModel)]="onBehalfOf"
+                                tabindex="1"
+                                (change)="this.reset(); onBehalfOfChange()"
+                              >
+                                <option
+                                  *ngFor="
+                                    let bookData of allBooksData;
+                                    let i = index
+                                  "
+                                  [value]="bookData.BookCode"
+                                >
+                                  {{ bookData.BookName }}
+                                </option>
+                              </select>
+                            </div>
+                          </div>
+
+                          <!-- Currency -->
+                          <div class="row-grid-2">
+                            <div class="relPosition">
+                              <label>{{ "Currency" | translate }}</label>
+                            </div>
+                            <div class="relPosition">
+                              <select
+                                [(ngModel)]="ddlNoteCcy"
+                                tabindex="2"
+                                (change)="currencyChange()"
+                                [disabled]="
+                                  format === 'Bono J' || format === 'Warrant'
+                                "
+                              >
+                                <ng-container *ngFor="let c of CCY">
+                                  <option [value]="c">{{ c }}</option>
+                                </ng-container>
+                              </select>
+                            </div>
+                          </div>
+
+                          <!-- Format -->
+                          <div class="row-grid-2">
+                            <div class="relPosition">
+                              <label>{{ "Format" | translate }}</label>
+                            </div>
+                            <div class="relPosition">
+                              <select
+                                [(ngModel)]="format"
+                                (change)="formatChange()"
+                                tabindex="3"
+                              >
+                                <option
+                                  *ngFor="let f of mappedformatlist"
+                                  value="{{ f }}"
+                                >
+                                  {{ f }}
+                                </option>
+                              </select>
+                            </div>
+                          </div>
+
+                          <!-- Solve For -->
+                          <!-- <div class="row-grid-2">
+                            <div style="position: relative">
+                              <label>{{ "Solve for" | translate }} </label>
+                            </div>
+                            <div style="position: relative">
+                              <select
+                                [(ngModel)]="SolveForvalue"
+                                id="SolveForvalue"
+                                (change)="this.reset(); setSolveFor($event)"
+                                tabindex="3"
+                              >
+                                <option value="InitialFixedRate">
+                                  Initial Fixed Rate
+                                </option>
+                                <option value="Leverage">Leverage</option>
+                                
+                                <option value="IBPrice">Price</option>
+                              </select>
+                            </div>
+                          </div> -->
+
+                          <!-- Solve For -->
+                          <div class="row-grid-2">
+                            <div class="relPosition">
+                              <label>{{ "Solve for" | translate }} </label>
+                            </div>
+                            <div class="relPosition">
+                              <select
+                                [(ngModel)]="SolveForvalue"
+                                id="SolveForvalue"
+                                (change)="setSolveFor($event)"
+                                tabindex="4"
+                              >
+                                <option value="InitialFixedRate">
+                                  Initial Fixed Rate
+                                </option>
+                                <option value="Leverage">Leverage</option>
+                                <option value="IBPrice">Price</option>
+                              </select>
+                            </div>
+                          </div>
+
+                          
+                        </div>
+
+                        <!-- Column 2 -->
+                        <div class="flex-column">
+                          <div class="label-row hideScreen">
+                            <label
+                              class="labelHeaders hideScreen"
+                              style="height: 32px"
+                            ></label>
+                          </div>
+                          <div class="row-grid-2">
+                            <div style="position: relative"></div>
+                            <div style="position: relative"></div>
+                          </div>
+
+                          <div class="row-grid-2">
+                            <div style="position: relative"></div>
+                            <div style="position: relative"></div>
+                          </div>
+
+                          <!-- Size -->
+                          <div class="row-grid-2">
+                            <div style="position: relative">
+                              <label>{{ "Size" | translate }}</label>
+                            </div>
+                            <!--removed UnformatNumber function by riddhiP || 5JULY23 -->
+                            <div style="position: relative">
+                              <input
+                                #focusable
+                                type="text"
+                                id="txtnotional"
+                                type="text"
+                                tabindex="5"
+                                maxlength="14"
+                                value="{{ Notional }}"
+                                (blur)="
+                                  this.reset();
+                                  checkValidNotional($event);
+                                  checkNotional($event)
+                                "
+                                (keypress)="
+                                  commonfunctions.NotionalValidateKeys($event)
+                                "
+                                (keyup)="
+                                  commonfunctions.chkNotionalFormat_keyUp(
+                                    $event
+                                  )
+                                "
+                                placeholder="Enter Notional"
+                                [(ngModel)]="Notional"
+                              />
+                            </div>
+                          </div>
+
+                          <!-- START RiddhiP || 13june23 ||  BBVAEPCLI-548 || Rates: Steepener Blotter UI -->
+                          <div class="row-grid-2" *ngIf="format !== 'Swap'">
+                            <div style="position: relative" class="">
+                              <label
+                                [ngClass]="
+                                  this.SolveForvalue === 'IBPrice'
+                                    ? 'disabledlbl'
+                                    : ''
+                                "
+                                >{{ "Price (%)" | translate }}</label
+                              >
+                            </div>
+                            <div style="position: relative">
+                              <input
+                                type="text"
+                                [(ngModel)]="IBPrice"
+                                id="txtIBPrice"
+                                maxlength="10"
+                                [disabled]="this.SolveForvalue === 'IBPrice'"
+                                (change)="IBPricechange()"
+                                (blur)="
+                                  this.reset();
+                                  this.IBPrice =
+                                    commonfunctions.setDecimal($event)
+                                "
+                                (keypress)="
+                                  format === 'Swap'
+                                    ? commonfunctions.InputNegativeNumber(
+                                        $event
+                                      )
+                                    : commonfunctions.InputNumber($event)
+                                "
+                                tabindex="6"
+                              />
+                            </div>
+                          </div>
+
+                          <!-- Upfront (%) -->
+                          <div class="row-grid-2" *ngIf="format === 'Swap'">
+                            <div style="position: relative">
+                              <label style="white-space: nowrap">
+                                {{ "upfront (%)" | translate }}</label
+                              >
+                              <div>
+                                <app-svg-icons
+                                  class="info"
+                                  [icon]="'info-icon'"
+                                  [width]="'15'"
+                                >
+                                </app-svg-icons>
+                                <div class="infodiv" *ngIf="format === 'Swap'">
+                                  <span
+                                    class="infoNote"
+                                    *ngIf="format === 'Swap'"
+                                    style="white-space: initial"
+                                  >
+                                    {{
+                                      "Negative Upfront means Issuer pays"
+                                        | translate
+                                    }}
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                            <div
+                              style="
+                                position: relative;
+                                display: flex;
+                                flex-direction: row;
+                                gap: 10px;
+                              "
+                            >
+                              <input
+                                type="text"
+                                [(ngModel)]="IBPrice"
+                                id="txtIBPrice"
+                                maxlength="10"
+                                [disabled]="this.SolveForvalue === 'IBPrice'"
+                                (change)="IBPricechange()"
+                                (blur)="
+                                  this.reset();
+                                  this.IBPrice =
+                                    commonfunctions.setDecimal($event)
+                                "
+                                (keypress)="
+                                  format === 'Swap'
+                                    ? commonfunctions.InputNegativeNumber(
+                                        $event
+                                      )
+                                    : commonfunctions.InputNumber($event)
+                                "
+                                tabindex="7"
+                              />
+                            </div>
+                          </div>
+                          <!-- end RiddhiP || 13june23 ||  BBVAEPCLI-548 || Rates: Steepener Blotter UI -->
+
+                          <!-- RiddhiP || 13june23 ||  BBVAEPCLI-548 || Steepener Caps & Floors Blotter UI -->
+                          <div
+                            class="row-grid-2"
+                            *ngIf="format !== 'Swap' && format !== 'Option'"
+                          >
+                            <div style="position: relative">
+                              <label>{{ "Issue Price (%)" | translate }}</label>
+                            </div>
+                            <div style="position: relative">
+                              <input
+                                type="text"
+                                [(ngModel)]="issuePrice"
+                                tabindex="8"
+                                (blur)="
+                                  this.issuePrice =
+                                    commonfunctions.setDecimal($event);
+                                  this.reset()
+                                "
+                                maxlength="10"
+                                (keypress)="commonfunctions.InputNumber($event)"
+                                disabled
+                              />
+                            </div>
+                          </div>
+
+                          <div class="row-grid-2">
+                            <!-- Added by Anubhav Goyal | 23-Jun-2023 | BBVAEPCLI-594 Rates: Additional enhancements-->
+                            <div style="position: relative">
+                              <!-- Added by RiddhiP || BBVAEPCLI-672 || updated translations|| 9AUG23 -->
+                              <label>{{ "Ref.Index" | translate }}</label>
+                              <!-- <app-svg-icons
+                                class="info"
+                                [icon]="'info-icon'"
+                                [width]="'15'"
+                              ></app-svg-icons> -->
+                              <img
+                                src="{{ asseturl }}information.png"
+                                class="info"
+                              />
+                              <div class="infodiv">
+                                <span
+                                  class="infoNote flex-column"
+                                  style="
+                                    white-space: initial;
+                                    width: 455px;
+                                    row-gap: 0px;
+                                  "
+                                >
+                                  <div
+                                    style="
+                                      display: grid;
+                                      grid-template-columns: 0.3fr 10px 1fr;
+                                    "
+                                  >
+                                    <div
+                                      style="position: relative; width: 101px"
+                                    >
+                                      Coupon Fixed
+                                    </div>
+                                    <div style="position: relative">:</div>
+                                    <div style="position: relative">
+                                      Initial fixed rate
+                                    </div>
+                                  </div>
+                                  <div
+                                    style="
+                                      display: grid;
+                                      grid-template-columns: 0.3fr 10px 1fr;
+                                    "
+                                  >
+                                    <div
+                                      style="position: relative; width: 101px"
+                                    >
+                                      Coupon Year "i"
+                                    </div>
+                                    <div style="position: relative">:</div>
+                                    <div style="position: relative">
+                                      Min[ Max[ Floor , Leverage * (Index1 -
+                                      Index2) ], Cap]
+                                    </div>
+                                  </div>
+                                  <!-- Coupon Fixed: Initial fixed rate <br>
+                                                Coupon Year "i": Min[ Max[ Floor , Leverage * (Index1 - Index2) ], Cap] -->
+                                </span>
+                              </div>
+                            </div>
+                            <div style="position: relative">
+                              <!-- Code changes done as per changed response Pranav D 20-Jun-2023 -->
+                              <!-- Start Reset function added by RadhaM || remove the Initial Fixed Rate the previous price is not cleared issue || 3-07-23-->
+                              <select
+                                [(ngModel)]="underlyingRef"
+                                (change)="filterRefArr(); this.reset()"
+                                tabindex="9"
+                              >
+                                <option
+                                  *ngFor="let arr of copySTUnderlyingRefRateArr"
+                                  [value]="arr.Data_Value"
+                                >
+                                  {{ arr.Data_Value }}
+                                </option>
+                              </select>
+                              <!-- End Reset function added by RadhaM || remove the Initial Fixed Rate the previous price is not cleared issue || 3-07-23-->
+                            </div>
+                          </div>
+
+                          <!-- New field added by Pranav D as asked by Shikhar G 13-Jun-2023 -->
+                          <div class="row-grid-2">
+                            <div style="position: relative">
+                              <!-- Added by RiddhiP || BBVAEPCLI-672 || updated translations|| 8AUG23 -->
+                              <label>{{ "Ref.Index" | translate }} 2</label>
+                            </div>
+                            <div style="position: relative">
+                              <!-- Code changes done as per changed response Pranav D 20-Jun-2023 -->
+                              <select [(ngModel)]="underlyingRef2" tabindex="10">
+                                <option
+                                  *ngFor="let arr of FilteredUnderlyingRefArr"
+                                  [value]="arr"
+                                >
+                                  {{ arr }}
+                                </option>
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="container">
+                    <div style="position: relative">
+                      <!-- Column 1 & 2 -->
+                      <div class="row-grid-inner">
+                        <!-- Column 1 -->
+
+                        <!-- Column 2 -->
+                        <div class="flex-column">
+                          <!-- Start: Empty grids | Anubhav Goyal | 20-Jun-2023 | To align Initial fixed rate in line with Size -->
+                          <div class="row-grid-2"></div>
+                          <div class="row-grid-2"></div>
+                          <!-- End: Empty grids | Anubhav Goyal | 20-Jun-2023 | To align Initial fixed rate in line with Size -->
+                          <div class="row-header">
+                            <!-- Added by RiddhiP || BBVAEPCLI-672 || updated translations|| 8AUG23 -->
+                            <label class="box-header">{{
+                              "Initial Fixed Rate" | translate
+                            }}</label>
+                            <!-- Start Reset function added by RadhaM || remove the Initial Fixed Rate the previous price is not cleared issue || 3-07-23-->
+                            <div
+                              class="toggleYN btngroup"
+                              style="justify-content: end"
+                            >
+                              <div
+                                class="toggleN Btn"
+                                (click)="
+                                  this.initialFixedRateYN = 'Y';
+                                  InitialFixedRateToggle();
+                                  this.reset()
+                                "
+                                [ngClass]="
+                                  this.initialFixedRateYN == 'Y'
+                                    ? 'Btn_Yes'
+                                    : 'Btn_No'
+                                "
+                              >
+                                {{ "Yes" | translate }}
+                              </div>
+                              <div
+                                class="toggleN Btn"
+                                (click)="
+                                  this.initialFixedRateYN = 'N';
+                                  InitialFixedRateToggle();
+                                  this.reset()
+                                "
+                                [ngClass]="
+                                  this.initialFixedRateYN == 'N'
+                                    ? 'Btn_Yes'
+                                    : 'Btn_No'
+                                "
+                              >
+                                {{ "No" | translate }}
+                              </div>
+                            </div>
+                            <!-- End Reset function added by RadhaM || remove the Initial Fixed Rate the previous price is not cleared issue || 3-07-23-->
+                          </div>
+                          <!-- Type -->
+                          <!-- Initial Fixed Coupon -->
+                          <!-- Added condition *ngIf="this.initialFixedRateYN=='Y' | Anubhav Goyal | 19-Jun-2023 -->
+                          <!-- <div class="row-grid-2" *ngIf="this.initialFixedRateYN=='Y'  && flagFixedRate==true">
+                                    <div style="position:relative;padding-right: 0; display: flex;"> -->
+                          <!--Added by RiddhiP || 2JUNE23 || Initial fixed coupon to be first coupon changes asked by Nitij M  -->
+                          <!-- <label>First Coupon</label> -->
+
+                          <!-- </div> -->
+
+                          <!--START Added by RiddhiP || 2JUNE23 || Dropdown value to long/short changes asked by Nitij M  -->
+                          <!-- <div style="position:relative;">
+                                        <select name="" tabindex="30" [(ngModel)]="FixedCouponYN" (change)="this.reset();initialFixedCpnChange()">
+                                            <option value="Yes">Yes</option>
+                                            <option value="No">No</option>
+                                        </select>
+                                    </div> -->
+                          <!--  added by Suvarna P || used existing css -->
+                          <!--  added by Suvarna P || 06Jun23 || width issue reported by Nitij M -->
+                          <!-- Start Reset function added by RadhaM || remove the Initial Fixed Rate the previous price is not cleared issue || 3-07-23-->
+                          <!-- <div tyle="position:relative;" class="toggleYN"
+                                        (click)="setFirstCpn();this.reset();" *ngIf="cpnType !== 'UpFront'">
+                                        <div class="toggleN" (click)="firstCpnYN = 'Y'; toggeleOnOff();"
+                                            [ngClass]="this.firstCpnYN==='Y'? 'Select ':''">
+                                            Long
+                                        </div>
+                                        <div class="toggleN" (click)="firstCpnYN = 'N'; toggeleOnOff()"
+                                            [ngClass]="this.firstCpnYN==='N'? 'Select ':''">
+                                            Short
+                                        </div>
+                                    </div> -->
+                          <!-- End Reset function added by RadhaM || remove the Initial Fixed Rate the previous price is not cleared issue || 3-07-23-->
+                          <!--END Added by RiddhiP || 2JUNE23 || Dropdown value to long/short changes asked by Nitij M  -->
+                          <!-- </div> -->
+
+                          <!-- Initial Fixed Rate -->
+                          <div
+                            class="row-grid-2"
+                            *ngIf="this.initialFixedRateYN == 'Y'"
+                          >
+                            <div class="info-icon-wrapper">
+                              <div style="position: relative; display: flex; margin: unset !important;">
+                                <!-- Added by RiddhiP || BBVAEPCLI-672 || updated translations|| 8AUG23   -->
+                                <label
+                                  [ngClass]="
+                                    this.SolveForvalue == 'InitialFixedRate'
+                                      ? 'disabledlbl'
+                                      : ''
+                                  "
+                                  >{{
+                                    "Initial Fixed Rate (%)" | translate
+                                  }}</label
+                                >
+
+                                <!-- Added by RiddhiP || 11AUG23 ||BBVACLI-1232 || Autocall enhanced features tooltips  -->
+                                <!-- <app-svg-icons
+                        class="info"
+                        [icon]="'info-icon'"
+                        [width]="'15'"
+                      >
+                    </app-svg-icons> -->
+                                <img
+                                  src="{{ asseturl }}information.png"
+                                  class="info"
+                                />
+                                <div class="infodiv">
+                                  <span
+                                    class="infoNote"
+                                    style="white-space: initial"
+                                  >
+                                    Expressed in per annum basis
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                            <div
+                              style="position: relative"
+                              class="fields"
+                              [ngClass]="
+                                this.SolveForvalue == 'InitialFixedRate'
+                                  ? 'disablePointerEvents'
+                                  : ''
+                              "
+                            >
+                              <!-- Price validation funciton called on activity || Added by Taran || 29th June 2023 -->
+                              <input
+                                type="text"
+                                id="txtInitialFixedRate"
+                                [(ngModel)]="initialFixedRate"
+                                maxlength="8"
+                                (keypress)="commonfunctions.InputNumber($event)"
+                                tabindex="11"
+                                [disabled]="
+                                  SolveForvalue === 'InitialFixedRate' ||
+                                  this.initialFixedRateYN == 'N'
+                                "
+                                (blur)="
+                                  PriceValidation($event, 'InitialFixedRate');
+                                  this.initialFixedRate =
+                                    commonfunctions.setDecimal($event)
+                                "
+                              />
+                            </div>
+                          </div>
+
+                          <!-- End of Fixed Rate Period -->
+                          <div
+                            class="row-grid-2"
+                            *ngIf="this.initialFixedRateYN == 'Y'"
+                          >
+                            <div style="position: relative">
+                              <!-- Added by RiddhiP || BBVAEPCLI-672 || updated translations|| 8AUG23   -->
+                              <label>{{
+                                "End of Fixed Rate Period" | translate
+                              }}</label>
+                            </div>
+                            <div style="position: relative">
+                              <!-- Start Reset function added by RadhaM || remove the Initial Fixed Rate the previous price is not cleared issue || 3-07-23-->
+                              <select
+                                (change)="this.reset()"
+                                [(ngModel)]="endOfFixedRatePrd"
+                                tabindex="12"
+                              >
+                                <option
+                                  *ngFor="let data of copyEndFixedRatePeriod"
+                                  [value]="data.Data_Value"
+                                >
+                                  {{ data.Data_Value }}
+                                </option>
+                              </select>
+                              <!-- End Reset function added by RadhaM || remove the Initial Fixed Rate the previous price is not cleared issue || 3-07-23-->
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="flex-container">
+                  <div class="container" style="width: 857px">
+                    <div style="position: relative">
+                      <!-- Column 1 & 2 -->
+                      <div class="row-grid-inner">
+                        <!-- Column 1 -->
+                        <div class="flex-column">
+                          <div class="label-row">
+                            <label class="box-header">{{
+                              "Dates" | translate
+                            }}</label>
+                          </div>
+
+                          <!-- START : Issue date shifter Added by Pranav D 5-Jul-2023 -->
+                          <div class="row-grid-2">
+                            <div
+                              style="
+                                position: relative;
+                                padding-right: 0 !important;
+                                display: flex;
+                              "
+                            >
+                              <!-- BBVAEPCLI-672 || Translation changes || RadhaM || 8August23 -->
+                              <label>{{ "Issue Date Offset" | translate }}</label>
+                            </div>
+                            <div>
+                              <!-- <input
+                                type="text"
+                                name=""
+                                class="tenorBox"
+                                maxlength="4"
+                                [(ngModel)]="issueDate"
+                                disabled
+                              /> -->
+
+                              <select name="" [(ngModel)]="issueDate" tabindex="13">
+                                                <option *ngFor="let commondata of this.issueDateArr"  [value]="commondata.Data_Value">
+                                                    {{commondata.Data_Value}}
+                                                </option>
+                                            </select>
+
+                            </div>
+                          </div>
+                          <!-- END : Issue date shifter Added by Pranav D 5-Jul-2023 -->
+                          <!-- Fixing -->
+                          <div class="row-grid-2">
+                            <div
+                              style="
+                                position: relative;
+                                padding-right: 0 !important;
+                                display: flex;
+                              "
+                            >
+                              <!-- BBVAEPCLI-672 || Translation changes || RadhaM || 8August23 -->
+                              <label>{{ "Fixing" | translate }}</label>
+                            </div>
+                            <div style="position: relative">
+                              <div style="position: relative">
+                                <select
+                                  name=""
+                                  [(ngModel)]="fixing"
+                                  tabindex="14"
+                                  (change)="this.reset()"
+                                >
+                                  <!-- <option value="In Arrears">In Arrears</option>
+                                                <option value="In Advance">In Advance</option> -->
+                                  <option
+                                    *ngFor="let data of FixingTypeArr"
+                                    value="{{ data.Data_Value }}"
+                                  >
+                                    {{ data.Data_Value }}
+                                  </option>
+                                </select>
+                              </div>
+                            </div>
+                          </div>
+                          <!-- Maturity -->
+                          <div class="row-grid-2">
+                            <div
+                              style="
+                                position: relative;
+                                padding-right: 0;
+                                display: flex;
+                              "
+                            >
+                              <!-- Added by RiddhiP || 10aug23 || BBVAEPCLI-672 || updated translations -->
+                              <label>{{ "Maturity" | translate }}</label>
+                            </div>
+                            <div style="position: relative">
+                              <select
+                                name=""
+                                tabindex="15"
+                                [(ngModel)]="maturity"
+                                (change)="
+                                  this.reset();
+                                  this.changeDatesFrequencyArr(this.maturity)
+                                "
+                              >
+                                <!-- <option value="1Y">1Y
+                                            </option> -->
+                                <option
+                                  *ngFor="let data of MaturityArr"
+                                  value="{{ data.Data_Value }}"
+                                >
+                                  {{ data.Data_Value }}
+                                </option>
+                              </select>
+                            </div>
+                          </div>
+                          <!-- Frequency -->
+                          <div class="row-grid-2">
+                            <div style="position: relative; display: flex">
+                              <div
+                                style="
+                                  display: flex;
+                                  gap: 50px;
+                                  justify-content: space-between;
+                                "
+                              >
+                                <label>{{ "Frequency" | translate }}</label>
+                              </div>
+                            </div>
+                            <div
+                              style="position: relative"
+                              style="padding: 0 !important; white-space: nowrap"
+                            >
+                              <select
+                                name=""
+                                tabindex="16"
+                                [(ngModel)]="frequency"
+                                (change)="
+                                  this.reset();
+                                  changeEndOfFixedRatePeriod(
+                                    maturity,
+                                    frequency
+                                  )
+                                "
+                              >
+                                <option
+                                  *ngFor="let ele of copyFrequencyArr"
+                                  value="{{ ele.Data_Value }}"
+                                >
+                                  {{ ele.Data_Value }}
+                                </option>
+                              </select>
+                            </div>
+                          </div>
+                          <!-- Coupon Basis -->
+                          <div class="row-grid-2">
+                            <div style="position: relative; display: flex">
+                              <div
+                                style="
+                                  display: flex;
+                                  gap: 50px;
+                                  justify-content: space-between;
+                                "
+                              >
+                                <!-- BBVAEPCLI-672 || Translation changes || RadhaM || 8August23 -->
+                                <label>{{ "Coupon Basis" | translate }}</label>
+                              </div>
+                            </div>
+                            <div
+                              style="position: relative"
+                              style="padding: 0 !important; white-space: nowrap"
+                            >
+                              <select
+                                name=""
+                                tabindex="17"
+                                [(ngModel)]="cpnBasis"
+                                (change)="this.reset()"
+                              >
+                                <!-- <option value="Act/Act">Act/Act</option>
+                                            <option value="30/360">30/360</option>
+                                            <option value="Act/360">Act/360</option> -->
+                                <option
+                                  *ngFor="let data of CouponBasisArr"
+                                  value="{{ data.Data_Value }}"
+                                >
+                                  {{ data.Data_Value }}
+                                </option>
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+
+                        <!-- Column 2 -->
+                        <div class="flex-column" *ngIf="format === 'Swap'">
+                          <div class="label-row">
+                            <label class="box-header">{{
+                              "Funding" | translate
+                            }}</label>
+                          </div>
+
+                          <!-- Type -->
+                          <div class="row-grid-2">
+                            <div style="position: relative">
+                              <label>{{ "Type" | translate }}</label>
+                            </div>
+                            <div style="position: relative">
+                              <select
+                                *ngIf="format === 'Swap'"
+                                [(ngModel)]="fundType"
+                                tabindex="18"
+                                (change)="this.reset()"
+                              >
+                                <!-- <option value="Fixed Rate">{{this.commonfunctions.FixedRate | translate}}
+                                            </option>
+                                            <option value="Floating Rate">{{this.commonfunctions.FloatingRate |
+                                                translate}}</option> -->
+                                <option
+                                  *ngFor="let data of FundingTypeArr"
+                                  value="{{ data.Data_Value }}"
+                                >
+                                  {{ data.Data_Value }}
+                                </option>
+                              </select>
+                            </div>
+                          </div>
+
+                          <!-- Frequency -->
+                          <div class="row-grid-2" *ngIf="format === 'Swap'">
+                            <div style="position: relative">
+                              <label>{{ "Frequency" | translate }}</label>
+                            </div>
+                            <div style="position: relative">
+                              <select
+                                [(ngModel)]="fundFreq"
+                                *ngIf="format === 'Swap'"
+                                tabindex="19"
+                              >
+                                <!-- <option value="1m">1m</option>
+                                            <option value="3m">3m</option>
+                                            <option value="6m">6m</option>
+                                            <option value="12m">12m</option> -->
+                                <option
+                                  *ngFor="let data of FundingFrequencyArr"
+                                  value="{{ data.Data_Value }}"
+                                >
+                                  {{ data.Data_Value }}
+                                </option>
+                              </select>
+                            </div>
+                          </div>
+
+                          <!-- Rate/Spread (%) -->
+                          <div class="row-grid-2" *ngIf="format === 'Swap'">
+                            <div
+                              style="position: relative"
+                              style="padding-right: 0 !important"
+                              class="set_Icon"
+                            >
+                              <!--Added by RiddhiP || 2JUNE23 || Rate when type is fixed,spread when type is floating  changes asked by Nitij M  -->
+                              <!-- Changed  this.fundType | Anubhav Goyal | 14-Jun-2023-->
+                              <!--  (%) added by Pranav D 19-Jun-2023 -->
+                              <label
+                                *ngIf="
+                                  format === 'Swap' && this.fundType === 'Fixed'
+                                "
+                                >{{ "Rate (%)" | translate }}
+                              </label>
+                              <label
+                                *ngIf="
+                                  format === 'Swap' &&
+                                  this.fundType === 'Floating'
+                                "
+                              >
+                                {{ "Spread" | translate }}(%)</label
+                              >
+                              <!-- (click)="GetTriggerValue('fundRate')"  -->
+                            </div>
+                            <div style="position: relative">
+                              <input
+                                type="text"
+                                *ngIf="format === 'Swap'"
+                                tabindex="20"
+                                [(ngModel)]="fundRate"
+                                id="txtFundingRate"
+                                maxlength="100"
+                                (blur)="
+                                  this.reset();
+                                  this.fundRate =
+                                    commonfunctions.setDecimal($event)
+                                "
+                                (keypress)="commonfunctions.InputSpread($event)"
+                                [disabled]="
+                                  this.SolveForvalue === 'FundingRate'
+                                "
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="container">
+                    <div style="position: relative">
+                      <!-- Column 1 & 2 -->
+                      <div class="row-grid-inner">
+                        <!-- Column 1 -->
+
+                        <!-- Column 2 -->
+                        <div class="flex-column">
+                          <div class="label-row">
+                            <label class="box-header">{{
+                              "Coupon" | translate
+                            }}</label>
+                          </div>
+                          <!-- Type -->
+                          <div class="row-grid-2">
+                            <div style="position: relative; display: flex">
+                              <label>{{ "Leverage" | translate }} (%)</label>
+                            </div>
+                            <div style="position: relative">
+                              <!-- <app-svg-icons [icon]="'info-icon'" [width]="'15'"></app-svg-icons> -->
+
+                              <div class="row-grid-2">
+                                <div style="position: relative" class="fields">
+                                  <!-- Price validation funciton called on activity || Added by Taran || 29th June 2023 -->
+                                  <input
+                                    type="text"
+                                    [(ngModel)]="Leverage"
+                                    id="txtLeverage"
+                                    (blur)="
+                                      PriceValidation($event, 'Leverage');
+                                      this.Leverage =
+                                        commonfunctions.setDecimal($event)
+                                    "
+                                    [disabled]="SolveForvalue === 'Leverage'"
+                                    tabindex="21"
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <!-- Barrier Level (%) 1-->
+                          <!-- Comment Added by Anubhav Goyal | 20-Jun-2023 | Asked by Nitij M. -->
+                          <!-- <div>
+                                    <div class="row-grid-2">
+                                        <div style="position:relative;">
+                                            <label><span>{{this.commonfunctions.Spread | translate}} (%)</span></label>
+                                        </div>
+                                        <div style="position:relative;">
+                                            <input type="text" [(ngModel)]="spread"
+                                                (blur)="this.spread = commonfunctions.setDecimal($event)">
+                                        </div>
+                                    </div>
+                                </div> -->
+
+                          <!-- Strike (%) -->
+                          <div class="row-grid-2">
+                            <!--START: Added by Anubhav Goyal | 18-Jul-2023 | BBVAEPCLI-645 Remove need for Cap in steepener | Yes/No toggle to be added and then CAP will be mandatory when Yes is selected. -->
+                            <div style="position: relative; display: flex">
+                              <label
+                                [ngClass]="{
+                                  disabledlbl:
+                                    this.SolveForvalue === 'Strike' ||
+                                    this.SolveForvalue ===
+                                      'Strike + CouponBarrier'
+                                }"
+                                >{{ "Cap" | translate }} (%)</label
+                              >
+                            </div>
+                            <div style="position: relative" class="fields">
+                              <div class="toggleYN" style="width: 75px">
+                                <div
+                                  class="toggleN Btn"
+                                  (click)="
+                                    this.capToggleYN = 'Y';
+                                    this.ToggleCap();
+                                    reset()
+                                  "
+                                  [ngClass]="
+                                    this.capToggleYN == 'Y'
+                                      ? 'Btn_Yes '
+                                      : 'Btn_No'
+                                  "
+                                >
+                                  {{ "Yes" | translate }}
+                                </div>
+                                <div
+                                  class="toggleN Btn"
+                                  (click)="
+                                    this.capToggleYN = 'N';
+                                    this.ToggleCap();
+                                    reset()
+                                  "
+                                  [ngClass]="
+                                    this.capToggleYN == 'N'
+                                      ? 'Btn_Yes '
+                                      : 'Btn_No'
+                                  "
+                                >
+                                  {{ "No" | translate }}
+                                </div>
+                              </div>
+
+                              <!-- Price validation funciton called on activity || Added by Taran || 29th June 2023 -->
+                              <input
+                                class="YNbox"
+                                type="text"
+                                tabindex="22"
+                                [(ngModel)]="cap"
+                                [disabled]="capToggleYN === 'N'"
+                                (blur)="
+                                  PriceValidation($event, 'CapFloorLimit');
+                                  this.cap = commonfunctions.setDecimal($event)
+                                "
+                              />
+                            </div>
+                          </div>
+                          <!--END: Added by Anubhav Goyal | 18-Jul-2023 | BBVAEPCLI-645 Remove need for Cap in steepener | Yes/No toggle to be added and then CAP will be mandatory when Yes is selected. -->
+                          <div class="row-grid-2">
+                            <div style="position: relative">
+                              <!-- BBVAEPCLI-672 || Translation changes || RadhaM || 8August23 -->
+                              <label>{{ "Floor" | translate }} (%)</label>
+                            </div>
+                            <div style="position: relative">
+                              <!-- Price validation funciton called on activity || Added by Taran || 29th June 2023 -->
+                              <input
+                                type="text"
+                                tabindex="23"
+                                [(ngModel)]="floor"
+                                (blur)="
+                                  PriceValidation($event, 'CapFloorLimit');
+                                  this.floor =
+                                    commonfunctions.setDecimal($event)
+                                "
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- <div class="BottomFlex">
+                <div>
+                  <div
+                    class="msgBox"
+                    style="
+                      border: 1px solid rgb(105, 105, 105);
+                      border-radius: 5px;
+                    "
+                    *ngIf="
+                      (this.sortedAllPrices.length > 0 &&
+                        this.sortedAllPrices[0].Price !== '') ||
+                      timeoutMsg === 'Timeout' ||
+                      (orderID !== '' && this.viewOnly)
+                    "
+                  >
+                    <div class="row_1">
+                      <div>
+                        <span class="bestreply" style="text-align: left">
+                          Reply
+                        </span>
+                      </div>
+                      <div style="text-align: left">
+                        <span class="bestreply">
+                          <span
+                            class="bestPriceStyle"
+                            *ngIf="
+                              this.sortedAllPrices.length > 0 &&
+                              this.sortedAllPrices[0].solveFor !== ''
+                            "
+                            [ngClass]="
+                              this.SolveForvalue !== '' ? 'alignResponse' : ''
+                            "
+                          >
+                            {{ replySolveFor }} (%):
+                            {{
+                              this.sortedAllPrices[0].Price === "Rejected"
+                                ? this.sortedAllPrices[0].QueueStatus
+                                : (this.sortedAllPrices[0].Price
+                                  | number : "1.2-2")
+                            }}
+                          </span>
+
+                          <br />
+                          <span>
+                            <br />
+                          </span>
+                        </span>
+                        <span class="errorMsg" *ngIf="timeoutMsg !== ''">
+                          {{ timeoutMsg }}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div style="text-align: center" *ngIf="loadflag">
+                    <div
+                      class="row"
+                      style="padding: 0 auto !important; margin: 0"
+                    >
+                      <div class="col-12">
+                        <img
+                          src="{{ asseturl }}loading_dots.gif"
+                          alt=""
+                          width="100px"
+                          style="margin-top: -40px"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="Center_flex_buttons">
+                  <div class="buttonsDiv">
+                    <div
+                      *ngIf="!this.viewOnly"
+                      (clickOutside)="priceoptionflag = false"
+                      style="position: relative"
+                    >
+                      <button
+                        class="btn btn-split priceBtn"
+                        style="
+                          min-width: 92px;
+                          height: 40px !important;
+                          font-size: 14px !important;
+                          padding-left: 28px;
+                          border-top-right-radius: 4px !important;
+                          border-bottom-right-radius: 4px !important;
+                        "
+                        tabindex="35"
+                        type="button"
+                        (click)="Price()"
+                        tabindex="35"
+                        *ngIf="!this.viewOnly"
+                        [disabled]="priceBtnActive === 'N'"
+                      >
+                        {{ "Price" | translate }}
+                      </button>
+
+                      
+                    </div>
+                    <div
+                      class="btn-group"
+                      style="position: relative"
+                      (clickOutside)="saveoptionflag = false"
+                    >
+                      <button
+                        class="btn btn-split priceBtn"
+                        style="
+                          min-width: 64px;
+                          height: 40px !important;
+                          font-size: 14px !important;
+                          padding-left: 28px;
+                        "
+                        (click)="Save()"
+                        tabindex="35"
+                        *ngIf="!this.viewOnly"
+                        [disabled]="priceBtnActive === 'N'"
+                        type="button"
+                      >
+                        {{ "Save" | translate }}
+                      </button>
+                      <button
+                        class="btn btn-split dropdown-toggle dropdown-toggle-split btn-dropDown"
+                        (click)="saveOptions()"
+                        data-toggle="dropdown"
+                        style="
+                          height: 40px !important;
+                          font-size: 14px !important;
+                          padding: 11px;
+                        "
+                        type="button"
+                        *ngIf="!this.viewOnly"
+                      >
+                        <app-svg-icons
+                          *ngIf="!this.viewOnly"
+                          [icon]="'dropdown'"
+                          [width]="'10'"
+                          [height]="'10'"
+                          [fill]="'var(--btn-text)'"
+                        ></app-svg-icons>
+                      </button>
+                      <div class="ddl" style="top: 45px" *ngIf="saveoptionflag">
+                        <div class="ddlitem">
+                          <div>
+                            <app-svg-icons
+                              class="info"
+                              [icon]="'share-icon'"
+                              [width]="'15'"
+                            ></app-svg-icons>
+                          </div>
+                          <div class="" (click)="showsaveSharePopup()">
+                            {{ "Save and Share" | translate }}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="buttonsDiv" style="text-align: center">
+                    <button
+                      class="btnPrice"
+                      *ngIf="this.viewOnly"
+                      (click)="cloneSinglePricer()"
+                      style="pointer-events: all"
+                    >
+                      {{ "Clone" | translate }}
+                    </button>
+
+                    
+                  </div>
+                </div>
+                <div>
+                  
+                  <div
+                    class="msgBox"
+                    style="
+                      border: 1px solid rgb(105, 105, 105);
+                      border-radius: 5px;
+                      height: 81px;
+                    "
+                    *ngIf="
+                      (this.sortedAllPrices.length > 0 &&
+                        this.sortedAllPrices[0].Price !== '' &&
+                        !saveFlag) ||
+                      (orderID !== '' && this.viewOnly)
+                    "
+                  >
+                    <div
+                      class="row_2"
+                      style="padding: 5px 0 !important; margin: 0; gap: 5px"
+                    >
+                      <div>
+                        <span> BBVA ID </span>
+                      </div>
+                      <div>
+                        <span>{{ rfqID }}</span>
+                        
+                      </div>
+                    </div>
+                    <div
+                      class="row_2"
+                      style="padding: 5px 0 !important; margin: 0"
+                    >
+                      <div>
+                        <span> Status </span>
+                      </div>
+                      <div>
+                        <span>{{ orderStatus }}</span>
+                      </div>
+                    </div>
+                    <div
+                      class="row"
+                      style="padding: 5px 0 !important; margin: 0"
+                      *ngIf="reqSuccessMsg"
+                    >
+                      <div class="col-3" style="color: var(--green-text)">
+                        <span> Termsheet </span>
+                      </div>
+                      <div style="color: var(--green-text); margin-left: 10px">
+                        {{ reqSuccessMsg }}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <span class="successMsg" *ngIf="saveFlag">{{
+                      successMsg
+                    }}</span>
+                  </div>
+                </div>
+              </div> -->
+
+              <!-- lp div added by SandipA || Start  -->
+              <div class="row-button-grid clearPriceDivheight">
+                <div
+                  class="btn-group btn-groupMargin"
+                  (clickOutside)="priceoptionflag = false"
+                  *ngIf="!this.viewOnly"
+                >
+                  <button
+                    tabindex="24"
+                    class="button clearPriceMargin"
+                    (click)="this.reset()"
+                  >
+                    Clear Price
+                  </button>
+                  <button
+                    type="button"
+                    class="button priceAll"
+                    tabindex="25"
+                    *ngIf="!this.viewOnly"
+                    [disabled]="priceBtnActive === 'N' || loadflag"
+                    (click)="Price()"
+                  >
+                    <div class="price-with-loader">
+                      {{ "Price All" | translate }}
+                      <div class="txtAlignCenter" *ngIf="loadflag">
+                        <div class="row priceall-loader loaderbox">
+                          <div class="col-12">
+                            <img
+                              src="{{ asseturl }}Ajaxloader.gif"
+                              alt=""
+                              width="100px"
+                              class="loadergif"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </button>
+                </div>
+
+                <div class="relPosition">
+                  <div class="pageload-overlay" *ngIf="pageloadflag">
+                    <div>
+                      <svg
+                        version="1.1"
+                        id="L4"
+                        xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink"
+                        x="0px"
+                        y="0px"
+                        [ngStyle]="{ width: +'25px', height: +'25px' }"
+                        class="pageLoadSvg"
+                        viewBox="0 0 100 100"
+                        enable-background="new 0 0 0 0"
+                        xml:space="preserve"
+                      >
+                        <circle
+                          stroke="#a1a1a1"
+                          cx="55"
+                          cy="23"
+                          r="1.4"
+                          stroke-width="0.1"
+                          fill="var(--icon-active-bg)"
+                        >
+                          <animate
+                            attributeName="opacity"
+                            dur="2s"
+                            values="0;1;0"
+                            repeatCount="indefinite"
+                            begin="0.1"
+                          />
+                        </circle>
+                        <circle
+                          stroke="#a1a1a1"
+                          cx="55"
+                          cy="23"
+                          r="1.5"
+                          stroke-width="0.1"
+                          fill="var(--icon-active-bg)"
+                        >
+                          <animate
+                            attributeName="opacity"
+                            dur="2s"
+                            values="0;1;0"
+                            repeatCount="indefinite"
+                            begin="0.1"
+                          />
+                        </circle>
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="lpFlex" *ngIf="!viewOnly">
+                  <div
+                    [ngClass]="
+                      this.bestLPArray.length !== 0
+                        ? 'bestlpHighlight'
+                        : 'bestlp'
+                    "
+                    *ngIf="this.bestLPArray"
+                  >
+                    <div class="divbestLP">
+                      <div class="lp-box-name">
+                        <h6 class="hdrBest">Best</h6>
+                      </div>
+                      <div class="LPheight">
+                        <span class="rfqFont">{{ this.bestLPArray.rfq }}</span>
+                      </div>
+                      <div class="LPheight timer-icon">
+                        <span
+                          *ngIf="this.bestLPArray.timer"
+                          class="pricer-timer"
+                          >{{ this.bestLPArray.timer }}
+                        </span>
+                      </div>
+
+                      <div class="divBestPrice">
+                        <h5
+                          class="priceColor hdrBestPrice"
+                          [ngClass]="
+                            this.bestLPArray.price === 'Rejected'
+                              ? 'infocard'
+                              : ''
+                          "
+                        >
+                          {{
+                            this.bestLPArray.price === "Rejected" ||
+                            this.bestLPArray.price === "Unsupported" ||
+                            this.bestLPArray.price === "Expired" ||
+                            this.bestLPArray.price === "Cancelled" ||
+                            this.bestLPArray.length < 1 ||
+                            bestLPArray.price === "-" ||
+                            this.bestLPArray.price === "Timeout"
+                              ? this.bestLPArray.price
+                              : (this.bestLPArray.price | number : "1.2-2")
+                          }}
+                        </h5>
+
+                        <div
+                          class="infocarddiv"
+                          *ngIf="
+                            this.bestLPArray.status === 'Active' &&
+                            this.bestLPArray.remark !== '' &&
+                            this.bestLPArray.price !== '-'
+                          "
+                        >
+                          <img
+                            src="{{ asseturl }}information.png"
+                            class="info imgInfo"
+                            *ngIf="this.bestLPArray.remark !== ''"
+                          />
+                          <div
+                            class="infodiv"
+                            *ngIf="this.bestLPArray.remark !== ''"
+                          >
+                            <span
+                              class="infoNote spnRemark"
+                              *ngIf="this.bestLPArray.remark !== ''"
+                            >
+                              {{ this.bestLPArray.remark }}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <h6 class="hdrBestLpTsMsg">
+                        {{ this.bestLPArray.TSMsg }}
+                      </h6>
+                      <h6 class="hdrBestLPMsg">{{ this.bestLPArray.Msg }}</h6>
+
+                      <button
+                        class="button bestLpBtnMail"
+                        [disabled]="
+                          bestLPArray.length < 1 ||
+                          bestLPArray.price === '-' ||
+                          bestLPArray.price === 'Rejected' ||
+                          bestLPArray.price === 'Unsupported' ||
+                          bestLPArray.price === 'Expired' ||
+                          bestLPArray.price === 'Cancelled' ||
+                          bestLPArray.price === 'Timeout' ||
+                          (viewOnly && viewRFQ !== bestLPArray.rfq)
+                        "
+                        (click)="emailQuote(bestLPArray.rfq)"
+                      >
+                        Mail
+                      </button>
+
+                      <button
+                        class="button btnMinWidth"
+                        [disabled]="
+                          bestLPArray.length < 1 ||
+                          bestLPArray.price === '-' ||
+                          bestLPArray.price === 'Rejected' ||
+                          bestLPArray.price === 'Unsupported' ||
+                          bestLPArray.price === 'Expired' ||
+                          bestLPArray.price === 'Cancelled' ||
+                          bestLPArray.price === 'Timeout' ||
+                          (viewOnly && viewRFQ !== bestLPArray.rfq) ||
+                          bestLPArray.TSNotSupported ||
+                          bestLPArray.TSDisableFlag
+                        "
+                        *ngIf="
+                          EQ_Show_Termsheet_Button === 'YES' ||
+                          EQ_Show_Termsheet_Button === 'Y' ||
+                          EQ_Show_Termsheet_Button === 'Yes'
+                        "
+                        (click)="RequestTS(bestLPArray.idx)"
+                      >
+                        Request TS
+                      </button>
+                      <button
+                        class="button btnViewTSandKID"
+                        *ngIf="bestLPArray.TSFlag"
+                        (click)="ViewTS(bestLPArray.idx)"
+                      >
+                        <div class="price-with-loader divMarginLeft">
+                          View TS
+                          <div
+                            class="txtAlignCenter"
+                            *ngIf="bestLPArray.ViewTSFlag"
+                          >
+                            <div class="row priceall-loader loaderbox">
+                              <div class="col-12">
+                                <img
+                                  src="{{ asseturl }}Ajaxloader.gif"
+                                  alt=""
+                                  width="100px"
+                                  class="loadergif"
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </button>
+                      <button
+                        class="button btnMinWidth"
+                        [disabled]="
+                          bestLPArray.length < 1 ||
+                          bestLPArray.price === '-' ||
+                          bestLPArray.price === 'Rejected' ||
+                          bestLPArray.price === 'Unsupported' ||
+                          bestLPArray.price === 'Expired' ||
+                          bestLPArray.price === 'Cancelled' ||
+                          bestLPArray.price === 'Timeout' ||
+                          (viewOnly && viewRFQ !== bestLPArray.rfq) ||
+                          priipsYN === 'No' ||
+                          bestLPArray.KidNotSupported ||
+                          bestLPArray.KidDisableFlag
+                        "
+                        *ngIf="
+                          EQ_Show_KID_Button === 'YES' ||
+                          EQ_Show_KID_Button === 'Y' ||
+                          EQ_Show_KID_Button === 'Yes'
+                        "
+                        (click)="RequestKID(bestLPArray.idx)"
+                      >
+                        Request KID
+                      </button>
+                      <button
+                        class="button btnViewTSandKID"
+                        *ngIf="bestLPArray.KIDFlag"
+                        (click)="ViewKID(bestLPArray.idx)"
+                      >
+                        <div class="price-with-loader divMarginLeft">
+                          View KID
+                          <div
+                            class="txtAlignCenter"
+                            *ngIf="bestLPArray.ViewKIDFlag"
+                          >
+                            <div class="row priceall-loader loaderbox">
+                              <div class="col-12">
+                                <img
+                                  src="{{ asseturl }}Ajaxloader.gif"
+                                  alt=""
+                                  width="100px"
+                                  class="loadergif"
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </button>
+
+                      <button
+                        class="button btnMinWidth"
+                        *ngIf="
+                          isDealer &&
+                          (EQ_Show_Launch_Button === 'YES' ||
+                            EQ_Show_Launch_Button === 'Y' ||
+                            EQ_Show_Launch_Button === 'Yes')
+                        "
+                        [disabled]="
+                          bestLPArray.length < 1 ||
+                          bestLPArray.price === '-' ||
+                          bestLPArray.price === 'Rejected' ||
+                          bestLPArray.price === 'Unsupported' ||
+                          bestLPArray.price === 'Expired' ||
+                          bestLPArray.price === 'Cancelled' ||
+                          bestLPArray.price === 'Timeout' ||
+                          (viewOnly && viewRFQ !== bestLPArray.rfq)
+                        "
+                        (click)="lauchProduct(bestLPArray)"
+                      >
+                        Launch Product
+                      </button>
+
+                      <button
+                        class="button btnMinWidth"
+                        [disabled]="
+                          bestLPArray.length < 1 ||
+                          bestLPArray.price === '-' ||
+                          bestLPArray.price === 'Rejected' ||
+                          bestLPArray.price === 'Unsupported' ||
+                          bestLPArray.price === 'Expired' ||
+                          bestLPArray.price === 'Cancelled' ||
+                          bestLPArray.price === 'Timeout' ||
+                          bestLPArray.timer === '' ||
+                          bestLPArray.timer === 0 ||
+                          (viewOnly && viewRFQ !== bestLPArray.rfq) ||
+                          !bookOrderFlag
+                        "
+                        (click)="
+                          showOrderDetails(
+                            bestLPArray.lp,
+                            bestLPArray.rfq,
+                            bestLPArray
+                          );
+                          postBackMethod()
+                        "
+                        *ngIf="
+                          !viewOnly &&
+                          (EQ_Show_Order_Button === 'YES' ||
+                            EQ_Show_Order_Button === 'Y' ||
+                            EQ_Show_Order_Button === 'Yes')
+                        "
+                      >
+                        Book Order
+                      </button>
+                    </div>
+                    <div>
+                      <span
+                        *ngIf="
+                          bestLPArray.price !== '-' &&
+                          bestLPArray.price !== 'Timeout' &&
+                          bestLPArray.price > 0
+                        "
+                        class="minMaxLimitFont"
+                      >
+                        {{
+                          this.commonfunctions.nFormatter(bestLPArray.minLimit)
+                        }}</span
+                      >&nbsp;
+                      <span
+                        *ngIf="
+                          bestLPArray.price !== '-' &&
+                          bestLPArray.price !== 'Timeout' &&
+                          bestLPArray.price > 0
+                        "
+                        >/</span
+                      >&nbsp;
+                      <span
+                        *ngIf="
+                          bestLPArray.price !== '-' &&
+                          bestLPArray.price !== 'Timeout' &&
+                          bestLPArray.price > 0
+                        "
+                        class="minMaxLimitFont"
+                      >
+                        {{
+                          this.commonfunctions.nFormatter(bestLPArray.maxLimit)
+                        }}</span
+                      >
+                    </div>
+                  </div>
+
+                  <div
+                    [ngClass]="
+                      this.sortedAllPrices.length > 0 &&
+                      this.sortedAllPrices[0].lp === p.lp
+                        ? 'selectedlp'
+                        : 'lpname'
+                    "
+                    *ngFor="let p of this.priceProvidersArr; let i = index"
+                  >
+                    <div class="divbestLP">
+                      <div class="lp-box-name">
+                        <input
+                          type="checkbox"
+                          [checked]="p.priceChkFlg"
+                          (change)="chngPriceChkBox(i)"
+                          class="lpNameWidth"
+                        />
+                        <h6>{{ p.lp }}</h6>
+                      </div>
+                      <div class="LPheight">
+                        <span class="rfqFont">{{ p.rfq }}</span>
+                      </div>
+                      <div class="timer-icon LPheight">
+                        <app-svg-icons
+                          *ngIf="p.price !== '-'"
+                          [icon]="'clock-icon'"
+                          [width]="'10'"
+                          [height]="'10'"
+                        >
+                        </app-svg-icons>
+                        <span
+                          class="spntimerHeight"
+                          [ngClass]="
+                            p.timer <= 10 && p.timer > 0
+                              ? 'timerTimeout'
+                              : 'timer-text'
+                          "
+                          >{{
+                            p.timer === this.defaultTimeout ||
+                            p.price === "-" ||
+                            p.price === "" ||
+                            p.price === 0 ||
+                            p.price === "Rejected" ||
+                            p.price === "Unsupported" ||
+                            p.price === "Expired" ||
+                            p.price === "Cancelled" ||
+                            p.price === "Timeout"
+                              ? ""
+                              : p.timer
+                          }}</span
+                        >
+                      </div>
+
+                      <div class="divRejectedPrice">
+                        <h5
+                          class="priceColor hdrRejectedPrice"
+                          *ngIf="p.price === 'Rejected'"
+                        >
+                          {{
+                            p.price === "Rejected" ||
+                            p.price === "Unsupported" ||
+                            p.price === "Expired" ||
+                            p.price === "Cancelled" ||
+                            p.price === "-" ||
+                            p.price === "Timeout"
+                              ? p.price
+                              : (p.price | number : "1.2-2")
+                          }}
+                        </h5>
+                        <div
+                          class="infocarddiv"
+                          *ngIf="
+                            (p.status === 'REJECTED' ||
+                              p.status === 'Rejected') &&
+                            p.price === 'Rejected' &&
+                            p.remark !== ''
+                          "
+                        >
+                          <img
+                            src="{{ asseturl }}information.png"
+                            class="info ReqLoader"
+                            *ngIf="p.remark !== ''"
+                          />
+                          <div class="infodiv" *ngIf="p.remark !== ''">
+                            <span
+                              class="infoNote spnRemarkInfo"
+                              *ngIf="p.remark !== ''"
+                            >
+                              {{ p.remark }}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      <h5
+                        class="priceColor hdrPriceFont"
+                        *ngIf="
+                          p.price === 'Unsupported' ||
+                          p.price === 'Expired' ||
+                          p.price === 'Cancelled' ||
+                          p.price === 'Timeout'
+                        "
+                      >
+                        {{
+                          p.price === "Rejected" ||
+                          p.price === "Unsupported" ||
+                          p.price === "Expired" ||
+                          p.price === "Cancelled" ||
+                          p.price === "-" ||
+                          p.price === "Timeout"
+                            ? p.price
+                            : (p.price | number : "1.2-2")
+                        }}
+                      </h5>
+
+                      <div class="divActiveStatus">
+                        <div></div>
+                        <h5
+                          class="priceColor hdrActiveStatus"
+                          *ngIf="
+                            p.price !== 'Rejected' &&
+                            p.price !== 'Unsupported' &&
+                            p.price !== 'Expired' &&
+                            p.price !== 'Cancelled' &&
+                            p.price !== 'Timeout' &&
+                            p.price !== '-'
+                          "
+                        >
+                          {{
+                            p.price === "Rejected" ||
+                            p.price === "Unsupported" ||
+                            p.price === "Expired" ||
+                            p.price === "Cancelled" ||
+                            p.price === "-" ||
+                            p.price === "Timeout"
+                              ? p.price
+                              : (p.price | number : "1.2-2")
+                          }}
+                        </h5>
+                        <div
+                          class="infocarddiv"
+                          *ngIf="
+                            p.status === 'Active' &&
+                            p.remark !== '' &&
+                            p.price !== '-'
+                          "
+                        >
+                          <img
+                            src="{{ asseturl }}information.png"
+                            class="info imgInfo"
+                            *ngIf="p.remark !== ''"
+                          />
+                          <div class="infodiv" *ngIf="p.remark !== ''">
+                            <span
+                              class="infoNote spnRemark"
+                              *ngIf="p.remark !== ''"
+                            >
+                              {{ p.remark }}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      <h5
+                        class="priceColor hdrPriceFont"
+                        *ngIf="!p.loadFlag && p.price === '-'"
+                      >
+                        {{
+                          p.price === "Rejected" ||
+                          p.price === "Unsupported" ||
+                          p.price === "Expired" ||
+                          p.price === "Cancelled" ||
+                          p.price === "-" ||
+                          p.price === "Timeout"
+                            ? p.price
+                            : (p.price | number : "1.2-2")
+                        }}
+                      </h5>
+                      <div class="txtAlignCenter" *ngIf="p.loadFlag">
+                        <div class="row loaderbox">
+                          <div class="col-12">
+                            <img
+                              src="{{ asseturl }}loading_dots.gif"
+                              alt=""
+                              width="50px"
+                              height="54px"
+                              class="imgMargin"
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      <h6 class="hdrTsMsg">{{ p.TSMsg }}</h6>
+                      <h6 class="hdrMsg">{{ p.Msg }}</h6>
+
+                      <div class="divMail">
+                        <a
+                          *ngIf="
+                            p.price !== '-' &&
+                            p.price !== 'Timeout' &&
+                            p.price !== 'Rejected' &&
+                            p.price !== 'Unsupported' &&
+                            p.price !== 'Expired' &&
+                            p.price !== 'Cancelled' &&
+                            p.price > 0 &&
+                            p.timer !== 0
+                          "
+                          class="quoteMailLabel"
+                          (click)="emailQuote(p.rfq)"
+                          >Mail</a
+                        >
+                        <a
+                          *ngIf="
+                            p.price === 'Timeout' ||
+                            p.price === 'Rejected' ||
+                            p.price === 'Unsupported' ||
+                            p.price === 'Expired' ||
+                            p.price === 'Cancelled'
+                          "
+                          class="quoteMailLabel mailLabelHeight"
+                        ></a>
+                      </div>
+
+                      <button
+                        class="button btnMinWidth"
+                        [disabled]="
+                          p.price === '-' ||
+                          p.price === 'Rejected' ||
+                          p.price === 'Unsupported' ||
+                          p.price === 'Expired' ||
+                          p.price === 'Cancelled' ||
+                          p.price === 'Timeout' ||
+                          (viewOnly && viewRFQ !== p.rfq) ||
+                          p.timer == 0 ||
+                          p.TSFlag ||
+                          p.TSDisableFlag ||
+                          p.TSNotSupported ||
+                          p.TSFlag ||
+                          p.TSDisableFlag
+                        "
+                        *ngIf="
+                          EQ_Show_Termsheet_Button === 'YES' ||
+                          EQ_Show_Termsheet_Button === 'Y' ||
+                          EQ_Show_Termsheet_Button === 'Yes'
+                        "
+                        (click)="RequestTS(i)"
+                      >
+                        <div class="price-with-loader">
+                          Request TS
+                          <div class="txtAlignCenter" *ngIf="p.TSLoadFlag">
+                            <div class="row priceall-loader loaderbox">
+                              <div class="col-12">
+                                <img
+                                  src="{{ asseturl }}Ajaxloader.gif"
+                                  alt=""
+                                  width="100px"
+                                  class="loadergif"
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </button>
+
+                      <button
+                        class="button btnViewTSandKID"
+                        *ngIf="p.TSFlag"
+                        (click)="ViewTS(i)"
+                      >
+                        <div class="price-with-loader divMarginLeft">
+                          View TS
+                          <div class="txtAlignCenter" *ngIf="p.ViewTSFlag">
+                            <div class="row priceall-loader loaderbox">
+                              <div class="col-12">
+                                <img
+                                  src="{{ asseturl }}Ajaxloader.gif"
+                                  alt=""
+                                  width="100px"
+                                  class="loadergif"
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </button>
+                      <button
+                        class="button btnMinWidth"
+                        [disabled]="
+                          p.price === '-' ||
+                          p.price === 'Rejected' ||
+                          p.price === 'Unsupported' ||
+                          p.price === 'Expired' ||
+                          p.price === 'Cancelled' ||
+                          p.price === 'Timeout' ||
+                          (viewOnly && viewRFQ !== p.rfq) ||
+                          priipsYN === 'No' ||
+                          p.timer === 0 ||
+                          p.KIDFlag ||
+                          p.KidDisableFlag ||
+                          p.KidNotSupported
+                        "
+                        *ngIf="
+                          EQ_Show_KID_Button === 'YES' ||
+                          EQ_Show_KID_Button === 'Y' ||
+                          EQ_Show_KID_Button === 'Yes'
+                        "
+                        (click)="RequestKID(i)"
+                      >
+                        <div class="price-with-loader">
+                          Request KID
+                          <div class="txtAlignCenter" *ngIf="p.KIDLoadFlag">
+                            <div class="row priceall-loader loaderbox">
+                              <div class="col-12">
+                                <img
+                                  src="{{ asseturl }}Ajaxloader.gif"
+                                  alt=""
+                                  width="100px"
+                                  class="loadergif"
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </button>
+
+                      <button
+                        class="button btnViewTSandKID"
+                        *ngIf="p.KIDFlag"
+                        (click)="ViewKID(i)"
+                        [disabled]="p.ViewKIDFlag"
+                      >
+                        <div class="price-with-loader divMarginLeft">
+                          View KID
+                          <div class="txtAlignCenter" *ngIf="p.ViewKIDFlag">
+                            <div class="row priceall-loader loaderbox">
+                              <div class="col-12">
+                                <img
+                                  src="{{ asseturl }}Ajaxloader.gif"
+                                  alt=""
+                                  width="100px"
+                                  class="loadergif"
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </button>
+
+                      <button
+                        class="button btnMinWidth"
+                        *ngIf="
+                          isDealer &&
+                          (EQ_Show_Launch_Button === 'YES' ||
+                            EQ_Show_Launch_Button === 'Y' ||
+                            EQ_Show_Launch_Button === 'Yes')
+                        "
+                        [disabled]="
+                          p.price === '-' ||
+                          p.price === 'Rejected' ||
+                          p.price === 'Unsupported' ||
+                          p.price === 'Expired' ||
+                          p.price === 'Cancelled' ||
+                          p.price === 'Timeout' ||
+                          (viewOnly && viewRFQ !== p.rfq) ||
+                          p.timer == 0
+                        "
+                        (click)="lauchProduct(p)"
+                      >
+                        Launch Product
+                      </button>
+                      <button
+                        class="button btnMinWidth"
+                        *ngIf="!viewOnly"
+                        (click)="PriceLP(p.lp)"
+                        [disabled]="!p.priceChkFlg || p.loadFlag"
+                      >
+                        {{ "Price" | translate }}
+                      </button>
+                      <button
+                        class="button btnMinWidth"
+                        [disabled]="
+                          p.price === '-' ||
+                          p.price === 'Rejected' ||
+                          p.price === 'Unsupported' ||
+                          p.price === 'Expired' ||
+                          p.price === 'Cancelled' ||
+                          p.price === 'Timeout' ||
+                          (viewOnly && viewRFQ !== p.rfq) ||
+                          !bookOrderFlag ||
+                          p.timer == 0
+                        "
+                        (click)="
+                          showOrderDetails(p.lp, p.rfq, p); postBackMethod()
+                        "
+                        *ngIf="
+                          !viewOnly &&
+                          (EQ_Show_Order_Button === 'YES' ||
+                            EQ_Show_Order_Button === 'Y' ||
+                            EQ_Show_Order_Button === 'Yes')
+                        "
+                      >
+                        Book Order
+                      </button>
+                    </div>
+                    <div>
+                      <span
+                        *ngIf="
+                          p.price !== '-' &&
+                          p.price !== 'Timeout' &&
+                          p.price > 0
+                        "
+                        class="minMaxLimitFont"
+                      >
+                        {{ this.commonfunctions.nFormatter(p.minLimit) }}</span
+                      >&nbsp;
+                      <span
+                        *ngIf="
+                          p.price !== '-' &&
+                          p.price !== 'Timeout' &&
+                          p.price > 0
+                        "
+                        >/</span
+                      >&nbsp;
+                      <span
+                        *ngIf="
+                          p.price !== '-' &&
+                          p.price !== 'Timeout' &&
+                          p.price > 0
+                        "
+                        class="minMaxLimitFont"
+                        >{{ this.commonfunctions.nFormatter(p.maxLimit) }}</span
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <br />
+              <br />
+              <br />
+              <!-- lp div added by SandipA || End  -->
+
+              <div id="schedule" *ngIf="showSchedulePopupFlag">
+                <div class="schedulePopup">
+                  <div class="schedule-header">
+                    <!-- Added by RiddhiP || 10aug23 || BBVAEPCLI-672 || updated translations -->
+                    <span
+                      style="
+                        margin-left: 10px;
+                        font-size: var(--font-xl);
+                        font-weight: 500;
+                      "
+                      >{{ "Pick date and time" | translate }}</span
+                    >
+                    <app-svg-icons
+                      [icon]="'close-icon'"
+                      [width]="'14'"
+                      style="font-weight: 700; font-size: medium; float: right"
+                      (click)="hideSchedulePopup()"
+                    >
+                    </app-svg-icons>
+                  </div>
+                  <div class="scheduleDiv">
+                    <div class="calendar-wrapper">
+                      <mat-calendar
+                        #calendar
+                        (monthSelected)="monthSelected($event)"
+                        [(selected)]="selectedDate"
+                        (selectedChange)="dateChanged()"
+                        [minDate]="todayDate"
+                      ></mat-calendar>
+                    </div>
+                    <div>
+                      <div class="scheduleFieldDiv">
+                        <div class="scheduleFieldDiv">
+                          <!-- BBVAEPCLI-672 || Translation changes || RadhaM || 8August23 -->
+                          <label>{{ "Type" | translate }}</label>
+                          <select
+                            class="scheduleSelect"
+                            [(ngModel)]="scheduleType"
+                            (change)="scheduleTypeChange()"
+                          >
+                            <option
+                              *ngFor="let st of scheduleTypeArr; let i = index"
+                              [value]="st.misc1"
+                            >
+                              {{ st.Data_Value }}
+                            </option>
+                          </select>
+                        </div>
+                        <div class="scheduleFieldDiv">
+                          <label>{{ "Date" | translate }}</label>
+                          <input
+                            type="text"
+                            class="scheduleSelect"
+                            [(ngModel)]="inputDate"
+                            disabled
+                          />
+                        </div>
+                        <div class="scheduleFieldDiv">
+                          <label>{{ "Time" | translate }}</label>
+                          <input
+                            type="time"
+                            class="scheduleSelect"
+                            style="
+                              border: none;
+                              width: 100%;
+                              font-size: 14px !important;
+                              height: 35px !important;
+                            "
+                            [(ngModel)]="inputTime"
+                            value="{{ inputTime }}"
+                          />
+                        </div>
+                        <div class="scheduleFieldDiv">
+                          <label>{{Frequ"ency | translate}}</label>
+                          <select
+                            class="scheduleSelect"
+                            [(ngModel)]="scheduleFreq"
+                            [disabled]="scheduleType === 'One-Off'"
+                          >
+                            <option
+                              *ngFor="let sf of scheduleFreqArr; let i = index"
+                              [value]="sf.misc1"
+                            >
+                              {{ sf.Data_Value }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div style="text-align: center" class="validationMsg-margin">
+                    <span class="validationErrorMsg" *ngIf="ErrorMsg !== ''">{{
+                      ErrorMsg
+                    }}</span>
+                    <span
+                      class="successMsg"
+                      *ngIf="scheduleMsg !== ''"
+                      style=""
+                      >{{ scheduleMsg }}</span
+                    >
+                  </div>
+                  <div class="scheduleBtnGrid">
+                    <div>
+                      <!-- BBVAEPCLI-672 || Translation changes || RadhaM || 8August23 -->
+                      <button class="btnPrice" (click)="hideSchedulePopup()">
+                        {{ "Cancel" | translate }}
+                      </button>
+                      <!-- Added by RiddhiP || 10aug23 || BBVAEPCLI-672 || updated translations -->
+                      <button
+                        class="btnPrice"
+                        (click)="scheduleSend()"
+                        style="width: 11em"
+                      >
+                        {{ "ScheduleSend" | translate }}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div id="saveShare" *ngIf="showsaveSharePopupFlag">
+                <div class="savesharePopup">
+                  <div>
+                    <!-- BBVAEPCLI-672 || translation changes ||10August23 ||RadhaM -->
+                    <span style="font-size: var(--font-m); font-weight: 500">{{
+                      "Share with Colleagues and Groups" | translate
+                    }}</span>
+                  </div>
+                  <div>
+                    <!-- BBVAEPCLI-672 || translation changes ||10August23 ||RadhaM -->
+                    <input
+                      type="text"
+                      placeholder="{{
+                        this.commonfunctions.PleaseenteruserIDorclientgroup
+                          | translate
+                      }}"
+                      value="{{ userName }}"
+                      class="saveShareInput"
+                      style="text-align: left; max-width: 100% !important"
+                      [(ngModel)]="userName"
+                      maxlength="10"
+                      (keypress)="
+                        ChangeIndex_User($event); showSuggestions_User = true
+                      "
+                      (keydown.enter)="selectUser($event); userflag = false"
+                      (keydown.backspace)="backKeyPress_User($event)"
+                      (keydown.delete)="backKeyPress_User($event)"
+                      (keydown.tab)="userflag = false"
+                      (keydown.ArrowUp)="
+                        selectedBIndex_User = commonfunctions.moveUpSelection1(
+                          $event,
+                          selectedBIndex_User
+                        )
+                      "
+                      (keydown.ArrowDown)="
+                        selectedBIndex_User =
+                          commonfunctions.moveDownSelection1(
+                            $event,
+                            selectedBIndex_User
+                          )
+                      "
+                      tabindex="26"
+                      Id="txtUserGroup"
+                    />
+                    <div
+                      class="SelectorBox"
+                      style="width: 96% !important"
+                      *ngIf="userflag && showSuggestions_User"
+                      (clickOutside)="userflag = false"
+                    >
+                      <a
+                        *ngFor="
+                          let user of users | searchUserGroup : userName;
+                          let i = index
+                        "
+                        (keypress)="ChangeIndex_User($event)"
+                        (keydown.enter)="selectUser($event)"
+                      >
+                        <div
+                          *ngIf="user"
+                          [attr.data-user]="user.Code"
+                          (click)="showUser($event, user)"
+                          [ngClass]="{
+                            HoverSuggestion: i === selectedBIndex_User
+                          }"
+                        >
+                          <span>{{ user.Name }}</span>
+                        </div>
+                      </a>
+                    </div>
+                  </div>
+                  <div *ngFor="let u of userBasket; let i = index">
+                    <div class="userListDiv">
+                      <div (click)="deleteUserfromList(i)">
+                        <img
+                          src="{{ asseturl }}delete.png"
+                          width="30px"
+                          style="filter: invert(50%); cursor: pointer"
+                          title="Delete"
+                        />
+                      </div>
+                      <div>
+                        <span
+                          style="
+                            font-size: var(--font-m);
+                            font-weight: 500;
+                            color: #02559fc2;
+                          "
+                          >{{ u.Name }}</span
+                        >
+                      </div>
+                      <div>
+                        <select
+                          id="list{{ i }}"
+                          style="width: max-content !important"
+                          (change)="changeAccessofUserGroup($event, i)"
+                          [attr.selected]="u.Access"
+                        >
+                          <option
+                            [ngValue]="u.Access"
+                            [attr.selected]="u.Access === 'VIEW' ? true : null"
+                          >
+                            VIEW
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="share-portfolio-popup">
+                    <!-- BBVAEPCLI-672 || translation changes ||10August23 ||RadhaM -->
+                    <span style="font-size: 12px; font-weight: 500"
+                      >{{ "Owner" | translate }}:</span
+                    >
+                    <span
+                      style="
+                        font-size: 12px;
+                        font-weight: 500;
+                        color: #02559fc2;
+                      "
+                      >{{ currentowner }}</span
+                    >
+                  </div>
+                  <div class="share-portfolio-popup">
+                    <button class="btnPrice" (click)="hidesaveSharePopup()">
+                      Cancel
+                    </button>
+                    <!-- BBVAEPCLI-672 || translation changes ||10August23 ||RadhaM -->
+                    <button class="btnPrice" (click)="sharePortfolio()">
+                      {{ "Share" | translate }}
+                    </button>
+                  </div>
+                  <div class="validationErrorMsg">
+                    {{ this.SaveandShareErrorMsg }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div id="schedule" *ngIf="ProductWatchlist">
+            <div class="schedulePopup" style="min-width: 300px !important">
+              <div class="schedule-header">
+                <span
+                  style="margin-left: 0px; font-size: 20px; font-weight: 500"
+                >
+                  {{ "AddtoWatchlist" | translate }}</span
+                >
+                <app-svg-icons
+                  [icon]="'close-icon'"
+                  [width]="'14'"
+                  style="font-weight: 700; font-size: medium; float: right"
+                  (click)="hideProductPopup()"
+                ></app-svg-icons>
+              </div>
+              <div class="AddToProductDiv">
+                <div class="scheduleFieldDiv">
+                  <div class="AddToProductfieldDiv">
+                    <!-- BBVAEPCLI-672 || Translation changes || RadhaM || 8August23 -->
+                    <label>{{ "Solvefor" | translate }}</label>
+                    <input
+                      type="text"
+                      class="scheduleSelect"
+                      [(ngModel)]="addWatchlistSolveFor"
+                      disabled
+                      style="text-align: left !important"
+                    />
+                  </div>
+
+                  <!-- Added by RiddhiP || 10aug23 || BBVAEPCLI-672 || updated translations -->
+                  <div class="AddToProductfieldDiv">
+                    <label>{{ "TargetValue" | translate }}</label>
+                    <input
+                      type="text"
+                      class="scheduleSelect"
+                      [(ngModel)]="targetValue"
+                      (blur)="
+                        this.targetValue = commonfunctions.setDecimal($event)
+                      "
+                    />
+                  </div>
+                  <div class="AddToProductfieldDiv">
+                    <label>{{ "Direction" | translate }}</label>
+                    <select
+                      class="scheduleSelect"
+                      [(ngModel)]="direction"
+                      (change)="scheduleTypeChange()"
+                    >
+                      <option value="Up">Up</option>
+                      <option value="Down">Down</option>
+                    </select>
+                  </div>
+                  <div class="AddToProductfieldDiv">
+                    <label>{{ "ValidTill" | translate }}</label>
+                    <input
+                      type="date"
+                      class="scheduleSelect"
+                      max="{{ MaxSelectDate }}"
+                      min="{{ MinSelectDate }}"
+                      [(ngModel)]="expiryDate"
+                      style="max-width: none !important; text-align: left"
+                    />
+                  </div>
+                  <div class="AddToProductfieldDiv">
+                    <label>{{ "ScheduledAt" | translate }}</label>
+                    <input
+                      type="time"
+                      class="scheduleSelect"
+                      [(ngModel)]="TimeValid"
+                      value="{{ TimeValid }}"
+                      style="max-width: none !important; text-align: left"
+                    />
+                  </div>
+                </div>
+                <div class="validationMsg">
+                  <span class="validationErrorMsg" *ngIf="ErrorMsg !== ''">{{
+                    ErrorMsg
+                  }}</span>
+                  <span
+                    class="successMsg"
+                    *ngIf="scheduleMsg !== ''"
+                    style="white-space: nowrap"
+                    >{{ scheduleMsg }}</span
+                  >
+
+                  <span
+                    style="text-align: center"
+                    class="successMsg"
+                    *ngIf="scheduleMsg !== '' && this.WatchID"
+                    >Watch ID: <label>{{ this.WatchID }}</label></span
+                  >
+                </div>
+                <div class="AddBtnGrid">
+                  <!-- BBVAEPCLI-672 || Translation changes || RadhaM || 8August23 -->
+                  <button class="btnPrice" (click)="hideProductPopup()">
+                    {{ "Cancel" | translate }}
+                  </button>
+                  <!-- commneted by Pranav D 21-Jun-2023 as not required for Steepener -->
+                  <!-- <button class="btnPrice" (click)="AddToWatchlist()" style="width: 11em;">Add</button> -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

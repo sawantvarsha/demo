@@ -1,0 +1,9 @@
+.padding-left {
+    padding-left: 40px;
+}
+
+.generic-response {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap);
+}

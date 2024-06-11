@@ -1,0 +1,17 @@
+{
+  "apiBaseUrl": "https://gatemarkets.finiq-connect.com/FinIQAPIGateway/api/",
+  "authUrl": "https://gatemarkets.finiq-connect.com/FinIQAPIGateway/",
+  "hostedAppName": "GatewayMarkets2_Dev/",
+  "pgmessage": "funds/message",
+  "pgfunds": "payments/addfunds",
+  "marginpledgemessage": "pledge/message",
+  "marginpledge": "marginpledge/pledgesecurities",
+  "logo": "FINIQ",
+  "isBanner": true,
+  "isAmbigous": true,
+  "ipAddress": "localhost",
+  "isHashingEnabled": true,
+  "hkey": "C1PFxPgKepndcdBCqU6yYODCDlSw0W2v",
+  "sessionIdle": 3600,
+  "idlePopupCountdown": 10
+}

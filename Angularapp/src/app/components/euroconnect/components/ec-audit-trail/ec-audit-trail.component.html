@@ -1,0 +1,358 @@
+<div class="main-grid-container contentdiv" style="padding-top: 15px !important;">
+    <div class="main-grid-item">
+        <div class="wfblotterClass">
+            <!-- Start || Added by AdilP for Page Loader || 04-05-2023 || FIN1EURINT-282 -->
+            <div class="pageload-overlay" *ngIf="pageloadflag">
+                <div>
+                    <svg version="1.1" id="L4" xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                        [ngStyle]="{ width:  + '25px', height:  + '25px' }" style="margin-left: 30px"
+                        viewBox="0 0 100 100" enable-background="new 0 0 0 0" xml:space="preserve">
+                        <circle stroke="#a1a1a1" cx="45" cy="25" r="1.4" stroke-width="0.1">
+                            <animate attributeName="opacity" dur="1s" values="0;1;0" repeatCount="indefinite"
+                                begin="0.1" />
+                        </circle>
+                        <circle stroke="#a1a1a1" cx="45" cy="25" r="1.5" stroke-width="0.1">
+                            <animate attributeName="opacity" dur="1s" values="0;1;0" repeatCount="indefinite"
+                                begin="0.1" />
+                        </circle>
+                    </svg>
+                </div>
+            </div>
+            <!-- End || Added by Adil P || 03-05-2023 -->
+            
+            <div class="innergrid">
+                <label class="pageHeader">{{pageTitle}}</label>
+                <hr width="100%" class="productHeaderhr">
+            </div>
+            <div>
+                <div class="inner-grid">
+                    <div class="rfq-table">
+                        <div class="filters">
+                            <div class="flex-row" style="padding: 0px 0px 0px 5px;">
+                                <!-- Changes made by Yash Agrawal on 20th March, 2023 -->
+                                <label style="line-height: 38px;margin-right: 0.5em !important;">Product
+                                </label>
+                                <div class="dropDown-with-tooltip">
+                                    <select value="All" [(ngModel)]="selectedProduct" (change)="changeProduct()"
+                                        style="width: 12em !important;" class="ip-border">
+                                        <!-- <option value="All" class="ng-star-inserted">All</option> -->
+                                        <!-- <ng-template ngFor let-i="index" let-payoff [ngForOf]="this.api.payOffList"> -->
+                                        <ng-template ngFor let-i="index" let-payoff [ngForOf]="this.payOffListSorted">
+                                            <option value="{{payoff.auditTProductType}}" class="ng-star-inserted"
+                                                *ngIf="payoff.display">{{payoff.displayName}}</option>
+                                        </ng-template>
+                                        <!-- <option value="ACC" class="ng-star-inserted">Accumulator</option>
+                                        <option value="EQC_Europe" class="ng-star-inserted">Autocallable</option>
+                                        <option value="AutocallablePhoenix" class="ng-star-inserted">Autocall Phoenix
+                                        </option>
+                                        <option value="CreditTranche" class="ng-star-inserted">Credit Tranche</option>
+                                        <option value="DAC" class="ng-star-inserted">Decumulator</option>
+                                        <option value="DiscountCertificates" class="ng-star-inserted">Discount Certificates</option>
+                                        <option value="Participation" class="ng-star-inserted">Participation</option>
+                                        <option value="ReverseConvertible" class="ng-star-inserted">Reverse Convertible
+                                             <option value="YieldEnhancement" class="ng-star-inserted">Yield Enhancement</option>
+                                        </option> -->
+
+
+                                        <!-- <Apurva C | 13-sep-2021 | Audit Trail Remaining products /> -->
+
+
+
+
+
+                                    </select>
+                                    
+                                </div>
+
+                                <!-- added key events || PriyaL || 28Apr2022 || Assigned by Rishabh S  -->
+                                <input id="txtShare" [(ngModel)]="searchKey" class="searchbar ip-border" maxlength="10"
+                                    (keydown.enter)="getRFQs()" (keydown.tab)="getRFQs()" placeholder="Search RFQ"
+                                    style="text-align: left;margin-left: 0.7em !important;margin-bottom: 0.1em !important;"
+                                    tabindex="5" type="text">
+                                    <!-- modified img src path || PriyaL || 04May2022 || issue reported by AbeerJ-->
+                                <!-- <img _ngcontent-oet-c7="" style="width:20px;height:20px;margin-top: 10px;"
+                                    src="assets/search.png"> -->
+                                    <img _ngcontent-oet-c7="" style="width:20px;height:20px;margin: 10px 10px 0px 10px"
+                                    src="{{asseturl}}search.png"> <!-- Changed by Jyoti S | 25-Mar-2023 | fixed alignment of search icon -->
+                            </div>
+                            <!-- Changed by Amogh K | 2May2022 | fixed alignment of load button container -->
+                            <div class="flex-row" style="justify-content: space-between; align-items: center;"> <!-- Changes made for FIN1EURINT-383 : to show refresh/reload button || Kaustubh S || 06-Jun-2023 -->
+                                <!--Padding removed for cutom-tabs div by Jyoti S || 20-Mar-2023 -->
+                                <div class="custom-tabs" style="padding: 3px 15px 0px 0px;">
+                                    <!-- Padding added for cutom-tabs div by Jyoti S || 20-Mar-2023 -->
+                                    <ul>
+                                        <li>
+                                            <a [ngClass]="(accord===1) ? 'active' : 'disabledtabs'"
+                                                (click)="chooseDateFilter(1);">Day</a>
+                                        </li>
+                                        <li>
+                                            <a [ngClass]="(accord===2) ? 'active' : 'disabledtabs'"
+                                                (click)="chooseDateFilter(2);">Week</a>
+                                        </li>
+                                        <li>
+                                            <a [ngClass]="(accord===3) ? 'active' : 'disabledtabs'"
+                                                (click)="chooseDateFilter(3);">Month</a>
+                                        </li>
+                                        <li>
+                                            <a [ngClass]="(accord===4) ? 'active' : 'disabledtabs'"
+                                                (click)="chooseDateFilter(4);">Custom</a>
+                                        </li>
+
+
+
+                                    </ul>
+                                </div>
+                                <!-- Changed by Amogh K | 2May2022 | button width made important -->
+                                <!-- Changes made for FIN1EURINT-383 : to show refresh/reload button || Kaustubh S || 06-Jun-2023 || START -->
+                                <!-- <button *ngIf="accord === 4" class="btn button" (click)="getRFQs();"
+                                    style="margin: 4px;height: 35px;line-height: 35px; text-align: center;border-radius:3px;width:110px !important;"
+                                    [disabled]="!loadFlag">Load</button> -->
+                                    <span class="refreshIcon">
+                                        <app-svg-icons [icon]="'reload-icon'" [width]="'15'" [height]="'15'" (click)="getRFQs();noOfRecords=0">
+                                        </app-svg-icons><!-- Changes done by Jyoti S || 09-Aug-2023 || FIN1EURINT-582 -->
+                                    </span>
+                                    <!-- Changes made for FIN1EURINT-383 : to show refresh/reload button || Kaustubh S || 06-Jun-2023 || END -->
+                            </div>
+
+                            <!-- Changes made by Yash Agrawal on 20th March, 2023 -->
+                            <div class="flex-row date-flex" *ngIf="accord === 4">
+                                <!-- Changed by Amogh K | 2May2022 | alignment fixed for, from and to dates -->
+                                <label style="padding-top: 4%; padding-right: 5px;">From</label> &nbsp;
+                                <!-- <div style="position: relative;">
+                                    <input style="width: 135px !important;" type="date" [(ngModel)]="frmDate"
+                                        id="txtfrmDate" (change)="fromDateChange()" class="ip-border" /> &nbsp;
+                                </div> -->
+                                <app-custom-datetime-field [format]="'date'" style="width: 145px !important;" [(ngModel)]="frmDate" id="txtfrmDate" (change)="fromDateChange()"></app-custom-datetime-field>
+                                <label style="padding-top: 4%;padding-left: 34px;padding-right: 5px;">To</label> &nbsp;
+                                <!-- <div style="position: relative;">
+                                    <input style="width: 135px !important;" type="date" [(ngModel)]="toDate"
+                                        id="txttoDate" (change)="toDateChange()" class="ip-border" /> &nbsp;
+                                </div> -->
+                                
+                                <app-custom-datetime-field [format]="'date'" style="width: 145px !important;" [(ngModel)]="toDate" id="txttoDate" (change)="toDateChange()"></app-custom-datetime-field>
+                            </div>
+                            <div class="rfq-inner-table" [ngClass]="{'active': accord === 4}">
+                                <!--       <div class="row-grid" *ngFor="let rfq of currentItemsToShow; let i = index" (click)="selectRQF(i)" [ngClass]="{'active': selectedRFQ === i}">-->
+                                <div class="row-grid" *ngFor="let rfq of currentItemsToShow; let i = index"
+                                    (click)="selectRQF(rfq.RFQID, i)" [ngClass]="{'active': selectedRFQIndex === i}">
+                                    <div class="flex-column">
+                                       
+                                        <!-- <label class="blue">{{rfq.RFQID}}</label>
+                                        <label class="darkgrey">{{rfq.Underlyings}}</label> -->
+                                        <label style="color: var(--heading-label);">{{rfq.RFQID}}</label>
+                                        <label style="color: var(--heading-label);">{{rfq.Underlyings}}</label>
+                                    </div>
+                                    <div style="margin: auto 0px;">
+                                        <div class="status default"
+                                            [ngClass]="{'green': rfq.Status === 'Active' ,'yellow': rfq.Status === 'Pending Response', 'purple': rfq.Status === 'Pool Created', 'greys': rfq.Status === 'Order Placed', 'grey': rfq.Status === 'New Pool','red': rfq.Status === 'Expired' }">
+                                            <label style="margin: auto"
+                                                [ngClass]="{'orderPlacedBold' : rfq.Status === 'Order Placed'}">{{rfq.Status}}</label>
+                                        </div>
+
+                                    </div>
+                                    <div>
+                                        <!-- <img class="arrow-img" src="{{asseturl}}arrow-down.png"> -->
+                                        <app-svg-icons class="arrow-img" [icon]="'arrow'" [width]="'15'" [height]="'15'" [fill]="'var(--btn-border)'"></app-svg-icons>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <div class="pagination-div">
+                                <mat-paginator #paginator [length]="noOfRecords" [pageIndex]="pageIndex" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions" (page)="handlePage($event)">
+                                </mat-paginator>
+                            </div> -->
+
+                            <div class="pagination-wrapper">
+                                <div class="custom-pagination">
+                                    <div>
+                                        Items per page
+                                        <select class="pagination-select ip-border" [ngModel]="pageSize"
+                                            (change)="handlePage({'pageNo':pageNo,'pageSize':$event.target.value,'reload':true, 'length':noOfRecords})">
+                                            <option *ngFor="let option of pageSizeOptions">
+                                                {{option}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        {{this.pageEnd!=0?this.pageStart+1:this.pageStart}}-{{this.pageEnd}} of
+                                        {{noOfRecords}}
+                                    </div>
+                                    <div>
+                                        <!-- <img class="arrow-img" src="{{asseturl}}arrow-down.png"
+                                            style="transform: rotate(90deg);" [ngClass]="{'btn-disabled':pageNo==0}"
+                                            (click)="handlePage({'pageNo':pageNo-1,'pageSize':pageSize,'reload':false,'length':noOfRecords})"> -->
+                                        <app-svg-icons class="arrow-img left-arrow" [ngClass]="{'btn-disabled':pageNo==0}" (click)="handlePage({'pageNo':pageNo-1,'pageSize':pageSize,'reload':false,'length':noOfRecords})" [icon]="'arrow-left'" [width]="'15'" [height]="'15'" [fill]="'var(--btn-border)'"></app-svg-icons>
+                                    <!-- </div>
+                                    <div> -->
+                                        <!-- <img class="arrow-img" src="{{asseturl}}arrow-down.png"
+                                            [ngClass]="{'btn-disabled':pageEnd == noOfRecords}"
+                                            (click)="handlePage({'pageNo':pageNo+1,'pageSize':pageSize, 'reload':false,'length':noOfRecords})"> -->
+                                        <app-svg-icons class="arrow-img" [ngClass]="{'btn-disabled':pageEnd == noOfRecords}" (click)="handlePage({'pageNo':pageNo+1,'pageSize':pageSize, 'reload':false,'length':noOfRecords})" [icon]="'arrow'" [width]="'15'" [height]="'15'" [fill]="'var(--btn-border)'"></app-svg-icons>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="queues-table">
+                        <!--  <label class="sub-header">Quote IDs
+                            {{selectedRFQ > -1 ? "(" + rfqs[selectedRFQ].RFQID + ")" : ''}}</label>   -->
+                        <label class="sub-header" style="color: var(--heading-label);font-weight: bold;">Quote IDs
+                            {{selectedRFQ > -1 ? "(" + selectedRFQ + ")" : ''}}</label>
+                        <div class="quotes-table">
+                            <div class="table-header">
+                                <div class="tdCenter line-height" style="color: var(--heading-label);">Quote ID</div>
+                                <div class="tdCenter line-height" style="color: var(--heading-label);">Counterparty</div>
+                                <!-- <div>Solve For Price</div> -->
+                                <div class="tdCenter" style="padding: 7px 22px;
+                                line-height: 17px; color: var(--heading-label)">{{solveForHeaderTxt}}</div>
+                                <div class="tdCenter line-height" style="color: var(--heading-label);">Status</div>
+                            </div>
+                            <div class="trailtable-header">
+                                <div style="color: var(--heading-label)">Trail</div>
+                            </div>
+
+                            <!-- Changes made by Yash Agrawal on 20th March, 2023 -->
+                            <div class="table-section left-table-section">
+                                <div class="table-data" *ngFor="let quote of quotes; let i = index"
+                                    (click)="selectQuote(i)" [ngClass]="{'active': selectedQuote === i}">
+                                    <!-- ChitraM | 27-Feb-23 | UI Changes 
+									<label [ngClass]="{'bestPrice': quote.BestFlag === 'Y'}"
+                                        class="blue">{{quote.QuoteID}}</label>
+                                    <label [ngClass]="{'bestPrice': quote.BestFlag === 'Y'}"
+                                        class="darkgrey">{{quote.CounterParty}}</label>
+                                    <label [ngClass]="{'bestPrice': quote.BestFlag === 'Y'}"
+                                        class="darkgrey right">{{quote.Price | number:'1.2-2'}}</label>
+                                    <label
+                                        [ngClass]="{'bestPrice': quote.BestFlag === 'Y' || quote.Status === 'Order Placed'}"
+                                        class="darkgrey">{{quote.Status}}</label> -->
+
+                                    <label [ngClass]="{'bestPrice': quote.BestFlag === 'Y'}"
+                                        style="color: var(--heading-label);">{{quote.QuoteID}}</label>
+                                    <label [ngClass]="{'bestPrice': quote.BestFlag === 'Y'}"
+                                        style="color: var(--heading-label);">{{quote.CounterParty}}</label>
+                                    <label [ngClass]="{'bestPrice': quote.BestFlag === 'Y'}"
+                                        class="right" style="color: var(--heading-label);">{{quote.Price | number:'1.2-2'}}</label>
+                                    <label
+                                        [ngClass]="{'bestPrice': quote.BestFlag === 'Y' || quote.Status === 'Order Placed'}"
+                                        style="color: var(--heading-label);">{{quote.Status}}</label>
+                                </div>
+                            </div>
+                            <div class="table-section">
+                                <div style="padding: 10px;" class="">
+                                    <div class="flex-row" *ngIf="showLogo">
+                                        <!-- <div>
+                                            <img class="product-img" src="{{asseturl}}autocall.png" style="color: #98999A;">
+                                        </div> -->  <!-- Commented by Jyoti S || to replace PNG with SVG || 10-Apr-2023 -->
+                                       <div *ngIf="(this.selectedProduct == 'EQC_Europe')">
+                                        <app-svg-icons [icon]="'Autocallable-audit'" [width]="'30'" [height]="'30'"
+                                        style="margin-top: 10px;"><!-- Icon replaced by AdilP -->
+                                        </app-svg-icons>
+                                       </div>
+                                       <div *ngIf="(this.selectedProduct == 'YieldEnhancement')">
+                                        <app-svg-icons [icon]="'Yield Enhancement-audit'" [width]="'30'" [height]="'30'"
+                                        style="margin-top: 10px;">
+                                        </app-svg-icons>
+                                       </div>
+                                       <div *ngIf="(this.selectedProduct == 'Participation')">
+                                        <app-svg-icons [icon]="'Participation-audit'" [width]="'30'" [height]="'30'"
+                                        style="margin-top: 10px;">
+                                        </app-svg-icons>
+                                       </div>
+                                       <div *ngIf="(this.selectedProduct == 'ACC')">
+                                        <app-svg-icons [icon]="'Accumulator-audit'" [width]="'30'" [height]="'30'"
+                                        style="margin-top: 10px;">
+                                        </app-svg-icons>
+                                       </div>
+                                       <div *ngIf="(this.selectedProduct == 'DAC')">
+                                        <app-svg-icons [icon]="'Decumulator-audit'" [width]="'30'" [height]="'30'"
+                                        style="margin-top: 10px;">
+                                        </app-svg-icons>
+                                       </div>
+                                        <div style="padding-left: 10px;"class="flex-column" *ngIf="selectedQuote > -1">
+                                            <!-- <label class="blue">{{quotes[selectedQuote].QuoteID}}</label>
+                                            <label class="midgrey large">{{products.Product}}</label> -->
+
+                                            <label style="color: var(--table-th);">{{quotes[selectedQuote].QuoteID}}</label>
+                                            <label style="color: #98999A;">{{products.Product}}</label>
+                                        </div>
+                                    </div>
+                                    <div class="flex-row" style="justify-content: flex-end;" *ngIf="subscription">
+                                        <label *ngIf="!showSub" (click)="showSubscriptions()" class="link">
+                                            <!-- <img
+                                                src="{{asseturl}}arrow-down.png"> -->
+                                                <app-svg-icons  [icon]="'arrow-down'" [width]="'15'" [height]="'15'" [fill]="'var(--btn-border)'"></app-svg-icons>
+                                                View Subscriptions</label>
+                                        <label *ngIf="showSub" (click)="hideSubscriptions()" class="link">
+                                            <!-- <img
+                                                style="transform: rotate(180deg);" src="{{asseturl}}arrow-down.png"> -->
+                                                <app-svg-icons class="arrow-flip" [icon]="'arrow-down'" [width]="'15'" [height]="'15'" [fill]="'var(--btn-border)'"></app-svg-icons>
+                                                Hide
+                                            Subscriptions</label>
+                                    </div>
+                                </div>
+
+                                <div class="timeline">
+                                    <div class="sub-table" *ngIf="showSub">
+                                        <table class="underlying-table">
+                                            <tr>
+                                                <th class="tdCenter">Deal ID</th>
+                                                <!-- <th style="width: 130px;" class="tdCenter">Notional Amount</th> -->
+                                                <th style="width: 130px;" class="tdCenter"
+                                                    *ngIf="selectedProduct !== 'ACC' && selectedProduct !== 'DAC'">
+                                                    Notional Amount</th>
+                                                <th style="width: 130px;" class="tdCenter"
+                                                    *ngIf="selectedProduct === 'ACC' || selectedProduct === 'DAC'">No.
+                                                    Of Shares</th>
+
+
+                                                <th class="tdCenter">Created By</th>
+                                                <th class="tdCenter">Created At</th>
+                                            </tr>
+                                            <tr *ngFor="let item of subdData">
+                                                <td>{{item.DealID}}</td>
+                                                <td style="text-align: right; width: 130px;"
+                                                    *ngIf="selectedProduct !== 'ACC' && selectedProduct !== 'DAC'">
+                                                    {{item.NominalAmt | number:'1.2-2'}}</td>
+                                                <td style="text-align: right; width: 130px;"
+                                                    *ngIf="selectedProduct === 'ACC' || selectedProduct === 'DAC'">
+                                                    {{item.NominalAmt}}</td>
+                                                <td>{{item.CreatedBy}}</td>
+                                                <td>{{item.CreatedAt | date:'dd-MMM-yyyy h:mm:ss a'}}</td>
+                                            </tr>
+                                        </table>
+
+                                    </div>
+                                    <div class="timeline-row"
+                                        *ngFor="let timeRecord of timelineArray; let i = index; let last = last">
+                                        <div class="timestamp">
+                                            <!-- <label>{{timeRecord.Date}}</label> ChitraM | 27-Feb-23 | UI Changes -->
+                                            <!-- <label style="color: rgb(48, 48, 48);">{{timeRecord.Time | date:'dd-MMM-yyyy
+                                                h:mm:ss a'}}</label> -->
+                                                <label style="color: #98999A;;">{{timeRecord.Time | date:'dd-MMM-yyyy
+                                                    h:mm:ss a'}}</label>
+                                        </div>
+                                        <div class="milestone" [ngClass]="{'ripple': last}">
+                                            <div class="milestone-icon default-icon"
+                                                [ngClass]="{'price-icon': timeRecord.Status === 'Price Request' ,'response-icon': timeRecord.Status === 'Price Received', 'termsheet-icon': timeRecord.Status === 'Termsheet Requested', 'kid-icon': timeRecord.Status === 'KID Requested', 'pool-icon': timeRecord.Status === 'New Pool' }">
+                                            </div>
+                                        </div>
+                                        <div class="status-timeline"><label>{{timeRecord.Status}}</label>
+                                            <label *ngIf="timeRecord.ActionBy" class="">By
+                                                {{timeRecord.ActionBy}}</label>
+                                        </div>
+                                        <div class="vl" *ngIf="!last"></div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>

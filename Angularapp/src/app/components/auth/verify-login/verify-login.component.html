@@ -1,0 +1,112 @@
+<nav class="nav">
+
+
+  <!-- SH CAPITAL -->
+  <div class="nav-header" style="height: 56px;text-align: center;background-color: var(--nav-header);"
+    *ngIf="CompanyLogo === 'SHC'">
+    <div class="stanhope-logo"></div>
+  </div>
+
+  <!-- GATEWAY MARKETS -->
+  <div class="nav-header"
+    style="height: 56px;text-align: center; display: flex; align-items: center; padding-left: 10px;"
+    *ngIf="CompanyLogo === 'GWM'">
+    <app-svg-icons class="gateway-logo" [icon]="'gateway-markets-horizontal'" [width]="'338'" [height]="'55'">
+    </app-svg-icons>
+  </div>
+
+  <!-- FINIQ -->
+  <div class="nav-header" style="height: 56px;text-align: center; display: flex;" *ngIf="CompanyLogo === 'FinIQ'">
+    <p
+      style="text-align: center; font-family: 'Times New Roman', Times, serif; font-size: 45px;color: white;margin-left: 67px;">
+      FinIQ</p>
+  </div>
+
+  <div class="nav-container" style="height: 56px;">
+
+    <div class="flex-spacer"></div>
+    <div class="nav-bar-contents" (clickOutside)="ClosePopup($event)">
+      <!-- <app-svg-icons class="" (click)="toggleSupport()" [icon]="'support'" [width]="'23'" [height]="'23'">
+      </app-svg-icons> -->
+      <div (click)="toggleSupport()">
+        <svg version="1.2" baseProfile="tiny" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
+          xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 300 300" [ngStyle]="{'width':'23px','height':'23px'}">
+          <use href="#support" />
+        </svg>
+        <svg version="1.2" baseProfile="tiny" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
+          xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 300 300" overflow="visible"
+          xml:space="preserve" style="display: none;">
+          <g id="support">
+            <path fill="white" d="M147.07,300c-4.95-1.15-9.71-2.68-13.74-6.03c-8.92-7.41-12.02-19.05-7.9-30.18c3.64-9.84,14.06-16.89,24.98-16.6
+            c10.87,0.29,18.63,5.65,23.4,15.3c0.81,1.63,1.6,2.3,3.45,2.3c19.92-0.07,39.84-0.02,59.76-0.05c6.47-0.01,9.96-3.5,10.07-9.94
+            c0.05-3,0.01-6,0.01-8.55c-5.19,0-10.3,0.91-14.94-0.17c-12.82-2.99-20.31-12.85-20.39-26.47c-0.18-28.71-0.2-57.42,0-86.12
+            c0.12-16.96,12.55-28.49,28.93-27.37c1.83,0.12,3.64,0.61,5.92,1.01c-2.74-28.56-14.87-52.17-37.7-69.2
+            c-32.03-23.88-67.12-27.32-102.8-9.47c-31.82,15.92-48.75,43.13-52.87,78.3c3.96-0.22,7.63-0.82,11.24-0.56
+            c12.17,0.87,22.48,11.31,23.42,23.44c0.22,2.82,0.34,5.65,0.35,8.48c0.03,26.76,0.01,53.51,0.02,80.27
+            c0,7.36-1.81,14.02-6.77,19.72c-6.77,7.79-17.7,10.74-28.27,7.43c-9.33-2.92-16.64-11.92-17.57-21.73
+            c-0.26-2.71-0.42-5.45-0.42-8.17c-0.03-32.32,0.07-64.64-0.05-96.96c-0.08-20.06,3.85-39.14,13.21-56.97
+            c9.32-17.73,22.39-32.1,39.16-43.06C103.73,8.07,121.49,2.11,140.7,0.44c0.57-0.05,1.12-0.29,1.68-0.44c5.08,0,10.16,0,15.23,0
+            c2.69,0.4,5.38,0.81,8.07,1.19c25.51,3.59,47.49,14.5,65.54,32.76c21.84,22.09,33.17,48.97,33.41,80.02
+            c0.36,46.96,0.12,93.93,0.09,140.9c-0.01,6.18-1.59,11.95-5.47,16.94c-5.69,7.33-13.32,10.55-22.42,10.57
+            c-19.72,0.03-39.45,0.04-59.17-0.03c-1.98-0.01-3.12,0.41-3.96,2.4c-0.9,2.12-2.31,4.07-3.75,5.89c-4.2,5.32-10.06,7.82-16.43,9.37
+            C151.37,300,149.22,300,147.07,300z" />
+            <path fill="white" d="M0,146.48c1.35-5.11,3.07-10.03,6.79-14.01c2.97-3.17,6.38-5.61,10.71-7.14c0,34.14,0,67.98,0,102.23
+            c-5.63-1.92-10.01-5.24-12.91-10.1C2.63,214.18,1.5,210.4,0,206.84C0,186.72,0,166.6,0,146.48z" />
+            <path fill="white" d="M300,206.84c-1.47,4.96-3.18,9.79-6.84,13.68c-2.92,3.09-6.25,5.49-10.56,7.06c0-34.18,0-68.06,0-102.24
+            c8.25,3.27,13.65,8.94,16.26,17.28c0.4,1.29,0.76,2.59,1.14,3.88C300,166.6,300,186.72,300,206.84z" />
+          </g>
+        </svg>
+      </div>
+      <!-- <div class="setting-icon" (click)="toggleSettings()"></div>
+      <div class="notification">
+      </div>
+      <div class="logout-icon" (click)="openLogoutPopUp()"></div> -->
+    </div>
+  </div>
+
+  <!-- SH CAPITAL -->
+  <div class="setting-box2" *ngIf="showSupport && CompanyLogo === 'SHC'">
+    <label class="headercolor">Tell us how can we help</label>
+    <div class="theme-box" style="gap: 10px;">
+      <app-svg-icons class="" style="margin: 2px 0px;" [icon]="'phone'" [width]="'20'" [height]="'20'"></app-svg-icons>
+      <label class="">+971(0)4 556 2701</label>
+    </div>
+    <div class="theme-box" style="gap: 10px;">
+      <app-svg-icons class="" style="margin: 2px 0px;" [icon]="'email'" [width]="'20'" [height]="'20'"></app-svg-icons>
+      <label class="">info&#64;sh-financial.com</label>
+    </div>
+  </div>
+
+  <!-- GATEWAY MARKETS -->
+  <div class="setting-box2" *ngIf="showSupport && (CompanyLogo === 'GWM' || CompanyLogo === 'FinIQ')">
+    <label class="headercolor">Tell us how can we help</label>
+    <div class="theme-box" style="gap: 10px;">
+      <app-svg-icons class="" style="margin: 2px 0px;" [icon]="'phone'" [width]="'20'" [height]="'20'"></app-svg-icons>
+      <label class="">+65-6808 6460</label>
+    </div>
+    <div class="theme-box" style="gap: 10px;">
+      <app-svg-icons class="" style="margin: 2px 0px;" [icon]="'email'" [width]="'20'" [height]="'20'"></app-svg-icons>
+      <label class="">info&#64;finiq.com</label>
+    </div>
+  </div>
+</nav>
+<div class="flow-outer">
+  <div class="flow-diagram">
+    <div class="page-title"
+      style="grid-column: 1 / span 6; padding-top: 0px; padding-bottom: 20px; color: var(--text);">{{header}}
+    </div>
+  </div>
+  <div class="flow-diagram">
+    <div class="flow-process"><img style="margin: auto;" src="assets/user.png" width="60px" height="60px">
+    </div>
+  </div>
+  <div class="">
+    <div style="margin-top: 30px;" class="action-buttons">
+      <button class="continuebtn" *ngIf="!isUserVerified" (click)="authorizeUser()">{{'Verify'|translate}}</button>
+      <button class="continuebtn" *ngIf="isUserVerified" (click)="goTOLogin()">{{'Login'|translate}}</button>
+    </div>
+  </div>
+  <div class="message">
+    <label>{{message}}</label>
+  </div>
+</div>

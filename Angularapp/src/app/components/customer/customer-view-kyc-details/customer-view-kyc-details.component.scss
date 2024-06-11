@@ -1,0 +1,241 @@
+.CK-maindata-outer {
+  display: flex;
+  width: 87vw;
+  .CK-questiondata {
+    .CK-rowcontent {
+      display: flex;
+      justify-content: flex-start;
+      grid-template-rows: auto;
+    }
+    .CK-rowoptions {
+      min-height: 200px;
+      margin-bottom: 5px;
+      text-align: left;
+      margin-left: 5px;
+      margin-right: 5px;
+    }
+    .singleoption {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+    }
+  }
+}
+
+.VKYC-card {
+  .VKYC-card-header {
+    color: var(--label);
+    // line-height: 80px;
+    height: 45px;
+    font-size: 22px;
+    text-align: start;
+    padding: 10px 15px;
+  }
+
+  .VKYC-card-content {
+    box-shadow: var(--box-shadow-thin);
+    transition: 0.3s;
+    // margin-left: 40px; // 15-Mar-2021 || Viplav T. || CHange 20px to 40px
+    padding: 10px 20px;
+    background: var(--containers);
+
+    .VKYC-rowcontent {
+      display: grid;
+      grid-template-columns: 1fr;
+      padding: 0.5% 0%;
+
+      .content {
+        width: 100%;
+      }
+    }
+  }
+
+  .Summary-card {
+    box-shadow: var(--box-shadow-thin);
+    transition: 0.3s;
+    padding: 20px;
+    background: var(--containers);
+    margin-left: 20px !important;
+    margin-bottom: 24px;
+    border-radius: 4px;
+    margin: 0px 2px;
+
+    .Summary-card-header {
+      color: var(--label);
+      height: 50px;
+      font-size: 22px;
+      text-align: start;
+      padding: 0% 1%;
+      font-weight: normal;
+      margin-top: 1.5%;
+    }
+
+    .Summary-card-content {
+      .Summary-rowcontent {
+        display: grid;
+        grid-template-columns: 1fr 1.5fr;
+        padding: 0.5% 1%;
+        .content {
+          width: 100%;
+        }
+      }
+    }
+  }
+}
+
+.VKYC-card-content:hover {
+  box-shadow: var(--box-shadow-hovered) !important;
+}
+
+.CKSuccess {
+  align-items: center;
+  display: none;
+  // padding: 5% 0%;
+  box-shadow: 0 1px 8px 0 rgba(0, 0, 0, 0.2);
+  transition: 0.3s;
+  // margin: 0px 0px 0px 7px;
+  // border-radius: 15px;
+  // padding: 20px;
+  // margin: 20px;
+  // margin: 10px;
+  // margin-left: 40px; // 15-Mar-2021 || Viplav T. || Add Property margin-left
+  background-color: var(--containers);
+  width: -webkit-fill-available;
+  // overflow: scroll;
+}
+
+.RR-card-Header {
+  display: grid;
+  grid-template-columns: 30% 70%;
+  width: 100%;
+  padding: 2% 5px;
+  text-align: center;
+}
+
+.RR-circle {
+  color: var(--text);
+  font-size: 23px !important;
+  margin: auto;
+  border: 1px solid var(--white);
+  width: 200px;
+  min-height: 200px;
+  border-radius: 50%;
+  // padding-top: 50px;
+  // line-height: 132%;
+  background: var(--containers);
+  font-weight: 500;
+  .riskProfile {
+    padding: 10px 0px;
+    color: #6c8a9e;
+    font-size: 20px;
+  }
+  .RR-circle-content {
+    display: inline-grid;
+    height: 200px;
+    grid-template-rows: 33.33% 33.33% 33.33%;
+    .RR-circle-content-line-1 {
+      line-height: 70px;
+    }
+  }
+}
+
+.RR-circle:hover h3 {
+  animation: icon1 0.5s ease 0.8s forwards;
+}
+
+@keyframes icon1 {
+  0% {
+    top: -25px;
+  }
+
+  100% {
+    top: 10px;
+  }
+}
+
+.form-container5050 {
+  display: grid;
+  grid-template-columns: 50% 50%;
+}
+
+.form-container2525 {
+  display: flex;
+  justify-content: flex-start;
+  // grid-template-columns: 1fr 1fr 1fr 1fr;
+  // gap: 10px;
+}
+
+.lbl {
+  font-size: 15px;
+  line-height: 35px;
+  text-align: initial;
+}
+
+.scorenumber {
+  border-radius: 50%;
+  width: 70px;
+  height: 70px;
+  padding-top: 20px;
+  background: #fff;
+  border: 2px solid grey;
+  color: grey;
+  text-align: center;
+  font: 27px Arial, sans-serif;
+}
+.textnewentry {
+  font-size: 20px !important;
+  font-weight: 100;
+  margin: 0;
+}
+
+.legend-section {
+  display: flex;
+  // height: fit-content;
+  // row-gap: 5px;
+  // max-height: 30px;
+  /* padding: 10px; */
+  // margin: auto;
+  justify-content: center;
+  padding: 10px 0px;
+  // padding-left: 5%;
+  // padding-top: 1.5%;
+}
+
+.legend-label {
+  padding-right: 20px;
+  padding-left: 15px;
+  font-size: 14px !important;
+  font-weight: 500;
+}
+
+.loaderdiv {
+  display: grid;
+  height: calc(100vh - 56px);
+  img {
+    margin: auto;
+  }
+}
+.activeProduct {
+  font-size: 14px !important;
+  font-weight: 500;
+}
+.inactiveProduct {
+  font-size: 14px !important;
+  padding: 0px 20px !important;
+  color: grey;
+  font-weight: 500;
+}
+.product-list {
+  display: grid;
+  grid-template-rows: repeat(4, 1fr);
+  grid-template-columns: 1fr 1fr;
+  grid-auto-flow: column;
+}
+.cirp-header {
+  background: var(--cirp-header);
+  width: 100%;
+}
+
+.question{
+  color: var(--off-color);
+}

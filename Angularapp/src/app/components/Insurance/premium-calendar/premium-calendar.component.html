@@ -1,0 +1,181 @@
+<div class="component">
+  <div class="page-title module">
+    Premium Calendar
+  </div>
+  <div class="calendar-grid">
+    <div class="main-container">
+      <label class="box-header" style="margin-bottom: 0px !important;">Filter</label>
+      <!-- <div class="flex-row">
+                <label>Select Year:</label>
+                <mat-form-field appearance="fill">
+                    <input matInput [matDatepicker]="dp" [formControl]="date">
+                    <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+                    <mat-datepicker #dp
+                                    startView="multi-year"
+                                    (yearSelected)="chosenYearHandler($event, dp)"
+                                    panelClass="example-month-picker">
+                    </mat-datepicker>
+                  </mat-form-field>
+            </div>
+            <div class="flex-col">
+                <label>Select Month:</label>
+                <div class="calendar-matrix">
+                    <div [ngClass]="{'active': isActive === i }" class="month-calendar" *ngFor="let month of Months_All; let i = index" (click)='setMonth(i, month)'>
+                        <label>{{month}}</label>
+                    </div>
+                </div>
+            </div> -->
+
+      <div class="label-class ">
+        <label>{{errorMsg}}</label>
+        <label (click)="clearFilter()" style="float: right" class="links">Clear Filter(s)</label>
+      </div>
+      <div class="calendar-flex">
+        <div class="calendar-grid-outer">
+          <div class="year-slider">
+            <button (click)="slideRight()" id="slideRight" type="button">
+              <app-svg-icons class="" [icon]="'arrow-left-icon'" [width]="'16'" [height]="'16'">
+              </app-svg-icons>
+            </button>
+            <div id="container">
+              <div id="content">
+                <!-- <div class="calendar-matrix-list"> -->
+                <div (click)="getYear(year.title)" [ngClass]="{ active: year.title === currentyear }"
+                  class="year-calendar" *ngFor="let year of yearRange; let i = index">
+                  <label>{{ year.title }} ( {{ year.value }} )</label>
+                  <!-- </div> -->
+                </div>
+              </div>
+            </div>
+
+            <button (click)="slideLeft()" id="slideLeft" type="button">
+              <app-svg-icons style="float: right" class="" [icon]="'arrow-right-icon'" [width]="'16'" [height]="'16'">
+              </app-svg-icons>
+            </button>
+          </div>
+          <!-- <div class="flex-column" style="grid-row: 1 / span 2; border-right: 1px solid var(--btn-border);">
+                                      <div class="calendar-matrix-list">
+                                          <div (click)="getYear(year.title)" [ngClass]="{'active': year.title === currentyear }" class="year-calendar"
+                                              *ngFor="let year of yearRange; let i = index">
+                                              <label>{{year.title}} ( {{year.value}} )</label>
+                                          </div>
+                                      </div>
+                                  </div> -->
+          <!-- <div class="calendar-title">
+                                      <label>{{currentyear}}</label>
+                                  </div> -->
+          <div class="flex-col month-box">
+            <div class="calendar-matrix">
+              <div (click)="getMonth(month.title, i)" [ngClass]="{
+                            active: month.title === currentMonth,
+                            'no-pointer': month.value === 0
+                          }" class="month-calendar-new" *ngFor="let month of MonthsCount; let i = index">
+                <label [ngClass]="{ disabled: month.value === 0 }">{{
+                  month.title
+                  }}</label>
+                <label [ngClass]="{ disabled: month.value === 0 }" class="event-count">{{ month.value }}</label>
+                <!-- <label [ngClass]="{'disabled': month.value === 1 }" class="event-count">{{month.value}} Event</label>
+                                              <label [ngClass]="{'disabled': month.value > 1  }" class="event-count">{{month.value}} Events</label> -->
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="week-grid" *ngIf="currentMonth !== null">
+          <label style="font-weight: 500; font-size: 16px; margin-bottom: 5px">{{ currentMonth }} {{ currentyear
+            }}</label>
+          <div class="week-header">
+            <label *ngFor="let item of WEEKDAYS">{{ item }}</label>
+          </div>
+          <div class="week-data">
+            <div *ngFor="let item of no_of_days">
+              <div class="week-class" [ngClass]="{ active: events_in_month.includes(item) }">
+                <label *ngIf="item === 0"></label>
+                <label *ngIf="item !== 0">{{ item }}</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="main-container">
+      <label *ngIf="currentyear !== null && currentMonth !== null" class="box-header">Events - {{currentMonth}}
+        {{currentyear}}</label>
+      <label *ngIf="currentyear === null && currentMonth === null" class="box-header">Events - All</label>
+      <div class="events">
+        <div class="graph-div" *ngFor="let item of filteredData">
+          <div class="graph-item">
+            <div class="graph-date">
+              <label>{{item[6].Value | date}}</label>
+            </div>
+            <div class="graph-item-list">
+              <div class="graph-item-content">
+                <label>{{item[5].Value}}</label>
+                <label class="amount">{{item[4].Value}} {{this.cfs.FormatNumberr(item[8].Value)}}</label>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+        <div class="schedule-height empty" *ngIf="premiumCalendar.length === 0">
+          <div class="empty-state">
+            <app-svg-icons class="" [icon]="'no-records'" [width]="'100'" [height]="'100'">
+            </app-svg-icons>
+            <label class="state-big">No Records Found</label>
+            <label class="state-small">Try to adjust your filter to find what you are looking
+              for.</label>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+    <!-- <div class="content-container">
+            <div class="premiumDetails">
+                <div>
+                    <div *ngFor="let month of Months1; let i = index">
+                        <div class="month" (click)='showHide(i)'>
+                            {{month}}
+                        </div>
+                        <div *ngIf='Monthshow1[i] !== false' class="subdiv">
+                            <div *ngFor="let item of premiumCalendar" class="info">
+                                <div *ngIf="Months1[item.InsuranceDetail[13].Value] === Months1[i+1]">
+                                    <div>{{item.InsuranceDetail[6].Value | date:'dd-MMM-yyyy'}}</div>
+                                    <div class="INSName ">
+                                        {{item.InsuranceDetail[5].Value}}
+                                    </div>
+                                    <div class="INSName ">
+                                        {{item.InsuranceDetail[4].Value}} &nbsp; {{this.cfs.FormatNumberr(item.InsuranceDetail[8].Value)}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div *ngFor="let month of Months2; let i = index">
+                        <div class="month" (click)='showHide2(i)'>
+                            {{month}}
+                        </div>
+                        <div *ngIf='Monthshow2[i] !== false' class="subdiv">
+                            <div *ngFor="let item of premiumCalendar" class="info">
+                                
+                                <div *ngIf="Months2[item.InsuranceDetail[13].Value] === Months2[i+7]">
+                                <div>{{item.InsuranceDetail[6].Value | date:'dd-MMM-yyyy'}}</div>
+                                <div class="INSName ">
+                                    {{item.InsuranceDetail[5].Value}}
+                                </div>
+                                <div class="INSName ">
+                                    {{item.InsuranceDetail[4].Value}} &nbsp; {{this.cfs.FormatNumberr(item.InsuranceDetail[8].Value)}}
+                                </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+  </div>
+</div>

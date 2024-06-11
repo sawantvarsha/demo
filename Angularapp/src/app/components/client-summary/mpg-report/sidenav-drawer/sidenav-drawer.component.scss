@@ -1,0 +1,138 @@
+.tp-container {
+    position: initial;
+    /* top: 90px; */
+    top: 40px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    /* background: #eee; */
+}
+
+span {
+    margin-left: 20px;
+}
+
+
+/* 
+  .search{
+      border-radius: 50px;
+      border: 1px solid #e1e1e1;
+      padding: 10px;
+      height: 20px; 
+      margin-top:5px;
+  } */
+
+button,
+button:hover,
+button:not([disabled]):active,
+.mat-raised-button {
+    /* border: 1px solid #1a4269; */
+    /* padding: 5px; */
+    /* background-color:white; SSSSS*/
+    background-color: #323232;
+    /* color: #ffffff; */
+    width: 40px;
+    height: 36px;
+    border-radius: 4px;
+    cursor: pointer;
+    /* box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12); */
+    /* box-shadow: 0 3px 1px -2px rgb(0 0 0 / 20%), 0 2px 2px 0 rgb(0 0 0 / 14%), 0 1px 5px 0 rgb(0 0 0 / 12%); */
+    /* box-shadow: 0 3px 1px -2px rgb(0 0 0 / 10%), 0 2px 2px 0 rgb(0 0 0 / 10%), 0 1px 5px 0 rgb(0 0 0 / 10%); */
+    box-sizing: border-box;
+    position: relative;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: pointer;
+    outline: none;
+    display: inline-block;
+    white-space: nowrap;
+    text-decoration: none;
+    vertical-align: middle;
+    text-align: center;
+    font: normal 15px "Montserrat", sans-serif;
+    border-color: white;
+    border: none;
+}
+
+.date-form-field {
+    background-color: white;
+}
+
+mat-form-field {
+    width: 10% !important;
+    /* caret-color: #673ab7 !important; */
+}
+
+mat-button-toggle-group {
+    height: 38px;
+}
+
+mat-button-toggle {
+    vertical-align: middle;
+}
+
+.list-item {
+    cursor: pointer;
+    list-style-type: none;
+    padding: 7px 10px;
+    /* color: #ffdab9;  */
+    /* color: #0368B6; */
+    /* var(--heading-text); */
+    color: var(--text);
+    /* font-size: 14px !important; */
+    font-size: 13px !important;
+    font-family: Verdana, Geneva, Tahoma, sans-serif !important;
+}
+
+.list-item:hover {
+    background: var(--list-hover);
+    border-radius: 3px;
+}
+
+.cards-list {
+    margin-left: 300px;
+    width: 100%;
+    height: 100%;
+}
+
+.card {
+    margin: 20px;
+    background-color: white;
+    /* color: #ffffff; */
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+    /* box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12); */
+    box-shadow: 0 3px 1px -2px rgb(0 0 0 / 20%), 0 2px 2px 0 rgb(0 0 0 / 14%), 0 1px 5px 0 rgb(0 0 0 / 12%);
+    padding: 30px;
+}
+
+.active {
+    background: var(--active-sidebar);
+    color: var(--sidebar-li);
+    border-radius: 3px;
+}
+
+.sidebar-background {
+    height: 100%;
+    width: 300px;
+    background-repeat: no-repeat;
+    //   background-color: var(--background-color) !important;
+    //   box-shadow: var(--shadow);
+    // border-radius: 4px;
+    margin: 0px 3px;
+}
+
+.product-list::-webkit-scrollbar {
+    display: none;
+}
+
+.header-text {
+    font-size: 20px;
+    color: var(--headers);
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    padding-bottom: .1rem;
+}

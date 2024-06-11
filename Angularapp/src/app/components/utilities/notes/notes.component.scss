@@ -1,0 +1,152 @@
+.title-notes-div{
+    padding: 5px 0px;
+}
+.add-newicon{
+    margin: 5px;
+}
+
+.margin-btm-addnote{
+    margin-bottom: 0.8rem;
+    background-color: var(--containers);
+    padding: 0.8rem;
+    border-radius: 5px;
+    font-size: 18px;
+}
+
+.notes-header-flex{
+    // display: flex;
+    // align-items: center;
+    // gap: 0.8rem;
+    // margin: 0.8rem 0rem;
+    // justify-content: space-between;
+    // font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0px 4px;
+    gap: 1em;
+    font-size: var(--20);
+    padding-bottom: 15px;
+    .flex {
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+}
+
+
+
+.dates-style{
+    font-size: 12px;
+    color: var(--heading-label);
+    float: right;
+}
+
+.note-count{
+    text-align: center;
+    background-color: var(--containers);
+    padding: 5px;
+    position: absolute;
+    bottom: 70px;
+    text-align: center;
+    width: -webkit-fill-available;
+    margin-right: 2rem;
+    border-radius: 5px;
+}
+
+.listNotes{
+    display: flex;
+    flex-direction: column;
+}
+
+.title-notes{
+    // font-weight: 500;
+    font-size: 30px;
+}
+.note-textarea{
+    height: auto;
+}
+
+
+.addNotesPanel{
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    
+    overflow-y: auto;
+    max-height: 700px;
+
+}
+
+.height-on-addnotes{
+    overflow-y: auto;
+    height: 400px;
+}
+
+.title-label{
+    font-size: 15px;
+    color: var(--inline-label);
+}
+
+.description-label{
+    font-size: 15px;
+}
+
+.align-right{
+    text-align: end;
+}
+
+
+.flex-row-note{
+    // display: flex;
+    // flex-direction: row;
+    display: grid;
+    grid-template-columns: 5fr 0.5fr;
+    background-color: var(--containers);
+    justify-content: space-between;
+    padding: 0.8rem;
+    border-radius: 5px;
+    border-left: 4px solid var(--inline-label);
+    z-index: 2;
+}
+
+.flex-row-note:hover{
+        box-shadow: 0px 2px 8px rgb(121 121 121 / 73%);
+        // background: var(--select-bg);
+    }
+
+
+    .newnotes{
+        // background-color: var(--containers);
+        // padding: 0.8rem;
+   
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        cursor: pointer;
+        z-index: 1;
+     
+    }
+    
+    // .delete-note{
+    //     display: block;
+    // }
+
+    //Added by Apurva K|| 08-May-2023
+    .delete-note{
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        justify-content: flex-end;
+    }
+  
+    .flex-row-note:hover + .delete-note{
+        display: block;
+    }
+
+    .modifynotes{
+        background-color: var(--containers);
+        border-radius: 5px;
+        font-size: 18px;
+    }

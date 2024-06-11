@@ -1,0 +1,122 @@
+<form #allTabNameForm="ngForm">
+    <div class="bottom-padding">
+        <button mat-mini-fab (click)="close()" class="edit-close-button">
+            <mat-icon class="edit-close-icon">clear</mat-icon>
+        </button>
+        &nbsp;
+        <button mat-mini-fab (click)="apply()" class="edit-close-button">
+            <mat-icon class="edit-close-icon">save</mat-icon>
+        </button>
+    </div>
+    <ng-container>
+        <label class="txt-blue dd-font-size">{{ lblCustGrid }}</label>
+    </ng-container>
+    <div>
+        <ng-container>
+            <input type="text" class="common-font dd-font-size capsule-input" placeholder="Search"
+                [(ngModel)]="searchText" name="search" (keyup)="refreshSelections()">
+        </ng-container>
+    </div>
+    <br>
+    <div>
+        <ng-container *ngIf="isWFL">
+            <mat-form-field class="width_180px">
+                <mat-label>Workflow Type</mat-label>
+                <mat-select class="common-font dd-font-size" #WorkflowType="ngModel" name="WorkflowType" [(ngModel)]="workflow"
+                    (selectionChange)="wflhedge_typechange()">
+                    <mat-option class="common-font dd-font-size" *ngFor="let wfl of workflowData" [value]="wfl.WB_Workflow_Type_Code">
+                        {{ wfl.WB_Workflow_Type_Code }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </ng-container>
+        <ng-container *ngIf="isWFL" >
+            <mat-form-field class="width_180px" style="margin-left: 15px;">
+                <mat-label>Hedging Type</mat-label>
+                <mat-select class="common-font dd-font-size" [(value)]="selectedHedging" (selectionChange)="wflhedge_typechange()">
+                    <mat-option value="All">All</mat-option>
+                    <mat-option value="Deal">Deal</mat-option>
+                    <mat-option value="Order">Order</mat-option>
+                    <mat-option value="Product">Product</mat-option>
+                    <mat-option value="RFQ">RFQ</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </ng-container>
+        <br>
+        <mat-checkbox class="common-font dd-font-size" [(ngModel)]="allFieldsSelected"
+            (change)="selectAllChanged($event)" name="selectAll" [disabled]="searchText.length !== 0">
+            Select All
+        </mat-checkbox>
+        <ng-container *ngIf="isSelectedTabCGM || isSelectedTab">
+            <mat-selection-list class="common-font dd-font-size" #FieldNames_Selected="ngModel"
+                name="FieldNames_Selected" [(ngModel)]="selectedFieldNames"
+                (selectionChange)="fieldNameSelectionChanged($event)">
+                <mat-list-option class="common-font dd-font-size"
+                    *ngFor="let field of (fieldNameData | fieldSearch:searchText:'SelectedTab')"
+                    [value]="field.Field_Name">
+                    {{ field.Display_Name }}
+                </mat-list-option>
+            </mat-selection-list>
+        </ng-container>
+        <ng-container *ngIf="isWFL">
+            <mat-selection-list class="common-font dd-font-size" #FieldNames_Selected="ngModel"
+                name="FieldNames_Selected" [(ngModel)]="selectedFieldNames"
+                (selectionChange)="fieldNameSelectionChanged($event)">
+                <mat-list-option class="common-font dd-font-size"
+                    *ngFor="let field of (fieldNameData | fieldSearch:searchText:'WFL')" [value]="field">
+                    {{ field }}
+                </mat-list-option>
+            </mat-selection-list>
+        </ng-container>
+        <ng-container *ngIf="isMappedUserGroup">
+            <mat-selection-list class="common-font dd-font-size" #FieldNames_Selected="ngModel"
+                name="FieldNames_Selected" [(ngModel)]="selectedFieldNames"
+                (selectionChange)="fieldNameSelectionChanged($event)">
+                <mat-list-option class="common-font dd-font-size"
+                    *ngFor="let field of (fieldNameData | fieldSearch:searchText:'UserGroup')" [value]="field.Data_Value">
+                    {{ field.Data_Value }}
+                </mat-list-option>
+            </mat-selection-list>
+        </ng-container>
+        <ng-container *ngIf="isUserMappedWF">
+            <mat-selection-list class="common-font dd-font-size" #FieldNames_Selected="ngModel"
+                name="FieldNames_Selected" [(ngModel)]="selectedFieldNames"
+                (selectionChange)="fieldNameSelectionChanged($event)">
+                <mat-list-option class="common-font dd-font-size"
+                    *ngFor="let field of (fieldNameData | fieldSearch:searchText:'UserGroupWF')" [value]="field.U_Id">
+                    {{ field.U_Id }}
+                </mat-list-option>
+            </mat-selection-list>
+        </ng-container>
+        <ng-container *ngIf="isVisibilityMap">
+            <mat-selection-list class="common-font dd-font-size" #FieldNames_Selected="ngModel"
+                name="FieldNames_Selected" [(ngModel)]="selectedFieldNames"
+                (selectionChange)="fieldNameSelectionChanged($event)">
+                <mat-list-option class="common-font dd-font-size"
+                    *ngFor="let field of (fieldNameData | fieldSearch:searchText:'VisibilityMap')" [value]="field">
+                    {{ field }}
+                </mat-list-option>
+            </mat-selection-list>
+        </ng-container>
+        <ng-container *ngIf="isUserMappedDesigner">
+            <mat-selection-list class="common-font dd-font-size" #FieldNames_Selected="ngModel"
+                name="FieldNames_Selected" [(ngModel)]="selectedFieldNames"
+                (selectionChange)="fieldNameSelectionChanged($event)">
+                <mat-list-option class="common-font dd-font-size"
+                    *ngFor="let field of (fieldNameData | fieldSearch:searchText:'UserGroupWF')" [value]="field.NAME">
+                    {{ field.NAME }}
+                </mat-list-option>
+            </mat-selection-list>
+        </ng-container>
+        <ng-container *ngIf="isUserMappedMetaData">
+            <mat-selection-list class="common-font dd-font-size" #FieldNames_Selected="ngModel"
+                name="FieldNames_Selected" [(ngModel)]="selectedFieldNames"
+                (selectionChange)="fieldNameSelectionChanged($event)">
+                <mat-list-option class="common-font dd-font-size"
+                    *ngFor="let field of (fieldNameData | fieldSearch:searchText:'UserGroupWF')" [value]="field.NAME">
+                    {{ field.U_Id }}
+                </mat-list-option>
+            </mat-selection-list>
+        </ng-container> 
+    </div>
+</form>

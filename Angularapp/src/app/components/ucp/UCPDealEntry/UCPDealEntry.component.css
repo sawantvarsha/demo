@@ -1,0 +1,610 @@
+:host {
+  margin: 0px;
+  padding: 0px;
+  display: grid;
+  grid-template-columns: 320px calc(100% - 320px);
+  overflow: hidden;
+  left: 0;
+  top: 40px; /* added by OnkarE */
+}
+
+:host.showtabs{
+  margin: 0px;
+  padding: 0px;
+  display: grid;
+  grid-template-columns: none; /* changed by OnkarE */
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+}
+/* .deal-entry-host {
+  margin: 0px;
+  padding: 0px;
+  display: grid;
+  grid-template-columns: 350px calc(100% - 350px);
+  overflow: hidden;
+}
+
+.deal-entry-host-show-tabs {
+  margin: 0px;
+  padding: 0px;
+  display: grid;
+  grid-template-columns: 250px 350px calc(100% - 350px);
+  overflow: hidden;
+} */
+
+
+
+* {
+  outline: 0px;
+}
+
+.hardblock {
+  grid-column: span 3;
+  border-bottom: solid 1px transparent;
+  /* -o-border-image: linear-gradient(to right, #fff 1%, #cacaca 10%, #cacaca 80%, #fff 100%); */
+  /* linear-gradient(to right, #fff 1%, #cacaca 10%, #cacaca 80%, #fff 100%); */
+  /* border-image: linear-gradient(to right, #000 1%, #ababab 19%, #2c2c2c 100%, #000 100%); */
+  border-image: linear-gradient(to right, var(--linear-grad1) 1%, var(--linear-grad2) 19%, var(--linear-grad3) 100%, var(--linear-grad1) 100% );
+  border-image-slice: 100%;
+  border-image-slice: 1;
+  /* padding-bottom: 4px; */
+  /* padding-top: 12px; */
+}
+
+.hardblock-contents {
+  display: grid;
+  grid-template-columns: 320px 0.4fr 0.4fr 0.3fr;
+  align-items: center;
+  justify-items: left;
+  /* padding: 6px 20px; */
+  padding-left: 20px;
+  /* padding-top: 2px; */
+  height: calc(100% - 20px);
+  padding-bottom: 8px;
+  grid-column-gap: 10px;
+}
+
+.hardblock-contents_multi_ucp {
+  display: grid;
+  /* grid-template-columns: 350px 0.4fr 1fr; */
+  align-items: center;
+  justify-items: left;
+  /* padding: 6px 20px; */
+  padding-left: 20px;
+  /* padding-top: 2px; */
+  height: calc(100% - 20px);
+  padding-bottom: 12px;
+  padding-right: 10px;
+}
+
+.hardblock-contents_panelYesNoN{
+  display: grid;
+  grid-template-columns: 220px 0.4fr 1fr;
+  align-items: center;
+  justify-items: left;
+  padding-left: 35px;
+  height: calc(100% - 20px);
+  padding-bottom: 12px;
+}
+
+.messages {
+  width: 100%;
+  height: 100%;
+  /* overflow-y: auto; */
+  display: flex;
+  align-items: center;
+  padding-top: 30px;
+  font-weight: 100 !important;
+  letter-spacing: 0.4px;
+}
+.messages_postcard{
+  width: 200%;
+  height: 100%;
+  /* overflow-y: auto; */
+  display: flex;
+  align-items: center;
+}
+
+.hardblock-notification {
+  border: solid 1px #dedede;
+  align-self: flex-end;
+  height: 80%;
+  width: 90%;
+  overflow-y: auto;
+  white-space: pre-wrap;
+}
+
+.hardblock-notification>p {
+  color: red;
+  padding: 0px 10px 0px 10px;
+  font-size: 12px;
+  letter-spacing: 0.4px; /*Added by OnkarE on 11-Apr-2023*/
+}
+
+.dealentrycontent {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  width: 100%; /*changed by Onkar*/
+  height: 150%;
+  overflow-x: auto;
+  /* max-height: 100%; */
+  padding: 24px 0px 0px 0px;
+  
+  /* overflow: auto; */
+}
+
+.fields {
+  width: calc(100% - 20px);
+  /* height: calc(100vh - 170px); */
+  display: grid;
+  grid-auto-flow: column;
+  /* grid-template-columns: repeat(5, 300px); */
+  /* grid-template-rows: repeat(50, 30px); */
+  -webkit-column-gap: 50px;
+  -moz-column-gap: 50px;
+  column-gap: 18px;
+  row-gap: 20px;
+  /* overflow: auto; */
+  margin: 20px;
+  margin-top: 0;
+}
+
+.form-group {
+  display: grid;
+  /* grid-template-columns: 50% 50%; */
+  /* height: 100%;
+  padding: 5px 0; */
+}
+
+.mandatoryImage {
+  margin-right: -8px;
+}
+
+.labelAlignment {
+  padding-left: 8px;
+}
+
+
+
+.readonly {
+  background: #d6d6d6;
+}
+
+.label-group {
+  display: flex;
+  align-items: center;
+}
+
+.filter {
+  display: grid;
+  grid-template-rows: repeat(10, 30px);
+  grid-gap: 30px;
+  padding: 34px 20px 0px 20px; /*changed by Onkar*/
+  border-right: solid 1px transparent;
+  -o-border-image: linear-gradient(to bottom, #fff 2%, #cacaca 10%, #fff 100%);
+  /* border-image: linear-gradient(to bottom,  #000000 1%, #ababab 24%, #2c2c2c 100%); */
+  border-image: linear-gradient(to bottom, var(--linear-grad1) 1%, var(--linear-grad2) 24%, var(--linear-grad3) 100%);
+  border-image-slice: 100%;
+  border-image-slice: 1;
+  width: 320px;
+}
+
+.selected_tab{
+  grid-gap: 30px;
+    padding: 0px 20px 0px 20px;
+    border-right: solid 1px transparent;
+    -o-border-image: linear-gradient(to bottom, #fff 2%, #cacaca 10%, #fff 100%);
+    /* border-image: linear-gradient(to bottom, #000000 1%, #ababab 24%, #2c2c2c 100%); */
+    border-image: linear-gradient(to bottom, var(--linear-grad1) 1%, var(--linear-grad2) 24%, var(--linear-grad3) 100%);
+    border-image-slice: 100%;
+    border-image-slice: 1;
+    width: 1700px;
+}
+.filterrow {
+  display: grid;
+  grid-template-columns: 40% 60%;
+  align-items: center;
+}
+
+.filterButton {
+  display: grid;
+  grid-gap: 15px;
+  height: 30px;
+  grid-template-columns: 48% 48%;
+}
+
+.wflbtn{
+  width: min-content;
+}
+.filter select {
+  width: 100%;
+}
+
+.fieldDisplayNone {
+  display: none;
+}
+
+.custom-radio {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.overlay_postcard {
+  position: absolute;
+  top: 45px;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  height: 250%;
+  width: 250%;
+  z-index: 1;
+  /* background-color: #cececea2; */
+  background-color: white;
+}
+.overlay {
+  position: absolute;
+  /* top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0; */
+  height: 250%;
+  width: 250%;
+  z-index: 1;
+  /* background-color: #cececea2; */
+  background-color: white;
+}
+.overlay_grey {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  height: 250%;
+  width: 250%;
+  z-index: 1;
+  background-color: #cececea2;
+}
+/*.center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -moz-transform: translateX(-50%) translateY(-50%);
+  -webkit-transform: translateX(-50%) translateY(-50%);
+  transform: translateX(-50%) translateY(-50%);
+}*/
+.mandate-fix {
+  display: flex;
+  justify-content: center;
+  height: 30px;
+}
+
+.custom-tabs {
+  width: 100%;
+  /* border-bottom: solid 1px #1a4269; */
+  /* margin-bottom: 20px; */
+  padding-bottom: 20px;
+  border-bottom: solid 1px transparent;
+  /* border-image: linear-gradient(to right, #000 1%, #ababab 19%, #2c2c2c 100%, #000 100%); */
+  border-image: linear-gradient(to right, var(--linear-grad1) 1%, var(--linear-grad2) 19%, var(--linear-grad3) 100%, var(--linear-grad1) 100% );
+  border-image-slice: 1;
+  padding-left: 19px;
+}
+
+.customer-grid {
+  /* width: 100%; */
+  padding-top: 20px;
+  /* margin-bottom: 20px; */
+  padding-bottom: 20px;
+  margin-bottom: 50px;
+  /* border-top: solid 2px transparent; */
+  border-bottom: solid 1px transparent;
+  border-top: solid 1px transparent;
+  /* border-image: linear-gradient(to right, #000 1%, #ababab 19%, #2c2c2c 100%, #000 100%);; */
+  border-image: linear-gradient(to right, var(--linear-grad1) 1%, var(--linear-grad2) 19%, var(--linear-grad3) 100%, var(--linear-grad1) 100% );
+  border-image-slice: 1;
+  padding-left: 19px;
+  overflow-x: visible;
+  /* min-height: 180px; */
+}
+
+.customer-grid th {
+  font-weight: 500;
+  font-size: 14px;
+  color: var(--customtabHeaderColor) !important;
+  letter-spacing: 0.4px; /*Added by OnkarE on 11-Apr-2023*/
+}
+
+.customer-grid td {
+  width: 50px !important;
+}
+
+.custom-tabs th {
+  font-size: 14px;
+  font-weight: 500;
+  /* color: var(--customtabHeaderColor) !important; */
+  color: var(--btn-bg) !important;
+  letter-spacing: 0.4px; /*Added by OnkarE on 11-Apr-2023*/
+}
+
+.custom-tabs td {
+  width: 50px !important;
+}
+
+.btnCustomTab {
+  cursor: pointer;
+}
+
+.disabled {
+  opacity: 0.5;
+  /* pointer-events: none; */
+  cursor: not-allowed;
+}
+
+.custom-tab-disabled {
+  /* opacity: 0.5; */
+  /* pointer-events: none; */
+  opacity: 0.5;
+  color: white;
+  cursor: not-allowed;
+}
+.example-full-width {
+  width: 280px !important; /*changed by Onkar*/
+}
+
+.redClass {
+  border: red;
+  color: red;
+  background-color: red;
+}
+
+.whiteClass{
+  border: green;
+  color: green;
+  background-color: green;
+}
+/* .disabled:hover{
+
+} */
+
+.round{
+  width:100px; 
+  border-radius: 50px;
+  border:1px #e1e1e1 solid;
+ 
+}
+
+/* .custom-scroll-bar::-webkit-scrollbar {
+  width: 0px;
+  background: white; 
+  display:none !important;
+}
+
+.custom-scroll-bar{
+ width:500px!important;
+  overflow-y:scroll;
+ 
+} */
+
+::ng-deep .mat-form-field-appearance-legacy .mat-form-field-underline {
+  background-color: #bcbcbc !important;;
+}
+/* :ng-deep .mat-form-field-ripple {
+  background-color: #bcbcbc !important;
+} */
+.invisible{
+  display: none;
+}
+.showhidebuttons {
+  font-size: 14px !important; /*added by Onkar*/
+  width: 100%;
+  min-width: 100px;
+  /* color: #0094ff !important; */
+  color: var(--btn-bg) !important; /*added by Onkar*/
+  white-space: nowrap;
+  padding-left: 10px;
+  cursor: pointer;
+  padding-top: 34px;
+  letter-spacing: 0.4px; /*Added by OnkarE on 11-Apr-2023*/
+}
+.mappedTabs{
+  height: 15px !important;
+  line-height: 14px !important;
+  color: var(--btn-bg) !important; /*added by Onkar*/
+  font-size: 14px;
+  letter-spacing: 0.4px; /*Added by OnkarE on 11-Apr-2023*/
+}
+.tabPanel {
+  overflow-x: hidden !important;
+    overflow-y: auto;
+    width: 262px;
+    height: auto;
+    /* max-height: 580px !important; */
+    padding-left: 18px;
+
+    /*added border css by Onkar*/
+    border-right: solid 1px transparent;
+    -o-border-image: linear-gradient(to bottom, #fff 2%, #cacaca 10%, #fff 100%);
+    border-image: linear-gradient(to bottom,  #000000 1%, #ababab 24%, #2c2c2c 100%);
+    border-image-slice: 1;
+    padding-top: 24px;
+}
+.matListStyle {
+  white-space: nowrap !important;
+  cursor: pointer;
+  padding-bottom: 8px;
+}
+.activeTab {
+  background-color: var(--readOnlyBGColor);
+}
+
+.display-button{
+  display: block;
+}
+
+.hide-button {
+  display: none;
+}
+
+
+/* Added Classes to remove inline styling in deal entry component - by OnkarE */
+.topPadding22 {
+  padding-top: 22px;
+}
+
+.dealEntryHeader {
+  margin:0% !important; 
+  padding-left:30px;
+}
+
+.width2percent {
+  width: 2%;
+  padding: 0px 0px 0px 20px;
+}
+
+.tabNameTd{
+  padding: 2px 0px 0px 0px;
+}
+
+.modschtempSearchInput {
+  margin-left: -20px;width: 294px!important;font-size: 12px; padding-left: 10px;height: 37px;letter-spacing: 0.4px; /*Added by OnkarE on 11-Apr-2023*/
+}
+
+.width500 {
+  width:500!important;
+}
+
+.height5 {
+  height: 5px;
+}
+
+.draftBtn {
+  background-color: #F4A460; color: black;
+}
+
+.saveBtn {
+  background-color: #FFA500; color: black;
+}
+
+.repriceBtn {
+  background-color: #BDB76B; color: black;
+}
+
+.clearBtn {
+  background-color: #BEE2F5; color: black;
+}
+
+.simulationBtn {
+  background-color: #DDA0DD; color: black;
+}
+
+.wflBtntd {
+  width: 136px; 
+  padding-bottom: 5px;
+  padding: 0 !important;
+  margin: 0px !important;
+}
+
+.wflBtnUCP {
+  width: inherit; 
+  font-size: 13px;
+  height: 38px;             
+  white-space: pre-wrap;
+}
+
+.stylewidth30 {
+  width: 30px;
+}
+
+.widthmax {
+  width: max-content;
+}
+
+.paddingtop15 {
+  padding-top: 15px;
+}
+
+.loaderstyle {
+  position: absolute;margin-left: 40%; z-index: 99;
+}
+
+.appfieldtd{
+  vertical-align: top;padding-right: 18px;
+}
+
+.custgridtable {
+  table-layout: auto;
+  width: max-content;
+}
+
+.custgridborder {
+  border-top: solid 1px transparent;
+}
+
+.leftpanelstyle {
+  height: 30px!important; margin-bottom: 10px;padding-left: 15px;
+  background: inherit;
+}
+
+.active{
+  display: block;
+}
+
+.inactive{
+  display: none;
+}
+
+/* Added by SwatiP */
+.QueueButtons{ 
+  /* background-color: var(--wflButtonsBGColor);  */
+  color: var(--wflButtonsTxtColor); 
+  width: 66px; 
+  /* font-size: 11px; */
+  height: 38px;
+  border:  var(--wflButtonsBGColor);
+  letter-spacing: 0.4px; /*Added by OnkarE on 11-Apr-2023*/
+}
+/* END BY SwatiP */
+
+
+.PricingGrid{
+  padding: 0.5px;
+}
+
+.customHeaderRow{
+  border-bottom: solid 1px #E7E7E7 !important;
+  background: var(--customtabHeaderBGColor) !important;
+  /* #F5F5F5 !important; */
+  height: 39px !important;
+}
+
+
+.WFLButtonTR {
+  display: grid;
+  grid-template-columns: 144px 150px;
+}
+
+.mainDEBGColor {
+  background-color: var(--mainDEBGColor);
+  overflow: auto;
+}
+
+.wflButtonStyle {
+  background-color: var(--wflButtonsBGColor); 
+  color: var(--wflButtonsTxtColor); 
+  border:  var(--wflButtonsBGColor);
+}
+/* .UCPCustomTabHeader{
+  margin-left: -14px !important;
+}
+
+.UCPCustomerGridHead{
+  margin-left: -14px !important;
+} */
+
+.SaveMsg {
+  overflow-wrap: anywhere;
+}

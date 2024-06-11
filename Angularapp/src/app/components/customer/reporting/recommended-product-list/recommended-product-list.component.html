@@ -1,0 +1,323 @@
+<div class="container" *ngIf="mode === 'previous'">
+  <div class="parentDiv">
+    <div class="sub-Section-title">RECOMMENDED PRODUCTS LIST</div>
+
+    <div class="searchbox">
+      <input
+        type="text"
+        [(ngModel)]="searchInput"
+        placeholder=" Enter Security or Asset Code"
+        (keyup.enter)="loadProducts(searchInput)"
+      />
+    </div>
+
+    <div>
+      <button class="button loadbtn" (click)="loadProducts(searchInput)">
+        Load
+      </button>
+    </div>
+
+    <div *ngIf="showNoProductsMsg" class="NoProductsMsg">No Products Found</div>
+  </div>
+
+  <div>
+    <table>
+      <tr>
+        <th>ASSET CLASS</th>
+        <th>ASSET CODE</th>
+        <th>PRODUCT NAME</th>
+        <th>ISIN</th>
+        <th>SECTOR</th>
+        <th>CURRENCY</th>
+        <th>RISK RATING</th>
+        <th>UPDATED AT</th>
+        <th>UPDATED BY</th>
+      </tr>
+
+      <tr *ngFor="let item of RecommendedList">
+        <td>{{ item.PSL_Asset_Class }}</td>
+        <td>{{ item.PSL_Code }}</td>
+        <td>{{ item.PSL_Product_Name }}</td>
+        <td>{{ item.PSL_ISIN }}</td>
+        <td>{{ item.PSL_Sector }}</td>
+        <td>{{ item.PSL_Currency }}</td>
+        <td>{{ item.PSL_Underlying_Risk_Rating }}</td>
+        <td>{{ item.PSL_Updated_At }}</td>
+        <td>{{ item.PSL_Updated_By }}</td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+<!-- Changes on 03 Feb 2022 by Ashwini H. asked by Mohan P. -->
+
+<div *ngIf="mode === 'new'">
+  <div>
+    <div class="page-title">
+      <div>
+        <app-svg-icons
+          class="back-button"
+          [icon]="'back-button'"
+          [width]="'40'"
+          [height]="'40'"
+          [fill]="'var(--headers)'"
+          (click)="commonApi.back()"
+        ></app-svg-icons>
+      </div>
+
+      <div>
+        <label>Recommended Products</label>
+      </div>
+
+      <div></div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="flex-filter-div">
+      <div class="search-asset-filter">
+        <input
+          type="text"
+          [(ngModel)]="searchInput"
+          placeholder=" Enter Product Name or Asset Code"
+          (input)="columnWiseFilter($event)"
+          (keydown.backspace)="columnWiseFilter($event)"
+        />
+      </div>
+
+      <div>
+        <button class="button" (click)="loadProducts(searchInput)">Load</button>
+      </div>
+
+      <div>
+        <app-svg-icons
+          (click)="refresh()"
+          [icon]="'refresh'"
+          [width]="'26'"
+          [height]="'26'"
+        >
+        </app-svg-icons>
+      </div>
+
+      <div>
+        <app-svg-icons
+          (click)="exportToExcel()"
+          [icon]="'xls'"
+          [width]="'26'"
+          [height]="'26'"
+        >
+        </app-svg-icons>
+      </div>
+
+      <div *ngIf="showNoProductsMsg" class="NoProductsMsg">
+        No Products Found
+      </div>
+    </div>
+
+    <!-- <div class = "flex-filter-div"> -->
+    <!-- <div>
+      <label>Asset Class: </label>
+    </div>
+    <div>
+      <select [(ngModel)] = "selectedAsset" (change)="changesAssetClass($event)" class = "select-assetclass">
+        <option *ngFor = "let asset of assetClass" >{{asset.assetCls}}</option>
+      </select>
+    </div> -->
+
+    <!-- <div>
+      <label> Risk Rating: </label>
+    </div>
+    <div>
+      <select [(ngModel)] = "selectedAsset" (change)="changesAssetClass($event)" class = "select-assetclass">
+        <option *ngFor = "let asset of assetClass" >{{asset}}</option>
+      </select>
+    </div> -->
+
+    <!-- <div class="panel">
+      <div class="details">
+
+          <input class="" placeholder="Search" [(ngModel)]="searchString"
+              (keyup)="filterSearch($event, 'PRR')">
+          <div class="select-multiassets"
+              *ngFor="let asset of assetClass; let j = index">
+              <input #checkboxes type="checkbox" value="asset" class = "checkbox-filter"
+                  name="asset" [checked]="asset.isChecked" (change) = "changeAssetClassChecked(asset, j)"
+                  value="asset.assetCls">
+              <label>  {{asset.assetCls}} </label>
+          </div>
+      </div>
+  </div> -->
+
+    <!-- </div> -->
+
+    <!-- <div> -->
+      <div class="filter-tabs-outside">
+        <div class="filter-tabs">
+          <div
+            class="filter-tab all"
+            [ngClass]="{ active: filteredTab === 'All' }"
+            (click)="selectFilter('All')"
+          >
+            <label class="filter-title">All</label>
+            <label class="filter-value">{{ totalCount }}</label>
+          </div>
+
+          <div
+            class="filter-tab"
+            *ngFor="let filter of filterTabs"
+            (click)="selectFilter(filter.title)"
+            [ngClass]="{
+              Confirmed: filter.title === 'BUY',
+              submitted: filter.title === 'NEUTRAL',
+              rejected: filter.title === 'SELL',
+              'strong-buy': filter.title === 'STRING BUY',
+              'strong-buy': filter.title === 'STRONG BUY',
+              'strong-sell': filter.title === 'STRONG SELL',
+              active: filteredTab === filter.title
+            }"
+          >
+            <label class="filter-title">{{ filter.title }}</label>
+            <label class="filter-value">{{ filter.value }}</label>
+          </div>
+        </div>
+
+        <div class="padding-select">
+          <label class="filter-label">Asset Class : </label>
+          <div class="assetClassFlex">
+            <div
+              *ngFor="let asset of assetClass; let i = index"
+              class="select-multiassets"
+              (click)="changeAssetClassChecked(asset, i)"
+            >
+              <input
+                type="checkbox"
+                class="checkbox-filter"
+                [checked]="asset.isChecked"
+              />
+              <label class="select-multiassets-label">{{
+                asset.assetCls
+              }}</label>
+            </div>
+          </div>
+        </div>
+
+        <!-- <div class = "padding-select">
+        <label class = "filter-label">Risk Rating : </label>
+        <div class = "assetClassFlex">
+          <div *ngFor = "let RR of RiskRate; let i = index;" class="select-multiassets"  >
+            <input type="checkbox" class = "checkbox-filter" (change) = "changeAssetClassChecked(RR, i)">
+            <label>{{RR.columnName}}</label>
+          </div>
+        </div>
+      </div> -->
+      </div>
+    <!-- </div> -->
+
+    <!-- <div class = "grid-filter-table">
+    <div class = "flex-col-filter">
+      <div>
+        <label class = "filter-label">Filter</label>
+      </div>
+
+      <div>
+        <div *ngFor = "let item of filterHeaderArray; let i = index;" class = "flex-header-filter"> 
+          <label>{{item.columnName}}</label>
+          <div class = "toggle-menu-icon"> 
+            <span class="material-icons " (click)="accordion(i)"
+            [ngClass]=" {'rotate-toggle-menu-icon' : item.isChecked} ">expand_more</span>
+          </div>
+        </div>
+      
+      </div>
+      <div>
+        <div *ngFor = "let i of RiskRate" class="select-multiassets">
+          <input type="checkbox" class = "checkbox-filter">
+          {{i}}
+        </div>
+      </div>
+
+    </div> -->
+    <div class="grid-view-recommended">
+      <!-- <div class="recommended-grid"> -->
+        <!-- <div class="recommended-table"> -->
+          <table id="productlist-table">
+            <thead>
+              <tr class="rec-header-grid-header">
+                <th >Asset Class</th>
+                <th>Asset Code</th>
+                <th>Security</th>
+                <th>ISIN</th>
+                <th>Sector</th>
+                <th>Currency</th>
+                <th>Risk Rating</th>
+                <th>Sentiments</th>
+                <th>Updated At</th>
+                <th>Updated By</th>
+              </tr>
+            </thead>
+            <tbody>
+              <div class="recommended-table-body">
+                <tr
+                  class="rec-header-grid"
+                  *ngFor="let item of RecommendedList"
+                >
+                  <td
+                    
+                    *ngIf="item.PSL_Asset_Class === 'EQ'"
+                  >
+                    Shares
+                  </td>
+                  <td
+                    
+                    *ngIf="item.PSL_Asset_Class === 'UT'"
+                  >
+                    Funds
+                  </td>
+                  <td
+                    
+                    *ngIf="item.PSL_Asset_Class === 'FI'"
+                  >
+                    Bonds
+                  </td>
+                  <!-- <td *ngIf = " item.PSL_Asset_Class === 'MF'"> Mutual Funds </td> -->
+                  <td  *ngIf="item.PSL_Asset_Class === ''">
+                    -
+                  </td>
+                  <td>{{ item.PSL_Code || "-" }}</td>
+                  <td class="productname-cls">
+                    {{ item.PSL_Product_Name || "-" }}
+                  </td>
+                  <td class="align-center">{{ item.PSL_ISIN || "-" }}</td>
+                  <td>{{ item.PSL_Sector || "-" }}</td>
+                  <td class="align-center">{{ item.PSL_Currency || "-" }}</td>
+                  <td class="align-center">
+                    {{ item.PSL_Underlying_Risk_Rating || "-" }}
+                  </td>
+                  <td class="align-left">
+                    <!-- <div class="status-sentiment align-left" [ngClass]="{'strong-buy-tag' : item.PSL_market_Sentiment === 'STRONG BUY',
+                        'buy-tag' : item.PSL_market_Sentiment === 'BUY',
+                        'sell-tag' : item.PSL_market_Sentiment === 'SELL',
+                        'strong-sell-tag' : item.PSL_market_Sentiment === 'STRONG SELL',
+                        'neutral-tag' : item.PSL_market_Sentiment === 'NEUTRAL'
+                      }"> -->
+                    {{ item.PSL_market_Sentiment || "-" }}
+                    <!-- </div> -->
+                  </td>
+                  <td class="align-center">
+                    {{
+                      item.PSL_Updated_At
+                        | date: "dd-MMM-yyyy hh:mm:ss aa" || "-"
+                    }}
+                  </td>
+                  <td class="align-center">{{ item.PSL_Updated_By || "-" }}</td>
+                </tr>
+              </div>
+            </tbody>
+          </table>
+        <!-- </div> -->
+      <!-- </div> -->
+    </div>
+  </div>
+</div>
+
+<!-- </div> -->
